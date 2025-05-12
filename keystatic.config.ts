@@ -3,7 +3,11 @@ import { config, fields, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: {
+      owner: 'eecd-design',
+      name: 'conditions-for-success_middle'
+    }
   },
   collections: {
     posts: collection({
