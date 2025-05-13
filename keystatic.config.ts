@@ -159,12 +159,21 @@ export default config({
             description: 'The title of the resource',
           }
         }),
-        // linkedFocusItems: fields.array({
-        //   fields.relationship({
-        //     label: 
-        //   })
-        // })
-
+        linkedFocusItems: fields.array(
+          fields.text({
+            label: 'Focus Item',
+            validation: {
+              isRequired: true,
+              pattern: {
+                regex: /^\d\.\d\.\d$/,
+                message: 'Must match the following pattern: #.#.#'
+              }
+            }
+          }), {
+            label: 'Linked Focus Items',
+            itemLabel: props => props.value ?? 'Select a Focus Item',
+          }
+        ),
         internal: fields.conditional(
           // Condition
           fields.checkbox({
