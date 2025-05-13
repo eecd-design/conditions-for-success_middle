@@ -9,6 +9,11 @@ export default config({
       name: 'conditions-for-success_middle'
     }
   },
+  ui: {
+    brand: {
+      name: 'NB Middle School Conditions for Success'
+    }
+  },
   collections: {
     posts: collection({
       label: 'Posts',
