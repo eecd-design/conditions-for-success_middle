@@ -1,0 +1,20 @@
+indicator: 7-meaningful-learning-experiences
+subindicatorID: '7.1'
+title: Student Voice, Choice, and Reflection
+reflectionQuestion: >-
+  How do we incorporate student voice, choice, and reflection into learning
+  experiences?
+goal: ''
+intiating:
+  focus: Introduce basic opportunities for student input.
+  focusItems:
+    - id: 7.1.1
+      description: >-
+        Teachers occasionally survey students on learning preferences or ask for
+        informal feedback on classroom activities.
+      compass: true
+    - id: 7.1.2
+      description: >-
+        Choice is limited to small tasks, such as selecting a book or choosing a
+        project topic.
+      compass: false
