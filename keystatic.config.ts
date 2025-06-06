@@ -16,28 +16,23 @@ export default config({
   },
   collections: {
 
-    posts: collection({
-      label: 'Posts',
-      slugField: 'title',
-      path: 'src/content/posts/*',
-      format: { contentField: 'content' },
-      schema: {
-        title: fields.slug({ name: { label: 'Title' } }),
-        pubDate: fields.datetime({ label: 'Published Date' }),
-        content: fields.markdoc({ label: 'Content' }),
-      },
-    }),
-
     indicators: collection({
       label: 'Indicators',
       columns: ['id', 'title'],
       slugField: 'title',
       schema: {
-        id: fields.integer({
+        id: fields.text({
           label: 'Indicator ID',
           validation: {
-            min: 1,
-            max: 7,
+            isRequired: true,
+            pattern: {
+              regex: /^\d$/,
+              message: 'Must match the following pattern: #'
+            },
+            length: {
+              min: 1,
+              max: 1,
+            }
           },
         }),
         title: fields.slug({
@@ -47,7 +42,8 @@ export default config({
           },
           slug: {
             label: 'Numbered slug',
-            description: 'This will define the file/folder name for this entry'
+            description: 'This will define the file/folder name for this entry',
+            // generate: (name, id) => { `${id}-${name}` },
           }
         }),
         colour: fields.select({
@@ -71,21 +67,25 @@ export default config({
 
     subindicators: collection({
       label: 'Subindicators',
-      columns: ['indicatorID', 'subindicatorID', 'title'],
+      columns: ['subindicatorID', 'title'],
       slugField: 'title',
       schema: {
-        indicatorID: fields.integer({
-          label: 'Indicator ID',
-          validation: {
-            min: 1,
-            max: 7,
-          },
+        indicator: fields.relationship({
+          label: 'Parent Indicator',
+          collection: 'indicators',
         }),
-        subindicatorID: fields.integer({
+        subindicatorID: fields.text({
           label: 'Subindicator ID',
           validation: {
-            min: 1,
-            max: 12,
+            isRequired: true,
+            pattern: {
+              regex: /^\d\.\d$/,
+              message: 'Must match the following pattern: #.#'
+            },
+            length: {
+              min: 3,
+              max: 3,
+            }
           },
         }),
         title: fields.slug({
@@ -94,56 +94,49 @@ export default config({
             description: 'The title of the subindicator',
           },
         }),
-        description: fields.markdoc({
-          label: 'Description',
-        })
-      }
-    }),
-
-    focusItems: collection({
-      label: 'Focus Items',
-      columns: ['indicatorID', 'subindicatorID', 'focusItemID'],
-      slugField: 'title',
-      schema: {
-        indicatorID: fields.integer({
-          label: 'Indicator ID',
-          validation: {
-            min: 1,
-            max: 12,
-          },
+        reflectionQuestion: fields.text({
+          label: 'Reflection Question',
         }),
-        subindicatorID: fields.integer({
-          label: 'Subindicator ID',
-          validation: {
-            min: 1,
-            max: 12,
-          },
+        goal: fields.markdoc.inline({
+          label: 'Goal',
         }),
-        focusItemID: fields.integer({
-          label: 'Focus Item ID',
-          validation: {
-            min: 1,
-            max: 12,
-          },
-        }),
-        phase: fields.select({
-          label: 'Phase',
-          options: [
-            { label: 'Initiating', value: 'initiating' },
-            { label: 'Developing', value: 'developing' },
-            { label: 'Yellow', value: 'yellow' },
-            { label: 'Sustaining', value: 'sustaining' },
-          ],
-          defaultValue: 'initiating',
-        }),
-        title: fields.slug({
-          name: {
-            label: 'Title',
-            description: 'The title of the focus item',
-          },
-        }),
-        description: fields.markdoc({
-          label: 'Description',
+        intiating: fields.object({
+          focus: fields.text({
+            label: 'Focus',
+          }),
+          focusItems: fields.array(
+            fields.object({
+              id: fields.text({
+                label: 'ID',
+                validation: {
+                  isRequired: true,
+                  pattern: {
+                    regex: /^\d\.\d\.\d$/,
+                    message: 'Must match the following pattern: #.#.#'
+                  },
+                  length: {
+                    min: 5,
+                    max: 5,
+                  }
+                }
+              }),
+              description: fields.text({
+                label: 'Description',
+                multiline: true,
+              }),
+              compass: fields.checkbox({
+                label: 'Compass',
+                description: 'Flag focus items that respond to students who have not demonstrated literacy and numeracy proficiency.'
+              })
+            }),
+            {
+              label: 'Focus Items',
+              itemLabel: (props) => props.fields.id.value,
+            }
+          ),
+        },
+        { 
+          label: 'Phase: Initiating',
         })
       }
     }),
@@ -159,6 +152,17 @@ export default config({
             description: 'The title of the resource',
           }
         }),
+        type: fields.select({
+          label: 'Resource Type',
+          options: [
+            { label: 'Document', value: 'document' },
+            { label: 'Video', value: 'video' },
+            { label: 'Website', value: 'website' },
+            { label: 'Presentation', value: 'presentation' },
+            { label: 'Audio', value: 'audio' },
+          ],
+          defaultValue: 'video',
+        }),
         linkedFocusItems: fields.array(
           fields.text({
             label: 'Focus Item',
@@ -167,6 +171,10 @@ export default config({
               pattern: {
                 regex: /^\d\.\d\.\d$/,
                 message: 'Must match the following pattern: #.#.#'
+              },
+              length: {
+                min: 5,
+                max: 5,
               }
             }
           }), {
