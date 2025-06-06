@@ -1,0 +1,24 @@
+indicator: 7-meaningful-learning-experiences
+subindicatorID: '7.4'
+title: Career-connected Learning
+reflectionQuestion: >-
+  How do students seek out and apply learning experiences—both inside and
+  outside the classroom—that connect to their career interests and future
+  goals? 
+goal: >
+  Career-connected learning is embedded within the school experience, ensuring
+  that students explore, experience, and plan for their future pathways. Schools
+  provide equitable access to career exploration, integrate career education
+  into instruction, and leverage experiential learning opportunities to prepare
+  students for their futures. [Career Education
+  Framework](https://www2.gnb.ca/content/dam/gnb/Departments/ed/pdf/K12/FRL/nb-career-education-framework.pdf)
+intiating:
+  focus: >-
+    Establishing career-connected learning awareness and initial exploration
+    opportunities.
+  focusItems:
+    - id: 7.2.1
+      description: >-
+        The school recognizes the need for career-connected learning but has
+        limited structured opportunities.
+      compass: false
