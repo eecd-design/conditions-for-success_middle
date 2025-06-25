@@ -15,5 +15,35 @@ const posts = defineCollection({
     })
  });
 
+const indicators = defineCollection({ 
+    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/indicators" }),
+    schema: z.object({
+        title: z.string(),
+        // pubDate: z.date(),
+        // description: z.string(),
+        // author: z.string(),
+    })
+ });
+
+const components = defineCollection({ 
+    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/components" }),
+    schema: z.object({
+        title: z.string(),
+        // pubDate: z.date(),
+        // description: z.string(),
+        // author: z.string(),
+    })
+ });
+
+const resources = defineCollection({ 
+    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/resources" }),
+    schema: z.object({
+        title: z.string(),
+        // pubDate: z.date(),
+        // description: z.string(),
+        // author: z.string(),
+    })
+ });
+
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { posts };
+export const collections = { posts, indicators, components, resources };

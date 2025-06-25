@@ -20,6 +20,7 @@ export default config({
       label: 'Indicators',
       columns: ['id', 'title'],
       slugField: 'title',
+      path: 'src/content/indicators/*',
       schema: {
         id: fields.text({
           label: 'Indicator ID',
@@ -37,8 +38,8 @@ export default config({
         }),
         title: fields.slug({
           name: {
-            label: 'Title',
-            description: 'The title of the indicator',
+            label: 'Name',
+            description: 'The name of the indicator',
           },
           slug: {
             label: 'Numbered slug',
@@ -53,9 +54,9 @@ export default config({
             { label: 'Orange', value: 'orange' },
             { label: 'Yellow', value: 'yellow' },
             { label: 'Green', value: 'green' },
+            { label: 'Cyan', value: 'cyan' },
             { label: 'Blue', value: 'blue' },
             { label: 'Purple', value: 'purple' },
-            { label: 'Pink', value: 'pink' },
           ],
           defaultValue: 'red',
         }),
@@ -65,17 +66,18 @@ export default config({
       }
     }),
 
-    subindicators: collection({
-      label: 'Subindicators',
-      columns: ['subindicatorID', 'title'],
+    components: collection({
+      label: 'Components',
+      columns: ['id', 'title'],
       slugField: 'title',
+      path: 'src/content/components/*',
       schema: {
         indicator: fields.relationship({
           label: 'Parent Indicator',
           collection: 'indicators',
         }),
-        subindicatorID: fields.text({
-          label: 'Subindicator ID',
+        id: fields.text({
+          label: 'Component ID',
           validation: {
             isRequired: true,
             pattern: {
@@ -90,8 +92,8 @@ export default config({
         }),
         title: fields.slug({
           name: {
-            label: 'Title',
-            description: 'The title of the subindicator',
+            label: 'Name',
+            description: 'The name of the component',
           },
         }),
         reflectionQuestion: fields.text({
@@ -104,10 +106,10 @@ export default config({
           focus: fields.text({
             label: 'Focus',
           }),
-          focusItems: fields.array(
+          considerations: fields.array(
             fields.object({
               id: fields.text({
-                label: 'ID',
+                label: 'Consideration ID',
                 validation: {
                   isRequired: true,
                   pattern: {
@@ -126,11 +128,11 @@ export default config({
               }),
               compass: fields.checkbox({
                 label: 'Compass',
-                description: 'Flag focus items that respond to students who have not demonstrated literacy and numeracy proficiency.'
+                description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
               })
             }),
             {
-              label: 'Focus Items',
+              label: 'Considerations',
               itemLabel: (props) => props.fields.id.value,
             }
           ),
@@ -145,15 +147,16 @@ export default config({
       label: 'Resources',
       columns: [],
       slugField: 'title',
+      path: 'src/content/resources/*',
       schema: {
         title: fields.slug({
           name: {
-            label: 'Title',
-            description: 'The title of the resource',
+            label: 'Name',
+            description: 'The name of the resource',
           }
         }),
-        type: fields.select({
-          label: 'Resource Type',
+        category: fields.select({
+          label: 'Category',
           options: [
             { label: 'Document', value: 'document' },
             { label: 'Video', value: 'video' },
@@ -163,9 +166,50 @@ export default config({
           ],
           defaultValue: 'video',
         }),
-        linkedFocusItems: fields.array(
+        linkedIndicators: fields.array(
           fields.text({
-            label: 'Focus Item',
+            label: 'Indicator',
+            description: 'This resource will appear in the resource sections of every component of the indicator.',
+            validation: {
+              isRequired: true,
+              pattern: {
+                regex: /^\d$/,
+                message: 'Must match the following pattern: #'
+              },
+              length: {
+                min: 5,
+                max: 5,
+              }
+            }
+          }), {
+            label: 'Linked Indicators',
+            itemLabel: props => props.value ?? 'Select a Indicator',
+          }
+        ),
+        linkedComponents: fields.array(
+          fields.text({
+            label: 'Component',
+            description: 'This resource will appear in the resource sections of all four phases of the component.',
+            validation: {
+              isRequired: true,
+              pattern: {
+                regex: /^\d\.\d$/,
+                message: 'Must match the following pattern: #.#'
+              },
+              length: {
+                min: 5,
+                max: 5,
+              }
+            }
+          }), {
+            label: 'Linked Components',
+            itemLabel: props => props.value ?? 'Select a Component',
+          }
+        ),
+        linkedConsiderations: fields.array(
+          fields.text({
+            label: 'Consideration',
+            description: 'This resource will appear in the resource section of the phase associated with the consideration.',
             validation: {
               isRequired: true,
               pattern: {
@@ -178,8 +222,8 @@ export default config({
               }
             }
           }), {
-            label: 'Linked Focus Items',
-            itemLabel: props => props.value ?? 'Select a Focus Item',
+            label: 'Linked Considerations',
+            itemLabel: props => props.value ?? 'Select a Consideration',
           }
         ),
         internal: fields.conditional(
