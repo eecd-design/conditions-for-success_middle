@@ -60,7 +60,7 @@ export default config({
           ],
           defaultValue: 'red',
         }),
-        description: fields.markdoc({
+        description: fields.mdx({
           label: 'Description',
         })
       }
@@ -99,7 +99,7 @@ export default config({
         reflectionQuestion: fields.text({
           label: 'Reflection Question',
         }),
-        goal: fields.markdoc.inline({
+        goal: fields.mdx.inline({
           label: 'Goal',
         }),
         intiating: fields.object({
