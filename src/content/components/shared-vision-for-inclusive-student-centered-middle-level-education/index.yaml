@@ -9,3 +9,11 @@ initiating:
     - tag: 1.1.2
       description: 'Leadership introduces the concept of middle block philosophy '
       compass: true
+implementing:
+  considerations:
+    - tag: 1.1.3
+      description: "Staff can articulate the school's shared vision and mission."
+      compass: false
+    - tag: 1.1.4
+      description: 'Staff can explain the key components of middle block philosophy.'
+      compass: true

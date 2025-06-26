@@ -177,7 +177,7 @@ export default config({
           ),
         },
         { 
-          label: 'Phase: Initiating',
+          label: 'Phase: Implementing',
         })
       }
     }),
