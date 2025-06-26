@@ -1,0 +1,18 @@
+indicator: 1-leadership-and-teaming
+id: '1.1'
+title: Shared Vision for Inclusive, Student-Centered Middle Level Education
+reflectionQuestion: >-
+  How effectively does our leadership communicate, model, and embed a shared
+  vision that reflects the unique needs of middle-level learners and guides our
+  school culture and decision-making?
+goal: |
+  This is a sample goal statement.
+intiating:
+  focus: Leadership introduces a shared vision and middle block philosophy.
+  considerations:
+    - id: 1.1.1
+      description: Leadership introduces the concept of a shared vision and mission.
+      compass: false
+    - id: 1.1.2
+      description: 'Leadership introduces the concept of middle block philosophy '
+      compass: true
