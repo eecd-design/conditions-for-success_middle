@@ -20,7 +20,7 @@ export default config({
       label: 'Indicators',
       columns: ['id', 'title'],
       slugField: 'title',
-      path: 'src/content/indicators/*',
+      path: 'src/content/indicators/*/',
       schema: {
         id: fields.text({
           label: 'Indicator ID',
@@ -44,7 +44,6 @@ export default config({
           slug: {
             label: 'Numbered slug',
             description: 'This will define the file/folder name for this entry',
-            // generate: (name, id) => { `${id}-${name}` },
           }
         }),
         colour: fields.select({
@@ -62,6 +61,7 @@ export default config({
         }),
         description: fields.mdx({
           label: 'Description',
+          extension: 'md'
         })
       }
     }),
@@ -70,7 +70,7 @@ export default config({
       label: 'Components',
       columns: ['id', 'title'],
       slugField: 'title',
-      path: 'src/content/components/*',
+      path: 'src/content/components/*/',
       schema: {
         indicator: fields.relationship({
           label: 'Parent Indicator',
@@ -98,6 +98,7 @@ export default config({
         }),
         reflectionQuestion: fields.text({
           label: 'Reflection Question',
+          multiline: true,
         }),
         goal: fields.mdx.inline({
           label: 'Goal',
@@ -105,6 +106,7 @@ export default config({
         intiating: fields.object({
           focus: fields.text({
             label: 'Focus',
+            multiline: true,
           }),
           considerations: fields.array(
             fields.object({
@@ -147,7 +149,7 @@ export default config({
       label: 'Resources',
       columns: [],
       slugField: 'title',
-      path: 'src/content/resources/*',
+      path: 'src/content/resources/*/',
       schema: {
         title: fields.slug({
           name: {
