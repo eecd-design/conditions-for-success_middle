@@ -1,0 +1,106 @@
+---
+const { componentID, componentTag, title, focus, considerations, resources } = Astro.props;
+---
+
+<h3 class="accordion">
+	<span class="label">
+		<span class="icon-group"></span>
+		<span class="text-group">{title}</span>
+	</span>
+	<span class="consideration-completion" hidden></span>
+	<!-- Cross/Minus Icon -->
+</h3>
+
+<div>
+	{
+		focus && focus.rawContent().trim().length > 0 && (
+			<div class="focus">
+				<h4 class="label">
+					<span class="icon-group"></span>
+					<span class="text-group">Focus</span>
+				</h4>
+				<div class="statement">
+					<focus.Content />
+				</div>
+			</div>
+		)
+	}
+
+	<div class="considerations">
+		<ul>
+			{
+				considerations.map((consideration) => {
+
+					return (
+						<li>
+							<form>
+								<label>
+
+									<input type="checkbox" value={consideration.tag} hidden/>
+
+									<span class="number">{consideration.tag}</span>
+
+									{consideration.compass && (
+										<svg></svg>
+									)}
+
+								</label>
+							</form>
+
+							<span class="description">
+								{consideration.description}
+							</span>
+
+							<a href={`#${componentID}_${title.toLowerCase()}-resources&filter=${consideration.tag}`}>View relevant resources</a>
+
+						</li>
+					)
+				})
+			}
+		</ul>
+	</div>
+
+	{
+		resources && (
+
+			<div class="resources" id={`${componentID}_${title.toLowerCase()}-resources`}>
+
+				<div class="">
+					<h4>Resources</h4>
+					<div class="filters">
+						{/* Filter Icon */}
+						<p>Filters:</p>
+						<div class="button-group">
+							<button type="button">Clear All</button>
+							{/* Buttons for each consideration that has associated resources */}
+						</div>
+					</div>
+				</div>
+
+				<ul>
+
+					{considerations.map((consideration) => {
+
+						return (
+
+							<li>
+								<a href="" >
+									<span class="icon-group">
+
+									</span>
+									<span class="text-group">
+
+									</span>
+								</a>
+							</li>
+
+						)
+
+					})}
+
+				</ul>
+
+			</div>
+		)
+	}
+</div>

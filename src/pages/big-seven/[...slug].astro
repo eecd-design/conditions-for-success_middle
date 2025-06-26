@@ -1,0 +1,71 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Component from "../../components/Component.astro";
+import type { MarkdownInstance } from 'astro';
+
+// Get the current indicator
+export async function getStaticPaths() {
+	const indicators = await getCollection("indicators");
+	return indicators.map((indicator) => ({
+		params: { slug: indicator.id },
+		props: { indicator },
+	}));
+}
+
+const { indicator } = Astro.props;
+
+// Store the path to the current indicator
+const pathToIndicator = `src/content/indicators/${indicator.id}`;
+
+// Get all indicator descriptions
+let allDescriptions = Object.values(
+	import.meta.glob("src/content/indicators/**/description.md", {
+		eager: true,
+	}),
+);
+
+// Get the current indicator description
+let description:any = allDescriptions.find((match:any) =>
+	match.file.includes(pathToIndicator),
+);
+
+// Get all indicator components
+let allComponents = await getCollection("components");
+
+// Get all current indicator components
+let components = allComponents.filter((component => component.data.indicator === indicator.id));
+
+
+---
+
+<Layout frontmatter={indicator.data}>
+
+	<h1>{indicator.data.title}</h1>
+
+	{description && <description.Content />}
+
+    <ul>
+        {components.map((component) => (
+
+            <li>
+                <a href={`/${component.id}`}>{component.data.tag} {component.data.title}</a>
+            </li>
+
+        ))}
+    </ul>
+
+    <div class="callout">
+        <p class="heading">Be on the lookout for the compass symbol!</p>
+        <p>It flags focus areas on responding to students who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward student success.</p>
+    </div>
+
+	{components.map((component) => (
+
+        <hr />
+
+		<Component entry={component}/>
+
+	))}
+
+</Layout>

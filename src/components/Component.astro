@@ -1,0 +1,84 @@
+---
+
+import Phase from "../components/Phase.astro";
+
+const { entry } = Astro.props;
+
+// console.log(entry);
+// console.log(entry.data.initiating);
+
+// Store the path to the current component
+const pathToComponent = `src/content/components/${entry.id}`;
+
+// Get all reflection questions
+let allQuestions = Object.values(
+	import.meta.glob("src/content/components/**/reflectionQuestion.md", {
+		eager: true,
+	}),
+);
+
+// Get the current reflection question
+let question:any = allQuestions.find((match:any) =>
+	match.file.includes(pathToComponent),
+);
+
+// Get all component goals
+let allGoals = Object.values(
+	import.meta.glob("src/content/components/**/goal.md", {
+		eager: true,
+	}),
+);
+
+// Get the current component goal
+let goal:any = allGoals.find((match:any) =>
+	match.file.includes(pathToComponent),
+);
+
+// Get all component focus statements
+let allFocuses = Object.values(
+	import.meta.glob("src/content/components/**/focus.md", {
+		eager: true,
+	}),
+);
+
+// Get the current component focus statements
+let focuses = Object.fromEntries(allFocuses
+.filter((match:any) => match.file.includes(pathToComponent))
+.map((match:any) => {
+    let path = match.file.split('/');
+    let id = path[path.length - 2];
+    return [id, match]
+}));
+
+---
+
+<p class="current-phase" hidden></p>
+
+<h2 id={entry.id}>
+    <span class="tag">
+        <span class="number">{entry.data?.tag}</span>
+    </span>
+    <span class="title">{entry.data?.title}</span>
+</h2>
+
+{ question && question.rawContent().trim().length > 0 && (
+
+    <div class="callout" data-style="outline" data-on-path-elem="heading">
+        <h3 class="heading">Reflection Question</h3>
+        <question.Content />
+    </div>
+
+)}
+
+{ goal && goal.rawContent().trim().length > 0 && (
+    <h3>
+        <span class="icon-group"></span>
+        <span class="text-group">Goal</span>
+    </h3>
+    <goal.Content />
+)}
+
+<Phase componentID={entry.id} componentTag={entry.data?.tag} title="Initiating" focus={focuses?.initiating} considerations={entry.data?.initiating?.considerations}/>
+<Phase componentID={entry.id} componentTag={entry.data?.tag} title="Implementing" focus={focuses?.implementing} considerations={entry.data?.implementing?.considerations}/>
+<!-- <Phase componentID={entry.id} componentTag={entry.data?.tag} title="Developing" focus={focuses?.developing} considerations={entry.data?.developing?.considerations}/>
+<Phase componentID={entry.id} componentTag={entry.data?.tag} title="Sustaining" focus={focuses?.sustaining} considerations={entry.data?.sustaining?.considerations}/> -->

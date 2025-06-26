@@ -1,0 +1,16 @@
+---
+import { getCollection } from "astro:content";
+
+const indicators = await getCollection('indicators');
+
+console.log(indicators);
+
+---
+
+<ul>
+	{indicators.map(indicator => (
+		<li>
+			<a href={`/big-seven/${indicator.id}`}>{indicator.data.title}</a>
+		</li>
+	))}
+</ul>
