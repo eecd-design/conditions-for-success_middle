@@ -18,12 +18,12 @@ export default config({
 
     indicators: collection({
       label: 'Indicators',
-      columns: ['id', 'title'],
+      columns: ['tag', 'title'],
       slugField: 'title',
       path: 'src/content/indicators/*/',
       schema: {
-        id: fields.text({
-          label: 'Indicator ID',
+        tag: fields.text({
+          label: 'Indicator Tag',
           validation: {
             isRequired: true,
             pattern: {
@@ -68,7 +68,7 @@ export default config({
 
     components: collection({
       label: 'Components',
-      columns: ['id', 'title'],
+      columns: ['tag', 'title'],
       slugField: 'title',
       path: 'src/content/components/*/',
       schema: {
@@ -76,8 +76,8 @@ export default config({
           label: 'Parent Indicator',
           collection: 'indicators',
         }),
-        id: fields.text({
-          label: 'Component ID',
+        tag: fields.text({
+          label: 'Component Tag',
           validation: {
             isRequired: true,
             pattern: {
@@ -96,22 +96,23 @@ export default config({
             description: 'The name of the component',
           },
         }),
-        reflectionQuestion: fields.text({
+        reflectionQuestion: fields.mdx({
           label: 'Reflection Question',
-          multiline: true,
+          extension: 'md',
         }),
-        goal: fields.mdx.inline({
+        goal: fields.mdx({
           label: 'Goal',
+          extension: 'md',
         }),
-        intiating: fields.object({
-          focus: fields.text({
+        initiating: fields.object({
+          focus: fields.mdx({
             label: 'Focus',
-            multiline: true,
+            extension: 'md',
           }),
           considerations: fields.array(
             fields.object({
-              id: fields.text({
-                label: 'Consideration ID',
+              tag: fields.text({
+                label: 'Consideration Tag',
                 validation: {
                   isRequired: true,
                   pattern: {
@@ -135,7 +136,7 @@ export default config({
             }),
             {
               label: 'Considerations',
-              itemLabel: (props) => props.fields.id.value,
+              itemLabel: (props) => props.fields.tag.value,
             }
           ),
         },

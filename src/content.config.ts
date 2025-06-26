@@ -18,20 +18,30 @@ const posts = defineCollection({
 const indicators = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/indicators" }),
 	schema: z.object({
+        id: z.string(),
 		title: z.string(),
 		colour: z.string(),
-		// description: z.string(),
-		// author: z.string(),
 	})
 });
 
 const components = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/components" }),
 	schema: z.object({
+        indicator: z.string(),
+        id: z.string(),
 		title: z.string(),
-		// pubDate: z.date(),
-		// description: z.string(),
-		// author: z.string(),
+        reflectionQuestion: z.string(),
+        goal: z.string(),
+        initiating: z.object({
+            focus: z.string(),
+            considerations: z.array(
+                z.object({
+                    id: z.string(),
+                    description: z.string(),
+                    compass: z.boolean(),
+                })
+            )
+        }),
 	})
 });
 
