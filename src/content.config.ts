@@ -5,45 +5,45 @@ import { defineCollection, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 
 // 3. Define your collection(s)
-const posts = defineCollection({ 
-    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/posts" }),
-    schema: z.object({
-        title: z.string(),
-        // pubDate: z.date(),
-        // description: z.string(),
-        // author: z.string(),
-    })
- });
+const posts = defineCollection({
+	loader: glob({ pattern: "**/*.mdoc", base: "./src/content/posts" }),
+	schema: z.object({
+		title: z.string(),
+		// pubDate: z.date(),
+		// description: z.string(),
+		// author: z.string(),
+	})
+});
 
-const indicators = defineCollection({ 
-    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/indicators" }),
-    schema: z.object({
-        title: z.string(),
-        // pubDate: z.date(),
-        // description: z.string(),
-        // author: z.string(),
-    })
- });
+const indicators = defineCollection({
+	loader: glob({ pattern: "**/*.yaml", base: "./src/content/indicators" }),
+	schema: z.object({
+		title: z.string(),
+		colour: z.string(),
+		// description: z.string(),
+		// author: z.string(),
+	})
+});
 
-const components = defineCollection({ 
-    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/components" }),
-    schema: z.object({
-        title: z.string(),
-        // pubDate: z.date(),
-        // description: z.string(),
-        // author: z.string(),
-    })
- });
+const components = defineCollection({
+	loader: glob({ pattern: "**/*.yaml", base: "./src/content/components" }),
+	schema: z.object({
+		title: z.string(),
+		// pubDate: z.date(),
+		// description: z.string(),
+		// author: z.string(),
+	})
+});
 
-const resources = defineCollection({ 
-    loader: glob({ pattern: "**/*.mdoc", base: "./src/content/resources" }),
-    schema: z.object({
-        title: z.string(),
-        // pubDate: z.date(),
-        // description: z.string(),
-        // author: z.string(),
-    })
- });
+const resources = defineCollection({
+	loader: glob({ pattern: "**/*.yaml", base: "./src/content/resources" }),
+	schema: z.object({
+		title: z.string(),
+		// pubDate: z.date(),
+		// description: z.string(),
+		// author: z.string(),
+	})
+});
 
 // 4. Export a single `collections` object to register your collection(s)
 export const collections = { posts, indicators, components, resources };
