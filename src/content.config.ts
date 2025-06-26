@@ -18,7 +18,7 @@ const posts = defineCollection({
 const indicators = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/indicators" }),
 	schema: z.object({
-        id: z.string(),
+        tag: z.string(),
 		title: z.string(),
 		colour: z.string(),
 	})
@@ -28,15 +28,21 @@ const components = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/components" }),
 	schema: z.object({
         indicator: z.string(),
-        id: z.string(),
+        tag: z.string(),
 		title: z.string(),
-        reflectionQuestion: z.string(),
-        goal: z.string(),
         initiating: z.object({
-            focus: z.string(),
             considerations: z.array(
                 z.object({
-                    id: z.string(),
+                    tag: z.string(),
+                    description: z.string(),
+                    compass: z.boolean(),
+                })
+            )
+        }),
+        implementing: z.object({
+            considerations: z.array(
+                z.object({
+                    tag: z.string(),
                     description: z.string(),
                     compass: z.boolean(),
                 })

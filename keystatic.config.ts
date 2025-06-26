@@ -139,6 +139,42 @@ export default config({
               itemLabel: (props) => props.fields.tag.value,
             }
           ),
+        }),
+        implementing: fields.object({
+          focus: fields.mdx({
+            label: 'Focus',
+            extension: 'md',
+          }),
+          considerations: fields.array(
+            fields.object({
+              tag: fields.text({
+                label: 'Consideration Tag',
+                validation: {
+                  isRequired: true,
+                  pattern: {
+                    regex: /^\d\.\d\.\d$/,
+                    message: 'Must match the following pattern: #.#.#'
+                  },
+                  length: {
+                    min: 5,
+                    max: 5,
+                  }
+                }
+              }),
+              description: fields.text({
+                label: 'Description',
+                multiline: true,
+              }),
+              compass: fields.checkbox({
+                label: 'Compass',
+                description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+              })
+            }),
+            {
+              label: 'Considerations',
+              itemLabel: (props) => props.fields.tag.value,
+            }
+          ),
         },
         { 
           label: 'Phase: Initiating',
