@@ -139,6 +139,9 @@ export default config({
               itemLabel: (props) => props.fields.tag.value,
             }
           ),
+        },
+        { 
+          label: 'Phase: Initiating',
         }),
         implementing: fields.object({
           focus: fields.mdx({
