@@ -378,8 +378,8 @@ export default config({
 								message: 'Must match the following pattern: #'
 							},
 							length: {
-								min: 5,
-								max: 5,
+								min: 1,
+								max: 1,
 							}
 						}
 					}), {
@@ -398,8 +398,8 @@ export default config({
 								message: 'Must match the following pattern: #.#'
 							},
 							length: {
-								min: 5,
-								max: 5,
+								min: 3,
+								max: 3,
 							}
 						}
 					}), {
