@@ -1,0 +1,16 @@
+title: SharingLearningWithStudents_Tutorial
+external:
+  discriminant: false
+  value:
+    category:
+      discriminant: video
+      value:
+        existing:
+          discriminant: false
+          value:
+            file: >-
+              /resources/videos/sharing-learning-with-students-tutorial/external/value/category/value/existing/value/file.mp4
+linkedIndicators:
+  - '1'
+linkedComponents: []
+linkedConsiderations: []
