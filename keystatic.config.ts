@@ -205,20 +205,14 @@ export default config({
 			slugField: 'title',
 			path: 'src/content/resources/*/',
 			schema: {
-				title: fields.slug({
-					name: {
-						label: 'Name',
-						description: 'The name of the resource',
+				title: fields.text({
+					label: 'Name',
+					description: 'The name of the resource',
+					validation: {
+						length: {
+							max: 50,
+						}
 					},
-					slug: {
-						label: 'Slug',
-						description: 'This will define the file/folder name for this entry',
-						validation: {
-							length: {
-								max: 50,
-							}
-						},
-					}
 				}),
 				external: fields.conditional(
 					// Condition
@@ -229,137 +223,140 @@ export default config({
 					}),
 					// Conditional Fields
 					{
-						false: fields.object({
-							category: fields.conditional(
-								// Condition
-								fields.select({
-									label: 'Category',
-									options: [
-										{ label: 'Document', value: 'document' },
-										{ label: 'Video', value: 'video' },
-										{ label: 'Presentation', value: 'presentation' },
-										{ label: 'Audio', value: 'audio' },
-									],
-									defaultValue: 'video',
-								}),
-								// Conditional Fields
-								{
-									document: fields.object({
-										existing: fields.conditional(
-											// Condition
-											fields.checkbox({
-												label: 'Existing resource',
-												description: 'Is the resource already uploaded to the website?',
-												defaultValue: false,
-											}),
-											// Conditional Fields
-											{
-												false: fields.object({
-													file: fields.file({
-														label: 'File Upload',
-														description: 'Upload the resource to the website',
-														directory: 'public/resources/documents',
-														publicPath: '/resources/documents'
-													}),
-												}),
-												true: fields.object({
-													filePath: fields.pathReference({
-														label: 'Resource File Path',
-														description: 'Folder path to the file on the website',
-														pattern: 'public/resources/documents/*',
-													}),
-												})
-											}
-										)
+						false: fields.conditional(
+							// Condition
+							fields.select({
+								label: 'Category',
+								options: [
+									{ label: 'Document', value: 'document' },
+									{ label: 'Video', value: 'video' },
+									{ label: 'Presentation', value: 'presentation' },
+									{ label: 'Audio', value: 'audio' },
+								],
+								defaultValue: 'video',
+							}),
+							// Conditional Fields
+							{
+								document: fields.conditional(
+									// Condition
+									fields.checkbox({
+										label: 'Existing resource',
+										description: 'Is the resource already uploaded to the website?',
+										defaultValue: false,
 									}),
-									video: fields.object({
-										existing: fields.conditional(
-											// Condition
-											fields.checkbox({
-												label: 'Existing resource',
-												description: 'Is the resource already uploaded to the website?',
-												defaultValue: false,
-											}),
-											// Conditional Fields
-											{
-												false: fields.object({
-													file: fields.file({
-														label: 'File Upload',
-														description: 'Upload the resource to the website',
-														directory: 'public/resources/videos',
-														publicPath: '/resources/videos'
-													}),
-												}),
-												true: fields.object({
-													filePath: fields.pathReference({
-														label: 'Resource File Path',
-														description: 'Folder path to the file on the website',
-														pattern: 'public/resources/videos/*',
-													}),
-												})
-											}
-										)
+									// Conditional Fields
+									{
+										false: fields.file({
+											label: 'File Upload',
+											description: 'Upload the resource to the website',
+											directory: 'public/resources/documents',
+											publicPath: '/resources/documents'
+										}),
+
+										true: fields.pathReference({
+											label: 'Resource File Path',
+											description: 'Folder path to the file on the website',
+											pattern: 'public/resources/documents/*',
+										}),
+
+									}
+								)
+								,
+								video: fields.conditional(
+									// Condition
+									fields.checkbox({
+										label: 'Existing resource',
+										description: 'Is the resource already uploaded to the website?',
+										defaultValue: false,
 									}),
-									presentation: fields.object({
-										existing: fields.conditional(
-											// Condition
-											fields.checkbox({
-												label: 'Existing resource',
-												description: 'Is the resource already uploaded to the website?',
-												defaultValue: false,
+									// Conditional Fields
+									{
+										false: fields.object({
+											file: fields.file({
+												label: 'File Upload',
+												description: 'Upload the resource to the website',
+												directory: 'public/resources/videos',
+												publicPath: '/resources/videos'
 											}),
-											// Conditional Fields
-											{
-												false: fields.object({
-													file: fields.file({
-														label: 'File Upload',
-														description: 'Upload the resource to the website',
-														directory: 'public/resources/presentations',
-														publicPath: '/resources/presentations'
-													}),
-												}),
-												true: fields.object({
-													filePath: fields.pathReference({
-														label: 'Resource File Path',
-														description: 'Folder path to the file on the website',
-														pattern: 'public/resources/presentations/*',
-													}),
-												})
-											}
-										)
-									}),
-									audio: fields.object({
-										existing: fields.conditional(
-											// Condition
-											fields.checkbox({
-												label: 'Existing resource',
-												description: 'Is the resource already uploaded to the website?',
-												defaultValue: false,
+										}),
+										true: fields.object({
+											filePath: fields.pathReference({
+												label: 'Resource File Path',
+												description: 'Folder path to the file on the website',
+												pattern: 'public/resources/videos/*',
 											}),
-											// Conditional Fields
-											{
-												false: fields.object({
-													file: fields.file({
-														label: 'File Upload',
-														description: 'Upload the resource to the website',
-														directory: 'public/resources/audio',
-														publicPath: '/resources/audio'
-													}),
-												}),
-												true: fields.object({
-													filePath: fields.pathReference({
-														label: 'Resource File Path',
-														description: 'Folder path to the file on the website',
-														pattern: 'public/resources/audio/*',
-													}),
-												})
-											}
-										)
+										})
+									}
+								)
+								,
+								presentation: fields.conditional(
+									// Condition
+									fields.checkbox({
+										label: 'Existing resource',
+										description: 'Is the resource already uploaded to the website?',
+										defaultValue: false,
 									}),
-								}
-							)
-						}),						
+									// Conditional Fields
+									{
+										false: fields.object({
+											file: fields.file({
+												label: 'File Upload',
+												description: 'Upload the resource to the website',
+												directory: 'public/resources/presentations',
+												publicPath: '/resources/presentations'
+											}),
+										}),
+										true: fields.object({
+											filePath: fields.pathReference({
+												label: 'Resource File Path',
+												description: 'Folder path to the file on the website',
+												pattern: 'public/resources/presentations/*',
+											}),
+										})
+									}
+								)
+								,
+								audio: fields.conditional(
+									// Condition
+									fields.checkbox({
+										label: 'Existing resource',
+										description: 'Is the resource already uploaded to the website?',
+										defaultValue: false,
+									}),
+									// Conditional Fields
+									{
+										false: fields.object({
+											file: fields.file({
+												label: 'File Upload',
+												description: 'Upload the resource to the website',
+												directory: 'public/resources/audio',
+												publicPath: '/resources/audio'
+											}),
+										}),
+										true: fields.object({
+											filePath: fields.pathReference({
+												label: 'Resource File Path',
+												description: 'Folder path to the file on the website',
+												pattern: 'public/resources/audio/*',
+											}),
+										})
+									}
+								)
+								,
+							}
+						)
+						,
 						true: fields.object({
+							category: fields.select({
+								label: 'Category',
+								options: [
+									{ label: 'Document', value: 'document' },
+									{ label: 'Video', value: 'video' },
+									{ label: 'Presentation', value: 'presentation' },
+									{ label: 'Audio', value: 'audio' },
+								],
+								defaultValue: 'video',
+							}),
 							url: fields.url({
 								label: 'Resource URL',
 								description: 'URL to the external resource',
