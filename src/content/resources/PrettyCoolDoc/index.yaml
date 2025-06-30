@@ -1,0 +1,12 @@
+file: /resources/documents/PrettyCoolDoc/file.docx
+external:
+  discriminant: false
+  value:
+    discriminant: video
+    value:
+      discriminant: false
+      value: {}
+linkedIndicators:
+  - '1'
+linkedComponents: []
+linkedConsiderations: []
