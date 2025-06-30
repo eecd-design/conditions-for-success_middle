@@ -214,6 +214,12 @@ export default config({
 						}
 					},
 				}),
+				file: fields.file({
+					label: 'File Upload',
+					description: 'Upload the resource to the website',
+					directory: 'public/resources/documents',
+					publicPath: '/resources/documents'
+				}),
 				external: fields.conditional(
 					// Condition
 					fields.checkbox({
