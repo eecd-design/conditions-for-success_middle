@@ -1,0 +1,15 @@
+title: StudentCentredDesign_Checklist
+external:
+  discriminant: false
+  value:
+    category:
+      discriminant: document
+      value:
+        existing:
+          discriminant: true
+          value:
+            filePath: public/resources/documents/doc-test.pdf
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 1.1.2
