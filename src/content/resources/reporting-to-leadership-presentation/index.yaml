@@ -1,0 +1,16 @@
+title: ReportingToLeadership_Presentation
+external:
+  discriminant: false
+  value:
+    category:
+      discriminant: presentation
+      value:
+        existing:
+          discriminant: false
+          value:
+            file: >-
+              /resources/presentations/reporting-to-leadership-presentation/external/value/category/value/existing/value/file.pdf
+linkedIndicators: []
+linkedComponents:
+  - '1.2'
+linkedConsiderations: []
