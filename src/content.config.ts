@@ -55,9 +55,14 @@ const resources = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/resources" }),
 	schema: z.object({
 		title: z.string(),
-		// pubDate: z.date(),
-		// description: z.string(),
-		// author: z.string(),
+		category: z.string(),
+		source: z.object({
+			filePath: z.optional(z.string()),
+			url: z.optional(z.string()),
+		}),
+		linkedIndicators: z.array(z.string()),
+		linkedComponents: z.array(z.string()),
+		linkedConsiderations: z.array(z.string()),
 	})
 });
 

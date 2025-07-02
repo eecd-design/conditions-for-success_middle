@@ -24,11 +24,12 @@ export default config({
 			schema: {
 				tag: fields.text({
 					label: 'Indicator Tag',
+					description: 'Tag must follow the format: [#]. Example: 1',
 					validation: {
 						isRequired: true,
 						pattern: {
 							regex: /^\d$/,
-							message: 'Must match the following pattern: #'
+							message: 'Tag must follow the format: [#]. Example: 1'
 						},
 						length: {
 							min: 1,
@@ -39,11 +40,11 @@ export default config({
 				title: fields.slug({
 					name: {
 						label: 'Name',
-						description: 'The name of the indicator',
+						description: 'The indicator name.',
 					},
 					slug: {
-						label: 'Numbered slug',
-						description: 'This will define the file/folder name for this entry',
+						label: 'Slug',
+						description: `This slug defines the page url for this entry, it must follow the format: [tag]_[indicator-name]. Example: 1_leadership-and-teaming.`,
 						validation: {
 							length: {
 								max: 50,
@@ -53,6 +54,7 @@ export default config({
 				}),
 				colour: fields.select({
 					label: 'Indicator Colour',
+					description: 'This selection customizes the colour palette of the indicator page UI elements.',
 					options: [
 						{ label: 'Red', value: 'red' },
 						{ label: 'Orange', value: 'orange' },
@@ -66,6 +68,7 @@ export default config({
 				}),
 				description: fields.mdx({
 					label: 'Description',
+					description: 'This content will appear below the page title.',
 					extension: 'md'
 				})
 			}
@@ -83,11 +86,12 @@ export default config({
 				}),
 				tag: fields.text({
 					label: 'Component Tag',
+					description: 'Tag must follow the format: [#.#]. Example: 1.1',
 					validation: {
 						isRequired: true,
 						pattern: {
 							regex: /^\d\.\d$/,
-							message: 'Must match the following pattern: #.#'
+							message: 'Tag must follow the format: [#.#]. Example: 1.1'
 						},
 						length: {
 							min: 3,
@@ -98,11 +102,11 @@ export default config({
 				title: fields.slug({
 					name: {
 						label: 'Name',
-						description: 'The name of the component',
+						description: 'The component name.',
 					},
 					slug: {
-						label: 'Numbered slug',
-						description: 'This will define the file/folder name for this entry',
+						label: 'Slug',
+						description: `This slug defines the folder name for this entry, it must follow the format: [tag]_[component-name]. Abbreviate the component name as necessary. Example: 1-1_shared-vision-for-inclusive-education.`,
 						validation: {
 							length: {
 								max: 50,
@@ -127,11 +131,12 @@ export default config({
 						fields.object({
 							tag: fields.text({
 								label: 'Consideration Tag',
+								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
 								validation: {
 									isRequired: true,
 									pattern: {
 										regex: /^\d\.\d\.\d$/,
-										message: 'Must match the following pattern: #.#.#'
+										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 									},
 									length: {
 										min: 5,
@@ -154,9 +159,9 @@ export default config({
 						}
 					),
 				},
-					{
-						label: 'Phase: Initiating',
-					}),
+				{
+					label: 'Phase: Initiating',
+				}),
 				implementing: fields.object({
 					focus: fields.mdx({
 						label: 'Focus',
@@ -166,11 +171,12 @@ export default config({
 						fields.object({
 							tag: fields.text({
 								label: 'Consideration Tag',
+								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
 								validation: {
 									isRequired: true,
 									pattern: {
 										regex: /^\d\.\d\.\d$/,
-										message: 'Must match the following pattern: #.#.#'
+										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 									},
 									length: {
 										min: 5,
@@ -193,192 +199,148 @@ export default config({
 						}
 					),
 				},
-					{
-						label: 'Phase: Implementing',
-					})
+				{
+					label: 'Phase: Implementing',
+				}),
+				developing: fields.object({
+					focus: fields.mdx({
+						label: 'Focus',
+						extension: 'md',
+					}),
+					considerations: fields.array(
+						fields.object({
+							tag: fields.text({
+								label: 'Consideration Tag',
+								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+								validation: {
+									isRequired: true,
+									pattern: {
+										regex: /^\d\.\d\.\d$/,
+										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
+									},
+									length: {
+										min: 5,
+										max: 5,
+									}
+								}
+							}),
+							description: fields.text({
+								label: 'Description',
+								multiline: true,
+							}),
+							compass: fields.checkbox({
+								label: 'Compass',
+								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+							})
+						}),
+						{
+							label: 'Considerations',
+							itemLabel: (props) => props.fields.tag.value,
+						}
+					),
+				},
+				{
+					label: 'Phase: Developing',
+				}),
+				sustaining: fields.object({
+					focus: fields.mdx({
+						label: 'Focus',
+						extension: 'md',
+					}),
+					considerations: fields.array(
+						fields.object({
+							tag: fields.text({
+								label: 'Consideration Tag',
+								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+								validation: {
+									isRequired: true,
+									pattern: {
+										regex: /^\d\.\d\.\d$/,
+										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
+									},
+									length: {
+										min: 5,
+										max: 5,
+									}
+								}
+							}),
+							description: fields.text({
+								label: 'Description',
+								multiline: true,
+							}),
+							compass: fields.checkbox({
+								label: 'Compass',
+								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+							})
+						}),
+						{
+							label: 'Considerations',
+							itemLabel: (props) => props.fields.tag.value,
+						}
+					),
+				},
+				{
+					label: 'Phase: Sustaining',
+				})
 			}
 		}),
 
 		resources: collection({
 			label: 'Resources',
-			columns: [],
+			columns: ['category', 'title'],
 			slugField: 'title',
 			path: 'src/content/resources/*/',
 			schema: {
-				title: fields.text({
-					label: 'Name',
-					description: 'The name of the resource',
-					validation: {
-						length: {
-							max: 50,
-						}
+				title: fields.slug({
+					name: {
+						label: 'Name',
+						description: 'The resource name as it should appear in hyperlinks throughout the website.',
 					},
-				}),
-				file: fields.file({
-					label: 'File Upload',
-					description: 'Upload the resource to the website',
-					directory: 'public/resources/documents',
-					publicPath: '/resources/documents'
-				}),
-				external: fields.conditional(
-					// Condition
-					fields.checkbox({
-						label: 'External resource',
-						description: 'Is the resource hosted on an external website?',
-						defaultValue: false,
-					}),
-					// Conditional Fields
-					{
-						false: fields.conditional(
-							// Condition
-							fields.select({
-								label: 'Category',
-								options: [
-									{ label: 'Document', value: 'document' },
-									{ label: 'Video', value: 'video' },
-									{ label: 'Presentation', value: 'presentation' },
-									{ label: 'Audio', value: 'audio' },
-								],
-								defaultValue: 'video',
-							}),
-							// Conditional Fields
-							{
-								document: fields.conditional(
-									// Condition
-									fields.checkbox({
-										label: 'Existing resource',
-										description: 'Is the resource already uploaded to the website?',
-										defaultValue: false,
-									}),
-									// Conditional Fields
-									{
-										false: fields.file({
-											label: 'File Upload',
-											description: 'Upload the resource to the website',
-											directory: 'public/resources/documents',
-											publicPath: '/resources/documents'
-										}),
-
-										true: fields.pathReference({
-											label: 'Resource File Path',
-											description: 'Folder path to the file on the website',
-											pattern: 'public/resources/documents/*',
-										}),
-
-									}
-								)
-								,
-								video: fields.conditional(
-									// Condition
-									fields.checkbox({
-										label: 'Existing resource',
-										description: 'Is the resource already uploaded to the website?',
-										defaultValue: false,
-									}),
-									// Conditional Fields
-									{
-										false: fields.object({
-											file: fields.file({
-												label: 'File Upload',
-												description: 'Upload the resource to the website',
-												directory: 'public/resources/videos',
-												publicPath: '/resources/videos'
-											}),
-										}),
-										true: fields.object({
-											filePath: fields.pathReference({
-												label: 'Resource File Path',
-												description: 'Folder path to the file on the website',
-												pattern: 'public/resources/videos/*',
-											}),
-										})
-									}
-								)
-								,
-								presentation: fields.conditional(
-									// Condition
-									fields.checkbox({
-										label: 'Existing resource',
-										description: 'Is the resource already uploaded to the website?',
-										defaultValue: false,
-									}),
-									// Conditional Fields
-									{
-										false: fields.object({
-											file: fields.file({
-												label: 'File Upload',
-												description: 'Upload the resource to the website',
-												directory: 'public/resources/presentations',
-												publicPath: '/resources/presentations'
-											}),
-										}),
-										true: fields.object({
-											filePath: fields.pathReference({
-												label: 'Resource File Path',
-												description: 'Folder path to the file on the website',
-												pattern: 'public/resources/presentations/*',
-											}),
-										})
-									}
-								)
-								,
-								audio: fields.conditional(
-									// Condition
-									fields.checkbox({
-										label: 'Existing resource',
-										description: 'Is the resource already uploaded to the website?',
-										defaultValue: false,
-									}),
-									// Conditional Fields
-									{
-										false: fields.object({
-											file: fields.file({
-												label: 'File Upload',
-												description: 'Upload the resource to the website',
-												directory: 'public/resources/audio',
-												publicPath: '/resources/audio'
-											}),
-										}),
-										true: fields.object({
-											filePath: fields.pathReference({
-												label: 'Resource File Path',
-												description: 'Folder path to the file on the website',
-												pattern: 'public/resources/audio/*',
-											}),
-										})
-									}
-								)
-								,
+					slug: {
+						label: 'Slug',
+						description: `This slug defines the folder name for this entry, it must follow the format: [resource-name]. Abbreviate the resource name as necessary. Example: behaviour-management-pink-envelope`,
+						validation: {
+							length: {
+								max: 50,
 							}
-						)
-						,
-						true: fields.object({
-							category: fields.select({
-								label: 'Category',
-								options: [
-									{ label: 'Document', value: 'document' },
-									{ label: 'Video', value: 'video' },
-									{ label: 'Presentation', value: 'presentation' },
-									{ label: 'Audio', value: 'audio' },
-								],
-								defaultValue: 'video',
-							}),
-							url: fields.url({
-								label: 'Resource URL',
-								description: 'URL to the external resource',
-							})
-						})
+						},
 					}
-				),
+				}),
+				category: fields.select({
+					label: 'Category',
+					description: 'The category organizes this resource for search and filtering, and also determines the icon shown in its hyperlink.',
+					options: [
+						{ label: 'Video', value: 'video' },
+						{ label: 'Document', value: 'document' },
+						{ label: 'Presentation', value: 'presentation' },
+						{ label: 'Audio', value: 'audio' },
+					],
+					defaultValue: 'video',
+				}),
+				source: fields.object({
+					filePath: fields.pathReference({
+						label: 'Internal Resource',
+						description: `If the resource is hosted internally, search and select the correct path to the file in the website's /resources folder. Ensure the resource is uploaded to the website prior to completing this tagging entry.`,
+						pattern: 'public/resources/**/*',
+					}),
+					url: fields.url({
+						label: 'External Resource',
+						description: 'If the resource is hosted externally, provide a valid URL.',
+					})
+				},
+				{
+					label: 'Resource Location',
+					description: ''
+				}),
 				linkedIndicators: fields.array(
 					fields.text({
 						label: 'Indicator',
-						description: 'This resource will appear in the resource sections of every component of the indicator.',
+						description: 'This resource will be included in every component and phase of the linked indicator. Input the indicator tag, following the format: [#]. Example: 1',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d$/,
-								message: 'Must match the following pattern: #'
+								message: 'Tag must follow the format: [#]. Example: 1'
 							},
 							length: {
 								min: 1,
@@ -387,18 +349,18 @@ export default config({
 						}
 					}), {
 					label: 'Linked Indicators',
-					itemLabel: props => props.value ?? 'Select a Indicator',
+					itemLabel: props => props.value ?? 'Input an indicator tag',
 				}
 				),
 				linkedComponents: fields.array(
 					fields.text({
 						label: 'Component',
-						description: 'This resource will appear in the resource sections of all four phases of the component.',
+						description: 'This resource will be included in every phase of the linked component. Input the component tag, following the format: [#.#]. Example: 1.1',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d\.\d$/,
-								message: 'Must match the following pattern: #.#'
+								message: 'Tag must follow the format: [#.#]. Example: 1.1'
 							},
 							length: {
 								min: 3,
@@ -407,18 +369,18 @@ export default config({
 						}
 					}), {
 					label: 'Linked Components',
-					itemLabel: props => props.value ?? 'Select a Component',
+					itemLabel: props => props.value ?? 'Input a component tag',
 				}
 				),
 				linkedConsiderations: fields.array(
 					fields.text({
 						label: 'Consideration',
-						description: 'This resource will appear in the resource section of the phase associated with the consideration.',
+						description: 'This resource will be included in the parent phase of the linked consideration. Input the consideration tag, following the format: [#.#.#]. Example: 1.1.1',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d\.\d\.\d$/,
-								message: 'Must match the following pattern: #.#.#'
+								message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 							},
 							length: {
 								min: 5,
@@ -427,7 +389,7 @@ export default config({
 						}
 					}), {
 					label: 'Linked Considerations',
-					itemLabel: props => props.value ?? 'Select a Consideration',
+					itemLabel: props => props.value ?? 'Input a consideration tag',
 				}
 				),
 			}
