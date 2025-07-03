@@ -1,9 +1,9 @@
-title: ProblematicExpectations
+title: Problematic Expectations
 category: video
 source:
   filePath: public/resources/videos/video_02.mp4
 linkedIndicators: []
-linkedComponents:
-  - '1.2'
+linkedComponents: []
 linkedConsiderations:
-  - 1.1.2
+  - 1.2.1
+  - 1.2.3
