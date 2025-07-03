@@ -314,6 +314,7 @@ export default config({
 						{ label: 'Document', value: 'document' },
 						{ label: 'Presentation', value: 'presentation' },
 						{ label: 'Audio', value: 'audio' },
+						{ label: 'Website', value: 'website' },
 					],
 					defaultValue: 'video',
 				}),
