@@ -1,8 +1,10 @@
 ---
 import { getCollection, render } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionNav from "../../components/SectionNav.astro";
+import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
 import Component from "../../components/Component.astro";
-import type { MarkdownInstance } from 'astro';
+import IconArrow from "src/components/icons/IconArrowRight_16.astro";
 
 // Get the current indicator
 export async function getStaticPaths() {
@@ -34,38 +36,64 @@ let description:any = allDescriptions.find((match:any) =>
 let allComponents = await getCollection("components");
 
 // Get all current indicator components
-let components = allComponents.filter((component => component.data.indicator === indicator.id));
-
+let components = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
 ---
 
-<Layout frontmatter={indicator.data}>
+<BaseLayout pageTitle={indicator.data.title}>
 
-	<h1>{indicator.data.title}</h1>
+	<AssessmentToolbar />
 
-	{description && <description.Content />}
+	<SectionNav />
 
-    <ul>
-        {components.map((component) => (
+	<aside class="on-page-nav-container">
+		<nav class="on-page">
+			<h2 data-style-as="h3">On this page</h2>
+			<ul class="link-list">
+				{components.map((component) => (
+					<li>
+						<a href={`#${component.id}`}>
+							<span class="icon-container"><IconArrow /></span>
+							<span class="text">{component.data.tag} {component.data.title}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	</aside>
 
-            <li>
-                <a href={`/${component.id}`}>{component.data.tag} {component.data.title}</a>
-            </li>
+	<div class="content" data-theme={indicator.data.colour}>
 
-        ))}
-    </ul>
+		<h1>{indicator.data.title}</h1>
 
-    <div class="callout">
-        <p class="heading">Be on the lookout for the compass symbol!</p>
-        <p>It flags focus areas on responding to students who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward student success.</p>
-    </div>
+		{description && <description.Content />}
 
-	{components.map((component) => (
+		<ul class="link-list">
+			{components.map((component) => (
 
-        <hr />
+				<li>
+					<a href={`#${component.id}`}>
+						<span class="icon-container"><IconArrow /></span>	
+						<span class="text">{component.data.tag} {component.data.title}</span>
+					</a>
+				</li>
 
-		<Component entry={component}/>
+			))}
+		</ul>
 
-	))}
+		<div class="callout">
+			<p class="heading">Be on the lookout for the compass symbol!</p>
+			<p>It flags focus areas on responding to students who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward student success.</p>
+		</div>
 
-</Layout>
+		{components.map((component) => (
+
+			<hr />
+
+			<Component entry={component}/>
+
+		))}
+
+	</div>
+
+</BaseLayout>

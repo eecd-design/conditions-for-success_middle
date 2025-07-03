@@ -1,0 +1,50 @@
+<section class="assessment-controls" aria-label="Assessment Controls Toolbar">
+	<span class="active-assessment-title"></span>
+	<button class="view-details" type="button">
+		<span class="icon-container"></span>
+		<span class="text-container">View Details</span>
+	</button>
+	<button class="new-assessment" type="button">
+		<span class="icon-container"></span>
+		<span class="text-container">New Assessment</span>
+	</button>
+	<button class="switch-assessment" type="button">
+		<span class="icon-container"></span>
+		<span class="text-container">Switch Assessment</span>
+	</button>
+	<span class="save-status" aria-live="polite">*Unsaved Changes</span>
+	<button class="save-assessment" type="button">
+		<span class="icon-container"></span>
+		<span class="text-container">Save</span>
+	</button>
+	<a data-style-as="button" href="/big-seven/report">View Report</a>
+	<button class="stop-editing" type="button">
+		<span class="icon-container"></span>
+		<span class="text-container">Stop Editing</span>
+	</button>
+</section>
+
+<style is:global>
+
+	.assessment-controls {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.5rem;
+		height: 3.75rem;
+		padding: 0 3rem;
+		background-color: var(--colour-fill-neutral-subtle-muted);
+	}
+
+	.assessment-controls button {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.25rem;
+		height: 2.25rem;
+		padding: 0.75rem;
+		background-color: var(--colour-background);
+		border-radius: var(--border-radius-small);
+	}
+
+</style>

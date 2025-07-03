@@ -1,0 +1,21 @@
+---
+import IconAudio from "../icons/IconAudio_24.astro";
+import IconDocument from "../icons/IconDocument_24.astro";
+import IconPresentation from "../icons/IconPresentation_24.astro";
+import IconVideo from "../icons/IconVideo_24.astro";
+import IconWeb from "../icons/IconWeb_24.astro";
+
+const resourceIcons = {
+	audio: IconAudio,
+	document: IconDocument,
+	presentation: IconPresentation,
+	video: IconVideo,
+	website: IconWeb
+}
+
+const { category } = Astro.props;
+
+let Icon = resourceIcons[category];
+
+---
+<Icon />

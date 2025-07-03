@@ -1,0 +1,75 @@
+---
+
+const { url } = Astro;
+let path = url.pathname;
+
+---
+
+<aside class="section-nav-container">
+	<nav class="section">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven">Big Seven</a>
+				<ul>
+					<li><a class={path === '/big-seven/1_leadership-and-teaming' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">Leadership and Teaming</a></li>
+					<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">Access and Equity</a></li>
+					<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">Relationships</a></li>
+					<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">Empathy</a></li>
+					<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">Identities</a></li>
+					<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">High-yield Instructional Practices</a></li>
+					<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven/1_leadership-and-teaming">Meaningful Learning Experiences</a></li>
+				</ul>
+			</li>
+			<li><a class={path === '/resources' ? 'active' : ''} href="/resources">Resources</a></li>
+		</ul>
+	</nav>
+</aside>
+
+<style is:global>
+
+	nav.section ul {
+		display: flex;
+		flex-flow: column;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+
+	nav.section ul ul {
+		display: flex;
+		flex-flow: column;
+		gap: 0.5rem;
+		margin-top: 0.5rem;
+	}
+
+	nav.section ul li {
+		line-height: 1.2;
+	}
+
+	nav.section a {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		padding: 0.5rem 1rem;
+		border-radius: var(--border-radius-normal);
+	}
+
+	nav.section a:is(:hover, :focus-visible) {
+		outline: 2px solid var(--colour-border-neutral-subtle-muted);
+		outline-offset: -1px;
+	}
+
+	nav.section a.active {
+		background-color: var(--colour-fill-neutral-subtle-muted);
+		color: var(--colour-ui-neutral);
+		pointer-events: none;
+	}
+
+	nav.section ul ul a {
+		padding: 0.625rem 1rem;
+		font-size: 1rem;
+		line-height: 1.2;
+	}
+
+</style>

@@ -1,0 +1,19 @@
+---
+import IconInitiating from "../icons/IconTrowel_24.astro";
+import IconImplementing from "../icons/IconSeed_24.astro";
+import IconDeveloping from "../icons/IconSapling_24.astro";
+import IconSustaining from "../icons/IconWateringCan_24.astro";
+
+const resourceIcons = {
+	initiating: IconInitiating,
+	implementing: IconImplementing,
+	developing: IconDeveloping,
+	sustaining: IconSustaining,
+}
+
+const { phase } = Astro.props;
+
+let Icon = resourceIcons[phase.toLowerCase()];
+
+---
+<Icon />
