@@ -13,9 +13,24 @@ const resourceIcons = {
 	website: IconWeb
 }
 
+const resourceLabels = {
+	audio: 'Audio',
+	document: 'Document',
+	presentation: 'Presentation',
+	video: 'Video',
+	website: 'Website'
+}
+
 const { category } = Astro.props;
 
 let Icon = resourceIcons[category];
+let label = resourceLabels[category];
 
 ---
-<Icon />
+
+<div class="labelled-icon-container" data-collapsible>
+	<Icon />
+	<span class="label-container">
+		<span class="label">{label}</span>
+	</span>
+</div>
