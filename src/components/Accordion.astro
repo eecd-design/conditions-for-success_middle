@@ -7,6 +7,9 @@ import IconFocus from "./icons/IconTarget_20.astro";
 import IconCompass from "./icons/IconCompass_14.astro";
 import IconFilter from "./icons/IconFilter_16.astro";
 import IconArrow from "./icons/IconArrowRight_16.astro";
+import IconCheckmark from "./icons/IconCheckmark_20.astro";
+import IconDownload from "./icons/IconDownload_16.astro";
+import IconExternal from "./icons/IconExternal_16.astro";
 
 const { title, componentData } = Astro.props;
 
@@ -24,7 +27,7 @@ console.log(resources);
 	</span>
 
 	{ componentData && (
-		<span class="meta">2 / 3 Completed</span>
+		<span class="meta">2 / 3 Established</span>
 	)}
 
 	<IconCross />
@@ -64,9 +67,7 @@ console.log(resources);
 
 												<input type="checkbox" value={consideration.tag}/>
 
-												<span class="icon-group">
-
-												</span>
+												<IconCheckmark/>
 
 												<span class="tag">{consideration.tag}</span>
 
@@ -110,10 +111,10 @@ console.log(resources);
 								<span>Filters:</span>
 							</span>
                             <div class="button-group">
-                                <button type="button">Clear All</button>
+                                <button type="button" data-size="small">Clear All</button>
                                 {
 									considerations.map((consideration) => (
-										<button type="button" value={consideration.tag}>{consideration.tag}</button>
+										<button type="button" data-size="small" value={consideration.tag}>{consideration.tag}</button>
 									))
 								}
                             </div>
@@ -125,12 +126,25 @@ console.log(resources);
                         { 
 							resources.map((resource) => {
 
+								let category = resource.data.category;
+
 								return (
 
 									<li>
 										<a href={resource.data.source.filePath ? resource.data.source.filePath : resource.data.source.url} data-indicators={resource.data.linkedIndicators} data-components={resource.data.linkedComponents} data-considerations={resource.data.linkedConsiderations}>
-											<ResourceIcons category={resource.data.category} />
-											<span class="text-container">{resource.data.title}</span>
+											<ResourceIcons category={category} />
+											<div class="text-container">
+												<span class="text">{resource.data.title}</span>
+												<div class="icon-group">
+													{category === 'document'
+														|| category === 'presentation'
+														? <IconDownload/> : ''}
+													{category === 'audio'
+														|| category === 'video'
+														|| category === 'website'
+														? <IconExternal/> : ''}
+												</div>
+											</div>
 										</a>
 									</li>
 
@@ -170,28 +184,39 @@ console.log(resources);
 	}
 
 	.accordion button {
+		--button-background-colour: var(--colour-fill-accent-subtle-muted);
+		--button-background-colour-hover: transparent;
+		--button-border-radius: var(--border-radius-normal);
+		--button-ui-colour: var(--colour-ui-neutral);
+		--button-ui-colour-hover: var(--button-ui-colour);
+		--icon-colour: var(--colour-ui-accent);
+		--icon-size: 1.5rem;
+
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
 		gap: 1rem;
+		height: auto;
 		width: 100%;
 		padding: 0.75rem 1rem;
 		font-size: 1.5rem;
 		font-weight: 600;
-		border-radius: var(--border-radius-normal);
-		background-color: var(--colour-fill-accent-subtle-muted);
+		outline-color: transparent;
+		transition: 
+			background-color var(--transition-linear-fast),
+			outline-color var(--transition-linear-fast);
 	}
 
 	.accordion button:not([aria-expanded="true"]):hover {
 		outline: 2px solid var(--colour-border-accent-subtle-muted);
 		outline-offset: -1px;
-		background-color: transparent;
 	}
 
 	.accordion button[aria-expanded="true"] {
+		--button-background-colour: var(--colour-fill-accent-bold-muted);
+		--button-ui-colour: var(--colour-ui-reverse);
+		--icon-colour: var(--colour-ui-reverse);
 		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
-		background-color: var(--colour-fill-accent-bold-muted);
-		color: var(--colour-ui-reverse);
 	}
 
 	.accordion button .label {
@@ -200,22 +225,6 @@ console.log(resources);
 		align-items: center;
 		gap: 0.5rem;
 		flex-grow: 1;
-	}
-
-	.accordion button .label .icon {
-		width: 1.5rem;
-	}
-
-	.accordion button .label .icon path {
-		fill: var(--colour-ui-accent);
-	}
-
-	.accordion button:is(:hover, :focus-visible) .label .icon path {
-		fill: var(--colour-ui-accent);
-
-	}
-	.accordion button[aria-expanded="true"] .label .icon path {
-		fill: var(--colour-ui-reverse);
 	}
 	
 	.accordion button .meta {
@@ -231,23 +240,10 @@ console.log(resources);
 		color: var(--colour-ui-reverse);
 		opacity: 0.8;
 	}
-	
-	.accordion button > .icon.cross {
-		width: 1.5rem;
-	}
 
 	.accordion button > .icon.cross path {
-		fill: var(--colour-ui-accent);
 		transition: rotate 0.2s ease;
 		transform-origin: center;
-	}
-
-	.accordion button:is(:hover, :focus-visible) > .icon.cross path {
-		fill: var(--colour-ui-accent);
-	}
-
-	.accordion button[aria-expanded="true"] > .icon.cross path {
-		fill: var(--colour-ui-reverse);
 	}
 
 	.accordion button[aria-expanded="true"] > .icon.cross path:last-of-type {
@@ -270,6 +266,8 @@ console.log(resources);
 	}
 
 	.accordion + * > .focus .label {
+		--icon-colour: var(--colour-ui-neutral-subtle);
+		--icon-size: 1.25rem;
 		display: flex;
 		flex-flow: row nowrap;
 		gap: 0.5rem;
@@ -279,14 +277,6 @@ console.log(resources);
 		font-size: 1rem;
 		line-height: 1;
 		height: 100%;
-	}
-
-	.accordion + * > .focus .label .icon {
-		width: 1.25rem;
-	}
-
-	.accordion + * > .focus .label .icon path {
-		fill: var(--colour-ui-neutral-subtle);
 	}
 
 	.accordion + * > .focus .statement  {
@@ -325,7 +315,8 @@ console.log(resources);
 		background-color: var(--colour-fill-accent-subtle-muted);
 		border-radius: var(--border-radius-small);
 		cursor: pointer;
-		user-select: none;	
+		user-select: none;
+		transition: background-color var(--transition-linear-fast);	
 	}
 
 	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
@@ -354,13 +345,10 @@ console.log(resources);
 		border-radius: var(--border-radius-small);
 		pointer-events: none;
 		z-index: 1;
+		transition: border-color var(--transition-linear-fast);
 	}
 
-	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible))::before {
-		border-color: var(--colour-border-accent-bold-muted);
-	}
-
-	.considerations form label:has(input[type="checkbox"]:checked)::before {
+	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked))::before {
 		border-color: var(--colour-border-accent-bold-muted);
 	}
 
@@ -370,6 +358,7 @@ console.log(resources);
 		font-weight: 700;
 		line-height: 1;
 		color: var(--colour-ui-accent);
+		transition: color var(--transition-linear-fast);
 	}
 
 	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
@@ -377,22 +366,29 @@ console.log(resources);
 	}
 
 	.considerations form label:has(input[type="checkbox"]:checked) .tag {
+		--icon-colour: var(--colour-ui-reverse);
 		color: var(--colour-ui-reverse);
 	}
-
+	
+	.considerations form label .icon.checkmark {
+		--icon-colour: var(--colour-ui-accent);
+		--icon-size: 1.25rem;
+		position: absolute;
+		z-index: 2;
+		opacity: 0;
+		transition: opacity var(--transition-linear-fast);
+	}
+	
+	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked)) .icon.checkmark {
+		opacity: 1;
+	}
+	
 	.considerations form label .icon.compass {
-		width: 0.875rem;
+		--icon-colour: var(--colour-ui-accent);
+		--icon-size: 0.875rem;
 		margin: 0 0 0 0.25rem;
 	}
-
-	.considerations form label .icon.compass path {
-		fill: var(--colour-ui-accent);
-	}
-
-	.considerations form label:has(input[type="checkbox"]:checked) .icon.compass path {
-		fill: var(--colour-ui-reverse);
-	}
-
+	
 	.accordion + * :where(p, li, a) {
 		font-size: 1rem;
 		line-height: 1.2;
@@ -420,7 +416,6 @@ console.log(resources);
 		margin: 0;
 		font-size: 1rem;
 		text-transform: uppercase;
-		/* color: var(--colour-ui-accent); */
 	}
 
 	.resources .list-header .heading::after {
@@ -439,36 +434,14 @@ console.log(resources);
 	}
 
 	.resources .list-header .filters .label {
+		--icon-colour: var(--colour-ui-neutral-subtle);
+		--icon-size: 1rem;
 		display: flex;
 		flex-flow: row wrap;
 		align-items: center;
 		gap: 0.25rem;
 		font-size: 0.875rem;
 		font-weight: 700;
-	}
-
-	.resources .list-header .filters .label .icon {
-		width: 1rem;
-	}
-
-	.resources .list-header .filters .label .icon path {
-		fill: var(--colour-ui-neutral-subtle);
-	}
-
-	.resources .list-header .filters .button-group {
-		display: flex;
-		align-items: center;
-		gap: 0.375rem;
-	}
-
-	.resources .list-header .filters button {
-		height: 1.25rem;
-		padding: 0 0.375rem;
-		background-color: var(--colour-fill-neutral-subtle-muted);
-		border-radius: var(--border-radius-small);
-		cursor: pointer;
-		user-select: none;	
-		font-size: 0.875rem;
 	}
 
 	.resources .list {
@@ -480,92 +453,61 @@ console.log(resources);
 	}
 
 	.resources .list a {
+		--icon-colour: var(--colour-ui-accent);
+		--background-colour: var(--colour-fill-accent-subtle-muted);
+
 		display: flex;
 		flex-flow: row nowrap;
 		gap: 0.375rem;
 		align-items: center;
 		cursor: pointer;
+		text-decoration: none;
 	}
 
-	.resources .list a .icon-container {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		flex-shrink: 0;
-		background-color: var(--colour-fill-accent-subtle-muted);
-		border-radius: var(--border-radius-normal);
-		height: 2.5rem;
-		padding: 0.5rem 0 0.5rem 0.5rem;
-		pointer-events: auto;
-		transition: padding 200ms ease;
+	.resources .list a:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-accent-bold);
+		--label-colour: var(--colour-ui-accent-bold);
+		--background-colour: var(--colour-fill-accent-subtle-muted-highlight);
 	}
 
-	@media (prefers-reduced-motion) {
-		.resources .list a .icon-container {
-			transition: none;
-		}
+	.resources .list a .labelled-icon-container {
+		--container-background-colour: var(--colour-fill-accent-subtle-muted);
+		--container-border-radius: var(--border-radius-normal);
+		--container-padding: 0.5rem;
 	}
 
-	.resources .list a:is(:hover, :focus-visible) .icon-container {
-		background-color: var(--colour-fill-accent-subtle-muted-highlight);
-	}
-
-	.resources .list a .icon-container:is(:hover, :focus-visible) {
-		padding-right: 0.5rem;
-	}
-
-	.resources .list a .icon {
-		width: 1.5rem;
-	}
-
-	.resources .list a .icon path {
-		fill: var(--colour-ui-accent);
-	}
-
-	.resources .list a:is(:hover, :focus-visible) .icon {
-		fill: var(--colour-ui-accent-bold)
-	}
-
-	.resources .list a .icon-container .label-container {
-		display: grid;
-		grid-template-columns: 0fr;
-
-		white-space: nowrap;
-		font-size: 0.875rem;
-		font-weight: 600;
-		opacity: 0;
-		color: var(--colour-ui-accent-bold);
-		transition: opacity 150ms ease, grid-template-columns 200ms ease;
-	}
-
-	@media (prefers-reduced-motion) {
-		.resources .list a .icon-container .label-container {
-			transition: opacity 150ms ease;
-		}
-	}
-
-	.resources .list a .icon-container:is(:hover, :focus-visible) .label-container {
-		grid-template-columns: 1fr;
-		opacity: 1;
-	}
-
-	.resources .list a .icon-container .label-container .label {
-		overflow: hidden;
-		padding-left: 0.5rem;
+	.resources .list a:is(:hover, :focus-visible) .labelled-icon-container {
+		--icon-colour: var(--colour-ui-accent-bold);
+		--container-background-colour: var(--colour-fill-accent-subtle-muted-highlight);
 	}
 
 	.resources .list a .text-container {
 		display: flex;
 		align-items: center;
+		flex-flow: row nowrap;
+		flex-grow: 1;
+		background-color: var(--colour-fill-accent-subtle-muted);
 		border-radius: var(--border-radius-normal);
 		height: 2.5rem;
 		padding: 0 0.75rem;
+		outline-color: transparent;
+		transition: 
+			outline-color var(--transition-linear-fast),
+			text-decoration-color var(--transition-linear-fast);
 	}
 
 	.resources .list a:is(:hover, :focus-visible) .text-container {
 		outline: 2px solid var(--colour-border-accent-subtle-muted);
 		outline-offset: -1px;
 		background-color: transparent;
+	}
+
+	.resources .list a .text-container .text {
+		flex-grow: 1;
+	}
+
+	.resources .list a .text-container .icon-group {
+		--icon-size: 1rem;
 	}
 
 

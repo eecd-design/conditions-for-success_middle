@@ -5,6 +5,7 @@ import SectionNav from "../../components/SectionNav.astro";
 import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
 import Component from "../../components/Component.astro";
 import IconArrow from "src/components/icons/IconArrowRight_16.astro";
+import IconCompass from "src/components/icons/IconCompass_24.astro";
 
 // Get the current indicator
 export async function getStaticPaths() {
@@ -81,8 +82,8 @@ let components = allComponents.filter((component => component.data.indicator ===
 			))}
 		</ul>
 
-		<div class="callout">
-			<p class="heading">Be on the lookout for the compass symbol!</p>
+		<div class="callout" data-style="shaded">
+			<p class="heading"><IconCompass/> Be on the lookout for the compass symbol!</p>
 			<p>It flags focus areas on responding to students who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward student success.</p>
 		</div>
 

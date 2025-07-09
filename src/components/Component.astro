@@ -76,8 +76,8 @@ let allResources = await getCollection("resources");
 
 { goal && goal.rawContent().trim().length > 0 && (
     <h3>
-        <span class="icon-group"><IconFlag/></span>
-        <span class="text-group">Goal</span>
+        <IconFlag/>
+        <span class="text">Goal</span>
     </h3>
     <goal.Content />
 )}

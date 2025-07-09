@@ -1,32 +1,398 @@
+---
+import IconCross from "./icons/IconCross_20.astro";
+import IconWarning from "./icons/IconWarning_24.astro";
+import IconInfo from "./icons/IconInfo_20.astro";
+import IconFolder from "./icons/IconFolder_20.astro";
+import IconSwap from "./icons/IconSwap_20.astro";
+import IconSave from "./icons/IconSave_20.astro";
+import IconChart from "./icons/IconChart_20.astro";
+import IconEditStop from "./icons/IconEditStop_20.astro";
+import IconCaretDown from "./icons/IconCaretDown_20.astro";
+import IconCopy from "./icons/IconCopy_20.astro";
+import IconXmark from "./icons/IconXmark_20.astro";
+---
+
 <section class="assessment-controls" aria-label="Assessment Controls Toolbar">
-	<span class="active-assessment-title"></span>
-	<button class="view-details" type="button">
-		<span class="icon-container"></span>
-		<span class="text-container">View Details</span>
+
+	<span class="active-assessment-title" title='Editing "2025 Maple Grove High School"'>Editing "2025 Maple Grove High School"</span>
+
+	<hr/>
+
+	<button class="view-assessment" type="button">
+		<div class="labelled-icon-container">
+			<IconInfo/>
+			<span class="label-container">
+				<span class="label">
+					View Details
+				</span>
+			</span>
+		</div>
 	</button>
-	<button class="new-assessment" type="button">
-		<span class="icon-container"></span>
-		<span class="text-container">New Assessment</span>
-	</button>
-	<button class="switch-assessment" type="button">
-		<span class="icon-container"></span>
-		<span class="text-container">Switch Assessment</span>
-	</button>
-	<span class="save-status" aria-live="polite">*Unsaved Changes</span>
-	<button class="save-assessment" type="button">
-		<span class="icon-container"></span>
-		<span class="text-container">Save</span>
-	</button>
-	<a data-style-as="button" href="/big-seven/report">View Report</a>
+
+	<hr/>
+
+	<div class="button-group">
+		<button class="create-assessment" type="button">
+			<div class="labelled-icon-container">
+				<IconCross/>
+				<span class="label-container">
+					<span class="label">
+						New Assessment
+					</span>
+				</span>
+			</div>
+		</button>
+		<button class="open-assessment" type="button">
+			<div class="labelled-icon-container">
+				<IconFolder/>
+				<span class="label-container">
+					<span class="label">
+						Open Assessment
+					</span>
+				</span>
+			</div>
+		</button>
+		<button class="switch-assessment" type="button">
+			<div class="labelled-icon-container">
+				<IconSwap/>
+				<span class="label-container">
+					<span class="label">
+						Switch Assessment
+					</span>
+				</span>
+			</div>
+		</button>
+	</div>
+
+	<div class="button-group">
+		<span class="save-status" aria-live="polite">*Unsaved Changes</span>
+		<button class="save-assessment" type="button">
+			<div class="labelled-icon-container">
+				<IconSave/>
+				<span class="label-container">
+					<span class="label">
+						Save
+					</span>
+				</span>
+			</div>
+		</button>
+		<a data-style-as="button" href="/big-seven/report">
+			<div class="labelled-icon-container">
+				<IconChart/>
+				<span class="label-container">
+					<span class="label">
+						View Report
+					</span>
+				</span>
+			</div>
+		</a>
+	</div>
+
+	<hr/>
+
 	<button class="stop-editing" type="button">
-		<span class="icon-container"></span>
-		<span class="text-container">Stop Editing</span>
+		<div class="labelled-icon-container">
+			<IconEditStop/>
+			<span class="label-container">
+				<span class="label">
+					Stop Editing
+				</span>
+			</span>
+		</div>
 	</button>
+
 </section>
+
+<dialog id="create-assessment">
+
+	<button class="close" type="button" aria-label="Close Create Assessment Dialog"><IconXmark/></button>
+
+	<h2 class="heading">Create New Assessment</h2>
+
+	<div class="callout" data-style="shaded" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
+
+		<div class="icon-container">
+			<IconWarning/>
+		</div>
+
+		<div class="text-container">
+			<p>All information collected below is used exclusively for report generation and is not stored on a central server.</p>
+		</div>
+
+	</div>
+
+	<form id="create-assessment-form">
+
+		<label for="create-district-select">School District</label>
+		<div class="select-container">
+			<select id="create-district-select">
+				<option value="">Select a district...</option>
+				<option value="west">ASD-W</option>
+				<option value="north">ASD-N</option>
+				<option value="east">ASD-E</option>
+				<option value="south">ASD-S</option>
+			</select>
+			<IconCaretDown/>
+		</div>
+
+		<label for="create-school-select">School</label>
+		<div class="select-container">
+			<select id="create-school-select" disabled>
+				<option value="">Select a school...</option>
+				<optgroup class="west-school-options" hidden>
+					<option></option>
+				</optgroup>
+				<optgroup class="north-school-options" hidden>
+					<option></option>
+				</optgroup>
+				<optgroup class="east-school-options" hidden>
+					<option></option>
+				</optgroup>
+				<optgroup class="south-school-options" hidden>
+					<option></option>
+				</optgroup>
+			</select>
+			<IconCaretDown/>
+		</div>
+
+		<label for="create-reporting-year-input">Reporting Year</label>
+		<p class="instructions">Year must be 4 characters in length.</p>
+		<div class="input-container">
+			<input
+				id="create-reporting-year-input"
+				type="text"
+				required
+				placeholder="Enter a year..."
+				pattern="\d{4}"
+			/>
+		</div>
+
+		<label for="create-assessor-input">Assessor(s)</label>
+		<div class="input-container">
+			<input
+				id="create-assessor-input"
+				type="text"
+				placeholder="Enter a name..."
+			/>
+			<button id="create-add-assessor-button" type="button">
+				<span class="labelled-icon-container">
+					<IconCross/>
+					<span class="label-container">
+						<span class="label">
+							Add
+						</span>
+					</span>
+				</span>
+			</button>
+		</div>
+		<ul class="assessor-list" hidden></ul>
+
+		<button id="create-assessment-submit" type="button" data-size="large">Create and Start Editing</button>
+
+	</form>
+
+</dialog>
+
+<dialog id="view-assessment">
+
+	<button class="close" type="button" aria-label="Close Assessment Details Dialog"><IconXmark/></button>
+
+	<h2 class="heading">Assessment Details</h2>
+
+	<div class="current-details">
+
+		<dl>
+			<div class="detail-container">
+				<dt>School District:</dt>
+				<dd>ASD-W</dd>
+			</div>
+			<div class="detail-container">
+				<dt>School:</dt>
+				<dd>Maple Grove Elementary School</dd>
+			</div>
+			<div class="detail-container">
+				<dt>Reporting Year:</dt>
+				<dd>2025</dd>
+			</div>
+			<div class="detail-container">
+				<dt>Assessor(s):</dt>
+				<dd>2025</dd>
+			</div>
+			<div class="detail-container">
+				<dt>Date Created:</dt>
+				<dd>2025-07-10</dd>
+			</div>
+			<div class="detail-container">
+				<dt>Date Last Modified:</dt>
+				<dd>2025-07-16</dd>
+			</div>
+		</dl>
+
+		<button id="edit-details-button" type="button" data-size="large">Edit Details</button>
+
+	</div>
+
+	<form id="update-assessment-form" hidden>
+
+		<label for="update-district-select">School District</label>
+		<div class="select-container">
+			<select id="update-district-select">
+				<option value="">Select a district...</option>
+				<option value="west">ASD-W</option>
+				<option value="north">ASD-N</option>
+				<option value="east">ASD-E</option>
+				<option value="south">ASD-S</option>
+			</select>
+			<IconCaretDown/>
+		</div>
+
+		<label for="update-school-select">School</label>
+		<div class="select-container">
+			<select id="update-school-select" disabled>
+				<option value="">Select a school...</option>
+				<optgroup class="west-school-options" hidden>
+					<option></option>
+				</optgroup>
+				<optgroup class="north-school-options" hidden>
+					<option></option>
+				</optgroup>
+				<optgroup class="east-school-options" hidden>
+					<option></option>
+				</optgroup>
+				<optgroup class="south-school-options" hidden>
+					<option></option>
+				</optgroup>
+			</select>
+			<IconCaretDown/>
+		</div>
+
+		<label for="update-reporting-year-input">Reporting Year</label>
+		<p class="instructions">Year must be 4 characters in length.</p>
+		<div class="input-container">
+			<input
+				id="update-reporting-year-input"
+				type="text"
+				required
+				placeholder="Enter a year..."
+				pattern="\d{4}"
+			/>
+		</div>
+
+		<label for="update-assessor-input">Assessor(s)</label>
+		<div class="input-container">
+			<input
+				id="update-assessor-input"
+				type="text"
+				placeholder="Enter a name..."
+			/>
+			<button id="update-add-assessor-button" type="button">
+				<span class="labelled-icon-container">
+					<IconCross/>
+					<span class="label-container">
+						<span class="label">
+							Add
+						</span>
+					</span>
+				</span>
+			</button>
+		</div>
+		<ul class="assessor-list" hidden>
+
+		</ul>
+
+		<button id="update-assessment-submit" type="button" data-size="large">Update and Continue Editing</button>
+
+	</form>
+
+</dialog>
+
+<dialog id="open-assessment">
+
+	<button class="close" type="button" aria-label="Close Open Assessment Dialog"><IconXmark/></button>
+
+	<h2 class="heading">Open Assessment</h2>
+	
+	<section>
+		<h3>Import Assessment</h3>
+		<div class="button-group">
+			<button id="upload-csv-button" type="button" data-size="large">Upload .csv</button>
+			<button id="paste-url-button" type="button" data-size="large">Paste URL</button>
+		</div>
+	</section>
+
+	<section>
+		<h3>Saved Assessments</h3>
+		<ul id="saved-assessment-list" class="card-group">
+			<li class="card">
+				<h4 class="heading">2024</h4>
+				<div class="details">
+					<p>Maple Grove High School</p>
+					<p class="meta">Date Created: ...</p>
+					<p class="meta">Date Last Modified: ...</p>
+				</div>
+				<button type="button" data-size="large">Open Assessment</button>
+			</li>
+			<li class="card">
+				<h4 class="heading">2025</h4>
+				<div class="details">
+					<p>Maple Grove High School</p>
+					<p class="meta">Date Created: ...</p>
+					<p class="meta">Date Last Modified: ...</p>
+				</div>
+				<button type="button" data-size="large">Open Assessment</button>
+			</li>
+		</ul>
+	</section>
+
+</dialog>
+
+<dialog id="save-assessment">
+
+	<button class="close" type="button" aria-label="Close Save Assessment Dialog"><IconXmark/></button>
+
+	<h2 class="heading">Save Assessment(s)</h2>
+
+	<section>
+		<h3>Save/Share Link</h3>
+		<p class="instructions">This personalized link lets you access your assessment(s) from any device or share them with another assessor for collaboration.</p>
+		<div class="url-container" data-style-as="input-container">
+			<div id="save-url" class="url" data-style-as="input">
+				<span>https://middle.nbed.ca/conditions-for-success/#save=N4IgZglhg7ggkrughg8togghghtyggg0</span>
+			</div>
+			<button id="copy-save-url-button" type="button">
+				<span class="labelled-icon-container">
+					<IconCopy/>
+					<span class="label-container">
+						<span class="label">
+							Copy
+						</span>
+					</span>
+				</span>
+			</button>
+		</div>
+	</section>
+
+	<section>
+		<h3>Save File</h3>
+		<div class="callout" data-style="shaded" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
+			<div class="icon-container">
+				<IconWarning/>
+			</div>
+			<div class="text-container">
+				<p>To prevent data loss, please download a .csv copy of your assessments regularly, as your data is not stored on a central server.</p>
+			</div>
+		</div>
+		<button id="save-download-file" type="button" data-size="large">Download .csv</button>
+	</section>
+
+</dialog>
 
 <style is:global>
 
 	.assessment-controls {
+		container-name: assessment-controls;
+		container-type: inline-size;
+
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
@@ -34,17 +400,253 @@
 		height: 3.75rem;
 		padding: 0 3rem;
 		background-color: var(--colour-fill-neutral-subtle-muted);
+		position: sticky;
+		top: 0;
+		z-index: 100;
 	}
 
-	.assessment-controls button {
+	.assessment-controls .button-group:first-of-type {
+		flex-grow: 1;
+	}
+
+	.assessment-controls :is(.active-assessment-title, .save-status) {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.assessment-controls .active-assessment-title {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 20rem;
+	}
+
+	.assessment-controls :is(button, [data-style-as="button"]) {
+		--icon-size: 1.25rem;
+		--button-background-colour: var(--colour-background);
+	}
+
+	.assessment-controls :is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+		--button-background-colour: var(--colour-fill-neutral-bold-muted);
+	}
+
+	@container assessment-controls (width < 1440px) {
+		.assessment-controls :is(button, [data-style-as="button"]) .label-container {
+			display: none;
+		}
+	}
+
+	.assessment-controls hr {
+		display: block;
+		height: 2.25rem;
+		width: 2px;
+		flex-shrink: 0;
+		margin: 0;
+	}
+
+	dialog {
+		background-color: var(--colour-background);
+		border-radius: var(--border-radius-normal);
+		border: none;
+		padding: 3rem;
+		width: min(100%, 636px);
+		max-height: calc(100% - 3rem);
+	}
+
+	dialog:focus {
+		outline: none;
+		caret-color: transparent;
+	}
+
+	dialog::backdrop {
+		background-color: var(--colour-fill-neutral-bold-muted);
+		opacity: 0.8;
+	}
+
+	dialog button.close {
+		--button-background-colour: transparent;
+		--button-background-colour-hover: var(--colour-fill-neutral-subtle-muted);
+		--icon-size: 1.25rem;
+		float: right;
+		margin: 0 0 1rem 1.5rem;
+	}
+
+	dialog section {
+		margin: 1.5rem 0;
+	}
+
+	dialog > .heading {
+		margin: 0 0 1.5rem;
+		padding: 0 0 1rem;
+		border-bottom: 2px solid var(--colour-border-neutral-subtle-muted);
+	}
+
+	dialog section > h3 {
+		margin: 1rem 0;
+	}
+	
+	dialog .instructions {
+		font-size: 1rem;
+		line-height: 1.4;
+		margin: 0 0 0.75rem;
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	dialog .callout {
+		margin: 1.5rem 0;
+	}
+	
+	dialog form label {
+		display: block;
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 1.25rem 0 0.5rem;
+	}
+
+	.input-container,
+	.select-container,
+	[data-style-as="input-container"] {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.25rem;
-		height: 2.25rem;
-		padding: 0.75rem;
-		background-color: var(--colour-background);
-		border-radius: var(--border-radius-small);
+		position: relative;
+		border-radius: var(--border-radius-normal);
+		border: 2px solid var(--colour-border-neutral-subtle-muted);
+		width: 100%;
+		height: 3rem;
+		padding: 0;
+		margin: 0;
 	}
 
+	input[type="text"],
+	select,
+	[data-style-as="input"] {
+		display: flex;
+		align-items: center;
+		appearance: none;
+		border: none;
+		background: none;
+		height: 100%;
+		min-width: 0; /* Fixed text-overflow inside flex item */
+		padding: 0 1rem;
+		margin: 0;
+		flex-grow: 1;
+		font-size: 1rem;
+		line-height: 1.2;
+	}
+
+	input[type="text"]::placeholder {
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.url-container {
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.url-container .url span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	dialog form .select-container .icon {
+		width: 1.25rem;
+		position: absolute;
+		top: 0.875rem;
+		right: 0.875rem;
+	}
+
+	dialog :is(.input-container, .url-container) button {
+		--icon-size: 1.25rem;
+		margin-right: 0.25rem;
+	}
+
+	dialog :is(.input-container, .url-container) button:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+	}
+
+	dialog form > button:last-of-type {
+		margin: 1.75rem 0;
+	}
+
+	dl {
+		display: flex;
+		flex-flow: column;
+		gap: 1rem;
+		margin: 0 0 1.75rem;
+	}
+
+	.detail-container {
+		display: flex;
+		flex-flow: row;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.detail-container :is(dt, dd) {
+		font-size: 1.125rem;
+	}
+
+	.detail-container dt {
+		font-weight: 600;
+	}
+
+	.detail-container dd {
+		margin: 0;
+		color: var(--colour-ui-neutral-subtle)
+	}
+
+
+
+
 </style>
+
+<script>
+
+	let openDialog = (selector:string) => {
+		let dialog = document.querySelector(`#${selector}`) as HTMLDialogElement;
+		if (dialog) dialog.showModal();
+	}
+
+	let closeDialog = (dialog:HTMLDialogElement) => {
+		if (dialog) dialog.close();
+	}
+
+	let createAssessmentBtn = document.querySelector('button.create-assessment');
+	createAssessmentBtn.addEventListener('click', () => {
+		openDialog('create-assessment');
+	})
+
+	let openAssessmentBtn = document.querySelector('button.open-assessment');
+	openAssessmentBtn.addEventListener('click', () => {
+		openDialog('open-assessment');
+	})
+
+	let changeAssessmentBtn = document.querySelector('button.switch-assessment');
+	changeAssessmentBtn.addEventListener('click', () => {
+		openDialog('open-assessment');
+	})
+
+	let saveAssessmentBtn = document.querySelector('button.save-assessment');
+	saveAssessmentBtn.addEventListener('click', () => {
+		openDialog('save-assessment');
+	})
+
+	let viewAssessmentBtn = document.querySelector('button.view-assessment');
+	viewAssessmentBtn.addEventListener('click', () => {
+		openDialog('view-assessment');
+	})
+
+	let dialogCloseBtns = document.querySelectorAll('dialog button.close');
+	for (let btn of dialogCloseBtns) {
+		btn.addEventListener('click', (event) => {
+			let targetBtn = event.target as HTMLButtonElement;
+			closeDialog(targetBtn.closest('dialog'));
+		})
+	}
+
+</script>

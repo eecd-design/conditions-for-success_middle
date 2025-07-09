@@ -17,25 +17,25 @@ let path = url.pathname;
             <li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
             <li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
         </ul>
-
-        <!-- <button class="js-mobile-menu mobile-menu-toggle" type="button" aria-label="Show Menu" hidden><IconMenu /></button>
-
-        <ul class="mobile-menu" hidden>
-            <li><a href="/guidelines"><span>Guidelines</span><IconArrow /></a></li>
-            <li><a href="/resources"><span>General Resources</span><IconArrow /></a></li>
-            <li><a href="/educators"><span>Educator Resources and PL</span><IconArrow /></a></li>
-        </ul>  -->
-
 	</nav>
 
 	<div class="global-controls">
 		<button class="search-toggle" type="button">
-			<IconSearch />
-			<span>Search</span>
+			<div class="labelled-icon-container">
+				<IconSearch />
+				<span class="label-container">
+					<span class="label">Search</span>
+				</span>
+			</div>
 		</button>
         <button class="theme-toggle" type="button" aria-label="Toggle Theme">
-			<IconLight />
-			<IconDark />
+			<div class="labelled-icon-container">
+				<IconLight />
+				<IconDark hidden={true}/>
+				<span class="label-container" hidden>
+					<span class="label">Change Theme</span>
+				</span>
+			</div>
         </button>
 	</div>
 
@@ -72,52 +72,58 @@ let path = url.pathname;
 
 	header nav.global .home {
 		flex-grow: 1;
+		text-decoration: none;
+		color: var(--colour-ui-reverse);
 	}
 
-	header nav.global .menu a,
-	header .global-controls .search-toggle {
+	header nav.global .home a {
+		text-decoration: none;
+		color: var(--colour-ui-reverse);
+	}
+
+	header nav.global .menu :not(.home) a,
+	header .global-controls button {
 		display: flex;
 		align-items: center;
 		height: 3rem;
 		padding: 0 1rem;
 		border-radius: var(--border-radius-normal);
 		text-decoration: none;
-		font-size: 1.25rem;
+		font-size: 1.125rem;
 		color: var(--colour-ui-reverse);
 	}
 
-	header nav.global .menu a:is(:hover, :focus-visible),
-	header .global-controls .search-toggle:is(:hover, :focus-visible) {
-		outline: 2px solid var(--colour-border-neutral-subtle-muted);
-		outline-offset: -1px;
-	}
-
-	header nav.global .menu a.active {
+	header nav.global .menu :not(.home) a:is(:hover, :focus-visible),
+	header .global-controls button:is(:hover, :focus-visible) {
 		background-color: var(--colour-fill-neutral-subtle-muted);
 		color: var(--colour-ui-neutral);
+	}
+	
+	header nav.global .menu :not(.home) a.active {
+		outline: 2px solid var(--colour-border-neutral-subtle-muted);
+		outline-offset: -1px;
 		pointer-events: none;
 	}
 
 	header .global-controls {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	header .global-controls .search-toggle {
+		--button-background-colour: transparent;
+		--icon-colour: var(--colour-ui-reverse);
+		--icon-size: 1.5rem;
+		--label-colour: var(--colour-ui-reverse);
+		--label-size: 1.125rem;
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
 		gap: 0.5rem;
 	}
 
-	header .global-controls .icon {
-		width: 1.5rem;
+	header .global-controls button:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-neutral);
+		--label-colour: var(--colour-ui-neutral);
 	}
 
-	header .global-controls .icon path {
-		fill: var(--colour-ui-reverse);
+	header .global-controls .theme-toggle {
+		padding: 0 0.75rem;
 	}
 
 
