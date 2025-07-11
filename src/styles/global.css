@@ -625,13 +625,29 @@ nav.on-page {
 	top: 3rem;
 }
 
-[data-mode="assessment"] nav.on-page {
-	top: calc(3.75rem + 3rem);
-}
-
 .content {
 	grid-area: content;
 	padding: 5rem 0;
+}
+
+
+
+
+
+/*
+** MODES
+------------------------------*/
+
+main:not([data-mode="assessment"]) [data-restrict-mode="assessment"] {
+	display: none;
+}
+
+main:not([data-mode="reading"]) [data-restrict-mode="reading"] {
+	display: none;
+}
+
+[data-mode="assessment"] nav.on-page {
+	top: calc(3.75rem + 3rem);
 }
 
 
@@ -852,14 +868,19 @@ h3:has(> .icon)::after {
 	flex-flow: row nowrap;
 	align-items: center;
 	flex-shrink: 0;
+	gap: var(--container-padding, 0.5rem);
 	background-color: var(--container-background-colour, transparent);
 	border-radius: var(--container-border-radius, 0);
 	padding: var(--container-padding, 0);
-	padding-right: 0;
-	pointer-events: auto;
 	transition: 
 		background-color var(--transition-linear-fast),
 		padding var(--transition-ease-medium);
+}
+
+.labelled-icon-container[data-collapsible] {
+	gap: 0;
+	padding-right: 0;
+	pointer-events: auto;
 }
 
 @media (prefers-reduced-motion) {
@@ -902,10 +923,13 @@ h3:has(> .icon)::after {
 }
 
 .labelled-icon-container .label-container .label {
+	text-decoration: none;
+}
+
+.labelled-icon-container[data-collapsible] .label-container .label {
 	display: inline-block;
 	overflow: hidden;
 	padding-left: 0.5rem;
-	text-decoration: none;
 }
 
 

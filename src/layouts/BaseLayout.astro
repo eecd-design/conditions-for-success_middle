@@ -30,9 +30,32 @@ const { pageTitle } = Astro.props;
     </head>
     <body>
 		<Header />
-		<main data-mode="assessment">
+		<main data-mode="reading">
         	<slot />
 		</main>
 		<footer></footer>
     </body>
+
+	<script>
+
+		import { subscribe } from "src/stores/userDataStore";
+
+		let updateMode = (data) => {
+
+			let mode = data.uiState.mode;
+
+			if (mode !== 'assessment' && mode !== 'reading') return;
+
+			// Get the html root
+			let main = document.querySelector('main');
+
+			// Update the theme
+			main.setAttribute('data-mode', mode);
+
+		}
+
+		subscribe(updateMode);
+
+	</script>
+
 </html>

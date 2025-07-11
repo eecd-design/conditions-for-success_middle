@@ -1,0 +1,1052 @@
+---
+import IconCross from "./icons/IconCross_16.astro";
+import IconWarning from "./icons/IconWarning_24.astro";
+import IconCaretDown from "./icons/IconCaretDown_20.astro";
+import IconCopy from "./icons/IconCopy_20.astro";
+import IconXmark from "./icons/IconXmark_20.astro";
+
+let schoolList = {
+	east: [
+		"Alternative Pathways to Graduation",
+		"Arnold H. McLeod School",
+		"Beaverbrook School",
+		"Bernice MacNaughton High School",
+		"Bessborough School",
+		"Birchmount School",
+		"Caledonia Regional High School",
+		"Claude D. Taylor School",
+		"Dorchester Consolidated School",
+		"Edith Cavell School",
+		"Evergreen Park School",
+		"Forest Glen School",
+		"Frank L. Bowser School",
+		"Harrison Trimble High School",
+		"Havelock School",
+		"Hillsborough Elementary School",
+		"Lewisville Middle School",
+		"Lou MacNarin School",
+		"Magnetic Hill School",
+		"Maplehurst Middle School",
+		"Marshview Middle School",
+		"Moncton High School",
+		"Mountain View School",
+		"Northrop Frye School",
+		"Petitcodiac Regional School",
+		"Port Elgin Regional School",
+		"Queen Elizabeth School",
+		"Riverside Consolidated School",
+		"Riverview East School",
+		"Riverview High School",
+		"Riverview Middle School",
+		"Salem Elementary School",
+		"Salisbury Elementary School",
+		"Salisbury Regional School",
+		"Shediac Cape School",
+		"Sunny Brae Middle School",
+		"Tantramar Regional High School",
+		"Wabanaki School",
+		"West Riverview School",
+	],
+	north: [
+		"Bathurst High School",
+		"Bathurst Transition Center",
+		"Bengals II",
+		"Blackville School",
+		"Bonar Law Memorial School",
+		"Campbellton Learning Center",
+		"Campbellton Middle School",
+		"Dalhousie Learning Center",
+		"Dalhousie Regional High School",
+		"Dr. Losier Middle School",
+		"Eleanor W. Graham Middle School",
+		"Gretna Green School",
+		"Harcourt School",
+		"Jacquet River School",
+		"James M. Hill Memorial High School",
+		"Janeville Elementary School",
+		"King Street Elementary School",
+		"L.E. Reinsborough School",
+		"Lord Beaverbrook School",
+		"Max Aitken Academy",
+		"Millerton Elementary & Junior High School",
+		"Miramichi Rural School",
+		"Miramichi Valley High School",
+		"Napan Elementary School",
+		"Nelson Rural School",
+		"North & South Esk Elementary School",
+		"North & South Esk Regional High School",
+		"Parkwood Heights Elementary School",
+		"Pulamoo II",
+		"Rexton Elementary School",
+		"Sugarloaf Senior High School",
+		"Superior Middle School",
+		"Tabusintac Community School",
+		"Terry Fox Elementary School",
+		"Tommies II",
+	],
+	south: [
+		"Apohaqui Elementary School",
+		"Back Bay Elementary School",
+		"Barnhill Memorial School",
+		"Bayside Middle School",
+		"Bayview School",
+		"Beaconsfield Middle School",
+		"Belleisle Elementary School",
+		"Belleisle Regional High School",
+		"Blacks Harbour School",
+		"Campobello Island Consolidated School",
+		"Centennial School",
+		"Champlain Heights School",
+		"Chris Saunders Memorial Elementary School",
+		"Compass Education Support Program-Saint John",
+		"Compass Education Support Program-Sussex",
+		"Deer Island Community School",
+		"Dr. A. T. Leatherbarrow Primary School",
+		"Fairvale Elementary School",
+		"Forest Hills School",
+		"Fundy Middle and High School",
+		"Fundy Shores School",
+		"Glen Falls School",
+		"Grand Bay Primary School",
+		"Grand Manan Community School",
+		"Hammond River Valley Elementary School",
+		"Hampton Elementary School",
+		"Hampton High School",
+		"Hampton Middle School",
+		"Harbour View High School",
+		"Harry Miller Middle School",
+		"Hazen-White-St. Francis School",
+		"Inglewood School",
+		"Island View School",
+		"Kennebecasis Park Elementary School",
+		"Kennebecasis Valley High School",
+		"Lakefield Elementary School",
+		"Lakewood Heights School",
+		"Lawrence Station Elementary School",
+		"Loch Lomond School",
+		"M. Gerald Teed Memorial School",
+		"Macdonald Consolidated School",
+		"Millidgeville North School",
+		"Milltown Elementary School",
+		"Norton Elementary School",
+		"Prince Charles School",
+		"Princess Elizabeth School",
+		"Quispamsis Elementary School",
+		"Quispamsis Middle School",
+		"River Valley Middle School",
+		"Rothesay Elementary School",
+		"Rothesay High School",
+		"Rothesay Park School",
+		"Saint John High School",
+		"Saint Rose School",
+		"Seaside Park Elementary School",
+		"Simonds High School",
+		"Sir James Dunn Academy",
+		"St. George Elementary School",
+		"St. John the Baptist/King Edward School",
+		"St. Malachy's Memorial High School",
+		"St. Martins School",
+		"St. Stephen Elementary School",
+		"St. Stephen High School",
+		"St. Stephen Middle School",
+		"Sussex Corner Elementary School",
+		"Sussex Elementary School",
+		"Sussex Middle School",
+		"Sussex Regional High School",
+		"Vincent Massey Elementary School",
+		"Westfield School",
+		"White Head Elementary School",
+	],
+	west: [
+		"Andover Elementary School",
+		"Assiniboine Avenue Elementary School",
+		"Barkers Point Elementary School",
+		"Bath Community School",
+		"Bliss Carman Middle School",
+		"Bristol Elementary School",
+		"Burton Elementary School",
+		"Cambridge-Narrows Community School",
+		"Canterbury High School",
+		"Carleton North High School",
+		"Central New Brunswick Academy",
+		"Centreville Community School",
+		"Chipman Elementary School",
+		"Chipman Forest Avenue School",
+		"Connaught Street School",
+		"Cuffman Street Elementary",
+		"Devon Middle School",
+		"Doaktown Elementary School",
+		"Donald Fraser Memorial School",
+		"Florenceville Elementary School",
+		"Florenceville Middle School",
+		"Forest Hill Elementary School",
+		"Fredericton Education Centre (Enterprise Centre)",
+		"Fredericton High School",
+		"Gagetown School",
+		"Garden Creek School",
+		"Geary Elementary Community School",
+		"George Street Middle School",
+		"Gesner Street Elementary School",
+		"Gibson-Neill Memorial Elementary School",
+		"Hanwell Park Academy",
+		"Harold Peterson Middle School",
+		"Hartland Community School",
+		"Harvey Elementary School",
+		"Harvey High School",
+		"Hubbard Elementary School",
+		"John Caldwell School",
+		"Keswick Ridge School",
+		"Keswick Valley Memorial School",
+		"Kingsclear Community School",
+		"Leo Hayes High School",
+		"Lincoln Elementary Community School",
+		"Liverpool Street Elementary School",
+		"McAdam Elementary School",
+		"McAdam High School",
+		"Meduxnekeag Consolidated School",
+		"Minto Elementary Middle School",
+		"Minto Memorial High School",
+		"Montgomery Street Elementary School",
+		"Nackawic Elementary School",
+		"Nackawic Middle School",
+		"Nackawic Senior High School",
+		"Nashwaak Valley School",
+		"Nashwaaksis Middle School",
+		"New Maryland Elementary School",
+		"Oromocto High School",
+		"Park Street Elementary School",
+		"Perth-Andover Middle School",
+		"Priestman Street Elementary School",
+		"Ridgeview Middle School",
+		"Royal Road Elementary School",
+		"Saint Mary's Academy",
+		"Southern Victoria High School",
+		"Stanley Consolidated School",
+		"Summerhill Street Elementary School",
+		"Sunbury West School",
+		"Sunset Acres Elementary School",
+		"Tobique Valley High School",
+		"Townsview School",
+		"Upper Miramichi Elementary School",
+		"Woodstock High School",
+	],
+};
+
+---
+
+<dialog id="create-assessment">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Create Assessment Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Create New Assessment</h2>
+
+	<div
+		class="callout"
+		data-style="shaded"
+		data-vibrancy="vivid"
+		data-fit="compact"
+		data-theme="yellow"
+	>
+		<div class="icon-container">
+			<IconWarning />
+		</div>
+
+		<div class="text-container">
+			<p>
+				All information collected below is used exclusively for report
+				generation and is not stored on a central server.
+			</p>
+		</div>
+	</div>
+
+	<form id="create-assessment-form">
+		<label for="create-district-select">School District</label>
+		<div class="select-container">
+			<select 
+				id="create-district-select" 
+				class="district" 
+				name="district"
+				required
+			>
+				<option value="">Select a district...</option>
+				<option value="ASD-W">ASD-W</option>
+				<option value="ASD-N">ASD-N</option>
+				<option value="ASD-E">ASD-E</option>
+				<option value="ASD-S">ASD-S</option>
+			</select>
+			<IconCaretDown />
+		</div>
+
+		<label for="create-school-select">School</label>
+		<div class="select-container">
+			<select 
+				id="create-school-select" 
+				class="school"
+				name="school" 
+				required
+				disabled
+			>
+				<option value="">Select a school...</option>
+				<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
+					{schoolList.west.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+				<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
+					{schoolList.north.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+				<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
+					{schoolList.east.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+				<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
+					{schoolList.south.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+			</select>
+			<IconCaretDown />
+		</div>
+
+		<label for="create-reporting-year-input">Reporting Year</label>
+		<p class="instructions">Year must be 4 characters in length.</p>
+		<div class="input-container">
+			<input
+				id="create-reporting-year-input"
+				class="reporting-year"
+				name="reporting-year"
+				type="text"
+				required
+				placeholder="Enter a year..."
+				pattern="\\d{4}"
+			/>
+		</div>
+
+		<label for="create-assessor-input">Assessor(s)</label>
+		<div class="input-container">
+			<input
+				id="create-assessor-input"
+				class="assessor"
+				type="text"
+				placeholder="Enter a name..."
+			/>
+			<button class="add-assessor" type="button">
+				<span class="labelled-icon-container">
+					<IconCross />
+					<span class="label-container">
+						<span class="label"> Add </span>
+					</span>
+				</span>
+			</button>
+		</div>
+		<ul 
+			class="assessor-list"
+			data-field="assessors"
+			hidden
+		></ul>
+
+		<button id="create-assessment-submit" type="button" data-size="large">Create and Start Editing</button>
+	</form>
+</dialog>
+
+<dialog id="view-assessment">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Assessment Details</h2>
+
+	<div class="meta">
+		<span class="status"></span>
+		<span class="date-created">Date Created: <span class="slot"></span></span>
+		<span class="date-modified">Date Last Modified: <span class="slot"></span></span>
+	</div>
+
+	<div class="current-details">
+		<dl>
+			<div class="detail-container">
+				<dt>School District:</dt>
+				<dd class="district">ASD-W</dd>
+			</div>
+			<div class="detail-container">
+				<dt>School:</dt>
+				<dd class="school">Maple Grove Elementary School</dd>
+			</div>
+			<div class="detail-container">
+				<dt>Reporting Year:</dt>
+				<dd class="reporting-year">2025</dd>
+			</div>
+			<div class="detail-container">
+				<dt>Assessor(s):</dt>
+				<dd class="assessors">2025</dd>
+			</div>
+		</dl>
+		<button id="edit-details-button" type="button" data-size="large">Edit Details</button>
+	</div>
+
+	<form id="update-assessment-form" >
+		<label for="update-district-select">School District</label>
+		<div class="select-container">
+			<select class="district" id="update-district-select">
+				<option value="">Select a district...</option>
+				<option value="ASD-W">ASD-W</option>
+				<option value="ASD-N">ASD-N</option>
+				<option value="ASD-E">ASD-E</option>
+				<option value="ASD-S">ASD-S</option>
+			</select>
+			<IconCaretDown />
+		</div>
+
+		<label for="update-school-select">School</label>
+		<div class="select-container">
+			<select class="school" id="update-school-select">
+				<option value="">Select a school...</option>
+				<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
+					{schoolList.west.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+				<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
+					{schoolList.north.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+				<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
+					{schoolList.east.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+				<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
+					{schoolList.south.map((school) => (
+						<option value={school}>{school}</option>
+					))}
+				</optgroup>
+			</select>
+			<IconCaretDown />
+		</div>
+
+		<label for="update-reporting-year-input">Reporting Year</label>
+		<p class="instructions">Year must be 4 characters in length.</p>
+		<div class="input-container">
+			<input
+				id="update-reporting-year-input"
+				class="reporting-year"
+				type="text"
+				required
+				placeholder="Enter a year..."
+				pattern="\d{4}"
+			/>
+		</div>
+
+		<label for="update-assessor-input">Assessor(s)</label>
+		<div class="input-container">
+			<input
+				id="update-assessor-input"
+				class="assessor"
+				type="text"
+				placeholder="Enter a name..."
+			/>
+			<button class="add-assessor" type="button">
+				<span class="labelled-icon-container">
+					<IconCross />
+					<span class="label-container">
+						<span class="label"> Add </span>
+					</span>
+				</span>
+			</button>
+		</div>
+		<ul class="assessor-list" hidden></ul>
+
+		<button id="update-assessment-submit" type="button" data-size="large"
+			>Update and Continue Editing</button
+		>
+	</form>
+</dialog>
+
+<dialog id="open-assessment">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Open Assessment Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Open Assessment</h2>
+
+	<section>
+		<h3>Import Assessment</h3>
+		<div class="button-group">
+			<button id="upload-csv-button" type="button" data-size="large"
+				>Upload .csv</button
+			>
+			<button id="paste-url-button" type="button" data-size="large"
+				>Paste URL</button
+			>
+		</div>
+	</section>
+
+	<section>
+		<h3>Saved Assessments</h3>
+		<ul id="saved-assessment-list" class="card-group">
+			<li class="card">
+				<h4 class="heading">2024</h4>
+				<div class="details">
+					<p>Maple Grove High School</p>
+					<p class="meta">Date Created: ...</p>
+					<p class="meta">Date Last Modified: ...</p>
+				</div>
+				<button class="open-assessment" type="button" data-size="large"
+					>Open Assessment</button
+				>
+			</li>
+			<li class="card">
+				<h4 class="heading">2025</h4>
+				<div class="details">
+					<p>Maple Grove High School</p>
+					<p class="meta">Date Created: ...</p>
+					<p class="meta">Date Last Modified: ...</p>
+				</div>
+				<button class="open-assessment" type="button" data-size="large"
+					>Open Assessment</button
+				>
+			</li>
+		</ul>
+	</section>
+</dialog>
+
+<dialog id="save-assessment">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Save Assessment Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Save Assessment(s)</h2>
+
+	<section>
+		<h3>Save/Share Link</h3>
+		<p class="instructions">
+			This personalized link lets you access your assessment(s) from any
+			device or share them with another assessor for collaboration.
+		</p>
+		<div class="url-container" data-style-as="input-container">
+			<div id="save-url" class="url" data-style-as="input">
+				<span
+					>https://middle.nbed.ca/conditions-for-success/#save=N4IgZglhg7ggkrughg8togghghtyggg0</span
+				>
+			</div>
+			<button
+				id="copy-save-url-button"
+				class="save-assessment"
+				type="button"
+			>
+				<span class="labelled-icon-container">
+					<IconCopy />
+					<span class="label-container">
+						<span class="label"> Copy </span>
+					</span>
+				</span>
+			</button>
+		</div>
+	</section>
+
+	<section>
+		<h3>Save File</h3>
+		<div
+			class="callout"
+			data-style="shaded"
+			data-vibrancy="vivid"
+			data-fit="compact"
+			data-theme="yellow"
+		>
+			<div class="icon-container">
+				<IconWarning />
+			</div>
+			<div class="text-container">
+				<p>
+					To prevent data loss, please download a .csv copy of your
+					assessments regularly, as your data is not stored on a
+					central server.
+				</p>
+			</div>
+		</div>
+		<button
+			id="save-download-file"
+			class="save-assessment"
+			type="button"
+			data-size="large">Download .csv</button
+		>
+	</section>
+</dialog>
+
+<style>
+
+	dialog {
+		background-color: var(--colour-background);
+		border-radius: var(--border-radius-normal);
+		border: none;
+		padding: 3rem;
+		width: min(100%, 636px);
+		max-height: calc(100% - 3rem);
+	}
+
+	dialog:focus {
+		outline: none;
+		caret-color: transparent;
+	}
+
+	dialog::backdrop {
+		background-color: var(--colour-fill-neutral-bold-muted);
+		opacity: 0.8;
+	}
+
+	dialog button.close-dialog {
+		--button-background-colour: transparent;
+		--button-background-colour-hover: var(
+			--colour-fill-neutral-subtle-muted
+		);
+		--icon-size: 1.25rem;
+		float: right;
+		margin: 0 0 1rem 1.5rem;
+	}
+
+	dialog section {
+		margin: 1.5rem 0;
+	}
+
+	dialog > .heading {
+		margin: 0 0 1.5rem;
+		padding: 0 0 1rem;
+		border-bottom: 2px solid var(--colour-border-neutral-subtle-muted);
+	}
+
+	dialog section > h3 {
+		margin: 1rem 0;
+	}
+
+	dialog .instructions {
+		font-size: 1rem;
+		line-height: 1.4;
+		margin: 0 0 0.75rem;
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	dialog .callout {
+		margin: 1.5rem 0;
+	}
+
+	dialog form label {
+		display: block;
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 1.25rem 0 0.5rem;
+	}
+
+	.input-container,
+	.select-container,
+	[data-style-as="input-container"] {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		position: relative;
+		border-radius: var(--border-radius-normal);
+		border: 2px solid var(--colour-border-neutral-subtle-muted);
+		width: 100%;
+		height: 3rem;
+		padding: 0;
+		margin: 0;
+	}
+
+	input[type="text"],
+	select,
+	[data-style-as="input"] {
+		display: flex;
+		align-items: center;
+		appearance: none;
+		border: none;
+		background: none;
+		height: 100%;
+		min-width: 0; /* Fixed text-overflow inside flex item */
+		padding: 0 1rem;
+		margin: 0;
+		flex-grow: 1;
+		font-size: 1rem;
+		line-height: 1.2;
+	}
+
+	input[type="text"]::placeholder {
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.url-container {
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.url-container .url span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	dialog form .select-container .icon {
+		width: 1.25rem;
+		position: absolute;
+		top: 0.875rem;
+		right: 0.875rem;
+	}
+
+	dialog :is(.input-container, .url-container) button {
+		--icon-size: 1rem;
+		margin-right: 0.25rem;
+	}
+
+	dialog
+		:is(.input-container, .url-container)
+		button:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+	}
+
+	dialog form > button:last-of-type {
+		margin: 1.75rem 0;
+	}
+
+	dl {
+		display: flex;
+		flex-flow: column;
+		gap: 1rem;
+		margin: 0 0 1.75rem;
+	}
+
+	.detail-container {
+		display: flex;
+		flex-flow: row;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.detail-container :is(dt, dd) {
+		font-size: 1.125rem;
+	}
+
+	.detail-container dt {
+		font-weight: 600;
+	}
+
+	.detail-container dd {
+		margin: 0;
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.meta {
+		display: flex;
+		flex-flow: column;
+		align-items: start;
+		gap: 0.25rem;
+		margin: 0 0 1.5rem;
+	}
+
+	.meta * {
+		font-size: 0.875rem;
+		color: var(--colour-ui-neutral-subtle);
+	}
+
+	.meta .status {
+		display: flex;
+		align-items: center;
+		height: 1.75rem;
+		padding: 0 0.375rem;
+		margin: 0 0 0.25rem;
+		background-color: var(--colour-fill-neutral-subtle-muted);
+		border-radius: var(--border-radius-small);
+		font-weight: 600;
+	}
+
+	.assessor-list {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0;
+		margin: 0.5rem 0;
+		list-style-type: none;
+	}
+
+	.assessor-list button {
+		--icon-size: 1rem;
+	}
+
+	.assessor-list button:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+	}
+
+</style>
+
+<script>
+
+	//
+	// Imports
+	//
+
+	import { dateFormatter, findObjectByKey, htmlToElement, kebabToCamel, sanitizeHTML } from "src/utilities/helpers.js";
+	import { subscribe, setState, setAssessment, createAssessment } from "src/stores/userDataStore.js";
+
+	//
+	// Variables
+	//
+
+	let viewAssessmentDialog = document.querySelector('#view-assessment');
+	let openAssessmentDialog = document.querySelector('#open-assessment');
+	let saveAssessmentDialog = document.querySelector('#save-assessment');
+
+	//
+	// Methods
+	//
+
+	let openDialog = (selector:String) => {
+		let dialog = document.querySelector(`#${selector}`) as HTMLDialogElement;
+		if (dialog) dialog.showModal();
+	};
+
+	let closeDialog = (dialog:HTMLDialogElement) => {
+		if (dialog) dialog.close();
+	};
+
+	let createAssessorListItem = (name) => {
+		if (!name || name === undefined) return;
+		let template = `
+			<li>
+				<button class="remove-assessor" type="button">
+					<span class="labelled-icon-container">
+						<span class="label-container">
+							<span class="label" data-field-value>${sanitizeHTML(name).trim()}</span>
+						</span>
+						<svg class="icon xmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+							<path d="m9.41 8 4.24-4.24a.996.996 0 1 0-1.41-1.41L8 6.59 3.76 2.34a.996.996 0 1 0-1.41 1.41l4.24 4.24-4.24 4.24a.996.996 0 0 0 .71 1.7c.26 0 .51-.1.71-.29L8.01 9.4l4.24 4.24c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L9.43 7.99Z"/>
+						</svg>
+					</span>
+				</button>
+			</li>
+		`;
+		return htmlToElement(template);
+	}
+
+	let addAssessorToList = (target:HTMLButtonElement|HTMLInputElement) => {
+		let input = target.closest(".input-container").querySelector("input");
+		let item = createAssessorListItem(input.value);
+		if (!item) return;
+		let list = target.closest("form").querySelector(".assessor-list");
+		list.append(item);
+		list.removeAttribute("hidden");
+		input.value = "";
+	};
+
+	let removeAssessorFromList = (target:HTMLButtonElement) => {
+		let item = target.closest("li");
+		item.remove();
+	};
+
+	let getFormValues = (form:HTMLFormElement) => {
+
+		let result = {};
+
+		// Handle input and select elements
+		let fields = form.querySelectorAll('select[name], input[name]') as NodeListOf<HTMLInputElement|HTMLSelectElement>;
+		for (let field of fields) {
+			result[kebabToCamel(field.name)] = field.value;
+		}
+
+		// Handle <ul data-field="..."> lists (e.g., assessors)
+		let lists = form.querySelectorAll('ul[data-field]');
+		for (let list of lists) {
+			let items = [];
+			for (let item of list.querySelectorAll('[data-field-value]')) {
+				items.push(item.textContent.trim());
+			}
+			result[list.getAttribute('data-field')] = items;
+		}
+
+		return result;
+
+	}
+
+	let updateViewAssessmentDialog = (data:{uiState:{activeAssessment:String}, assessments:[]}) => {
+
+		let assessment = findObjectByKey(data.assessments, 'id', data.uiState.activeAssessment);
+		console.log(assessment);
+		if (!assessment) return;
+
+		let selectors = {
+
+			// Static details
+			'dd.district': 'district',
+			'dd.school': 'school',
+			'dd.reporting-year': 'reportingYear',
+			'dd.assessors': 'assessors',
+			'.meta .status': 'status',
+			'.meta .date-created .slot': 'dateCreated',
+			'.meta .date-modified .slot': 'dateModified',
+
+			// Form inputs, selects, and lists
+			'select.district': 'district',
+			'select.school': 'school',
+			'input.reporting-year': 'reportingYear',
+			'.assessor-list': 'assessors',
+		
+		}
+
+		for (let [selector, key] of Object.entries(selectors)) {
+			let elem = viewAssessmentDialog.querySelector(selector);
+			if (!elem) continue;
+			
+			let value = assessment[key];
+
+			if (Array.isArray(value)){
+				// Form list
+				if (elem.matches('ul')){
+					for (let assessor of value) {
+						let item = createAssessorListItem(assessor);
+						if (!item) continue;
+						elem.append(item);
+					}
+					if (elem.querySelectorAll('li').length > 0) {
+						elem.removeAttribute('hidden');
+					} else {
+						elem.setAttribute('hidden', '');
+					}
+				// Static detail list converted to comma-separated
+				} else {
+					elem.textContent = value.join(', ');
+				}
+
+			// Static detail date
+			} else if (key.startsWith('date') && typeof value === 'number') {
+				elem.textContent = dateFormatter.format(new Date(value));
+
+			} else {
+				// Form text
+				if ('value' in elem) {
+					elem.value = value;
+
+				// Static text
+				} else {
+					elem.textContent = value;
+				}
+			}
+				
+		}
+
+	}
+
+
+
+
+	//
+	// Inits & Event Listeners
+	//
+
+	subscribe(updateViewAssessmentDialog);
+
+	document.addEventListener("click", (event) => {
+
+		let target = event.target as HTMLButtonElement;
+
+		if (target.matches('#create-assessment-submit')) {
+
+			let form = target.closest('form');
+			console.log('Form', form);
+			let values:Object;
+
+			if (form.reportValidity()) {
+				values = getFormValues(form);
+				console.log('Values', values);
+
+				createAssessment(values);
+
+				// Close the dialog
+				let dialog = target.closest('dialog');
+				dialog.close();
+
+
+
+
+			} else {
+				console.warn('Form is incomplete')
+				// Display warning that form is incomplete
+			}
+
+		}
+
+		if (target.matches('#update-assessment-submit')) {
+
+			
+
+		}
+
+		if (target.matches('#upload-csv-button')){}
+		if (target.matches('#paste-url-button')){}
+		if (target.matches('button.open-assessment')){}
+		if (target.matches('button.save-assessment')){}
+
+		if (target.matches("button.open-dialog")) {
+			console.log(target);
+			let targetDialog = target.getAttribute("data-dialog");
+			openDialog(targetDialog);
+		}
+
+		if (target.matches("button.close-dialog")) {
+			closeDialog(target.closest("dialog"));
+		}
+
+		if (target.matches("button.add-assessor")) {
+			addAssessorToList(target);
+		}
+
+		if (target.matches("button.remove-assessor")) {
+			removeAssessorFromList(target);
+		}
+		
+	});
+
+	document.addEventListener("input", (event) => {
+		let target = event.target as (HTMLInputElement|HTMLSelectElement);
+
+		if (target.matches("select.district")) {
+			let schoolSelect = target.closest("form").querySelector("select.school") as HTMLSelectElement;
+			let schoolOptionGroups = schoolSelect?.querySelectorAll("optgroup");
+
+			if (target.value !== "") {
+				schoolSelect.removeAttribute("disabled");
+				console.log(target.value);
+				schoolSelect.querySelector(`.${target.value.toLowerCase()}-schools`).removeAttribute('hidden');
+
+			} else {
+				schoolSelect.value = '';
+				schoolSelect.setAttribute("disabled", "");
+				for (let group of schoolOptionGroups) {
+					group.setAttribute('hidden', '');
+				}
+
+			}
+		}
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Enter") {
+			let target = event.target as HTMLInputElement;
+
+			if (target.matches("input.assessor")) {
+				addAssessorToList(target);
+			}
+		}
+	});
+
+</script>
