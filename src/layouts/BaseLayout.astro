@@ -38,23 +38,86 @@ const { pageTitle } = Astro.props;
 
 	<script>
 
-		import { subscribe } from "src/stores/userDataStore";
+		import { getActiveAssessmentData, getSaveStatus, getUserData, subscribe } from "src/stores/userDataStore";
+		import { findObjectByKey } from "src/utilities/helpers";
+
+		let updateTheme = (data) => {
+
+			let theme = data.uiPreferences.theme;
+	
+			if (theme !== 'dark' && theme !== 'light') return;
+
+			// Get the html root
+			let html = document.documentElement;
+
+			// Update the theme
+			html.setAttribute('data-theme', theme);
+
+		}
 
 		let updateMode = (data) => {
 
 			let mode = data.uiState.mode;
 
-			if (mode !== 'assessment' && mode !== 'reading') return;
+			if (mode !== 'assessment' && mode !== 'reading') mode = 'reading';
 
-			// Get the html root
+			// Get the main
 			let main = document.querySelector('main');
 
-			// Update the theme
+			// Update the mode
 			main.setAttribute('data-mode', mode);
 
 		}
 
+		let updateStatus = (data) => {
+
+			let assessment = getActiveAssessmentData();
+			if (!assessment) return;
+
+			let status = assessment.status;
+
+			if (status !== 'In Progress' && status !== 'Complete') status = 'In Progress';
+
+			// Get the main
+			let main = document.querySelector('main');
+
+			// Update the status
+			main.setAttribute('data-status', status.split(" ").join('-').toLowerCase());
+
+		}
+
+		let updateAssessor = (data) => {
+
+			let activeAssessor = data.uiState.activeAssessor;
+			
+			// Get the main
+			let main = document.querySelector('main');
+
+			// Update the assessor
+			if (!activeAssessor || activeAssessor === undefined) {
+				main.setAttribute('data-assessor', false);
+			} else {
+				main.setAttribute('data-assessor', true);
+			}
+
+		}
+
+		subscribe(updateTheme);
 		subscribe(updateMode);
+		subscribe(updateStatus);
+		subscribe(updateAssessor);
+
+		window.addEventListener('beforeunload', (event) => {
+
+			// TODO: Test this
+			let userData = getUserData();
+
+			if (!userData.uiState.unsavedChanges) return;
+
+			event.preventDefault();
+			event.returnValue = '';
+
+		});
 
 	</script>
 

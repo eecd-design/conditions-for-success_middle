@@ -4,106 +4,208 @@ import IconInfo from "./icons/IconInfo_20.astro";
 import IconFolder from "./icons/IconFolder_20.astro";
 import IconSave from "./icons/IconSave_20.astro";
 import IconChart from "./icons/IconChart_20.astro";
+import IconEdit from "./icons/IconEdit_20.astro";
 import IconEditStop from "./icons/IconEditStop_20.astro";
+import IconSwap from "./icons/IconSwap_20.astro";
+import IconAssessor from "./icons/IconAssessor_20.astro";
+import IconAssessment from "./icons/IconAssessment_20.astro";
 ---
 
-<section class="assessment-controls" aria-label="Assessment Controls Toolbar">
-	<span
-		class="active-assessment-title"
-		title='Editing "2025 Maple Grove High School"'
-		data-restrict-mode="assessment"
-		>Editing "2025 Maple Grove High School"</span
-	>
+<section class="assessment-controls" aria-label="Assessment Controls Toolbar" role="toolbar">
 
-	<hr data-restrict-mode="assessment" />
+	<div class="info-group button-group" data-restrict-mode="assessment">
 
-	<button
-		class="open-dialog"
-		data-dialog="view-assessment"
-		type="button"
-		data-restrict-mode="assessment"
-	>
-		<div class="labelled-icon-container">
-			<IconInfo />
-			<span class="label-container">
-				<span class="label"> View Details </span>
+		<div class="field-container icon-and-label-container">
+			<IconAssessment />
+			<span class="label-container" data-restrict-length>
+				<span class="label" data-field="activeAssessmentName" 
+				></span>
 			</span>
 		</div>
-	</button>
 
-	<hr data-restrict-mode="assessment" />
+		<div class="field-container label-container">
+			<span class="label" data-field="status"></span>
+		</div>
+		
+		<hr class="item-divider"/>
 
-	<div class="button-group">
+		<button
+			class="open-dialog"
+			data-dialog="info-assessment"
+			type="button"
+			aria-label="View Assessment Info"
+		>
+			<div class="icon-and-label-container">
+				<IconInfo />
+				<span class="label-container">
+					<span class="label">Info</span>
+				</span>
+			</div>
+		</button>
+
+	</div>
+	
+	<hr class="group-divider" data-restrict-mode="assessment" />
+	
+	<div class="file-group button-group">
 		<button
 			class="open-dialog"
 			data-dialog="create-assessment"
+			aria-label="New Assessment"
 			type="button"
-		>
-			<div class="labelled-icon-container">
+			>
+			<div class="icon-and-label-container">
 				<IconCross />
 				<span class="label-container">
-					<span class="label"> New Assessment </span>
+					<span class="label">New</span>
 				</span>
 			</div>
 		</button>
+		
+		<hr class="item-divider"/>
+		
 		<button
 			class="open-dialog"
 			data-dialog="open-assessment"
+			aria-label="Open Assessment"
 			type="button"
-		>
-			<div class="labelled-icon-container">
+			>
+			<div class="icon-and-label-container">
 				<IconFolder />
 				<span class="label-container">
-					<span class="label"> Open Assessment </span>
+					<span class="label">Open</span>
 				</span>
 			</div>
 		</button>
-		<!-- <button class="switch-assessment" type="button" data-restrict-mode="assessment">
-			<div class="labelled-icon-container">
-				<IconSwap/>
-				<span class="label-container">
-					<span class="label">
-						Switch Assessment
-					</span>
-				</span>
-			</div>
-		</button> -->
+
 	</div>
 
-	<div class="button-group" data-restrict-mode="assessment">
-		<span class="save-status" aria-live="polite">*Unsaved Changes</span>
-		<button class="open-dialog" data-dialog="save-assessment" type="button">
-			<div class="labelled-icon-container">
+	<hr class="group-divider" data-restrict-mode="assessment"/>
+	
+	<div class="save-group button-group" data-restrict-mode="assessment"> 
+
+		<div class="field-container label-container" data-restrict-status="in-progress">
+			<span class="label" data-field="saveStatus">Unsaved Changes</span>
+		</div>
+
+		<hr class="item-divider" data-restrict-status="in-progress"/>
+		
+		<button
+			class="open-dialog"
+			data-dialog="save-assessment"
+			type="button"
+			aria-label="Save"
+		>
+			<div class="icon-and-label-container">
 				<IconSave />
 				<span class="label-container">
-					<span class="label"> Save </span>
+					<span class="label">Save</span>
 				</span>
 			</div>
 		</button>
-		<a data-style-as="button" href="/big-seven/report">
-			<div class="labelled-icon-container">
+
+	</div>
+
+	<hr class="group-divider" data-restrict-mode="assessment"/>
+
+	<div class="report-group button-group" data-restrict-mode="assessment">
+
+		<a
+			data-style-as="button"
+			href="/big-seven/report"
+			aria-label="View Report"
+		>
+			<div class="icon-and-label-container">
 				<IconChart />
 				<span class="label-container">
-					<span class="label"> View Report </span>
+					<span class="label">Report</span>
 				</span>
 			</div>
 		</a>
+
 	</div>
 
-	<hr data-restrict-mode="assessment" />
+	<hr class="group-divider" data-restrict-mode="assessment" data-restrict-status="in-progress"/>
 
-	<button class="stop-editing" type="button" data-restrict-mode="assessment">
-		<div class="labelled-icon-container">
-			<IconEditStop />
-			<span class="label-container">
-				<span class="label"> Stop Editing </span>
+	<div class="user-group button-group" data-restrict-mode="assessment" data-restrict-status="in-progress">
+		
+		<div class="field-container icon-and-label-container" data-restrict-assessor="true">
+			<IconAssessor />
+			<span class="label-container" data-restrict-length>
+				<span class="label" data-field="activeAssessorName"></span>
 			</span>
 		</div>
-	</button>
+
+		<hr class="item-divider" data-restrict-assessor="true"/>
+
+		<button
+			class="open-dialog"
+			data-dialog="change-assessor"
+			data-restrict-assessor="true"
+			type="button"
+			aria-label="Change Active Assessor"
+		>
+			<div class="icon-and-label-container">
+				<IconSwap />
+				<span class="label-container">
+					<span class="label">Change</span>
+				</span>
+			</div>
+		</button>
+
+		<button
+			class="open-dialog"
+			data-dialog="select-assessor"
+			data-restrict-assessor="false"
+			type="button"
+			aria-label="Select Active Assessor"
+		>
+			<div class="icon-and-label-container">
+				<IconAssessor />
+				<span class="label-container">
+					<span class="label">Select Assessor</span>
+				</span>
+			</div>
+		</button>
+
+	</div>
+
+	<hr class="group-divider" data-restrict-mode="assessment"/>
+
+	<div class="mode-group button-group">
+
+		<button
+			class="stop-editing"
+			type="button"
+			data-restrict-status="in-progress"
+		>
+			<div class="icon-and-label-container">
+				<IconEditStop />
+				<span class="label-container">
+					<span class="label"> Stop Editing </span>
+				</span>
+			</div>
+		</button>
+
+		<button
+			class="open-dialog"
+			data-dialog="status-warning"
+			type="button"
+			data-restrict-status="complete"
+		>
+			<div class="icon-and-label-container">
+				<IconEdit />
+				<span class="label-container">
+					<span class="label">Edit</span>
+				</span>
+			</div>
+		</button>
+		
+	</div>
+
 </section>
 
 <style is:global>
-	
 	.assessment-controls {
 		container-name: assessment-controls;
 		container-type: inline-size;
@@ -115,31 +217,33 @@ import IconEditStop from "./icons/IconEditStop_20.astro";
 		height: 3.75rem;
 		padding: 0 3rem;
 		background-color: var(--colour-fill-neutral-subtle-muted);
+		border-bottom: 1px solid var(--colour-border-neutral-subtle-muted);
 		position: sticky;
 		top: 0;
 		z-index: 100;
 	}
 
-	.assessment-controls .button-group:first-of-type {
+	.assessment-controls .button-group {
+		--group-gap: 0.5rem;
+	}
+
+	.assessment-controls .report-group {
 		flex-grow: 1;
 	}
 
-	.assessment-controls :is(.active-assessment-title, .save-status) {
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	.assessment-controls .active-assessment-title {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		max-width: 20rem;
+	.assessment-controls .field-container:has([data-field="status"]) {
+		--label-colour: var(--colour-ui-accent-bold);
+		background-color: var(--colour-fill-accent-subtle-vivid);
+		border: 1px solid var(--colour-border-accent-bold-vivid);
+		height: 1.75rem;
+		border-radius: var(--border-radius-small);
+		padding: 0 0.5rem;
+		margin: 0 0.5rem 0 0;
 	}
 
 	.assessment-controls :is(button, [data-style-as="button"]) {
 		--icon-size: 1.25rem;
-		--button-background-colour: var(--colour-background);
+		--button-background-colour: transparent;
 	}
 
 	.assessment-controls
@@ -158,146 +262,169 @@ import IconEditStop from "./icons/IconEditStop_20.astro";
 		}
 	}
 
+	.assessment-controls .field-container {
+		--icon-size: 1.25rem;
+		--label-size: 0.875rem;
+		margin: 0 0.5rem;
+		user-select: none;
+	}
+
+	.assessment-controls .field-container:has([data-field="activeAssessmentName"], [data-field="activeAssessorName"]) {
+		--label-size: 0.9375rem;
+		--label-weight: 700;
+		gap: 0.75rem		
+	}
+
+	.assessment-controls .field-container:has([data-field="saveStatus"]) {
+		--label-colour: var(--colour-ui-neutral-subtle);		
+	}
+
 	.assessment-controls hr {
 		display: block;
-		height: 2.25rem;
-		width: 2px;
+		width: 1px;
 		flex-shrink: 0;
 		margin: 0;
+		background-color: var(--colour-border-neutral-subtle-muted);
+	}
+
+	.assessment-controls hr.item-divider {
+		height: 1.75rem;
+	}
+
+	.assessment-controls hr.group-divider {
+		height: 100%;
 	}
 
 </style>
 
 <script>
+	import { getActiveAssessmentData, getAssessmentName, getSaveStatus, getStatusColour, setState, subscribe } from "src/stores/userDataStore";
+	import { findObjectByKey, getTimeDifference } from "src/utilities/helpers";
 
+	let updateToolbar = (data) => {
+		let { uiState, assessments } = data;
 
+		if (!uiState.activeAssessmentId) return;
 
+		// Get the toolbar
+		let toolbar = document.querySelector(".assessment-controls");
 
-	// //
-	// // Helpers
-	// //
+		if (!toolbar) return;
 
-	// let sanitizeHTML = (input:string) => {
-	// 	return input.replace(/&/g, "&amp;")
-	// 		.replace(/</g, "&lt;")
-	// 		.replace(/>/g, "&gt;")
-	// 		.replace(/"/g, "&quot;")
-	// 		.replace(/'/g, "&#039;");
-	// }
+		// Get the update fields
+		let statusField = toolbar?.querySelector(
+			'[data-field="status"]',
+		);
+		let assessmentField = toolbar?.querySelector(
+			'[data-field="activeAssessmentName"]',
+		);
+		let saveField = toolbar?.querySelector('[data-field="saveStatus"]');
+		let assessorField = toolbar?.querySelector(
+			'[data-field="activeAssessorName"]',
+		);
 
+		// Get the active assessment
+		let activeAssessment = getActiveAssessmentData();
 
+		console.log(activeAssessment);
 
-	// //
-	// // Methods
-	// //
+		if (!activeAssessment) return;
 
-	// /**
-	//  * Create an DOM element from HTML string
-	//  * @param  {String} html
-	//  * @return  {Element}
-	//  */
-	// let htmlToElement = (html) => {
-	// 	let template = document.createElement("template");
-	// 	html = html.trim(); // Never return a node of whitespace as a result
-	// 	template.innerHTML = html;
-	// 	return template.content.firstChild;
-	// };
+		// 1. Update the assessment status
+		if (statusField) {
+			if (
+				activeAssessment.status === undefined
+			) {
+				statusField.setAttribute("hidden", "");
+			} else {
+				statusField.removeAttribute("hidden");
+			}
 
-	// let openDialog = (selector: string) => {
-	// 	let dialog = document.querySelector(
-	// 		`#${selector}`,
-	// 	) as HTMLDialogElement;
-	// 	if (dialog) dialog.showModal();
-	// };
+			// Create the assessment title string and inject it
+			let statusStr = `${activeAssessment.status}`;
+			statusField.textContent = statusStr;
+			statusField.setAttribute("title", statusStr);
+			statusField.closest('.field-container')?.setAttribute('data-theme', getStatusColour());
+		}
 
-	// let closeDialog = (dialog: HTMLDialogElement) => {
-	// 	if (dialog) dialog.close();
-	// };
+		// 2. Update the assessment name
+		if (assessmentField) {
+			if (
+				activeAssessment.reportingYear === undefined ||
+				activeAssessment.school === undefined
+			) {
+				assessmentField.setAttribute("hidden", "");
+			} else {
+				assessmentField.removeAttribute("hidden");
+			}
 
-	// let addAssessorToList = (target: HTMLButtonElement | HTMLInputElement) => {
-	// 	let input = target.closest(".input-container").querySelector("input");
-	// 	let template = `
-	// 		<li>
-	// 			<button class="remove-assessor" type="button">
-	// 				<span class="labelled-icon-container">
-	// 					<span class="label-container">
-	// 						<span class="label">${sanitizeHTML(input.value).trim()}</span>
-	// 					</span>
-	// 					<svg class="icon xmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-	// 						<path d="m9.41 8 4.24-4.24a.996.996 0 1 0-1.41-1.41L8 6.59 3.76 2.34a.996.996 0 1 0-1.41 1.41l4.24 4.24-4.24 4.24a.996.996 0 0 0 .71 1.7c.26 0 .51-.1.71-.29L8.01 9.4l4.24 4.24c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L9.43 7.99Z"/>
-	// 					</svg>
-	// 				</span>
-	// 			</button>
-	// 		</li>
-	// 	`;
-	// 	let item = htmlToElement(template);
-	// 	let list = target.closest("form").querySelector(".assessor-list");
-	// 	list.append(item);
-	// 	list.removeAttribute("hidden");
-	// 	input.value = "";
-	// };
+			// Create the assessment title string and inject it
+			let assessmentStr = getAssessmentName();
+			assessmentField.textContent = assessmentStr;
+			assessmentField.setAttribute("title", assessmentStr);
+		}
 
-	// let removeAssessorFromList = (target: HTMLButtonElement) => {
-	// 	let item = target.closest("li");
-	// 	item.remove();
-	// };
+		// 3. Update the save status
+		if (saveField) {
+			if (uiState.unsavedChanges === undefined || activeAssessment.status === "Complete") {
+				saveField.setAttribute("hidden", "");
+			} else {
+				saveField.removeAttribute("hidden");
+			}
 
-	// //
-	// // Inits & Event Listeners
-	// //
+			saveField.textContent = getSaveStatus();
+		}
 
-	// document.addEventListener("click", (event) => {
-	// 	let target = event.target as HTMLButtonElement;
+		// 4. Update the assessor name
+		if (assessorField) {
+			if (uiState.activeAssessor === undefined) {
+				assessorField.setAttribute("hidden", "");
+			} else {
+				assessorField.removeAttribute("hidden");
+			}
 
-	// 	if (target.matches("button.open-dialog")) {
-	// 		console.log(target);
-	// 		let targetDialog = target.getAttribute("data-dialog");
-	// 		openDialog(targetDialog);
-	// 	}
+			let assessorStr = uiState.activeAssessor;
+			assessorField.textContent = assessorStr;
+			assessorField.setAttribute("title", assessorStr);
+		}
 
-	// 	if (target.matches("button.close-dialog")) {
-	// 		closeDialog(target.closest("dialog"));
-	// 	}
+	};
 
-	// 	if (target.matches("button.add-assessor")) {
-	// 		addAssessorToList(target);
-	// 	}
+	let updateToolbarSaveStatus = () => {
 
-	// 	if (target.matches("button.remove-assessor")) {
-	// 		removeAssessorFromList(target);
-	// 	}
-	// });
+		// Get the toolbar
+		let toolbar = document.querySelector(".assessment-controls");
 
-	// document.addEventListener("input", (event) => {
-	// 	let target = event.target as HTMLInputElement;
+		if (!toolbar) return;
 
-	// 	if (target.matches("select.district")) {
-	// 		let schoolSelect = target.closest("form").querySelector("select.school") as HTMLSelectElement;
-	// 		let schoolOptionGroups = schoolSelect?.querySelectorAll("optgroup");
+		// Get the update fields
+		let saveField = toolbar?.querySelector('[data-field="saveStatus"]');
 
-	// 		if (target.value !== "") {
-	// 			schoolSelect.removeAttribute("disabled");
-	// 			console.log(target.value);
-	// 			schoolSelect.querySelector(`.${target.value.toLowerCase()}-schools`).removeAttribute('hidden');
+		saveField.textContent = getSaveStatus();
 
-	// 		} else {
-	// 			schoolSelect.value = '';
-	// 			schoolSelect.setAttribute("disabled", "");
-	// 			for (let group of schoolOptionGroups as NodeListOf<HTMLOptGroupElement>) {
-	// 				group.setAttribute('hidden', '');
-	// 			}
+	};
 
-	// 		}
-	// 	}
-	// });
+	subscribe(updateToolbar);
 
-	// document.addEventListener("keydown", (event) => {
-	// 	if (event.key === "Enter") {
-	// 		let target = event.target as HTMLInputElement;
+		document.addEventListener("click", (event) => {
+		let target = event.target as HTMLButtonElement;
 
-	// 		if (target.matches("input.assessor")) {
-	// 			addAssessorToList(target);
-	// 		}
-	// 	}
-	// });
+		if (target.matches("button.start-editing")) {
+
+			setState({
+				mode: "assessment"
+			});
+
+			//Todo: Open warning dialog that assessment is complete, if they accept, open select assessor dialog
+		}
+
+	});
+
+	// Reset save status every minute
+	setInterval(() => {
+
+		updateToolbarSaveStatus();
+
+	}, 60_000);
+	
 </script>

@@ -2,13 +2,12 @@
 // Imports
 //
 
-import { findHighestValueByKey, findIndexByKey } from "src/utilities/helpers.js";
+import { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML } from "src/utilities/helpers.js";
 
 
 //
 // Variables
 //
-
 
 let key = 'user';
 
@@ -17,19 +16,25 @@ let data = {
 		theme: 'light',
 	},
 	uiState: {
+		activeAssessmentId: null,
+		activeAssessor: null,
+		changeHistory: [], 
+		lastModifiedPage: null,
+		lastSavedAt: null,
+		lastVisitedPage: typeof window !== 'undefined' ? window.location.pathname : null,
 		mode: 'reading',
 		onboardingCompleted: false,
-		lastVisitedPage: typeof window !== 'undefined' ? window.location.pathname : null,
-		lastModifiedPage: null,
-		activeAssessment: null,
 		unsavedChanges: false,
-		lastSavedAt: null,
-		changeHistory: [], 
 	},
 	assessments: [],
 };
 
 let subscribers = [];
+
+
+//
+// Init (Local Storage)
+//
 
 /**
  * Load from localStorage
@@ -41,6 +46,76 @@ try {
 	console.warn('Failed to load user data:', err);
 	localStorage.removeItem(key);
 }
+
+
+
+//
+// Methods (Getters)
+//
+
+/**
+ * Get the stored user data
+ */
+let getUserData = () => {
+	return data;
+};
+
+/**
+ * Get the active assessment data
+ */
+let getActiveAssessmentData = () => {
+	return findObjectByKey(data.assessments, 'id', data.uiState.activeAssessmentId);
+};
+
+/**
+ * Get a human-readable date
+ */
+let getAssessmentDate = (type) => {
+	let assessment = getActiveAssessmentData();
+	if (!assessment) return;
+	return formatDateHTML(assessment[type]);
+};
+
+/**
+ * Get the active assessment name
+ */
+let getAssessmentName = () => {
+	let assessment = getActiveAssessmentData();
+	if (!assessment) return;
+	return `${assessment.reportingYear} – ${assessment.school}`;
+};
+
+/**
+ * @returns {string} A human-readable save status
+ */
+let getSaveStatus = () => {
+	let { unsavedChanges, lastSavedAt } = data.uiState;
+
+	if (unsavedChanges) {
+		if (lastSavedAt) {
+			let diff = Date.now() - lastSavedAt;
+			let seconds = Math.floor(diff / 1000);
+			let minutes = Math.floor(seconds / 60);
+
+			if (minutes < 1) return `Saved to browser. Exported just now.`;
+			if (minutes === 1) return `Saved to browser. 1 min. since last export.`;
+			return `Saved in browser. ${minutes} min. since last export.`;
+		}
+		return 'Saved in browser. Export for backup.';
+	}
+
+	return 'No changes since last export.';
+};
+
+/**
+ * Get the active assessment status colour
+ */
+let getStatusColour = () => {
+	let assessment = getActiveAssessmentData();
+	if (!assessment) return;
+	let colour = assessment.status === 'In Progress' ? 'blue' : 'green';
+	return colour;
+};
 
 /**
  * Notify all components of data update
@@ -81,11 +156,15 @@ let setState = (update) => {
  * Update assessment values
  * @param {Partial<typeof data.assessments[0]>} update
  */
-let setAssessment = (id, update) => {
-	let index = findIndexByKey(data.assessments, 'id', id);
+let setAssessment = (update) => {
+	let assessmentId = data.uiState.activeAssessmentId;
+	if (!assessmentId) return;
+	let index = findIndexByKey(data.assessments, 'id', assessmentId);
 	if (index === -1) {
 		data.assessments.push(update);
 	} else {
+		update.lastModifiedBy = data.uiState.activeAssessor ?? null;
+		console.log(data.assessments[index]);
 		Object.assign(data.assessments[index], update);
 	}
 	save();
@@ -103,28 +182,31 @@ let createAssessment = (inputs) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = (typeof highestId === 'number' && !isNaN(highestId)) ? highestId + 1 : 1;
 
+
+
 	let assessment = {
-		id: id,
-		status: 'In Progress',
+		assessors: assessors,
+		componentPhase: {},
+		considerationsEstablished: [],
 		continuumVersion: '1.0',
 		dateCreated: Date.now(),
 		dateModified: Date.now(),
+		district: district,
+		id: id,
 		lastModifiedBy: null,
 		reportingYear: reportingYear,
-		district: district,
 		school: school,
-		assessors: assessors,
-		considerationsEstablished: [],
-		componentPhase: {},
+		status: 'In Progress',
 	};
 
-	setAssessment(id, assessment);
-
 	setState({
-		activeAssessment: id,
+		activeAssessmentId: id,
+		activeAssessor: null,
 		mode: 'assessment',
 		unsavedChanges: true,
 	})
+
+	setAssessment(assessment);
 
 };
 
@@ -137,7 +219,17 @@ let subscribe = (fn) => {
 	fn(structuredClone(data));
 };
 
+
+//
+// Inits
+//
+
 save();
 notify();
 
-export { subscribe, setPreferences, setState, createAssessment, setAssessment };
+
+//
+// Exports
+//
+
+export { getActiveAssessmentData, getAssessmentDate, getAssessmentName, getSaveStatus, getStatusColour, getUserData, subscribe, setPreferences, setState, createAssessment, setAssessment };

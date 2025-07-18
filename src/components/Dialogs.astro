@@ -231,17 +231,17 @@ let schoolList = {
 		"Woodstock High School",
 	],
 };
-
 ---
 
-<dialog id="create-assessment">
+<dialog id="create-assessment" aria-labelledby="create-assessment-heading">
+	<!-- TODO: Link dialog to heading with aria-labelledby="#heading-id" so that screen readers will announce the heading when the dialog is opened -->
 	<button
 		class="close-dialog"
 		type="button"
 		aria-label="Close Create Assessment Dialog"><IconXmark /></button
 	>
 
-	<h2 class="heading">Create New Assessment</h2>
+	<h2 id="create-assessment-heading" class="heading">Create New Assessment</h2>
 
 	<div
 		class="callout"
@@ -265,12 +265,7 @@ let schoolList = {
 	<form id="create-assessment-form">
 		<label for="create-district-select">School District</label>
 		<div class="select-container">
-			<select 
-				id="create-district-select" 
-				class="district" 
-				name="district"
-				required
-			>
+			<select id="create-district-select" name="district" required>
 				<option value="">Select a district...</option>
 				<option value="ASD-W">ASD-W</option>
 				<option value="ASD-N">ASD-N</option>
@@ -282,33 +277,35 @@ let schoolList = {
 
 		<label for="create-school-select">School</label>
 		<div class="select-container">
-			<select 
-				id="create-school-select" 
-				class="school"
-				name="school" 
-				required
-				disabled
-			>
+			<select id="create-school-select" name="school" required disabled>
 				<option value="">Select a school...</option>
 				<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
-					{schoolList.west.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.west.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 				<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
-					{schoolList.north.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.north.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 				<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
-					{schoolList.east.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.east.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 				<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
-					{schoolList.south.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.south.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 			</select>
 			<IconCaretDown />
@@ -319,8 +316,7 @@ let schoolList = {
 		<div class="input-container">
 			<input
 				id="create-reporting-year-input"
-				class="reporting-year"
-				name="reporting-year"
+				name="reportingYear"
 				type="text"
 				required
 				placeholder="Enter a year..."
@@ -332,12 +328,11 @@ let schoolList = {
 		<div class="input-container">
 			<input
 				id="create-assessor-input"
-				class="assessor"
 				type="text"
 				placeholder="Enter a name..."
 			/>
 			<button class="add-assessor" type="button">
-				<span class="labelled-icon-container">
+				<span class="icon-and-label-container">
 					<IconCross />
 					<span class="label-container">
 						<span class="label"> Add </span>
@@ -345,57 +340,196 @@ let schoolList = {
 				</span>
 			</button>
 		</div>
-		<ul 
-			class="assessor-list"
-			data-field="assessors"
-			hidden
-		></ul>
+		<ul class="assessor-list" data-field="assessors" hidden></ul>
 
-		<button id="create-assessment-submit" type="button" data-size="large">Create and Start Editing</button>
+		<button
+			id="create-assessment-submit"
+			type="button"
+			data-size="large"
+			data-style="bold">Create and Start Editing</button
+		>
 	</form>
 </dialog>
 
-<dialog id="view-assessment">
+<dialog id="select-assessor">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+	>
+	<!-- TODO: Update dialog close button with proper labels -->
+
+	<h2 class="heading">Select Active Assessor</h2>
+	<p class="instructions">
+		Choose the person currently making changes to this assessment.
+	</p>
+	<p class="instructions">
+		This helps maintain clear version history and makes it easier to
+		understand who last updated the data when it's shared with others.
+	</p>
+
+	<div
+		class="callout"
+		data-style="shaded"
+		data-vibrancy="vivid"
+		data-fit="compact"
+		data-theme="yellow"
+	>
+		<div class="icon-container">
+			<IconWarning />
+		</div>
+		<div class="text-container">
+			<p>
+				This step is optional, but recommended for collaborative
+				workflows.
+			</p>
+		</div>
+	</div>
+
+	<form>
+		<fieldset>
+			<legend>Active Assessor</legend>
+			<div class="radio-group assessor-radio-group"></div>
+		</fieldset>
+
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline">Skip</button
+			>
+			<button
+				class="update-assessor"
+				type="button"
+				data-size="large"
+				data-style="bold">Save</button
+			>
+		</div>
+	</form>
+</dialog>
+
+<dialog id="change-assessor">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+	>
+	<!-- TODO: Update dialog close button with proper labels -->
+
+	<h2 class="heading">Update Active Assessor</h2>
+	<p class="instructions">
+		Choose the person currently making changes to this assessment.
+	</p>
+	<p class="instructions">
+		This helps maintain clear version history and makes it easier to
+		understand who last updated the data when it's shared with others.
+	</p>
+
+	<form>
+		<fieldset>
+			<legend>Active Assessor</legend>
+			<div class="radio-group assessor-radio-group"></div>
+		</fieldset>
+
+		<!-- Todo: Need a way to set to no active assessor -->
+
+		<button
+			class="update-assessor"
+			type="button"
+			data-size="large"
+			data-style="bold">Save</button
+		>
+	</form>
+</dialog>
+
+<dialog id="info-assessment">
 	<button
 		class="close-dialog"
 		type="button"
 		aria-label="Close Assessment Details Dialog"><IconXmark /></button
 	>
 
-	<h2 class="heading">Assessment Details</h2>
+	<h2 class="heading">Assessment Information</h2>
 
-	<div class="meta">
-		<span class="status"></span>
-		<span class="date-created">Date Created: <span class="slot"></span></span>
-		<span class="date-modified">Date Last Modified: <span class="slot"></span></span>
+	<div
+		class="callout meta"
+		data-style="shaded"
+		data-vibrancy="vivid"
+		data-fit="compact"
+	>
+		<span class="status" data-field="status"></span>
+		<span>Date Created: <span data-field="dateCreated"></span></span>
+		<span>Date Last Modified: <span data-field="dateModified"></span></span>
+		<span data-restrict-assessor="true">Active Assessor: <span data-field="activeAssessor"></span></span>
 	</div>
 
-	<div class="current-details">
-		<dl>
-			<div class="detail-container">
-				<dt>School District:</dt>
-				<dd class="district">ASD-W</dd>
-			</div>
-			<div class="detail-container">
-				<dt>School:</dt>
-				<dd class="school">Maple Grove Elementary School</dd>
-			</div>
-			<div class="detail-container">
-				<dt>Reporting Year:</dt>
-				<dd class="reporting-year">2025</dd>
-			</div>
-			<div class="detail-container">
-				<dt>Assessor(s):</dt>
-				<dd class="assessors">2025</dd>
-			</div>
-		</dl>
-		<button id="edit-details-button" type="button" data-size="large">Edit Details</button>
-	</div>
+	<dl>
+		<div class="detail-container">
+			<dt>School District:</dt>
+			<dd data-field="district"></dd>
+		</div>
+		<div class="detail-container">
+			<dt>School:</dt>
+			<dd data-field="school"></dd>
+		</div>
+		<div class="detail-container">
+			<dt>Reporting Year:</dt>
+			<dd data-field="reportingYear"></dd>
+		</div>
+		<div class="detail-container">
+			<dt>Assessor(s):</dt>
+			<dd data-field="assessors"></dd>
+		</div>
+	</dl>
 
-	<form id="update-assessment-form" >
+	<button
+		class="open-dialog"
+		data-dialog="update-assessment"
+		type="button"
+		data-size="large"
+		data-style="bold">Update Information</button
+	>
+</dialog>
+
+<dialog id="update-assessment">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Update Information</h2>
+
+	<form id="update-assessment-form">
+		<fieldset>
+			<legend>Status</legend>
+			<div class="radio-group">
+				<div class="radio-container">
+					<input
+						type="radio"
+						name="status"
+						id="update-status-in-progress"
+						value="In Progress"
+						checked
+					/>
+					<label for="update-status-in-progress">In Progress</label>
+				</div>
+				<div class="radio-container">
+					<input
+						type="radio"
+						name="status"
+						id="update-status-complete"
+						value="Complete"
+					/>
+					<label for="update-status-complete">Complete</label>
+				</div>
+			</div>
+		</fieldset>
+
 		<label for="update-district-select">School District</label>
 		<div class="select-container">
-			<select class="district" id="update-district-select">
+			<select name="district" id="update-district-select">
 				<option value="">Select a district...</option>
 				<option value="ASD-W">ASD-W</option>
 				<option value="ASD-N">ASD-N</option>
@@ -407,27 +541,35 @@ let schoolList = {
 
 		<label for="update-school-select">School</label>
 		<div class="select-container">
-			<select class="school" id="update-school-select">
+			<select name="school" id="update-school-select">
 				<option value="">Select a school...</option>
 				<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
-					{schoolList.west.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.west.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 				<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
-					{schoolList.north.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.north.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 				<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
-					{schoolList.east.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.east.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 				<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
-					{schoolList.south.map((school) => (
-						<option value={school}>{school}</option>
-					))}
+					{
+						schoolList.south.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
 				</optgroup>
 			</select>
 			<IconCaretDown />
@@ -438,11 +580,11 @@ let schoolList = {
 		<div class="input-container">
 			<input
 				id="update-reporting-year-input"
-				class="reporting-year"
+				name="reportingYear"
 				type="text"
 				required
 				placeholder="Enter a year..."
-				pattern="\d{4}"
+				pattern="\\d{4}"
 			/>
 		</div>
 
@@ -450,12 +592,12 @@ let schoolList = {
 		<div class="input-container">
 			<input
 				id="update-assessor-input"
-				class="assessor"
+				name="assessor"
 				type="text"
 				placeholder="Enter a name..."
 			/>
 			<button class="add-assessor" type="button">
-				<span class="labelled-icon-container">
+				<span class="icon-and-label-container">
 					<IconCross />
 					<span class="label-container">
 						<span class="label"> Add </span>
@@ -463,11 +605,22 @@ let schoolList = {
 				</span>
 			</button>
 		</div>
-		<ul class="assessor-list" hidden></ul>
+		<ul class="assessor-list" data-field="assessors" hidden></ul>
 
-		<button id="update-assessment-submit" type="button" data-size="large"
-			>Update and Continue Editing</button
-		>
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline">Cancel</button
+			>
+			<button
+				class="update-assessment"
+				type="button"
+				data-size="large"
+				data-style="bold">Save</button
+			>
+		</div>
 	</form>
 </dialog>
 
@@ -481,44 +634,118 @@ let schoolList = {
 	<h2 class="heading">Open Assessment</h2>
 
 	<section>
-		<h3>Import Assessment</h3>
+		<h3>Import</h3>
 		<div class="button-group">
-			<button id="upload-csv-button" type="button" data-size="large"
-				>Upload .csv</button
+			<button
+				id="upload-csv-button"
+				type="button"
+				data-size="large"
+				data-style="bold">Upload .csv</button
 			>
-			<button id="paste-url-button" type="button" data-size="large"
-				>Paste URL</button
+			<button
+				id="paste-url-button"
+				type="button"
+				data-size="large"
+				data-style="bold">Paste URL</button
 			>
 		</div>
 	</section>
 
 	<section>
 		<h3>Saved Assessments</h3>
-		<ul id="saved-assessment-list" class="card-group">
-			<li class="card">
-				<h4 class="heading">2024</h4>
-				<div class="details">
-					<p>Maple Grove High School</p>
-					<p class="meta">Date Created: ...</p>
-					<p class="meta">Date Last Modified: ...</p>
-				</div>
-				<button class="open-assessment" type="button" data-size="large"
-					>Open Assessment</button
-				>
-			</li>
-			<li class="card">
-				<h4 class="heading">2025</h4>
-				<div class="details">
-					<p>Maple Grove High School</p>
-					<p class="meta">Date Created: ...</p>
-					<p class="meta">Date Last Modified: ...</p>
-				</div>
-				<button class="open-assessment" type="button" data-size="large"
-					>Open Assessment</button
-				>
-			</li>
-		</ul>
+		<ul id="saved-assessment-list" class="card-group"></ul>
 	</section>
+</dialog>
+
+<dialog id="status-warning">
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Open Assessment Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Reopen Assessment for Editing?</h2>
+
+	<div
+		class="callout"
+		data-style="shaded"
+		data-vibrancy="vivid"
+		data-fit="compact"
+		data-theme="yellow"
+	>
+		<div class="icon-container">
+			<IconWarning />
+		</div>
+		<div class="text-container">
+			<p>This assessment is currently marked as <strong>Complete</strong>. To make changes, its status will be updated to <strong>In Progress</strong>.</p>
+			<!-- <p>Do you want to continue?</p> -->
+		</div>
+	</div>
+
+	<p class="instructions">Do you want to continue?</p>
+
+
+	<div class="button-group">
+		<button
+			id="upload-csv-button"
+			type="button"
+			data-size="large"
+			data-style="outline">Cancel</button
+		>
+		<button
+			id="paste-url-button"
+			type="button"
+			data-size="large"
+			data-style="bold">Edit Assessment</button
+		>
+	</div>
+
+</dialog>
+
+<dialog id="export-warning" open>
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Open Assessment Dialog"><IconXmark /></button
+	>
+
+	<h2 class="heading">Unsaved Changes</h2>
+
+	<div
+		class="callout"
+		data-style="shaded"
+		data-vibrancy="vivid"
+		data-fit="compact"
+		data-theme="yellow"
+	>
+		<div class="icon-container">
+			<IconWarning />
+		</div>
+		<div class="text-container">
+			<p>You've made changes that haven't been exported.</p>
+			<p data-field="lastSavedAt"></p>
+			
+		</div>
+	</div>
+
+	<p class="instructions">Make sure to export a backup if you want to keep your edits.</p>
+
+	<div class="button-group">
+		<button
+		class="close-dialog"
+		type="button"
+		data-size="large"
+		data-style="outline">Continue Without Exporting</button
+		>
+		<button
+			class="open-dialog"
+			data-dialog="save-assessment"
+			type="button"
+			data-size="large"
+			data-style="bold">Export Changes</button
+		>
+	</div>
+
 </dialog>
 
 <dialog id="save-assessment">
@@ -529,6 +756,40 @@ let schoolList = {
 	>
 
 	<h2 class="heading">Save Assessment(s)</h2>
+
+	<form>
+		<h3>Update Status</h3>
+		<fieldset>
+			<!-- <legend>Status</legend> -->
+			<div class="radio-group">
+				<div class="radio-container">
+					<input
+						type="radio"
+						name="status"
+						id="save-status-in-progress"
+						value="In Progress"
+						checked
+					/>
+					<label for="save-status-in-progress">In Progress</label>
+				</div>
+				<div class="radio-container">
+					<input
+						type="radio"
+						name="status"
+						id="save-status-complete"
+						value="Complete"
+					/>
+					<label for="save-status-complete">Complete</label>
+				</div>
+			</div>
+		</fieldset>
+		<button
+			class="update-assessment"
+			type="button"
+			data-size="large"
+			data-style="bold">Save Status</button
+		>
+	</form>
 
 	<section>
 		<h3>Save/Share Link</h3>
@@ -547,7 +808,7 @@ let schoolList = {
 				class="save-assessment"
 				type="button"
 			>
-				<span class="labelled-icon-container">
+				<span class="icon-and-label-container">
 					<IconCopy />
 					<span class="label-container">
 						<span class="label"> Copy </span>
@@ -580,14 +841,14 @@ let schoolList = {
 		<button
 			id="save-download-file"
 			class="save-assessment"
+			data-style="bold"
 			type="button"
 			data-size="large">Download .csv</button
 		>
 	</section>
 </dialog>
 
-<style>
-
+<style is:global>
 	dialog {
 		background-color: var(--colour-background);
 		border-radius: var(--border-radius-normal);
@@ -607,7 +868,7 @@ let schoolList = {
 		opacity: 0.8;
 	}
 
-	dialog button.close-dialog {
+	dialog button.close-dialog:has(.icon:only-child) {
 		--button-background-colour: transparent;
 		--button-background-colour-hover: var(
 			--colour-fill-neutral-subtle-muted
@@ -642,7 +903,41 @@ let schoolList = {
 		margin: 1.5rem 0;
 	}
 
-	dialog form label {
+	dialog section:has(.card-group:empty) {
+		display: none;
+	}
+
+	/* TODO: Remove bottom margin of previous to last section when the other is display:none */
+
+	form fieldset {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+
+	form .radio-group {
+		display: flex;
+		flex-flow: row;
+		align-items: center;
+		gap: 1rem;
+		margin: 0.5rem 0;
+	}
+
+	form .radio-container {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	form .radio-container label {
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1;
+		margin: 0;
+	}
+
+	form :is(label, legend) {
 		display: block;
 		font-size: 1.25rem;
 		font-weight: 600;
@@ -695,27 +990,44 @@ let schoolList = {
 		white-space: nowrap;
 	}
 
-	dialog form .select-container .icon {
+	.select-container .icon {
 		width: 1.25rem;
 		position: absolute;
-		top: 0.875rem;
-		right: 0.875rem;
+		top: 0.75rem;
+		right: 0.75rem;
 	}
 
-	dialog :is(.input-container, .url-container) button {
+	:is(.input-container, .url-container) button {
 		--icon-size: 1rem;
 		margin-right: 0.25rem;
 	}
 
-	dialog
-		:is(.input-container, .url-container)
-		button:is(:hover, :focus-visible) {
+	:is(.input-container, .url-container) button:is(:hover, :focus-visible) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	dialog form > button:last-of-type {
+	form > :is(.button-group, button):last-of-type {
 		margin: 1.75rem 0;
+	}
+
+	form .assessor-list {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0;
+		margin: 0.5rem 0;
+		list-style-type: none;
+	}
+
+	form .assessor-list button {
+		--icon-size: 1rem;
+	}
+
+	form .assessor-list button:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
 	}
 
 	dl {
@@ -733,7 +1045,7 @@ let schoolList = {
 	}
 
 	.detail-container :is(dt, dd) {
-		font-size: 1.125rem;
+		font-size: 1rem;
 	}
 
 	.detail-container dt {
@@ -758,66 +1070,114 @@ let schoolList = {
 		color: var(--colour-ui-neutral-subtle);
 	}
 
+	.callout[data-style="shaded"].meta * {
+		color: var(--colour-ui-accent-bold, var(--colour-ui-neutral));
+	}
+
 	.meta .status {
 		display: flex;
 		align-items: center;
 		height: 1.75rem;
 		padding: 0 0.375rem;
 		margin: 0 0 0.25rem;
-		background-color: var(--colour-fill-neutral-subtle-muted);
+		background-color: var(--colour-fill-accent-subtle-vivid);
 		border-radius: var(--border-radius-small);
+		color: var(--colour-ui-accent);
 		font-weight: 600;
 	}
 
-	.assessor-list {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0;
-		margin: 0.5rem 0;
-		list-style-type: none;
+	.callout[data-style="shaded"].meta .status {
+		background-color: var(--colour-fill-accent-bold-vivid);
+		color: var(--colour-ui-reverse);
 	}
-
-	.assessor-list button {
-		--icon-size: 1rem;
-	}
-
-	.assessor-list button:is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-ui-reverse);
-		--label-colour: var(--colour-ui-reverse);
-	}
-
 </style>
 
 <script>
-
 	//
 	// Imports
 	//
 
-	import { dateFormatter, findObjectByKey, htmlToElement, kebabToCamel, sanitizeHTML } from "src/utilities/helpers.js";
-	import { subscribe, setState, setAssessment, createAssessment } from "src/stores/userDataStore.js";
+	import {
+		findIndexByKey,
+		findObjectByKey,
+		htmlToElement,
+		kebabToCamel,
+		sanitizeHTML,
+	} from "src/utilities/helpers.js";
+	import {
+		getActiveAssessmentData,
+		getAssessmentDate,
+		getAssessmentName,
+		getSaveStatus,
+		getStatusColour,
+		getUserData,
+		subscribe,
+		setState,
+		setAssessment,
+		createAssessment,
+	} from "src/stores/userDataStore.js";
 
 	//
 	// Variables
 	//
 
-	let viewAssessmentDialog = document.querySelector('#view-assessment');
-	let openAssessmentDialog = document.querySelector('#open-assessment');
-	let saveAssessmentDialog = document.querySelector('#save-assessment');
+	let createAssessmentDialog = document.querySelector("#create-assessment");
+	let selectAssessorDialog = document.querySelector("#select-assessor");
+	let changeAssessorDialog = document.querySelector("#change-assessor");
+	let infoAssessmentDialog = document.querySelector("#info-assessment");
+	let updateAssessmentDialog = document.querySelector("#update-assessment");
+	let openAssessmentDialog = document.querySelector("#open-assessment");
+	let saveAssessmentDialog = document.querySelector("#save-assessment");
+
+	//
+	// Type Definitions
+	//
+
+	type State = {
+		activeAssessmentId: number;
+		activeAssessor: string;
+		changeHistory: [];
+		lastModifiedPage: string;
+		lastSavedAt: number;
+		lastVisitedPage: string;
+		mode: string;
+		onboardingCompleted: boolean;
+		unsavedChanges: boolean;
+	};
+
+	type Assessment = {
+		id: number;
+		status: string;
+		continuumVersion: string;
+		dateCreated: number;
+		dateModified: number;
+		lastModifiedBy: string;
+		reportingYear: string;
+		district: string;
+		school: string;
+		assessors: [];
+		considerationsEstablished: [];
+		componentPhase: {};
+	};
 
 	//
 	// Methods
 	//
 
-	let openDialog = (selector:String) => {
-		let dialog = document.querySelector(`#${selector}`) as HTMLDialogElement;
+	let openDialog = (selector: String) => {
+		let openDialog = document.querySelector(
+			"dialog[open]",
+		) as HTMLDialogElement;
+		if (openDialog) openDialog.close();
+		let dialog = document.querySelector(
+			`#${selector}`,
+		) as HTMLDialogElement;
 		if (dialog) dialog.showModal();
 	};
 
-	let closeDialog = (dialog:HTMLDialogElement) => {
+	let closeDialog = (dialog: HTMLDialogElement) => {
 		if (dialog) dialog.close();
+		// TODO: Reset
 	};
 
 	let createAssessorListItem = (name) => {
@@ -825,7 +1185,7 @@ let schoolList = {
 		let template = `
 			<li>
 				<button class="remove-assessor" type="button">
-					<span class="labelled-icon-container">
+					<span class="icon-and-label-container">
 						<span class="label-container">
 							<span class="label" data-field-value>${sanitizeHTML(name).trim()}</span>
 						</span>
@@ -837,9 +1197,9 @@ let schoolList = {
 			</li>
 		`;
 		return htmlToElement(template);
-	}
+	};
 
-	let addAssessorToList = (target:HTMLButtonElement|HTMLInputElement) => {
+	let addAssessorToList = (target: HTMLButtonElement | HTMLInputElement) => {
 		let input = target.closest(".input-container").querySelector("input");
 		let item = createAssessorListItem(input.value);
 		if (!item) return;
@@ -849,155 +1209,504 @@ let schoolList = {
 		input.value = "";
 	};
 
-	let removeAssessorFromList = (target:HTMLButtonElement) => {
+	let removeAssessorFromList = (target: HTMLButtonElement) => {
 		let item = target.closest("li");
 		item.remove();
 	};
 
-	let getFormValues = (form:HTMLFormElement) => {
+	let createAssessmentCard = (
+		assessment: Assessment,
+		active: boolean = false,
+	) => {
+		if (!assessment || assessment === undefined) return;
+		let {
+			status,
+			id,
+		} = assessment;
+		// TODO: Fix design of heading
+		// TODO: Fix design of active assessment label
+		let template = `
+			<li class="card" ${active ? "data-active" : ""}>
+				${active ? `<div class="banner" data-theme="${getStatusColour()}">${status === "In Progress" ? `Editing` : `Reviewing`}</div>` : ''}
+				<div class="wrapper">
+					<h4 class="heading icon-and-label-container">
+						<svg class="icon assessment" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+							<path d="M19.36 13.06c.86-.86.86-2.25 0-3.11l-1.3-1.3c-.83-.83-2.28-.83-3.11 0l-5.26 5.26c-.38.39-.66.87-.79 1.39l-.87 3.46c-.09.34.01.7.26.95.19.19.45.29.71.29.08 0 .16 0 .24-.03l3.46-.87c.53-.13 1.01-.41 1.39-.79l5.26-5.26Zm-2.86-3.05c.05 0 .11.02.14.05l1.3 1.3c.08.08.08.21 0 .28l-.94.94-1.59-1.59.94-.94s.09-.05.14-.05Zm-3.82 6.89c-.13.13-.29.22-.46.26l-1.85.46.46-1.85c.04-.17.13-.34.26-.46l2.9-2.9L15.58 14l-2.9 2.9ZM6 19c0 .55-.45 1-1 1H3c-1.65 0-3-1.35-3-3V3c0-1.65 1.35-3 3-3h14c1.65 0 3 1.35 3 3v2c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h2c.55 0 1 .45 1 1Zm9-15c.55 0 1 .45 1 1s-.45 1-1 1h-5c-.55 0-1-.45-1-1s.45-1 1-1h5Zm-7 6c0-.55.45-1 1-1h1.5c.55 0 1 .45 1 1s-.45 1-1 1H9c-.55 0-1-.45-1-1Zm-.29-5.29-2 2c-.2.2-.45.29-.71.29s-.51-.1-.71-.29l-1-1A.996.996 0 1 1 4.7 4.3l.29.29L6.28 3.3a.996.996 0 1 1 1.41 1.41ZM6.5 10c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5Zm0 5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5ZM20 17c0 1.65-1.35 3-3 3-.55 0-1-.45-1-1s.45-1 1-1 1-.45 1-1 .45-1 1-1 1 .45 1 1Z"/>
+						</svg>
+						<span class="label-container">${getAssessmentName()}</span>
+					</h4>
+					<div class="details">
+						<div class="meta">
+							<span class="status" data-theme="${getStatusColour()}">${status}</span>
+							<span class="date-created">
+								Date Created: ${getAssessmentDate('dateCreated')}
+							</span>
+							<span class="date-modified">
+								Date Modified: ${getAssessmentDate('dateModified')}
+							</span>
+						</div>
+					</div>
+					
+					${
+						active ? '' : `
+					
+					<button class="open-assessment" type="button" data-size="large" data-id="${id}">Open</button>
+					
+					`
+					}
+				</div>
+			</li>
+		`;
+		return htmlToElement(template);
+	};
 
+	let createAssessorRadioInput = (assessor: string) => {
+		if (!assessor || assessor === undefined) return;
+
+		let id = `assessor-${assessor.split(" ").join("-").toLowerCase()}`;
+
+		let template = `
+			<div class="radio-container">
+				<input
+					type="radio"
+					name="activeAssessor"
+					id="${id}"
+					value="${assessor}"
+				/>
+				<label for="${id}">${assessor}</label>
+			</div>
+		`;
+
+		return htmlToElement(template);
+	};
+
+	let getFormValues = (form: HTMLFormElement) => {
 		let result = {};
 
 		// Handle input and select elements
-		let fields = form.querySelectorAll('select[name], input[name]') as NodeListOf<HTMLInputElement|HTMLSelectElement>;
+		let fields = form.querySelectorAll(
+			"select[name], input[name]",
+		) as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+
 		for (let field of fields) {
-			result[kebabToCamel(field.name)] = field.value;
+			let { name, type } = field;
+
+			// Skip fields with no name
+			if (!name) continue;
+
+			if (type === "radio") {
+				// Only capture checked radio once
+				if ((field as HTMLInputElement).checked) {
+					result[name] = field.value;
+				}
+			} else if (type === "checkbox") {
+				if (!result[name]) result[name] = [];
+
+				if ((field as HTMLInputElement).checked) {
+					result[name].push(field.value);
+				}
+			} else {
+				result[name] = field.value;
+			}
 		}
 
-		// Handle <ul data-field="..."> lists (e.g., assessors)
-		let lists = form.querySelectorAll('ul[data-field]');
+		// Handle custom <ul data-field> lists
+		let lists = form.querySelectorAll("ul[data-field]");
 		for (let list of lists) {
 			let items = [];
-			for (let item of list.querySelectorAll('[data-field-value]')) {
+			for (let item of list.querySelectorAll("[data-field-value]")) {
 				items.push(item.textContent.trim());
 			}
-			result[list.getAttribute('data-field')] = items;
+			let field = list.getAttribute("data-field");
+			if (field) result[field] = items;
 		}
 
 		return result;
+	};
 
-	}
+	let updateAssessmentFields = ({
+		assessment,
+		dialog,
+	}: {
+		assessment: Assessment;
+		dialog: HTMLDialogElement;
+	}) => {
+		let form = dialog.querySelector("form");
 
-	let updateViewAssessmentDialog = (data:{uiState:{activeAssessment:String}, assessments:[]}) => {
+		for (let [key, value] of Object.entries(assessment)) {
+			// Update form element by name
+			let input = form?.elements?.[key];
 
-		let assessment = findObjectByKey(data.assessments, 'id', data.uiState.activeAssessment);
-		console.log(assessment);
-		if (!assessment) return;
-
-		let selectors = {
-
-			// Static details
-			'dd.district': 'district',
-			'dd.school': 'school',
-			'dd.reporting-year': 'reportingYear',
-			'dd.assessors': 'assessors',
-			'.meta .status': 'status',
-			'.meta .date-created .slot': 'dateCreated',
-			'.meta .date-modified .slot': 'dateModified',
-
-			// Form inputs, selects, and lists
-			'select.district': 'district',
-			'select.school': 'school',
-			'input.reporting-year': 'reportingYear',
-			'.assessor-list': 'assessors',
-		
-		}
-
-		for (let [selector, key] of Object.entries(selectors)) {
-			let elem = viewAssessmentDialog.querySelector(selector);
-			if (!elem) continue;
-			
-			let value = assessment[key];
-
-			if (Array.isArray(value)){
-				// Form list
-				if (elem.matches('ul')){
-					for (let assessor of value) {
-						let item = createAssessorListItem(assessor);
-						if (!item) continue;
-						elem.append(item);
-					}
-					if (elem.querySelectorAll('li').length > 0) {
-						elem.removeAttribute('hidden');
-					} else {
-						elem.setAttribute('hidden', '');
-					}
-				// Static detail list converted to comma-separated
+			if (input) {
+				if (input instanceof RadioNodeList) {
+					// Handle radio group
+					input.value = String(value);
+				} else if (input.type === "checkbox") {
+					// Handle checkbox
+					input.checked = !!value;
 				} else {
-					elem.textContent = value.join(', ');
-				}
-
-			// Static detail date
-			} else if (key.startsWith('date') && typeof value === 'number') {
-				elem.textContent = dateFormatter.format(new Date(value));
-
-			} else {
-				// Form text
-				if ('value' in elem) {
-					elem.value = value;
-
-				// Static text
-				} else {
-					elem.textContent = value;
+					// Handle text/select/etc.
+					input.value = String(value ?? "");
 				}
 			}
-				
+
+			// Update static detail by name (dd, div, span, etc.)
+			let staticEl = dialog.querySelector(`[data-field="${key}"]`);
+
+			if (staticEl) {
+				if (Array.isArray(value)) {
+					staticEl.textContent = value.join(", ");
+				} else if (
+					key.startsWith("date") &&
+					typeof value === "number"
+				) {
+					staticEl.innerHTML = getAssessmentDate(key);
+				} else {
+					staticEl.textContent = String(value ?? "");
+
+					// Update special case: status theme
+					if (key === "status") {
+						staticEl.setAttribute("data-theme", getStatusColour());
+					}
+				}
+			}
+
+			// Update special case: assessor list
+			if (key === "assessors" && Array.isArray(value)) {
+				let ul = dialog.querySelector(".assessor-list");
+				if (ul) {
+					ul.innerHTML = ""; // Clear previous
+					for (let name of value) {
+						let li = createAssessorListItem(name);
+						if (li) ul.appendChild(li);
+					}
+					ul.toggleAttribute("hidden", ul.children.length === 0);
+				}
+			}
+		}
+	};
+
+	let updateStateFields = ({
+		state,
+		dialog,
+	}: {
+		state: State;
+		dialog: HTMLDialogElement;
+	}) => {
+		for (let [key, value] of Object.entries(state)) {
+			console.log(key, value);
+			let field = dialog.querySelector(`[data-field="${key}"]`);
+			console.log('State field', field);
+
+			if (field) {
+				if (Array.isArray(value)) {
+					field.textContent = value.join(", ");
+				} else if (
+					key.startsWith("date") &&
+					typeof value === "number"
+				) {
+					field.innerHTML = getAssessmentDate(key);
+				} else {
+					field.textContent = String(value ?? "");
+				}
+			}
+		}
+	};
+
+	/**
+	 * Update the select-assessor dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateSelectAssessorDialog = (data: {
+		uiState: State;
+		assessments: Assessment[];
+	}) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = selectAssessorDialog as HTMLDialogElement;
+
+		let assessorRadioGroup = dialog?.querySelector(".assessor-radio-group");
+
+		if (!dialog || !assessorRadioGroup) return;
+
+		assessorRadioGroup.innerHTML = "";
+
+		// Generate the HTML cards and add them to the DOM
+		for (let assessor of assessment.assessors) {
+			let input = createAssessorRadioInput(assessor);
+			assessorRadioGroup.append(input);
+		}
+	};
+
+	/**
+	 * Update the select-assessor dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateChangeAssessorDialog = (data: {
+		uiState: State;
+		assessments: Assessment[];
+	}) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = changeAssessorDialog as HTMLDialogElement;
+
+		let assessorRadioGroup = dialog?.querySelector(".assessor-radio-group");
+
+		if (!dialog || !assessorRadioGroup) return;
+
+		assessorRadioGroup.innerHTML = "";
+
+		// Generate the HTML cards and add them to the DOM
+		for (let assessor of assessment.assessors) {
+			let input = createAssessorRadioInput(assessor);
+			assessorRadioGroup.append(input);
+
+			if (assessor === data.uiState.activeAssessor) {
+				input.querySelector("input").checked = true;
+			}
+		}
+	};
+
+	/**
+	 * Update the info-assessment dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateInfoAssessmentDialog = (data: {
+		uiState: State;
+		assessments: Assessment[];
+	}) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = infoAssessmentDialog as HTMLDialogElement;
+
+		updateAssessmentFields({
+			assessment: assessment,
+			dialog: dialog,
+		});
+
+		updateStateFields({
+			state: data.uiState,
+			dialog: dialog,
+		});
+
+		let callout = dialog.querySelector(".callout");
+
+		let colour = assessment.status === "In Progress" ? "blue" : "green";
+
+		callout.setAttribute("data-theme", colour);
+	};
+
+	/**
+	 * Update the update-assessment dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateUpdateAssessmentDialog = (data: {
+		uiState: State;
+		assessments: Assessment[];
+	}) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = updateAssessmentDialog as HTMLDialogElement;
+
+		updateAssessmentFields({
+			assessment: assessment,
+			dialog: dialog,
+		});
+
+	};
+
+	/**
+	 * Update the open-assessment dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateOpenAssessmentDialog = (data: {
+		uiState: State;
+		assessments: Assessment[];
+	}) => {
+		let dialog = openAssessmentDialog;
+
+		let savedAssessmentList = dialog?.querySelector(
+			"#saved-assessment-list",
+		);
+
+		if (!dialog || !savedAssessmentList) return;
+
+		savedAssessmentList.innerHTML = "";
+
+		// Sort array of assessments by date modified
+		data.assessments.sort((a, b) => b.dateModified - a.dateModified);
+
+		// Get the index of the active assessment
+		let activeIndex = findIndexByKey(
+			data.assessments,
+			"id",
+			data.uiState.activeAssessmentId,
+		);
+
+		// Move it to the top of the array, if not already
+		if (activeIndex > 0) {
+			let [activeItem] = data.assessments.splice(activeIndex, 1);
+			data.assessments.unshift(activeItem);
 		}
 
-	}
+		// Generate the HTML cards and add them to the DOM
+		for (let i = 0; i < data.assessments.length; i++) {
+			let assessment = data.assessments[i];
+			let active = false;
 
+			if (typeof assessment === "object" && assessment !== null) {
+				if (i === 0) active = true;
 
+				let card = createAssessmentCard(assessment, active);
+				savedAssessmentList.append(card);
+			}
+		}
 
+		//TODO: Sort cards by recently modified
+	};
+
+	/**
+	 * Update the open-assessment dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateSaveAssessmentDialog = (data: {
+		uiState: State;
+		assessments: Assessment[];
+	}) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = saveAssessmentDialog as HTMLDialogElement;
+
+		updateAssessmentFields({
+			assessment: assessment,
+			dialog: dialog,
+		});
+
+		// TODO: Extract update form method from view so that it can be used here as well to update Status
+
+		// let url = generateSaveUrl();
+	};
 
 	//
 	// Inits & Event Listeners
 	//
 
-	subscribe(updateViewAssessmentDialog);
+	subscribe(updateSelectAssessorDialog);
+	subscribe(updateChangeAssessorDialog);
+	subscribe(updateInfoAssessmentDialog);
+	subscribe(updateUpdateAssessmentDialog);
+	subscribe(updateOpenAssessmentDialog);
+	subscribe(updateSaveAssessmentDialog);
 
 	document.addEventListener("click", (event) => {
-
 		let target = event.target as HTMLButtonElement;
 
-		if (target.matches('#create-assessment-submit')) {
-
-			let form = target.closest('form');
-			console.log('Form', form);
-			let values:Object;
+		// TODO: Refactor the following two if statements to reduce code
+		if (target.matches("#create-assessment-submit")) {
+			let form = target.closest("form");
+			let values: {};
 
 			if (form.reportValidity()) {
 				values = getFormValues(form);
-				console.log('Values', values);
 
 				createAssessment(values);
 
-				// Close the dialog
-				let dialog = target.closest('dialog');
-				dialog.close();
+				// Clear form
+				form.reset();
+				let formLists = form.querySelectorAll("ul[data-field]");
+				for (let list of formLists) {
+					list.innerHTML = "";
+				}
 
-
-
-
+				// Open select assessor dialog
+				openDialog("select-assessor");
 			} else {
-				console.warn('Form is incomplete')
-				// Display warning that form is incomplete
+				console.warn("Form is incomplete");
+				// TODO: Display warning that form is incomplete
 			}
-
 		}
 
-		if (target.matches('#update-assessment-submit')) {
+		if (target.matches("button.update-assessor")) {
+			let dialog = target.closest("dialog");
+			console.log("Dialog", dialog);
 
-			
+			let form = target.closest("form");
 
+			let values: {};
+
+			if (form.reportValidity()) {
+				values = getFormValues(form);
+				console.log("Value", values);
+
+				setState(values);
+
+				// Close the dialog
+				dialog.close();
+			} else {
+				console.warn("Form is incomplete");
+				// TODO: Display warning that form is incomplete
+			}
 		}
 
-		if (target.matches('#upload-csv-button')){}
-		if (target.matches('#paste-url-button')){}
-		if (target.matches('button.open-assessment')){}
-		if (target.matches('button.save-assessment')){}
+		if (target.matches("button.update-assessment")) {
+			let dialog = target.closest("dialog");
+			console.log("Dialog", dialog);
+
+			let form = target.closest("form");
+
+			let values: {};
+
+			if (form.reportValidity()) {
+				values = getFormValues(form);
+				console.log("Value", values);
+
+				setAssessment(values);
+
+				setState({
+					unsavedChanges: true,
+				});
+
+				// Close the dialog
+				dialog.close();
+			} else {
+				console.warn("Form is incomplete");
+				// TODO: Display warning that form is incomplete
+			}
+		}
+
+		if (target.matches("button.open-assessment")) {
+
+			setState({
+				mode: "assessment",
+				activeAssessmentId: Number(target.getAttribute("data-id")),
+				activeAssessor: null,
+			});
+
+			// Open select assessor dialog
+			openDialog("select-assessor");
+		}
+
+		if (target.matches("#upload-csv-button")) {
+		}
+
+		if (target.matches("#paste-url-button")) {
+		}
+
+		if (target.matches("button.save-assessment")) {
+
+			setState({
+				unsavedChanges: false,
+				lastSavedAt: Date.now(),
+			})
+
+		}
 
 		if (target.matches("button.open-dialog")) {
-			console.log(target);
 			let targetDialog = target.getAttribute("data-dialog");
 			openDialog(targetDialog);
 		}
@@ -1013,28 +1722,54 @@ let schoolList = {
 		if (target.matches("button.remove-assessor")) {
 			removeAssessorFromList(target);
 		}
-		
+
+		if (target.matches("button.stop-editing")) {
+
+			let userData = getUserData();
+
+			if (userData.uiState.unsavedChanges) {
+				openDialog('save-warning');
+			} else {
+				setState({
+					mode: "reading",
+					activeAssessment: null,
+				});	
+			}		
+
+			//Todo: Ensure that open assessment cards remove banner
+		}
+
+		if (target.matches("#save-warning button.close-dialog")) {
+
+			setState({
+				mode: "reading",
+				activeAssessment: null,
+			});
+
+		}
+
 	});
 
 	document.addEventListener("input", (event) => {
-		let target = event.target as (HTMLInputElement|HTMLSelectElement);
+		let target = event.target as HTMLInputElement | HTMLSelectElement;
 
-		if (target.matches("select.district")) {
-			let schoolSelect = target.closest("form").querySelector("select.school") as HTMLSelectElement;
+		if (target.matches(`select[name="district"]`)) {
+			let schoolSelect = target
+				.closest("form")
+				.querySelector(`select[name="school"]`) as HTMLSelectElement;
 			let schoolOptionGroups = schoolSelect?.querySelectorAll("optgroup");
 
 			if (target.value !== "") {
 				schoolSelect.removeAttribute("disabled");
-				console.log(target.value);
-				schoolSelect.querySelector(`.${target.value.toLowerCase()}-schools`).removeAttribute('hidden');
-
+				schoolSelect
+					.querySelector(`.${target.value.toLowerCase()}-schools`)
+					.removeAttribute("hidden");
 			} else {
-				schoolSelect.value = '';
+				schoolSelect.value = "";
 				schoolSelect.setAttribute("disabled", "");
 				for (let group of schoolOptionGroups) {
-					group.setAttribute('hidden', '');
+					group.setAttribute("hidden", "");
 				}
-
 			}
 		}
 	});
@@ -1043,10 +1778,10 @@ let schoolList = {
 		if (event.key === "Enter") {
 			let target = event.target as HTMLInputElement;
 
-			if (target.matches("input.assessor")) {
+			if (target.matches(`input[name="assessor"]`)) {
 				addAssessorToList(target);
+				// FIX: Not working
 			}
 		}
 	});
-
 </script>
