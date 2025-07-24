@@ -1,9 +1,10 @@
 ---
 import IconCross from "./icons/IconCross_16.astro";
-import IconWarning from "./icons/IconWarning_24.astro";
+import IconWarningBig from "./icons/IconWarning_24.astro";
 import IconCaretDown from "./icons/IconCaretDown_20.astro";
 import IconCopy from "./icons/IconCopy_20.astro";
 import IconXmark from "./icons/IconXmark_20.astro";
+import IconWarningSmall from "./icons/IconWarning_16.astro";
 
 let schoolList = {
 	east: [
@@ -233,25 +234,29 @@ let schoolList = {
 };
 ---
 
-<dialog id="create-assessment" aria-labelledby="create-assessment-heading">
-	<!-- TODO: Link dialog to heading with aria-labelledby="#heading-id" so that screen readers will announce the heading when the dialog is opened -->
+<dialog
+	id="create-assessment-dialog"
+	aria-labelledby="create-assessment-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
 		aria-label="Close Create Assessment Dialog"><IconXmark /></button
 	>
 
-	<h2 id="create-assessment-heading" class="heading">Create New Assessment</h2>
+	<h2 id="create-assessment-dialog_heading" class="heading">
+		Create New Assessment
+	</h2>
 
 	<div
 		class="callout"
-		data-style="shaded"
+		data-style="shading"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
 	>
 		<div class="icon-container">
-			<IconWarning />
+			<IconWarningBig />
 		</div>
 
 		<div class="text-container">
@@ -262,104 +267,185 @@ let schoolList = {
 		</div>
 	</div>
 
-	<form id="create-assessment-form">
-		<label for="create-district-select">School District</label>
-		<div class="select-container">
-			<select id="create-district-select" name="district" required>
-				<option value="">Select a district...</option>
-				<option value="ASD-W">ASD-W</option>
-				<option value="ASD-N">ASD-N</option>
-				<option value="ASD-E">ASD-E</option>
-				<option value="ASD-S">ASD-S</option>
-			</select>
-			<IconCaretDown />
-		</div>
+	<form data-clear-lists>
+		<fieldset>
+			<label for="create-assessment-dialog_district-select"
+				>School District</label
+			>
+			<div class="select-container">
+				<select
+					id="create-assessment-dialog_district-select"
+					name="district"
+					aria-describedby="create-assessment-dialog_district-select_error"
+					required
+				>
+					<option value="">Select a district...</option>
+					<option value="ASD-W">ASD-W</option>
+					<option value="ASD-N">ASD-N</option>
+					<option value="ASD-E">ASD-E</option>
+					<option value="ASD-S">ASD-S</option>
+				</select>
+				<IconCaretDown />
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="create-assessment-dialog_district-select_error"
+					role="alert"
+					>Please select a school district from the list.</span
+				>
+			</p>
+		</fieldset>
 
-		<label for="create-school-select">School</label>
-		<div class="select-container">
-			<select id="create-school-select" name="school" required disabled>
-				<option value="">Select a school...</option>
-				<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
-					{
-						schoolList.west.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-				<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
-					{
-						schoolList.north.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-				<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
-					{
-						schoolList.east.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-				<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
-					{
-						schoolList.south.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-			</select>
-			<IconCaretDown />
-		</div>
+		<fieldset>
+			<label for="create-assessment-dialog_school-select">School</label>
+			<div class="select-container">
+				<select
+					id="create-assessment-dialog_school-select"
+					name="school"
+					required
+					disabled
+				>
+					<option value="">Select a school...</option>
+					<optgroup
+						label="ASD-W Schools"
+						class="asd-w-schools"
+						hidden
+					>
+						{
+							schoolList.west.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+					<optgroup
+						label="ASD-N Schools"
+						class="asd-n-schools"
+						hidden
+					>
+						{
+							schoolList.north.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+					<optgroup
+						label="ASD-E Schools"
+						class="asd-e-schools"
+						hidden
+					>
+						{
+							schoolList.east.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+					<optgroup
+						label="ASD-S Schools"
+						class="asd-s-schools"
+						hidden
+					>
+						{
+							schoolList.south.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+				</select>
+				<IconCaretDown />
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="create-assessment-dialog_school-select_error"
+					role="alert">Please select a school from the list.</span
+				>
+			</p>
+		</fieldset>
 
-		<label for="create-reporting-year-input">Reporting Year</label>
-		<p class="instructions">Year must be 4 characters in length.</p>
-		<div class="input-container">
-			<input
-				id="create-reporting-year-input"
-				name="reportingYear"
-				type="text"
-				required
-				placeholder="Enter a year..."
-				pattern="\\d{4}"
-			/>
-		</div>
+		<fieldset>
+			<label for="create-assessment-dialog_reporting-year-input"
+				>Reporting Year</label
+			>
+			<p
+				id="create-assessment-dialog_reporting-year-input_help"
+				class="instructions"
+			>
+				Enter a 4-digit year (e.g., 2025).
+			</p>
+			<div class="input-container">
+				<input
+					id="create-assessment-dialog_reporting-year-input"
+					name="reportingYear"
+					type="text"
+					required
+					placeholder="Enter a year..."
+					pattern="\\d{4}"
+					aria-describedby="create-assessment-dialog_reporting-year-input_help, create-assessment-dialog_reporting-year-input_error"
+				/>
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="create-assessment-dialog_reporting-year-input_error"
+					role="alert">Please enter a valid year.</span
+				>
+			</p>
+		</fieldset>
 
-		<label for="create-assessor-input">Assessor(s)</label>
-		<div class="input-container">
-			<input
-				id="create-assessor-input"
-				type="text"
-				placeholder="Enter a name..."
-			/>
-			<button class="add-assessor" type="button">
-				<span class="icon-and-label-container">
-					<IconCross />
-					<span class="label-container">
-						<span class="label"> Add </span>
+		<fieldset>
+			<label for="create-assessment-dialog_assessor-input"
+				>Assessor(s)</label
+			>
+			<div class="input-container">
+				<input
+					id="create-assessment-dialog_assessor-input"
+					class="assessor"
+					type="text"
+					placeholder="Enter a name..."
+				/>
+				<button class="add-assessor" type="button">
+					<span class="icon-and-label-container">
+						<IconCross />
+						<span class="label-container">
+							<span class="label"> Add </span>
+						</span>
 					</span>
-				</span>
-			</button>
-		</div>
-		<ul class="assessor-list" data-field="assessors" hidden></ul>
+				</button>
+			</div>
+			<ul class="assessor-list" data-field="assessors" hidden></ul>
+		</fieldset>
 
-		<button
-			id="create-assessment-submit"
-			type="button"
-			data-size="large"
-			data-style="bold">Create and Start Editing</button
-		>
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline">Cancel</button
+			>
+			<button
+				class="create-assessment"
+				type="button"
+				data-size="large"
+				data-style="bold">Create and Start Editing</button
+			>
+		</div>
 	</form>
 </dialog>
 
-<dialog id="select-assessor">
+<dialog
+	id="select-assessor-dialog"
+	aria-describedby="select-assessor-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
-		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+		aria-label="Close Select Assessor Dialog"><IconXmark /></button
 	>
-	<!-- TODO: Update dialog close button with proper labels -->
 
-	<h2 class="heading">Select Active Assessor</h2>
+	<h2 id="select-assessor-dialog_heading" class="heading">
+		Select Active Assessor
+	</h2>
 	<p class="instructions">
 		Choose the person currently making changes to this assessment.
 	</p>
@@ -370,13 +456,13 @@ let schoolList = {
 
 	<div
 		class="callout"
-		data-style="shaded"
+		data-style="shading"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
 	>
 		<div class="icon-container">
-			<IconWarning />
+			<IconWarningBig />
 		</div>
 		<div class="text-container">
 			<p>
@@ -409,15 +495,19 @@ let schoolList = {
 	</form>
 </dialog>
 
-<dialog id="change-assessor">
+<dialog
+	id="change-assessor-dialog"
+	aria-describedby="change-assessor-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
-		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+		aria-label="Close Change Assessor Dialog"><IconXmark /></button
 	>
-	<!-- TODO: Update dialog close button with proper labels -->
 
-	<h2 class="heading">Update Active Assessor</h2>
+	<h2 id="change-assessor-dialog_heading" class="heading">
+		Change Active Assessor
+	</h2>
 	<p class="instructions">
 		Choose the person currently making changes to this assessment.
 	</p>
@@ -432,8 +522,6 @@ let schoolList = {
 			<div class="radio-group assessor-radio-group"></div>
 		</fieldset>
 
-		<!-- Todo: Need a way to set to no active assessor -->
-
 		<button
 			class="update-assessor"
 			type="button"
@@ -443,25 +531,55 @@ let schoolList = {
 	</form>
 </dialog>
 
-<dialog id="info-assessment">
+<dialog
+	id="info-assessment-dialog"
+	aria-describedby="info-assessment-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
-		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+		aria-label="Close Assessment Information Dialog"><IconXmark /></button
 	>
 
-	<h2 class="heading">Assessment Information</h2>
+	<h2 id="info-assessment-dialog_heading" class="heading">
+		Assessment Information
+	</h2>
 
 	<div
-		class="callout meta"
-		data-style="shaded"
+		class="callout"
+		data-style="shading"
 		data-vibrancy="vivid"
 		data-fit="compact"
 	>
-		<span class="status" data-field="status"></span>
-		<span>Date Created: <span data-field="dateCreated"></span></span>
-		<span>Date Last Modified: <span data-field="dateModified"></span></span>
-		<span data-restrict-assessor="true">Active Assessor: <span data-field="activeAssessor"></span></span>
+		<div class="label-group">
+			<div class="edit-status label-container field-container" data-style="shading">
+				<span class="label" data-field="status"></span>
+			</div>
+			<div class="export-status label-container" hidden>
+				<span class="label">*Unexported Changes</span>
+			</div>
+		</div>
+		<dl data-fit="compact">
+			<div class="detail-container field-container">
+				<dt>Date Created:</dt>
+				<dd data-field="dateCreated"></dd>
+			</div>
+
+			<div class="detail-container field-container">
+				<dt>Date Modified:</dt>
+				<dd data-field="dateModified"></dd>
+			</div>
+
+			<div class="detail-container field-container" hidden>
+				<dt>Date Exported:</dt>
+				<dd data-field="dateExported"></dd>
+			</div>
+
+			<div class="detail-container field-container" data-restrict-assessor="true">
+				<dt>Active Assessor:</dt>
+				<dd data-field="activeAssessor"></dd>
+			</div>
+		</dl>
 	</div>
 
 	<dl>
@@ -485,23 +603,29 @@ let schoolList = {
 
 	<button
 		class="open-dialog"
-		data-dialog="update-assessment"
+		data-dialog="update-assessment-dialog"
 		type="button"
 		data-size="large"
 		data-style="bold">Update Information</button
 	>
 </dialog>
 
-<dialog id="update-assessment">
+<dialog
+	id="update-assessment-dialog"
+	aria-describedby="update-assessment-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
-		aria-label="Close Assessment Details Dialog"><IconXmark /></button
+		aria-label="Close Update Assessment Information Dialog"
+		><IconXmark /></button
 	>
 
-	<h2 class="heading">Update Information</h2>
+	<h2 id="update-assessment-dialog_heading" class="heading">
+		Update Information
+	</h2>
 
-	<form id="update-assessment-form">
+	<form>
 		<fieldset>
 			<legend>Status</legend>
 			<div class="radio-group">
@@ -509,103 +633,166 @@ let schoolList = {
 					<input
 						type="radio"
 						name="status"
-						id="update-status-in-progress"
+						id="update-assessment-dialog_status-radio_in-progress"
 						value="In Progress"
 						checked
 					/>
-					<label for="update-status-in-progress">In Progress</label>
+					<label
+						for="update-assessment-dialog_status-radio_in-progress"
+						>In Progress</label
+					>
 				</div>
 				<div class="radio-container">
 					<input
 						type="radio"
 						name="status"
-						id="update-status-complete"
+						id="update-assessment-dialog_status-radio_complete"
 						value="Complete"
 					/>
-					<label for="update-status-complete">Complete</label>
+					<label for="update-assessment-dialog_status-radio_complete"
+						>Complete</label
+					>
 				</div>
 			</div>
 		</fieldset>
 
-		<label for="update-district-select">School District</label>
-		<div class="select-container">
-			<select name="district" id="update-district-select">
-				<option value="">Select a district...</option>
-				<option value="ASD-W">ASD-W</option>
-				<option value="ASD-N">ASD-N</option>
-				<option value="ASD-E">ASD-E</option>
-				<option value="ASD-S">ASD-S</option>
-			</select>
-			<IconCaretDown />
-		</div>
+		<fieldset>
+			<label for="update-assessment-dialog_district-select"
+				>School District</label
+			>
+			<div class="select-container">
+				<select
+					name="district"
+					id="update-assessment-dialog_district-select"
+				>
+					<option value="">Select a district...</option>
+					<option value="ASD-W">ASD-W</option>
+					<option value="ASD-N">ASD-N</option>
+					<option value="ASD-E">ASD-E</option>
+					<option value="ASD-S">ASD-S</option>
+				</select>
+				<IconCaretDown />
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="update-assessment-dialog_district-select_error"
+					role="alert"
+					>Please select a school district from the list.</span
+				>
+			</p>
+		</fieldset>
 
-		<label for="update-school-select">School</label>
-		<div class="select-container">
-			<select name="school" id="update-school-select">
-				<option value="">Select a school...</option>
-				<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
-					{
-						schoolList.west.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-				<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
-					{
-						schoolList.north.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-				<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
-					{
-						schoolList.east.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-				<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
-					{
-						schoolList.south.map((school) => (
-							<option value={school}>{school}</option>
-						))
-					}
-				</optgroup>
-			</select>
-			<IconCaretDown />
-		</div>
+		<fieldset>
+			<label for="update-assessment-dialog_school-select">School</label>
+			<div class="select-container">
+				<select
+					name="school"
+					id="update-assessment-dialog_school-select"
+				>
+					<option value="">Select a school...</option>
+					<optgroup
+						label="ASD-W Schools"
+						class="asd-w-schools"
+						hidden
+					>
+						{
+							schoolList.west.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+					<optgroup
+						label="ASD-N Schools"
+						class="asd-n-schools"
+						hidden
+					>
+						{
+							schoolList.north.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+					<optgroup
+						label="ASD-E Schools"
+						class="asd-e-schools"
+						hidden
+					>
+						{
+							schoolList.east.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+					<optgroup
+						label="ASD-S Schools"
+						class="asd-s-schools"
+						hidden
+					>
+						{
+							schoolList.south.map((school) => (
+								<option value={school}>{school}</option>
+							))
+						}
+					</optgroup>
+				</select>
+				<IconCaretDown />
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="update-assessment-dialog_school-select_error"
+					role="alert">Please select a school from the list.</span
+				>
+			</p>
+		</fieldset>
 
-		<label for="update-reporting-year-input">Reporting Year</label>
-		<p class="instructions">Year must be 4 characters in length.</p>
-		<div class="input-container">
-			<input
-				id="update-reporting-year-input"
-				name="reportingYear"
-				type="text"
-				required
-				placeholder="Enter a year..."
-				pattern="\\d{4}"
-			/>
-		</div>
+		<fieldset>
+			<label for="update-assessment-dialog_reporting-year-input"
+				>Reporting Year</label
+			>
+			<p class="instructions">Year must be 4 characters in length.</p>
+			<div class="input-container">
+				<input
+					id="update-assessment-dialog_reporting-year-input"
+					name="reportingYear"
+					type="text"
+					required
+					placeholder="Enter a year..."
+					pattern="\\d{4}"
+				/>
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="update-assessment-dialog_reporting-year-input_error"
+					role="alert">Please enter a valid year.</span
+				>
+			</p>
+		</fieldset>
 
-		<label for="update-assessor-input">Assessor(s)</label>
-		<div class="input-container">
-			<input
-				id="update-assessor-input"
-				name="assessor"
-				type="text"
-				placeholder="Enter a name..."
-			/>
-			<button class="add-assessor" type="button">
-				<span class="icon-and-label-container">
-					<IconCross />
-					<span class="label-container">
-						<span class="label"> Add </span>
+		<fieldset>
+			<label for="update-assessment-dialog_assessor-input"
+				>Assessor(s)</label
+			>
+			<div class="input-container">
+				<input
+					id="update-assessment-dialog_assessor-input"
+					class="assessor"
+					type="text"
+					placeholder="Enter a name..."
+				/>
+				<button class="add-assessor" type="button">
+					<span class="icon-and-label-container">
+						<IconCross />
+						<span class="label-container">
+							<span class="label"> Add </span>
+						</span>
 					</span>
-				</span>
-			</button>
-		</div>
-		<ul class="assessor-list" data-field="assessors" hidden></ul>
+				</button>
+			</div>
+			<ul class="assessor-list" data-field="assessors" hidden></ul>
+		</fieldset>
 
 		<div class="button-group">
 			<button
@@ -624,190 +811,213 @@ let schoolList = {
 	</form>
 </dialog>
 
-<dialog id="open-assessment">
+<dialog
+	id="open-assessment-dialog"
+	aria-describedby="open-assessment-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
 		aria-label="Close Open Assessment Dialog"><IconXmark /></button
 	>
 
-	<h2 class="heading">Open Assessment</h2>
+	<h2 id="open-assessment-dialog_heading" class="heading">Open Assessment</h2>
 
 	<section>
 		<h3>Import</h3>
 		<div class="button-group">
 			<button
-				id="upload-csv-button"
+				class="import-file"
 				type="button"
 				data-size="large"
-				data-style="bold">Upload .csv</button
+				data-style="bold"
+				disabled>Upload .csv</button
 			>
 			<button
-				id="paste-url-button"
+				id="import-url"
 				type="button"
 				data-size="large"
-				data-style="bold">Paste URL</button
+				data-style="bold"
+				disabled>Paste URL</button
 			>
 		</div>
 	</section>
 
 	<section>
 		<h3>Saved Assessments</h3>
-		<ul id="saved-assessment-list" class="card-group"></ul>
+		<ul class="saved-assessments card-group"></ul>
 	</section>
 </dialog>
 
-<dialog id="status-warning">
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Open Assessment Dialog"><IconXmark /></button
+<dialog
+	id="status-warning-dialog"
+	aria-describedby="status-warning-dialog_heading"
+>
+	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"
+		><IconXmark /></button
 	>
 
-	<h2 class="heading">Reopen Assessment for Editing?</h2>
+	<h2 id="status-warning-dialog_heading" class="heading">
+		Reopen Assessment for Editing?
+	</h2>
 
 	<div
 		class="callout"
-		data-style="shaded"
+		data-style="shading"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
 	>
 		<div class="icon-container">
-			<IconWarning />
+			<IconWarningBig />
 		</div>
 		<div class="text-container">
-			<p>This assessment is currently marked as <strong>Complete</strong>. To make changes, its status will be updated to <strong>In Progress</strong>.</p>
+			<p>
+				This assessment is currently marked as <strong>Complete</strong
+				>. To make changes, its status will be updated to <strong
+					>In Progress</strong
+				>.
+			</p>
 			<!-- <p>Do you want to continue?</p> -->
 		</div>
 	</div>
 
 	<p class="instructions">Do you want to continue?</p>
 
-
 	<div class="button-group">
 		<button
-			id="upload-csv-button"
+			class="close-dialog"
 			type="button"
 			data-size="large"
 			data-style="outline">Cancel</button
 		>
 		<button
-			id="paste-url-button"
+			class="open-dialog"
+			data-dialog="select-assessor-dialog"
 			type="button"
 			data-size="large"
 			data-style="bold">Edit Assessment</button
 		>
 	</div>
-
 </dialog>
 
-<dialog id="export-warning" open>
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Open Assessment Dialog"><IconXmark /></button
+<dialog
+	id="export-warning-dialog"
+	aria-describedby="export-warning-dialog_heading"
+>
+	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"
+		><IconXmark /></button
 	>
 
-	<h2 class="heading">Unsaved Changes</h2>
+	<h2 id="export-warning-dialog_heading" class="heading">
+		Unexported Changes
+	</h2>
 
 	<div
 		class="callout"
-		data-style="shaded"
+		data-style="shading"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
 	>
 		<div class="icon-container">
-			<IconWarning />
+			<IconWarningBig />
 		</div>
 		<div class="text-container">
 			<p>You've made changes that haven't been exported.</p>
-			<p data-field="lastSavedAt"></p>
-			
+			<dl data-fit="compact" hidden>
+				<dt>Last Export:</dt>
+				<dd data-field="dateExported"></dd>
+			</dl>
 		</div>
 	</div>
 
-	<p class="instructions">Make sure to export a backup if you want to keep your edits.</p>
+	<p class="instructions">
+		Make sure to export a backup if you want to keep your edits.
+	</p>
 
 	<div class="button-group">
 		<button
-		class="close-dialog"
-		type="button"
-		data-size="large"
-		data-style="outline">Continue Without Exporting</button
+			class="close-dialog"
+			type="button"
+			data-size="large"
+			data-style="outline">Continue Without Exporting</button
 		>
 		<button
 			class="open-dialog"
-			data-dialog="save-assessment"
+			data-dialog="export-assessment-dialog"
 			type="button"
 			data-size="large"
 			data-style="bold">Export Changes</button
 		>
 	</div>
-
 </dialog>
 
-<dialog id="save-assessment">
+<dialog
+	id="export-assessment-dialog"
+	aria-describedby="export-assessment-dialog_heading"
+>
 	<button
 		class="close-dialog"
 		type="button"
-		aria-label="Close Save Assessment Dialog"><IconXmark /></button
+		aria-label="Close Export Assessment Dialog"><IconXmark /></button
 	>
 
-	<h2 class="heading">Save Assessment(s)</h2>
-
-	<form>
-		<h3>Update Status</h3>
-		<fieldset>
-			<!-- <legend>Status</legend> -->
-			<div class="radio-group">
-				<div class="radio-container">
-					<input
-						type="radio"
-						name="status"
-						id="save-status-in-progress"
-						value="In Progress"
-						checked
-					/>
-					<label for="save-status-in-progress">In Progress</label>
-				</div>
-				<div class="radio-container">
-					<input
-						type="radio"
-						name="status"
-						id="save-status-complete"
-						value="Complete"
-					/>
-					<label for="save-status-complete">Complete</label>
-				</div>
-			</div>
-		</fieldset>
-		<button
-			class="update-assessment"
-			type="button"
-			data-size="large"
-			data-style="bold">Save Status</button
-		>
-	</form>
+	<h2 id="export-assessment-dialog_heading" class="heading">
+		Export Assessment(s)
+	</h2>
 
 	<section>
-		<h3>Save/Share Link</h3>
+		<h3>Update Status</h3>
+		<!-- TODO: Should this update status, be more along the line of a single button - Mark Assessment Complete. If so, would we omit this section if the status is set to complete, or would users expect to find it here?  -->
+		<form>
+			<fieldset>
+				<!-- <legend>Status</legend> -->
+				<div class="radio-group">
+					<div class="radio-container" data-theme="blue">
+						<input
+							type="radio"
+							name="status"
+							id="export-assessment-dialog_status-radio_in-progress"
+							value="In Progress"
+							checked
+						/>
+						<label for="export-assessment-dialog_status-radio_in-progress">In Progress</label>
+					</div>
+					<div class="radio-container" data-theme="green">
+						<input
+							type="radio"
+							name="status"
+							id="export-assessment-dialog_status-radio_complete"
+							value="Complete"
+						/>
+						<label for="export-assessment-dialog_status-radio_complete">Complete</label>
+					</div>
+				</div>
+			</fieldset>
+			<button
+				class="update-assessment"
+				type="button"
+				data-size="large"
+				data-style="bold">Save</button
+			>
+		</form>
+	</section>
+
+	<section>
+		<h3>Collaboration URL</h3>
 		<p class="instructions">
-			This personalized link lets you access your assessment(s) from any
-			device or share them with another assessor for collaboration.
+			This personalized url lets you access your assessment from any
+			device or share it with another assessor for collaboration.
 		</p>
+		<!-- Does this specifically need to be a url container? I guess it's to be able to locate and update. Investigate whether we can avoid css for it -->
 		<div class="url-container" data-style-as="input-container">
-			<div id="save-url" class="url" data-style-as="input">
+			<div class="url" data-style-as="input">
 				<span
-					>https://middle.nbed.ca/conditions-for-success/#save=N4IgZglhg7ggkrughg8togghghtyggg0</span
+					>https://middle.nbed.ca/conditions-for-success/#assessment=N4IgZglhg7ggkrughg8togghghtyggg0</span
 				>
 			</div>
-			<button
-				id="copy-save-url-button"
-				class="save-assessment"
-				type="button"
-			>
+			<button class="copy-url export-assessment" type="button" disabled>
 				<span class="icon-and-label-container">
 					<IconCopy />
 					<span class="label-container">
@@ -819,16 +1029,16 @@ let schoolList = {
 	</section>
 
 	<section>
-		<h3>Save File</h3>
+		<h3>Export File</h3>
 		<div
 			class="callout"
-			data-style="shaded"
+			data-style="shading"
 			data-vibrancy="vivid"
 			data-fit="compact"
 			data-theme="yellow"
 		>
 			<div class="icon-container">
-				<IconWarning />
+				<IconWarningBig />
 			</div>
 			<div class="text-container">
 				<p>
@@ -839,11 +1049,11 @@ let schoolList = {
 			</div>
 		</div>
 		<button
-			id="save-download-file"
-			class="save-assessment"
+			class="download-file export-assessment"
 			data-style="bold"
 			type="button"
-			data-size="large">Download .csv</button
+			data-size="large"
+			disabled>Download .csv</button
 		>
 	</section>
 </dialog>
@@ -907,189 +1117,6 @@ let schoolList = {
 		display: none;
 	}
 
-	/* TODO: Remove bottom margin of previous to last section when the other is display:none */
-
-	form fieldset {
-		margin: 0;
-		padding: 0;
-		border: none;
-	}
-
-	form .radio-group {
-		display: flex;
-		flex-flow: row;
-		align-items: center;
-		gap: 1rem;
-		margin: 0.5rem 0;
-	}
-
-	form .radio-container {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	form .radio-container label {
-		font-size: 1rem;
-		font-weight: 400;
-		line-height: 1;
-		margin: 0;
-	}
-
-	form :is(label, legend) {
-		display: block;
-		font-size: 1.25rem;
-		font-weight: 600;
-		margin: 1.25rem 0 0.5rem;
-	}
-
-	.input-container,
-	.select-container,
-	[data-style-as="input-container"] {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		position: relative;
-		border-radius: var(--border-radius-normal);
-		border: 2px solid var(--colour-border-neutral-subtle-muted);
-		width: 100%;
-		height: 3rem;
-		padding: 0;
-		margin: 0;
-	}
-
-	input[type="text"],
-	select,
-	[data-style-as="input"] {
-		display: flex;
-		align-items: center;
-		appearance: none;
-		border: none;
-		background: none;
-		height: 100%;
-		min-width: 0; /* Fixed text-overflow inside flex item */
-		padding: 0 1rem;
-		margin: 0;
-		flex-grow: 1;
-		font-size: 1rem;
-		line-height: 1.2;
-	}
-
-	input[type="text"]::placeholder {
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	.url-container {
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	.url-container .url span {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.select-container .icon {
-		width: 1.25rem;
-		position: absolute;
-		top: 0.75rem;
-		right: 0.75rem;
-	}
-
-	:is(.input-container, .url-container) button {
-		--icon-size: 1rem;
-		margin-right: 0.25rem;
-	}
-
-	:is(.input-container, .url-container) button:is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-ui-reverse);
-		--label-colour: var(--colour-ui-reverse);
-	}
-
-	form > :is(.button-group, button):last-of-type {
-		margin: 1.75rem 0;
-	}
-
-	form .assessor-list {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0;
-		margin: 0.5rem 0;
-		list-style-type: none;
-	}
-
-	form .assessor-list button {
-		--icon-size: 1rem;
-	}
-
-	form .assessor-list button:is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-ui-reverse);
-		--label-colour: var(--colour-ui-reverse);
-	}
-
-	dl {
-		display: flex;
-		flex-flow: column;
-		gap: 1rem;
-		margin: 0 0 1.75rem;
-	}
-
-	.detail-container {
-		display: flex;
-		flex-flow: row;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.detail-container :is(dt, dd) {
-		font-size: 1rem;
-	}
-
-	.detail-container dt {
-		font-weight: 600;
-	}
-
-	.detail-container dd {
-		margin: 0;
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	.meta {
-		display: flex;
-		flex-flow: column;
-		align-items: start;
-		gap: 0.25rem;
-		margin: 0 0 1.5rem;
-	}
-
-	.meta * {
-		font-size: 0.875rem;
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	.callout[data-style="shaded"].meta * {
-		color: var(--colour-ui-accent-bold, var(--colour-ui-neutral));
-	}
-
-	.meta .status {
-		display: flex;
-		align-items: center;
-		height: 1.75rem;
-		padding: 0 0.375rem;
-		margin: 0 0 0.25rem;
-		background-color: var(--colour-fill-accent-subtle-vivid);
-		border-radius: var(--border-radius-small);
-		color: var(--colour-ui-accent);
-		font-weight: 600;
-	}
-
-	.callout[data-style="shaded"].meta .status {
-		background-color: var(--colour-fill-accent-bold-vivid);
-		color: var(--colour-ui-reverse);
-	}
 </style>
 
 <script>
@@ -1101,14 +1128,18 @@ let schoolList = {
 		findIndexByKey,
 		findObjectByKey,
 		htmlToElement,
+		isEqual,
+		joinWithAnd,
 		kebabToCamel,
 		sanitizeHTML,
 	} from "src/utilities/helpers.js";
 	import {
+		updateChangeLog,
 		getActiveAssessmentData,
 		getAssessmentDate,
 		getAssessmentName,
-		getSaveStatus,
+		getActiveAssessor,
+		getExportStatus,
 		getStatusColour,
 		getUserData,
 		subscribe,
@@ -1121,13 +1152,27 @@ let schoolList = {
 	// Variables
 	//
 
-	let createAssessmentDialog = document.querySelector("#create-assessment");
-	let selectAssessorDialog = document.querySelector("#select-assessor");
-	let changeAssessorDialog = document.querySelector("#change-assessor");
-	let infoAssessmentDialog = document.querySelector("#info-assessment");
-	let updateAssessmentDialog = document.querySelector("#update-assessment");
-	let openAssessmentDialog = document.querySelector("#open-assessment");
-	let saveAssessmentDialog = document.querySelector("#save-assessment");
+	let createAssessmentDialog = document.querySelector(
+		"#create-assessment-dialog",
+	);
+	let selectAssessorDialog = document.querySelector(
+		"#select-assessor-dialog",
+	);
+	let changeAssessorDialog = document.querySelector(
+		"#change-assessor-dialog",
+	);
+	let infoAssessmentDialog = document.querySelector(
+		"#info-assessment-dialog",
+	);
+	let changeAssessmentInfoDialog = document.querySelector(
+		"#update-assessment-dialog",
+	);
+	let openAssessmentDialog = document.querySelector(
+		"#open-assessment-dialog",
+	);
+	let exportAssessmentDialog = document.querySelector(
+		"#export-assessment-dialog",
+	);
 
 	//
 	// Type Definitions
@@ -1138,11 +1183,9 @@ let schoolList = {
 		activeAssessor: string;
 		changeHistory: [];
 		lastModifiedPage: string;
-		lastSavedAt: number;
 		lastVisitedPage: string;
 		mode: string;
 		onboardingCompleted: boolean;
-		unsavedChanges: boolean;
 	};
 
 	type Assessment = {
@@ -1150,6 +1193,7 @@ let schoolList = {
 		status: string;
 		continuumVersion: string;
 		dateCreated: number;
+		dateExported: number;
 		dateModified: number;
 		lastModifiedBy: string;
 		reportingYear: string;
@@ -1158,6 +1202,7 @@ let schoolList = {
 		assessors: [];
 		considerationsEstablished: [];
 		componentPhase: {};
+		unexportedChanges: boolean;
 	};
 
 	//
@@ -1175,9 +1220,38 @@ let schoolList = {
 		if (dialog) dialog.showModal();
 	};
 
-	let closeDialog = (dialog: HTMLDialogElement) => {
+	let closeDialog = (dialog) => {
 		if (dialog) dialog.close();
-		// TODO: Reset
+	};
+
+	let resetForm = ({form, clearLists = true}) => {
+		// Clear inputs
+		form.reset();
+
+		if (clearLists) {
+
+			// Clear custom list fields
+			let formLists = form.querySelectorAll("ul[data-field]");
+			for (let list of formLists) {
+				list.innerHTML = "";
+			}
+
+		}
+
+		// Reset touched fields
+		touchedFormFields.clear();
+
+		// Hide all errors
+		let errors = form.querySelectorAll(".error");
+		for (let error of errors) {
+			error.setAttribute("hidden", "");
+		}
+
+		// Reset all aria-invalid
+		let inputs = form.querySelectorAll("input, select");
+		for (let input of inputs) {
+			input.removeAttribute("aria-invalid");
+		}
 	};
 
 	let createAssessorListItem = (name) => {
@@ -1219,36 +1293,56 @@ let schoolList = {
 		active: boolean = false,
 	) => {
 		if (!assessment || assessment === undefined) return;
-		let {
-			status,
-			id,
-		} = assessment;
-		// TODO: Fix design of heading
-		// TODO: Fix design of active assessment label
+		let { dateExported, status, id, unexportedChanges } = assessment;
+
 		let template = `
 			<li class="card" ${active ? "data-active" : ""}>
-				${active ? `<div class="banner" data-theme="${getStatusColour()}">${status === "In Progress" ? `Editing` : `Reviewing`}</div>` : ''}
+				${active ? `<div class="banner" data-theme="${getStatusColour()}">${status === "In Progress" ? `Editing` : `Reviewing`}</div>` : ""}
 				<div class="wrapper">
 					<h4 class="heading icon-and-label-container">
 						<svg class="icon assessment" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
 							<path d="M19.36 13.06c.86-.86.86-2.25 0-3.11l-1.3-1.3c-.83-.83-2.28-.83-3.11 0l-5.26 5.26c-.38.39-.66.87-.79 1.39l-.87 3.46c-.09.34.01.7.26.95.19.19.45.29.71.29.08 0 .16 0 .24-.03l3.46-.87c.53-.13 1.01-.41 1.39-.79l5.26-5.26Zm-2.86-3.05c.05 0 .11.02.14.05l1.3 1.3c.08.08.08.21 0 .28l-.94.94-1.59-1.59.94-.94s.09-.05.14-.05Zm-3.82 6.89c-.13.13-.29.22-.46.26l-1.85.46.46-1.85c.04-.17.13-.34.26-.46l2.9-2.9L15.58 14l-2.9 2.9ZM6 19c0 .55-.45 1-1 1H3c-1.65 0-3-1.35-3-3V3c0-1.65 1.35-3 3-3h14c1.65 0 3 1.35 3 3v2c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h2c.55 0 1 .45 1 1Zm9-15c.55 0 1 .45 1 1s-.45 1-1 1h-5c-.55 0-1-.45-1-1s.45-1 1-1h5Zm-7 6c0-.55.45-1 1-1h1.5c.55 0 1 .45 1 1s-.45 1-1 1H9c-.55 0-1-.45-1-1Zm-.29-5.29-2 2c-.2.2-.45.29-.71.29s-.51-.1-.71-.29l-1-1A.996.996 0 1 1 4.7 4.3l.29.29L6.28 3.3a.996.996 0 1 1 1.41 1.41ZM6.5 10c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5Zm0 5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5ZM20 17c0 1.65-1.35 3-3 3-.55 0-1-.45-1-1s.45-1 1-1 1-.45 1-1 .45-1 1-1 1 .45 1 1Z"/>
 						</svg>
-						<span class="label-container">${getAssessmentName()}</span>
+						<span class="label-container">${getAssessmentName(assessment)}</span>
 					</h4>
 					<div class="details">
-						<div class="meta">
-							<span class="status" data-theme="${getStatusColour()}">${status}</span>
-							<span class="date-created">
-								Date Created: ${getAssessmentDate('dateCreated')}
-							</span>
-							<span class="date-modified">
-								Date Modified: ${getAssessmentDate('dateModified')}
-							</span>
-						</div>
+						<span class="label-group">
+							<div class="edit-status label-container field-container" data-theme="${getStatusColour(assessment)}" data-style="shading">
+								<span class="label">${status}</span>
+							</div>
+							${unexportedChanges ? `
+							<div class="export-status label-container">
+								<span class="label">*Unexported Changes</span>
+							</div>
+							` : ""}
+						</span>
+						<dl data-fit="compact">
+							<div class="detail-container">
+								<dt class="date-created">Date Created:</dt>
+								<dd>${getAssessmentDate({ assessment: assessment, type: "dateCreated" })}</dd>
+							</div>
+							${
+								dateExported
+									? `
+							<div class="detail-container">
+								<dt class="date-exported">Date Exported:</dt>
+								<dd>${getAssessmentDate({ assessment: assessment, type: "dateExported" })}</dd>
+							</div>
+							`
+									: `
+							<div class="detail-container">
+								<dt class="date-modified">Date Modified:</dt>
+								<dd>${getAssessmentDate({ assessment: assessment, type: "dateModified" })}</dd>
+							</div>
+							`
+							}
+						</dl>
 					</div>
 					
 					${
-						active ? '' : `
+						active
+							? ""
+							: `
 					
 					<button class="open-assessment" type="button" data-size="large" data-id="${id}">Open</button>
 					
@@ -1260,10 +1354,10 @@ let schoolList = {
 		return htmlToElement(template);
 	};
 
-	let createAssessorRadioInput = (assessor: string) => {
-		if (!assessor || assessor === undefined) return;
+	let createAssessorRadioInput = ({ dialog, assessor }) => {
+		if (!dialog || !assessor || assessor === undefined) return;
 
-		let id = `assessor-${assessor.split(" ").join("-").toLowerCase()}`;
+		let id = `${dialog.id}_assessor-radio_${assessor.split(" ").join("-").toLowerCase()}`;
 
 		let template = `
 			<div class="radio-container">
@@ -1280,7 +1374,30 @@ let schoolList = {
 		return htmlToElement(template);
 	};
 
+	let revealSchoolOptionGroup = (districtSelect) => {
+
+		let schoolSelect = districtSelect
+			.closest("form")
+			.querySelector(`select[name="school"]`) as HTMLSelectElement;
+		let schoolOptionGroups = schoolSelect?.querySelectorAll("optgroup");
+
+		if (districtSelect.value !== "") {
+			schoolSelect.removeAttribute("disabled");
+			schoolSelect
+				.querySelector(`.${districtSelect.value.toLowerCase()}-schools`)
+				.removeAttribute("hidden");
+		} else {
+			schoolSelect.value = "";
+			schoolSelect.setAttribute("disabled", "");
+			for (let group of schoolOptionGroups) {
+				group.setAttribute("hidden", "");
+			}
+		}
+
+	}
+
 	let getFormValues = (form: HTMLFormElement) => {
+
 		let result = {};
 
 		// Handle input and select elements
@@ -1322,6 +1439,66 @@ let schoolList = {
 		}
 
 		return result;
+
+	};
+
+	/**
+	 * Validate a single non-radio input
+	 * @param {HTMLInputElement} input
+	 */
+	let validateInput = (input) => {
+		input.setCustomValidity("");
+
+		let error = document.getElementById(`${input.id}_error`);
+		if (!error) return;
+		let errorContainer = error.closest(".error");
+
+		let message = "";
+
+		if (!input.validity.valid) {
+			if (input.validity.valueMissing) {
+				message = "This field is required.";
+			} else if (
+				input.name === "reportingYear" &&
+				input.validity.patternMismatch
+			) {
+				message = "Year must be 4 digits.";
+			}
+			input.setCustomValidity(message);
+		}
+
+		if (message && touchedFormFields.has(input)) {
+			error.textContent = message;
+			errorContainer.removeAttribute("hidden");
+			input.setAttribute("aria-invalid", "true");
+		} else {
+			error.textContent = "";
+			errorContainer.setAttribute("hidden", "");
+			input.removeAttribute("aria-invalid");
+		}
+	};
+
+	let validateForm = (form: HTMLFormElement) => {
+		let firstInvalid = null;
+
+		let inputs = form.querySelectorAll(
+			"input[required], select[required]",
+		) as NodeListOf<HTMLInputElement | HTMLSelectElement>;
+
+		for (let input of inputs) {
+			touchedFormFields.add(input);
+			validateInput(input);
+			if (!input.validity.valid && !firstInvalid) {
+				firstInvalid = input;
+			}
+		}
+
+		if (firstInvalid) {
+			firstInvalid.focus();
+			return false;
+		}
+
+		return true;
 	};
 
 	let updateAssessmentFields = ({
@@ -1341,12 +1518,28 @@ let schoolList = {
 				if (input instanceof RadioNodeList) {
 					// Handle radio group
 					input.value = String(value);
+					let radios = Array.from(input) as HTMLInputElement[];
+					for (let radio of radios) {
+						let isMatch = radio.value === String(value);
+						radio.checked = isMatch;
+						if (isMatch) {
+							radio.setAttribute("checked", "");
+						} else {
+							radio.removeAttribute("checked");
+						}
+					}
 				} else if (input.type === "checkbox") {
-					// Handle checkbox
 					input.checked = !!value;
-				} else {
-					// Handle text/select/etc.
+					input.setAttribute("checked", !!value);
+				} else if (input.type === "text") {
 					input.value = String(value ?? "");
+					input.setAttribute("value", String(value ?? ""));
+				} else if (input.type === "select-one") {
+					input.value = String(value ?? "");
+					let option = input.querySelector(
+						`option[value="${String(value ?? "")}"]`,
+					);
+					option.setAttribute("selected", "");
 				}
 			}
 
@@ -1360,7 +1553,7 @@ let schoolList = {
 					key.startsWith("date") &&
 					typeof value === "number"
 				) {
-					staticEl.innerHTML = getAssessmentDate(key);
+					staticEl.innerHTML = getAssessmentDate({ type: key });
 				} else {
 					staticEl.textContent = String(value ?? "");
 
@@ -1394,9 +1587,7 @@ let schoolList = {
 		dialog: HTMLDialogElement;
 	}) => {
 		for (let [key, value] of Object.entries(state)) {
-			console.log(key, value);
 			let field = dialog.querySelector(`[data-field="${key}"]`);
-			console.log('State field', field);
 
 			if (field) {
 				if (Array.isArray(value)) {
@@ -1405,10 +1596,53 @@ let schoolList = {
 					key.startsWith("date") &&
 					typeof value === "number"
 				) {
-					field.innerHTML = getAssessmentDate(key);
+					field.innerHTML = getAssessmentDate({ type: key });
 				} else {
 					field.textContent = String(value ?? "");
 				}
+			}
+		}
+	};
+
+	let updateAssessorRadioGroup = ({
+		dialog,
+		assessment = getActiveAssessmentData(),
+		activeAssessor = null,
+	}) => {
+		let assessorRadioGroup = dialog?.querySelector(".assessor-radio-group");
+
+		if (!dialog || !assessorRadioGroup) return;
+
+		// Clear out the radio group
+		assessorRadioGroup.innerHTML = "";
+
+		// Create the reset input and add it to the group
+		let resetInput = htmlToElement(`
+				<div class="radio-container">
+					<input
+						type="radio"
+						name="activeAssessor"
+						id="${dialog.id}_assessor-radio_none"
+						value=""
+						${activeAssessor ? "" : "checked"}
+					/>
+					<label for="${dialog.id}_assessor-radio_none">None</label>
+				</div>
+			`);
+		assessorRadioGroup.append(resetInput);
+
+		// Generate the inputs and add them to the group
+		for (let assessor of assessment.assessors) {
+			let input = createAssessorRadioInput({
+				dialog: dialog,
+				assessor: assessor,
+			});
+			assessorRadioGroup.append(input);
+
+			// If there is an active assessor, set it to checked
+			if (activeAssessor && assessor === activeAssessor) {
+				input.querySelector("input").checked = true;
+				input.querySelector("input").setAttribute("checked", "");
 			}
 		}
 	};
@@ -1426,17 +1660,9 @@ let schoolList = {
 
 		let dialog = selectAssessorDialog as HTMLDialogElement;
 
-		let assessorRadioGroup = dialog?.querySelector(".assessor-radio-group");
-
-		if (!dialog || !assessorRadioGroup) return;
-
-		assessorRadioGroup.innerHTML = "";
-
-		// Generate the HTML cards and add them to the DOM
-		for (let assessor of assessment.assessors) {
-			let input = createAssessorRadioInput(assessor);
-			assessorRadioGroup.append(input);
-		}
+		updateAssessorRadioGroup({
+			dialog: dialog,
+		});
 	};
 
 	/**
@@ -1452,21 +1678,10 @@ let schoolList = {
 
 		let dialog = changeAssessorDialog as HTMLDialogElement;
 
-		let assessorRadioGroup = dialog?.querySelector(".assessor-radio-group");
-
-		if (!dialog || !assessorRadioGroup) return;
-
-		assessorRadioGroup.innerHTML = "";
-
-		// Generate the HTML cards and add them to the DOM
-		for (let assessor of assessment.assessors) {
-			let input = createAssessorRadioInput(assessor);
-			assessorRadioGroup.append(input);
-
-			if (assessor === data.uiState.activeAssessor) {
-				input.querySelector("input").checked = true;
-			}
-		}
+		updateAssessorRadioGroup({
+			dialog: dialog,
+			activeAssessor: data.uiState.activeAssessor,
+		});
 	};
 
 	/**
@@ -1493,29 +1708,53 @@ let schoolList = {
 		});
 
 		let callout = dialog.querySelector(".callout");
-
 		let colour = assessment.status === "In Progress" ? "blue" : "green";
-
 		callout.setAttribute("data-theme", colour);
+
+		let dateExportedField = dialog.querySelector(
+			'.field-container:has([data-field="dateExported"])',
+		);
+		let dateModifiedField = dialog.querySelector(
+			'.field-container:has([data-field="dateModified"])',
+		);
+		let exportStatus = dialog.querySelector(".export-status");
+
+		if (assessment.dateExported) {
+			dateExportedField.removeAttribute("hidden");
+			dateModifiedField.setAttribute("hidden", "");
+		} else {
+			dateExportedField.setAttribute("hidden", "");
+			dateModifiedField.removeAttribute("hidden");
+		}
+
+		if (assessment.unexportedChanges) {
+			exportStatus.removeAttribute("hidden");
+		} else {
+			exportStatus.setAttribute("hidden", "");
+		}
 	};
 
 	/**
 	 * Update the update-assessment dialog UI from stored assessment data
 	 * @param data
 	 */
-	let updateUpdateAssessmentDialog = (data: {
+	let updateChangeAssessmentInfoDialog = (data: {
 		uiState: State;
 		assessments: Assessment[];
 	}) => {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		let dialog = updateAssessmentDialog as HTMLDialogElement;
+		let dialog = changeAssessmentInfoDialog as HTMLDialogElement;
 
 		updateAssessmentFields({
 			assessment: assessment,
 			dialog: dialog,
 		});
+
+		let districtSelect = dialog.querySelector('select[name="district"]');
+
+		revealSchoolOptionGroup(districtSelect);
 
 	};
 
@@ -1528,68 +1767,69 @@ let schoolList = {
 		assessments: Assessment[];
 	}) => {
 		let dialog = openAssessmentDialog;
-
-		let savedAssessmentList = dialog?.querySelector(
-			"#saved-assessment-list",
-		);
+		let savedAssessmentList = dialog?.querySelector("ul.saved-assessments");
 
 		if (!dialog || !savedAssessmentList) return;
 
+		// Clear out the list
 		savedAssessmentList.innerHTML = "";
 
+		// Create a shallow copy of the array
+		let assessments = [...data.assessments];
+
 		// Sort array of assessments by date modified
-		data.assessments.sort((a, b) => b.dateModified - a.dateModified);
+		assessments.sort((a, b) => b.dateModified - a.dateModified);
 
-		// Get the index of the active assessment
-		let activeIndex = findIndexByKey(
-			data.assessments,
-			"id",
-			data.uiState.activeAssessmentId,
-		);
+		let activeAssessmentId = data.uiState.activeAssessmentId;
 
-		// Move it to the top of the array, if not already
-		if (activeIndex > 0) {
-			let [activeItem] = data.assessments.splice(activeIndex, 1);
-			data.assessments.unshift(activeItem);
+		if (activeAssessmentId) {
+			// Get the index of the active assessment
+			let activeIndex = findIndexByKey(
+				assessments,
+				"id",
+				activeAssessmentId,
+			);
+
+			// Move it to the top of the array, if not already
+			if (activeIndex > 0) {
+				let [activeItem] = assessments.splice(activeIndex, 1);
+				assessments.unshift(activeItem);
+			}
 		}
 
 		// Generate the HTML cards and add them to the DOM
-		for (let i = 0; i < data.assessments.length; i++) {
-			let assessment = data.assessments[i];
+		for (let i = 0; i < assessments.length; i++) {
+			let assessment = assessments[i];
 			let active = false;
 
 			if (typeof assessment === "object" && assessment !== null) {
-				if (i === 0) active = true;
+				if (activeAssessmentId && i === 0) active = true;
 
 				let card = createAssessmentCard(assessment, active);
 				savedAssessmentList.append(card);
 			}
 		}
-
-		//TODO: Sort cards by recently modified
 	};
 
 	/**
 	 * Update the open-assessment dialog UI from stored assessment data
 	 * @param data
 	 */
-	let updateSaveAssessmentDialog = (data: {
+	let updateExportAssessmentDialog = (data: {
 		uiState: State;
 		assessments: Assessment[];
 	}) => {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		let dialog = saveAssessmentDialog as HTMLDialogElement;
+		let dialog = exportAssessmentDialog as HTMLDialogElement;
 
 		updateAssessmentFields({
 			assessment: assessment,
 			dialog: dialog,
 		});
 
-		// TODO: Extract update form method from view so that it can be used here as well to update Status
-
-		// let url = generateSaveUrl();
+		// TODO: Generate collaboration url and update it in the dialog;
 	};
 
 	//
@@ -1599,88 +1839,129 @@ let schoolList = {
 	subscribe(updateSelectAssessorDialog);
 	subscribe(updateChangeAssessorDialog);
 	subscribe(updateInfoAssessmentDialog);
-	subscribe(updateUpdateAssessmentDialog);
+	subscribe(updateChangeAssessmentInfoDialog);
 	subscribe(updateOpenAssessmentDialog);
-	subscribe(updateSaveAssessmentDialog);
+	subscribe(updateExportAssessmentDialog);
+
+	let touchedFormFields = new Set();
 
 	document.addEventListener("click", (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		// TODO: Refactor the following two if statements to reduce code
-		if (target.matches("#create-assessment-submit")) {
+		if (target.matches("button.create-assessment")) {
+			let dialog = target.closest("dialog");
 			let form = target.closest("form");
+			let formValidity = validateForm(form);
+
 			let values: {};
 
-			if (form.reportValidity()) {
-				values = getFormValues(form);
+			if (!formValidity) return;
 
-				createAssessment(values);
+			// Get the form values and create the assessment
+			values = getFormValues(form);
+			createAssessment(values);
 
-				// Clear form
-				form.reset();
-				let formLists = form.querySelectorAll("ul[data-field]");
-				for (let list of formLists) {
-					list.innerHTML = "";
-				}
-
-				// Open select assessor dialog
-				openDialog("select-assessor");
-			} else {
-				console.warn("Form is incomplete");
-				// TODO: Display warning that form is incomplete
+			// Clear the form
+			form.reset();
+			let formLists = form.querySelectorAll("ul[data-field]");
+			for (let list of formLists) {
+				list.innerHTML = "";
 			}
+
+			// Reset the form
+			let forms = dialog.querySelectorAll("form");
+			for (let form of forms) {
+				resetForm({form:form});
+			}
+
+			// Open select assessor dialog
+			openDialog("select-assessor-dialog");
 		}
 
 		if (target.matches("button.update-assessor")) {
 			let dialog = target.closest("dialog");
-			console.log("Dialog", dialog);
-
 			let form = target.closest("form");
+			let formValidity = validateForm(form);
 
 			let values: {};
 
-			if (form.reportValidity()) {
-				values = getFormValues(form);
-				console.log("Value", values);
+			if (!formValidity) return;
 
-				setState(values);
+			// Get the form values and update the active assessor
+			values = getFormValues(form);
+			setState(values);
 
-				// Close the dialog
-				dialog.close();
-			} else {
-				console.warn("Form is incomplete");
-				// TODO: Display warning that form is incomplete
-			}
+			// Close the dialog
+			dialog.close();
 		}
 
 		if (target.matches("button.update-assessment")) {
 			let dialog = target.closest("dialog");
-			console.log("Dialog", dialog);
-
 			let form = target.closest("form");
+			let formValidity = validateForm(form);
 
-			let values: {};
+			let values = {} as any;
 
-			if (form.reportValidity()) {
-				values = getFormValues(form);
-				console.log("Value", values);
+			if (!formValidity) return;
+			
+			let assessment = getActiveAssessmentData();
 
-				setAssessment(values);
+			// Get the form values
+			values = getFormValues(form);
 
-				setState({
-					unsavedChanges: true,
+			let changedValues = {};
+			let updatedKeys = [];
+
+			for (let [key, value] of Object.entries(values)) {
+				if (isEqual(value, assessment[key])) continue;
+				updatedKeys.push(key);
+				changedValues[key] = value;
+			}
+
+			if (Object.keys(changedValues).length !== 0) {
+
+				values = changedValues;
+		
+				values.unexportedChanges = true;
+				
+				let formattedKeys = updatedKeys.map((value) => {
+					return value.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
 				});
+				
+				values.changeLog = updateChangeLog({
+					message: `Updated ${joinWithAnd(formattedKeys)}.`,
+				});
+				
+				setAssessment(values);
+				
+				let activeAssessor = getActiveAssessor();
+	
+				if (activeAssessor !== null && (!Array.isArray(values.assessors) || !values.assessors.includes(activeAssessor))) {
 
-				// Close the dialog
-				dialog.close();
-			} else {
-				console.warn("Form is incomplete");
-				// TODO: Display warning that form is incomplete
+					setState({
+						activeAssessor: null,
+					})
+
+				}
+
+			}
+
+			// Close the dialog
+			dialog.close();
+
+			// Reset the form
+			let forms = dialog.querySelectorAll("form");
+			for (let form of forms) {
+				resetForm({
+					form: form,
+					clearLists: false,
+				});
 			}
 		}
 
-		if (target.matches("button.open-assessment")) {
+		// TODO: If there are no assessors identified, the select assessor dialog doesn't make sense. Maybe it should include add assessor?
 
+		if (target.matches("button.open-assessment")) {
 			setState({
 				mode: "assessment",
 				activeAssessmentId: Number(target.getAttribute("data-id")),
@@ -1688,22 +1969,20 @@ let schoolList = {
 			});
 
 			// Open select assessor dialog
-			openDialog("select-assessor");
+			openDialog("select-assessor-dialog");
 		}
 
-		if (target.matches("#upload-csv-button")) {
+		if (target.matches("button.import-file")) {
 		}
 
-		if (target.matches("#paste-url-button")) {
+		if (target.matches("button.import-url")) {
 		}
 
-		if (target.matches("button.save-assessment")) {
-
-			setState({
-				unsavedChanges: false,
-				lastSavedAt: Date.now(),
-			})
-
+		if (target.matches("button.export-assessment")) {
+			setAssessment({
+				unexportedChanges: false,
+				dateExported: Date.now(),
+			});
 		}
 
 		if (target.matches("button.open-dialog")) {
@@ -1712,7 +1991,16 @@ let schoolList = {
 		}
 
 		if (target.matches("button.close-dialog")) {
-			closeDialog(target.closest("dialog"));
+			let targetDialog = target.closest("dialog");
+			closeDialog(targetDialog);
+			let forms = targetDialog.querySelectorAll("form");
+			for (let form of forms) {
+				let clearLists = form.hasAttribute('data-clear-lists');
+				resetForm({
+					form:form,
+					clearLists: clearLists,
+				});
+			}
 		}
 
 		if (target.matches("button.add-assessor")) {
@@ -1724,53 +2012,49 @@ let schoolList = {
 		}
 
 		if (target.matches("button.stop-editing")) {
+			let activeAssessment = getActiveAssessmentData();
 
-			let userData = getUserData();
-
-			if (userData.uiState.unsavedChanges) {
-				openDialog('save-warning');
+			if (activeAssessment.unexportedChanges) {
+				openDialog("export-warning-dialog");
 			} else {
 				setState({
 					mode: "reading",
-					activeAssessment: null,
-				});	
-			}		
-
-			//Todo: Ensure that open assessment cards remove banner
+					activeAssessmentId: null,
+					activeAssessor: null,
+				});
+			}
 		}
 
-		if (target.matches("#save-warning button.close-dialog")) {
-
+		if (target.matches("#export-warning-dialog button.close-dialog")) {
 			setState({
 				mode: "reading",
-				activeAssessment: null,
+				activeAssessmentId: null,
+				activeAssessor: null,
 			});
-
 		}
 
+		if (
+			target.matches(
+				'#status-warning-dialog button.open-dialog[data-dialog="select-assessor-dialog"]',
+			)
+		) {
+			setAssessment({
+				status: "In Progress",
+			});
+
+			setState({
+				mode: "assessment",
+			});
+		}
 	});
 
 	document.addEventListener("input", (event) => {
 		let target = event.target as HTMLInputElement | HTMLSelectElement;
 
 		if (target.matches(`select[name="district"]`)) {
-			let schoolSelect = target
-				.closest("form")
-				.querySelector(`select[name="school"]`) as HTMLSelectElement;
-			let schoolOptionGroups = schoolSelect?.querySelectorAll("optgroup");
 
-			if (target.value !== "") {
-				schoolSelect.removeAttribute("disabled");
-				schoolSelect
-					.querySelector(`.${target.value.toLowerCase()}-schools`)
-					.removeAttribute("hidden");
-			} else {
-				schoolSelect.value = "";
-				schoolSelect.setAttribute("disabled", "");
-				for (let group of schoolOptionGroups) {
-					group.setAttribute("hidden", "");
-				}
-			}
+			revealSchoolOptionGroup(target);
+
 		}
 	});
 
@@ -1778,10 +2062,30 @@ let schoolList = {
 		if (event.key === "Enter") {
 			let target = event.target as HTMLInputElement;
 
-			if (target.matches(`input[name="assessor"]`)) {
+			if (target.matches(`input.assessor`)) {
 				addAssessorToList(target);
 				// FIX: Not working
 			}
 		}
 	});
+
+	document.addEventListener("focusout", (event) => {
+		let target = event.target as any;
+
+		if (target.matches("select[required], input[required]")) {
+			touchedFormFields.add(target);
+			validateInput(target);
+		}
+	});
+
+	document.addEventListener("change", (event) => {
+		let target = event.target as any;
+
+		if (target.matches("select[required], input[required]")) {
+			touchedFormFields.add(target);
+			validateInput(target);
+		}
+	});
 </script>
+
+<!-- TODO: New dialog is not triggering select-assessor dialog -->

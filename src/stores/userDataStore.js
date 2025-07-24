@@ -14,17 +14,16 @@ let key = 'user';
 let data = {
 	uiPreferences: {
 		theme: 'light',
+		schemaVersion: '0.1'
 	},
 	uiState: {
 		activeAssessmentId: null,
 		activeAssessor: null,
-		changeHistory: [], 
 		lastModifiedPage: null,
-		lastSavedAt: null,
 		lastVisitedPage: typeof window !== 'undefined' ? window.location.pathname : null,
 		mode: 'reading',
 		onboardingCompleted: false,
-		unsavedChanges: false,
+		schemaVersion: '0.1',
 	},
 	assessments: [],
 };
@@ -70,8 +69,7 @@ let getActiveAssessmentData = () => {
 /**
  * Get a human-readable date
  */
-let getAssessmentDate = (type) => {
-	let assessment = getActiveAssessmentData();
+let getAssessmentDate = ({assessment = getActiveAssessmentData(), type}) => {
 	if (!assessment) return;
 	return formatDateHTML(assessment[type]);
 };
@@ -79,21 +77,36 @@ let getAssessmentDate = (type) => {
 /**
  * Get the active assessment name
  */
-let getAssessmentName = () => {
-	let assessment = getActiveAssessmentData();
+let getAssessmentName = (assessment = getActiveAssessmentData()) => {
 	if (!assessment) return;
 	return `${assessment.reportingYear} – ${assessment.school}`;
 };
 
 /**
- * @returns {string} A human-readable save status
+ * Get the active assessor name
  */
-let getSaveStatus = () => {
-	let { unsavedChanges, lastSavedAt } = data.uiState;
+let getActiveAssessor = () => {
+	if (!data.uiState.activeAssessor) return null;
+	return data.uiState.activeAssessor;
+};
 
-	if (unsavedChanges) {
-		if (lastSavedAt) {
-			let diff = Date.now() - lastSavedAt;
+/**
+ * Get the continuum consideration count
+ */
+let getConsiderationCount = () => {
+	return countPromise;
+}
+
+/**
+ * @returns {string} A human-readable export status
+ */
+let getExportStatus = (assessment = getActiveAssessmentData()) => {
+
+	let { unexportedChanges, dateExported } = assessment;
+
+	if (unexportedChanges) {
+		if (dateExported) {
+			let diff = Date.now() - dateExported;
 			let seconds = Math.floor(diff / 1000);
 			let minutes = Math.floor(seconds / 60);
 
@@ -110,8 +123,7 @@ let getSaveStatus = () => {
 /**
  * Get the active assessment status colour
  */
-let getStatusColour = () => {
-	let assessment = getActiveAssessmentData();
+let getStatusColour = (assessment = getActiveAssessmentData()) => {
 	if (!assessment) return;
 	let colour = assessment.status === 'In Progress' ? 'blue' : 'green';
 	return colour;
@@ -121,7 +133,6 @@ let getStatusColour = () => {
  * Notify all components of data update
  */
 let notify = () => {
-	console.log('Notifying...', subscribers);
 	for (let fn of subscribers) fn(structuredClone(data));
 };
 
@@ -164,7 +175,6 @@ let setAssessment = (update) => {
 		data.assessments.push(update);
 	} else {
 		update.lastModifiedBy = data.uiState.activeAssessor ?? null;
-		console.log(data.assessments[index]);
 		Object.assign(data.assessments[index], update);
 	}
 	save();
@@ -182,14 +192,18 @@ let createAssessment = (inputs) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = (typeof highestId === 'number' && !isNaN(highestId)) ? highestId + 1 : 1;
 
-
-
 	let assessment = {
 		assessors: assessors,
-		componentPhase: {},
+		changeLog: [{
+			date: Date.now(),
+			assessor: null,
+			message: 'Assessment created.', 	
+		}],
+		continuumCompletion: {},
 		considerationsEstablished: [],
 		continuumVersion: '1.0',
 		dateCreated: Date.now(),
+		dateExported: null,
 		dateModified: Date.now(),
 		district: district,
 		id: id,
@@ -197,18 +211,109 @@ let createAssessment = (inputs) => {
 		reportingYear: reportingYear,
 		school: school,
 		status: 'In Progress',
+		schemaVersion: '0.1',
+		unexportedChanges: true,
 	};
 
 	setState({
 		activeAssessmentId: id,
 		activeAssessor: null,
 		mode: 'assessment',
-		unsavedChanges: true,
 	})
 
 	setAssessment(assessment);
 
 };
+
+let updateChangeLog = ({assessment = getActiveAssessmentData(), assessor = getActiveAssessor(), message}) => {
+
+	if (!assessment || !message) return;
+
+	let entry = {
+		date: Date.now(),
+		assessor: assessor,
+		message: message, 
+	}
+
+	assessment.changeLog.push(entry);
+
+	if (assessment.changeLog.length > 10) assessment.changeLog.splice(0, 1);
+
+	return assessment.changeLog;
+
+}
+
+let updateContinuumCompletion = async ({assessment = getActiveAssessmentData(), considerationTag, operation}) => {
+
+	if (!assessment || !considerationTag || !/^\d+\.\d+\.\d+$/.test(considerationTag)) return;
+
+	let count = await getConsiderationCount();
+
+	if (!count) return;
+
+	// Get the connections
+	let phase = count[considerationTag].phase;
+	let indicator = count[considerationTag].indicator;
+	let component = count[considerationTag].component;
+
+	let completion = assessment.continuumCompletion;
+	if (!completion) return;
+
+	let updateEntry = (key, system) => {
+
+		let entry = completion[key] ?? {
+			totalCount: 0,
+			initiatingCount: 0,
+			implementingCount: 0,
+			developingCount: 0,
+			sustainingCount: 0,
+			totalRatio: 0,
+			initiatingRatio: 0,
+			implementingRatio: 0,
+			developingRatio: 0,
+			sustainingRatio: 0,
+			phase: 'Initiating'
+		};
+
+		let phaseCountKey = `${phase}Count`;
+		let phaseRatioKey = `${phase}Ratio`;
+
+		if (operation === 'add') {
+			entry.totalCount += 1;
+			entry[phaseCountKey] += 1;
+		} else {
+			entry.totalCount -= 1;
+			entry[phaseCountKey] -= 1;
+		}
+
+		entry.totalRatio = entry.totalCount / count[system].total;
+		entry[phaseRatioKey] = entry[phaseCountKey] / count[system][phase];
+
+		if ((entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) || entry.initiatingRatio === 1) {
+			entry.phase = 'Implementing';
+			if ((entry.implementingRatio >= 0.75 && entry.developingRatio >= 0.25) || entry.implementingRatio === 1) {
+				entry.phase = 'Developing';
+				if ((entry.developingRatio >= 0.75 && entry.sustainingRatio >= 0.25) || entry.developingRatio === 1) {
+					entry.phase = 'Sustaining';
+				}
+			}
+		} else {
+			entry.phase = 'Initiating';
+		}
+
+		completion[key] = entry;
+
+	};
+
+	updateEntry('continuum', 'continuum');
+	updateEntry(indicator, indicator);
+	updateEntry(component, component);
+
+	console.log('Updated Completion', completion);
+
+	return completion;
+
+}
 
 /**
  * Subscribe to data updates
@@ -224,6 +329,7 @@ let subscribe = (fn) => {
 // Inits
 //
 
+let countPromise = fetch('/consideration-count.json').then(res => res.json());
 save();
 notify();
 
@@ -232,4 +338,4 @@ notify();
 // Exports
 //
 
-export { getActiveAssessmentData, getAssessmentDate, getAssessmentName, getSaveStatus, getStatusColour, getUserData, subscribe, setPreferences, setState, createAssessment, setAssessment };
+export { updateChangeLog, getActiveAssessmentData, getAssessmentDate, getAssessmentName, getActiveAssessor, getExportStatus, getStatusColour, getUserData, subscribe, setPreferences, setState, createAssessment, setAssessment, updateContinuumCompletion };

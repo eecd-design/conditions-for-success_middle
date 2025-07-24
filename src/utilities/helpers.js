@@ -70,7 +70,7 @@ let formatDateHTML = (timestamp) => {
 			return `<span class="time">, ${str}</span>`;
 		})
 		.join("");
-};	
+};
 
 /**
  * Returns the human-readable time difference between two date strings or timestamps.
@@ -123,6 +123,35 @@ let htmlToElement = (html) => {
 };
 
 /**
+ * Check if two values are equal, including shallow array comparison
+ * @param {*} a
+ * @param {*} b
+ * @returns {boolean}
+ */
+let isEqual = function (a, b) {
+	if (Array.isArray(a) && Array.isArray(b)) {
+		if (a.length !== b.length) return false;
+		for (let i = 0; i < a.length; i++) {
+			if (a[i] !== b[i]) return false;
+		}
+		return true;
+	}
+	return a === b;
+};
+
+/**
+ * Join keys with commas and "and" before the last
+ * @param {string[]} arr
+ * @returns {string}
+ */
+let joinWithAnd = function (arr) {
+	if (arr.length === 0) return '';
+	if (arr.length === 1) return arr[0];
+	if (arr.length === 2) return `${arr[0]} and ${arr[1]}`;
+	return `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
+};
+
+/**
  * Converts a kebab-case string to camelCase.
  * @param {string} str - The kebab-case string.
  * @returns {string} The camelCase version.
@@ -139,4 +168,4 @@ let sanitizeHTML = (input) => {
 		.replace(/'/g, "&#039;");
 }
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, kebabToCamel, sanitizeHTML };
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML };

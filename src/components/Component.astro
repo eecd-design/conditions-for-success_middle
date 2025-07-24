@@ -1,12 +1,20 @@
 ---
 import { getCollection, render } from "astro:content";
 import Accordion from "../components/Accordion.astro";
+import ResourceIcons from "./icons/ResourceIcons.astro";
+import PhaseIcons from "./icons/PhaseIcons.astro";
 import IconFlag from "./icons/IconFlag_24.astro";
+import IconFocus from "./icons/IconTarget_20.astro";
+import IconCompass from "./icons/IconCompass_14.astro";
+import IconFilter from "./icons/IconFilter_16.astro";
+import IconArrow from "./icons/IconArrowRight_16.astro";
+import IconCheckmark from "./icons/IconCheckmark_20.astro";
+import IconDownload from "./icons/IconDownload_16.astro";
+import IconExternal from "./icons/IconExternal_16.astro";
 
 const { entry } = Astro.props;
 
-// console.log(entry);
-// console.log(entry.data.initiating);
+console.log(entry);
 
 // Store the path to the current component
 const pathToComponent = `src/content/components/${entry.id}`;
@@ -54,83 +62,724 @@ let focuses = Object.fromEntries(allFocuses
 // Get all resources
 let allResources = await getCollection("resources");
 
+let filterResourcesByPhase = (resources, phase) => {
+	
+	return resources.filter((resource) => {
+
+		let targetIndicator = entry.data?.tag.split('.')[0];
+		let targetComponent = entry.data?.tag;
+		let targetConsiderations = new Set(entry.data[phase]?.considerations.map((c) => c.tag));
+
+		let matchesIndicator = resource.data.linkedIndicators.includes(targetIndicator);
+		let matchesComponent = resource.data.linkedComponents.includes(targetComponent);
+		let matchesConsideration = false;
+		for (let consideration of resource.data.linkedConsiderations) {
+			if (targetConsiderations.has(consideration)) matchesConsideration = true;
+		}
+
+		if (matchesIndicator || matchesComponent || matchesConsideration) {
+			return resource
+		}
+
+	})
+}
+
+let phases = [
+	{
+		key: 'initiating',
+		title: 'Initiating',
+		resources: filterResourcesByPhase(allResources, 'initiating'),
+	},
+	{
+		key: 'implementing',
+		title: 'Implementing',
+		resources: filterResourcesByPhase(allResources, 'implementing'),
+	},
+	{
+		key: 'developing',
+		title: 'Developing',
+		resources: filterResourcesByPhase(allResources, 'developing'),
+	},
+	{
+		key: 'sustaining',
+		title: 'Sustaining',
+		resources: filterResourcesByPhase(allResources, 'sustaining'),
+	},
+]
+
 ---
 
-<p class="current-phase" hidden></p>
+<section data-component-tag={entry.data.tag}>
 
-<h2 id={entry.id}>
-    <span class="tag" data-font-type="sans-serif">
-        <span class="number">{entry.data?.tag}</span>
-    </span>
-    <span class="title">{entry.data?.title}</span>
-</h2>
+	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment"></p>
+	
+	<h2 id={entry.id}>
+		<span class="tag" data-font-type="sans-serif">
+			<span class="number">{entry.data?.tag}</span>
+		</span>
+		<span class="title">{entry.data?.title}</span>
+	</h2>
+	
+	{ question && question.rawContent().trim().length > 0 && (
+	
+		<div class="reflection-question callout" data-style="outline" data-on-path-elem="heading">
+			<h3 class="heading">Reflection Question</h3>
+			<question.Content />
+		</div>
+	
+	)}
+	
+	{ goal && goal.rawContent().trim().length > 0 && (
+		<h3>
+			<IconFlag/>
+			<span class="text">Goal</span>
+		</h3>
+		<goal.Content />
+	)}
+	
+	<div class="accordion-group">
+	
+		{ phases.map((phase) => {
+	
+			if (!entry.data) return;
+	
+			let focus = focuses[phase.key];
+			let considerations = entry.data[phase.key]?.considerations ?? null;
+			let considerationsCount = considerations ? considerations.length : null;
+			let resources = phase.resources;
+	
+			return (
+	
+				<Accordion title={phase.title} phase={phase.key}>
+	
+					<PhaseIcons phase={phase.key} slot="button-icon"/>
+	
+					{ considerationsCount && (
+						<span class="considerations-status label-container field-container" slot="button-meta">
+							<span class="label" data-field="considerationsEstablished">0</span>&nbsp;/ {considerationsCount} Established
+						</span>
+					)}
+	
+					{/* TODO: Developing icon needs updating */}
+	
+					<div>
+	
+						{
+							focus && focus.rawContent().trim().length > 0 && (
+								<div class="focus">
+									<h4 class="label">
+										<IconFocus />
+										<span>Focus</span>
+									</h4>
+									<div class="statement">
+										<focus.Content />
+									</div>
+								</div>
+							)
+						}
+	
+						{
+							considerations && considerationsCount > 0 && (
+	
+								<div class="considerations">
+									<ul>
+										{
+											considerations.map((consideration) => {
+	
+												return (
+													<li>
+														<form>
+															<label>
+	
+																<input name="considerationsEstablished" type="checkbox" value={consideration.tag} data-phase={phase.key}/>
+	
+																<IconCheckmark/>
+	
+																<span class="tag">{consideration.tag}</span>
+	
+																{consideration.compass && (
+																	<IconCompass />
+																)}
+	
+															</label>
+														</form>
+	
+														<span class="description">
+															<p>{consideration.description}</p>
+															<a href={`#${entry.id}_${phase.key}-resources&filter=${consideration.tag}`}>
+																<span class="icon-container"><IconArrow /></span>
+																<span>View relevant resources</span>
+															</a>
+														</span>
+	
+	
+	
+													</li>
+												)
+											})
+										}
+									</ul>
+								</div>
+	
+							)
+						}
+	
+						{
+							resources && (
+	
+								<div class="resources" id={`${entry.id}_${phase.key}-resources`}>
+	
+									<div class="list-header">
+										<h4 class="heading">Resources</h4>
+	
+										{ considerations && considerationsCount > 0 && (
+	
+											<div class="filters">
+												<span class="label">
+													<IconFilter />
+													<span>Filters:</span>
+												</span>
+												<div class="button-group">
+													<button type="button" data-size="small">Clear All</button>
+													{
+														considerations.map((consideration) => (
+															<button type="button" data-size="small" value={consideration.tag}>{consideration.tag}</button>
+														))
+													}
+												</div>
+											</div>
+	
+										)}
+									</div>
+	
+									<ul class="list">
+	
+										{
+											resources.map((resource) => {
+	
+												let category = resource.data.category;
+	
+												return (
+	
+													<li>
+														<a href={resource.data.source.filePath ? resource.data.source.filePath : resource.data.source.url} data-indicators={resource.data.linkedIndicators} data-components={resource.data.linkedComponents} data-considerations={resource.data.linkedConsiderations}>
+															<ResourceIcons category={category} />
+															<div class="text-container">
+																<span class="text">{resource.data.title}</span>
+																<div class="icon-group">
+																	{category === 'document'
+																		|| category === 'presentation'
+																		? <IconDownload/> : ''}
+																	{category === 'audio'
+																		|| category === 'video'
+																		|| category === 'website'
+																		? <IconExternal/> : ''}
+																</div>
+															</div>
+														</a>
+													</li>
+	
+												)
+	
+											}
+										)}
+	
+									</ul>
+	
+								</div>
+							)
+						}
+	
+					</div>
+	
+				</Accordion>
+	
+			)
+	
+		}) }
+	
+	</div>
 
-{ question && question.rawContent().trim().length > 0 && (
+</section>
 
-    <div class="callout" data-style="outline" data-on-path-elem="heading">
-        <h3 class="heading">Reflection Question</h3>
-        <question.Content />
-    </div>
+<style is:global>
 
-)}
+	/*
+	** PHASE STATUS
+	------------------------------*/
 
-{ goal && goal.rawContent().trim().length > 0 && (
-    <h3>
-        <IconFlag/>
-        <span class="text">Goal</span>
-    </h3>
-    <goal.Content />
-)}
+	.phase-status {
+		line-height: 1.2;
+		margin: 0 0 1rem;
+		color: var(--colour-ui-accent-subtle)
+	}
 
-<div class="accordion-group">
+	[data-mode="assessment"] .phase-status ~ h2 {
+		margin-top: 0;
+	}
 
-	<Accordion title="Initiating" componentData={{
-		id: entry.id,
-		tag: entry.data?.tag,
-		focus: focuses?.initiating,
-		considerations: entry.data?.initiating?.considerations,
-		resources: allResources.filter((resource) => {
 
-			let targetIndicator = entry.data?.tag.split('.')[0];
-			let targetComponent = entry.data?.tag;
-			let targetConsiderations = new Set(entry.data?.initiating?.considerations.map((c) => c.tag));
+	/*
+	** REFLECTION QUESTION
+	------------------------------*/
 
-			let matchesIndicator = resource.data.linkedIndicators.includes(targetIndicator);
-			let matchesComponent = resource.data.linkedComponents.includes(targetComponent);
-			let matchesConsideration = false;
-			for (let consideration of resource.data.linkedConsiderations) {
-				if (targetConsiderations.has(consideration)) matchesConsideration = true;
+	.reflection-question {
+		width: 100%;
+	}
+
+
+
+	/*
+	** FOCUS
+	------------------------------*/
+	
+	.focus {
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 1rem;
+		align-items: center;
+		padding: 0.75rem 1.25rem;
+		background-color: var(--colour-fill-neutral-subtle-muted);
+		border-bottom: 1px solid var(--colour-border-neutral-subtle-muted);
+	}
+
+	.focus .label {
+		--icon-colour: var(--colour-ui-neutral-subtle);
+		--icon-size: 1.25rem;
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 0.5rem;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+		font-size: 1rem;
+		line-height: 1;
+		height: 100%;
+	}
+
+	.focus .statement  {
+		border-left: 1px solid var(--colour-border-neutral-subtle-muted);
+		padding: 0 0 0 1rem;
+	}
+
+
+	/*
+	** CONSIDERATIONS
+	------------------------------*/
+
+	.considerations {
+		padding: 1.25rem;
+	}
+
+	.considerations ul {
+		display: grid;
+		gap: 2rem;
+		padding: 0;
+		list-style-type: none;
+	}
+
+	.considerations ul li {
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 1rem;
+		align-items: start;
+	}
+
+	.considerations form {
+		display: inline-block;
+		min-width: 5rem;
+	}
+
+	.considerations form label {
+		display: inline-grid;
+		grid-auto-flow: column;
+		align-items: center;
+		height: 1.25rem;
+		padding: 0 0.375rem 0 0;
+		background-color: var(--colour-fill-accent-subtle-muted);
+		border-radius: var(--border-radius-small);
+		cursor: pointer;
+		user-select: none;
+		transition: background-color var(--transition-linear-fast);	
+	}
+
+	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
+		background-color: var(--colour-fill-accent-subtle-muted-highlight);
+	}
+
+	.considerations form label:has(input[type="checkbox"]:checked) {
+		background-color: var(--colour-fill-accent-bold-muted);
+	}
+
+	.considerations form label input {
+		height: 1.25rem;
+		width: 1.25rem;
+		opacity: 0;
+		cursor: pointer;
+		z-index: 0;
+	}
+
+	.considerations form label::before {
+		content: "";
+		position: absolute;
+		height: 1.25rem;
+		width: 1.25rem;
+		background-color: var(--colour-background);
+		border: 2px solid var(--colour-border-accent-mid-muted);
+		border-radius: var(--border-radius-small);
+		pointer-events: none;
+		z-index: 1;
+		transition: border-color var(--transition-linear-fast);
+	}
+
+	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked))::before {
+		border-color: var(--colour-border-accent-bold-muted);
+	}
+
+	.considerations form label .tag {
+		margin: 0 0 0 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 700;
+		line-height: 1;
+		color: var(--colour-ui-accent);
+		transition: color var(--transition-linear-fast);
+	}
+
+	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
+		color: var(--colour-ui-accent-bold);
+	}
+
+	.considerations form label:has(input[type="checkbox"]:checked) .tag {
+		color: var(--colour-ui-reverse);
+	}
+	
+	.considerations form label .icon.checkmark {
+		--icon-colour: var(--colour-ui-accent);
+		--icon-size: 1.25rem;
+		position: absolute;
+		z-index: 2;
+		opacity: 0;
+		transition: opacity var(--transition-linear-fast);
+	}
+	
+	.considerations form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked)) .icon.checkmark {
+		opacity: 1;
+	}
+	
+	.considerations form label .icon.compass {
+		--icon-colour: var(--colour-ui-accent);
+		--icon-size: 0.875rem;
+		margin: 0 0 0 0.25rem;
+	}
+
+	.considerations form label:has(input[type="checkbox"]:checked) .icon.compass {
+		--icon-colour: var(--colour-ui-reverse);
+	}
+
+
+	/*
+	** RESOURCES
+	------------------------------*/
+
+	.resources {
+		padding: 1.25rem;
+	}
+
+	.resources .list-header {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		margin: 0 0 1.5rem;
+	}
+
+	.resources .list-header .heading {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 1.5rem;
+		flex-grow: 1;
+		margin: 0;
+		font-size: 1rem;
+		text-transform: uppercase;
+	}
+
+	.resources .list-header .heading::after {
+		content: "";
+		display: inline-block;
+		height: 2px;
+		width: 100%;
+		background-color: var(--colour-border-neutral-subtle-muted);
+	}
+
+	.resources .list-header .filters {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.resources .list-header .filters .label {
+		--icon-colour: var(--colour-ui-neutral-subtle);
+		--icon-size: 1rem;
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.875rem;
+		font-weight: 700;
+	}
+
+	.resources .list-header .filters .button-group {
+		--group-gap: 0.5rem;
+	}
+
+	.resources .list {
+		display: grid;
+		gap: 0.5rem;
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+
+	.resources .list a {
+		--icon-colour: var(--colour-ui-accent);
+		--background-colour: var(--colour-fill-accent-subtle-muted);
+
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 0.375rem;
+		align-items: center;
+		cursor: pointer;
+		text-decoration: none;
+	}
+
+	.resources .list a:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-accent-bold);
+		--label-colour: var(--colour-ui-accent-bold);
+		--background-colour: var(--colour-fill-accent-subtle-muted-highlight);
+	}
+
+	.resources .list a .icon-and-label-container {
+		--container-background-colour: var(--colour-fill-accent-subtle-muted);
+		--container-border-radius: var(--border-radius-normal);
+		--container-padding: 0.5rem;
+	}
+
+	.resources .list a:is(:hover, :focus-visible) .icon-and-label-container {
+		--icon-colour: var(--colour-ui-accent-bold);
+		--container-background-colour: var(--colour-fill-accent-subtle-muted-highlight);
+	}
+
+	.resources .list a .text-container {
+		display: flex;
+		align-items: center;
+		flex-flow: row nowrap;
+		flex-grow: 1;
+		background-color: var(--colour-fill-accent-subtle-muted);
+		border-radius: var(--border-radius-normal);
+		height: 2.5rem;
+		padding: 0 0.75rem;
+		outline-color: transparent;
+		transition: 
+			outline-color var(--transition-linear-fast),
+			text-decoration-color var(--transition-linear-fast);
+	}
+
+	.resources .list a:is(:hover, :focus-visible) .text-container {
+		outline: 2px solid var(--colour-border-accent-subtle-muted);
+		outline-offset: -1px;
+		background-color: transparent;
+	}
+
+	.resources .list a .text-container .text {
+		flex-grow: 1;
+	}
+
+	.resources .list a .text-container .icon-group {
+		--icon-size: 1rem;
+	}
+
+
+</style>
+
+<script>
+	//
+	// Imports
+	//
+
+	import {
+		findIndexByKey,
+	} from "src/utilities/helpers.js";
+	import {
+		updateChangeLog,
+		getActiveAssessmentData,
+		subscribe,
+		setState,
+		setAssessment,
+		updateContinuumCompletion
+	} from "src/stores/userDataStore.js";
+
+	//
+	// Variables
+	//
+
+
+	//
+	// Methods
+	//
+
+	let updateConsiderations = () => {
+
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+		
+		let currentIndicatorTag = document.querySelector('main').getAttribute('data-indicator-tag');
+		if (!currentIndicatorTag) return;
+
+		let relevantConsiderationsEstablished = assessment.considerationsEstablished.filter((consideration) => {
+
+			if (!consideration) return;
+
+			// Match pattern like 1.2.3
+			let match = consideration.match(/^(\d+)\.\d+\.\d+$/);
+			if (!match) return false;
+			
+			// Check if the first digit matches the current indicator
+			return match[1] === currentIndicatorTag;
+
+		});
+
+
+		// 1. Update checkboxes to match checked state
+		for (let consideration of relevantConsiderationsEstablished) {
+
+			let input = document.querySelector(`input[value="${consideration}"]`) as HTMLInputElement;
+
+			input.checked = true;
+
+		}
+
+		// 2. Update consideration status on accordion buttons
+		
+		let completion = {}
+
+		let componentSections = document.querySelectorAll('section[data-component-tag]');
+		
+		for (let component of componentSections) {
+
+			let tag = component.getAttribute('data-component-tag');
+
+			let accordionBtns = component.querySelectorAll('.accordion');
+
+			completion[tag] = {};
+	
+			for (let accordion of accordionBtns) {
+
+				let phase = accordion.getAttribute('data-phase');
+	
+				let panel = accordion.nextElementSibling;
+	
+				let inputs = panel.querySelectorAll('input[name="considerationsEstablished"]');
+				let checkedInputs = panel.querySelectorAll('input[name="considerationsEstablished"]:checked');
+	
+				let considerationStatusField = accordion.querySelector('[data-field="considerationsEstablished"]');
+	
+				if (!considerationStatusField) continue;
+	
+				considerationStatusField.textContent = String(checkedInputs.length);
+	
+				completion[tag][phase] = checkedInputs.length / inputs.length;
+	
 			}
 
-			if (matchesIndicator || matchesComponent || matchesConsideration) {
-				return resource
+		}
+
+		console.log(completion);
+
+
+		// 3. Update the current phase per component
+		let phaseStatusFields = document.querySelectorAll('[data-field="currentPhase"]');
+
+		for (let field of phaseStatusFields) {
+
+			let tag = field.closest('[data-component-tag]')?.getAttribute('data-component-tag');
+
+			if (!tag) return;
+
+			let phase = assessment.continuumCompletion[tag]?.phase;
+
+			if (!phase) return;
+	
+			// TODO: Should this default to showing 'Initiating'? 
+
+			field.textContent = assessment.continuumCompletion[tag].phase;
+
+		}
+
+	}
+
+	//
+	// Inits & Event Listeners
+	//
+
+	subscribe(updateConsiderations);
+
+	document.addEventListener("input", async (event) => {
+
+		let target = event.target as HTMLInputElement;
+
+		if (target.matches(`input[name="considerationsEstablished"]`)) {
+
+			console.log(target.checked);
+
+			let assessment = getActiveAssessmentData();
+
+			let operation = null;
+			let changeMessage = null;
+
+			if (target.checked) {
+
+				if (assessment.considerationsEstablished.includes(target.value)) return;
+
+				assessment.considerationsEstablished.push(target.value);
+
+				operation = 'add';
+
+				changeMessage = `Marked ${target.value} as established`;
+
+			} else {
+
+				let index = assessment.considerationsEstablished.indexOf(target.value);
+
+				if (index === -1) return;
+
+				assessment.considerationsEstablished.splice(index, 1);
+
+				operation = 'substract';
+
+				changeMessage = `Updated ${target.value} as not established`;
+
 			}
 
-		}),
-	}}/>
-	<Accordion title="Implementing" componentData={{
-		id: entry.id,
-		tag: entry.data?.tag,
-		focus: focuses?.implementing,
-		considerations: entry.data?.implementing?.considerations,
-		resources: allResources.filter((resource) => {
+			let updatedChangeLog = updateChangeLog({
+				message: changeMessage,
+			})
 
-			let targetIndicator = entry.data?.tag.split('.')[0];
-			let targetComponent = entry.data?.tag;
-			let targetConsiderations = new Set(entry.data?.implementing?.considerations.map((c) => c.tag));
+			let updatedContinuumCompletion = updateContinuumCompletion({
+				considerationTag: target.value,
+				operation: operation,
+			})
 
-			let matchesIndicator = resource.data.linkedIndicators.includes(targetIndicator);
-			let matchesComponent = resource.data.linkedComponents.includes(targetComponent);
-			let matchesConsideration = false;
-			for (let consideration of resource.data.linkedConsiderations) {
-				if (targetConsiderations.has(consideration)) matchesConsideration = true;
-			}
+			setAssessment({
+				changeLog: updatedChangeLog,
+				considerationsEstablished: assessment.considerationsEstablished,
+				continuumCompletion: updatedContinuumCompletion,
+			})
 
-			if (matchesIndicator || matchesComponent || matchesConsideration) {
-				return resource
-			}
+		}
 
-		}),
-	}}/>
+	});
 
-</div>
+</script>

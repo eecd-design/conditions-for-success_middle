@@ -4,7 +4,7 @@ import IconImplementing from "../icons/IconSeed_24.astro";
 import IconDeveloping from "../icons/IconSapling_24.astro";
 import IconSustaining from "../icons/IconWateringCan_24.astro";
 
-const resourceIcons = {
+const phaseIcons = {
 	initiating: IconInitiating,
 	implementing: IconImplementing,
 	developing: IconDeveloping,
@@ -13,7 +13,7 @@ const resourceIcons = {
 
 const { phase } = Astro.props;
 
-let Icon = resourceIcons[phase.toLowerCase()];
+let Icon = phaseIcons[phase];
 
 ---
 <Icon />

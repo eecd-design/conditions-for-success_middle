@@ -28,9 +28,14 @@ let label = resourceLabels[category];
 
 ---
 
-<div class="icon-and-label-container" data-collapsible>
-	<Icon />
-	<span class="label-container">
-		<span class="label">{label}</span>
-	</span>
-</div>
+{ Icon && label && (
+
+	<div class="icon-and-label-container" data-collapsible>
+		<Icon />
+		<span class="label-container">
+			<span class="label">{label}</span>
+		</span>
+	</div>
+
+)}
+

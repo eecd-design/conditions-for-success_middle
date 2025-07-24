@@ -23,7 +23,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			</span>
 		</div>
 
-		<div class="field-container label-container">
+		<div class="field-container label-container" data-style="shading-and-outline">
 			<span class="label" data-field="status"></span>
 		</div>
 		
@@ -31,7 +31,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 		<button
 			class="open-dialog"
-			data-dialog="info-assessment"
+			data-dialog="info-assessment-dialog"
 			type="button"
 			aria-label="View Assessment Info"
 		>
@@ -50,7 +50,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	<div class="file-group button-group">
 		<button
 			class="open-dialog"
-			data-dialog="create-assessment"
+			data-dialog="create-assessment-dialog"
 			aria-label="New Assessment"
 			type="button"
 			>
@@ -66,7 +66,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		
 		<button
 			class="open-dialog"
-			data-dialog="open-assessment"
+			data-dialog="open-assessment-dialog"
 			aria-label="Open Assessment"
 			type="button"
 			>
@@ -82,24 +82,24 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	<hr class="group-divider" data-restrict-mode="assessment"/>
 	
-	<div class="save-group button-group" data-restrict-mode="assessment"> 
+	<div class="export-group button-group" data-restrict-mode="assessment"> 
 
 		<div class="field-container label-container" data-restrict-status="in-progress">
-			<span class="label" data-field="saveStatus">Unsaved Changes</span>
+			<span class="label" data-field="exportStatus"></span>
 		</div>
 
 		<hr class="item-divider" data-restrict-status="in-progress"/>
 		
 		<button
 			class="open-dialog"
-			data-dialog="save-assessment"
+			data-dialog="export-assessment-dialog"
 			type="button"
-			aria-label="Save"
+			aria-label="Export"
 		>
 			<div class="icon-and-label-container">
 				<IconSave />
 				<span class="label-container">
-					<span class="label">Save</span>
+					<span class="label">Export</span>
 				</span>
 			</div>
 		</button>
@@ -140,7 +140,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 		<button
 			class="open-dialog"
-			data-dialog="change-assessor"
+			data-dialog="change-assessor-dialog"
 			data-restrict-assessor="true"
 			type="button"
 			aria-label="Change Active Assessor"
@@ -155,7 +155,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 		<button
 			class="open-dialog"
-			data-dialog="select-assessor"
+			data-dialog="select-assessor-dialog"
 			data-restrict-assessor="false"
 			type="button"
 			aria-label="Select Active Assessor"
@@ -172,7 +172,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	<hr class="group-divider" data-restrict-mode="assessment"/>
 
-	<div class="mode-group button-group">
+	<div class="mode-group button-group" data-restrict-mode="assessment">
 
 		<button
 			class="stop-editing"
@@ -189,7 +189,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 		<button
 			class="open-dialog"
-			data-dialog="status-warning"
+			data-dialog="status-warning-dialog"
 			type="button"
 			data-restrict-status="complete"
 		>
@@ -231,16 +231,6 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		flex-grow: 1;
 	}
 
-	.assessment-controls .field-container:has([data-field="status"]) {
-		--label-colour: var(--colour-ui-accent-bold);
-		background-color: var(--colour-fill-accent-subtle-vivid);
-		border: 1px solid var(--colour-border-accent-bold-vivid);
-		height: 1.75rem;
-		border-radius: var(--border-radius-small);
-		padding: 0 0.5rem;
-		margin: 0 0.5rem 0 0;
-	}
-
 	.assessment-controls :is(button, [data-style-as="button"]) {
 		--icon-size: 1.25rem;
 		--button-background-colour: transparent;
@@ -275,7 +265,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		gap: 0.75rem		
 	}
 
-	.assessment-controls .field-container:has([data-field="saveStatus"]) {
+	.assessment-controls .field-container:has([data-field="exportStatus"]) {
 		--label-colour: var(--colour-ui-neutral-subtle);		
 	}
 
@@ -298,7 +288,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 </style>
 
 <script>
-	import { getActiveAssessmentData, getAssessmentName, getSaveStatus, getStatusColour, setState, subscribe } from "src/stores/userDataStore";
+	import { getActiveAssessmentData, getAssessmentName, getExportStatus, getStatusColour, setState, subscribe } from "src/stores/userDataStore";
 	import { findObjectByKey, getTimeDifference } from "src/utilities/helpers";
 
 	let updateToolbar = (data) => {
@@ -318,15 +308,13 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		let assessmentField = toolbar?.querySelector(
 			'[data-field="activeAssessmentName"]',
 		);
-		let saveField = toolbar?.querySelector('[data-field="saveStatus"]');
+		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 		let assessorField = toolbar?.querySelector(
 			'[data-field="activeAssessorName"]',
 		);
 
 		// Get the active assessment
 		let activeAssessment = getActiveAssessmentData();
-
-		console.log(activeAssessment);
 
 		if (!activeAssessment) return;
 
@@ -364,15 +352,15 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			assessmentField.setAttribute("title", assessmentStr);
 		}
 
-		// 3. Update the save status
-		if (saveField) {
-			if (uiState.unsavedChanges === undefined || activeAssessment.status === "Complete") {
-				saveField.setAttribute("hidden", "");
+		// 3. Update the export status
+		if (exportField) {
+			if (activeAssessment.unexportedChanges === undefined || activeAssessment.status === "Complete") {
+				exportField.setAttribute("hidden", "");
 			} else {
-				saveField.removeAttribute("hidden");
+				exportField.removeAttribute("hidden");
 			}
 
-			saveField.textContent = getSaveStatus();
+			exportField.textContent = getExportStatus();
 		}
 
 		// 4. Update the assessor name
@@ -390,7 +378,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	};
 
-	let updateToolbarSaveStatus = () => {
+	let updateToolbarExportStatus = () => {
 
 		// Get the toolbar
 		let toolbar = document.querySelector(".assessment-controls");
@@ -398,32 +386,24 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		if (!toolbar) return;
 
 		// Get the update fields
-		let saveField = toolbar?.querySelector('[data-field="saveStatus"]');
+		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 
-		saveField.textContent = getSaveStatus();
+		exportField.textContent = getExportStatus();
 
 	};
 
 	subscribe(updateToolbar);
 
-		document.addEventListener("click", (event) => {
+	document.addEventListener("click", (event) => {
+
 		let target = event.target as HTMLButtonElement;
-
-		if (target.matches("button.start-editing")) {
-
-			setState({
-				mode: "assessment"
-			});
-
-			//Todo: Open warning dialog that assessment is complete, if they accept, open select assessor dialog
-		}
 
 	});
 
 	// Reset save status every minute
 	setInterval(() => {
 
-		updateToolbarSaveStatus();
+		updateToolbarExportStatus();
 
 	}, 60_000);
 	

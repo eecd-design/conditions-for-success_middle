@@ -7,7 +7,7 @@ import Header from "../components/Header.astro";
 import "../styles/normalize.css";
 import "../styles/global.css";
 
-const { pageTitle } = Astro.props;
+const { pageTitle, indicatorTag } = Astro.props;
 
 ---
 
@@ -30,7 +30,7 @@ const { pageTitle } = Astro.props;
     </head>
     <body>
 		<Header />
-		<main data-mode="reading">
+		<main data-mode="reading" data-indicator-tag={indicatorTag ? indicatorTag : null}>
         	<slot />
 		</main>
 		<footer></footer>
@@ -38,7 +38,7 @@ const { pageTitle } = Astro.props;
 
 	<script>
 
-		import { getActiveAssessmentData, getSaveStatus, getUserData, subscribe } from "src/stores/userDataStore";
+		import { getActiveAssessmentData, getExportStatus, getUserData, subscribe } from "src/stores/userDataStore";
 		import { findObjectByKey } from "src/utilities/helpers";
 
 		let updateTheme = (data) => {
@@ -95,9 +95,9 @@ const { pageTitle } = Astro.props;
 
 			// Update the assessor
 			if (!activeAssessor || activeAssessor === undefined) {
-				main.setAttribute('data-assessor', false);
+				main.setAttribute('data-assessor', 'false');
 			} else {
-				main.setAttribute('data-assessor', true);
+				main.setAttribute('data-assessor', 'true');
 			}
 
 		}
@@ -107,17 +107,17 @@ const { pageTitle } = Astro.props;
 		subscribe(updateStatus);
 		subscribe(updateAssessor);
 
-		window.addEventListener('beforeunload', (event) => {
+		// window.addEventListener('beforeunload', (event) => {
 
-			// TODO: Test this
-			let userData = getUserData();
+		// 	// TODO: Determine whether this is desired, as it will fire on page reload, internal navigation, etc.
+		// 	let userData = getUserData();
 
-			if (!userData.uiState.unsavedChanges) return;
+		// 	if (!userData.uiState.unsavedChanges) return;
 
-			event.preventDefault();
-			event.returnValue = '';
+		// 	event.preventDefault();
+		// 	event.returnValue = '';
 
-		});
+		// });
 
 	</script>
 
