@@ -155,7 +155,7 @@ let phases = [
 					<PhaseIcons phase={phase.key} slot="button-icon"/>
 	
 					{ considerationsCount && (
-						<span class="considerations-status label-container field-container" slot="button-meta">
+						<span class="considerations-status label-container field-container"  data-restrict-mode="assessment" slot="button-meta">
 							<span class="label" data-field="considerationsEstablished">0</span>&nbsp;/ {considerationsCount} Established
 						</span>
 					)}
@@ -191,7 +191,7 @@ let phases = [
 														<form>
 															<label>
 	
-																<input name="considerationsEstablished" type="checkbox" value={consideration.tag} data-phase={phase.key}/>
+																<input name="considerationsEstablished" type="checkbox" value={consideration.tag}/>
 	
 																<IconCheckmark/>
 	
@@ -328,6 +328,8 @@ let phases = [
 	}
 
 
+/* TODO: Left align the reflectio nquestion, might need to adjust the padding to match the location of the indicator heading start, or make it very different */
+
 
 	/*
 	** FOCUS
@@ -389,6 +391,8 @@ let phases = [
 		display: inline-block;
 		min-width: 5rem;
 	}
+
+	/* TODO: Instead of min-width, experiment with js or another alternative */
 
 	.considerations form label {
 		display: inline-grid;
@@ -474,6 +478,15 @@ let phases = [
 
 	.considerations form label:has(input[type="checkbox"]:checked) .icon.compass {
 		--icon-colour: var(--colour-ui-reverse);
+	}
+
+	main:not([data-mode="assessment"]) form label {
+		pointer-events: none;
+	}
+
+	main:not([data-mode="assessment"]) form label :is(input, .icon.checkmark),
+	main:not([data-mode="assessment"]) form label::before {
+		display: none;
 	}
 
 
