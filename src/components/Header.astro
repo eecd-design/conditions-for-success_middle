@@ -3,6 +3,7 @@
 import IconSearch from "./icons/IconSearch_24.astro";
 import IconLight from "./icons/IconLight_24.astro";
 import IconDark from "./icons/IconDark_24.astro";
+import SearchDialog from "./SearchDialog.astro";
 
 const { url } = Astro;
 let path = url.pathname;
@@ -20,7 +21,12 @@ let path = url.pathname;
 	</nav>
 
 	<div class="global-controls">
-		<button class="search-toggle" type="button">
+		<button 
+			class="open-dialog"
+			data-dialog="search-dialog"
+			type="button"
+			aria-label="Open Search Dialog"
+		>
 			<div class="icon-and-label-container">
 				<IconSearch />
 				<span class="label-container">
@@ -40,6 +46,8 @@ let path = url.pathname;
 	</div>
 
 </header>
+
+<SearchDialog />
 
 <style is:global>
 

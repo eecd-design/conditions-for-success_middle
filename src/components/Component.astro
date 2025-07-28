@@ -113,7 +113,9 @@ let phases = [
 
 	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment"></p>
 	
-	<h2 id={entry.id}>
+	<!-- TODO: Should we just drop the title for the anchor id? So #component-1-2 instead of #component-1-2_shared-practices... -->
+
+	<h2 id={`component-${entry.id}`}>
 		<span class="tag" data-font-type="sans-serif">
 			<span class="number">{entry.data?.tag}</span>
 		</span>

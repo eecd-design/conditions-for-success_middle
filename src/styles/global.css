@@ -1380,6 +1380,10 @@ dl dd {
 .icon-and-label-container[data-collapsible] .label-container .label {
 	display: inline-block;
 	overflow: hidden;
+	transition: padding var(--transition-ease-medium);
+}
+
+.icon-and-label-container[data-collapsible]:is(:hover, :focus-visible) .label-container .label {
 	padding-left: 0.5rem;
 }
 
