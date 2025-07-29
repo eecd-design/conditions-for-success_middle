@@ -1,0 +1,51 @@
+indicator: high-yield-instructional-practices
+tag: '6.1'
+title: Surface, Deep, Transfer Learning
+initiating:
+  considerations:
+    - tag: 6.1.1
+      description: >-
+        Teachers focus on surface learning strategies like memorization and
+        basic skills acquisition.
+      compass: false
+    - tag: 6.1.2
+      description: >-
+        Little to no emphasis on deeper conceptual understanding or transfer to
+        new contexts.
+      compass: false
+implementing:
+  considerations:
+    - tag: 6.1.3
+      description: >-
+        Teachers incorporate strategies like concept mapping, inquiry-based
+        learning, and problem-solving to promote deep learning.
+      compass: false
+    - tag: 6.1.4
+      description: >-
+        Collaboration is encouraged to design tasks that move students beyond
+        surface learning.
+      compass: false
+developing:
+  considerations:
+    - tag: 6.1.5
+      description: >-
+        Teachers design lessons and assessments where students apply their
+        learning in new, real-world contexts.
+      compass: false
+    - tag: 6.1.6
+      description: >-
+        Cross-disciplinary projects encourage students to integrate knowledge
+        from different learning areas.
+      compass: false
+sustaining:
+  considerations:
+    - tag: 6.1.7
+      description: >-
+        Transfer learning is consistently emphasized through project-based
+        learning, authentic assessments, and interdisciplinary units.
+      compass: false
+    - tag: 6.1.8
+      description: >-
+        Students articulate connections across learning areas and demonstrate
+        independent problem-solving skills.
+      compass: false
