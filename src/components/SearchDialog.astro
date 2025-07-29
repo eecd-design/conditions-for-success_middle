@@ -7,9 +7,9 @@ import IconXmark from "./icons/IconXmark_20.astro";
 import IconWarningSmall from "./icons/IconWarning_16.astro";
 import { getAllCodes } from "node_modules/astro/dist/i18n";
 import ResourceIcons from "./icons/ResourceIcons.astro";
-import IconArrowRight16 from "./icons/IconArrowRight_16.astro";
-import IconDownload16 from "./icons/IconDownload_16.astro";
-import IconExternal16 from "./icons/IconExternal_16.astro";
+import IconArrowRight from "./icons/IconArrowRight_16.astro";
+import IconDownload from "./icons/IconDownload_16.astro";
+import IconExternal from "./icons/IconExternal_16.astro";
 
 let searchList = [];
 
@@ -37,7 +37,7 @@ for (let component of allComponents) {
 		type: 'component',
 		tag: component.data.tag,
 		title: component.data.title,
-		url: `/big-seven/${component.data.indicator}#component-${component.id}`,
+		url: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`,
 		colour: colour,
 	})
 
@@ -46,7 +46,7 @@ for (let component of allComponents) {
 			type: 'consideration',
 			tag: consideration.tag,
 			title: consideration.description,
-			url: `/big-seven/${component.data.indicator}#component-${component.id}?consideration=${consideration.tag}`,
+			url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`,
 			colour: colour,
 		})
 	}
@@ -85,26 +85,7 @@ console.log(searchList);
 		Search
 	</h2>
 
-	<!-- <div
-		class="callout"
-		data-style="shading"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="yellow"
-	>
-		<div class="icon-container">
-			<IconWarningBig />
-		</div>
-
-		<div class="text-container">
-			<p>
-				All information collected below is used exclusively for report
-				generation and is not stored on a central server.
-			</p>
-		</div>
-	</div> -->
-
-	<form data-clear-lists>
+	<form>
 
 		<fieldset>
 			<p
@@ -121,7 +102,6 @@ console.log(searchList);
 					placeholder="Enter search term..."
 					aria-labelledby="search-dialog_heading"
 					aria-describedby="search-dialog_search-input_help, search-dialog_search-input_error"
-					minlength="3"
 					autofocus
 				/>
 			</div>
@@ -134,7 +114,7 @@ console.log(searchList);
 			</p>
 		</fieldset>
 
-		<ul class="search-list" hidden>
+		<ul class="search-results link-list" data-style="divided" hidden>
 
 			{searchList.map((item) => {
 
@@ -152,29 +132,28 @@ console.log(searchList);
 						<a href={item.url}>
 
 							<span class="text-container">
-								<span class="tag label-container" data-style="shading">
-									<span class="label">
-										{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.category)} ${toTitleCase(item.type)}`}</span>
+								<span class="label">
+									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.category)} ${toTitleCase(item.type)}`}
 								</span>
 								{/* TODO: Website Resource or Web Resource? */}
-								<span class="text">{item.title}</span>
+								<span class="text">
+									{item.title}
+								</span>
 							</span>
 
-							{item.type !== 'resource' ? 
+							<span class="icon-container">
+								{item.type !== 'resource' ? 
+									
+									<IconArrowRight classes={['destination']} />
 								
-								<IconArrowRight16 />
-							
-							: 
-							
-								item.external ? 
-
-									<IconExternal16 />
-
-								:
-
-									<IconDownload16 />
-							
-							}
+								: 
+								
+									item.category === 'document' || item.category === 'presentation' ? 
+									
+									<IconDownload classes={['destination']} /> : <IconExternal classes={['destination']} />
+								
+								}
+							</span>
 
 						</a>
 
@@ -192,76 +171,12 @@ console.log(searchList);
 
 <style is:global>
 
+	#search-dialog {
+		margin-top: 2rem;
+	}
 
-	/* TODO: Dialog should be top aligned */
-
-	#search-dialog .search-list {
-		display: flex;
-		flex-flow: column;
-		list-style-type: none;
-		padding: 0;
+	#search-dialog .search-results {
 		margin: 0;
-	}
-
-	#search-dialog .search-list > li {
-		padding: 0.5rem 0;
-		line-height: 1.2;
-	}
-
-	#search-dialog .search-list > li:not(:first-of-type) {
-		border-top: 1px solid var(--colour-border-neutral-subtle-muted);
-	}
-
-	/* TODO: This doesn't work for filtering ^, unless you sort */
-
-	#search-dialog .search-list a {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem;
-		cursor: pointer;
-		font-size: 1rem;
-		line-height: 1.2;
-		text-decoration: none;
-
-		border-radius: var(--border-radius-normal);
-	}
-
-	#search-dialog .search-list a:is(:hover, :focus-visible) {
-		background-color: var(--colour-fill-accent-subtle-muted, var(--colour-fill-neutral-subtle-muted));
-	}
-
-	#search-dialog .search-list a .text-container {
-		display: flex;
-		flex-flow: column nowrap;
-		gap: 0.375rem;
-		flex-grow: 1;
-	}
-
-	/* TODO: Check Resources, icon and label container, and here that background-colour is getting a transition */
-
-	#search-dialog .search-list a .text-container .tag {
-		--label-size: 0.875rem;
-		--label-colour: var(--colour-ui-accent-subtle);
-
-		padding: 0;
-		background-color: transparent;
-		flex-shrink: 0;
-		height: auto;
-	}
-
-	#search-dialog .search-list a:is(:hover, :focus-visible) .text-container .tag {
-		--label-colour: var(--colour-ui-accent-bold);
-	}
-
-	#search-dialog .search-list a > .icon {
-		--icon-size: 1rem;
-		--icon-colour: var(--colour-ui-neutral-subtle);
-	}
-
-	#search-dialog .search-list a:is(:hover, :focus-visible) > .icon {
-		--icon-colour: var(--colour-ui-accent-bold, var(--colour-ui-neutral-bold));
 	}
 
 </style>
@@ -270,50 +185,68 @@ console.log(searchList);
 <script>
 
 /**
- * Filter list
+ * Filters a list of <li> items based on input value, calculates relevance scores,
+ * hides non-matching items, and optionally sorts matching items by relevance.
+ * 
+ * @param {Object} options
+ * @param {HTMLInputElement} options.input - The input element whose value is used to filter the list.
+ * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
+ *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
  */
-let filterList = function({input, list}) {
+let filterList = ({input, list}) => {
 
-    let positiveResults = 0;
+	let results = [];
+	let matches = 0;
+	let presortType = 'byTitle';
 
 	let items = list.querySelectorAll('li');
-
 	let value = input.value.trim();
 
 	console.log('Value', value);
 
     for (const item of items) {
 
-		let match = false;
-
-		// Get the item type
+		// Get the item data
 		let type = item.getAttribute('data-type');
+		let title = item.getAttribute('data-title');
+		let tag = item.getAttribute('data-tag');
 
-		// If not a resource,
-        if (type !== 'resource'){
+		let result = {
+			elem: item,
+			title: title ?? null,
+			tag: tag ?? null,
+			match: false,
+			relevance: 0,
+		}
 
-            // Get the item tag
-            let tag = item.getAttribute('data-tag');
-
-			if (!tag) continue;
-			
+		// 1. Check for tag match
+        if (type !== 'resource' && tag) {
+	
 			// If the tag starts with the input value, show it
 			if (tag.startsWith(value)) {
 				item.removeAttribute('hidden');
-				match = true;
-				positiveResults += 1;
+				result.match = true;
+				matches += 1;
+				result.relevance += 10;
+				presortType = 'byTag';
 				continue;
 			}
 
         }
 
-		// Get the item title
-		let title = item.getAttribute('data-title');
-
+		// 2. Check for title match
 		if (value.includes(' ')) {
 
-			if (title.includes(value)) {
-				match = true;
+			if (title.startsWith(value)) {
+				result.match = true;
+				matches += 1;
+				// Give higher relevance to title start matches
+				result.relevance += 10;
+
+			} else if (title.includes(value)) {
+				result.match = true;
+				matches += 1;
+				result.relevance += 1;
 			}
 
 		} else {
@@ -321,50 +254,45 @@ let filterList = function({input, list}) {
 			// Split into individual words
 			let words = title.split(' ');
 
-			// If a word start with the input value, show the item
-			for (let word of words) {
+			words.forEach((word, index) => {
 				if (word.startsWith(value)) {
-					match = true;
-					break;
+					result.match = true;
+					matches += 1;
+					// Give higher relevance to first word matches
+					result.relevance = index === 0 ? result.relevance + 10 : result.relevance + 1;
 				}
-			}
-
-			// TODO: Create a relevance score so that first word matches float to the top of the list
+			})
 
 		}
 
+		results.push(result);
+
 		// If there's a match, show it, otherwise, hide it
-		if (match) {
+		if (result.match) {
 			item.removeAttribute('hidden');
-			positiveResults += 1;
 		} else {
 			item.setAttribute('hidden', '');
 		}
         
     }
 
-	console.log('Positive Results', positiveResults);
+    if (matches > 1) {
 
-    // if (sort) {
+		sortList({
+			sortType: 'byRelevance',
+			presortType: presortType,
+			list: list,
+			items: results,
+		});
 
-    //     let targetSort = sort;
-    
-    //     if (targetSort.input) {
-    //         targetSort.type = JSON.parse(targetSort.input.value);
-    //     }
-
-    //     if (targetSort.type !== undefined && positiveResults > 0) {
-    //         sortList(targetSort);
-    //     }
-
-    // }
+    }
 
 	let errorMessage = input.closest('fieldset').querySelector('.error');
 
 	if (errorMessage){
 		
 		// If there are no positive results, reveal the error message
-		if (positiveResults === 0) {
+		if (matches === 0) {
 			errorMessage.removeAttribute('hidden');
 			list.setAttribute('hidden', '');
 
@@ -379,136 +307,132 @@ let filterList = function({input, list}) {
 
 
 /**
- * Sort list
- * @param  {Object} targetSort The sort object containing the following data
- * @param  {String} targetSort.type The sort type
- * @param  {Node} targetSort.list The sort list container
- * @param  {Node} targetSort.sublists The sort sublist containers
- * @param  {Nodelist} targetSort.items The sort list items
+ * Sorts and reorders list items based on a given type and optional presort.
+ *
+ * @param {Object} options
+ * @param {string} [options.sortType='byTitle'] - Primary sort: 'byTitle', 'byDate', 'byDateNumAsc', 'byDateNumDesc', or 'byRelevance'.
+ * @param {string|null} [options.presortType=null] - Optional presort: 'byTag' or 'byTitle'.
+ * @param {HTMLElement} options.list - Container holding the list items.
+ * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
  */
-let sortList = function(targetSort) {
+let sortList = ({sortType = 'byTitle', presortType = null, list, items}) => {
 
-    let {type, list, sublists, items} = targetSort;
+	console.log(items);
 
-    if (type.list) {
+    if (!list || !items || !Array.isArray(items)) return;
 
-        // Reset items list
-        items = list.querySelectorAll('[data-item]');
-
-        // Filter list to only include active (shown) items
-        items = Array.from(items).filter((item) => {
-            return !item.hasAttribute('hidden');
-        })
-
-        // If list has sublists and there is no sublist sort defined, hide them
-        if (sublists && !type.sublist) {
-            for (let sublist of sublists){
-                sublist.setAttribute('hidden', '');
-            }
-        }
-
-        // If sorting by priority,
-        if (type.list.id === 'byPriority'){
-
-            // Presort the list alphabetically
-            items.sort((a,b) => {
-                a = a.dataset.title;
-                b = b.dataset.title;
-                if (a < b) return -1;
-                if (a > b) return 0;
-                return 0;
-            })
-
-            // Ensure all items have priority assigned
-            for (let item of items) {
-                if (!item.dataset.priority) {
-                    item.dataset.priority = 0;
-                }
-            }
-
-        }
-
-        items.sort((a,b) => {
-            if (type.list.id === 'byName'){
-                a = a.dataset.title;
-                b = b.dataset.title;
-                if (a < b) return -1;
-                if (a > b) return 0;
-                return 0;
-            } else if (type.list.id === 'byDate'){
-                a = Date.parse(a.dataset.date);
-                b = Date.parse(b.dataset.date);
-                return b - a;
-            } else if (type.list.id === 'byDateNumAsc'){
-                a = a.dataset.date;
-                b = b.dataset.date;
-                return a - b;
-            } else if (type.list.id === 'byDateNumDesc'){
-                a = a.dataset.date;
-                b = b.dataset.date;
-                return b - a;
-            } else if (type.list.id === 'byPriority'){
-                a = a.dataset.priority;
-                b = b.dataset.priority;
-                return b - a;
-            }
-        
-        })
-
-        if (list.hasAttribute('data-list-priority-selected')) {
-            console.log('Priority Sorting');
-            items.sort((a,b) => {
-                a = a.querySelector(':checked') ? 1 : 0;
-                b = b.querySelector(':checked') ? 1 : 0;
-                return b - a;
-            })
-        }
-
-        // If sorting by priority, add each item to the bottom of the list
-        // * this accounts for the rounded corner styling of the article search bar *
-        if (type.list.id === 'byPriority'){
-
-            items.forEach((elem) => {
-                list.lastElementChild.after(elem);
-            });
-
-        // Otherwise, reverse the results and add each sorted item to the top of the list
-        } else {
-
-            items.reverse().forEach((elem) => {
-                list.firstElementChild.before(elem);
-            })
-
-        }   
-
-    }
-}
-
-
-let searchInput = document.querySelector('#search-dialog input');
-let searchList = document.querySelector('#search-dialog .search-list');
-
-searchInput.addEventListener('input', (event) => {
-
-	let target = event.target as HTMLInputElement;
-
-	if (target.value.trim().length > 0) {
-	
-		filterList({
-			input: target,
-			list: searchList,
-		});
-
-	} else {
-
-		searchList.setAttribute('hidden', '');
-
+	// Ensure all items have a numeric relevance score
+	if (sortType === 'byRelevance'){
+		for (let item of items) {
+			if (item.relevance === undefined || isNaN(item.relevance)) {
+				item.relevance = 0;
+			}
+		}
 	}
 
-})
+    // Optional presort (by tag or title)
+    if (presortType === 'byTag') {
+        items.sort((a, b) => {
+            return (a.tag || '').localeCompare(b.tag || '');
+        });
+    } else if (presortType === 'byTitle') {
+        items.sort((a, b) => {
+            return (a.title || '').localeCompare(b.title || '');
+        });
+    }
 
-// TODO: Click <a> tag inside of dialog, close dialog
+    // Primary sort
+    items.sort((a, b) => {
+        if (sortType === 'byTitle') {
+            return (a.title || '').localeCompare(b.title || '');
+        }
+
+        if (sortType === 'byDate') {
+            let dateA = Date.parse(a.elem?.getAttribute('data-date') || '');
+            let dateB = Date.parse(b.elem?.getAttribute('data-date') || '');
+            return dateB - dateA;
+        }
+
+        if (sortType === 'byDateNumAsc') {
+            let numA = Number(a.elem?.getAttribute('data-date'));
+            let numB = Number(b.elem?.getAttribute('data-date'));
+            return numA - numB;
+        }
+
+        if (sortType === 'byDateNumDesc') {
+            let numA = Number(a.elem?.getAttribute('data-date'));
+            let numB = Number(b.elem?.getAttribute('data-date'));
+            return numB - numA;
+        }
+
+        if (sortType === 'byRelevance') {
+            return b.relevance - a.relevance;
+        }
+
+        return 0;
+    });
+
+    // Reorder elements in the DOM
+    for (let item of items) {
+        if (item.elem instanceof HTMLElement) {
+            list.appendChild(item.elem);
+        }
+    }
+
+}
+
+let debounce = (fn, delay = 200) => {
+	let timeout;
+	return (...args) => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => fn(...args), delay);
+	};
+};
+
+let debouncedFilter = debounce(({input, list}) => {
+	filterList({ input: input, list: list});
+}, 200);
+
+
+
+
+// TODO: Click <a> tag for same page inside of dialog, closes dialog
 
 // TODO: Catch anchor links with query string ?consideration=1.1.1 and open correct accordion and scroll to that accordion.
+
+//
+// INITS
+//
+
+let search = (() => {
+	let input, list;
+
+	let onInput = (event) => {
+		let target = event.target;
+		if (target.value.trim().length > 0) {
+			debouncedFilter({ input: target, list });
+		} else {
+			list.setAttribute('hidden', '');
+		}
+	};
+
+	let init = () => {
+		input = document.querySelector('#search-dialog input');
+		list = document.querySelector('#search-dialog .search-results');
+		if (input) input.addEventListener('input', onInput);
+	};
+
+	let destroy = () => {
+		if (input) input.removeEventListener('input', onInput);
+		input = null;
+		list = null;
+	};
+
+	return { init, destroy };
+})();
+
+search.init();
+document.addEventListener('astro:before-swap', search.destroy);
+document.addEventListener('astro:after-swap', search.init);
 
 </script>

@@ -175,9 +175,9 @@
 	--colour-ui-neutral-subtle: var(--gray-muted-500);
 	--colour-ui-reverse: white;
 	--colour-ui-reverse-subtle: var(--gray-muted-100);
-	--colour-ui-accent: var(--red-muted-500);
+	/* --colour-ui-accent: var(--red-muted-500);
 	--colour-ui-accent-subtle: var(--red-muted-400);
-	--colour-ui-accent-bold: var(--red-muted-600);
+	--colour-ui-accent-bold: var(--red-muted-600); */
 	--colour-ui-link: var(--colour-ui-neutral);
 	--colour-ui-link-hover: var(--colour-ui-neutral);
 	--colour-ui-link-underline: var(--colour-ui-neutral-subtle);
@@ -445,7 +445,7 @@ p {
 
 
 /*
-** LINKS & BUTTONS
+** BUTTONS
 ------------------------------*/
 
 :is(button, a) * {
@@ -494,9 +494,9 @@ button[type="button"],
 }
 
 :is(button[type="button"], [data-style-as="button"]):is(:hover, :focus-visible) {
-	--button-background-colour: var(--button-background-colour-hover, var(--colour-fill-neutral-mid-muted));
-	--button-ui-colour: var(--button-ui-colour-hover, var(--colour-ui-reverse));
-	--button-outline-colour: var(--button-outline-colour-hover, transparent);
+	--button-background-colour: var(--colour-fill-neutral-mid-muted);
+	--button-ui-colour: var(--colour-ui-reverse);
+	--button-outline-colour: transparent;
 }
 
 :is(button[type="button"], [data-style-as="button"]):disabled {
@@ -523,38 +523,41 @@ button[data-size="large"] {
 
 button[data-style="bold"] {
 	--button-background-colour: var(--colour-fill-neutral-mid-muted);
-	--button-background-colour-hover: transparent;
 	--button-ui-colour: var(--colour-ui-reverse);
-	--button-ui-colour-hover: var(--colour-ui-neutral);
-	--button-outline-colour-hover: var(--colour-border-neutral-bold-muted);
+}
+
+button[data-style="bold"]:is(:hover, :focus-visible) {
+	--button-background-colour: transparent;
+	--button-ui-colour: var(--colour-ui-neutral);
+	--button-outline-colour: var(--colour-border-neutral-bold-muted);
 }
 
 button[data-style="outline"] {
 	--button-background-colour: transparent;
-	--button-background-colour-hover: transparent;
 	--button-ui-colour: var(--colour-ui-neutral-subtle);
-	--button-ui-colour-hover: var(--colour-ui-neutral);
 	--button-outline-colour: var(--colour-border-neutral-subtle-muted);
-	--button-outline-colour-hover: var(--colour-border-neutral-bold-muted);
 }
 
-.link-list {
-	display: flex;
-	flex-flow: column;
-	gap: 1rem;
-	margin: 1.5rem 0;
-	padding: 0;
-	list-style-type: none;
+button[data-style="outline"]:is(:hover, :focus-visible) {
+	--button-background-colour: transparent;
+	--button-ui-colour: var(--colour-ui-neutral);
+	--button-outline-colour: var(--colour-border-neutral-bold-muted);
 }
 
-.link-list li {
-	line-height: 1.2;
-}
+
+
+
+
+
+/*
+** LINKS
+------------------------------*/
 
 a {
 	color: var(--colour-ui-link);
 	font-weight: 600;
 	text-decoration-color: var(--colour-ui-link-underline);
+	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
 	/* Removes blue highlight on mobile */
 	transition:
@@ -568,44 +571,190 @@ a:hover {
 	text-decoration-color: transparent;
 }
 
-a:has(.icon.arrow) {
-	--icon-colour: var(--colour-ui-neutral-subtle);
-	--icon-size: 1rem;
+/* TODO: Update destination class to all icons */
+
+a:has(.icon.destination, .icon.type) {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
+	line-height: 1.2;
 }
 
-a:has(.icon.arrow) .icon-container {
-	width: 0;
-	flex-shrink: 0;
-	transition: width var(--transition-ease-slow);
+a .icon.destination {
+	--icon-colour: var(--colour-ui-neutral-subtle);
+	--icon-size: 1rem;
 }
 
-a:has(.icon.arrow):is(:hover, :focus-visible) .icon-container {
-	width: 1.75rem;
+a .icon.type {
+	--icon-colour: var(--colour-ui-neutral-subtle);
+	--icon-size: 1.5rem;
 }
 
-a:has(.icon.arrow) .icon {
+a .text-container {
+	flex-grow: 1;
+}
+
+a:has(.icon.type) .text-container {
+	border-left: 1px solid var(--container-border-colour, var(--colour-border-neutral-subtle-muted));
+	padding-left: 0.75rem;
+}
+
+a .text-container:has(.label) {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.375rem;
+}
+
+a .text-container .label {
+	color: var(--label-colour, var(--colour-ui-neutral-subtle));
+	font-size: var(--label-size, 1rem);
+	font-weight: var(--label-weight, 500);
+}
+
+
+
+
+/* WITH ARROW ICON */
+
+a .icon.destination.arrow {
 	opacity: 0;
-	translate: -0.75rem;
+	translate: -0.25rem;
 	transition: opacity var(--transition-linear-fast), translate var(--transition-ease-fast);
+	/* TODO: Media check for hover, and if not, have icon appear always */
 }
 
-a:has(.icon.arrow):is(:hover, :focus-visible) .icon {
+a:is(:hover, :focus-visible) .icon.destination.arrow {
 	opacity: 1;
 	translate: 0;
 	transition: opacity var(--transition-linear-medium) 0.1s, translate var(--transition-ease-medium) 0.1s;
 }
 
-a:has(.icon.arrow) .text {
+a .icon.destination.external {
+	opacity: 0;
+	scale: 90%;
+	transition: opacity var(--transition-linear-fast), scale var(--transition-ease-fast);
+	/* TODO: Media check for hover, and if not, have icon appear always */
+}
+
+a:is(:hover, :focus-visible) .icon.destination.external {
+	opacity: 1;
+	scale: 100%;
+	transition: opacity var(--transition-linear-medium) 0.1s, scale var(--transition-ease-medium) 0.1s;
+}
+
+a .icon.destination.download {
+	opacity: 0;
+	scale: 90%;
+	transition: opacity var(--transition-linear-fast), scale var(--transition-ease-fast);
+	/* TODO: Media check for hover, and if not, have icon appear always */
+}
+
+a:is(:hover, :focus-visible) .icon.destination.download {
+	opacity: 1;
+	scale: 100%;
+	transition: opacity var(--transition-linear-medium) 0.1s, scale var(--transition-ease-medium) 0.1s;
+}
+
+
+
+
+/* PRECEEDING TEXT */
+
+a:has(.icon.destination.arrow) .icon-container:first-child {
+	width: 0;
+	flex-shrink: 0;
+	transition: width var(--transition-ease-slow);
+}
+
+a:has(.icon.destination.arrow):is(:hover, :focus-visible) .icon-container:first-child {
+	width: 1.75rem;
+}
+
+a:has(.icon-container:first-child) .icon.destionation.arrow {
+	translate: -0.75rem;
+}
+
+a:has(.icon-container:first-child):has(.icon.destination.arrow) .text-container {
 	padding-right: 1.75rem;
 	transition: padding var(--transition-ease-slow);
 }
 
-a:has(.icon.arrow):is(:hover, :focus-visible) .text {
+a:has(.icon-container:first-child):has(.icon.destination.arrow):is(:hover, :focus-visible) .text-container {
 	padding-right: 0;
 }
+
+
+/* SECTION LINK LIST */
+
+.link-list {
+	display: flex;
+	flex-flow: column;
+	gap: 1rem;
+	margin: 1.5rem 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+
+/* ICON LINK LIST */
+
+.link-list[data-style="divided"] {
+	gap: 0;
+}
+
+.link-list[data-style="divided"] > li {
+	padding: 0.5rem 0;
+}
+
+.link-list[data-style="divided"] > li:first-child {
+	padding-top: 0 !important;
+}
+
+.link-list[data-style="divided"] > li:last-child {
+	padding-bottom: 0 !important;
+}
+
+.link-list[data-style="divided"] > li:not(:first-of-type) {
+	border-top: 1px solid var(--colour-border-neutral-subtle-muted);
+	/* TODO: This doesn't work for filtering ^, unless you sort */
+}
+
+.link-list[data-style="divided"] a {
+	padding: 0.75rem 1rem 0.75rem 0.75rem;
+	border-radius: var(--border-radius-normal);
+	gap: 0.75rem;
+	text-decoration: none;
+}
+
+.link-list[data-style="divided"] a:is(:hover, :focus-visible) {
+	background-color: var(--colour-fill-accent-subtle-muted, var(--colour-fill-neutral-subtle-muted));
+}
+
+.link-list[data-style="divided"] a:is(:hover, :focus-visible) .text-container {
+	--container-border-colour: var(--colour-border-accent-mid-muted, var(--colour-border-neutral-mid-muted));
+}
+
+.link-list[data-style="divided"] a .text {
+	font-size: 1rem;
+}
+
+.link-list[data-style="divided"] a .label {
+	--label-size: 0.875rem;
+	--label-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+}
+
+.link-list[data-style="divided"] a:is(:hover, :focus-visible) .label {
+	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+}
+
+.link-list[data-style="divided"] a:is(:hover, :focus-visible) .icon-and-label-container {
+	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+}
+
+.link-list[data-style="divided"] a:is(:hover, :focus-visible) :is(.icon.destination, .icon.type) {
+	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+}
+
 
 
 

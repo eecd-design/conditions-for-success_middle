@@ -21,7 +21,7 @@ const resourceLabels = {
 	website: 'Website'
 }
 
-const { category } = Astro.props;
+const { category, classes } = Astro.props;
 
 let Icon = resourceIcons[category];
 let label = resourceLabels[category];
@@ -31,7 +31,7 @@ let label = resourceLabels[category];
 { Icon && label && (
 
 	<div class="icon-and-label-container" data-collapsible>
-		<Icon />
+		<Icon classes={classes} />
 		<span class="label-container">
 			<span class="label">{label}</span>
 		</span>

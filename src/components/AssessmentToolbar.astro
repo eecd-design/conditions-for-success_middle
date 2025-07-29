@@ -11,7 +11,8 @@ import IconAssessor from "./icons/IconAssessor_20.astro";
 import IconAssessment from "./icons/IconAssessment_20.astro";
 ---
 
-<section class="assessment-controls" aria-label="Assessment Controls Toolbar" role="toolbar">
+<section class="assessment-controls" aria-label="Assessment Controls Toolbar" role="toolbar" transition:persist>
+	<!-- TODO: Investigate the use of transition persist throughout -->
 
 	<div class="info-group button-group" data-restrict-mode="assessment">
 

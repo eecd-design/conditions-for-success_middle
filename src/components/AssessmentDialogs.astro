@@ -1067,7 +1067,7 @@ let schoolList = {
 		border: none;
 		padding: 3rem;
 		width: min(100%, 636px);
-		max-height: calc(100% - 3rem);
+		max-height: calc(100% - 4rem);
 	}
 
 	dialog:focus {
@@ -1082,12 +1082,15 @@ let schoolList = {
 
 	dialog button.close-dialog:has(.icon:only-child) {
 		--button-background-colour: transparent;
-		--button-background-colour-hover: var(
-			--colour-fill-neutral-subtle-muted
-		);
 		--icon-size: 1.25rem;
 		float: right;
 		margin: 0 0 1rem 1.5rem;
+	}
+
+	dialog button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
+		--button-background-colour: var(
+			--colour-fill-neutral-subtle-muted
+		);
 	}
 
 	dialog section {
@@ -1134,6 +1137,8 @@ let schoolList = {
 		joinWithAnd,
 		kebabToCamel,
 		sanitizeHTML,
+		openDialog,
+		closeDialog,
 	} from "src/utilities/helpers.js";
 	import {
 		updateChangeLog,
@@ -1210,21 +1215,6 @@ let schoolList = {
 	//
 	// Methods
 	//
-
-	let openDialog = (selector: String) => {
-		let openDialog = document.querySelector(
-			"dialog[open]",
-		) as HTMLDialogElement;
-		if (openDialog) openDialog.close();
-		let dialog = document.querySelector(
-			`#${selector}`,
-		) as HTMLDialogElement;
-		if (dialog) dialog.showModal();
-	};
-
-	let closeDialog = (dialog) => {
-		if (dialog) dialog.close();
-	};
 
 	let resetForm = ({form, clearLists = true}) => {
 		// Clear inputs

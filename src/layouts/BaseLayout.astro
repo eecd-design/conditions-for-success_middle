@@ -39,7 +39,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 	<script>
 
 		import { getActiveAssessmentData, getExportStatus, getUserData, subscribe } from "src/stores/userDataStore";
-		import { findObjectByKey } from "src/utilities/helpers";
+		import { findObjectByKey, closeDialog } from "src/utilities/helpers";
 
 		let updateTheme = (data) => {
 
@@ -118,6 +118,94 @@ const { pageTitle, indicatorTag } = Astro.props;
 		// 	event.returnValue = '';
 
 		// });
+
+		// window.addEventListener('popstate', () => {
+
+		// 	let hash = window.location.hash;
+
+		// 	if (hash) {
+
+		// 		console.log('Hash Change', hash);
+		// 		console.log('Queries', window.location.search);
+
+		// 		// If link was within a dialog, close it
+		// 		let openDialog = document.querySelector('dialog:open');
+		// 		if (openDialog) closeDialog(openDialog);
+
+		// 		// Capture query parameters
+		// 		let params = new URLSearchParams(window.location.search);
+
+		// 		let considerationTag = params.get('consideration');
+
+		// 		if (!considerationTag) return;
+
+		// 		console.log(considerationTag);
+
+		// 		// TODO: Open the accordion it's in and scroll to that heading
+		// 		let consideration = document.querySelector(`[value="${considerationTag}"]`);
+
+		// 		if (!consideration) return;
+
+		// 		let accordionHeading = consideration.closest('.accordion');
+		// 		let accordionBtn = accordionHeading?.querySelector('button');
+
+		// 		if (!accordionHeading || !accordionBtn) return;
+
+		// 		accordionHeading.scrollTo();
+		// 		// TODO: Scroll to oOptions?
+
+		// 		if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
+
+		// 		accordionBtn.click();
+
+		// 	}
+
+		// });
+
+		document.addEventListener('astro:page-load', () => {
+
+			let hash = window.location.hash;
+
+			if (hash) {
+
+				// If link was within a dialog, close it
+				let openDialog = document.querySelector('dialog:open');
+				if (openDialog) closeDialog(openDialog);
+
+				// Capture query parameters
+				let params = new URLSearchParams(window.location.search);
+
+				let considerationTag = params.get('consideration');
+
+				if (!considerationTag) return;
+
+				let consideration = document.querySelector(`[value="${considerationTag}"]`);
+
+				if (!consideration) return;
+
+				let accordionHeading = consideration.closest('.accordion-group')?.querySelector('.accordion');
+				let accordionBtn = accordionHeading?.querySelector('button');
+
+				if (!accordionHeading || !accordionBtn) return;
+
+				if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
+
+				accordionBtn.click();
+
+				setTimeout(() => {
+					accordionHeading.scrollIntoView({ block: 'start', behavior: 'smooth' });
+
+					// Clean the URL after scrolling
+					let newUrl = location.pathname + location.hash;
+					history.replaceState(null, '', newUrl);
+
+				}, 50);
+
+			}
+
+			// TODO: So now, when I add a search query, it triggers a reload even on the same page. And even after replaceState, it trigger another reload when I click a jump link after
+
+		})
 
 	</script>
 
