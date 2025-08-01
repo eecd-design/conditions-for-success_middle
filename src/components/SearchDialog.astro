@@ -10,6 +10,7 @@ import ResourceIcons from "./icons/ResourceIcons.astro";
 import IconArrowRight from "./icons/IconArrowRight_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
+import IconSearch from "./icons/IconSearch_20.astro";
 
 let searchList = [];
 
@@ -59,7 +60,7 @@ let allResources = await getCollection("resources");
 for (let resource of allResources) {
 	searchList.push({
 		type: 'resource',
-		category: resource.data.category,
+		type: resource.data.type,
 		title: resource.data.title,
 		url: resource.data.source.filePath ? resource.data.source.filePath.replace('public', '') : resource.data.source.url,
 		external: resource.data.source.url ? true : false,
@@ -85,9 +86,9 @@ console.log(searchList);
 		Search
 	</h2>
 
-	<form>
+	<form data-search-list="site-content-list">
 
-		<fieldset>
+		<fieldset class="search">
 			<p
 				id="search-dialog_search-input_help"
 				class="instructions"
@@ -104,6 +105,7 @@ console.log(searchList);
 					aria-describedby="search-dialog_search-input_help, search-dialog_search-input_error"
 					autofocus
 				/>
+				<IconSearch />
 			</div>
 			<p class="error" hidden>
 				<IconWarningSmall />
@@ -114,7 +116,7 @@ console.log(searchList);
 			</p>
 		</fieldset>
 
-		<ul class="search-results link-list" data-style="divided" hidden>
+		<ul id="site-content-list" class="link-list" data-style="divided" hidden>
 
 			{searchList.map((item) => {
 
@@ -124,7 +126,7 @@ console.log(searchList);
 						data-type={item.type}
 						data-title={item.title.toLowerCase()}
 						data-tag={item.tag ?? null}
-						data-category={item.category ?? null}
+						data-type={item.type ?? null}
 						data-theme={item.colour ?? null}
 						data-external={item.external}
 					>
@@ -133,7 +135,7 @@ console.log(searchList);
 
 							<span class="text-container">
 								<span class="label">
-									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.category)} ${toTitleCase(item.type)}`}
+									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.type)} ${toTitleCase(item.type)}`}
 								</span>
 								{/* TODO: Website Resource or Web Resource? */}
 								<span class="text">
@@ -148,7 +150,7 @@ console.log(searchList);
 								
 								: 
 								
-									item.category === 'document' || item.category === 'presentation' ? 
+									item.type === 'document' || item.type === 'presentation' ? 
 									
 									<IconDownload classes={['destination']} /> : <IconExternal classes={['destination']} />
 								
@@ -184,255 +186,10 @@ console.log(searchList);
 
 <script>
 
-/**
- * Filters a list of <li> items based on input value, calculates relevance scores,
- * hides non-matching items, and optionally sorts matching items by relevance.
- * 
- * @param {Object} options
- * @param {HTMLInputElement} options.input - The input element whose value is used to filter the list.
- * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
- *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
- */
-let filterList = ({input, list}) => {
+	import { search } from "../utilities/filter";
 
-	let results = [];
-	let matches = 0;
-	let presortType = 'byTitle';
-
-	let items = list.querySelectorAll('li');
-	let value = input.value.trim();
-
-	console.log('Value', value);
-
-    for (const item of items) {
-
-		// Get the item data
-		let type = item.getAttribute('data-type');
-		let title = item.getAttribute('data-title');
-		let tag = item.getAttribute('data-tag');
-
-		let result = {
-			elem: item,
-			title: title ?? null,
-			tag: tag ?? null,
-			match: false,
-			relevance: 0,
-		}
-
-		// 1. Check for tag match
-        if (type !== 'resource' && tag) {
-	
-			// If the tag starts with the input value, show it
-			if (tag.startsWith(value)) {
-				item.removeAttribute('hidden');
-				result.match = true;
-				matches += 1;
-				result.relevance += 10;
-				presortType = 'byTag';
-				continue;
-			}
-
-        }
-
-		// 2. Check for title match
-		if (value.includes(' ')) {
-
-			if (title.startsWith(value)) {
-				result.match = true;
-				matches += 1;
-				// Give higher relevance to title start matches
-				result.relevance += 10;
-
-			} else if (title.includes(value)) {
-				result.match = true;
-				matches += 1;
-				result.relevance += 1;
-			}
-
-		} else {
-
-			// Split into individual words
-			let words = title.split(' ');
-
-			words.forEach((word, index) => {
-				if (word.startsWith(value)) {
-					result.match = true;
-					matches += 1;
-					// Give higher relevance to first word matches
-					result.relevance = index === 0 ? result.relevance + 10 : result.relevance + 1;
-				}
-			})
-
-		}
-
-		results.push(result);
-
-		// If there's a match, show it, otherwise, hide it
-		if (result.match) {
-			item.removeAttribute('hidden');
-		} else {
-			item.setAttribute('hidden', '');
-		}
-        
-    }
-
-    if (matches > 1) {
-
-		sortList({
-			sortType: 'byRelevance',
-			presortType: presortType,
-			list: list,
-			items: results,
-		});
-
-    }
-
-	let errorMessage = input.closest('fieldset').querySelector('.error');
-
-	if (errorMessage){
-		
-		// If there are no positive results, reveal the error message
-		if (matches === 0) {
-			errorMessage.removeAttribute('hidden');
-			list.setAttribute('hidden', '');
-
-		// Otherwise, hide the error message
-		} else {
-			errorMessage.setAttribute('hidden', '');
-			list.removeAttribute('hidden');
-		}
-	}
-
-}
-
-
-/**
- * Sorts and reorders list items based on a given type and optional presort.
- *
- * @param {Object} options
- * @param {string} [options.sortType='byTitle'] - Primary sort: 'byTitle', 'byDate', 'byDateNumAsc', 'byDateNumDesc', or 'byRelevance'.
- * @param {string|null} [options.presortType=null] - Optional presort: 'byTag' or 'byTitle'.
- * @param {HTMLElement} options.list - Container holding the list items.
- * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
- */
-let sortList = ({sortType = 'byTitle', presortType = null, list, items}) => {
-
-	console.log(items);
-
-    if (!list || !items || !Array.isArray(items)) return;
-
-	// Ensure all items have a numeric relevance score
-	if (sortType === 'byRelevance'){
-		for (let item of items) {
-			if (item.relevance === undefined || isNaN(item.relevance)) {
-				item.relevance = 0;
-			}
-		}
-	}
-
-    // Optional presort (by tag or title)
-    if (presortType === 'byTag') {
-        items.sort((a, b) => {
-            return (a.tag || '').localeCompare(b.tag || '');
-        });
-    } else if (presortType === 'byTitle') {
-        items.sort((a, b) => {
-            return (a.title || '').localeCompare(b.title || '');
-        });
-    }
-
-    // Primary sort
-    items.sort((a, b) => {
-        if (sortType === 'byTitle') {
-            return (a.title || '').localeCompare(b.title || '');
-        }
-
-        if (sortType === 'byDate') {
-            let dateA = Date.parse(a.elem?.getAttribute('data-date') || '');
-            let dateB = Date.parse(b.elem?.getAttribute('data-date') || '');
-            return dateB - dateA;
-        }
-
-        if (sortType === 'byDateNumAsc') {
-            let numA = Number(a.elem?.getAttribute('data-date'));
-            let numB = Number(b.elem?.getAttribute('data-date'));
-            return numA - numB;
-        }
-
-        if (sortType === 'byDateNumDesc') {
-            let numA = Number(a.elem?.getAttribute('data-date'));
-            let numB = Number(b.elem?.getAttribute('data-date'));
-            return numB - numA;
-        }
-
-        if (sortType === 'byRelevance') {
-            return b.relevance - a.relevance;
-        }
-
-        return 0;
-    });
-
-    // Reorder elements in the DOM
-    for (let item of items) {
-        if (item.elem instanceof HTMLElement) {
-            list.appendChild(item.elem);
-        }
-    }
-
-}
-
-let debounce = (fn, delay = 200) => {
-	let timeout;
-	return (...args) => {
-		clearTimeout(timeout);
-		timeout = setTimeout(() => fn(...args), delay);
-	};
-};
-
-let debouncedFilter = debounce(({input, list}) => {
-	filterList({ input: input, list: list});
-}, 200);
-
-
-
-
-// TODO: Click <a> tag for same page inside of dialog, closes dialog
-
-// TODO: Catch anchor links with query string ?consideration=1.1.1 and open correct accordion and scroll to that accordion.
-
-//
-// INITS
-//
-
-let search = (() => {
-	let input, list;
-
-	let onInput = (event) => {
-		let target = event.target;
-		if (target.value.trim().length > 0) {
-			debouncedFilter({ input: target, list });
-		} else {
-			list.setAttribute('hidden', '');
-		}
-	};
-
-	let init = () => {
-		input = document.querySelector('#search-dialog input');
-		list = document.querySelector('#search-dialog .search-results');
-		if (input) input.addEventListener('input', onInput);
-	};
-
-	let destroy = () => {
-		if (input) input.removeEventListener('input', onInput);
-		input = null;
-		list = null;
-	};
-
-	return { init, destroy };
-})();
-
-search.init();
-document.addEventListener('astro:before-swap', search.destroy);
-document.addEventListener('astro:after-swap', search.init);
+	search.init();
+	document.addEventListener('astro:before-swap', search.destroy);
+	document.addEventListener('astro:after-swap', search.init);
 
 </script>

@@ -39,7 +39,8 @@ const { pageTitle, indicatorTag } = Astro.props;
 	<script>
 
 		import { getActiveAssessmentData, getExportStatus, getUserData, subscribe } from "src/stores/userDataStore";
-		import { findObjectByKey, closeDialog } from "src/utilities/helpers";
+		import { findObjectByKey } from "src/utilities/helpers";
+		import { dialogControl } from "src/utilities/dialog";
 
 		let updateTheme = (data) => {
 
@@ -129,8 +130,8 @@ const { pageTitle, indicatorTag } = Astro.props;
 		// 		console.log('Queries', window.location.search);
 
 		// 		// If link was within a dialog, close it
-		// 		let openDialog = document.querySelector('dialog:open');
-		// 		if (openDialog) closeDialog(openDialog);
+		// 		let activeDialog = document.querySelector('dialog:open');
+		// 		if (activeDialog) activeDialog.close();
 
 		// 		// Capture query parameters
 		// 		let params = new URLSearchParams(window.location.search);
@@ -169,8 +170,8 @@ const { pageTitle, indicatorTag } = Astro.props;
 			if (hash) {
 
 				// If link was within a dialog, close it
-				let openDialog = document.querySelector('dialog:open');
-				if (openDialog) closeDialog(openDialog);
+				let activeDialog = document.querySelector('dialog:open') as HTMLDialogElement;
+				if (activeDialog) activeDialog.close();
 
 				// Capture query parameters
 				let params = new URLSearchParams(window.location.search);
@@ -206,6 +207,10 @@ const { pageTitle, indicatorTag } = Astro.props;
 			// TODO: So now, when I add a search query, it triggers a reload even on the same page. And even after replaceState, it trigger another reload when I click a jump link after
 
 		})
+
+		dialogControl.init();
+		document.addEventListener('astro:before-swap', dialogControl.destroy);
+		document.addEventListener('astro:after-swap', dialogControl.init);
 
 	</script>
 

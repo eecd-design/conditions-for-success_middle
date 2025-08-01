@@ -180,19 +180,4 @@ let toTitleCase = function (str) {
   });
 };
 
-let openDialog = (selector) => {
-	let openDialog = document.querySelector(
-		"dialog[open]",
-	);
-	if (openDialog) openDialog.close();
-	let dialog = document.querySelector(
-		`#${selector}`,
-	);
-	if (dialog) dialog.showModal();
-};
-
-let closeDialog = (dialog) => {
-	if (dialog) dialog.close();
-};
-
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML, toTitleCase, openDialog, closeDialog };
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML, toTitleCase };
