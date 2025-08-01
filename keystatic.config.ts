@@ -44,7 +44,7 @@ export default config({
 					},
 					slug: {
 						label: 'Slug',
-						description: `This slug defines the page url for this entry, it must follow the format: [tag]_[indicator-name]. Example: 1_leadership-and-teaming.`,
+						description: `This slug defines the page url for this entry.`,
 						validation: {
 							length: {
 								max: 50,
@@ -106,7 +106,7 @@ export default config({
 					},
 					slug: {
 						label: 'Slug',
-						description: `This slug defines the folder name for this entry, it must follow the format: [tag]_[component-name]. Abbreviate the component name as necessary. Example: 1-1_shared-vision-for-inclusive-education.`,
+						description: `This slug defines the folder and jump link name for this entry. Abbreviate the component name as necessary.`,
 						validation: {
 							length: {
 								max: 50,
