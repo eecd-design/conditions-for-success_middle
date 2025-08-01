@@ -21,10 +21,10 @@ const resourceLabels = {
 	website: 'Website'
 }
 
-const { category, classes } = Astro.props;
+const { type, classes } = Astro.props;
 
-let Icon = resourceIcons[category];
-let label = resourceLabels[category];
+let Icon = resourceIcons[type];
+let label = resourceLabels[type];
 
 ---
 
