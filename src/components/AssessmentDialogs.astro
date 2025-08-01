@@ -1060,67 +1060,6 @@ let schoolList = {
 	</section>
 </dialog>
 
-<style is:global>
-	dialog {
-		background-color: var(--colour-background);
-		border-radius: var(--border-radius-normal);
-		border: none;
-		padding: 3rem;
-		width: min(100%, 636px);
-		max-height: calc(100% - 3rem);
-	}
-
-	dialog:focus {
-		outline: none;
-		caret-color: transparent;
-	}
-
-	dialog::backdrop {
-		background-color: var(--colour-fill-neutral-bold-muted);
-		opacity: 0.8;
-	}
-
-	dialog button.close-dialog:has(.icon:only-child) {
-		--button-background-colour: transparent;
-		--button-background-colour-hover: var(
-			--colour-fill-neutral-subtle-muted
-		);
-		--icon-size: 1.25rem;
-		float: right;
-		margin: 0 0 1rem 1.5rem;
-	}
-
-	dialog section {
-		margin: 1.5rem 0;
-	}
-
-	dialog > .heading {
-		margin: 0 0 1.5rem;
-		padding: 0 0 1rem;
-		border-bottom: 2px solid var(--colour-border-neutral-subtle-muted);
-	}
-
-	dialog section > h3 {
-		margin: 1rem 0;
-	}
-
-	dialog .instructions {
-		font-size: 1rem;
-		line-height: 1.4;
-		margin: 0 0 0.75rem;
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	dialog .callout {
-		margin: 1.5rem 0;
-	}
-
-	dialog section:has(.card-group:empty) {
-		display: none;
-	}
-
-</style>
-
 <script>
 	//
 	// Imports
@@ -1128,11 +1067,9 @@ let schoolList = {
 
 	import {
 		findIndexByKey,
-		findObjectByKey,
 		htmlToElement,
 		isEqual,
 		joinWithAnd,
-		kebabToCamel,
 		sanitizeHTML,
 	} from "src/utilities/helpers.js";
 	import {
@@ -1149,6 +1086,7 @@ let schoolList = {
 		setAssessment,
 		createAssessment,
 	} from "src/stores/userDataStore.js";
+	import { dialogControl } from "src/utilities/dialog";
 
 	//
 	// Variables
@@ -1210,21 +1148,6 @@ let schoolList = {
 	//
 	// Methods
 	//
-
-	let openDialog = (selector: String) => {
-		let openDialog = document.querySelector(
-			"dialog[open]",
-		) as HTMLDialogElement;
-		if (openDialog) openDialog.close();
-		let dialog = document.querySelector(
-			`#${selector}`,
-		) as HTMLDialogElement;
-		if (dialog) dialog.showModal();
-	};
-
-	let closeDialog = (dialog) => {
-		if (dialog) dialog.close();
-	};
 
 	let resetForm = ({form, clearLists = true}) => {
 		// Clear inputs
@@ -1877,7 +1800,7 @@ let schoolList = {
 			}
 
 			// Open select assessor dialog
-			openDialog("select-assessor-dialog");
+			dialogControl.open("select-assessor-dialog");
 		}
 
 		if (target.matches("button.update-assessor")) {
@@ -1971,7 +1894,7 @@ let schoolList = {
 			});
 
 			// Open select assessor dialog
-			openDialog("select-assessor-dialog");
+			dialogControl.open("select-assessor-dialog");
 		}
 
 		if (target.matches("button.import-file")) {
@@ -1989,12 +1912,11 @@ let schoolList = {
 
 		if (target.matches("button.open-dialog")) {
 			let targetDialog = target.getAttribute("data-dialog");
-			openDialog(targetDialog);
+			dialogControl.open(targetDialog);
 		}
 
 		if (target.matches("button.close-dialog")) {
 			let targetDialog = target.closest("dialog");
-			closeDialog(targetDialog);
 			let forms = targetDialog.querySelectorAll("form");
 			for (let form of forms) {
 				let clearLists = form.hasAttribute('data-clear-lists');
@@ -2017,7 +1939,7 @@ let schoolList = {
 			let activeAssessment = getActiveAssessmentData();
 
 			if (activeAssessment.unexportedChanges) {
-				openDialog("export-warning-dialog");
+				dialogControl.open("export-warning-dialog");
 			} else {
 				setState({
 					mode: "reading",
@@ -2066,7 +1988,7 @@ let schoolList = {
 
 			if (target.matches(`input.assessor`)) {
 				addAssessorToList(target);
-				// FIX: Not working
+				// TODO: Not working
 			}
 		}
 	});

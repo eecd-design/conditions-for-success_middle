@@ -1,0 +1,571 @@
+import { htmlToElement, toTitleCase } from "./helpers";
+
+/**
+ * Filters a list of <li> items based on a filter button value and hides non-matching items.
+ * 
+ * @param {Object} options
+ * @param {Object} options.filters - An object of filter values by category used to filter the list.
+ * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
+ *   data attributes like `data-title`, `data-indicators`, `data-components`, `data-considerations`, and `data-type`.
+ */
+let filterListByFilterBtns = ({ filters, list }) => {
+
+	let results = [];
+	let matches = 0;
+	let sortType = 'byRelevance';
+	let presortType = 'byTitle';
+
+	let items = list.querySelectorAll('li');
+
+	for (const item of items) {
+
+		// Get the item data
+		let title = item.getAttribute('data-title');
+		let type = item.getAttribute('data-type');
+		let indicators = JSON.parse(item.getAttribute('data-indicators'));
+		let components = JSON.parse(item.getAttribute('data-components'));
+		let considerations = JSON.parse(item.getAttribute('data-considerations'));
+
+		let result = {
+			elem: item,
+			title: title ?? null,
+			match: false,
+			relevance: 0,
+		}
+
+		if (!filters || Object.keys(filters).length === 0) {
+
+			result.match = true;
+			matches += 1;
+			sortType = 'byTitle';
+			presortType = null;
+
+		} else {
+
+			let relevance = 0;
+			let matchedAll = true;
+
+			if (filters.types) {
+				console.log('Matching Type');
+				let match = filters.types.includes(type);
+				if (!match) matchedAll = false;
+				else relevance++;
+			}
+
+			if (filters.indicators) {
+				let match = filters.indicators.some((v) => indicators.includes(v));
+				if (!match) matchedAll = false;
+				else relevance++;
+			}
+
+			if (filters.components) {
+				let match = filters.components.some((v) => components.includes(v));
+				if (!match) matchedAll = false;
+				else relevance++;
+			}
+
+			if (filters.considerations) {
+				let match = filters.considerations.some((v) => considerations.includes(v));
+				if (!match) matchedAll = false;
+				else relevance++;
+			}
+
+			if (matchedAll) {
+				result.match = true;
+				result.relevance = relevance;
+				matches += 1;
+			}
+
+		}
+
+		results.push(result);
+
+		// If there's a match, show it, otherwise, hide it
+		if (result.match) {
+			item.removeAttribute('hidden');
+		} else {
+			item.setAttribute('hidden', '');
+		}
+
+	}
+
+	if (matches > 0) {
+
+		sortList({
+			list: list,
+			items: results,
+			sortType: sortType,
+			presortType: presortType,
+		});
+
+	}
+
+	// TODO: Need to add a no results error message
+
+	// let errorMessage = input.closest('fieldset')?.querySelector('.error');
+
+	// if (errorMessage){
+
+	// 	// If there are no positive results, reveal the error message
+	// 	if (matches === 0) {
+	// 		errorMessage.removeAttribute('hidden');
+	// 		list.setAttribute('hidden', '');
+
+	// 	// Otherwise, hide the error message
+	// 	} else {
+	// 		errorMessage.setAttribute('hidden', '');
+	// 		list.removeAttribute('hidden');
+	// 	}
+	// }
+
+}
+
+/**
+ * Filters a list of <li> items based on text input value, calculates relevance scores,
+ * hides non-matching items, and optionally sorts matching items by relevance.
+ * 
+ * @param {Object} options
+ * @param {HTMLInputElement} options.input - The input element whose value is used to filter the list.
+ * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
+ *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
+ * @param {String} options.noValueBehaviour - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
+ */
+let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
+
+	let results = [];
+	let matches = 0;
+	let presortType = 'byTitle';
+
+	let items = list.querySelectorAll('li');
+	let value = input.value.trim();
+
+	for (const item of items) {
+
+		if (value.length === 0) {
+			if (noValueBehaviour === 'shown') {
+				item.removeAttribute('hidden');
+			} else {
+				item.setAttribute('hidden', '');
+			}
+			continue;
+		}
+
+		// Get the item data
+		let type = item.getAttribute('data-type');
+		let title = item.getAttribute('data-title');
+		let tag = item.getAttribute('data-tag');
+
+		let result = {
+			elem: item,
+			title: title ?? null,
+			tag: tag ?? null,
+			match: false,
+			relevance: 0,
+		}
+
+		// 1. Check for tag match
+		if (type !== 'resource' && tag) {
+
+			// If the tag starts with the input value, show it
+			if (tag.startsWith(value)) {
+				item.removeAttribute('hidden');
+				result.match = true;
+				matches += 1;
+				result.relevance += 10;
+				presortType = 'byTag';
+				continue;
+			}
+
+		}
+
+		// 2. Check for title match
+		if (value.includes(' ')) {
+
+			if (title.startsWith(value)) {
+				result.match = true;
+				matches += 1;
+				// Give higher relevance to title start matches
+				result.relevance += 10;
+
+			} else if (title.includes(value)) {
+				result.match = true;
+				matches += 1;
+				result.relevance += 1;
+			}
+
+		} else {
+
+			// Split into individual words
+			let words = title.split(' ');
+
+			words.forEach((word, index) => {
+				if (word.startsWith(value)) {
+					result.match = true;
+					matches += 1;
+					// Give higher relevance to first word matches
+					result.relevance = index === 0 ? result.relevance + 10 : result.relevance + 1;
+				}
+			})
+
+		}
+
+		results.push(result);
+
+		// If there's a match, show it, otherwise, hide it
+		if (result.match) {
+			item.removeAttribute('hidden');
+		} else {
+			item.setAttribute('hidden', '');
+		}
+
+	}
+
+	sortList({
+		sortType: 'byRelevance',
+		presortType: presortType,
+		list: list,
+		items: results,
+	});
+
+	let errorMessage = input.closest('fieldset')?.querySelector('.error');
+
+	if (errorMessage) {
+
+		// If there are no positive results, reveal the error message
+		if (matches === 0 && value.length > 0) {
+			errorMessage.removeAttribute('hidden');
+
+			// Otherwise, hide the error message
+		} else {
+			errorMessage.setAttribute('hidden', '');
+		}
+
+	}
+
+}
+
+/**
+ * Sorts and reorders list items based on a given type and optional presort.
+ *
+ * @param {Object} options
+ * @param {string} [options.sortType='byTitle'] - Primary sort: 'byTitle', 'byDate', 'byDateNumAsc', 'byDateNumDesc', or 'byRelevance'.
+ * @param {string|null} [options.presortType=null] - Optional presort: 'byTag' or 'byTitle'.
+ * @param {HTMLElement} options.list - Container holding the list items.
+ * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
+ */
+let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
+
+	if (!list || !items || !Array.isArray(items)) return;
+
+	// Ensure all items have a numeric relevance score
+	if (sortType === 'byRelevance') {
+		for (let item of items) {
+			if (item.relevance === undefined || isNaN(item.relevance)) {
+				item.relevance = 0;
+			}
+		}
+	}
+
+	// Optional presort (by tag or title)
+	if (presortType === 'byTag') {
+		items.sort((a, b) => {
+			return (a.tag || '').localeCompare(b.tag || '');
+		});
+	} else if (presortType === 'byTitle') {
+		items.sort((a, b) => {
+			return (a.title || '').localeCompare(b.title || '');
+		});
+	}
+
+	// Primary sort
+	items.sort((a, b) => {
+		if (sortType === 'byTitle') {
+			return (a.title || '').localeCompare(b.title || '');
+		}
+
+		if (sortType === 'byDate') {
+			let dateA = Date.parse(a.elem?.getAttribute('data-date') || '');
+			let dateB = Date.parse(b.elem?.getAttribute('data-date') || '');
+			return dateB - dateA;
+		}
+
+		if (sortType === 'byDateNumAsc') {
+			let numA = Number(a.elem?.getAttribute('data-date'));
+			let numB = Number(b.elem?.getAttribute('data-date'));
+			return numA - numB;
+		}
+
+		if (sortType === 'byDateNumDesc') {
+			let numA = Number(a.elem?.getAttribute('data-date'));
+			let numB = Number(b.elem?.getAttribute('data-date'));
+			return numB - numA;
+		}
+
+		if (sortType === 'byRelevance') {
+			return b.relevance - a.relevance;
+		}
+
+		return 0;
+	});
+
+	// Reorder elements in the DOM
+	for (let item of items) {
+		if (item.elem instanceof HTMLElement) {
+			list.appendChild(item.elem);
+		}
+	}
+
+}
+
+/**
+ * Get selected filters from a form.
+ * @param {HTMLFormElement} form
+ * @returns {Object} Filter values keyed by name
+ */
+function getFilters(form) {
+	let data = new FormData(form);
+	let result = {};
+
+	for (let [key, value] of data.entries()) {
+		if (!result[key]) {
+			result[key] = [];
+		}
+		result[key].push(value);
+	}
+
+	return result;
+}
+
+let debounce = (fn, delay = 200) => {
+	let timeout;
+	return (...args) => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => fn(...args), delay);
+	};
+};
+
+let debouncedFilter = debounce(({ input, list, noValueBehaviour }) => {
+	filterListByTextInput({ input, list, noValueBehaviour });
+}, 200);
+
+
+// TODO: Click <a> tag for same page inside of dialog, closes dialog
+
+// TODO: Catch anchor links with query string ?consideration=1.1.1 and open correct accordion and scroll to that accordion.
+
+
+let filter = (() => {
+
+	let createTag = (target) => {
+		let group = target.getAttribute('name');
+		let title = target.getAttribute('data-title');
+		let value = target.getAttribute('value');
+		let field = target.getAttribute('data-status-field');
+		if (!group || !title || !value) return;
+		let template = `
+			<li class="filter-tag" data-group="${group}" data-value="${value}" data-status-field="${field ?? null}">
+				<span class="group">${toTitleCase(group)}</span>
+				<span class="title" title="${title}">${title}</span>
+				<button class="clear" type="button" aria-label="Clear ${title} Filter">
+					X
+				</button>
+			</li>
+		`;
+		let tag = htmlToElement(template);
+		return tag;
+	}
+
+	let getTag = (target) => {
+		let tag;
+		if (target.matches('input')) {
+			if (!target.value) return null;
+			tag = document.querySelector(`.filter-tag[data-value="${target.value}"]`);
+			return tag ?? null;
+		} else if (target.matches('button')) {
+			tag = target.closest('.filter-tag');
+			return tag ?? null
+		} else {
+			return null;
+		}
+	}
+
+	let removeTag = (tag) => {
+		if (tag) tag.remove();
+	}
+
+	let getStatusField = (target) => {
+		let fieldId = target.getAttribute('data-status-field');
+		if (!fieldId) return null;
+		let field = document.querySelector(`[data-field="${fieldId}"]`);
+		return field ?? null;
+	}
+
+	let updateStatus = ({field, operation}) => {
+		let currentStatus = Number(field.textContent);
+		if (operation === 'add') currentStatus ++;
+		if (operation === 'subtract') currentStatus --;
+		if (operation === 'reset') currentStatus = 0;
+		field.textContent = currentStatus;
+		let fieldContainer = field.closest('.field-container');
+		if (!fieldContainer) return;
+		if (currentStatus > 0) {
+			fieldContainer.removeAttribute('hidden');
+		} else {
+			fieldContainer.setAttribute('hidden', '');
+		}
+	}
+
+	let getInput = (tag) => {
+		let group = tag.getAttribute('data-group');
+		let value = tag.getAttribute('data-value');
+		if (!group || !value) return null;
+		let input = document.querySelector(`input[name="${group}"][value="${value}"]`);
+		return input ?? null;
+	}
+
+	let updateInput = (input) => {
+		input.checked = !input.checked;
+	}
+
+	let onInput = (event) => {
+		let target = event.target;
+		if (!target.matches('fieldset.filters input')) return;
+		let form = target.closest('form');
+		let listId = form.getAttribute('data-filter-list');
+		let list = document.querySelector(`#${listId}`);
+		if (!form || !list) return;
+		let filters = getFilters(form);
+		filterListByFilterBtns({ filters, list });
+		let statusOperation;
+		if (target.checked) {
+			statusOperation = 'add';
+			let tagListId = form.getAttribute('data-tag-list');
+			let tagList = document.querySelector(`#${tagListId}`);
+			if (tagList) {
+				let tag = createTag(target);
+				tagList.append(tag);
+			}
+		} else {
+			statusOperation = 'subtract';
+			let tag = getTag(target);
+			removeTag(tag);
+		}
+		let statusField = getStatusField(target);
+		if (statusField) {
+			updateStatus({
+				field: statusField,
+				operation: statusOperation,
+			});
+		}
+	}
+
+	let onReset = (event) => {
+		let target = event.target;
+		if (!target.matches('form:has(fieldset.filters)')) return;
+		let form = target.closest('form');
+		let listId = form.getAttribute('data-filter-list');
+		let list = document.querySelector(`#${listId}`);
+		if (!form || !list) return;
+		let filters = {};
+		filterListByFilterBtns({ filters, list });
+		let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
+		for (let field of statusFields) {
+			updateStatus({
+				field,
+				operation: 'reset',
+			})
+		}
+		let tagListId = form.getAttribute('data-tag-list');
+		let tagList = document.querySelector(`#${tagListId}`);
+		if (tagList) {
+			tagList.innerHTML = '';
+		}
+	}
+
+	let onClick = (event) => {
+		let target = event.target;
+		if (!target.matches('.filter-tag button')) return;
+		console.log(target);
+		let tag = getTag(target);
+		if (!tag) return;
+		let input = getInput(tag);
+		if (input) {
+			updateInput(input);
+		}
+		let statusField = getStatusField(tag);
+		if (statusField) {
+			updateStatus({
+				field: statusField,
+				operation: 'subtract',
+			});
+		}
+		removeTag(tag);
+	}
+
+	let init = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.filters)');
+		for (let form of forms) {
+			form.addEventListener('input', onInput);
+			form.addEventListener('reset', onReset);
+			document.addEventListener('click', onClick);
+		}
+	}
+
+	let destroy = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.filters)');
+		for (let form of forms) {
+			form.removeEventListener('input', onInput);
+			form.removeEventListener('reset', onReset);
+			document.removeEventListener('click', onClick);
+		}
+	}
+
+	return { init, destroy };
+
+})();
+
+
+let search = (() => {
+
+	let options = {};
+
+	let onInput = (event) => {
+		let target = event.target;
+		if (!target.matches('fieldset.search input')) return;
+		let form = target.closest('form');
+		let listId = form.getAttribute('data-search-list');
+		if (!listId) return;
+		let list = document.querySelector(`#${listId}`);
+		if (!form || !list) return;
+		if (target.value.trim().length > 0) {
+			list.removeAttribute('hidden');
+			debouncedFilter({ input: target, list });
+		} else {
+			if (options.noValueBehaviour === 'hidden') {
+				list.setAttribute('hidden', '');
+			} else {
+				debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour });
+			}
+		}
+	};
+
+	let init = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.search)');
+		for (let form of forms) {
+			options.noValueBehaviour = form.getAttribute('data-no-value-behaviour') ?? null;
+			form.addEventListener('input', onInput);
+		}
+	};
+
+	let destroy = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.search)');
+		for (let form of forms) {
+			form.removeEventListener('input', onInput);
+		}
+	};
+
+	return { init, destroy };
+
+})();
+
+export { filter, search };

@@ -1,0 +1,195 @@
+---
+import { getCollection, render } from "astro:content";
+
+import { findObjectByKey, toTitleCase } from "../utilities/helpers"
+
+import IconXmark from "./icons/IconXmark_20.astro";
+import IconWarningSmall from "./icons/IconWarning_16.astro";
+import { getAllCodes } from "node_modules/astro/dist/i18n";
+import ResourceIcons from "./icons/ResourceIcons.astro";
+import IconArrowRight from "./icons/IconArrowRight_16.astro";
+import IconDownload from "./icons/IconDownload_16.astro";
+import IconExternal from "./icons/IconExternal_16.astro";
+import IconSearch from "./icons/IconSearch_20.astro";
+
+let searchList = [];
+
+// Get all indicator
+let allIndicators = await getCollection("indicators");
+
+for (let indicator of allIndicators) {
+	searchList.push({
+		type: 'indicator',
+		tag: indicator.data.tag,
+		title: indicator.data.title,
+		url: `/big-seven/${indicator.id}`,
+		colour: indicator.data.colour,
+	})
+}
+
+// Get all indicator components
+let allComponents = await getCollection("components");
+
+for (let component of allComponents) {
+
+	let colour = findObjectByKey(allIndicators, 'id', component.data.indicator)?.data.colour;
+
+	searchList.push({
+		type: 'component',
+		tag: component.data.tag,
+		title: component.data.title,
+		url: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`,
+		colour: colour,
+	})
+
+	for (let consideration of component.data['initiating'].considerations) {
+		searchList.push({
+			type: 'consideration',
+			tag: consideration.tag,
+			title: consideration.description,
+			url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`,
+			colour: colour,
+		})
+	}
+
+}
+
+// Get all resources
+let allResources = await getCollection("resources");
+
+for (let resource of allResources) {
+	searchList.push({
+		type: 'resource',
+		type: resource.data.type,
+		title: resource.data.title,
+		url: resource.data.source.filePath ? resource.data.source.filePath.replace('public', '') : resource.data.source.url,
+		external: resource.data.source.url ? true : false,
+	})
+}
+
+console.log(searchList);
+
+
+---
+
+<dialog
+	id="search-dialog"
+	aria-labelledby="search-dialog_heading"
+>
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Search Dialog"><IconXmark /></button
+	>
+
+	<h2 id="search-dialog_heading" class="heading">
+		Search
+	</h2>
+
+	<form data-search-list="site-content-list">
+
+		<fieldset class="search">
+			<p
+				id="search-dialog_search-input_help"
+				class="instructions"
+			>
+				Search for an Indicator, Component, Consideration, or Resource by entering a valid tag (e.g., 1.0, 2.1, 3.1.1) or title.
+			</p>
+			<div class="input-container">
+				<input
+					id="search-dialog_search-input"
+					name="search"
+					type="text"
+					placeholder="Enter search term..."
+					aria-labelledby="search-dialog_heading"
+					aria-describedby="search-dialog_search-input_help, search-dialog_search-input_error"
+					autofocus
+				/>
+				<IconSearch />
+			</div>
+			<p class="error" hidden>
+				<IconWarningSmall />
+				<span
+					id="search-dialog_search-input_error"
+					role="alert">There are no results that match the search term.</span
+				>
+			</p>
+		</fieldset>
+
+		<ul id="site-content-list" class="link-list" data-style="divided" hidden>
+
+			{searchList.map((item) => {
+
+				return (
+
+					<li
+						data-type={item.type}
+						data-title={item.title.toLowerCase()}
+						data-tag={item.tag ?? null}
+						data-type={item.type ?? null}
+						data-theme={item.colour ?? null}
+						data-external={item.external}
+					>
+
+						<a href={item.url}>
+
+							<span class="text-container">
+								<span class="label">
+									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.type)} ${toTitleCase(item.type)}`}
+								</span>
+								{/* TODO: Website Resource or Web Resource? */}
+								<span class="text">
+									{item.title}
+								</span>
+							</span>
+
+							<span class="icon-container">
+								{item.type !== 'resource' ? 
+									
+									<IconArrowRight classes={['destination']} />
+								
+								: 
+								
+									item.type === 'document' || item.type === 'presentation' ? 
+									
+									<IconDownload classes={['destination']} /> : <IconExternal classes={['destination']} />
+								
+								}
+							</span>
+
+						</a>
+
+					</li>
+
+				)
+
+			})}
+
+		</ul>
+
+	</form>
+	
+</dialog>
+
+<style is:global>
+
+	#search-dialog {
+		margin-top: 2rem;
+	}
+
+	#search-dialog .search-results {
+		margin: 0;
+	}
+
+</style>
+
+
+<script>
+
+	import { search } from "../utilities/filter";
+
+	search.init();
+	document.addEventListener('astro:before-swap', search.destroy);
+	document.addEventListener('astro:after-swap', search.init);
+
+</script>

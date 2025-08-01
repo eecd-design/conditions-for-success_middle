@@ -168,4 +168,16 @@ let sanitizeHTML = (input) => {
 		.replace(/'/g, "&#039;");
 }
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML };
+/**
+ * Converts a string to Title Case.
+ * Words are split by whitespace and non-letter characters are preserved.
+ * @param {string} str - The input string to convert.
+ * @returns {string} The converted Title Case string.
+ */
+let toTitleCase = function (str) {
+  return str.replace(/\w\S*/g, function (word) {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+};
+
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML, toTitleCase };

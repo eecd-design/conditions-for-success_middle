@@ -287,7 +287,7 @@ export default config({
 
 		resources: collection({
 			label: 'Resources',
-			columns: ['category', 'title'],
+			columns: ['type', 'title'],
 			slugField: 'title',
 			path: 'src/content/resources/*/',
 			schema: {
@@ -306,9 +306,9 @@ export default config({
 						},
 					}
 				}),
-				category: fields.select({
-					label: 'Category',
-					description: 'The category organizes this resource for search and filtering, and also determines the icon shown in its hyperlink.',
+				type: fields.select({
+					label: 'Type',
+					description: 'The type organizes this resource for search and filtering, and also determines the icon shown in its hyperlink.',
 					options: [
 						{ label: 'Video', value: 'video' },
 						{ label: 'Document', value: 'document' },

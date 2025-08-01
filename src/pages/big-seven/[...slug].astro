@@ -3,7 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SectionNav from "../../components/SectionNav.astro";
 import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
-import Dialogs from "../../components/Dialogs.astro";
+import AssessmentDialogs from "../../components/AssessmentDialogs.astro";
 import Component from "../../components/Component.astro";
 import IconArrow from "src/components/icons/IconArrowRight_16.astro";
 import IconCompass from "src/components/icons/IconCompass_24.astro";
@@ -46,7 +46,7 @@ let components = allComponents.filter((component => component.data.indicator ===
 
 	<AssessmentToolbar />
 
-	<Dialogs />
+	<AssessmentDialogs />
 
 	<SectionNav />
 
@@ -56,9 +56,13 @@ let components = allComponents.filter((component => component.data.indicator ===
 			<ul class="link-list">
 				{components.map((component) => (
 					<li>
-						<a href={`#${component.id}`}>
-							<span class="icon-container"><IconArrow /></span>
-							<span class="text">{component.data.tag} {component.data.title}</span>
+						<a href={`#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`}>
+							<span class="icon-container">
+								<IconArrow classes={['destination']} />
+							</span>
+							<span class="text-container">
+								<span class="text">{component.data.tag} {component.data.title}</span>
+							</span>
 						</a>
 					</li>
 				))}
@@ -76,9 +80,13 @@ let components = allComponents.filter((component => component.data.indicator ===
 			{components.map((component) => (
 
 				<li>
-					<a href={`#${component.id}`}>
-						<span class="icon-container"><IconArrow /></span>	
-						<span class="text">{component.data.tag} {component.data.title}</span>
+					<a href={`#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`}>
+						<span class="icon-container">
+							<IconArrow classes={['destination']} />
+						</span>
+						<span class="text-container">
+							<span class="text">{component.data.tag} {component.data.title}</span>
+						</span>
 					</a>
 				</li>
 

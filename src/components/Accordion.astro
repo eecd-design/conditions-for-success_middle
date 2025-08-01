@@ -33,14 +33,17 @@ const { title, phase } = Astro.props;
 
 	.accordion {
 		margin: 0.5rem 0 0;
+		scroll-margin-top: 2rem;
+	}
+
+	[data-mode="assessment"] .accordion {
+		scroll-margin-top: 5.75rem;
 	}
 
 	.accordion button {
 		--button-background-colour: var(--colour-fill-accent-subtle-muted);
-		--button-background-colour-hover: transparent;
 		--button-border-radius: var(--border-radius-normal);
 		--button-ui-colour: var(--colour-ui-neutral);
-		--button-ui-colour-hover: var(--button-ui-colour);
 		--icon-colour: var(--colour-ui-accent);
 		--icon-size: 1.5rem;
 
@@ -57,7 +60,12 @@ const { title, phase } = Astro.props;
 			outline-color var(--transition-linear-fast);
 	}
 
-	.accordion button:not([aria-expanded="true"]):hover {
+	.accordion button:is(:hover, :focus-visible) {
+		--button-background-colour: transparent;
+		--button-ui-colour: var(--button-ui-colour);
+	}
+
+	.accordion button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
 		outline: 2px solid var(--colour-border-accent-subtle-muted);
 		outline-offset: -1px;
 	}
@@ -363,6 +371,8 @@ const { title, phase } = Astro.props;
 
     // Re-initialize the component after swapping pages
     document.addEventListener('astro:after-swap', initAccordion);
+
+	// TODO: Update the accordion init based on the search init/destroy 
 
 </script>
 

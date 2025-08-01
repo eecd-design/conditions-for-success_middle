@@ -1,0 +1,489 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionNav from "../../components/SectionNav.astro";
+import IconDownload from "../../components/icons/IconDownload_16.astro";
+import IconExternal from "../../components/icons/IconExternal_16.astro";
+import IconFilter from "src/components/icons/IconFilter_20.astro";
+import IconFilterClear from "src/components/icons/IconFilterClear_20.astro";
+import IconWarning from "src/components/icons/IconWarning_16.astro";
+import IconSearch from "src/components/icons/IconSearch_20.astro";
+import ResourceIcons from "src/components/icons/ResourceIcons.astro";
+
+import { toTitleCase } from "../../utilities/helpers";
+import Accordion from "src/components/Accordion.astro";
+
+
+
+let allResources = await getCollection("resources");
+
+// TODO: Sort resources by Title
+
+let allIndicators = await getCollection("indicators");
+
+let types = [
+	'Audio',
+	'Document',
+	'Presentation',
+	'Video',
+	'Website',
+];
+
+
+---
+
+<BaseLayout pageTitle={'Resources'}>
+
+	<aside class="filters-container">
+
+		<form data-no-value-behaviour="shown" data-filter-list="resources-list" data-tag-list="active-filters-list">
+			
+			<div class="heading-group">
+				<h2 class="heading">
+					<!-- <IconFilter /> -->
+					<span>Filters</span>
+				</h2>
+				<hr/>
+				<label class="filters-reset" data-style-as="button">
+					<div class="icon-and-label-container">
+						<IconFilterClear />
+						<!-- <span class="label-container">
+							<span class="label">Clear Filters</span>
+						</span> -->
+					</div>
+					<input type="reset" value=""/>
+				</label>
+			</div>
+
+			<hr class="group-divider" />
+			
+			<Accordion title={'Type'}>
+
+				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
+					<span data-field="filters-types-status" >0</span>&nbsp;Selected</span>
+				</span>
+
+				<hr class="item-divider">
+
+				<fieldset class="filters" aria-labelledby="filters-types_legend">
+					<!-- TODO: Connect aria labelledby to accordion heading -->
+					{
+						types.map((type) => (
+							<label>
+								<input type="checkbox" name="types" value={type.toLowerCase()} data-title={type} data-status-field="filters-types-status"/>
+								<span>{type}</span>
+							</label>
+						))
+					}
+				</fieldset>
+
+			</Accordion>
+			
+
+			<hr class="group-divider"/>
+
+			<Accordion title={'Indicator'}>
+
+				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
+					<span data-field="filters-indicators-status" >0</span>&nbsp;Selected</span>
+				</span>
+
+				<hr class="item-divider">
+
+				<fieldset class="filters" aria-labelledby="filters-indicators_legend">
+					{
+						allIndicators.map((indicator) => (
+							<label>
+								<input type="checkbox" name="indicators" value={indicator.data.tag} data-title={indicator.data.title} data-status-field="filters-indicators-status"/>
+								<span>{indicator.data.title}</span>
+							</label>
+						))
+					}
+				</fieldset>
+				
+			</Accordion>
+
+		</form>
+
+	</aside>
+
+	<div class="content">
+
+		<h1>Resources</h1>
+
+		<ul id="active-filters-list"></ul>
+
+		<form data-no-value-behaviour="shown" data-search-list="resources-list">		
+
+			<fieldset class="search">
+				<div class="input-container">
+					<input
+						id="filters-search-input"
+						name="search"
+						type="text"
+						placeholder="Search these resources..."
+						aria-label="Search Resources"
+						aria-describedby="filters-search-input_help, filters-search-input_error"
+						autofocus
+					/>
+					<IconSearch/>
+					<!-- TODO: Make a 20px search icon -->
+				</div>
+				<p class="error" hidden>
+					<IconWarning />
+					<span
+						id="filters-search-input_error"
+						role="alert">There are no results that match the search term.</span
+					>
+				</p>
+			</fieldset>
+
+		</form>
+
+		<ul id="resources-list" class="link-list" data-style="divided">
+
+			{allResources.map((resource) => {
+				
+				let { data } = resource;
+				let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+
+				return (
+
+					<li data-title={title.toLowerCase()} data-type={type}
+						data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
+						<a href={source.filePath ? source.filePath : source.url} 
+						>
+							<ResourceIcons type={type} classes={['type']} />
+							<span class="text-container">
+								<span class="text">{title}</span>
+							</span>
+							<span class="icon-container">
+								{type === 'document'
+									|| type === 'presentation'
+									? <IconDownload classes={['destination']}/> : ''}
+								{type === 'audio'
+									|| type === 'video'
+									|| type === 'website'
+									? <IconExternal classes={['destination']}/> : ''}
+							</span>
+						</a>
+					</li>
+
+				)
+
+			})}
+
+		</ul>
+
+	</div>
+
+</BaseLayout>
+
+<style is:global>
+
+	.filters-container {
+		grid-area: left-aside;
+		margin: 0 5rem 0 0;
+		padding: 2rem 0;
+		min-width: 300px;
+		border-right: 1px solid var(--colour-border-neutral-subtle-muted);
+	}
+
+	.filters-container .heading-group {
+		--icon-size: 1.25rem;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0 0.5rem;
+	}
+
+	.filters-container .heading {
+		font-size: 1.5rem;
+		margin: 0 0 0 0.75rem;
+		flex-grow: 1;
+	}
+
+	.filters-container .heading-group hr {
+		display: block;
+		width: 1px;
+		flex-shrink: 0;
+		margin: 0;
+		background-color: var(--colour-border-neutral-subtle-muted);
+		height: 1.75rem;
+	}
+
+	.filters-container .heading-group [data-style-as="button"] {
+		--button-background-colour: transparent;
+		--icon-size: 1.25rem;
+	}
+
+	.filters-container .heading-group [data-style-as="button"]:is(:hover, :focus-visible) {
+		/* --icon-colour: var(--colour-ui-reverse); */
+		/* --label-colour: var(--colour-ui-reverse); */
+		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+	}
+
+	.filters-container form {
+		gap: 0.5rem;
+	}
+
+	.filters-container .accordion {
+		margin: 0 0.5rem;
+	}
+
+	.filters-container .accordion button {
+		--button-background-colour: transparent;
+		--button-border-radius: var(--border-radius-small);
+		--button-ui-colour: var(--colour-ui-neutral);
+		/* --icon-colour: var(--colour-ui-accent); */
+		--icon-size: 1.25rem;
+		/* TODO: Make smaller cross icon */
+
+		padding: 0.75rem;
+	}
+
+	.filters-container .accordion button:is(:hover, :focus-visible),
+	.filters-container .accordion button[aria-expanded="true"]:is(:hover, :focus-visible) {
+		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+	}
+
+	.filters-container .accordion button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+		outline-color: transparent;
+	}
+
+	.filters-container .accordion button[aria-expanded="true"] {
+		--button-background-colour: transparent;
+		--icon-colour: unset;
+		border-radius: var(--button-border-radius);
+		/* border-bottom: 1px solid var(--colour-border-neutral-subtle-muted); */
+	}
+
+	.filters-container .accordion button .icon-and-label-container {
+		--label-size: 1rem;
+		--label-weight: 600;
+	}
+
+	.filters-container .accordion button[aria-expanded="true"] .icon-and-label-container {
+		--label-colour: unset;
+		
+	}
+
+	.filters-container .accordion + * {
+		margin: 0 0.5rem;
+	}
+
+	.filters-container hr {
+		margin: 0;
+	}
+
+	.filters-container hr.item-divider {
+		margin: 0 0.75rem;
+		background-color: var(--colour-border-neutral-subtle-muted);
+	}
+
+	fieldset.filters {
+		padding: 0.75rem 0 0.25rem;
+	}
+
+	fieldset.filters label {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 1rem;
+		margin: 0 0.75rem;
+		border-radius: var(--border-radius-small);
+		font-size: 0.875rem;
+		padding: 0.5rem 0.75rem;
+	}
+
+	fieldset.filters label:is(:hover, :focus-visible) {
+		background-color: var(--colour-fill-neutral-subtle-muted);
+	}
+
+	fieldset.filters label > span {
+		flex-grow: 1;
+	}
+
+	#active-filters-list {
+		display: flex;
+		flex-flow: row wrap;
+		column-gap: 0.5rem;
+		row-gap: 0.75rem;
+		list-style-type: none;
+		padding: 0;
+		margin: 1rem 0;
+	}
+
+	#active-filters-list li {
+		line-height: 1.2;
+	}
+
+	#active-filters-list .filter-tag {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.875rem;
+		height: 2rem;
+		border-radius: var(--border-radius-normal);
+		background-color: var(--colour-fill-neutral-subtle-muted);
+		padding: 0 0 0 0.75rem;
+	}
+
+	#active-filters-list .filter-tag .group {
+		padding-right: 0.5rem;
+		border-right: 1px solid var(--colour-border-neutral-subtle-muted);
+		font-weight: 700;
+	}
+
+	#active-filters-list .filter-tag .title {
+		font-weight: 500;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 8rem;
+	}
+
+	#active-filters-list .filter-tag button.clear {
+		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+		height: 2rem;
+		min-width: 2rem;
+		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal) 0;
+		border-left: 1px solid var(--colour-border-neutral-subtle-muted);
+	}
+
+	/* TODO: Update the assessor buttons to match these. */
+
+	/* TODO: Generalize the hr as it's used for assessment toolbar as well */
+
+	/* TODO: Style checkboxes */
+
+	
+
+</style>
+
+<script>
+		
+	//
+	// Imports
+	//
+
+	import { filter, search } from "src/utilities/filter";
+
+	import {
+		updateChangeLog,
+		getActiveAssessmentData,
+		setAssessment,
+		updateContinuumCompletion
+	} from "src/stores/userDataStore.js";
+import { htmlToElement } from "src/utilities/helpers";
+
+
+
+
+
+	//
+	// Methods
+	//
+
+	let updateFilterGroupStatus = ({status, operation}) => {
+
+		let statusValue = Number(status.textContent);
+
+		if (operation === 'addition') statusValue ++;
+		if (operation === 'substraction') statusValue --;
+
+		status.textContent = statusValue;
+
+	}
+
+	let createActiveFilterTag = (target) => {
+
+		let groupName = target.getAttribute('name');
+		let filterName = target.getAttribute('data-title');
+		let filterValue = target.getAttribute('value');
+
+		if (!groupName || !filterName || !filterValue) return;
+
+		let template = `
+		
+			<li class="active-filter-tag" data-name="${groupName}" data-value="${filterValue}">
+				<span class="filter-group-name">${groupName}</span>
+				<span class="filter-name">${filterName}</span>
+				<button class="clear-filter" type="button" aria-label="Clear ${filterName} Filter">
+					X
+				</button>
+			</li>
+
+		`;
+
+		let tag = htmlToElement(template);
+
+		return tag;
+
+	}
+
+	let deleteActiveFilterTag = (target) => {
+
+		let activeFilterTag = target.closest('.active-filter-tag');
+
+		if (activeFilterTag) {
+
+			activeFilterTag.remove();
+
+		} else {
+	
+			activeFilterTag = document.querySelector(`.active-filter-tag[data-value="${target.value}"]`);
+	
+			if (activeFilterTag) activeFilterTag.remove();
+
+		}
+
+	}
+
+	let updateFilterState = (target) => {
+
+		let groupName, groupStatus, operation;
+
+		if (target.matches('input')) {
+			groupName = target.getAttribute('name');
+			if (target.checked) {
+				operation = 'addition';
+				let tag = createActiveFilterTag(target);
+
+			} else {
+				operation = 'substraction';
+				deleteActiveFilterTag(target);
+			}
+		} else if (target.matches('button.clear-filter')) {
+			let tag = target.closest('.active-filter-tag');
+			groupName = tag.getAttribute('data-name');
+			let filterValue = tag.getAttribute('data-value');
+			operation = 'substraction';
+			deleteActiveFilterTag(tag);
+			let sourceInput = document.querySelector(`input[name="${groupName}"][value="${filterValue}"]`) as HTMLInputElement;
+			if (sourceInput) sourceInput.checked = false;
+		}
+
+		groupStatus = document.querySelector(`[data-field="filters-${groupName}-status"]`);
+
+		if (groupStatus) updateFilterGroupStatus({status: groupStatus, operation});
+
+	}
+
+
+	//
+	// Inits & Event Listeners
+	//
+
+	filter.init();
+	document.addEventListener('astro:before-swap', filter.destroy);
+	document.addEventListener('astro:after-swap', filter.init);
+
+	search.init();
+	document.addEventListener('astro:before-swap', search.destroy);
+	document.addEventListener('astro:after-swap', search.init);
+
+
+</script>
