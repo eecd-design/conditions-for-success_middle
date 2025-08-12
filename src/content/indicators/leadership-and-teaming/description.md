@@ -1,1 +1,1 @@
-This is a TEST *description* of the indicator.
+Focuses on cultivating a shared vision, fostering inclusive collaboration, and building strong professional communities that prioritize student-centered middle-level education through flexible, responsive scheduling.
