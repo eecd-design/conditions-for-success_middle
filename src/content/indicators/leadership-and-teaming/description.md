@@ -1,1 +1,1 @@
-This is a *description* of the indicator.
+This is a TEST *description* of the indicator.
