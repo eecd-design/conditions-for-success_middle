@@ -1,1 +1,1 @@
-Focuses on strengthening connections that build trust, inclusion, and emotional safety for all, including: school personnel to student, school personnel to school personnel, student to student, and school to community.
+Focuses on strengthening connections that build trust, inclusion, and emotional safety for all, including: school personnel to learner, school personnel to school personnel, learner to learner, and school to community.
