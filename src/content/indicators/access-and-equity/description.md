@@ -1,0 +1,1 @@
+Focuses on ensuring inclusion and equitable access to school resources and supports through the Academic Response to Intervention, Positive Behavioural Interventions & Supports (PBIS), differentiated instruction, the Universal Design for Learning (UDL), linguistically and culturally responsive pedagogy, and acceleration-focused literacy support for all learners.

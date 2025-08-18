@@ -1,1 +1,1 @@
-This is a *description* of the indicator.
+Focuses on cultivating a shared vision, fostering inclusive collaboration, and building strong professional communities that prioritize learner-centered middle-level education through flexible, responsive scheduling.
