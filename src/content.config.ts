@@ -48,6 +48,24 @@ const components = defineCollection({
                 })
             )
         }),
+        developing: z.object({
+            considerations: z.array(
+                z.object({
+                    tag: z.string(),
+                    description: z.string(),
+                    compass: z.boolean(),
+                })
+            )
+        }),
+        sustaining: z.object({
+            considerations: z.array(
+                z.object({
+                    tag: z.string(),
+                    description: z.string(),
+                    compass: z.boolean(),
+                })
+            )
+        }),
 	})
 });
 
