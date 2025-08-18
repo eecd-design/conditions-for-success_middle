@@ -1,1 +1,0 @@
-Staff understand and can explain the shared vision and philosophy.
