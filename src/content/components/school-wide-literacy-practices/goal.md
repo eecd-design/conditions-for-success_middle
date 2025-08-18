@@ -1,0 +1,1 @@
+Learners develop as confident, critical readers and writers through language exploration, experimentation, and application.  Teachers use high-yield instructional practices that scaffold learning, promote discussion, and foster student ownership so that they use language, engage as readers and writers, and seek information criticality.

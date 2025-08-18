@@ -1,0 +1,44 @@
+indicator: high-yield-instructional-practices
+tag: '6.2'
+title: School-wide Literacy Practices
+initiating:
+  considerations:
+    - tag: 6.2.1
+      description: >-
+        Direct instruction (0.59) focuses on isolated skills rather than deeper
+        meaning (e.g., educators explicitly define literary terms before reading
+        but do not connect them to learners’ unique strengths or prior
+        knowledge).
+      compass: false
+    - tag: 6.2.2
+      description: >-
+        Vocabulary instruction (0.67) relies on word lists rather than
+        developing thematic and technical vocabulary across learning areas
+        (e.g., learners memorize definitions instead of using new vocabulary to
+        communicate effectively in writing and discussions).
+      compass: false
+    - tag: 6.2.3
+      description: >-
+        Summarizing (0.63) and note-taking (0.59) involve copying text rather
+        than connecting reading and writing or increasing stamina (e.g.,
+        learners complete fill-in-the-blank summaries rather than constructing
+        their own responses to texts).
+      compass: false
+    - tag: 6.2.4
+      description: >-
+        Questioning (0.48) is recall-based, with minimal opportunities to seek
+        clarification or evaluate and respond to ideas (e.g., educators ask,
+        “What happened in the story?” rather than prompting learners to explain
+        author’s intent or argumentation strategies).
+      compass: false
+    - tag: 6.2.5
+      description: >-
+        Assessment is summative, with little formative feedback for learners to
+        reflect and grow as independent readers and writers.
+      compass: false
+implementing:
+  considerations: []
+developing:
+  considerations: []
+sustaining:
+  considerations: []
