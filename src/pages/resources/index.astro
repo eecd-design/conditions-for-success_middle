@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SectionNav from "../../components/SectionNav.astro";
+import IconCheckmark from "../../components/icons/IconCheckmark_8.astro";
 import IconDownload from "../../components/icons/IconDownload_16.astro";
 import IconExternal from "../../components/icons/IconExternal_16.astro";
 import IconFilter from "src/components/icons/IconFilter_20.astro";
@@ -17,7 +18,9 @@ import Accordion from "src/components/Accordion.astro";
 
 let allResources = await getCollection("resources");
 
-// TODO: Sort resources by Title
+allResources.sort((a, b) => {
+	return (a.data.title || '').localeCompare(b.data.title || '');
+});
 
 let allIndicators = await getCollection("indicators");
 
@@ -57,7 +60,7 @@ let types = [
 
 			<hr class="group-divider" />
 			
-			<Accordion title={'Type'}>
+			<Accordion title={'Type'} id={'filters_type'} crossIconSize={'small'}>
 
 				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
 					<span data-field="filters-types-status" >0</span>&nbsp;Selected</span>
@@ -65,12 +68,12 @@ let types = [
 
 				<hr class="item-divider">
 
-				<fieldset class="filters" aria-labelledby="filters-types_legend">
-					<!-- TODO: Connect aria labelledby to accordion heading -->
+				<fieldset class="filters" aria-labelledby="filters_type">
 					{
 						types.map((type) => (
 							<label>
 								<input type="checkbox" name="types" value={type.toLowerCase()} data-title={type} data-status-field="filters-types-status"/>
+								<IconCheckmark/>
 								<span>{type}</span>
 							</label>
 						))
@@ -82,7 +85,7 @@ let types = [
 
 			<hr class="group-divider"/>
 
-			<Accordion title={'Indicator'}>
+			<Accordion title={'Indicator'} id={'filters_indicator'} crossIconSize={'small'}>
 
 				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
 					<span data-field="filters-indicators-status" >0</span>&nbsp;Selected</span>
@@ -90,11 +93,12 @@ let types = [
 
 				<hr class="item-divider">
 
-				<fieldset class="filters" aria-labelledby="filters-indicators_legend">
+				<fieldset class="filters" aria-labelledby="filters_indicator">
 					{
 						allIndicators.map((indicator) => (
 							<label>
 								<input type="checkbox" name="indicators" value={indicator.data.tag} data-title={indicator.data.title} data-status-field="filters-indicators-status"/>
+								<IconCheckmark/>
 								<span>{indicator.data.title}</span>
 							</label>
 						))
@@ -127,7 +131,6 @@ let types = [
 						autofocus
 					/>
 					<IconSearch/>
-					<!-- TODO: Make a 20px search icon -->
 				</div>
 				<p class="error" hidden>
 					<IconWarning />
@@ -237,8 +240,7 @@ let types = [
 		--button-border-radius: var(--border-radius-small);
 		--button-ui-colour: var(--colour-ui-neutral);
 		/* --icon-colour: var(--colour-ui-accent); */
-		--icon-size: 1.25rem;
-		/* TODO: Make smaller cross icon */
+		--icon-size: 1rem;
 
 		padding: 0.75rem;
 	}
@@ -290,15 +292,57 @@ let types = [
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 1rem;
+		gap: 0.75rem;
 		margin: 0 0.75rem;
+		padding: 0.5rem 0.75rem;
 		border-radius: var(--border-radius-small);
 		font-size: 0.875rem;
-		padding: 0.5rem 0.75rem;
+		cursor: pointer;
+		user-select: none;
+		position: relative;
 	}
 
 	fieldset.filters label:is(:hover, :focus-visible) {
 		background-color: var(--colour-fill-neutral-subtle-muted);
+	}
+
+	fieldset.filters label input {
+		height: 1rem;
+		width: 1rem;
+		opacity: 0;
+		cursor: pointer;
+		z-index: 0;
+	}
+
+	fieldset.filters label:is(:hover, :focus-visible, :has(input[type="checkbox"]:checked))::before {
+		border-color: var(--colour-border-neutral-bold-muted);
+	}
+
+	fieldset.filters label::before {
+		content: "";
+		position: absolute;
+		height: 1rem;
+		width: 1rem;
+		background-color: var(--colour-background);
+		border: 2px solid var(--colour-border-neutral-mid-muted);
+		border-radius: var(--border-radius-small);
+		pointer-events: none;
+		z-index: 1;
+		transition: border-color var(--transition-linear-fast);
+	}
+
+	fieldset.filters label .icon.checkmark {
+		--icon-colour: var(--colour-ui-neutral);
+		--icon-size: 0.5rem;
+		position: absolute;
+		left: 1rem;
+		z-index: 2;
+		opacity: 0;
+		transition: opacity var(--transition-linear-fast);
+	}
+
+	fieldset.filters label:has(input[type="checkbox"]:checked) .icon.checkmark {
+		opacity: 1;
 	}
 
 	fieldset.filters label > span {
@@ -329,6 +373,11 @@ let types = [
 		border-radius: var(--border-radius-normal);
 		background-color: var(--colour-fill-neutral-subtle-muted);
 		padding: 0 0 0 0.75rem;
+		transition: background-color var(--transition-linear-fast);
+	}
+
+	#active-filters-list .filter-tag:has(button.clear:is(:hover, :focus-visible)) {
+		background-color: var(--colour-fill-neutral-subtle-muted-highlight);
 	}
 
 	#active-filters-list .filter-tag .group {
@@ -347,11 +396,23 @@ let types = [
 
 	#active-filters-list .filter-tag button.clear {
 		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+		--icon-size: 0.75rem;
+		--icon-colour: var(--colour-ui-neutral-subtle);
+		display: inline-flex;
 		height: 2rem;
 		min-width: 2rem;
 		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal) 0;
 		border-left: 1px solid var(--colour-border-neutral-subtle-muted);
+		border
 	}
+
+	#active-filters-list .filter-tag button.clear:is(:hover, :focus-visible) {
+		--button-background-colour: var(--colour-fill-neutral-bold-muted);
+		--icon-colour: var(--colour-ui-reverse);
+		border-color: var(--button-background-colour);
+	}
+
+
 
 	/* TODO: Update the assessor buttons to match these. */
 
@@ -370,16 +431,7 @@ let types = [
 	//
 
 	import { filter, search } from "src/utilities/filter";
-
-	import {
-		updateChangeLog,
-		getActiveAssessmentData,
-		setAssessment,
-		updateContinuumCompletion
-	} from "src/stores/userDataStore.js";
-import { htmlToElement } from "src/utilities/helpers";
-
-
+	import { htmlToElement } from "src/utilities/helpers";
 
 
 
@@ -387,90 +439,6 @@ import { htmlToElement } from "src/utilities/helpers";
 	// Methods
 	//
 
-	let updateFilterGroupStatus = ({status, operation}) => {
-
-		let statusValue = Number(status.textContent);
-
-		if (operation === 'addition') statusValue ++;
-		if (operation === 'substraction') statusValue --;
-
-		status.textContent = statusValue;
-
-	}
-
-	let createActiveFilterTag = (target) => {
-
-		let groupName = target.getAttribute('name');
-		let filterName = target.getAttribute('data-title');
-		let filterValue = target.getAttribute('value');
-
-		if (!groupName || !filterName || !filterValue) return;
-
-		let template = `
-		
-			<li class="active-filter-tag" data-name="${groupName}" data-value="${filterValue}">
-				<span class="filter-group-name">${groupName}</span>
-				<span class="filter-name">${filterName}</span>
-				<button class="clear-filter" type="button" aria-label="Clear ${filterName} Filter">
-					X
-				</button>
-			</li>
-
-		`;
-
-		let tag = htmlToElement(template);
-
-		return tag;
-
-	}
-
-	let deleteActiveFilterTag = (target) => {
-
-		let activeFilterTag = target.closest('.active-filter-tag');
-
-		if (activeFilterTag) {
-
-			activeFilterTag.remove();
-
-		} else {
-	
-			activeFilterTag = document.querySelector(`.active-filter-tag[data-value="${target.value}"]`);
-	
-			if (activeFilterTag) activeFilterTag.remove();
-
-		}
-
-	}
-
-	let updateFilterState = (target) => {
-
-		let groupName, groupStatus, operation;
-
-		if (target.matches('input')) {
-			groupName = target.getAttribute('name');
-			if (target.checked) {
-				operation = 'addition';
-				let tag = createActiveFilterTag(target);
-
-			} else {
-				operation = 'substraction';
-				deleteActiveFilterTag(target);
-			}
-		} else if (target.matches('button.clear-filter')) {
-			let tag = target.closest('.active-filter-tag');
-			groupName = tag.getAttribute('data-name');
-			let filterValue = tag.getAttribute('data-value');
-			operation = 'substraction';
-			deleteActiveFilterTag(tag);
-			let sourceInput = document.querySelector(`input[name="${groupName}"][value="${filterValue}"]`) as HTMLInputElement;
-			if (sourceInput) sourceInput.checked = false;
-		}
-
-		groupStatus = document.querySelector(`[data-field="filters-${groupName}-status"]`);
-
-		if (groupStatus) updateFilterGroupStatus({status: groupStatus, operation});
-
-	}
 
 
 	//

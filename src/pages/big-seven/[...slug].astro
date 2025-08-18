@@ -56,7 +56,7 @@ let components = allComponents.filter((component => component.data.indicator ===
 			<ul class="link-list">
 				{components.map((component) => (
 					<li>
-						<a href={`#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`}>
+						<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 							<span class="icon-container">
 								<IconArrow classes={['destination']} />
 							</span>
@@ -80,7 +80,7 @@ let components = allComponents.filter((component => component.data.indicator ===
 			{components.map((component) => (
 
 				<li>
-					<a href={`#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`}>
+					<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 						<span class="icon-container">
 							<IconArrow classes={['destination']} />
 						</span>

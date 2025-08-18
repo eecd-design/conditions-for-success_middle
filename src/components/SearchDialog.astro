@@ -59,16 +59,12 @@ let allResources = await getCollection("resources");
 
 for (let resource of allResources) {
 	searchList.push({
-		type: 'resource',
 		type: resource.data.type,
 		title: resource.data.title,
 		url: resource.data.source.filePath ? resource.data.source.filePath.replace('public', '') : resource.data.source.url,
 		external: resource.data.source.url ? true : false,
 	})
 }
-
-console.log(searchList);
-
 
 ---
 
@@ -137,7 +133,6 @@ console.log(searchList);
 								<span class="label">
 									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.type)} ${toTitleCase(item.type)}`}
 								</span>
-								{/* TODO: Website Resource or Web Resource? */}
 								<span class="text">
 									{item.title}
 								</span>

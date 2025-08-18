@@ -351,10 +351,14 @@ let debouncedFilter = debounce(({ input, list, noValueBehaviour }) => {
 
 // TODO: Click <a> tag for same page inside of dialog, closes dialog
 
-// TODO: Catch anchor links with query string ?consideration=1.1.1 and open correct accordion and scroll to that accordion.
+// TODO: Catch anchor links with query string ?consideration=1.1.1 and open correct accordion and scroll to that accordion. We now have anchor ids for the accordion headings? Use those instead
 
 
 let filter = (() => {
+
+	//
+	// Tags
+	//
 
 	let createTag = (target) => {
 		let group = target.getAttribute('name');
@@ -367,7 +371,9 @@ let filter = (() => {
 				<span class="group">${toTitleCase(group)}</span>
 				<span class="title" title="${title}">${title}</span>
 				<button class="clear" type="button" aria-label="Clear ${title} Filter">
-					X
+					<svg class="icon xmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
+						<path d="m7.41 6 4.3-4.29A.996.996 0 1 0 10.3.3L6.01 4.59 1.71.29C1.32-.1.68-.1.29.29s-.39 1.03 0 1.42L4.58 6 .29 10.29a.996.996 0 0 0 .71 1.7c.26 0 .51-.1.71-.29L6 7.41l4.29 4.29c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L7.42 6Z"/>
+					</svg>
 				</button>
 			</li>
 		`;
@@ -393,6 +399,10 @@ let filter = (() => {
 		if (tag) tag.remove();
 	}
 
+	//
+	// Status Fields
+	//
+
 	let getStatusField = (target) => {
 		let fieldId = target.getAttribute('data-status-field');
 		if (!fieldId) return null;
@@ -415,6 +425,19 @@ let filter = (() => {
 		}
 	}
 
+	//
+	// Form
+	//
+
+	let getForm = (input) => {
+		let form = input.closest('form');
+		return form ?? null;
+	}
+
+	//
+	// Inputs
+	//
+
 	let getInput = (tag) => {
 		let group = tag.getAttribute('data-group');
 		let value = tag.getAttribute('data-value');
@@ -427,12 +450,25 @@ let filter = (() => {
 		input.checked = !input.checked;
 	}
 
+	//
+	// List
+	//
+
+	let getList = (form) => {
+		let listId = form.getAttribute('data-filter-list');
+		let list = document.querySelector(`#${listId}`);
+		return list ?? null;
+	}
+
+	//
+	// Event Handlers
+	//
+
 	let onInput = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.filters input')) return;
-		let form = target.closest('form');
-		let listId = form.getAttribute('data-filter-list');
-		let list = document.querySelector(`#${listId}`);
+		let form = getForm(target);
+		let list = getList(form);
 		if (!form || !list) return;
 		let filters = getFilters(form);
 		filterListByFilterBtns({ filters, list });
@@ -462,9 +498,8 @@ let filter = (() => {
 	let onReset = (event) => {
 		let target = event.target;
 		if (!target.matches('form:has(fieldset.filters)')) return;
-		let form = target.closest('form');
-		let listId = form.getAttribute('data-filter-list');
-		let list = document.querySelector(`#${listId}`);
+		let form = getForm(target);
+		let list = getList(form);
 		if (!form || !list) return;
 		let filters = {};
 		filterListByFilterBtns({ filters, list });
@@ -485,13 +520,17 @@ let filter = (() => {
 	let onClick = (event) => {
 		let target = event.target;
 		if (!target.matches('.filter-tag button')) return;
-		console.log(target);
 		let tag = getTag(target);
 		if (!tag) return;
 		let input = getInput(tag);
 		if (input) {
 			updateInput(input);
 		}
+		let form = getForm(input);
+		let list = getList(form);
+		if (!form || !list) return;
+		let filters = getFilters(form);
+		filterListByFilterBtns({ filters, list });
 		let statusField = getStatusField(tag);
 		if (statusField) {
 			updateStatus({
@@ -501,6 +540,10 @@ let filter = (() => {
 		}
 		removeTag(tag);
 	}
+
+	//
+	// Init and Destroy
+	//
 
 	let init = () => {
 		let forms = document.querySelectorAll('form:has(fieldset.filters)');

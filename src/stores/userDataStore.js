@@ -309,8 +309,6 @@ let updateContinuumCompletion = async ({assessment = getActiveAssessmentData(), 
 	updateEntry(indicator, indicator);
 	updateEntry(component, component);
 
-	console.log('Updated Completion', completion);
-
 	return completion;
 
 }

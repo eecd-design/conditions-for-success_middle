@@ -1167,10 +1167,9 @@ input[type="text"]::placeholder {
 }
 
 .select-container .icon {
-	width: 1.25rem;
+	width: 0.875rem;
 	position: absolute;
-	top: 0.75rem;
-	right: 0.75rem;
+	right: 1rem;
 }
 
 :is(.input-container, .url-container) button {

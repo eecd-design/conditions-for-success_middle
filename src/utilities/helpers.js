@@ -169,6 +169,22 @@ let sanitizeHTML = (input) => {
 }
 
 /**
+ * Converts a string to kebab-case.
+ * 
+ * @param {string} str - The input string.
+ * @returns {string} The kebab-cased string.
+ */
+let toKebabCase = (str) => {
+  return str
+	.replace(/([a-z])([A-Z])/g, '$1-$2')   // handle camelCase/PascalCase
+	.replace(/[\s_]+/g, '-')               // replace spaces/underscores
+	.toLowerCase()                         // lowercase everything
+	.replace(/[^a-z0-9-]/g, '')            // remove non-alphanumerics except -
+	.replace(/--+/g, '-')                  // collapse multiple -
+	.replace(/^-+|-+$/g, '');              // trim - from ends
+};
+
+/**
  * Converts a string to Title Case.
  * Words are split by whitespace and non-letter characters are preserved.
  * @param {string} str - The input string to convert.
@@ -180,4 +196,4 @@ let toTitleCase = function (str) {
   });
 };
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML, toTitleCase };
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML, toKebabCase, toTitleCase };

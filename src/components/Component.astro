@@ -14,8 +14,6 @@ import IconExternal from "./icons/IconExternal_16.astro";
 
 const { entry } = Astro.props;
 
-console.log(entry);
-
 // Store the path to the current component
 const pathToComponent = `src/content/components/${entry.id}`;
 
@@ -107,8 +105,6 @@ let phases = [
 	},
 ]
 
-console.log(phases[0].resources);
-
 ---
 
 <section data-component-tag={entry.data.tag}>
@@ -117,7 +113,7 @@ console.log(phases[0].resources);
 	
 	<!-- TODO: Should we just drop the title for the anchor id? So #component-1-2 instead of #component-1-2_shared-practices... -->
 
-	<h2 id={`component-${entry.data.tag.replaceAll('.', '-')}_${entry.id}`}>
+	<h2 id={`component-${entry.data.tag.replaceAll('.', '-')}`}>
 		<span class="tag" data-font-type="sans-serif">
 			<span class="number">{entry.data?.tag}</span>
 		</span>
@@ -151,10 +147,12 @@ console.log(phases[0].resources);
 			let considerations = entry.data[phase.key]?.considerations ?? null;
 			let considerationsCount = considerations ? considerations.length : null;
 			let resources = phase.resources;
+
+			console.log(entry.data);
 	
 			return (
 	
-				<Accordion title={phase.title} phase={phase.key}>
+				<Accordion title={phase.title} id={`component-${entry.data.tag.replaceAll('.', '-')}_${phase.title.toLowerCase()}`} dataset={[{key: 'phase', value: phase.key}]} crossIconSize="medium">
 	
 					<PhaseIcons phase={phase.key} slot="button-icon"/>
 	
@@ -660,9 +658,6 @@ console.log(phases[0].resources);
 
 		}
 
-		console.log(completion);
-
-
 		// 3. Update the current phase per component
 		let phaseStatusFields = document.querySelectorAll('[data-field="currentPhase"]');
 
@@ -695,8 +690,6 @@ console.log(phases[0].resources);
 		let target = event.target as HTMLInputElement;
 
 		if (target.matches(`input[name="considerationsEstablished"]`)) {
-
-			console.log(target.checked);
 
 			let assessment = getActiveAssessmentData();
 

@@ -1,12 +1,31 @@
 ---
 
-import IconCross from "./icons/IconCross_24.astro";
+import IconCaretSmall from "./icons/IconCaretDown_14.astro";
+import IconCaretMedium from "./icons/IconCaretDown_16.astro";
+import IconCaretLarge from "./icons/IconCaretDown_20.astro";
 
-const { title, phase } = Astro.props;
+import { toKebabCase } from "../utilities/helpers";
+
+const { title, id, dataset, crossIconSize = 'large' } = Astro.props;
+
+let datasetAttrs = {};
+if (dataset) {
+	for (let data of dataset) {
+		datasetAttrs[`data-${data.key}`] = data.value;
+	}
+}
+
+const crossIcons = {
+	small: IconCaretSmall,
+	medium: IconCaretMedium,
+	large: IconCaretLarge,
+}
+
+let IconCross = crossIcons[crossIconSize];
 
 ---
 
-<h3 class="accordion" data-phase={phase ? phase : null}>
+<h3 id={id ? id : toKebabCase(title)} class="accordion" {...datasetAttrs}>
 
 	<span class="icon-and-label-container">
 		<slot name="button-icon"/>
@@ -45,7 +64,7 @@ const { title, phase } = Astro.props;
 		--button-border-radius: var(--border-radius-normal);
 		--button-ui-colour: var(--colour-ui-neutral);
 		--icon-colour: var(--colour-ui-accent);
-		--icon-size: 1.5rem;
+		--icon-size: 1.25rem;
 
 		display: flex;
 		flex-flow: row nowrap;
@@ -53,7 +72,7 @@ const { title, phase } = Astro.props;
 		gap: 1rem;
 		height: auto;
 		width: 100%;
-		padding: 0.75rem 1rem;
+		padding: 0.75rem 1.25rem 0.75rem 1rem;
 		outline-color: transparent;
 		transition: 
 			background-color var(--transition-linear-fast),
@@ -86,13 +105,13 @@ const { title, phase } = Astro.props;
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	.accordion button > .icon.cross path {
+	.accordion button > .icon.caret {
 		transition: rotate 0.2s ease;
 		transform-origin: center;
 	}
 
-	.accordion button[aria-expanded="true"] > .icon.cross path:last-of-type {
-		rotate: -90deg;
+	.accordion button[aria-expanded="true"] > .icon.caret {
+		rotate: x 180deg;
 	}
 
 	.accordion button .considerations-status {
