@@ -1,0 +1,1 @@
+Remove barriers and optimize learning for all by proactively designing lessons that offer multiple means of engagement, representation, and expression. UDL ensures all learners can access and participate in meaningful learning.
