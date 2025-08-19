@@ -37,7 +37,7 @@ developing:
       description: Regularly uses common assessments to monitor learner progress.
       compass: false
     - tag: 1.5.8
-      description: Use results of common assessment to inform instructional decisions.
+      description: Uses results of common assessment to inform instructional decisions.
       compass: true
     - tag: 1.5.9
       description: Implements targeted interventions based on learner needs.
