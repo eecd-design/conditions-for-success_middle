@@ -1,1 +1,1 @@
-The "Response to Intervention" is often expressed as RTI.
+Note: "Response to Intervention" is often expressed as RTI.
