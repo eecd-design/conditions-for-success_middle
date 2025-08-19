@@ -20,8 +20,56 @@ initiating:
         decolonizing practices.
       compass: false
 implementing:
-  considerations: []
+  considerations:
+    - tag: 2.1.4
+      description: >-
+        Staff provide a positive classroom environment which includes
+        self-regulatory practices and procedures.
+      compass: false
+    - tag: 2.1.5
+      description: >-
+        Learners develop self-awareness and self-management skills to support
+        their social and emotional development.
+      compass: false
+    - tag: 2.1.6
+      description: >-
+        School uses demographic and learner wellness data to inform what health
+        and well-being resources are needed to support learner populations
+        centering equity-owed groups.
+      compass: false
 developing:
-  considerations: []
+  considerations:
+    - tag: 2.1.7
+      description: >-
+        School-wide SEL and well-being procedures have been developed and are
+        consistently implemented.
+      compass: false
+    - tag: 2.1.8
+      description: >-
+        Learners are engaged in social awareness and responsible decision-making
+        activities to enhance empathy and problem-solving skills.
+      compass: false
+    - tag: 2.1.9
+      description: >-
+        School works with families and community providers to reduce the
+        barriers to accessing well-being services in and out of school.
+      compass: false
 sustaining:
-  considerations: []
+  considerations:
+    - tag: 2.1.10
+      description: >-
+        There is a whole school approach to promoting health and well-being
+        where the needs of all learners are consistently monitored and
+        evaluated.
+      compass: false
+    - tag: 2.1.11
+      description: >-
+        School makes social and emotional learning a priority and is embedded in
+        all curricular areas.
+      compass: false
+    - tag: 2.1.12
+      description: >-
+        School provides access to health and well-being proactive and
+        intervention services to support learner populations, centering
+        equity-owed groups.
+      compass: false
