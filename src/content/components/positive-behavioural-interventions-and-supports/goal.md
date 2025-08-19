@@ -1,0 +1,1 @@
+PBIS are proactive, school-wide supports that promote positive behaviour, create a safe and inclusive environment, and support learners’ social-emotional well-being through consistent expectations, data-driven decision-making, and targeted interventions.
