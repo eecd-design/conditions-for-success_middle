@@ -1,0 +1,56 @@
+indicator: leadership-and-teaming
+tag: '1.5'
+title: Professional Learning Communities
+initiating:
+  considerations:
+    - tag: 1.5.1
+      description: >-
+        Discuss Skill Descriptors but lack a structured approach to the four PLC
+        questions.
+      compass: false
+    - tag: 1.5.2
+      description: >-
+        Rely primarily on individual assessment practices without common
+        assessment and shared analysis of learner learning.
+      compass: false
+implementing:
+  considerations:
+    - tag: 1.5.3
+      description: >-
+        Identifies Skill Descriptors that they will provide explicit instruction
+        in.
+      compass: false
+    - tag: 1.5.4
+      description: Begin to develop common assessments.
+      compass: false
+    - tag: 1.5.5
+      description: Begin to analyze learner data collectively.
+      compass: false
+    - tag: 1.5.6
+      description: >-
+        Start discussing intervention response to learners who haven’t and have
+        learned it but apply them inconsistently.
+      compass: false
+developing:
+  considerations:
+    - tag: 1.5.7
+      description: Regularly uses common assessments to monitor learner progress.
+      compass: false
+    - tag: 1.5.8
+      description: Use results of common assessment to inform instructional decisions.
+      compass: true
+    - tag: 1.5.9
+      description: Implements targeted interventions based on learner needs.
+      compass: true
+sustaining:
+  considerations:
+    - tag: 1.5.10
+      description: >-
+        Continuously refines instructional practices based on learner data,
+        ensuring all learners receive appropriate support and challenge.
+      compass: false
+    - tag: 1.5.11
+      description: >-
+        Embeds the four PLC questions into daily decision-making, fostering a
+        culture of continuous improvement.
+      compass: false
