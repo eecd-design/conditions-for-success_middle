@@ -140,7 +140,7 @@ export default config({
 								validation: {
 									isRequired: true,
 									pattern: {
-										regex: /^\d\.\d\.\d$/,
+										regex: /^\d\.\d\.\d{1,2}$/,
 										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 									},
 									length: {
@@ -180,7 +180,7 @@ export default config({
 								validation: {
 									isRequired: true,
 									pattern: {
-										regex: /^\d\.\d\.\d$/,
+										regex: /^\d\.\d\.\d{1,2}$/,
 										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 									},
 									length: {
@@ -220,7 +220,7 @@ export default config({
 								validation: {
 									isRequired: true,
 									pattern: {
-										regex: /^\d\.\d\.\d$/,
+										regex: /^\d\.\d\.\d{1,2}$/,
 										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 									},
 									length: {
@@ -260,7 +260,7 @@ export default config({
 								validation: {
 									isRequired: true,
 									pattern: {
-										regex: /^\d\.\d\.\d$/,
+										regex: /^\d\.\d\.\d{1,2}$/,
 										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 									},
 									length: {
@@ -385,7 +385,7 @@ export default config({
 						validation: {
 							isRequired: true,
 							pattern: {
-								regex: /^\d\.\d\.\d$/,
+								regex: /^\d\.\d\.\d{1,2}$/,
 								message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
 							},
 							length: {
