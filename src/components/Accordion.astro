@@ -136,101 +136,15 @@ let IconCross = crossIcons[crossIconSize];
 
 <script>
 
-    //
-    // HELPER METHODS
-    //
+	import { isInViewport, scrollIntoView, stopVideo } from "../utilities/helpers";
 
-	/**
-	 * Stop all actively playing videos within a container element
-	 * @param  {Event} elem The container element
-	 */
-	let stopVideo = (elem) => {
-		let iframe = elem.matches('iframe') ? elem : elem.querySelector('iframe');
-		let video = elem.matches('video') ? elem : elem.querySelector('video');
-		if (iframe) {
-			let iframeSrc = iframe.src;
-			iframe.src = iframeSrc;
-		}
-		if (video) {
-			video.pause();
-		}
-	};
+	let accordion = (() => {
 
-	/**
-	 * Scroll an element into view
-	 * @param  {Node} elem The elem to show
-	 */
-	let scrollIntoView = (elem, options:{block?:string} = {}) => {
-
-		let { block = 'start' } = options; 
-
-		let rect = elem.getBoundingClientRect();
-		let fullyInView = (
-			rect.top >= 0 &&
-			rect.left >= 0 &&
-			rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-			rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-		);
-
-		if (!fullyInView) {
-
-			elem.scrollIntoView({
-				behavior: 'auto',
-				block: block,
-			});
-
-		}
-
-	}
-
-	/**
-	 * Checks if an element is in the viewport.
-	 * @param {HTMLElement} elem - The element to check.
-	 * @param {Object} [options] - Options for visibility.
-	 * @param {boolean} [options.fully=false] - Whether the element must be fully in view.
-	 * @returns {boolean} True if element is in view (fully or partially).
-	 */
-	let isInViewport = (elem, options:{fully?:boolean} = {}) => {
-
-		let { fully = false } = options
-		let rect = elem.getBoundingClientRect()
-
-		let viewHeight = window.innerHeight || document.documentElement.clientHeight
-		let viewWidth = window.innerWidth || document.documentElement.clientWidth
-
-		if (fully) {
-			return (
-				rect.top >= 0 &&
-				rect.left >= 0 &&
-				rect.bottom <= viewHeight &&
-				rect.right <= viewWidth
-			)
-		}
-
-		return (
-			rect.bottom > 0 &&
-			rect.right > 0 &&
-			rect.top < viewHeight &&
-			rect.left < viewWidth
-		)
-
-	}
-
-
-    //
-	// DOM SETUP
-	//
-
-	/**
-	* Add buttons and hide content on page load
-	*/
-	let setupAccordionDOM = () => {
-
-		// Get all accordion headings
-		let headings = document.querySelectorAll('.accordion');
-
-		// Wrap heading content in a button
-		for (let heading of headings) {
+		//
+		// DOM Setup
+		//
+			
+		let setupDOM = (heading) => {
 
 			// Create a button
 			let btn = document.createElement('button');
@@ -253,145 +167,136 @@ let IconCross = crossIcons[crossIconSize];
 			// Add ARIA
 			btn.setAttribute('aria-expanded', 'false');
 
+			// Flag heading as initialized
+			heading.setAttribute('data-initialized', '');
+
 		}
 
-	}
+		//
+		// Methods
+		//
 
+		/**
+		 * Toggle accordion visibility
+		 * @param  {Node} targetAccordion The accordion to show
+		 */
+		let toggleAccordion = (targetAccordion) => {
 
-	//
-	//	EVENT HANDLERS
-	//
-
-	/**
-	 * Show content on click events
-	 * @param  {Event} event The event object
-	 */
-	let accordionClickHandler = (event) => {
-
-		// Only run on accordion buttons
-		let targetAccordion = event.target.closest('.accordion');
-		if (!targetAccordion) return;
-
-		// Toggle accordion visibility
-		toggleAccordion(targetAccordion);
-
-	}
-
-
-
-    //
-    // METHODS
-    //
-
-
-	/**
-	 * Toggle accordion visibility
-	 * @param  {Node} targetAccordion The accordion to show
-	 */
-	let toggleAccordion = (targetAccordion) => {
-
-		// Get the accordion group, if there is one
-		let accordionGroup = targetAccordion.closest('.accordion-group');
-		
-		// If there is an accordion group, check whether it allows multiple open panels, default to false
-		let allowMultiple = accordionGroup ? accordionGroup.hasAttribute('data-allow-multiple') : false;
-
-		// Get the target accordion toggle button
-		let targetToggle = targetAccordion.querySelector('button');
-
-		// Get the target accordion panel
-		let targetPanel = targetAccordion.nextElementSibling;
-
-		// Check if the target panel is expanded
-		let isExpanded = targetToggle.getAttribute('aria-expanded') == 'true';
-		
-		// Get the active toggle button
-		let activeToggle = accordionGroup ? accordionGroup.querySelector('[aria-expanded="true"]') : null;
-
-		// Get the active panel
-		let activePanel = activeToggle ? activeToggle.closest('.accordion').nextElementSibling : null;
-
-		// If the active panel contains a video, pause it
-		if (activePanel && (activePanel.matches('video, .embed') || activePanel.querySelector('video, .embed'))) {
-			stopVideo(activePanel);
-		}
-
-		// If accordion group does not allows multiple open panels and the target toggle is not the active toggle 
-		if (!allowMultiple && activeToggle && activeToggle !== targetToggle) {
-
-			// Reset the active toggle
-			activeToggle.setAttribute('aria-expanded', 'false');
+			// Get the accordion group, if there is one
+			let accordionGroup = targetAccordion.closest('.accordion-group');
 			
-			// Hide the active panel
-			activePanel.setAttribute('hidden', '');
+			// If there is an accordion group, check whether it allows multiple open panels, default to false
+			let allowMultiple = accordionGroup ? accordionGroup.hasAttribute('data-allow-multiple') : false;
 
+			// Get the target accordion toggle button
+			let targetToggle = targetAccordion.querySelector('button');
+
+			// Get the target accordion panel
+			let targetPanel = targetAccordion.nextElementSibling;
+
+			// Check if the target panel is expanded
+			let isExpanded = targetToggle.getAttribute('aria-expanded') == 'true';
+			
+			// Get the active toggle button
+			let activeToggle = accordionGroup ? accordionGroup.querySelector('[aria-expanded="true"]') : null;
+
+			// Get the active panel
+			let activePanel = activeToggle ? activeToggle.closest('.accordion').nextElementSibling : null;
+
+			// If the active panel contains a video, pause it
+			if (activePanel && (activePanel.matches('video, .embed') || activePanel.querySelector('video, .embed'))) {
+				stopVideo(activePanel);
+			}
+
+			// If accordion group does not allows multiple open panels and the target toggle is not the active toggle 
+			if (!allowMultiple && activeToggle && activeToggle !== targetToggle) {
+
+				// Reset the active toggle
+				activeToggle.setAttribute('aria-expanded', 'false');
+				
+				// Hide the active panel
+				activePanel.setAttribute('hidden', '');
+
+			}
+
+			// If the target is collapsed, expand it
+			if (!isExpanded) {
+
+				// Set the toggle to expanded
+				targetToggle.setAttribute('aria-expanded', 'true');
+
+				// Show the target panel
+				targetPanel.removeAttribute('hidden');
+
+			}
+
+			// If the target is expanded, collapse it
+			else if (isExpanded) {
+
+				// Set the expanded state on the triggering element
+				targetToggle.setAttribute('aria-expanded', 'false');
+
+				// Hide the target panel
+				targetPanel.setAttribute('hidden', '');
+
+			}
+
+			// Get the transition length and convert it to a number
+			let transitionLength = Number(getComputedStyle(targetAccordion).getPropertyValue('transition-duration').replace(/[^0-9\.]/g, ''));
+
+			setTimeout(() => {
+
+				// If the target toggle is not in view after the transition
+				if (!isInViewport(targetToggle)) {
+
+					// Scroll it into view
+					scrollIntoView(targetToggle);
+
+				}
+
+			}, transitionLength * 1000);
+
+		}		
+
+		//
+		// Event Handlers
+		//
+
+		let onClick = (event) => {
+			let targetAccordion = event.target.closest('.accordion');
+			if (!targetAccordion) return;
+			toggleAccordion(targetAccordion);
 		}
 
-		// If the target is collapsed, expand it
-		if (!isExpanded) {
+		//
+		// Init and Destroy
+		//
 
-			// Set the toggle to expanded
-			targetToggle.setAttribute('aria-expanded', 'true');
-
-			// Show the target panel
-			targetPanel.removeAttribute('hidden');
-
+		let init = () => {
+			// Get all accordion headings
+			let headings = document.querySelectorAll('.accordion');
+			for (let heading of headings) {
+				if (heading.getAttribute('data-initalized')) return;
+				setupDOM(heading);
+			}
+			document.addEventListener('click', onClick);
 		}
 
-		// If the target is expanded, collapse it
-		else if (isExpanded) {
-
-			// Set the expanded state on the triggering element
-			targetToggle.setAttribute('aria-expanded', 'false');
-
-			// Hide the target panel
-			targetPanel.setAttribute('hidden', '');
-
+		let destroy = () => {
+			document.removeEventListener('click', onClick);
 		}
 
-        // Get the transition length and convert it to a number
-        let transitionLength = Number(getComputedStyle(targetAccordion).getPropertyValue('transition-duration').replace(/[^0-9\.]/g, ''));
+		return { init, destroy };	
 
-        setTimeout(() => {
+	})();
 
-            // If the target toggle is not in view after the transition
-            if (!isInViewport(targetToggle)) {
+	//
+	// Inits & Event Listeners
+	//
 
-                // Scroll it into view
-                scrollIntoView(targetToggle);
-
-            }
-
-        }, transitionLength * 1000);
-
-    }
-
-
-    //
-    // INITS
-    //
-
-    let initAccordion = function() {
-
-		setupAccordionDOM();
-
-		document.addEventListener('click', accordionClickHandler);
-
-        document.addEventListener('astro:before-swap', () => {
-
-            document.removeEventListener('click', accordionClickHandler);
-
-        })
-
-    }
-
-    // Initialize the component
-    initAccordion();
-
-    // Re-initialize the component after swapping pages
-    document.addEventListener('astro:after-swap', initAccordion);
-
-	// TODO: Update the accordion init based on the search init/destroy 
+	accordion.init();
+	document.addEventListener('astro:before-swap', accordion.destroy);
+	document.addEventListener('astro:after-swap', accordion.init);
 
 </script>
 
