@@ -28,7 +28,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			<span class="label" data-field="status"></span>
 		</div>
 		
-		<hr class="item-divider"/>
+		<div class="separator item" data-orientation="vertical"></div>
 
 		<button
 			class="open-dialog"
@@ -46,7 +46,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	</div>
 	
-	<hr class="group-divider" data-restrict-mode="assessment" />
+	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment"></div>
 	
 	<div class="file-group button-group">
 		<button
@@ -63,7 +63,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			</div>
 		</button>
 		
-		<hr class="item-divider"/>
+		<div class="separator item" data-orientation="vertical"></div>
 		
 		<button
 			class="open-dialog"
@@ -81,7 +81,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	</div>
 
-	<hr class="group-divider" data-restrict-mode="assessment"/>
+	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment"></div>
 	
 	<div class="export-group button-group" data-restrict-mode="assessment"> 
 
@@ -89,7 +89,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			<span class="label" data-field="exportStatus"></span>
 		</div>
 
-		<hr class="item-divider" data-restrict-status="in-progress"/>
+		<div class="separator item" data-orientation="vertical" data-restrict-status="in-progress"></div>
 		
 		<button
 			class="open-dialog"
@@ -107,7 +107,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	</div>
 
-	<hr class="group-divider" data-restrict-mode="assessment"/>
+	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment"></div>
 
 	<div class="report-group button-group" data-restrict-mode="assessment">
 
@@ -126,7 +126,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	</div>
 
-	<hr class="group-divider" data-restrict-mode="assessment" data-restrict-status="in-progress"/>
+	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" data-restrict-status="in-progress"></div>
 
 	<div class="user-group button-group" data-restrict-mode="assessment" data-restrict-status="in-progress">
 		
@@ -137,7 +137,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			</span>
 		</div>
 
-		<hr class="item-divider" data-restrict-assessor="true"/>
+		<div class="separator item" data-orientation="vertical" data-restrict-assessor="true"></div>
 
 		<button
 			class="open-dialog"
@@ -171,7 +171,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	</div>
 
-	<hr class="group-divider" data-restrict-mode="assessment"/>
+	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment"></div>
 
 	<div class="mode-group button-group" data-restrict-mode="assessment">
 
@@ -273,20 +273,8 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		--label-colour: var(--colour-ui-neutral-subtle);		
 	}
 
-	.assessment-controls hr {
-		display: block;
-		width: 1px;
-		flex-shrink: 0;
-		margin: 0;
-		background-color: var(--colour-border-neutral-subtle-muted);
-	}
-
-	.assessment-controls hr.item-divider {
-		height: 1.75rem;
-	}
-
-	.assessment-controls hr.group-divider {
-		height: 100%;
+	.assessment-controls .separator.item {
+		--separator-long-edge-dimension: 1.75rem;
 	}
 
 </style>

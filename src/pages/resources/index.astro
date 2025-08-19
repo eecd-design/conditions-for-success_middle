@@ -46,7 +46,7 @@ let types = [
 					<!-- <IconFilter /> -->
 					<span>Filters</span>
 				</h2>
-				<hr/>
+				<div class="separator" data-orientation="vertical"></div>
 				<label class="filters-reset" data-style-as="button">
 					<div class="icon-and-label-container">
 						<IconFilterClear />
@@ -58,7 +58,7 @@ let types = [
 				</label>
 			</div>
 
-			<hr class="group-divider" />
+			<div class="separator group"></div>
 			
 			<Accordion title={'Type'} id={'filters_type'} crossIconSize={'small'}>
 
@@ -66,7 +66,7 @@ let types = [
 					<span data-field="filters-types-status" >0</span>&nbsp;Selected</span>
 				</span>
 
-				<hr class="item-divider">
+				<div class="separator item"></div>
 
 				<fieldset class="filters" aria-labelledby="filters_type">
 					{
@@ -83,7 +83,7 @@ let types = [
 			</Accordion>
 			
 
-			<hr class="group-divider"/>
+			<div class="separator group"></div>
 
 			<Accordion title={'Indicator'} id={'filters_indicator'} crossIconSize={'small'}>
 
@@ -91,7 +91,7 @@ let types = [
 					<span data-field="filters-indicators-status" >0</span>&nbsp;Selected</span>
 				</span>
 
-				<hr class="item-divider">
+				<div class="separator item"></div>
 
 				<fieldset class="filters" aria-labelledby="filters_indicator">
 					{
@@ -207,13 +207,8 @@ let types = [
 		flex-grow: 1;
 	}
 
-	.filters-container .heading-group hr {
-		display: block;
-		width: 1px;
-		flex-shrink: 0;
-		margin: 0;
-		background-color: var(--colour-border-neutral-subtle-muted);
-		height: 1.75rem;
+	.filters-container .heading-group .separator {
+		--separator-long-edge-dimension: 1.75rem;
 	}
 
 	.filters-container .heading-group [data-style-as="button"] {
@@ -275,13 +270,9 @@ let types = [
 		margin: 0 0.5rem;
 	}
 
-	.filters-container hr {
-		margin: 0;
-	}
-
-	.filters-container hr.item-divider {
+	.filters-container .separator.item {
+		--separator-long-edge-dimension: auto;
 		margin: 0 0.75rem;
-		background-color: var(--colour-border-neutral-subtle-muted);
 	}
 
 	fieldset.filters {
@@ -412,15 +403,7 @@ let types = [
 		border-color: var(--button-background-colour);
 	}
 
-
-
-	/* TODO: Update the assessor buttons to match these. */
-
-	/* TODO: Generalize the hr as it's used for assessment toolbar as well */
-
-	/* TODO: Style checkboxes */
-
-	
+	/* TODO: Update the assessor buttons to match these. */	
 
 </style>
 

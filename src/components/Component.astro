@@ -122,8 +122,6 @@ let phases = [
 <section data-component-tag={entry.data.tag}>
 
 	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment"></p>
-	
-	<!-- TODO: Should we just drop the title for the anchor id? So #component-1-2 instead of #component-1-2_shared-practices... -->
 
 	<h2 id={`component-${entry.data.tag.replaceAll('.', '-')}`}>
 		<span class="tag" data-font-type="sans-serif">
@@ -179,8 +177,6 @@ let phases = [
 							<span class="label" data-field="considerationsEstablished">0</span>&nbsp;/ {considerationsCount} Established
 						</span>
 					)}
-	
-					{/* TODO: Developing icon needs updating */}
 	
 					<div>
 	
@@ -352,11 +348,7 @@ let phases = [
 	.reflection-question {
 		width: 100%;
 	}
-
-
-	/* TODO: Left align the reflectio nquestion, might need to adjust the padding to match the location of the indicator heading start, or make it very different */
-
-
+	
 	/*
 	** FOCUS
 	------------------------------*/

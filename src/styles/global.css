@@ -1704,14 +1704,30 @@ svg {
 ------------------------------*/
 
 hr {
-	height: 1px;
-	margin: 4rem 0;
-	background-color: var(--colour-border-neutral-subtle-muted);
 	border: none;
 }
 
-/* TODO: Fix accessibility issue with hr use */
-/* <div role="separator" aria-orientation="vertical"></div> might be a better use case for 'meaningful separators', if purely visual, no need for hr or separator role */
+:is(hr, .separator, [role="separator"]) {
+	--separator-long-edge-dimension: 100%;
+	--separator-short-edge-dimension: 1px;
+
+	flex-shrink: 0;
+	margin: 0;
+	width: var(--separator-long-edge-dimension);
+	height: var(--separator-short-edge-dimension);
+	background-color: var(--separator-colour, var(--colour-border-neutral-subtle-muted));
+}
+
+:is(hr, .separator, [role="separator"]):is([data-orientation="vertical"], [aria-orientation="vertical"]) {
+	width: var(--separator-short-edge-dimension);
+	height: var(--separator-long-edge-dimension);
+}
+
+hr.section {
+	margin: 4rem 0;
+}
+
+/* Use <div role="separator" aria-orientation="vertical"></div> for 'meaningful separators' vertical separators */
 
 
 /*
