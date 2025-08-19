@@ -47,7 +47,64 @@ implementing:
         Staff can articulate what it means to be a professional in a diverse
         school.
       compass: false
+    - tag: 1.2.10
+      description: >-
+        A learner leadership group is formed and is asked to provide feedback to
+        school staff around decisions impacting them at school.
+      compass: false
 developing:
-  considerations: []
+  considerations:
+    - tag: 1.2.11
+      description: >-
+        The school regularly reflects on its inclusive practices, with a focus
+        on continuous improvement.
+      compass: false
+    - tag: 1.2.12
+      description: >-
+        Staff use inclusive teaching practices to ensure all learners are
+        supported to participate and achieve.
+      compass: false
+    - tag: 1.2.13
+      description: >-
+        Staff engage in regular collaborative reflection and professional
+        learning on bias, empathy, and inclusive practices.
+      compass: false
+    - tag: 1.2.14
+      description: >-
+        Discussions about the strengths and resources within a diverse school
+        community (e.g., language as a resource) are a regular part of staff
+        learning and leadership.
+      compass: false
+    - tag: 1.2.15
+      description: >-
+        The learner leadership group is made up of diverse voices who
+        collaborate with the school staff on a regular basis to improve middle
+        level education.
+      compass: false
 sustaining:
-  considerations: []
+  considerations:
+    - tag: 1.2.16
+      description: >-
+        Adjustments are regularly made to ensure inclusive practices are
+        evolving to meet all learners' needs.
+      compass: false
+    - tag: 1.2.17
+      description: Staff are skilled in using strategies that meet learner needs.
+      compass: false
+    - tag: 1.2.18
+      description: >-
+        Professional learning and sharing of practices are ongoing, as the
+        school maintains commitment to an inclusive, bias-aware learning
+        environment where all learners and families are welcomed and supported.
+      compass: false
+    - tag: 1.2.19
+      description: >-
+        The school serves as a model for inclusion, regularly sharing evolution
+        of practice through ongoing reflection and data analysis.
+      compass: false
+    - tag: 1.2.20
+      description: >-
+        The school prioritizes learner voice and learner leadership. The school
+        has a clear, effective method for all learners to provide feedback on
+        decisions impacting them at school.
+      compass: false
