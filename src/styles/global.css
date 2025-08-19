@@ -18,33 +18,8 @@
 :root {
 
 	/*
-    // COLOURS
+    // BASE COLOURS
     */
-
-	--system-colour-white: 0 0% 100%;
-
-	--system-colour-vividDarkGreen: 173 100% 19%;
-	--system-colour-mutedDimGreen: 173 27% 45%;
-	--system-colour-mutedModerateGreen: 173 27% 75%;
-	--system-colour-mutedLightGreen: 173 27% 90%;
-	--system-colour-mutedBrightGreen: 173 27% 97%;
-
-	--system-colour-vividDarkBlue: 204 100% 27%;
-	--system-colour-mutedDimBlue: 204 40% 50%;
-	--system-colour-mutedModerateBlue: 204 40% 75%;
-	--system-colour-mutedLightBlue: 204 40% 90%;
-
-	--system-colour-vividDarkPurple: 255 28% 30%;
-	--system-colour-mutedDimPurple: 255 12% 50%;
-	--system-colour-mutedModeratePurple: 255 12% 75%;
-	--system-colour-mutedLightPurple: 255 12% 90%;
-
-	--system-colour-vividDarkGray: 215 15% 15%;
-	--system-colour-vividDimGray: 215 15% 25%;
-	--system-colour-mutedDimGray: 215 10% 35%;
-	--system-colour-mutedModerateGray: 215 8% 45%;
-	--system-colour-mutedLightGray: 215 8% 75%;
-	--system-colour-mutedBrightGray: 215 8% 97%;
 
 	/* red */
 	--red-muted-50: #faf1f1;
@@ -167,7 +142,9 @@
 	--gray-vivid-400: #667890;
 
 
-
+	/*
+    // THEME COLOURS
+    */
 
 	--colour-background: white;
 
@@ -175,9 +152,6 @@
 	--colour-ui-neutral-subtle: var(--gray-muted-500);
 	--colour-ui-reverse: white;
 	--colour-ui-reverse-subtle: var(--gray-muted-100);
-	/* --colour-ui-accent: var(--red-muted-500);
-	--colour-ui-accent-subtle: var(--red-muted-400);
-	--colour-ui-accent-bold: var(--red-muted-600); */
 	--colour-ui-link: var(--colour-ui-neutral);
 	--colour-ui-link-hover: var(--colour-ui-neutral);
 	--colour-ui-link-underline: var(--colour-ui-neutral-subtle);
@@ -187,26 +161,17 @@
 	--colour-fill-highlight: var(--color-highlight);
 	--colour-on-highlight: inherit;
 
+	/* TODO: Set up highlight colour */
+
 	--colour-fill-neutral-faint-muted: var(--gray-muted-50);
 	--colour-fill-neutral-subtle-muted: var(--gray-muted-75);
 	--colour-fill-neutral-subtle-muted-highlight: var(--gray-muted-100);
 	--colour-fill-neutral-mid-muted: var(--gray-muted-500);
 	--colour-fill-neutral-bold-muted: var(--gray-muted-700);
-	/* --colour-fill-accent-subtle-vivid: var(--gray-vivid-75);
-	--colour-fill-accent-subtle-vivid-highlight: var(--gray-vivid-100);
-	--colour-fill-accent-bold-vivid: var(--gray-vivid-400);
-	--colour-fill-accent-subtle-muted: var(--gray-muted-75);
-	--colour-fill-accent-subtle-muted-highlight: var(--gray-muted-100);
-	--colour-fill-accent-bold-muted: var(--gray-muted-500); */
 
 	--colour-border-neutral-subtle-muted: var(--gray-muted-200);
 	--colour-border-neutral-mid-muted: var(--gray-muted-300);
 	--colour-border-neutral-bold-muted: var(--gray-muted-500);
-	/* --colour-border-accent-subtle-vivid: var(--gray-vivid-100);
-	--colour-border-accent-bold-vivid: var(--gray-vivid-400);
-	--colour-border-accent-subtle-muted: var(--gray-muted-200);
-	--colour-border-accent-mid-muted: var(--gray-muted-400);
-	--colour-border-accent-bold-muted: var(--gray-muted-500); */
 
 	--border-radius-small: 0.25rem;
 	--border-radius-normal: 0.5rem;
@@ -241,6 +206,31 @@
 	--colour-border-accent-subtle-muted: var(--red-muted-200);
 	--colour-border-accent-mid-muted: var(--red-muted-300);
 	--colour-border-accent-bold-muted: var(--red-muted-500);
+
+}
+
+[data-theme="orange"] {
+
+	--colour-ui-accent: var(--orange-muted-500);
+	--colour-ui-accent-subtle: var(--orange-muted-400);
+	--colour-ui-accent-bold: var(--orange-muted-600);
+
+	--colour-highlight: #fbf9c9;
+	--colour-fill-highlight: var(--color-highlight);
+	--colour-on-highlight: inherit;
+
+	--colour-fill-accent-subtle-vivid: var(--orange-vivid-75);
+	--colour-fill-accent-subtle-vivid-highlight: var(--orange-vivid-100);
+	--colour-fill-accent-bold-vivid: var(--orange-vivid-400);
+	--colour-fill-accent-subtle-muted: var(--orange-muted-75);
+	--colour-fill-accent-subtle-muted-highlight: var(--orange-muted-100);
+	--colour-fill-accent-bold-muted: var(--orange-muted-500);
+
+	--colour-border-accent-subtle-vivid: var(--orange-vivid-100);
+	--colour-border-accent-bold-vivid: var(--orange-vivid-400);
+	--colour-border-accent-subtle-muted: var(--orange-muted-200);
+	--colour-border-accent-mid-muted: var(--orange-muted-300);
+	--colour-border-accent-bold-muted: var(--orange-muted-500);
 
 }
 
@@ -294,6 +284,31 @@
 
 }
 
+[data-theme="teal"] {
+
+	--colour-ui-accent: var(--teal-muted-500);
+	--colour-ui-accent-subtle: var(--teal-muted-400);
+	--colour-ui-accent-bold: var(--teal-muted-600);
+
+	--colour-highlight: #fbf9c9;
+	--colour-fill-highlight: var(--color-highlight);
+	--colour-on-highlight: inherit;
+
+	--colour-fill-accent-subtle-vivid: var(--teal-vivid-75);
+	--colour-fill-accent-subtle-vivid-highlight: var(--teal-vivid-100);
+	--colour-fill-accent-bold-vivid: var(--teal-vivid-400);
+	--colour-fill-accent-subtle-muted: var(--teal-muted-75);
+	--colour-fill-accent-subtle-muted-highlight: var(--teal-muted-100);
+	--colour-fill-accent-bold-muted: var(--teal-muted-500);
+
+	--colour-border-accent-subtle-vivid: var(--teal-vivid-100);
+	--colour-border-accent-bold-vivid: var(--teal-vivid-400);
+	--colour-border-accent-subtle-muted: var(--teal-muted-200);
+	--colour-border-accent-mid-muted: var(--teal-muted-300);
+	--colour-border-accent-bold-muted: var(--teal-muted-500);
+
+}
+
 [data-theme="blue"] {
 
 	--colour-ui-accent: var(--blue-muted-500);
@@ -316,6 +331,31 @@
 	--colour-border-accent-subtle-muted: var(--blue-muted-200);
 	--colour-border-accent-mid-muted: var(--blue-muted-300);
 	--colour-border-accent-bold-muted: var(--blue-muted-500);
+
+}
+
+[data-theme="purple"] {
+
+	--colour-ui-accent: var(--purple-muted-500);
+	--colour-ui-accent-subtle: var(--purple-muted-400);
+	--colour-ui-accent-bold: var(--purple-muted-600);
+
+	--colour-highlight: #fbf9c9;
+	--colour-fill-highlight: var(--color-highlight);
+	--colour-on-highlight: inherit;
+
+	--colour-fill-accent-subtle-vivid: var(--purple-vivid-75);
+	--colour-fill-accent-subtle-vivid-highlight: var(--purple-vivid-100);
+	--colour-fill-accent-bold-vivid: var(--purple-vivid-400);
+	--colour-fill-accent-subtle-muted: var(--purple-muted-75);
+	--colour-fill-accent-subtle-muted-highlight: var(--purple-muted-100);
+	--colour-fill-accent-bold-muted: var(--purple-muted-500);
+
+	--colour-border-accent-subtle-vivid: var(--purple-vivid-100);
+	--colour-border-accent-bold-vivid: var(--purple-vivid-400);
+	--colour-border-accent-subtle-muted: var(--purple-muted-200);
+	--colour-border-accent-mid-muted: var(--purple-muted-300);
+	--colour-border-accent-bold-muted: var(--purple-muted-500);
 
 }
 
