@@ -17,6 +17,18 @@ const { entry } = Astro.props;
 // Store the path to the current component
 const pathToComponent = `src/content/components/${entry.id}`;
 
+// Get all component descriptions
+let allDescriptions = Object.values(
+	import.meta.glob("src/content/components/**/description.md", {
+		eager: true,
+	}),
+);
+
+// Get the current reflection question
+let description:any = allDescriptions.find((match:any) =>
+	match.file.includes(pathToComponent),
+);
+
 // Get all reflection questions
 let allQuestions = Object.values(
 	import.meta.glob("src/content/components/**/reflectionQuestion.md", {
@@ -119,6 +131,12 @@ let phases = [
 		</span>
 		<span class="title">{entry.data?.title}</span>
 	</h2>
+	
+	{ description && description.rawContent().trim().length > 0 && (
+	
+		<description.Content />
+	
+	)}
 	
 	{ question && question.rawContent().trim().length > 0 && (
 	

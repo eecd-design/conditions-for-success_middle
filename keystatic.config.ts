@@ -114,6 +114,11 @@ export default config({
 						},
 					}
 				}),
+				description: fields.mdx({
+					label: 'Description',
+					description: `This description defines terms used in the component title and appears directly below the component heading.`,
+					extension: 'md',
+				}),
 				reflectionQuestion: fields.mdx({
 					label: 'Reflection Question',
 					extension: 'md',
