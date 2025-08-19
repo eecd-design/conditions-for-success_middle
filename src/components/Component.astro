@@ -11,6 +11,7 @@ import IconArrow from "./icons/IconArrowRight_16.astro";
 import IconCheckmark from "./icons/IconCheckmark_12.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
+import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
 
 const { entry } = Astro.props;
 
@@ -162,9 +163,21 @@ let phases = [
 			let focus = focuses[phase.key];
 			let considerations = entry.data[phase.key]?.considerations ?? null;
 			let considerationsCount = considerations ? considerations.length : null;
-			let resources = phase.resources;
+			// let resources = phase.resources;
 
-			console.log(entry.data);
+			for (let consideration of considerations) {
+				let targetConsideration = consideration.tag;
+				consideration.resources = allResources.filter((resource) => {
+					for (let linkedConsideration of resource.data.linkedConsiderations) {
+						if (targetConsideration === linkedConsideration) {
+							return true; // stop early, match found
+						}
+					}
+					return false;
+				})
+			}
+
+			console.log(considerations);
 	
 			return (
 	
@@ -220,15 +233,53 @@ let phases = [
 															</label>
 														</form>
 	
-														<span class="description">
+														<div class="description">
 															<p>{consideration.description}</p>
-															<a href={`#${entry.id}_${phase.key}-resources&filter=${consideration.tag}`}>
-																<span class="icon-container"><IconArrow classes={['destination']} /></span>
-																<span>View relevant resources</span>
-															</a>
-														</span>
+														</div>
+
+														{ consideration.resources && consideration.resources.length > 0 && (
+
+															<details class="resources">
+																<summary>
+																	<span>Resources relevant to {consideration.tag}</span>
+																	<IconCaretDown14/>
+																</summary>
+
+																<div class="contents">
+																	<ul class="link-list" data-style="divided">
+																		{
+																			consideration.resources.map((resource) => {
+																				let { data } = resource;
+																				let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+																				return (
+																					<li data-title={title.toLowerCase()}
+																						data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
+																						<a href={source.filePath ? source.filePath : source.url}
+																						>
+																							<ResourceIcons type={type} classes={['type']} />
+																							<span class="text-container">
+																								<span class="text">{title}</span>
+																							</span>
+																							<span class="icon-container">
+																								{type === 'document'
+																									|| type === 'presentation'
+																									? <IconDownload classes={['destination']}/> : ''}
+																								{type === 'audio'
+																									|| type === 'video'
+																									|| type === 'website'
+																									? <IconExternal classes={['destination']}/> : ''}
+																							</span>
+																						</a>
+																					</li>
+																				)
+																			}
+																		)}
+																	</ul>
+																</div>
+
+															</details>
 	
-	
+														)}
 	
 													</li>
 												)
@@ -240,7 +291,7 @@ let phases = [
 							)
 						}
 	
-						{
+						{/* {
 							resources && (
 	
 								<form class="resources" id={`${entry.id}_${phase.key}-resources`}>
@@ -310,7 +361,7 @@ let phases = [
 	
 								</form>
 							)
-						}
+						} */}
 	
 					</div>
 	
@@ -387,27 +438,26 @@ let phases = [
 	** CONSIDERATIONS
 	------------------------------*/
 
-	.considerations {
-		padding: 1.25rem;
-	}
-
 	.considerations ul {
-		display: grid;
-		gap: 2rem;
 		padding: 0;
 		list-style-type: none;
 	}
 
 	.considerations ul li {
-		display: flex;
-		flex-flow: row nowrap;
-		gap: 1rem;
-		align-items: start;
+		padding: 1.25rem;
+	}
+
+	.considerations ul li:not(:first-of-type) {
+		border-top: 1px solid var(--colour-border-neutral-subtle-muted);
 	}
 
 	.considerations form {
 		display: inline-block;
-		min-width: 5rem;
+		margin: 0 0 0.75rem;
+	}
+
+	.considerations details.resources {
+		margin: 0.75rem 0 0;
 	}
 
 	/* TODO: Instead of min-width, experiment with js or another alternative */
@@ -515,7 +565,7 @@ let phases = [
 	** RESOURCES
 	------------------------------*/
 
-	.resources {
+	/* .resources {
 		padding: 1.25rem;
 		gap: 1rem;
 	}
@@ -572,7 +622,7 @@ let phases = [
 
 	.resources .link-list {
 		margin: 0;
-	}
+	} */
 
 
 </style>
