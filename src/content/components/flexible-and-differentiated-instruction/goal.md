@@ -1,0 +1,1 @@
+Ensure that all learners have access to appropriately challenging and engaging learning experiences. Educators adapt content, process, and products to meet varied readiness levels, interests, and learning profiles.

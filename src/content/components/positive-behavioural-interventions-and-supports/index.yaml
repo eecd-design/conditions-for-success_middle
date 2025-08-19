@@ -1,0 +1,91 @@
+indicator: access-and-equity
+tag: '2.3'
+title: Positive Behavioural Interventions & Supports
+initiating:
+  considerations:
+    - tag: 2.3.1
+      description: >-
+        A PBIS team is identified, and a basic data collection process is in
+        place, though usage is inconsistent.
+      compass: false
+    - tag: 2.3.2
+      description: >-
+        Expectations for learner behaviour are defined but not systematically
+        reinforced.
+      compass: false
+    - tag: 2.3.3
+      description: >-
+        A behavioural matrix and PBIS reference materials are established, and
+        initial behavioural instruction is in place, but application varies.
+      compass: false
+    - tag: 2.3.4
+      description: >-
+        Limited professional learning on PBIS strategies, with a developing plan
+        for staff training.
+      compass: false
+implementing:
+  considerations:
+    - tag: 2.3.5
+      description: >-
+        Professional learning opportunities are expanding, but staff
+        implementation remains inconsistent.
+      compass: false
+    - tag: 2.3.6
+      description: >-
+        Behaviour data collection is improving, thus guiding some decisions,
+        behaviour instruction, and interventions.
+      compass: false
+    - tag: 2.3.7
+      description: >-
+        Positive reinforcement systems exist but are not yet consistently
+        applied across all settings.
+      compass: false
+    - tag: 2.3.8
+      description: >-
+        Change management practices are emerging, with efforts to be more
+        proactive than reactive.
+      compass: false
+developing:
+  considerations:
+    - tag: 2.3.9
+      description: >-
+        Staff consistently use data to monitor behaviour and adjust
+        interventions.
+      compass: false
+    - tag: 2.3.10
+      description: >-
+        PBIS strategies are embedded in daily practice, fostering a supportive
+        school climate.
+      compass: false
+    - tag: 2.3.11
+      description: >-
+        PBIS is integrated into onboarding, professional learning, and the
+        School Improvement Plan.
+      compass: false
+    - tag: 2.3.12
+      description: >-
+        Decision-making is proactive and evidence-based, allowing systems to
+        adapt to changing circumstances.
+      compass: false
+sustaining:
+  considerations:
+    - tag: 2.3.13
+      description: >-
+        PBIS is fully embedded in school culture, climate, and all learning
+        environments.
+      compass: false
+    - tag: 2.3.14
+      description: >-
+        Continuous data analysis and feedback loops drive ongoing improvement
+        and behavioural instruction.
+      compass: false
+    - tag: 2.3.15
+      description: >-
+        Professional learning and collaboration ensure staff refine and sustain
+        PBIS strategies.
+      compass: false
+    - tag: 2.3.16
+      description: >-
+        The school mentors other schools, districts, and community members while
+        integrating PBIS into succession planning.
+      compass: false
