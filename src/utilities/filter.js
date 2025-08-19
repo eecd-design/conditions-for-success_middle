@@ -322,7 +322,7 @@ let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
  * @param {HTMLFormElement} form
  * @returns {Object} Filter values keyed by name
  */
-function getFilters(form) {
+let getFilters = (form) => {
 	let data = new FormData(form);
 	let result = {};
 
