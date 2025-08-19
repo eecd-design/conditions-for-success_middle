@@ -1338,7 +1338,7 @@ dialog section:has(.card-group:empty) {
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
-	padding: 3rem;
+	padding: 2rem 3rem;
 	border: 2px solid var(--colour-border-neutral-subtle-muted);
 	position: relative;
 }
@@ -1346,6 +1346,7 @@ dialog section:has(.card-group:empty) {
 .callout[data-style="outline"][data-on-path-elem="heading"] .heading {
 	position: absolute;
 	top: -0.5rem;
+	left: 1.5rem;
 	padding: 0 1.5rem;
 	background-color: var(--colour-background);
 	font-size: 1rem;
@@ -1359,7 +1360,7 @@ dialog section:has(.card-group:empty) {
 	font-size: 1.25rem;
 	font-weight: 600;
 	line-height: 1.5;
-	text-align: center;
+	width: 100%;
 }
 
 
