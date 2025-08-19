@@ -1,3 +1,3 @@
-**Note:** "Universal Design for Learning” is often expressed as UDL.
+Note: "Universal Design for Learning” is often expressed as UDL.
 
 **Want to learn more about UDL?** Check out the [**UDL in NB website**](https://udl.nbed.ca/).
