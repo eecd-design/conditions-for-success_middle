@@ -1,0 +1,53 @@
+indicator: leadership-and-teaming
+tag: '1.2'
+title: Shared Practices for Inclusive, Learner-centered Middle Level Education
+initiating:
+  considerations:
+    - tag: 1.2.1
+      description: >-
+        Staff recognize the importance of inclusion but need to learn more about
+        what it entails and need support enacting it.
+      compass: false
+    - tag: 1.2.2
+      description: Inclusive practices are happening but are siloed and inconsistent.
+      compass: false
+    - tag: 1.2.3
+      description: Staff have received minimal professional learning on implicit bias.
+      compass: false
+    - tag: 1.2.4
+      description: >-
+        Staff are beginning to reflect on their role in a diverse school (e.g.,
+        what does it mean to be a educator of learners with diverse academic,
+        linguistic, and social-emotional strengths and needs?)
+      compass: false
+    - tag: 1.2.5
+      description: >-
+        Learner voice is valued among school staff, but learners have limited
+        opportunities to provide feedback to decisions impacting them at school.
+      compass: false
+implementing:
+  considerations:
+    - tag: 1.2.6
+      description: >-
+        There is a growing understanding of inclusive teaching strategies, but
+        some inconsistencies remain across the school. 
+      compass: false
+    - tag: 1.2.7
+      description: >-
+        Structures exist that enable staff to plan together for inclusive
+        practices across learning spaces.
+      compass: false
+    - tag: 1.2.8
+      description: >-
+        Staff have engaged in professional learning to reflect on bias, empathy
+        and inclusive practices.
+      compass: false
+    - tag: 1.2.9
+      description: >-
+        Staff can articulate what it means to be a professional in a diverse
+        school.
+      compass: false
+developing:
+  considerations: []
+sustaining:
+  considerations: []
