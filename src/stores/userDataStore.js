@@ -249,7 +249,7 @@ let updateContinuumCompletion = async ({assessment = getActiveAssessmentData(), 
 
 	let count = await getConsiderationCount();
 
-	if (!count) return;
+	if (!count || !count[considerationTag]) return;
 
 	// Get the connections
 	let phase = count[considerationTag].phase;
@@ -282,12 +282,12 @@ let updateContinuumCompletion = async ({assessment = getActiveAssessmentData(), 
 			entry.totalCount += 1;
 			entry[phaseCountKey] += 1;
 		} else {
-			entry.totalCount -= 1;
-			entry[phaseCountKey] -= 1;
+			entry.totalCount = Math.max(0, entry.totalCount - 1);
+			entry[phaseCountKey] = Math.max(0, entry[phaseCountKey] - 1);
 		}
 
-		entry.totalRatio = entry.totalCount / count[system].total;
-		entry[phaseRatioKey] = entry[phaseCountKey] / count[system][phase];
+		entry.totalRatio = count[system].total ? entry.totalCount / count[system].total : 0;
+		entry[phaseRatioKey] = count[system][phase] ? entry[phaseCountKey] / count[system][phase] : 0;
 
 		if ((entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) || entry.initiatingRatio === 1) {
 			entry.phase = 'Implementing';

@@ -122,7 +122,7 @@ let phases = [
 
 <section data-component-tag={entry.data.tag}>
 
-	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment"></p>
+	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment">Initiating</p>
 
 	<h2 id={`component-${entry.data.tag.replaceAll('.', '-')}`}>
 		<span class="tag" data-font-type="sans-serif">
@@ -478,11 +478,8 @@ let phases = [
 		margin: 0.75rem 0 0;
 	}
 
-	/* TODO: Instead of min-width, experiment with js or another alternative */
-
 	.considerations-list form label {
-		display: inline-grid;
-		grid-auto-flow: column;
+		display: flex;
 		align-items: center;
 		height: 1.5rem;
 		padding: 0 0.5rem 0 0;
@@ -490,8 +487,8 @@ let phases = [
 		border-radius: var(--border-radius-small);
 		cursor: pointer;
 		user-select: none;
-		transition: background-color var(--transition-linear-fast);	
 		position: relative;
+		transition: background-color var(--transition-linear-fast);	
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
@@ -745,13 +742,9 @@ let phases = [
 
 			if (!tag) return;
 
-			let phase = assessment.continuumCompletion[tag]?.phase;
+			let phase = assessment.continuumCompletion[tag]?.phase ?? 'Initiating';
 
-			if (!phase) return;
-	
-			// TODO: Should this default to showing 'Initiating'? 
-
-			field.textContent = assessment.continuumCompletion[tag].phase;
+			field.textContent = phase;
 
 		}
 
@@ -802,7 +795,7 @@ let phases = [
 				message: changeMessage,
 			})
 
-			let updatedContinuumCompletion = updateContinuumCompletion({
+			let updatedContinuumCompletion = await updateContinuumCompletion({
 				considerationTag: target.value,
 				operation: operation,
 			})
@@ -816,8 +809,6 @@ let phases = [
 		}
 
 	});
-
-	// TODO: Should consideration filters include component or indicator assigned resources?
 
 	filter.init();
 	document.addEventListener('astro:before-swap', filter.destroy);
