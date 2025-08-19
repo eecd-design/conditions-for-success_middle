@@ -145,7 +145,7 @@ export default config({
 									},
 									length: {
 										min: 5,
-										max: 5,
+										max: 6,
 									}
 								}
 							}),
@@ -185,7 +185,7 @@ export default config({
 									},
 									length: {
 										min: 5,
-										max: 5,
+										max: 6,
 									}
 								}
 							}),
@@ -225,7 +225,7 @@ export default config({
 									},
 									length: {
 										min: 5,
-										max: 5,
+										max: 6,
 									}
 								}
 							}),
@@ -265,7 +265,7 @@ export default config({
 									},
 									length: {
 										min: 5,
-										max: 5,
+										max: 6,
 									}
 								}
 							}),
@@ -390,7 +390,7 @@ export default config({
 							},
 							length: {
 								min: 5,
-								max: 5,
+								max: 6,
 							}
 						}
 					}), {
