@@ -140,6 +140,39 @@ let isEqual = function (a, b) {
 };
 
 /**
+ * Checks if an element is in the viewport.
+ * @param {HTMLElement} elem - The element to check.
+ * @param {Object} [options] - Options for visibility.
+ * @param {boolean} [options.fully=false] - Whether the element must be fully in view.
+ * @returns {boolean} True if element is in view (fully or partially).
+ */
+let isInViewport = (elem, options = {}) => {
+
+	let { fully = false } = options
+	let rect = elem.getBoundingClientRect()
+
+	let viewHeight = window.innerHeight || document.documentElement.clientHeight
+	let viewWidth = window.innerWidth || document.documentElement.clientWidth
+
+	if (fully) {
+		return (
+			rect.top >= 0 &&
+			rect.left >= 0 &&
+			rect.bottom <= viewHeight &&
+			rect.right <= viewWidth
+		)
+	}
+
+	return (
+		rect.bottom > 0 &&
+		rect.right > 0 &&
+		rect.top < viewHeight &&
+		rect.left < viewWidth
+	)
+
+}
+
+/**
  * Join keys with commas and "and" before the last
  * @param {string[]} arr
  * @returns {string}
@@ -169,6 +202,43 @@ let sanitizeHTML = (input) => {
 }
 
 /**
+ * Scroll an element into view
+ * @param  {Node} elem The elem to show
+ */
+let scrollIntoView = (elem, options = {}) => {
+
+	let { block = 'start' } = options;
+	
+	let fullyInView = isInViewport(elem, {
+		fully: true,
+	});
+
+	if (!fullyInView) {
+		elem.scrollIntoView({
+			behavior: 'auto',
+			block: block,
+		});
+	}
+
+}
+
+/**
+ * Stop all actively playing videos within a container element
+ * @param  {Event} elem The container element
+ */
+let stopVideo = (elem) => {
+	let iframe = elem.matches('iframe') ? elem : elem.querySelector('iframe');
+	let video = elem.matches('video') ? elem : elem.querySelector('video');
+	if (iframe) {
+		let iframeSrc = iframe.src;
+		iframe.src = iframeSrc;
+	}
+	if (video) {
+		video.pause();
+	}
+};
+
+/**
  * Converts a string to kebab-case.
  * 
  * @param {string} str - The input string.
@@ -196,4 +266,4 @@ let toTitleCase = function (str) {
   });
 };
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, joinWithAnd, kebabToCamel, sanitizeHTML, toKebabCase, toTitleCase };
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, isInViewport, joinWithAnd, kebabToCamel, sanitizeHTML, scrollIntoView, stopVideo, toKebabCase, toTitleCase };
