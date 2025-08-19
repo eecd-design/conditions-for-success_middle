@@ -10,6 +10,7 @@ initiating:
         but do not connect them to learners’ unique strengths or prior
         knowledge).
       compass: false
+      categories: []
     - tag: 6.2.2
       description: >-
         Vocabulary instruction (0.67) relies on word lists rather than
@@ -17,6 +18,7 @@ initiating:
         (e.g., learners memorize definitions instead of using new vocabulary to
         communicate effectively in writing and discussions).
       compass: false
+      categories: []
     - tag: 6.2.3
       description: >-
         Summarizing (0.63) and note-taking (0.59) involve copying text rather
@@ -24,6 +26,7 @@ initiating:
         learners complete fill-in-the-blank summaries rather than constructing
         their own responses to texts).
       compass: false
+      categories: []
     - tag: 6.2.4
       description: >-
         Questioning (0.48) is recall-based, with minimal opportunities to seek
@@ -31,11 +34,13 @@ initiating:
         “What happened in the story?” rather than prompting learners to explain
         author’s intent or argumentation strategies).
       compass: false
+      categories: []
     - tag: 6.2.5
       description: >-
         Assessment is summative, with little formative feedback for learners to
         reflect and grow as independent readers and writers.
       compass: false
+      categories: []
 implementing:
   considerations: []
 developing:

@@ -8,16 +8,19 @@ initiating:
         A formal system for requesting additional resources is in the early
         stages and may not be widely understood or used.
       compass: false
+      categories: []
     - tag: 2.4.2
       description: >-
         Educators are unsure of how to request additional support and resources
         for learners.
       compass: false
+      categories: []
     - tag: 2.4.3
       description: >-
         Some resources are available, but access is inconsistent and often
         reactive.
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 2.4.4
@@ -25,17 +28,20 @@ implementing:
         A formal system is in place for requesting and accessing resources, with
         educators beginning to use it regularly.
       compass: false
+      categories: []
     - tag: 2.4.5
       description: >-
         Staff are becoming familiar with available academic, linguistic,
         social-cultural, social-emotional, and behavioural supports.
       compass: false
+      categories: []
     - tag: 2.4.6
       description: >-
         Some resources are consistently used to support learners, but barriers
         to access may still exist (e.g., MLLs using technology to access grade
         level text).
       compass: false
+      categories: []
 developing:
   considerations:
     - tag: 2.4.7
@@ -43,6 +49,7 @@ developing:
         The resource request system is streamlined, ensuring staff can access
         the support they need in a timely manner.
       compass: false
+      categories: []
     - tag: 2.4.8
       description: >-
         Educators have easy access to resources to support learners achieving
@@ -50,11 +57,13 @@ developing:
         language at the same time as content, and achieving above grade level
         expectations.
       compass: true
+      categories: []
     - tag: 2.4.9
       description: >-
         Collaboration between staff and external supports and services (e.g.,
         Central Office Curriculum and ESS Coordinators).
       compass: true
+      categories: []
 sustaining:
   considerations:
     - tag: 2.4.10
@@ -62,18 +71,22 @@ sustaining:
         Educators in rural schools establish virtual collaboration systems
         (e.g., Microsoft Teams) for cross-school PLCs.
       compass: false
+      categories: []
     - tag: 2.4.11
       description: >-
         The system for accessing resources is fully embedded and efficient,
         ensuring all learners thrive.
       compass: true
+      categories: []
     - tag: 2.4.12
       description: >-
         Educators have quick and effective access to resources to meet learners'
         academic, linguistic, social-emotional, and behavioural needs.
       compass: true
+      categories: []
     - tag: 2.4.13
       description: >-
         There is a continuous process for evaluating and adapting the resource
         system to meet changing needs.
       compass: true
+      categories: []

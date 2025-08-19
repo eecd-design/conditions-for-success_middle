@@ -9,16 +9,19 @@ initiating:
         inconsistent, and vulnerable learners struggle without targeted support.
         Universal accommodations are emerging but not yet consistently applied.
       compass: false
+      categories: []
     - tag: 2.2.2
       description: >-
         TIER 2: Additional support is informal, provided by individual educators
         rather than structured team-based intervention.
       compass: false
+      categories: []
     - tag: 2.2.3
       description: >-
         TIER 3: Intensive intervention is limited to special education, often
         disconnected from general classroom instruction.
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 2.2.4
@@ -27,17 +30,20 @@ implementing:
         proactive design and differentiation, though gaps persist. Universal
         accommodations are mostly consistent.
       compass: false
+      categories: []
     - tag: 2.2.5
       description: >-
         TIER 2: Some coordinated additional time/support, but interventions rely
         on availability rather than systematic scheduling.
       compass: false
+      categories: []
     - tag: 2.2.6
       description: >-
         TIER 3: Universal skills interventions begin to be identified, but
         access is inconsistent and based on referral rather than data-driven
         processes.
       compass: false
+      categories: []
 developing:
   considerations:
     - tag: 2.2.7
@@ -46,16 +52,19 @@ developing:
         strategies to support all learners. Universal accommodations are
         routinely embedded in classroom practice.
       compass: false
+      categories: []
     - tag: 2.2.8
       description: >-
         TIER 2: Additional time and support are structured within the school
         day, using common assessments to identify needs.
       compass: false
+      categories: []
     - tag: 2.2.9
       description: >-
         TIER 3: Universal skills interventions are systematic, with clear
         entry/exit criteria and progress monitoring.
       compass: false
+      categories: []
 sustaining:
   considerations:
     - tag: 2.2.10
@@ -65,14 +74,17 @@ sustaining:
         instruction. Universal accommodations are seamlessly woven into all
         aspects of teaching and learning.
       compass: true
+      categories: []
     - tag: 2.2.11
       description: >-
         TIER 2: Additional time and support are guaranteed for learners who need
         them, with intervention teams using timely and responsive strategies.
       compass: true
+      categories: []
     - tag: 2.2.12
       description: >-
         TIER 3: Intensive reinforcement of universal skills is data-driven,
         targeted, and fluid—learners move in and out based on ongoing progress
         monitoring.
       compass: true
+      categories: []

@@ -10,17 +10,20 @@ initiating:
         materials for certain learners, but it’s often reactive rather than
         proactive.
       compass: false
+      categories: []
     - tag: 2.6.2
       description: >-
         Learning experiences are mostly uniform; learners with identified
         justified accommodations receive individual supports, but not all
         learners benefit from universally-designed lessons.
       compass: false
+      categories: []
     - tag: 2.6.3
       description: >-
         Educators receive introductory sessions on UDL frameworks and
         guidelines. School leaders begin discussing implementation essentials.
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 2.6.4
@@ -29,18 +32,21 @@ implementing:
         audio, text) for content, flexible seating options, and multiple ways
         for learners to show learning (e.g., presentations, writing, art).
       compass: false
+      categories: []
     - tag: 2.6.5
       description: >-
         Learners start to see more choices in how they engage with content
         (e.g., reading vs. listening) and demonstrate learning. Supports (e.g.,
         closed captions, graphic organizers) are more widely available.
       compass: false
+      categories: []
     - tag: 2.6.6
       description: >-
         Educators collaborate to share practical UDL tools and plan lessons with
         at least one UDL principle in mind (e.g., multiple means of
         representation).
       compass: false
+      categories: []
 developing:
   considerations:
     - tag: 2.6.7
@@ -51,18 +57,21 @@ developing:
         simulations, texts at various reading levels), and expression (e.g.,
         written, oral, digital).
       compass: true
+      categories: []
     - tag: 2.6.8
       description: >-
         Learners benefit from diverse ways to interact with content and show
         their understanding. They develop metacognitive skills by choosing
         strategies that suit their needs.
       compass: true
+      categories: []
     - tag: 2.6.9
       description: >-
         Teams conduct lesson studies or peer observations focusing on UDL
         application. Data is used to reflect on how well UDL practices remove
         barriers and improve learner outcomes.
       compass: true
+      categories: []
 sustaining:
   considerations:
     - tag: 2.6.10
@@ -71,15 +80,18 @@ sustaining:
         be accessible and challenging for every learner. UDL is second nature,
         with ongoing innovation and sharing of best practices.
       compass: true
+      categories: []
     - tag: 2.6.11
       description: >-
         Learners take ownership of their learning, frequently self-selecting
         resources, strategies, and modes of expression. They view “barrier-free”
         learning as the norm.
       compass: true
+      categories: []
     - tag: 2.6.12
       description: >-
         UDL is infused in professional learning, coaching, and evaluation
         processes. Leaders and educators continuously refine practices based on
         research and learner data.
       compass: true
+      categories: []

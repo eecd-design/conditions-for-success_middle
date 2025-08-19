@@ -156,6 +156,16 @@ export default config({
 							compass: fields.checkbox({
 								label: 'Compass',
 								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+							}),
+							categories: fields.array(
+								fields.text({
+									label: 'Category',
+
+								}),
+							{
+								label: 'Categories',
+								itemLabel: (props) => props.value,
+								description: 'These categories will appear next to the consideration tag with a similar styling.',
 							})
 						}),
 						{
@@ -196,7 +206,17 @@ export default config({
 							compass: fields.checkbox({
 								label: 'Compass',
 								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
-							})
+							}),
+							categories: fields.array(
+								fields.text({
+									label: 'Category',
+
+								}),
+							{
+								label: 'Categories',
+								itemLabel: (props) => props.value,
+								description: 'These categories will appear next to the consideration tag with a similar styling.',
+							}),							
 						}),
 						{
 							label: 'Considerations',
@@ -236,7 +256,17 @@ export default config({
 							compass: fields.checkbox({
 								label: 'Compass',
 								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
-							})
+							}),
+							categories: fields.array(
+								fields.text({
+									label: 'Category',
+
+								}),
+							{
+								label: 'Categories',
+								itemLabel: (props) => props.value,
+								description: 'These categories will appear next to the consideration tag with a similar styling.',
+							}),							
 						}),
 						{
 							label: 'Considerations',
@@ -276,7 +306,17 @@ export default config({
 							compass: fields.checkbox({
 								label: 'Compass',
 								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
-							})
+							}),
+							categories: fields.array(
+								fields.text({
+									label: 'Category',
+
+								}),
+							{
+								label: 'Categories',
+								itemLabel: (props) => props.value,
+								description: 'These categories will appear next to the consideration tag with a similar styling.',
+							}),							
 						}),
 						{
 							label: 'Considerations',

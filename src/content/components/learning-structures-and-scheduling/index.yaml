@@ -10,30 +10,35 @@ initiating:
         isolation. Learners transition between classes based on a rigid
         timetable.
       compass: false
+      categories: []
     - tag: 1.3.2
       description: >-
         EDUCATOR COLLABORATION: Minimal interdisciplinary planning. Educators
         focus on individual learning area instruction with limited opportunities
         for cross-curricular connections.
       compass: false
+      categories: []
     - tag: 1.3.3
       description: >-
         LEARNER EXPERIENCE: Learners move from one learning area to another
         without explicit connections between content areas. Learning remains
         compartmentalized.
       compass: false
+      categories: []
     - tag: 1.3.4
       description: >-
         INFORMAL LEARNING: Limited unstructured time. Informal learning
         primarily occurs in brief recesses, lunch breaks, or before/after
         school.
       compass: false
+      categories: []
     - tag: 1.3.5
       description: >-
         SHOWCASE OF LEARNING: Learner achievements are typically assessed and
         displayed within individual classes. School-wide exhibitions or
         interdisciplinary showcases are rare.
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 1.3.6
@@ -42,30 +47,35 @@ implementing:
         minutes), allowing for fewer transitions and more in-depth exploration
         of topics. Blocks may rotate every other day.
       compass: false
+      categories: []
     - tag: 1.3.7
       description: >-
         EDUCATOR COLLABORATION: More time for educators to design engaging,
         hands-on activities and incorporate elements of project-based learning
         within their learning areas.
       compass: false
+      categories: []
     - tag: 1.3.8
       description: >-
         LEARNER EXPERIENCE: Learners engage more deeply in each learning area
         due to extended class time, though learning areas are still largely
         taught separately.
       compass: false
+      categories: []
     - tag: 1.3.9
       description: >-
         INFORMAL LEARNING: Some flexibility is built into longer periods,
         allowing learners to explore topics in greater depth, collaborate on
         projects, or engage in independent work.
       compass: true
+      categories: []
     - tag: 1.3.10
       description: >-
         SHOWCASE OF LEARNING: Interdisciplinary projects may be presented in
         class or within small-scale school events, but they remain secondary to
         learning area-based assessment.
       compass: false
+      categories: []
 developing:
   considerations:
     - tag: 1.3.11
@@ -74,30 +84,35 @@ developing:
         with flexible blocks of time that allow for co-teaching and
         cross-curricular units.
       compass: false
+      categories: []
     - tag: 1.3.12
       description: >-
         EDUCATOR COLLABORATION: Educators meet regularly to plan
         interdisciplinary lessons, aligning instruction across multiple learning
         areas to create meaningful connections.
       compass: true
+      categories: []
     - tag: 1.3.13
       description: >-
         LEARNER EXPERIENCE: Learning is structured around themes, projects, or
         inquiry-based experiences that help learners apply knowledge across
         disciplines.
       compass: false
+      categories: []
     - tag: 1.3.14
       description: >-
         INFORMAL LEARNING: Schools create structured but flexible time for
         learner-led exploration, mentorship, and collaborative projects beyond
         formal class periods.
       compass: false
+      categories: []
     - tag: 1.3.15
       description: >-
         SHOWCASE OF LEARNING: Learners participate in exhibitions,
         presentations, or performances that highlight interdisciplinary learning
         and demonstrate real-world applications of their knowledge.
       compass: false
+      categories: []
 sustaining:
   considerations:
     - tag: 1.3.16
@@ -106,27 +121,32 @@ sustaining:
         personalized learning paths, integrating multiple learning areas based
         on their interests and goals.
       compass: false
+      categories: []
     - tag: 1.3.17
       description: >-
         EDUCATOR COLLABORATION: Educators serve as facilitators and mentors,
         guiding learners in personalized learning experiences that blend
         academic and real-world applications.
       compass: false
+      categories: []
     - tag: 1.3.18
       description: >-
         LEARNER EXPERIENCE: Learners take an active role in shaping their
         education, choosing projects, working collaboratively, and engaging in
         authentic learning experiences.
       compass: false
+      categories: []
     - tag: 1.3.19
       description: >-
         INFORMAL LEARNING: Abundant opportunities for informal learning through
         flexible schedules, open learning spaces, access to mentors, and
         self-directed inquiry.
       compass: false
+      categories: []
     - tag: 1.3.20
       description: >-
         SHOWCASE OF LEARNING: Learners regularly present their work to diverse
         audiences, including peers, educators, families, and community members,
         through exhibitions, portfolios, and real-world demonstrations.
       compass: false
+      categories: []

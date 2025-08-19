@@ -36,6 +36,7 @@ const components = defineCollection({
                     tag: z.string(),
                     description: z.string(),
                     compass: z.boolean(),
+					categories: z.array(z.string()),
                 })
             )
         }),
@@ -45,6 +46,7 @@ const components = defineCollection({
                     tag: z.string(),
                     description: z.string(),
                     compass: z.boolean(),
+					categories: z.array(z.string()),
                 })
             )
         }),
@@ -54,6 +56,7 @@ const components = defineCollection({
                     tag: z.string(),
                     description: z.string(),
                     compass: z.boolean(),
+					categories: z.array(z.string()),
                 })
             )
         }),
@@ -63,6 +66,7 @@ const components = defineCollection({
                     tag: z.string(),
                     description: z.string(),
                     compass: z.boolean(),
+					categories: z.array(z.string()),
                 })
             )
         }),

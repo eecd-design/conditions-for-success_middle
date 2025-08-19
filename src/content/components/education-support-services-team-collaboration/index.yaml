@@ -8,12 +8,15 @@ initiating:
         Hold initial meetings with minimal structure, primarily addressing
         immediate learner needs.
       compass: false
+      categories: []
     - tag: 1.4.2
       description: Focus on isolated incidents with little or no data-driven discussion.
       compass: false
+      categories: []
     - tag: 1.4.3
       description: Outline a method for including learner voice to define key issues.
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 1.4.4
@@ -21,32 +24,39 @@ implementing:
         Meet biweekly with structured agendas focused on academic and behavioral
         needs.
       compass: true
+      categories: []
     - tag: 1.4.5
       description: >-
         Educators are part of the ESS referral process, including pre- and
         post-communication.
       compass: false
+      categories: []
     - tag: 1.4.6
       description: Begin using data to discuss trends and patterns in learner performance.
       compass: false
+      categories: []
 developing:
   considerations:
     - tag: 1.4.7
       description: Educators participate in ESS-hosted Problem-Solving Meetings.
       compass: false
+      categories: []
     - tag: 1.4.8
       description: Use data trends to collaboratively design and implement interventions.
       compass: true
+      categories: []
     - tag: 1.4.9
       description: >-
         Engage in co-planning and co-teaching with educators to address diverse
         learner needs.
       compass: true
+      categories: []
     - tag: 1.4.10
       description: >-
         Engage impacted learners—provide learners agency in the design of the
         approach to meet their needs.
       compass: true
+      categories: []
 sustaining:
   considerations:
     - tag: 1.4.11
@@ -55,3 +65,4 @@ sustaining:
         aligned with the school’s vision. Continuous evaluation of interventions
         ensures dynamic and effective support for learners.
       compass: true
+      categories: []

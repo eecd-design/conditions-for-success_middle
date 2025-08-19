@@ -9,12 +9,14 @@ initiating:
         and skills. Reading tasks often emphasize filling gaps rather than
         building independence and confidence in literacy.
       compass: false
+      categories: []
     - tag: 2.8.2
       description: >-
         Texts are limited to traditional print materials, with little
         recognition of an expanded definition of text (e.g., multimodal texts,
         digital media, spoken word, infographics, visual narratives).
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 2.8.3
@@ -22,6 +24,7 @@ implementing:
         Instruction begins incorporating grade-level texts with some
         scaffolding, though reliance on below-grade-level materials remains.
       compass: false
+      categories: []
     - tag: 2.8.4
       description: >-
         Expanded definition of text begins to emerge, with educators introducing
@@ -29,21 +32,25 @@ implementing:
         graphic novels) to engage learners, but traditional print-based
         materials still dominate.
       compass: false
+      categories: []
     - tag: 2.8.5
       description: >-
         Educators experiment with high-interest, relevant texts to engage
         learners but may still lower text complexity rather than layering
         supports.
       compass: false
+      categories: []
     - tag: 2.8.6
       description: >-
         Learners begin using digital tools and assistive technologies (e.g.,
         text-to-speech, audiobooks, screen readers, annotation apps) to access
         and engage with complex texts.
       compass: false
+      categories: []
     - tag: 2.8.7
       description: Discussions about acceleration begin, but remediation mindsets persist.
       compass: false
+      categories: []
 developing:
   considerations:
     - tag: 2.8.8
@@ -52,6 +59,7 @@ developing:
         frontloading vocabulary, mixed ability groupings, guided annotation,
         modeling complex comprehension strategies).
       compass: true
+      categories: []
     - tag: 2.8.9
       description: >-
         Expanded definition of text is fully embedded, with learners engaging in
@@ -59,17 +67,20 @@ developing:
         social media discourse, primary source visuals) to support comprehension
         of grade-level material.
       compass: false
+      categories: []
     - tag: 2.8.10
       description: >-
         Educators routinely analyze learner work and progress data to adjust
         scaffolds rather than lower text complexity.
       compass: false
+      categories: []
     - tag: 2.8.11
       description: >-
         Assessment practices recognize learners’ ability to demonstrate
         understanding through various media, such as learner-created videos,
         visual annotations, and audio responses.
       compass: false
+      categories: []
 sustaining:
   considerations:
     - tag: 2.8.12
@@ -77,25 +88,30 @@ sustaining:
         Grade-level, culturally-responsive texts are the norm, with intentional
         scaffolds ensuring all learners engage meaningfully.
       compass: false
+      categories: []
     - tag: 2.8.13
       description: >-
         Expanded definition of text is fully normalized, with learners choosing
         from diverse text formats based on purpose, audience, and accessibility
         needs.
       compass: false
+      categories: []
     - tag: 2.8.14
       description: >-
         Educators use disciplinary literacy strategies, teaching learners how to
         navigate complex texts in different learning areas.
       compass: false
+      categories: []
     - tag: 2.8.15
       description: >-
         Learners independently use a range of technologies (e.g., adaptive
         reading tools, digital collaboration platforms, interactive media) to
         access, analyze, and create complex texts across disciplines.
       compass: false
+      categories: []
     - tag: 2.8.16
       description: >-
         Learner agency in reading is prioritized—learners engage in choice,
         goal-setting, and reflective reading practices.
       compass: false
+      categories: []

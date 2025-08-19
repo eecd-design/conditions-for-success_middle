@@ -10,16 +10,19 @@ initiating:
         at individualized strategies (e.g., extra worksheets for advanced
         learners).
       compass: false
+      categories: []
     - tag: 2.5.2
       description: >-
         Most learners receive the same tasks; few adaptations are evident for
         learners with different readiness levels.
       compass: false
+      categories: []
     - tag: 2.5.3
       description: >-
         Staff attend introductory sessions on the “why” and “what” of
         differentiation but have limited practice integrating it.
       compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 2.5.4
@@ -29,18 +32,21 @@ implementing:
         (e.g., varied project formats). Some use flexible grouping based on
         pre-assessment data.
       compass: false
+      categories: []
     - tag: 2.5.5
       description: >-
         Learners are given options or leveled tasks (e.g., striving readers
         receive scaffolded texts, advanced learners may explore deeper or
         extended tasks).
       compass: true
+      categories: []
     - tag: 2.5.6
       description: >-
         Collaboration in grade-level or learning area teams to plan
         differentiated lessons. Educators share strategies (e.g., tiered
         assignments, choice boards).
       compass: true
+      categories: []
 developing:
   considerations:
     - tag: 2.5.7
@@ -50,18 +56,21 @@ developing:
         thoughtfully align adaptations to Skill Descriptors and Achievement
         Indicators and learner needs.
       compass: true
+      categories: []
     - tag: 2.5.8
       description: >-
         Learners frequently select from multiple pathways (e.g., learning
         centers, interactive tasks, peer teaching) that address their readiness,
         interests, etc.
       compass: true
+      categories: []
     - tag: 2.5.9
       description: >-
         Grade-level or learning area (e.g., English Language Arts) teams
         regularly analyze learner work, refine differentiation strategies, and
         discuss impact on engagement and achievement.
       compass: true
+      categories: []
 sustaining:
   considerations:
     - tag: 2.5.10
@@ -70,15 +79,18 @@ sustaining:
         adjustments, co-teaching models, and robust professional learning.
         Educators also mentor newer staff in differentiation practices.
       compass: true
+      categories: []
     - tag: 2.5.11
       description: >-
         Learners know how to advocate for their own learning needs, select tasks
         that challenge them, and track their progress. Learning is personalized,
         relevant, and leads to high achievement.
       compass: true
+      categories: []
     - tag: 2.5.12
       description: >-
         Continuous reflection and research-based refinement. Differentiation
         best practices are shared school-wide and celebrated through improved
         learner learning outcomes.
       compass: true
+      categories: []

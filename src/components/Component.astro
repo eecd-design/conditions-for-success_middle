@@ -217,21 +217,30 @@ let phases = [
 	
 												return (
 													<li>
-														<form>
-															<label>
-	
-																<input name="considerationsEstablished" type="checkbox" value={consideration.tag}/>
-	
-																<IconCheckmark/>
-	
-																<span class="tag">{consideration.tag}</span>
-	
-																{consideration.compass && (
-																	<IconCompass />
-																)}
-	
-															</label>
-														</form>
+														<div class="label-group">
+															<form>
+																<label>
+																	<input name="considerationsEstablished" type="checkbox" value={consideration.tag}/>
+																	<IconCheckmark/>
+																	<span class="tag">{consideration.tag}</span>
+																	{consideration.compass && (
+																		<IconCompass />
+																	)}
+																</label>
+															</form>
+															{ consideration.categories && consideration.categories.length > 0 && (
+																<ul class="categories">
+																	{ consideration.categories.map((category) => (
+																		<li>
+																			<div class="label-container" data-style="outline">
+																				<div class="label">{category}</div>
+																			</div>
+																		</li>
+																
+																	)) }
+																</ul>
+															)}
+														</div>
 	
 														<div class="description">
 															<p>{consideration.description}</p>
