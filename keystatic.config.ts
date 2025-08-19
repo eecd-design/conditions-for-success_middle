@@ -60,7 +60,7 @@ export default config({
 						{ label: 'Orange', value: 'orange' },
 						{ label: 'Yellow', value: 'yellow' },
 						{ label: 'Green', value: 'green' },
-						{ label: 'Cyan', value: 'cyan' },
+						{ label: 'Teal', value: 'teal' },
 						{ label: 'Blue', value: 'blue' },
 						{ label: 'Purple', value: 'purple' },
 					],
