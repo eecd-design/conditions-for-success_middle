@@ -1,0 +1,1 @@
+Learners interact with one another, developing from initial, basic interactions to more complex, emotionally supportive, and intellectually collaborative relationships—they grow as peers who support, learn from, and help each other throughout their educational journey.

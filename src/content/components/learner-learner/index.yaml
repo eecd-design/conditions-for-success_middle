@@ -1,0 +1,112 @@
+indicator: relationships
+tag: '3.3'
+title: Learner-Learner
+initiating:
+  considerations:
+    - tag: 3.3.1
+      description: >-
+        Begin forming basic connections with peers through shared activities
+        (e.g., group work, class discussions).
+      compass: false
+      categories: []
+    - tag: 3.3.2
+      description: >-
+        Actively listen and show respect to others, trying to understand
+        different perspectives.
+      compass: false
+      categories: []
+    - tag: 3.3.3
+      description: >-
+        Seek out learners with similar academic or social interests to create
+        initial bonds.
+      compass: false
+      categories: []
+    - tag: 3.3.4
+      description: >-
+        Participate in group activities or social events that encourage mingling
+        and early relationship-building.
+      compass: false
+      categories: []
+implementing:
+  considerations:
+    - tag: 3.3.5
+      description: >-
+        Collaborate on academic or extracurricular projects, learning to depend
+        on one another for shared goals.
+      compass: false
+      categories: []
+    - tag: 3.3.6
+      description: >-
+        Join or form social clubs or interest groups that provide consistent
+        opportunities to interact and build relationships.
+      compass: false
+      categories: []
+    - tag: 3.3.7
+      description: >-
+        Actively seek out opportunities for conflict resolution, using methods
+        like peer mediation or restorative circles to resolve disagreements.
+      compass: false
+      categories: []
+    - tag: 3.3.8
+      description: >-
+        Begin offering emotional or academic support to peers (e.g., helping a
+        classmate with homework, providing encouragement during stressful
+        times).
+      compass: false
+      categories: []
+developing:
+  considerations:
+    - tag: 3.3.9
+      description: Share experiences and challenges, building understanding and empathy.
+      compass: false
+      categories: []
+    - tag: 3.3.10
+      description: >-
+        Engage in reflective discussions, helping each other improve academic
+        skills or social-emotional outcomes.
+      compass: false
+      categories: []
+    - tag: 3.3.11
+      description: >-
+        Provide constructive feedback and support to peers, fostering an
+        environment of mutual growth.
+      compass: false
+      categories: []
+    - tag: 3.3.12
+      description: >-
+        Build trust by following through on commitments to one another, both
+        academically and socially.
+      compass: true
+      categories: []
+    - tag: 3.3.13
+      description: >-
+        Groups or social clubs are created to support learners’ sense of
+        belonging at school (GSA, Global Minds, culture club).
+      compass: false
+      categories: []
+sustaining:
+  considerations:
+    - tag: 3.3.14
+      description: >-
+        Continue offering ongoing support to one another through challenges,
+        maintaining trust.
+      compass: false
+      categories: []
+    - tag: 3.3.15
+      description: >-
+        Regularly celebrate each other’s successes and milestones, creating a
+        culture of mutual recognition.
+      compass: false
+      categories: []
+    - tag: 3.3.16
+      description: >-
+        Participate in leadership or mentorship roles where learners help guide
+        and support younger peers or new learners.
+      compass: false
+      categories: []
+    - tag: 3.3.17
+      description: >-
+        Encourage a collective sense of community, where learners actively work
+        together to foster an inclusive, supportive environment.
+      compass: false
+      categories: []
