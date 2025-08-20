@@ -348,12 +348,6 @@ let debouncedFilter = debounce(({ input, list, noValueBehaviour }) => {
 	filterListByTextInput({ input, list, noValueBehaviour });
 }, 200);
 
-
-// TODO: Click <a> tag for same page inside of dialog, closes dialog
-
-// TODO: Catch anchor links with query string ?consideration=1.1.1 and open correct accordion and scroll to that accordion. We now have anchor ids for the accordion headings? Use those instead
-
-
 let filter = (() => {
 
 	//
