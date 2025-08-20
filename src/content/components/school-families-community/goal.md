@@ -1,0 +1,1 @@
+Establish and nurture strong, ongoing partnerships between the school, families, and the broader community, ensuring that relationship-building is a core priority that enriches learning, promotes inclusivity, and fosters shared responsibility for the success and well-being of all learners.
