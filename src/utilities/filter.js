@@ -46,20 +46,26 @@ let filterListByFilterBtns = ({ filters, list }) => {
 			let matchedAll = true;
 
 			if (filters.types) {
-				console.log('Matching Type');
 				let match = filters.types.includes(type);
 				if (!match) matchedAll = false;
 				else relevance++;
 			}
 
 			if (filters.indicators) {
-				let match = filters.indicators.some((v) => indicators.includes(v));
+				let match = filters.indicators.some((v) => 
+					indicators.some(tag => tag.startsWith(v)) ||
+					components.some(tag => tag.startsWith(v)) ||
+					considerations.some(tag => tag.startsWith(v))
+				);
 				if (!match) matchedAll = false;
 				else relevance++;
 			}
 
 			if (filters.components) {
-				let match = filters.components.some((v) => components.includes(v));
+				let match = filters.components.some((v) => 
+					components.some(tag => tag.startsWith(v)) ||
+					considerations.some(tag => tag.startsWith(v))
+				);
 				if (!match) matchedAll = false;
 				else relevance++;
 			}
