@@ -19,7 +19,7 @@ let allIndicators = await getCollection("indicators");
 
 for (let indicator of allIndicators) {
 	searchList.push({
-		type: 'indicator',
+		category: 'indicator',
 		tag: indicator.data.tag,
 		title: indicator.data.title,
 		url: `/big-seven/${indicator.id}`,
@@ -35,7 +35,7 @@ for (let component of allComponents) {
 	let colour = findObjectByKey(allIndicators, 'id', component.data.indicator)?.data.colour;
 
 	searchList.push({
-		type: 'component',
+		category: 'component',
 		tag: component.data.tag,
 		title: component.data.title,
 		url: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}`,
@@ -44,7 +44,7 @@ for (let component of allComponents) {
 
 	for (let consideration of component.data['initiating'].considerations) {
 		searchList.push({
-			type: 'consideration',
+			category: 'consideration',
 			tag: consideration.tag,
 			title: consideration.description,
 			url: `/big-seven/${component.data.indicator}#consideration-${consideration.tag.replaceAll('.', '-')}`,
@@ -61,6 +61,7 @@ let allResources = await getCollection("resources");
 
 for (let resource of allResources) {
 	searchList.push({
+		category: 'resource',
 		type: resource.data.type,
 		title: resource.data.title,
 		url: resource.data.source.filePath ? resource.data.source.filePath.replace('public', '') : resource.data.source.url,
@@ -122,7 +123,7 @@ for (let resource of allResources) {
 			{searchList.map((item) => {
 				return (
 					<li
-						data-type={item.type}
+						data-category={item.category}
 						data-title={item.title.toLowerCase()}
 						data-tag={item.tag ?? null}
 						data-type={item.type ?? null}
@@ -132,23 +133,18 @@ for (let resource of allResources) {
 						<a href={item.url}>
 							<span class="text-container">
 								<span class="label">
-									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.type)} ${toTitleCase(item.type)}`}
+									{item.category !== 'resource' ? `${toTitleCase(item.category)} ${item.tag}` : `${toTitleCase(item.type)} Resource`}
 								</span>
 								<span class="text">
 									{item.title}
 								</span>
 							</span>
 							<span class="icon-container">
-								{item.type !== 'resource' ?
-		
+								{item.category !== 'resource' ?
 									<IconArrowRight classes={['destination']} />
-		
 								:
-		
 									item.type === 'document' || item.type === 'presentation' ?
-		
 									<IconDownload classes={['destination']} /> : <IconExternal classes={['destination']} />
-		
 								}
 							</span>
 						</a>

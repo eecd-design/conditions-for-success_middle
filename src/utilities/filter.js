@@ -136,29 +136,23 @@ let filterListByFilterBtns = ({ filters, list }) => {
  */
 let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 
-	let results = [];
-	let matches = 0;
-	let presortType = 'byTitle';
-
-	let items = list.querySelectorAll('li');
 	let value = input.value.trim();
 
+	let results = [];
+	let matches = 0;
+	let presortType = value.length === 0 ? null : 'byTitle';
+	let sortType = 	value.length === 0 ? 'byTitle' : 'byRelevance';
+	console.log(sortType);
+
+	let items = list.querySelectorAll('li');
+
 	for (const item of items) {
-
-		if (value.length === 0) {
-			if (noValueBehaviour === 'shown') {
-				item.removeAttribute('hidden');
-			} else {
-				item.setAttribute('hidden', '');
-			}
-			continue;
-		}
-
+		
 		// Get the item data
 		let type = item.getAttribute('data-type');
 		let title = item.getAttribute('data-title');
 		let tag = item.getAttribute('data-tag');
-
+		
 		let result = {
 			elem: item,
 			title: title ?? null,
@@ -167,65 +161,59 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 			relevance: 0,
 		}
 
+		let markMatch = (score = 1) => {
+			result.match = true;
+			result.relevance += score;
+			matches += 1;
+		};
+
+		if (value.length === 0) {
+
+			if (noValueBehaviour === 'shown') {
+				markMatch(0);
+			}
+			results.push(result);
+    		item.toggleAttribute('hidden', !result.match);
+
+		} 
+
 		// 1. Check for tag match
-		if (type !== 'resource' && tag) {
-
-			// If the tag starts with the input value, show it
-			if (tag.startsWith(value)) {
-				item.removeAttribute('hidden');
-				result.match = true;
-				matches += 1;
-				result.relevance += 10;
-				presortType = 'byTag';
-				continue;
-			}
-
-		}
-
+		if (tag && tag.startsWith(value)) {
+			markMatch(10);
+			presortType = 'byTag';
+			
 		// 2. Check for title match
-		if (value.includes(' ')) {
+		} else if (title) {
 
-			if (title.startsWith(value)) {
-				result.match = true;
-				matches += 1;
-				// Give higher relevance to title start matches
-				result.relevance += 10;
+			// Full phrase match
+			if (value.includes(' ')) {
 
-			} else if (title.includes(value)) {
-				result.match = true;
-				matches += 1;
-				result.relevance += 1;
-			}
+				if (title.startsWith(value)) markMatch(10);
+				else if (title.includes(value)) markMatch(1);
 
-		} else {
+			// Single word match
+			} else {
 
-			// Split into individual words
-			let words = title.split(' ');
-
-			words.forEach((word, index) => {
-				if (word.startsWith(value)) {
-					result.match = true;
-					matches += 1;
-					// Give higher relevance to first word matches
-					result.relevance = index === 0 ? result.relevance + 10 : result.relevance + 1;
+				let words = title.split(' ');
+				for (let i = 0; i < words.length; i++) {
+					if (words[i].startsWith(value)) {
+						// Give higher relevance to first word matches
+						markMatch(i === 0 ? 10 : 1)
+						break;
+					}
 				}
-			})
+
+			}	
 
 		}
 
 		results.push(result);
-
-		// If there's a match, show it, otherwise, hide it
-		if (result.match) {
-			item.removeAttribute('hidden');
-		} else {
-			item.setAttribute('hidden', '');
-		}
+		item.toggleAttribute('hidden', !result.match);
 
 	}
 
 	sortList({
-		sortType: 'byRelevance',
+		sortType: sortType,
 		presortType: presortType,
 		list: list,
 		items: results,
@@ -260,6 +248,8 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
  * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
  */
 let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
+
+	console.log('Before Sort', items);
 
 	if (!list || !items || !Array.isArray(items)) return;
 
@@ -313,6 +303,8 @@ let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
 
 		return 0;
 	});
+
+	console.log('After Sort', items);
 
 	// Reorder elements in the DOM
 	for (let item of items) {

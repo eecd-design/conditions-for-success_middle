@@ -24,6 +24,10 @@ allResources.sort((a, b) => {
 
 let allIndicators = await getCollection("indicators");
 
+allIndicators.sort((a, b) => {
+	return (a.data.tag || '').localeCompare(b.data.tag || '');
+});
+
 let types = [
 	'Audio',
 	'Document',
