@@ -351,9 +351,13 @@ export default config({
 						},
 					}
 				}),
+				dateAdded: fields.date({
+					label: 'Date Added',
+					defaultValue: { kind: "today" },
+				}),
 				type: fields.select({
 					label: 'Type',
-					description: 'The type organizes this resource for search and filtering, and also determines the icon shown in its hyperlink.',
+					description: 'Type categorizes the resource for filtering on the resource page and determines the icon shown in its hyperlink.',
 					options: [
 						{ label: 'Video', value: 'video' },
 						{ label: 'Document', value: 'document' },
@@ -362,6 +366,13 @@ export default config({
 						{ label: 'Website', value: 'website' },
 					],
 					defaultValue: 'video',
+				}),
+				topics: fields.multiselect({
+					label: 'Topics',
+					description: 'Topics categorize the resource for filtering on the resource page.',
+					options: [
+						{ label: 'Test', value: 'test' }
+					],
 				}),
 				source: fields.object({
 					filePath: fields.pathReference({
@@ -394,9 +405,9 @@ export default config({
 							}
 						}
 					}), {
-					label: 'Linked Indicators',
-					itemLabel: props => props.value ?? 'Input an indicator tag',
-				}
+						label: 'Linked Indicators',
+						itemLabel: props => props.value ?? 'Input an indicator tag',
+					}
 				),
 				linkedComponents: fields.array(
 					fields.text({
@@ -414,9 +425,9 @@ export default config({
 							}
 						}
 					}), {
-					label: 'Linked Components',
-					itemLabel: props => props.value ?? 'Input a component tag',
-				}
+						label: 'Linked Components',
+						itemLabel: props => props.value ?? 'Input a component tag',
+					}
 				),
 				linkedConsiderations: fields.array(
 					fields.text({
@@ -434,9 +445,9 @@ export default config({
 							}
 						}
 					}), {
-					label: 'Linked Considerations',
-					itemLabel: props => props.value ?? 'Input a consideration tag',
-				}
+						label: 'Linked Considerations',
+						itemLabel: props => props.value ?? 'Input a consideration tag',
+					}
 				),
 			}
 		})
