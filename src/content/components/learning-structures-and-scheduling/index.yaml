@@ -5,7 +5,7 @@ initiating:
   considerations:
     - tag: 1.3.1
       description: >-
-        STRUCTURE: The school day is divided into fixed periods (e.g., Period 1:
+        The school day is divided into fixed periods (e.g., Period 1:
         Mathematics, Period 2: Science), with each learning area taught in
         isolation. Learners transition between classes based on a rigid
         timetable.
@@ -14,33 +14,31 @@ initiating:
         - Structure
     - tag: 1.3.2
       description: >-
-        EDUCATOR COLLABORATION: Minimal interdisciplinary planning. Educators
-        focus on individual learning area instruction with limited opportunities
-        for cross-curricular connections.
+        Minimal interdisciplinary planning. Educators focus on individual
+        learning area instruction with limited opportunities for
+        cross-curricular connections.
       compass: false
       categories:
         - Educator Collaboration
     - tag: 1.3.3
       description: >-
-        LEARNER EXPERIENCE: Learners move from one learning area to another
-        without explicit connections between content areas. Learning remains
-        compartmentalized.
+        Learners move from one learning area to another without explicit
+        connections between content areas. Learning remains compartmentalized.
       compass: false
       categories:
         - Learner Experience
     - tag: 1.3.4
       description: >-
-        INFORMAL LEARNING: Limited unstructured time. Informal learning
-        primarily occurs in brief recesses, lunch breaks, or before/after
-        school.
+        Limited unstructured time. Informal learning primarily occurs in brief
+        recesses, lunch breaks, or before/after school.
       compass: false
       categories:
         - Informal Learning
     - tag: 1.3.5
       description: >-
-        SHOWCASE OF LEARNING: Learner achievements are typically assessed and
-        displayed within individual classes. School-wide exhibitions or
-        interdisciplinary showcases are rare.
+        Learner achievements are typically assessed and displayed within
+        individual classes. School-wide exhibitions or interdisciplinary
+        showcases are rare.
       compass: false
       categories:
         - Showcase of Learning
