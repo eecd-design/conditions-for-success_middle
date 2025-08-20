@@ -1,0 +1,81 @@
+indicator: empathy
+tag: '4.1'
+title: Staff Preparedness
+initiating:
+  considerations:
+    - tag: 4.1.1
+      description: Staff appreciate and value diversity, equity, and inclusion.
+      compass: false
+      categories: []
+    - tag: 4.1.2
+      description: Leadership shares the importance of empathy in staff interactions.
+      compass: false
+      categories: []
+    - tag: 4.1.3
+      description: Empathy is discussed in staff meetings.
+      compass: false
+      categories: []
+    - tag: 4.1.4
+      description: >-
+        Staff are aware of how adverse childhood experiences can impact the
+        classroom environment.
+      compass: false
+      categories: []
+implementing:
+  considerations:
+    - tag: 4.1.5
+      description: >-
+        Staff participate in basic training on active listening, emotional
+        awareness, finding common ground, negotiation, conflict resolution,
+        supportive communication, and addressing discrimination.
+      compass: false
+      categories: []
+    - tag: 4.1.6
+      description: Staff can identify examples of implicit bias.
+      compass: false
+      categories: []
+    - tag: 4.1.7
+      description: >-
+        All staff are trauma-informed and know how to provide positive childhood
+        experiences to support any potential adverse childhood experiences.
+      compass: false
+      categories: []
+developing:
+  considerations:
+    - tag: 4.1.8
+      description: Leadership and staff regularly check-in on each other’s well-being.
+      compass: false
+      categories: []
+    - tag: 4.1.9
+      description: >-
+        Staff incorporate strategies and structures in each classroom to support
+        the social-emotional development of all learners.
+      compass: false
+      categories: []
+    - tag: 4.1.10
+      description: >-
+        All staff are trauma-assumed. Staff understand that many learners may be
+        affected by adverse childhood experiences and provide positive childhood
+        experiences for all learners.
+      compass: false
+      categories: []
+sustaining:
+  considerations:
+    - tag: 4.1.11
+      description: >-
+        Staff consistently use evidence-based practices to ensure all learners
+        feel seen, heard, and valued.
+      compass: true
+      categories: []
+    - tag: 4.1.12
+      description: >-
+        Staff survey data shows a strong sense of emotional safety and support
+        within the school.
+      compass: false
+      categories: []
+    - tag: 4.1.13
+      description: >-
+        All staff are trauma-invested and consistently evaluate their practices
+        to create positive childhood experiences for all learners.
+      compass: false
+      categories: []
