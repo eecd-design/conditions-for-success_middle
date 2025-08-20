@@ -1,1 +1,1 @@
-To move from traditional period-based scheduling models to personalized, learner-centered models.
+To move from a traditional period-based scheduling model to a personalized, learner-centered model.
