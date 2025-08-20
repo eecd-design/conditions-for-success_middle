@@ -47,7 +47,7 @@ sustaining:
       description: >-
         Actively contribute to a supportive and reflective professional learning
         community.
-      compass: false
+      compass: true
       categories: []
     - tag: 3.2.8
       description: Model and promote transparent, solution-focused communication.
