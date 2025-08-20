@@ -23,8 +23,8 @@ initiating:
       categories: []
     - tag: 5.2.4
       description: >-
-        Schools identify advocates to support all identities (ex. 2SLGBTQIA+,
-        indigenous, etc.).
+        Schools identify advocates to support all identities (e.g., 2SLGBTQIA+,
+        Indigenous, etc.).
       compass: false
       categories: []
 implementing:
@@ -43,15 +43,15 @@ implementing:
       categories: []
     - tag: 5.2.7
       description: >-
-        SEL, i.e., self-awareness, self-management, social awareness,
-        relationship skills, making responsible decisions, is tied to learners’
+        SEL (i.e., self-awareness, self-management, social awareness,
+        relationship skills, making responsible decisions), is tied to learners’
         personal and cultural backgrounds.
       compass: false
       categories: []
     - tag: 5.2.8
       description: >-
         School provides social opportunities for learners to explore their
-        identity (ex. Global Minds, cultural clubs, GSA, etc.).
+        identity (e.g., Global Minds, cultural clubs, GSA, etc.).
       compass: false
       categories: []
 developing:
