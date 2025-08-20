@@ -108,6 +108,28 @@ const { pageTitle, indicatorTag } = Astro.props;
 		subscribe(updateStatus);
 		subscribe(updateAssessor);
 
+		let scrollToConsideration = (tag) => {
+
+			let consideration = document.querySelector(`[value="${tag}"]`);
+
+			if (!consideration) return;
+
+			let accordionHeading = consideration.closest('.accordion-group')?.querySelector('.accordion');
+			let accordionBtn = accordionHeading?.querySelector('button');
+
+			if (!accordionHeading || !accordionBtn) return;
+
+			if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
+
+			accordionBtn.click();
+
+			setTimeout(() => {
+				accordionHeading.scrollIntoView({ block: 'start', behavior: 'smooth' });
+				// TODO: Should I be using the helper here instead?
+			}, 50);
+
+		}
+
 		// window.addEventListener('beforeunload', (event) => {
 
 		// 	// TODO: Determine whether this is desired, as it will fire on page reload, internal navigation, etc.
@@ -161,48 +183,31 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 		// });
 
+		window.addEventListener('popstate', () => {
+  			let hash = window.location.hash;
+			if (!hash) return;
+
+			// If link was within a dialog, close it
+			let activeDialog = document.querySelector('dialog:open') as HTMLDialogElement;
+			if (activeDialog) activeDialog.close();
+
+			if (hash.includes('consideration')) {
+				let tag = hash.replace(/^#consideration-/, "").replace(/-/g, ".");
+				scrollToConsideration(tag);
+			}
+		});
+
 		document.addEventListener('astro:page-load', () => {
 
 			let hash = window.location.hash;
+			console.log('After Load', hash);
 
-			if (hash) {
+			if (!hash) return;
 
-				// If link was within a dialog, close it
-				let activeDialog = document.querySelector('dialog:open') as HTMLDialogElement;
-				if (activeDialog) activeDialog.close();
-
-				// Capture query parameters
-				let params = new URLSearchParams(window.location.search);
-
-				let considerationTag = params.get('consideration');
-
-				if (!considerationTag) return;
-
-				let consideration = document.querySelector(`[value="${considerationTag}"]`);
-
-				if (!consideration) return;
-
-				let accordionHeading = consideration.closest('.accordion-group')?.querySelector('.accordion');
-				let accordionBtn = accordionHeading?.querySelector('button');
-
-				if (!accordionHeading || !accordionBtn) return;
-
-				if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
-
-				accordionBtn.click();
-
-				setTimeout(() => {
-					accordionHeading.scrollIntoView({ block: 'start', behavior: 'smooth' });
-
-					// Clean the URL after scrolling
-					let newUrl = location.pathname + location.hash;
-					history.replaceState(null, '', newUrl);
-
-				}, 50);
-
+			if (hash.includes('consideration')) {
+				let tag = hash.replace(/^#consideration-/, "").replace(/-/g, ".");
+				scrollToConsideration(tag);
 			}
-
-			// TODO: So now, when I add a search query, it triggers a reload even on the same page. And even after replaceState, it trigger another reload when I click a jump link after
 
 		})
 

@@ -38,7 +38,7 @@ for (let component of allComponents) {
 		type: 'component',
 		tag: component.data.tag,
 		title: component.data.title,
-		url: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`,
+		url: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}`,
 		colour: colour,
 	})
 
@@ -47,7 +47,9 @@ for (let component of allComponents) {
 			type: 'consideration',
 			tag: consideration.tag,
 			title: consideration.description,
-			url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}#component-${component.data.tag.replaceAll('.', '-')}_${component.id}`,
+			url: `/big-seven/${component.data.indicator}#consideration-${consideration.tag.replaceAll('.', '-')}`,
+			// url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}`,
+			// url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}#component-${component.data.tag.replaceAll('.', '-')}`,
 			colour: colour,
 		})
 	}
