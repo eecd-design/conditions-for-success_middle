@@ -1,0 +1,55 @@
+indicator: relationships
+tag: '3.2'
+title: School Personnel-School Personnel
+initiating:
+  considerations:
+    - tag: 3.2.1
+      description: Engage in occasional, task-based collaboration with colleagues.
+      compass: false
+      categories: []
+    - tag: 3.2.2
+      description: >-
+        Communicate primarily, when necessary, with limited sharing of ideas or
+        resources.
+      compass: false
+      categories: []
+implementing:
+  considerations:
+    - tag: 3.2.3
+      description: >-
+        Engage in regular discussions with colleagues to share strategies and
+        insights.
+      compass: false
+      categories: []
+    - tag: 3.2.4
+      description: >-
+        Demonstrate a willingness to collaborate beyond immediate
+        responsibilities.
+      compass: false
+      categories: []
+developing:
+  considerations:
+    - tag: 3.2.5
+      description: >-
+        Seek and value input from colleagues, incorporating feedback into
+        practice.
+      compass: false
+      categories: []
+    - tag: 3.2.6
+      description: >-
+        Engage in problem-solving and shared decision-making with a focus on
+        learner success.
+      compass: false
+      categories: []
+sustaining:
+  considerations:
+    - tag: 3.2.7
+      description: >-
+        Actively contribute to a supportive and reflective professional learning
+        community.
+      compass: false
+      categories: []
+    - tag: 3.2.8
+      description: Model and promote transparent, solution-focused communication.
+      compass: false
+      categories: []
