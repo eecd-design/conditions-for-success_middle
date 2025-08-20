@@ -127,56 +127,53 @@ let types = [
 						type="text"
 						placeholder="Search these resources..."
 						aria-label="Search Resources"
-						aria-describedby="filters-search-input_help, filters-search-input_error"
+						aria-describedby="resource-list_error" 
 						autofocus
 					/>
 					<IconSearch/>
 				</div>
-				<p class="error" hidden>
-					<IconWarning />
-					<span
-						id="filters-search-input_error"
-						role="alert">There are no results that match the search term.</span
-					>
-				</p>
 			</fieldset>
 
 		</form>
 
-		<ul id="resources-list" class="link-list" data-style="divided">
+		<div class="list-container">
 
-			{allResources.map((resource) => {
-				
-				let { data } = resource;
-				let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+			<p id="resource-list_error" class="error-status" role="status" hidden>
+				<IconWarning aria-hidden="true" />
+				<span
+					>There are no results that match the search term.</span
+				>
+			</p>
 
-				return (
-
-					<li data-title={title.toLowerCase()} data-type={type}
-						data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-						<a href={source.filePath ? source.filePath : source.url} 
-						>
-							<ResourceIcons type={type} classes={['type']} />
-							<span class="text-container">
-								<span class="text">{title}</span>
-							</span>
-							<span class="icon-container">
-								{type === 'document'
-									|| type === 'presentation'
-									? <IconDownload classes={['destination']}/> : ''}
-								{type === 'audio'
-									|| type === 'video'
-									|| type === 'website'
-									? <IconExternal classes={['destination']}/> : ''}
-							</span>
-						</a>
-					</li>
-
-				)
-
-			})}
-
-		</ul>
+			<ul id="resources-list" class="link-list" data-style="divided">
+				{allResources.map((resource) => {
+			
+					let { data } = resource;
+					let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+					return (
+						<li data-title={title.toLowerCase()} data-type={type}
+							data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
+							<a href={source.filePath ? source.filePath : source.url}
+							>
+								<ResourceIcons type={type} classes={['type']} />
+								<span class="text-container">
+									<span class="text">{title}</span>
+								</span>
+								<span class="icon-container">
+									{type === 'document'
+										|| type === 'presentation'
+										? <IconDownload classes={['destination']}/> : ''}
+									{type === 'audio'
+										|| type === 'video'
+										|| type === 'website'
+										? <IconExternal classes={['destination']}/> : ''}
+								</span>
+							</a>
+						</li>
+					)
+				})}
+			</ul>
+		</div>
 
 	</div>
 

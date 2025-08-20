@@ -100,23 +100,21 @@ let filterListByFilterBtns = ({ filters, list }) => {
 
 	}
 
-	// TODO: Need to add a no results error message
+	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
 
-	// let errorMessage = input.closest('fieldset')?.querySelector('.error');
+	if (errorMessage){
 
-	// if (errorMessage){
+		// If there are no positive results, reveal the error message
+		if (matches === 0) {
+			errorMessage.removeAttribute('hidden');
+			list.setAttribute('hidden', '');
 
-	// 	// If there are no positive results, reveal the error message
-	// 	if (matches === 0) {
-	// 		errorMessage.removeAttribute('hidden');
-	// 		list.setAttribute('hidden', '');
-
-	// 	// Otherwise, hide the error message
-	// 	} else {
-	// 		errorMessage.setAttribute('hidden', '');
-	// 		list.removeAttribute('hidden');
-	// 	}
-	// }
+		// Otherwise, hide the error message
+		} else {
+			errorMessage.setAttribute('hidden', '');
+			list.removeAttribute('hidden');
+		}
+	}
 
 }
 
@@ -227,17 +225,19 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 		items: results,
 	});
 
-	let errorMessage = input.closest('fieldset')?.querySelector('.error');
+	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
 
 	if (errorMessage) {
 
 		// If there are no positive results, reveal the error message
 		if (matches === 0 && value.length > 0) {
 			errorMessage.removeAttribute('hidden');
+			list.setAttribute('hidden', '');
 
-			// Otherwise, hide the error message
+		// Otherwise, hide the error message
 		} else {
 			errorMessage.setAttribute('hidden', '');
+			list.removeAttribute('hidden');
 		}
 
 	}
@@ -464,6 +464,10 @@ let filter = (() => {
 	// Event Handlers
 	//
 
+	/**
+	 * Handles input inside filter form
+	 * @param {Event} event
+	 */	
 	let onInput = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.filters input')) return;
@@ -495,6 +499,10 @@ let filter = (() => {
 		}
 	}
 
+	/**
+	 * Handles filter form reset
+	 * @param {Event} event
+	 */	
 	let onReset = (event) => {
 		let target = event.target;
 		if (!target.matches('form:has(fieldset.filters)')) return;
@@ -517,6 +525,10 @@ let filter = (() => {
 		}
 	}
 
+	/**
+	 * Handles filter tag button clicks
+	 * @param {Event} event
+	 */
 	let onClick = (event) => {
 		let target = event.target;
 		if (!target.matches('.filter-tag button')) return;
@@ -541,10 +553,9 @@ let filter = (() => {
 		removeTag(tag);
 	}
 
-	//
-	// Init and Destroy
-	//
-
+	/**
+	 * Initializes filter forms
+	 */
 	let init = () => {
 		let forms = document.querySelectorAll('form:has(fieldset.filters)');
 		for (let form of forms) {
@@ -554,6 +565,9 @@ let filter = (() => {
 		}
 	}
 
+	/**
+	 * Cleans up event listeners
+	 */
 	let destroy = () => {
 		let forms = document.querySelectorAll('form:has(fieldset.filters)');
 		for (let form of forms) {
@@ -570,16 +584,31 @@ let filter = (() => {
 
 let search = (() => {
 
-	let options = {};
+	/** 
+	 * Stores options per form
+	 * @type {Map<HTMLFormElement, {noValueBehaviour: string|null}>}
+	 */
+	let formOptions = new Map();
 
+	/**
+	 * Handles input inside search forms
+	 * @param {Event} event
+	 */
 	let onInput = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.search input')) return;
+
 		let form = target.closest('form');
+		if (!form) return;
+
 		let listId = form.getAttribute('data-search-list');
 		if (!listId) return;
+
 		let list = document.querySelector(`#${listId}`);
-		if (!form || !list) return;
+		if (!list) return;
+
+		let options = formOptions.get(form) ?? {};
+
 		if (target.value.trim().length > 0) {
 			list.removeAttribute('hidden');
 			debouncedFilter({ input: target, list });
@@ -592,17 +621,25 @@ let search = (() => {
 		}
 	};
 
+	/**
+	 * Initializes search forms
+	 */
 	let init = () => {
 		let forms = document.querySelectorAll('form:has(fieldset.search)');
 		for (let form of forms) {
-			options.noValueBehaviour = form.getAttribute('data-no-value-behaviour') ?? null;
+			let noValueBehaviour = form.getAttribute('data-no-value-behaviour') ?? null;
+			formOptions.set(form, { noValueBehaviour });
 			form.addEventListener('input', onInput);
 		}
 	};
 
+	/**
+	 * Cleans up event listeners
+	 */
 	let destroy = () => {
 		let forms = document.querySelectorAll('form:has(fieldset.search)');
 		for (let form of forms) {
+			formOptions.delete(form);
 			form.removeEventListener('input', onInput);
 		}
 	};

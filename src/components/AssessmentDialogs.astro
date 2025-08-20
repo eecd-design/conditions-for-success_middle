@@ -287,12 +287,9 @@ let schoolList = {
 				</select>
 				<IconCaretDown />
 			</div>
-			<p class="error" hidden>
+			<p id="create-assessment-dialog_district-select_error" class="error-status" role="status" hidden>
 				<IconWarningSmall />
-				<span
-					id="create-assessment-dialog_district-select_error"
-					role="alert"
-					>Please select a school district from the list.</span
+				<span>Please select a school district from the list.</span
 				>
 			</p>
 		</fieldset>
@@ -354,11 +351,9 @@ let schoolList = {
 				</select>
 				<IconCaretDown />
 			</div>
-			<p class="error" hidden>
+			<p id="create-assessment-dialog_school-select_error" class="error-status" role="status" hidden>
 				<IconWarningSmall />
-				<span
-					id="create-assessment-dialog_school-select_error"
-					role="alert">Please select a school from the list.</span
+				<span>Please select a school from the list.</span
 				>
 			</p>
 		</fieldset>
@@ -384,11 +379,9 @@ let schoolList = {
 					aria-describedby="create-assessment-dialog_reporting-year-input_help, create-assessment-dialog_reporting-year-input_error"
 				/>
 			</div>
-			<p class="error" hidden>
+			<p id="create-assessment-dialog_reporting-year-input_error" class="error-status" role="status" hidden>
 				<IconWarningSmall />
-				<span
-					id="create-assessment-dialog_reporting-year-input_error"
-					role="alert">Please enter a valid year.</span
+				<span>Please enter a valid year.</span
 				>
 			</p>
 		</fieldset>
@@ -673,12 +666,9 @@ let schoolList = {
 				</select>
 				<IconCaretDown />
 			</div>
-			<p class="error" hidden>
+			<p id="update-assessment-dialog_district-select_error" class="error-status" role="status" hidden>
 				<IconWarningSmall />
-				<span
-					id="update-assessment-dialog_district-select_error"
-					role="alert"
-					>Please select a school district from the list.</span
+				<span>Please select a school district from the list.</span
 				>
 			</p>
 		</fieldset>
@@ -738,11 +728,9 @@ let schoolList = {
 				</select>
 				<IconCaretDown />
 			</div>
-			<p class="error" hidden>
+			<p id="update-assessment-dialog_school-select_error" class="error-status" role="status" hidden>
 				<IconWarningSmall />
-				<span
-					id="update-assessment-dialog_school-select_error"
-					role="alert">Please select a school from the list.</span
+				<span>Please select a school from the list.</span
 				>
 			</p>
 		</fieldset>
@@ -762,11 +750,9 @@ let schoolList = {
 					pattern="\\d{4}"
 				/>
 			</div>
-			<p class="error" hidden>
+			<p id="update-assessment-dialog_reporting-year-input_error" class="error-status" role="status" hidden>
 				<IconWarningSmall />
-				<span
-					id="update-assessment-dialog_reporting-year-input_error"
-					role="alert">Please enter a valid year.</span
+				<span>Please enter a valid year.</span
 				>
 			</p>
 		</fieldset>
@@ -1166,10 +1152,10 @@ let schoolList = {
 		// Reset touched fields
 		touchedFormFields.clear();
 
-		// Hide all errors
-		let errors = form.querySelectorAll(".error");
-		for (let error of errors) {
-			error.setAttribute("hidden", "");
+		// Hide all error statuses
+		let errorsStatuses = form.querySelectorAll(".error-status");
+		for (let status of errorsStatuses) {
+			status.setAttribute("hidden", "");
 		}
 
 		// Reset all aria-invalid
@@ -1374,9 +1360,8 @@ let schoolList = {
 	let validateInput = (input) => {
 		input.setCustomValidity("");
 
-		let error = document.getElementById(`${input.id}_error`);
-		if (!error) return;
-		let errorContainer = error.closest(".error");
+		let errorStatus = document.getElementById(`${input.id}_error`);
+		if (!errorStatus) return;
 
 		let message = "";
 
@@ -1393,12 +1378,12 @@ let schoolList = {
 		}
 
 		if (message && touchedFormFields.has(input)) {
-			error.textContent = message;
-			errorContainer.removeAttribute("hidden");
+			errorStatus.querySelector('span').textContent = message;
+			errorStatus.removeAttribute("hidden");
 			input.setAttribute("aria-invalid", "true");
 		} else {
-			error.textContent = "";
-			errorContainer.setAttribute("hidden", "");
+			errorStatus.querySelector('span').textContent = "";
+			errorStatus.setAttribute("hidden", "");
 			input.removeAttribute("aria-invalid");
 		}
 	};

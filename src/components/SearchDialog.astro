@@ -82,7 +82,7 @@ for (let resource of allResources) {
 		Search
 	</h2>
 
-	<form data-search-list="site-content-list">
+	<form data-no-value-behaviour="hidden" data-search-list="site-content-list">
 
 		<fieldset class="search">
 			<p
@@ -98,26 +98,27 @@ for (let resource of allResources) {
 					type="text"
 					placeholder="Enter search term..."
 					aria-labelledby="search-dialog_heading"
-					aria-describedby="search-dialog_search-input_help, search-dialog_search-input_error"
+					aria-describedby="search-dialog_search-input_help, site-content-list_error"
 					autofocus
 				/>
 				<IconSearch />
 			</div>
-			<p class="error" hidden>
-				<IconWarningSmall />
-				<span
-					id="search-dialog_search-input_error"
-					role="alert">There are no results that match the search term.</span
-				>
-			</p>
 		</fieldset>
+		
+	</form>
+
+	<div class="list-container">
+
+		<p id="site-content-list_error" class="error-status" role="status" hidden>
+			<IconWarningSmall />
+			<span
+				>There are no results that match the search term.</span
+			>
+		</p>
 
 		<ul id="site-content-list" class="link-list" data-style="divided" hidden>
-
 			{searchList.map((item) => {
-
 				return (
-
 					<li
 						data-type={item.type}
 						data-title={item.title.toLowerCase()}
@@ -126,9 +127,7 @@ for (let resource of allResources) {
 						data-theme={item.colour ?? null}
 						data-external={item.external}
 					>
-
 						<a href={item.url}>
-
 							<span class="text-container">
 								<span class="label">
 									{item.type !== 'resource' ? `${toTitleCase(item.type)} ${item.tag}` : `${toTitleCase(item.type)} ${toTitleCase(item.type)}`}
@@ -137,32 +136,26 @@ for (let resource of allResources) {
 									{item.title}
 								</span>
 							</span>
-
 							<span class="icon-container">
-								{item.type !== 'resource' ? 
-									
+								{item.type !== 'resource' ?
+		
 									<IconArrowRight classes={['destination']} />
-								
-								: 
-								
-									item.type === 'document' || item.type === 'presentation' ? 
-									
+		
+								:
+		
+									item.type === 'document' || item.type === 'presentation' ?
+		
 									<IconDownload classes={['destination']} /> : <IconExternal classes={['destination']} />
-								
+		
 								}
 							</span>
-
 						</a>
-
 					</li>
-
 				)
-
 			})}
-
 		</ul>
 
-	</form>
+	</div>
 	
 </dialog>
 
@@ -170,10 +163,6 @@ for (let resource of allResources) {
 
 	#search-dialog {
 		margin-top: 2rem;
-	}
-
-	#search-dialog .search-results {
-		margin: 0;
 	}
 
 </style>
