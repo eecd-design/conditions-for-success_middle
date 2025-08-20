@@ -1,0 +1,1 @@
+Educators focus instruction on isolated numeracy skills with limited implementation of effective numeracy instructional practices. Learners inconsistently apply prior mathematical knowledge and are reluctant to engage in problem solving tasks.
