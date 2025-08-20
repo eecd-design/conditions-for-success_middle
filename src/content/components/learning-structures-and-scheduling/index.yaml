@@ -46,110 +46,121 @@ implementing:
   considerations:
     - tag: 1.3.6
       description: >-
-        STRUCTURE: Learning areas are scheduled in longer blocks (e.g., 80-90
-        minutes), allowing for fewer transitions and more in-depth exploration
-        of topics. Blocks may rotate every other day.
+        Learning areas are scheduled in longer blocks (e.g., 80-90 minutes),
+        allowing for fewer transitions and more in-depth exploration of topics.
+        Blocks may rotate every other day.
       compass: false
-      categories: []
+      categories:
+        - Structure
     - tag: 1.3.7
       description: >-
-        EDUCATOR COLLABORATION: More time for educators to design engaging,
-        hands-on activities and incorporate elements of project-based learning
-        within their learning areas.
+        More time for educators to design engaging, hands-on activities and
+        incorporate elements of project-based learning within their learning
+        areas.
       compass: false
-      categories: []
+      categories:
+        - Educator Collaboration
     - tag: 1.3.8
       description: >-
-        LEARNER EXPERIENCE: Learners engage more deeply in each learning area
-        due to extended class time, though learning areas are still largely
-        taught separately.
+        Learners engage more deeply in each learning area due to extended class
+        time, though learning areas are still largely taught separately.
       compass: false
-      categories: []
+      categories:
+        - Learner Experience
     - tag: 1.3.9
       description: >-
-        INFORMAL LEARNING: Some flexibility is built into longer periods,
-        allowing learners to explore topics in greater depth, collaborate on
-        projects, or engage in independent work.
+        Some flexibility is built into longer periods, allowing learners to
+        explore topics in greater depth, collaborate on projects, or engage in
+        independent work.
       compass: true
-      categories: []
+      categories:
+        - Informal Learning
     - tag: 1.3.10
       description: >-
-        SHOWCASE OF LEARNING: Interdisciplinary projects may be presented in
-        class or within small-scale school events, but they remain secondary to
-        learning area-based assessment.
+        Interdisciplinary projects may be presented in class or within
+        small-scale school events, but they remain secondary to learning
+        area-based assessment.
       compass: false
-      categories: []
+      categories:
+        - Showcase of Learning
 developing:
   considerations:
     - tag: 1.3.11
       description: >-
-        STRUCTURE: Schedules are designed to support interdisciplinary learning,
-        with flexible blocks of time that allow for co-teaching and
-        cross-curricular units.
+        Schedules are designed to support interdisciplinary learning, with
+        flexible blocks of time that allow for co-teaching and cross-curricular
+        units.
       compass: false
-      categories: []
+      categories:
+        - Structure
     - tag: 1.3.12
       description: >-
-        EDUCATOR COLLABORATION: Educators meet regularly to plan
-        interdisciplinary lessons, aligning instruction across multiple learning
-        areas to create meaningful connections.
+        Educators meet regularly to plan interdisciplinary lessons, aligning
+        instruction across multiple learning areas to create meaningful
+        connections.
       compass: true
-      categories: []
+      categories:
+        - Educator Collaboration
     - tag: 1.3.13
       description: >-
-        LEARNER EXPERIENCE: Learning is structured around themes, projects, or
-        inquiry-based experiences that help learners apply knowledge across
-        disciplines.
+        Learning is structured around themes, projects, or inquiry-based
+        experiences that help learners apply knowledge across disciplines.
       compass: false
-      categories: []
+      categories:
+        - Learner Experience
     - tag: 1.3.14
       description: >-
-        INFORMAL LEARNING: Schools create structured but flexible time for
-        learner-led exploration, mentorship, and collaborative projects beyond
-        formal class periods.
+        Schools create structured but flexible time for learner-led exploration,
+        mentorship, and collaborative projects beyond formal class periods.
       compass: false
-      categories: []
+      categories:
+        - Informal Learning
     - tag: 1.3.15
       description: >-
-        SHOWCASE OF LEARNING: Learners participate in exhibitions,
-        presentations, or performances that highlight interdisciplinary learning
-        and demonstrate real-world applications of their knowledge.
+        Learners participate in exhibitions, presentations, or performances that
+        highlight interdisciplinary learning and demonstrate real-world
+        applications of their knowledge.
       compass: false
-      categories: []
+      categories:
+        - Showcase of Learning
 sustaining:
   considerations:
     - tag: 1.3.16
       description: >-
-        STRUCTURE: Highly flexible schedules allow learners to design
-        personalized learning paths, integrating multiple learning areas based
-        on their interests and goals.
+        Highly flexible schedules allow learners to design personalized learning
+        paths, integrating multiple learning areas based on their interests and
+        goals.
       compass: false
-      categories: []
+      categories:
+        - Structure
     - tag: 1.3.17
       description: >-
-        EDUCATOR COLLABORATION: Educators serve as facilitators and mentors,
-        guiding learners in personalized learning experiences that blend
-        academic and real-world applications.
+        Educators serve as facilitators and mentors, guiding learners in
+        personalized learning experiences that blend academic and real-world
+        applications.
       compass: false
-      categories: []
+      categories:
+        - Educator Collaboration
     - tag: 1.3.18
       description: >-
-        LEARNER EXPERIENCE: Learners take an active role in shaping their
-        education, choosing projects, working collaboratively, and engaging in
-        authentic learning experiences.
+        Learners take an active role in shaping their education, choosing
+        projects, working collaboratively, and engaging in authentic learning
+        experiences.
       compass: false
-      categories: []
+      categories:
+        - Learner Experience
     - tag: 1.3.19
       description: >-
-        INFORMAL LEARNING: Abundant opportunities for informal learning through
-        flexible schedules, open learning spaces, access to mentors, and
-        self-directed inquiry.
+        Abundant opportunities for informal learning through flexible schedules,
+        open learning spaces, access to mentors, and self-directed inquiry.
       compass: false
-      categories: []
+      categories:
+        - Informal Learning
     - tag: 1.3.20
       description: >-
-        SHOWCASE OF LEARNING: Learners regularly present their work to diverse
-        audiences, including peers, educators, families, and community members,
-        through exhibitions, portfolios, and real-world demonstrations.
+        Learners regularly present their work to diverse audiences, including
+        peers, educators, families, and community members, through exhibitions,
+        portfolios, and real-world demonstrations.
       compass: false
-      categories: []
+      categories:
+        - Showcase of Learning
