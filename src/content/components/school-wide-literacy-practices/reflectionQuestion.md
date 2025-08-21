@@ -1,1 +1,1 @@
-To what extent do teachers understand and consistently use high-yield literacy instructional practices?
+To what extent do educators understand and consistently use high-yield literacy instructional practices?
