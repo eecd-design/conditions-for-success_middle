@@ -1,0 +1,129 @@
+indicator: meaningful-learning-experiences
+tag: '7.4'
+title: Career-connected Learning
+initiating:
+  considerations:
+    - tag: 7.4.1
+      description: >-
+        The school recognizes the need for career-connected learning but has
+        limited structured opportunities.
+      compass: false
+      categories: []
+    - tag: 7.4.2
+      description: >-
+        Staff awareness is emerging, but career education is not systematically
+        integrated.
+      compass: false
+      categories: []
+    - tag: 7.4.3
+      description: Career discussions occur but lack learner personalization or planning.
+      compass: false
+      categories: []
+    - tag: 7.4.4
+      description: >-
+        Few, if any, experiential learning opportunities exist (e.g., workplace
+        visits, job shadowing).
+      compass: false
+      categories: []
+    - tag: 7.4.5
+      description: >-
+        Career guidance is inconsistent, and equity in access is not yet a
+        focus.
+      compass: false
+      categories: []
+implementing:
+  considerations:
+    - tag: 7.4.6
+      description: >-
+        The school offers career days, guest speakers, and introductory career
+        discussions.
+      compass: false
+      categories: []
+    - tag: 7.4.7
+      description: >-
+        Some career-related activities are embedded in instruction, and staff
+        training is increasing.
+      compass: false
+      categories: []
+    - tag: 7.4.8
+      description: >-
+        Learners engage in self-assessments and begin exploring labour market
+        information.
+      compass: false
+      categories: []
+    - tag: 7.4.9
+      description: >-
+        Early experiential learning (e.g., field trips, project-based career
+        activities) is introduced.
+      compass: false
+      categories: []
+    - tag: 7.4.10
+      description: >-
+        Career counseling is available, but not yet fully personalized or
+        data-driven.
+      compass: false
+      categories: []
+developing:
+  considerations:
+    - tag: 7.4.11
+      description: >-
+        Career exploration is integrated into multiple learning areas and
+        learner planning.
+      compass: false
+      categories: []
+    - tag: 7.4.12
+      description: >-
+        Experiential learning opportunities (e.g., internships, co-ops,
+        apprenticeships) are available.
+      compass: false
+      categories: []
+    - tag: 7.4.13
+      description: >-
+        Learners actively reflect on interests and use labour market data to
+        refine career pathways.
+      compass: false
+      categories: []
+    - tag: 7.4.14
+      description: >-
+        Career counseling is structured, personalized, and connected to academic
+        planning.
+      compass: false
+      categories: []
+    - tag: 7.4.15
+      description: >-
+        Schools work to remove barriers and ensure equitable access to career
+        experiences.
+      compass: false
+      categories: []
+sustaining:
+  considerations:
+    - tag: 7.4.16
+      description: >-
+        Career-connected learning is fully integrated across grade levels and
+        learning areas.
+      compass: false
+      categories: []
+    - tag: 7.4.17
+      description: >-
+        Learners maintain career portfolios and engage in meaningful
+        career-related experiences.
+      compass: false
+      categories: []
+    - tag: 7.4.18
+      description: >-
+        Work-integrated learning and industry partnerships provide real-world
+        exposure.
+      compass: false
+      categories: []
+    - tag: 7.4.19
+      description: >-
+        The school collaborates with post-secondary institutions and employers
+        for seamless transitions.
+      compass: false
+      categories: []
+    - tag: 7.4.20
+      description: >-
+        Learners take leadership in career exploration, mentoring peers, and
+        shaping school practices.
+      compass: false
+      categories: []
