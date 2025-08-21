@@ -442,6 +442,30 @@ h2,
 	margin: 1.5rem 0 1.5rem;
 }
 
+:is(h2, [data-style-as="h2"]):has(+ .heading-subtitle) {
+	margin: 1.5rem 0 0.5rem;
+}
+
+:is(h2, [data-style-as="h2"]) + .heading-subtitle {
+	--icon-colour: var(--colour-ui-accent);
+	--icon-size: 1.25rem;
+	/* TODO: Make arrow icon @ 20px */
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: start;
+	gap: 0.75rem;
+	font-family: aesthet-nova, serif;
+	font-size: 1.625rem;
+	font-weight: 500;
+	line-height: 1.2;
+	color: var(--colour-ui-accent);
+	margin: 0 0 1.5rem;
+}
+
+:is(h2, [data-style-as="h2"]) + .heading-subtitle .icon {
+	margin-top: 0.25rem;
+}
+
 h3,
 [data-style-as="h3"] {
 	font-family: "Public Sans", sans-serif;
@@ -572,12 +596,16 @@ button[type="button"],
 	font-size: 1rem;
 }
 
-:is(button[type="button"], [data-style-as="button"])[data-style="bold"] {
+:is(button[type="button"], [data-style-as="button"])[data-size="large"]:has(.icon) {
+	padding: 0 1rem;
+}
+
+:is(button[type="button"], [data-style-as="button"])[data-style="solid"] {
 	--button-background-colour: var(--colour-fill-neutral-mid-muted);
 	--button-ui-colour: var(--colour-ui-reverse);
 }
 
-:is(button[type="button"], [data-style-as="button"])[data-style="bold"]:is(:hover, :focus-visible) {
+:is(button[type="button"], [data-style-as="button"])[data-style="solid"]:is(:hover, :focus-visible) {
 	--button-background-colour: transparent;
 	--button-ui-colour: var(--colour-ui-neutral);
 	--button-outline-colour: var(--colour-border-neutral-bold-muted);
@@ -1322,8 +1350,57 @@ dialog .callout {
 	margin: 1.5rem 0;
 }
 
-dialog section:has(.card-group:empty) {
+dialog section:has(.elem-group:empty) {
 	display: none;
+}
+
+
+
+/*
+** GROUPS
+------------------------------*/
+
+.elem-group {
+	container: elem-group / inline-size;
+	display: grid;
+	grid-template-columns: repeat(var(--group-columns), 1fr);
+	gap: var(--group-gap, 1.5rem);
+	list-style-type: none;
+	padding: 0;
+	margin: var(--group-margin, 4rem 0);
+}
+
+.elem-group[data-columns="2"] {
+	--group-columns: 2;
+}
+
+.elem-group[data-columns="3"] {
+	--group-columns: 3;
+}
+
+.elem-group > * {
+	margin: 0 !important;
+}
+
+.elem-group[data-columns="2"]:has(> *:only-child) > * {
+	grid-column: span 2;
+}
+
+.elem-group[data-columns="3"]:has(> *:only-child) > * {
+	grid-column: span 3;
+}
+
+.elem-group[data-columns="2"]:has(> *:nth-last-child(n + 3)) > * {
+	grid-column: span 2;
+}
+
+.elem-group[data-columns="3"]:has(> *:nth-last-child(n + 4)) > * {
+	grid-column: span 3;
+}
+
+.elem-group [data-fit="compact"] {
+	--group-gap: 1rem;
+	--group-margin: 1rem 0;
 }
 
 
@@ -1333,22 +1410,69 @@ dialog section:has(.card-group:empty) {
 ------------------------------*/
 
 .callout {
+	background-color: var(--callout-background-colour, var(--colour-fill-neutral-subtle-muted));
 	border-radius: var(--border-radius-normal);
-	padding: 2rem;
-	margin: 2.5rem 0;
+	padding: var(--callout-padding, 2rem);
+	margin: var(--callout-margin, 2.5rem 0);
 	width: fit-content;
 }
 
-.callout[data-fit="compact"] {
-	padding: 1.25rem;
+.callout[data-spacing="large"] {
+	--callout-margin: 4rem 0;
 }
 
-.callout[data-fit="compact"][data-style="shading"]:has(.icon-container) {
+.callout[data-fit="compact"] {
+	--callout-padding: 1.25rem;
+}
+
+.callout[data-fit="compact"][data-style="solid"]:has(.icon-container) {
 	column-gap: 1.25rem;
 }
 
+.callout[data-fit="compact"] :where(p, li, a) {
+	font-size: 1rem;
+	line-height: 1.4;
+}
+
+.callout[data-style="solid"] {
+	--callout-background-colour: var(--colour-fill-accent-subtle-muted, var(--colour-fill-neutral-subtle-muted));
+}
+
+.callout[data-style="solid"][data-vibrancy="vivid"] {
+	--callout-background-colour: var(--colour-fill-accent-subtle-vivid, --colour-fill-neutral-subtle-vivid);
+}
+
+.callout[data-style="solid"][data-intensity="bold"] {
+	--callout-background-colour: var(--colour-fill-accent-bold-muted, var(--colour-fill-neutral-bold-muted));
+	--callout-ui-colour: var(--colour-ui-reverse);
+}
+
+.callout[data-style="solid"][data-intensity="bold"][data-vibrancy="vivid"] {
+	--callout-background-colour: var(--colour-fill-accent-bold-vibrant, var(--colour-fill-neutral-bold-vibrant));
+}
+
+.callout[data-style="solid"]:has(.icon-container) {
+	--icon-size: 1.5rem;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	column-gap: 1.5rem;
+}
+
+.callout[data-style="outline"] {
+	--callout-background-colour: transparent;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	padding: 2rem 3rem;
+	border: 2px solid var(--colour-border-neutral-subtle-muted);
+	position: relative;
+}
+
 .callout .heading {
+	font-size: var(--callout-heading-size, 1.625rem);
 	font-weight: 700;
+	color: var(--callout-ui-colour, inherit);
 }
 
 .callout .heading:has(.icon) {
@@ -1359,80 +1483,102 @@ dialog section:has(.card-group:empty) {
 	gap: 0.75rem;
 }
 
-.callout[data-fit="compact"] :where(p, li, a) {
-	font-size: 1rem;
-	line-height: 1.4;
+.callout[data-style="solid"][data-intensity="bold"] :is(button, [data-style-as="button"]) {
+	--icon-size: 1.25rem;
+	--container-gap: 0.75rem;
+	--label-size: 1rem;
+	--button-background-colour: var(--colour-background);
 }
 
-.callout[data-style="shading"] {
-	background-color: var(--colour-fill-accent-subtle-muted, --colour-fill-neutral-subtle-muted);
+.callout[data-style="solid"][data-intensity="bold"] :is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
+	--button-background-colour: transparent;
+	--button-outline-colour: var(--colour-background);
+	--label-colour: var(--colour-ui-reverse);
+	--icon-colour: var(--colour-ui-reverse);
 }
 
-.callout[data-style="shading"]:has(.icon-container) {
-	--icon-size: 1.5rem;
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	column-gap: 1.5rem;
-}
-
-.callout[data-style="shading"][data-vibrancy="vivid"] {
-	background-color: var(--colour-fill-accent-subtle-vivid, --colour-fill-neutral-subtle-vivid);
-}
-
-.callout[data-style="outline"] {
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: center;
-	padding: 2rem 3rem;
-	border: 2px solid var(--colour-border-neutral-subtle-muted);
-	position: relative;
-}
-
-.callout[data-style="outline"][data-on-path-elem="heading"] .heading {
+.callout[data-style="outline"][data-elem-on-path="heading"] .heading {
 	position: absolute;
 	top: -0.5rem;
 	left: 1.5rem;
 	padding: 0 1.5rem;
 	background-color: var(--colour-background);
 	font-size: 1rem;
-	font-weight: 700;
 	text-transform: uppercase;
 	line-height: 1;
 	color: var(--colour-ui-accent);
 }
 
-.callout[data-style="outline"] p {
-	font-size: 1.25rem;
-	font-weight: 600;
-	line-height: 1.5;
-	width: 100%;
+.callout[data-style="outline"][data-elem-on-path="icon"] .icon-container {
+	--icon-size: 2.5rem;
+	/* TODO: Export 44px version of icons */
+	--icon-colour: var(--colour-ui-accent-subtle);
+	position: absolute;
+	top: -1.25rem;
+	padding: 0 1.5rem;
+	background-color: var(--colour-background);
 }
 
+.callout[data-style="image"] {
+	--callout-background-colour: var(--colour-fill-accent-bold-muted, var(--colour-fill-neutral-bold-muted));
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: 1fr auto;
+	padding: 0;
+}
+
+.callout[data-style="image"] img {
+	grid-column: 1 / 2;
+	grid-row: 1 / 3;
+	width: 100%;
+	max-height: 400px;
+	opacity: 0.5;
+	position: relative;
+	object-fit: cover;
+	z-index: 1;
+}
+
+.callout[data-style="image"] .text-container {
+	grid-column: 1 / 2;
+	grid-row: 2 / 3;
+	z-index: 2;
+	padding: 2rem;
+	position: relative;
+	z-index: 2;
+}
+
+.callout[data-style="image"] .text-container::after {
+	content: "";
+	display: block;
+	background: var(--colour-fill-accent-bold-muted, var(--colour-fill-neutral-bold-muted));
+	border-radius: var(--border-radius-normal);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(
+		to top, 
+		var(--colour-fill-accent-bold-muted) 0%, 
+		transparent
+	);
+	z-index: 3;
+}
+
+.callout[data-style="image"] .text-container p {
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: var(--colour-ui-reverse);
+	position: relative;
+	z-index: 4;
+}
 
 
 
 /*
 ** CARDS
 ------------------------------*/
-
-.card-group {
-	container: card-group / inline-size;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 1rem;
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
-
-.card-group:has(.card:only-child) .card {
-	grid-column: span 2;
-}
-
-.card-group:has(.card:nth-last-child(n + 3)) .card {
-	grid-column: span 2;
-}
 
 .card {
 	container: card / inline-size;
@@ -1562,6 +1708,63 @@ dl dd {
 
 
 
+
+
+
+/*
+** FANCY LISTS
+------------------------------*/
+
+ol.fancy {
+	list-style-type: none;
+	padding: 0;
+	display: flex;
+	flex-flow: column;
+	gap: 0.75rem;
+	margin: 2rem 0;
+}
+
+ol.fancy li::marker {
+}
+
+ol.fancy li {
+	counter-increment: fancy-ol;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: start;
+	gap: 0.5rem;
+}
+
+ol.fancy li::before {
+	content: counter(fancy-ol);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--colour-fill-accent-bold-vivid, var(--colour-fill-neutral-bold-muted));
+	border-radius: var(--border-radius-small);
+	padding: 0 0.5rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--colour-ui-reverse);
+	height: 3rem;
+	min-width: 3rem;
+}
+
+ol.fancy li .text {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	min-height: 3rem;
+	background-color: var(--colour-fill-accent-subtle-vivid, var(--colour-fill-neutral-subtle-muted));
+	border-radius: var(--border-radius-small);
+	flex-grow: 1;
+	font-size: 1.5rem;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+
+
 /*
 ** DISCLOSURES
 ------------------------------*/
@@ -1640,18 +1843,18 @@ details .contents {
 	transition: color var(--transition-linear-fast);
 }
 
-.label-container:is([data-style="shading"], [data-style="outline"], [data-style="shading-and-outline"]) {
+.label-container:is([data-style="solid"], [data-style="outline"], [data-style="shading-and-outline"]) {
 	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	height: 1.75rem;
 	padding: 0 0.5rem;
 	border-radius: var(--label-border-radius, var(--border-radius-small));
 }
 
-.label-container[data-style="shading"] {
+.label-container[data-style="solid"] {
 	background-color: var(--colour-fill-accent-subtle-vivid, var(--colour-fill-neutral-subtle-muted));
 }
 
-.callout[data-style="shading"] .label-container[data-style="shading"] {
+.callout[data-style="solid"] .label-container[data-style="solid"] {
 	background-color: var(--colour-background);
 }
 

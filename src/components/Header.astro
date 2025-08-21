@@ -4,46 +4,126 @@ import IconSearch from "./icons/IconSearch_24.astro";
 import IconLight from "./icons/IconLight_24.astro";
 import IconDark from "./icons/IconDark_24.astro";
 import SearchDialog from "./SearchDialog.astro";
+import IconInfo20 from "./icons/IconInfo_20.astro";
+import IconEdit20 from "./icons/IconEdit_20.astro";
+import IconSearch20 from "./icons/IconSearch_20.astro";
+import IconHistory20 from "./icons/IconHistory_20.astro";
 
 const { url } = Astro;
 let path = url.pathname;
 
 ---
 
-<header>
+<header data-theme="red">
 
-	<nav class="global">
-		<ul class="menu">
-            <li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
-            <li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
-            <li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
-        </ul>
-	</nav>
-
-	<div class="global-controls">
-		<button 
-			class="open-dialog"
-			data-dialog="search-dialog"
-			type="button"
-			aria-label="Open Search Dialog"
-		>
-			<div class="icon-and-label-container">
-				<IconSearch />
-				<span class="label-container">
-					<span class="label">Search</span>
-				</span>
-			</div>
-		</button>
-        <button class="theme-toggle" type="button" aria-label="Toggle Theme">
-			<div class="icon-and-label-container">
-				<IconLight />
-				<IconDark hidden={true}/>
-				<span class="label-container" hidden>
-					<span class="label">Change Theme</span>
-				</span>
-			</div>
-        </button>
+	<div class="site-masthead">
+		<nav class="global">
+			<ul class="menu">
+					<li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
+					<li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
+					<li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
+				</ul>
+		</nav>
+		<div class="global-controls">
+			<button
+				class="open-dialog"
+				data-dialog="search-dialog"
+				type="button"
+				aria-label="Open Search Dialog"
+			>
+				<div class="icon-and-label-container">
+					<IconSearch />
+					<span class="label-container">
+						<span class="label">Search</span>
+					</span>
+				</div>
+			</button>
+				<button class="theme-toggle" type="button" aria-label="Toggle Theme">
+				<div class="icon-and-label-container">
+					<IconLight />
+					<IconDark hidden={true}/>
+					<span class="label-container" hidden>
+						<span class="label">Change Theme</span>
+					</span>
+				</div>
+			</button>
+		</div>
 	</div>
+
+	<div class="background" aria-hidden="true"></div>
+
+	{path === '/' && (
+
+		<div class="site-title-container">
+			<h1 class="site-title">New Brunswick Middle Schools: A Window of Opportunity</h1>
+			<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
+		</div>
+
+		<div class="launchpad">
+
+			<div class="media-container">
+				<button class="open-dialog" data-dialog="media-resource-dialog" data-media-url="" type="button">
+					<img class="" />
+				</button>
+			</div>
+
+			<div class="quick-links-container callout" data-style="solid" data-intensity="bold">
+
+				<h2>I want to...</h2>
+				<ul>
+					<li>
+						<a href="" data-style-as="button" data-style="solid" data-size="large">
+							<div class="icon-and-label-container">
+								<IconInfo20/>
+								<span class="label-container">
+									<span class="label">Learn about the continuums</span>
+								</span>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="/big-seven" data-style-as="button" data-style="solid" data-size="large">
+							<div class="icon-and-label-container">
+								<IconEdit20/>
+								<span class="label-container">
+									<span class="label">Start an assessment</span>
+								</span>
+							</div>
+							{/* TODO: Make this dynamic, so retuning users see 'Continue my assessment' */}
+						</a>
+					</li>
+					<li>
+						<a href="/resources" data-style-as="button" data-style="solid" data-size="large">
+							<div class="icon-and-label-container">
+								<IconSearch20/>
+								<span class="label-container">
+									<span class="label">Find a resource</span>
+								</span>
+							</div>
+						</a>
+					</li>
+				</ul>
+
+				{/* TODO: Make this section conditional to having recently visited page */}
+				<h2>Last time, I was working on...</h2>
+				<ul>
+					<li>
+						<a href="" data-style-as="button" data-style="solid" data-size="large">
+							<div class="icon-and-label-container">
+								<IconHistory20/>
+								<span class="label-container">
+									<span class="label">Meaningful Learning Experiences</span>
+								</span>
+							</div>
+						</a>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+	)}
 
 </header>
 
@@ -52,16 +132,38 @@ let path = url.pathname;
 <style is:global>
 
 	header {
+		display: grid;
+		grid-template-rows: auto auto auto auto;
+		grid-template-areas: 
+		"masthead"
+		"title"
+		"launchpad"
+		"launchpad";
+		align-items: center;
+		justify-items: center;
+	}
+	
+	header .background {
+		grid-column: 1;
+		grid-row: 1 / span 3;
+		width: 100%;
+		height: 100%;
+		background: 
+			url('/patterns/pattern.svg') repeat,
+			var(--colour-fill-neutral-bold-muted);
+		background-blend-mode: screen;
+		z-index: -1;
+	}
+
+	header .site-masthead {
+		grid-area: masthead;
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
 		gap: 0.5rem;
 		height: 7rem;
 		padding: 0 3rem;
-		background: 
-			url('/patterns/pattern.svg') repeat,
-			var(--colour-fill-neutral-bold-muted);
-		background-blend-mode: screen;
+		width: 100%;
 	}
 
 	header nav.global {
@@ -132,6 +234,71 @@ let path = url.pathname;
 
 	header .global-controls .theme-toggle {
 		padding: 0 0.75rem;
+	}
+
+	header .site-title-container {
+		grid-area: title;
+		display: flex;
+		flex-flow: column;
+		justify-items: center;
+		align-items: center;
+		max-width: 680px;
+		margin: 2rem 0 5rem;
+	}
+
+	header .site-title-container .site-title {
+		color: var(--colour-ui-reverse);
+		text-align: center;
+	}
+
+	header .site-title-container .site-subtitle {
+		display: inline-block;
+		font-size: 1.75rem;
+		font-weight: 500;
+		line-height: 1;
+		color: var(--colour-ui-reverse);
+		text-align: center;
+		background-color: var(--colour-fill-accent-bold-muted);
+		border-radius: var(--border-radius-normal);
+		padding: 1rem 1.5rem;
+	}
+
+	header .launchpad {
+		grid-area: launchpad;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 3rem;
+		margin: 0 7rem;
+	}
+
+	header .launchpad .media-container {
+		min-height: 400px;
+		aspect-ratio: 3 / 2;
+		flex-shrink: 0;
+		flex-grow: 1;
+		background-color: var(--colour-fill-neutral-subtle-muted);
+		border-radius: var(--border-radius-normal);
+	}
+
+	header .launchpad .quick-links-container {
+		flex-shrink: 1;
+	}
+
+	header .launchpad .quick-links-container h2 {
+		font-size: 1.75rem;
+		font-weight: 500;
+		line-height: 1;
+		color: var(--colour-ui-reverse);
+	}
+
+	header .launchpad .quick-links-container ul {
+		list-style-type: none;
+		padding: 0;
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 1rem;
 	}
 
 
