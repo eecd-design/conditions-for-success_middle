@@ -122,7 +122,7 @@ developing:
         Formative assessment and feedback loops guide instruction and learning
         (e.g., learners use self-assessment checklists and peer review
         strategies to refine their writing and questioning skills).
-      compass: false
+      compass: true
       categories: []
 sustaining:
   considerations:
