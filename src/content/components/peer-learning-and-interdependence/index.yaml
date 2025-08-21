@@ -1,0 +1,55 @@
+indicator: meaningful-learning-experiences
+tag: '7.5'
+title: Peer Learning and Interdependence
+initiating:
+  considerations:
+    - tag: 7.5.1
+      description: >-
+        Educators facilitate occasional group work or partner activities focused
+        on simple collaboration, like sharing ideas (e.g., think-pair-share) or
+        solving a problem together.
+      compass: false
+      categories: []
+implementing:
+  considerations:
+    - tag: 7.5.2
+      description: >-
+        Learners regularly engage in cooperative learning tasks, such as peer
+        teaching or collaborative projects, to develop interdependence.
+      compass: false
+      categories: []
+    - tag: 7.5.3
+      description: >-
+        Educators use strategies like peer feedback to encourage mutual
+        learning.
+      compass: false
+      categories: []
+developing:
+  considerations:
+    - tag: 7.5.4
+      description: >-
+        Learners work in teams on complex projects that require them to rely on
+        each other’s strengths, with educator support for group dynamics and
+        conflict resolution.
+      compass: false
+      categories: []
+    - tag: 7.5.5
+      description: >-
+        Reflection on team projects includes identifying how peers contributed
+        to individual learning.
+      compass: false
+      categories: []
+sustaining:
+  considerations:
+    - tag: 7.5.6
+      description: >-
+        Peer learning is an integral part of daily instruction, with learners
+        leading collaborative efforts and teaching each other.
+      compass: false
+      categories: []
+    - tag: 7.5.7
+      description: >-
+        Learners consistently articulate what they have learned from their peers
+        and how it enhances their understanding.
+      compass: false
+      categories: []

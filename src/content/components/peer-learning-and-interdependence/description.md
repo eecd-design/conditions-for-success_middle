@@ -1,0 +1,1 @@
+**Learner interdependence** is a learning dynamic in which learners rely on one another to achieve shared goals, solve problems, or complete tasks. Collaboration, mutual support, and shared responsibility are emphasized, which fosters a sense of connection and teamwork.
