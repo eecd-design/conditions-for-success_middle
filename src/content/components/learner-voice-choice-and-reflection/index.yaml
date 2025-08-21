@@ -1,0 +1,58 @@
+indicator: meaningful-learning-experiences
+tag: '7.1'
+title: Learner Voice, Choice, and Reflection
+initiating:
+  considerations:
+    - tag: 7.1.1
+      description: >-
+        Educators occasionally survey learners on learning preferences or ask
+        for informal feedback on classroom activities.
+      compass: false
+      categories: []
+    - tag: 7.1.2
+      description: >-
+        Choice is limited to small tasks, such as selecting a book or choosing a
+        project topic.
+      compass: false
+      categories: []
+implementing:
+  considerations:
+    - tag: 7.1.3
+      description: >-
+        Learners choose from a range of learning tasks, such as independent
+        research topics or project formats, and provide feedback on classroom
+        experiences.
+      compass: false
+      categories: []
+    - tag: 7.1.4
+      description: >-
+        Reflection includes identifying personal learning goals and areas for
+        growth.
+      compass: false
+      categories: []
+developing:
+  considerations:
+    - tag: 7.1.5
+      description: >-
+        Learners co-create learning experiences, such as developing projects
+        aligned with their interests or proposing new learning activities.
+      compass: false
+      categories: []
+    - tag: 7.1.6
+      description: Learner feedback is regularly collected and used to improve instruction.
+      compass: true
+      categories: []
+sustaining:
+  considerations:
+    - tag: 7.1.7
+      description: >-
+        Learners consistently make meaningful choices about their learning and
+        reflect deeply on their progress, strengths, and areas for improvement.
+      compass: false
+      categories: []
+    - tag: 7.1.8
+      description: >-
+        Learner input drives curriculum adjustments, and learners see their
+        suggestions implemented.
+      compass: false
+      categories: []
