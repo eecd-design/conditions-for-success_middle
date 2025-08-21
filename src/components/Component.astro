@@ -139,7 +139,7 @@ let phases = [
 	
 	{ question && question.rawContent().trim().length > 0 && (
 	
-		<div class="reflection-question callout" data-style="outline" data-on-path-elem="heading">
+		<div class="reflection-question callout" data-style="outline" data-elem-on-path="heading">
 			<h3 class="heading">Reflection Question</h3>
 			<question.Content />
 		</div>
@@ -405,7 +405,14 @@ let phases = [
 	** REFLECTION QUESTION
 	------------------------------*/
 
-	.reflection-question {
+	.reflection-question.callout {
+		width: 100%;
+	}
+
+	.reflection-question.callout p {
+		font-size: 1.25rem;
+		font-weight: 600;
+		line-height: 1.5;
 		width: 100%;
 	}
 	

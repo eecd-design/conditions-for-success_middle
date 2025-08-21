@@ -250,7 +250,7 @@ let schoolList = {
 
 	<div
 		class="callout"
-		data-style="shading"
+		data-style="solid"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
@@ -420,7 +420,7 @@ let schoolList = {
 				class="create-assessment"
 				type="button"
 				data-size="large"
-				data-style="bold">Create and Start Editing</button
+				data-style="solid">Create and Start Editing</button
 			>
 		</div>
 	</form>
@@ -449,7 +449,7 @@ let schoolList = {
 
 	<div
 		class="callout"
-		data-style="shading"
+		data-style="solid"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
@@ -482,7 +482,7 @@ let schoolList = {
 				class="update-assessor"
 				type="button"
 				data-size="large"
-				data-style="bold">Save</button
+				data-style="solid">Save</button
 			>
 		</div>
 	</form>
@@ -519,7 +519,7 @@ let schoolList = {
 			class="update-assessor"
 			type="button"
 			data-size="large"
-			data-style="bold">Save</button
+			data-style="solid">Save</button
 		>
 	</form>
 </dialog>
@@ -540,12 +540,12 @@ let schoolList = {
 
 	<div
 		class="callout"
-		data-style="shading"
+		data-style="solid"
 		data-vibrancy="vivid"
 		data-fit="compact"
 	>
 		<div class="label-group">
-			<div class="edit-status label-container field-container" data-style="shading">
+			<div class="edit-status label-container field-container" data-style="solid">
 				<span class="label" data-field="status"></span>
 			</div>
 			<div class="export-status label-container" hidden>
@@ -599,7 +599,7 @@ let schoolList = {
 		data-dialog="update-assessment-dialog"
 		type="button"
 		data-size="large"
-		data-style="bold">Update Information</button
+		data-style="solid">Update Information</button
 	>
 </dialog>
 
@@ -791,7 +791,7 @@ let schoolList = {
 				class="update-assessment"
 				type="button"
 				data-size="large"
-				data-style="bold">Save</button
+				data-style="solid">Save</button
 			>
 		</div>
 	</form>
@@ -816,14 +816,14 @@ let schoolList = {
 				class="import-file"
 				type="button"
 				data-size="large"
-				data-style="bold"
+				data-style="solid"
 				disabled>Upload .csv</button
 			>
 			<button
 				id="import-url"
 				type="button"
 				data-size="large"
-				data-style="bold"
+				data-style="solid"
 				disabled>Paste URL</button
 			>
 		</div>
@@ -831,7 +831,8 @@ let schoolList = {
 
 	<section>
 		<h3>Saved Assessments</h3>
-		<ul class="saved-assessments card-group"></ul>
+		<ul class="saved-assessments elem-group" data-fit="compact" data-columns="2"></ul>
+		<!-- TODO: Check styles due to changes from card-group to elem-group -->
 	</section>
 </dialog>
 
@@ -849,7 +850,7 @@ let schoolList = {
 
 	<div
 		class="callout"
-		data-style="shading"
+		data-style="solid"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
@@ -882,7 +883,7 @@ let schoolList = {
 			data-dialog="select-assessor-dialog"
 			type="button"
 			data-size="large"
-			data-style="bold">Edit Assessment</button
+			data-style="solid">Edit Assessment</button
 		>
 	</div>
 </dialog>
@@ -903,7 +904,7 @@ let schoolList = {
 
 	<div
 		class="callout"
-		data-style="shading"
+		data-style="solid"
 		data-vibrancy="vivid"
 		data-fit="compact"
 		data-theme="yellow"
@@ -936,7 +937,7 @@ let schoolList = {
 			data-dialog="export-assessment-dialog"
 			type="button"
 			data-size="large"
-			data-style="bold">Export Changes</button
+			data-style="solid">Export Changes</button
 		>
 	</div>
 </dialog>
@@ -987,7 +988,7 @@ let schoolList = {
 				class="update-assessment"
 				type="button"
 				data-size="large"
-				data-style="bold">Save</button
+				data-style="solid">Save</button
 			>
 		</form>
 	</section>
@@ -1020,7 +1021,7 @@ let schoolList = {
 		<h3>Export File</h3>
 		<div
 			class="callout"
-			data-style="shading"
+			data-style="solid"
 			data-vibrancy="vivid"
 			data-fit="compact"
 			data-theme="yellow"
@@ -1038,7 +1039,7 @@ let schoolList = {
 		</div>
 		<button
 			class="download-file export-assessment"
-			data-style="bold"
+			data-style="solid"
 			type="button"
 			data-size="large"
 			disabled>Download .csv</button
@@ -1218,7 +1219,7 @@ let schoolList = {
 					</h4>
 					<div class="details">
 						<span class="label-group">
-							<div class="edit-status label-container field-container" data-theme="${getStatusColour(assessment)}" data-style="shading">
+							<div class="edit-status label-container field-container" data-theme="${getStatusColour(assessment)}" data-style="solid">
 								<span class="label">${status}</span>
 							</div>
 							${unexportedChanges ? `
