@@ -5,6 +5,8 @@ description: >-
   student profiles that guide teaching and assessment practices.
 type: video
 topics: []
+external:
+  discriminant: false
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

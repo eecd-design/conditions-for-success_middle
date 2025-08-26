@@ -81,9 +81,12 @@ const resources = defineCollection({
 		description: z.string(),
 		type: z.string(),
 		topics: z.array(z.string()),
-		external: z.optional(z.object({
-			url: z.string()
-		})),
+		external: z.object({
+			discriminant: z.boolean(),
+			value: z.optional(z.object({
+				url: z.string(),
+			}))
+		}),
 		source: z.optional(z.object({
 			filePath: z.optional(z.string()),
 			url: z.optional(z.string()),

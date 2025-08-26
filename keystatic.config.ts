@@ -387,7 +387,8 @@ export default config({
 				}),
 				external: fields.conditional(
 					fields.checkbox({ 
-						label: 'Is the resource hosted on an external website?', 
+						label: 'External Resource', 
+						description: 'Is the resource hosted on an external website?', 
 						defaultValue: false 
 					}),
 					{
