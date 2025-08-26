@@ -355,6 +355,17 @@ export default config({
 					label: 'Date Added',
 					defaultValue: { kind: "today" },
 				}),
+				description: fields.text({
+					label: 'Description',
+					multiline: true,
+					// TODO: Create new resource link layout with description included
+					// TODO: Mull whether the description should be part of resource page search? YES
+					// validation: {
+					// 	length: {
+					// 		max: 150,
+					// 	}
+					// }
+				}),
 				type: fields.select({
 					label: 'Type',
 					description: 'Type categorizes the resource for filtering on the resource page and determines the icon shown in its hyperlink.',

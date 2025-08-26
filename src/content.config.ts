@@ -78,6 +78,7 @@ const resources = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		dateAdded: z.date(),
+		description: z.string(),
 		type: z.string(),
 		topics: z.array(z.string()),
 		source: z.object({
