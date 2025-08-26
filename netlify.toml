@@ -1,5 +1,0 @@
-# netlify.toml
-
-[build.environment]
-  # Trailing slash behavior: always | never | ignore
-  NETLIFY_TRAILING_SLASH = "never"

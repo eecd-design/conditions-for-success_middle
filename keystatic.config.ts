@@ -385,21 +385,21 @@ export default config({
 						{ label: 'Test', value: 'test' }
 					],
 				}),
-				source: fields.object({
-					filePath: fields.pathReference({
-						label: 'Internal Resource',
-						description: `If the resource is hosted internally, search and select the correct path to the file in the website's /resources folder. Ensure the resource is uploaded to the website prior to completing this tagging entry.`,
-						pattern: 'public/resources/**/*',
+				external: fields.conditional(
+					fields.checkbox({ 
+						label: 'Is the resource hosted on an external website?', 
+						defaultValue: false 
 					}),
-					url: fields.url({
-						label: 'External Resource',
-						description: 'If the resource is hosted externally, provide a valid URL.',
-					})
-				},
-				{
-					label: 'Resource Location',
-					description: ''
-				}),
+					{
+						true: fields.object({
+							url: fields.url({ 
+								label: 'Resource URL',
+								description: 'Provide a valid url to the resource.', 
+							}),
+						}),
+						false: fields.empty(),
+					}
+				),
 				linkedIndicators: fields.array(
 					fields.text({
 						label: 'Indicator',

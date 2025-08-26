@@ -81,10 +81,13 @@ const resources = defineCollection({
 		description: z.string(),
 		type: z.string(),
 		topics: z.array(z.string()),
-		source: z.object({
+		external: z.optional(z.object({
+			url: z.string()
+		})),
+		source: z.optional(z.object({
 			filePath: z.optional(z.string()),
 			url: z.optional(z.string()),
-		}),
+		})),
 		linkedIndicators: z.array(z.string()),
 		linkedComponents: z.array(z.string()),
 		linkedConsiderations: z.array(z.string()),
