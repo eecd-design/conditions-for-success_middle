@@ -3,8 +3,6 @@ dateAdded: 2025-03-17
 description: ''
 type: document
 topics: []
-source:
-  filePath: public/resources/documents/doc_01.pdf
 linkedIndicators:
   - '1'
 linkedComponents: []

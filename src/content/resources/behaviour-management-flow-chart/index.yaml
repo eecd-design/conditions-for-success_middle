@@ -3,8 +3,6 @@ dateAdded: 2025-02-22
 description: ''
 type: presentation
 topics: []
-source:
-  filePath: public/resources/presentations/presentation_01.pdf
 linkedIndicators: []
 linkedComponents:
   - '1.1'

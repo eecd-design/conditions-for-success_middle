@@ -4,8 +4,6 @@ description: ''
 type: website
 topics:
   - test
-source:
-  url: www.wikipedia.com
 linkedIndicators:
   - '2'
 linkedComponents: []
