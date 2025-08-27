@@ -12,6 +12,7 @@ import IconCheckmark from "./icons/IconCheckmark_12.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
 import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
+import { getResourcePath } from "src/utilities/helpers";
 
 const { entry } = Astro.props;
 
@@ -120,7 +121,7 @@ let phases = [
 
 ---
 
-<section data-component-tag={entry.data.tag}>
+<section class="component" data-component-tag={entry.data.tag}>
 
 	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment">Initiating</p>
 
@@ -176,12 +177,10 @@ let phases = [
 					return false;
 				})
 			}
-
-			console.log(considerations);
 	
 			return (
 	
-				<Accordion title={phase.title} id={`component-${entry.data.tag.replaceAll('.', '-')}_${phase.title.toLowerCase()}`} dataset={[{key: 'phase', value: phase.key}]} crossIconSize="medium">
+				<Accordion title={phase.title} id={`component-${entry.data.tag.replaceAll('.', '-')}_${phase.title.toLowerCase()}`} dataset={[{key: 'phase', value: phase.key}]} crossIconSize={'medium'} wrapper={false}>
 	
 					<PhaseIcons phase={phase.key} slot="button-icon"/>
 	
@@ -259,11 +258,12 @@ let phases = [
 																		{
 																			consideration.resources.map((resource) => {
 																				let { data } = resource;
-																				let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+																				let { title, type, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+																				let path = getResourcePath(resource);
 																				return (
 																					<li data-title={title.toLowerCase()}
 																						data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-																						<a href={source.filePath ? source.filePath : source.url}
+																						<a href={path}
 																						>
 																							<ResourceIcons type={type} classes={['type']} />
 																							<span class="text-container">
@@ -299,78 +299,6 @@ let phases = [
 	
 							)
 						}
-	
-						{/* {
-							resources && (
-	
-								<form class="resources" id={`${entry.id}_${phase.key}-resources`}>
-	
-									<div class="list-header">
-										<h4 class="heading">Resources</h4>
-	
-										{ considerations && considerationsCount > 0 && (
-	
-											<fieldset class="filters" aria-labelledby={`${entry.id}_${phase.key}-resources_legend`}>
-												<div id={`${entry.id}_${phase.key}-resources_legend`} class="label">
-													<IconFilter />
-													<span>Filters:</span>
-												</div>
-												<div class="button-group">
-													<input type="reset" data-style-as="button" data-size="small" value="Clear All"/>
-													{
-														considerations.map((consideration) => (
-															<label data-style-as="button" data-size="small">
-																{consideration.tag}
-																<input type="checkbox" name="considerations" value={consideration.tag}/>
-															</label>
-														))
-													}
-												</div>
-											</fieldset>
-	
-										)}
-									</div>
-	
-									<ul class="filter-list link-list" data-style="divided">
-	
-										{
-											resources.map((resource) => {
-	
-												let { data } = resource;
-												let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
-
-												return (
-
-													<li data-title={title.toLowerCase()}
-														data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-														<a href={source.filePath ? source.filePath : source.url} 
-														>
-															<ResourceIcons type={type} classes={['type']} />
-															<span class="text-container">
-																<span class="text">{title}</span>
-															</span>
-															<span class="icon-container">
-																{type === 'document'
-																	|| type === 'presentation'
-																	? <IconDownload classes={['destination']}/> : ''}
-																{type === 'audio'
-																	|| type === 'video'
-																	|| type === 'website'
-																	? <IconExternal classes={['destination']}/> : ''}
-															</span>
-														</a>
-													</li>
-
-												)
-	
-											}
-										)}
-	
-									</ul>
-	
-								</form>
-							)
-						} */}
 	
 					</div>
 	
@@ -587,64 +515,9 @@ let phases = [
 	** RESOURCES
 	------------------------------*/
 
-	/* .resources {
-		padding: 1.25rem;
-		gap: 1rem;
+	.considerations-list .resources {
+		margin: 0.75rem 0 0;
 	}
-
-	.resources .list-header {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1.5rem;
-		margin: 0;
-	}
-
-	.resources .list-header .heading {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 1.5rem;
-		flex-grow: 1;
-		margin: 0;
-		font-size: 1rem;
-		text-transform: uppercase;
-	}
-
-	.resources .list-header .heading::after {
-		content: "";
-		display: inline-block;
-		height: 2px;
-		width: 100%;
-		background-color: var(--colour-border-neutral-subtle-muted);
-	}
-
-	.resources .list-header .filters {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
-	.resources .list-header .filters .label {
-		--icon-colour: var(--colour-ui-neutral-subtle);
-		--icon-size: 1rem;
-		display: flex;
-		flex-flow: row wrap;
-		align-items: center;
-		gap: 0.25rem;
-		font-size: 0.875rem;
-		font-weight: 700;
-	}
-
-	.resources .list-header .filters .button-group {
-		--group-gap: 0.5rem;
-	}
-
-	.resources .link-list {
-		margin: 0;
-	} */
 
 
 </style>
