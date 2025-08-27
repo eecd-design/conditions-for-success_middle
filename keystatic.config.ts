@@ -338,12 +338,12 @@ export default config({
 			schema: {
 				title: fields.slug({
 					name: {
-						label: 'Name',
-						description: 'The resource name as it should appear in hyperlinks throughout the website.',
+						label: 'Resource Title',
+						description: 'Enter the title as it should appear on the website and in links.',
 					},
 					slug: {
-						label: 'Slug',
-						description: `This slug defines the folder name for this entry, it must follow the format: [resource-name]. Abbreviate the resource name as necessary. Example: behaviour-management-pink-envelope`,
+						label: 'Resource Filename',
+						description: `Use a short, lowercase, hyphen-separated name (e.g., behaviour-management-pink-envelope). Max 50 characters.`,
 						validation: {
 							length: {
 								max: 50,
@@ -353,22 +353,12 @@ export default config({
 				}),
 				dateAdded: fields.date({
 					label: 'Date Added',
+					description: 'Defaults to today’s date.',
 					defaultValue: { kind: "today" },
 				}),
-				description: fields.text({
-					label: 'Description',
-					multiline: true,
-					// TODO: Create new resource link layout with description included
-					// TODO: Mull whether the description should be part of resource page search? YES
-					// validation: {
-					// 	length: {
-					// 		max: 150,
-					// 	}
-					// }
-				}),
 				type: fields.select({
-					label: 'Type',
-					description: 'Type categorizes the resource for filtering on the resource page and determines the icon shown in its hyperlink.',
+					label: 'Resource Type',
+					description: 'Determines the icon shown in links and allows filtering on the resource page.',
 					options: [
 						{ label: 'Video', value: 'video' },
 						{ label: 'Document', value: 'document' },
@@ -378,9 +368,14 @@ export default config({
 					],
 					defaultValue: 'video',
 				}),
+				description: fields.text({
+					label: 'Resource Description',
+					description: 'Optional short summary or details about the resource.',
+					multiline: true,
+				}),
 				topics: fields.multiselect({
 					label: 'Topics',
-					description: 'Topics categorize the resource for filtering on the resource page.',
+					description: 'Select topics to categorize the resource for filtering.',
 					options: [
 						{ label: 'Test', value: 'test' }
 					],
@@ -388,28 +383,33 @@ export default config({
 				external: fields.conditional(
 					fields.checkbox({ 
 						label: 'External Resource', 
-						description: 'Is the resource hosted on an external website?', 
+						description: 'Check if this resource is hosted on an external website.', 
 						defaultValue: false 
 					}),
 					{
 						true: fields.object({
 							url: fields.url({ 
-								label: 'Resource URL',
-								description: 'Provide a valid url to the resource.', 
+								label: 'External URL',
+								description: 'Provide a full, valid URL to the resource.', 
 							}),
 						}),
-						false: fields.empty(),
+						false: fields.object({
+							fileType: fields.text({
+								label: 'File Type',
+								description: "Specify only if different from default: video (.mp4), document (.pdf), presentation (.pdf), audio (.mp3).",
+							}),
+						}),
 					}
 				),
 				linkedIndicators: fields.array(
 					fields.text({
-						label: 'Indicator',
-						description: 'This resource will be included in every component and phase of the linked indicator. Input the indicator tag, following the format: [#]. Example: 1',
+						label: 'Indicator Tag',
+						description: 'Use [#] format (e.g., 1). This adds the resource to all components and considerations of the indicator.',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d$/,
-								message: 'Tag must follow the format: [#]. Example: 1'
+								message: 'Must match [#] format (e.g., 1)'
 							},
 							length: {
 								min: 1,
@@ -418,18 +418,18 @@ export default config({
 						}
 					}), {
 						label: 'Linked Indicators',
-						itemLabel: props => props.value ?? 'Input an indicator tag',
+						itemLabel: props => props.value ?? 'Add indicator tag',
 					}
 				),
 				linkedComponents: fields.array(
 					fields.text({
-						label: 'Component',
-						description: 'This resource will be included in every phase of the linked component. Input the component tag, following the format: [#.#]. Example: 1.1',
+						label: 'Component Tag',
+						description: 'Use [#.#] format (e.g., 1.1). This adds the resource to all considerations of the component.',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d\.\d$/,
-								message: 'Tag must follow the format: [#.#]. Example: 1.1'
+								message: 'Must match [#.#] format (e.g., 1.1)'
 							},
 							length: {
 								min: 3,
@@ -438,18 +438,18 @@ export default config({
 						}
 					}), {
 						label: 'Linked Components',
-						itemLabel: props => props.value ?? 'Input a component tag',
+						itemLabel: props => props.value ?? 'Add component tag',
 					}
 				),
 				linkedConsiderations: fields.array(
 					fields.text({
-						label: 'Consideration',
-						description: 'This resource will be included in the parent phase of the linked consideration. Input the consideration tag, following the format: [#.#.#]. Example: 1.1.1',
+						label: 'Consideration Tag',
+						description: 'Use [#.#.#] format (e.g., 1.1.1). This adds the resource to the consideration.',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d\.\d\.\d{1,2}$/,
-								message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
+								message: 'Must match [#.#.#] format (e.g., 1.1.1)'
 							},
 							length: {
 								min: 5,
@@ -458,7 +458,7 @@ export default config({
 						}
 					}), {
 						label: 'Linked Considerations',
-						itemLabel: props => props.value ?? 'Input a consideration tag',
+						itemLabel: props => props.value ?? 'Add consideration tag',
 					}
 				),
 			}

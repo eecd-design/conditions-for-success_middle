@@ -74,7 +74,8 @@ const resources = defineCollection({
 		external: z.object({
 			discriminant: z.boolean(),
 			value: z.optional(z.object({
-				url: z.string(),
+				url: z.optional(z.string()),
+				fileType: z.optional(z.string()),
 			}))
 		}),
 		linkedIndicators: z.array(z.string()),
