@@ -72,6 +72,54 @@ let formatDateHTML = (timestamp) => {
 		.join("");
 };
 
+let getResourcePath = (resource) => {
+
+	let { id, data } = resource;
+	let { type, external } = data;
+
+	if (!id || !data || !type || !external) return null;
+	
+	if (external.discriminant === true) {
+
+		return external.value.url;
+
+	} else if (external.discriminant === false) {
+
+		let path;
+		let fileType = external.value.fileType ?? null;
+		
+		if (fileType) {
+
+			fileType.replaceAll('.', '').trim();
+
+		} else {
+
+			switch (type) {
+				case 'video':
+					fileType = 'mp4';
+					break;
+				case 'audio':
+					fileType = 'mp3';
+					break;
+				case 'document':
+					fileType = 'pdf';
+					break;
+				case 'presentation':
+					fileType = 'pdf';
+					break;
+				default:
+			}
+
+		} 
+			
+		path = `/assets/${type}/${id}.${fileType}`; 
+		return path;
+
+	} else {
+		return null;
+	}
+}
+
 /**
  * Returns the human-readable time difference between two date strings or timestamps.
  * @param {string|number} d1 - First date (string, ms timestamp, or Unix seconds).
@@ -266,4 +314,4 @@ let toTitleCase = function (str) {
   });
 };
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getTimeDifference, htmlToElement, isEqual, isInViewport, joinWithAnd, kebabToCamel, sanitizeHTML, scrollIntoView, stopVideo, toKebabCase, toTitleCase };
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getResourcePath, getTimeDifference, htmlToElement, isEqual, isInViewport, joinWithAnd, kebabToCamel, sanitizeHTML, scrollIntoView, stopVideo, toKebabCase, toTitleCase };
