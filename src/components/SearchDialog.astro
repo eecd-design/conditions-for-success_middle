@@ -1,12 +1,10 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 
-import { findObjectByKey, toTitleCase } from "../utilities/helpers"
+import { findObjectByKey, getResourcePath, toTitleCase } from "../utilities/helpers"
 
 import IconXmark from "./icons/IconXmark_20.astro";
 import IconWarningSmall from "./icons/IconWarning_16.astro";
-import { getAllCodes } from "node_modules/astro/dist/i18n";
-import ResourceIcons from "./icons/ResourceIcons.astro";
 import IconArrowRight from "./icons/IconArrowRight_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
@@ -22,7 +20,7 @@ for (let indicator of allIndicators) {
 		category: 'indicator',
 		tag: indicator.data.tag,
 		title: indicator.data.title,
-		url: `/big-seven/${indicator.id}`,
+		path: `/big-seven/${indicator.id}`,
 		colour: indicator.data.colour,
 	})
 }
@@ -38,7 +36,7 @@ for (let component of allComponents) {
 		category: 'component',
 		tag: component.data.tag,
 		title: component.data.title,
-		url: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}`,
+		path: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}`,
 		colour: colour,
 	})
 
@@ -47,9 +45,7 @@ for (let component of allComponents) {
 			category: 'consideration',
 			tag: consideration.tag,
 			title: consideration.description,
-			url: `/big-seven/${component.data.indicator}#consideration-${consideration.tag.replaceAll('.', '-')}`,
-			// url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}`,
-			// url: `/big-seven/${component.data.indicator}?consideration=${consideration.tag}#component-${component.data.tag.replaceAll('.', '-')}`,
+			path: `/big-seven/${component.data.indicator}#consideration-${consideration.tag.replaceAll('.', '-')}`,
 			colour: colour,
 		})
 	}
@@ -60,12 +56,18 @@ for (let component of allComponents) {
 let allResources = await getCollection("resources");
 
 for (let resource of allResources) {
+
+	let { data } = resource;
+	let { title, type, external } = data;
+
+	let path = getResourcePath(resource);
+
 	searchList.push({
 		category: 'resource',
-		type: resource.data.type,
-		title: resource.data.title,
-		url: resource.data.source.filePath ? resource.data.source.filePath.replace('public', '') : resource.data.source.url,
-		external: resource.data.source.url ? true : false,
+		type: type,
+		title: title,
+		path: path,
+		external: external.discriminant,
 	})
 }
 
@@ -130,7 +132,7 @@ for (let resource of allResources) {
 						data-theme={item.colour ?? null}
 						data-external={item.external}
 					>
-						<a href={item.url}>
+						<a href={item.path}>
 							<span class="text-container">
 								<span class="label">
 									{item.category !== 'resource' ? `${toTitleCase(item.category)} ${item.tag}` : `${toTitleCase(item.type)} Resource`}

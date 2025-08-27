@@ -11,7 +11,7 @@ import IconWarning from "src/components/icons/IconWarning_16.astro";
 import IconSearch from "src/components/icons/IconSearch_20.astro";
 import ResourceIcons from "src/components/icons/ResourceIcons.astro";
 
-import { toTitleCase } from "../../utilities/helpers";
+import { getResourcePath } from "../../utilities/helpers";
 import Accordion from "src/components/Accordion.astro";
 
 
@@ -35,7 +35,6 @@ let types = [
 	'Video',
 	'Website',
 ];
-
 
 ---
 
@@ -64,7 +63,7 @@ let types = [
 
 			<div class="separator group" aria-hidden="true"></div>
 			
-			<Accordion title={'Type'} id={'filters_type'} crossIconSize={'small'}>
+			<Accordion title={'Type'} id={'filters_type'} crossIconSize={'small'} wrapper={false}>
 
 				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
 					<span data-field="filters-types-status" >0</span>&nbsp;Selected</span>
@@ -89,7 +88,7 @@ let types = [
 
 			<div class="separator group" aria-hidden="true"></div>
 
-			<Accordion title={'Indicator'} id={'filters_indicator'} crossIconSize={'small'}>
+			<Accordion title={'Indicator'} id={'filters_indicator'} crossIconSize={'small'} wrapper={false}>
 
 				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
 					<span data-field="filters-indicators-status" >0</span>&nbsp;Selected</span>
@@ -151,13 +150,17 @@ let types = [
 
 			<ul id="resources-list" class="link-list" data-style="divided">
 				{allResources.map((resource) => {
-			
+
 					let { data } = resource;
-					let { title, type, source, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+					let { title, type, linkedIndicators, linkedComponents, linkedConsiderations } = data;
+
+					let path = getResourcePath(resource);
+
 					return (
 						<li data-title={title.toLowerCase()} data-type={type}
 							data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-							<a href={source.filePath ? source.filePath : source.url}
+								{/* TODO: Audio and Video should be button dialog open with all necessary data attrs */}
+							<a href={path}
 							>
 								<ResourceIcons type={type} classes={['type']} />
 								<span class="text-container">
