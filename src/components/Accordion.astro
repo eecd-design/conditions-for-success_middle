@@ -6,7 +6,7 @@ import IconCaretLarge from "./icons/IconCaretDown_20.astro";
 
 import { toKebabCase } from "../utilities/helpers";
 
-const { title, id, dataset, crossIconSize = 'large' } = Astro.props;
+const { title, id, dataset, crossIconSize = 'large', wrapper = true } = Astro.props;
 
 let datasetAttrs = {};
 if (dataset) {
@@ -41,7 +41,19 @@ let IconCross = crossIcons[crossIconSize];
 </h3>
 
 <div>
-	<slot />
+
+	{ wrapper ? 
+		
+		<div class="content">
+			<slot />
+		</div>
+		
+		: 
+
+		<slot />
+
+	}
+
 </div>
 
 <style is:global>
@@ -130,6 +142,10 @@ let IconCross = crossIcons[crossIconSize];
 	.accordion + * :where(p, li, a) {
 		font-size: 1rem;
 		line-height: 1.2;
+	}
+
+	.accordion + * > .content {
+		padding: 1.25rem;
 	}
 
 </style>
