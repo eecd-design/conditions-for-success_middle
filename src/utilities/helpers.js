@@ -86,7 +86,7 @@ let getResourcePath = (resource) => {
 	} else if (external.discriminant === false) {
 
 		let path;
-		let fileType = external.value.fileType ?? null;
+		let fileType = external.value?.fileType ?? null;
 		
 		if (fileType) {
 
