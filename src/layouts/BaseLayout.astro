@@ -130,59 +130,6 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 		}
 
-		// window.addEventListener('beforeunload', (event) => {
-
-		// 	// TODO: Determine whether this is desired, as it will fire on page reload, internal navigation, etc.
-		// 	let userData = getUserData();
-
-		// 	if (!userData.uiState.unsavedChanges) return;
-
-		// 	event.preventDefault();
-		// 	event.returnValue = '';
-
-		// });
-
-		// window.addEventListener('popstate', () => {
-
-		// 	let hash = window.location.hash;
-
-		// 	if (hash) {
-
-		// 		console.log('Hash Change', hash);
-		// 		console.log('Queries', window.location.search);
-
-		// 		// If link was within a dialog, close it
-		// 		let activeDialog = document.querySelector('dialog:open');
-		// 		if (activeDialog) activeDialog.close();
-
-		// 		// Capture query parameters
-		// 		let params = new URLSearchParams(window.location.search);
-
-		// 		let considerationTag = params.get('consideration');
-
-		// 		if (!considerationTag) return;
-
-		// 		console.log(considerationTag);
-
-		// 		let consideration = document.querySelector(`[value="${considerationTag}"]`);
-
-		// 		if (!consideration) return;
-
-		// 		let accordionHeading = consideration.closest('.accordion');
-		// 		let accordionBtn = accordionHeading?.querySelector('button');
-
-		// 		if (!accordionHeading || !accordionBtn) return;
-
-		// 		accordionHeading.scrollTo();
-
-		// 		if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
-
-		// 		accordionBtn.click();
-
-		// 	}
-
-		// });
-
 		window.addEventListener('popstate', () => {
   			let hash = window.location.hash;
 			if (!hash) return;
