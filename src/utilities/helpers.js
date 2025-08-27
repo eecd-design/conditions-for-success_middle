@@ -86,11 +86,31 @@ let getResourcePath = (resource) => {
 	} else if (external.discriminant === false) {
 
 		let path;
+
+		let subfolder;
+		switch (type) {
+			case 'video':
+				subfolder = 'media';
+				break;
+			case 'audio':
+				subfolder = 'media';
+				break;
+			case 'document':
+				subfolder = 'files';
+				break;
+			case 'presentation':
+				subfolder = 'files';
+				break;
+			default:
+				subfolder = 'files';
+		}
+
 		let fileType = external.value?.fileType ?? null;
 		
 		if (fileType) {
 
-			fileType.replaceAll('.', '').trim();
+			console.log(fileType);
+			fileType = fileType.replaceAll('.', '').trim();
 
 		} else {
 
@@ -112,7 +132,7 @@ let getResourcePath = (resource) => {
 
 		} 
 			
-		path = `/assets/${type}/${id}.${fileType}`; 
+		path = `/assets/${subfolder}/${id}.${fileType}`; 
 		return path;
 
 	} else {
