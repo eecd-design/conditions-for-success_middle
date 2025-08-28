@@ -8,6 +8,7 @@ import IconInfo20 from "./icons/IconInfo_20.astro";
 import IconEdit20 from "./icons/IconEdit_20.astro";
 import IconSearch20 from "./icons/IconSearch_20.astro";
 import IconHistory20 from "./icons/IconHistory_20.astro";
+import MediaDialog from "./MediaDialog.astro";
 
 const { url } = Astro;
 let path = url.pathname;
@@ -62,10 +63,18 @@ let path = url.pathname;
 		<div class="launchpad">
 
 			<div class="media-container">
-				<button class="open-dialog" data-dialog="media-resource-dialog" data-media-url="" type="button">
-					<img class="" />
+				<button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="https://pedex.nbed.nb.ca/DesignTeam/middle/conditions-for-success/assets/media/building-student-profiles-with-a-data-wall.mp4" data-media-storage-location="internal" type="button">
+					Internal Video
+				</button>
+				<button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="https://www.youtube.com/watch?v=hmtuvNfytjM" data-media-storage-location="external" type="button">
+					External Video
+				</button>
+				<button class="open-dialog" data-dialog="media-dialog" data-media-type="audio" data-media-src="https://pedex.nbed.nb.ca/DesignTeam/middle/conditions-for-success/assets/media/building-student-profiles-with-a-data-wall.mp4" type="button">
+					Audio
 				</button>
 			</div>
+
+			<MediaDialog/>
 
 			<div class="quick-links-container callout" data-style="solid" data-intensity="bold">
 
@@ -150,7 +159,7 @@ let path = url.pathname;
 		height: 100%;
 		background: 
 			url('/patterns/pattern.svg') repeat,
-			var(--colour-fill-neutral-bold-muted);
+			var(--colour-fill-neutral-bold);
 		background-blend-mode: screen;
 		z-index: -1;
 	}
@@ -205,12 +214,12 @@ let path = url.pathname;
 
 	header nav.global .menu :not(.home) a:is(:hover, :focus-visible),
 	header .global-controls button:is(:hover, :focus-visible) {
-		background-color: var(--colour-fill-neutral-subtle-muted);
+		background-color: var(--colour-fill-neutral-subtle);
 		color: var(--colour-ui-neutral);
 	}
 	
 	header nav.global .menu :not(.home) a.active {
-		outline: 2px solid var(--colour-border-neutral-subtle-muted);
+		outline: 2px solid var(--colour-border-neutral-subtle);
 		outline-offset: -1px;
 		pointer-events: none;
 	}
@@ -258,7 +267,7 @@ let path = url.pathname;
 		line-height: 1;
 		color: var(--colour-ui-reverse);
 		text-align: center;
-		background-color: var(--colour-fill-accent-bold-muted);
+		background-color: var(--colour-fill-accent-bold);
 		border-radius: var(--border-radius-normal);
 		padding: 1rem 1.5rem;
 	}
@@ -277,11 +286,12 @@ let path = url.pathname;
 		aspect-ratio: 3 / 2;
 		flex-shrink: 0;
 		flex-grow: 1;
-		background-color: var(--colour-fill-neutral-subtle-muted);
+		background-color: var(--colour-fill-neutral-subtle);
 		border-radius: var(--border-radius-normal);
 	}
 
 	header .launchpad .quick-links-container {
+		--callout-margin: 0;
 		flex-shrink: 1;
 	}
 
