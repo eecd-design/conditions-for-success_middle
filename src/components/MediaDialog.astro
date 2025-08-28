@@ -1,0 +1,167 @@
+---
+import Accordion from "./Accordion.astro";
+import IconXmark from "./icons/IconXmark_20.astro";
+
+---
+
+<dialog
+	id="media-dialog"
+	class="media"
+	aria-labelledby="media-dialog_heading"
+>
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Media Dialog"><IconXmark /></button
+	>
+
+	<h2 id="media-dialog_heading" class="heading">
+		Media Resource
+	</h2>
+
+	<video controls poster="" hidden>
+		<source src="">
+		<track default kind="captions" src="" srclang="en" />
+	</video>
+
+	<audio controls src="" hidden></audio>
+
+	<iframe src="" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen hidden></iframe>
+
+	<div class="transcript accordion-group" hidden>
+		<Accordion title={'Transcript'}>
+			<!-- TODO: Create a transcript icon -->
+			<p>Transcript goes here...</p>
+		</Accordion>
+	</div>
+
+</dialog>
+
+
+<script>
+
+	//
+	// Imports
+	//
+
+	import { dialogControl } from "src/utilities/dialog";
+
+	//
+	// Variables
+	//
+
+	let mediaDialog = document.querySelector(
+		"#media-dialog",
+	);
+
+	//
+	// Methods
+	//
+
+	/**
+	 * Generate an iframe element from a YouTube or Vimeo URL
+	 * @param {string} url - Full video URL (YouTube or Vimeo)
+	 * @returns {HTMLIFrameElement|null} iframe element or null if URL is invalid
+	 */
+	let convertURLToEmbedURL = function (url) {
+
+		let videoId, embedUrl;
+
+		// YouTube URLs
+		if (/youtu(\.be|be\.com)/.test(url)) {
+			let match = url.match(/(?:v=|youtu\.be\/|embed\/)([^#\&\?]+)/);
+			if (!match) return null;
+			videoId = match[1];
+			embedUrl = `https://www.youtube.com/embed/${videoId}`;
+		}
+
+		// Vimeo URLs
+		else if (/vimeo\.com/.test(url)) {
+			let match = url.match(/vimeo\.com\/(\d+)/);
+			if (!match) return null;
+			videoId = match[1];
+			embedUrl = `https://player.vimeo.com/video/${videoId}`;
+		}
+
+		else {
+			return null; // Unsupported platform
+		}
+
+		return embedUrl;
+
+	};
+
+	/**
+	 * Remove the file extension from a URL string
+	 * @param {string} url - URL with optional file extension
+	 * @returns {string} URL without the file extension
+	 */
+	let removeFileExtension = function (url) {
+		return url.replace(/\.[^.\/?#]+(?=$|[?#])/, '');
+	};
+
+
+	//
+	// Inits & Event Listeners
+	//
+
+	document.addEventListener("click", (event) => {
+
+		let target = event.target as HTMLButtonElement;
+
+		if (!mediaDialog || !target.matches(`button.open-dialog[data-dialog="media-dialog"]`)) return;
+
+		// Get the media elements
+		let video = mediaDialog.querySelector('video');
+		let captions = video?.querySelector('track');
+		let iframe = mediaDialog.querySelector('iframe');
+		let audio = mediaDialog.querySelector('audio');
+		let transcriptAccordion = mediaDialog.querySelector('.transcript');
+
+		// Reset visibility
+		video.setAttribute('hidden', '');
+		iframe.setAttribute('hidden', '');
+		audio.setAttribute('hidden', '');
+		transcriptAccordion.setAttribute('hidden', '');
+
+		// Get the media data from the button
+		let mediaType = target.getAttribute('data-media-type');
+		let mediaStorageLocation = target.getAttribute('data-media-storage-location');
+		let mediaSrc = target.getAttribute('data-media-src');
+
+		if (!mediaType && !mediaSrc) return;
+
+		// Get a path only verison of the src url
+		let mediaSrcPathOnly = removeFileExtension(mediaSrc);
+
+		if (mediaType === 'video') {
+
+			if (mediaStorageLocation === 'internal') {
+				video.setAttribute('src', mediaSrc);
+				video.setAttribute('poster', `${mediaSrcPathOnly}.png`);
+				video.removeAttribute('hidden');
+				captions.setAttribute('src', `${mediaSrcPathOnly}.vtt`);
+
+			} else if (mediaStorageLocation === 'external') {
+				iframe.setAttribute('src', convertURLToEmbedURL(mediaSrc));
+				iframe.removeAttribute('hidden');
+			}
+
+		} else if (mediaType === 'audio') {
+			audio.setAttribute('src', mediaSrc);
+			audio.removeAttribute('hidden');
+			transcriptAccordion.removeAttribute('hidden');
+			let transcriptPanel = transcriptAccordion.querySelector('.panel > .content');
+			transcriptPanel.innerHTML = '<p>Updated transcript...</p>';
+
+			// TODO: Figure out how we're going to save transcripts.
+
+		} else {
+
+			console.warn('Invalid Resource Type');
+
+		}
+
+	});
+
+</script>
