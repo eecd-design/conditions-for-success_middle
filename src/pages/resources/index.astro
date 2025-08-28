@@ -186,6 +186,8 @@ let types = [
 
 </BaseLayout>
 
+<!-- TODO: How to handle the progressive enhancement popping in of accordions? -->
+
 <style is:global>
 
 	.filters-container {
@@ -193,7 +195,7 @@ let types = [
 		margin: 0 5rem 0 0;
 		padding: 2rem 0;
 		min-width: 300px;
-		border-right: 1px solid var(--colour-border-neutral-subtle-muted);
+		border-right: 1px solid var(--colour-border-neutral-subtle);
 	}
 
 	.filters-container .heading-group {
@@ -223,7 +225,7 @@ let types = [
 	.filters-container .heading-group [data-style-as="button"]:is(:hover, :focus-visible) {
 		/* --icon-colour: var(--colour-ui-reverse); */
 		/* --label-colour: var(--colour-ui-reverse); */
-		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+		--button-background-colour: var(--colour-fill-neutral-subtle);
 	}
 
 	.filters-container form {
@@ -234,7 +236,7 @@ let types = [
 		margin: 0 0.5rem;
 	}
 
-	.filters-container .accordion button {
+	.filters-container .accordion .heading button {
 		--button-background-colour: transparent;
 		--button-border-radius: var(--border-radius-small);
 		--button-ui-colour: var(--colour-ui-neutral);
@@ -244,34 +246,35 @@ let types = [
 		padding: 0.75rem;
 	}
 
-	.filters-container .accordion button:is(:hover, :focus-visible),
-	.filters-container .accordion button[aria-expanded="true"]:is(:hover, :focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+	.filters-container .accordion .heading button:is(:hover, :focus-visible),
+	.filters-container .accordion .heading button[aria-expanded="true"]:is(:hover, :focus-visible) {
+		--button-background-colour: var(--colour-fill-neutral-subtle);
 	}
 
-	.filters-container .accordion button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+	.filters-container .accordion .heading button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
 		outline-color: transparent;
 	}
 
-	.filters-container .accordion button[aria-expanded="true"] {
+	.filters-container .accordion .heading button[aria-expanded="true"] {
 		--button-background-colour: transparent;
 		--icon-colour: unset;
 		border-radius: var(--button-border-radius);
-		/* border-bottom: 1px solid var(--colour-border-neutral-subtle-muted); */
+		/* border-bottom: 1px solid var(--colour-border-neutral-subtle); */
 	}
 
-	.filters-container .accordion button .icon-and-label-container {
+	.filters-container .accordion .heading button .icon-and-label-container {
 		--label-size: 1rem;
 		--label-weight: 600;
 	}
 
-	.filters-container .accordion button[aria-expanded="true"] .icon-and-label-container {
+	.filters-container .accordion .heading button[aria-expanded="true"] .icon-and-label-container {
 		--label-colour: unset;
 		
 	}
 
-	.filters-container .accordion + * {
+	.filters-container .accordion .panel {
 		margin: 0 0.5rem;
+		padding-top: 0.25rem;
 	}
 
 	.filters-container .separator.item {
@@ -298,7 +301,7 @@ let types = [
 	}
 
 	fieldset.filters label:is(:hover, :focus-visible) {
-		background-color: var(--colour-fill-neutral-subtle-muted);
+		background-color: var(--colour-fill-neutral-subtle);
 	}
 
 	fieldset.filters label input {
@@ -310,7 +313,7 @@ let types = [
 	}
 
 	fieldset.filters label:is(:hover, :focus-visible, :has(input[type="checkbox"]:checked))::before {
-		border-color: var(--colour-border-neutral-bold-muted);
+		border-color: var(--colour-border-neutral-bold);
 	}
 
 	fieldset.filters label::before {
@@ -366,18 +369,18 @@ let types = [
 		font-size: 0.875rem;
 		height: 2rem;
 		border-radius: var(--border-radius-normal);
-		background-color: var(--colour-fill-neutral-subtle-muted);
+		background-color: var(--colour-fill-neutral-subtle);
 		padding: 0 0 0 0.75rem;
 		transition: background-color var(--transition-linear-fast);
 	}
 
 	#active-filters-list .filter-tag:has(button.clear:is(:hover, :focus-visible)) {
-		background-color: var(--colour-fill-neutral-subtle-muted-highlight);
+		background-color: var(--colour-fill-neutral-subtle-highlight);
 	}
 
 	#active-filters-list .filter-tag .group {
 		padding-right: 0.5rem;
-		border-right: 1px solid var(--colour-border-neutral-subtle-muted);
+		border-right: 1px solid var(--colour-border-neutral-subtle);
 		font-weight: 700;
 	}
 
@@ -390,19 +393,19 @@ let types = [
 	}
 
 	#active-filters-list .filter-tag button.clear {
-		--button-background-colour: var(--colour-fill-neutral-subtle-muted);
+		--button-background-colour: var(--colour-fill-neutral-subtle);
 		--icon-size: 0.75rem;
 		--icon-colour: var(--colour-ui-neutral-subtle);
 		display: inline-flex;
 		height: 2rem;
 		min-width: 2rem;
 		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal) 0;
-		border-left: 1px solid var(--colour-border-neutral-subtle-muted);
+		border-left: 1px solid var(--colour-border-neutral-subtle);
 		border
 	}
 
 	#active-filters-list .filter-tag button.clear:is(:hover, :focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-bold-muted);
+		--button-background-colour: var(--colour-fill-neutral-bold);
 		--icon-colour: var(--colour-ui-reverse);
 		border-color: var(--button-background-colour);
 	}
