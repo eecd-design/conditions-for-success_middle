@@ -1,14 +1,408 @@
 ---
 import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionNav from "../../components/SectionNav.astro";
+import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
+import AssessmentDialogs from "../../components/AssessmentDialogs.astro";
+import Accordion from "../../components/Accordion.astro";
+import Tab from "../../components/Tab.astro";
+import PhaseIcons from "../../components/icons/PhaseIcons.astro";
+import IconArrow from "src/components/icons/IconArrowRight_16.astro";
+import { Image } from 'astro:assets';
+import phaseScreenshot from "../../images/phase-highlight-screenshot.png";
+import focusScreenshot from "../../images/focus-highlight-screenshot.png";
+import considerationScreenshot from "../../images/consideration-highlight-screenshot.png";
+import resourcesScreenshot from "../../images/consideration-resources-highlight-screenshot.png";
+import IconCheckmark from "src/components/icons/IconCheckmark_16.astro";
 
-const indicators = await getCollection('indicators');
+let allIndicators = await getCollection('indicators');
+
+// Get all indicator components
+let allComponents = await getCollection("components");
+
+// Sort components by indicator
+let components = {};
+for (let indicator of allIndicators) {
+	components[indicator.id] = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+}
 
 ---
+<BaseLayout pageTitle={'The Big Seven'}>
+	
+	<AssessmentToolbar />
 
-<ul>
-	{indicators.map(indicator => (
-		<li>
-			<a href={`/big-seven/${indicator.id}`}>{indicator.data.title}</a>
-		</li>
-	))}
-</ul>
+	<AssessmentDialogs />
+
+	<SectionNav />
+
+	<!-- TODO: Populate on page nav -->
+	<aside class="on-page-nav-container">
+		<nav class="on-page">
+			<h2 data-style-as="h3">On this page</h2>
+			<ul class="link-list">
+				<li>
+					<a href="#what-are-the-big-seven-indicators">
+						<span class="icon-container">
+							<IconArrow classes={['destination']} />
+						</span>
+						<span class="text-container">
+							<span class="text">What are “The Big Seven” indicators?</span>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="#what-are-the-four-phases-of-growth-and-success">
+						<span class="icon-container">
+							<IconArrow classes={['destination']} />
+						</span>
+						<span class="text-container">
+							<span class="text">What are the four phases of growth and success?</span>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="#when-self-assessing-how-will-schools-know-which-phase-theyre-in">
+						<span class="icon-container">
+							<IconArrow classes={['destination']} />
+						</span>
+						<span class="text-container">
+							<span class="text">When self-assessing, how will schools know which phase they're in?</span>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="#how-can-the-framework-help-with-continuous-improvement-planning">
+						<span class="icon-container">
+							<IconArrow classes={['destination']} />
+						</span>
+						<span class="text-container">
+							<span class="text">How can the framework help with continuous improvement planning?</span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</aside>
+
+	<div class="content">
+
+		<h1>The Big Seven</h1>
+		<p>Our framework enables self-assessment across seven key indicators.</p>
+
+		<hr class="section">
+
+		<section>
+			<h2 id="what-are-the-big-seven-indicators">What are “The Big Seven” indicators?</h2>
+
+			<div class="accordion-group">
+	
+				<Accordion title={'Leadership and Teaming'} dataset={[{key: 'theme', value: 'red'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">1</span>
+					<p>Focuses on cultivating a shared vision, fostering inclusive collaboration, and building strong professional communities that prioritize student-centered middle-level education through flexible, responsive scheduling.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['leadership-and-teaming'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+	
+				<Accordion title={'Access and Equity'} dataset={[{key: 'theme', value: 'orange'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">2</span>
+					<p>Focuses on ensuring inclusion and equitable access to school resources and supports through the Academic Response to Intervention, Positive Behavioral Interventions & Supports (PBIS), differentiated instruction, the Universal Design for Learning (UDL), linguistically and culturally responsive pedagogy, and acceleration-focused literacy support for all students.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['access-and-equity'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+	
+				<Accordion title={'Relationships'} dataset={[{key: 'theme', value: 'yellow'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">3</span>
+					<p>Focuses on strengthening connections that build trust, inclusion, and emotional safety for all, including: school personnel to student, school personnel to school personnel, student to student, and school to community.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['relationships'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+	
+				<Accordion title={'Empathy'} dataset={[{key: 'theme', value: 'green'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">4</span>
+					<p>Focuses on developing a culture of support through trauma-informed practices, active listening, emotional awareness, and culturally responsive approaches that support all learners.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['empathy'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+	
+				<Accordion title={'Identities'} dataset={[{key: 'theme', value: 'teal'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">5</span>
+					<p>Focuses on recognizing and integrating diverse identities into school culture through curriculum, policies, events, and professional learning, ensuring inclusion and student empowerment.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['identities'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+	
+				<Accordion title={'High-yield Instructional Practices'} dataset={[{key: 'theme', value: 'blue'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">6</span>
+					<p>Focuses on implementing evidence-based strategies such as cross-curricular and scaffolded learning opportunities to strengthen literacy, numeracy, and language learning.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['high-yield-instructional-practices'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+	
+				<Accordion title={'Meaningful Learning Experiences'} dataset={[{key: 'theme', value: 'purple'}, {key: 'vibrancy', value: 'vivid'}]}>
+					<span class="tag" slot="button-icon">7</span>
+					<p>Focuses on the design of engaging, student-centered learning through peer collaboration, interdisciplinary projects, problem-solving, experiential learning, and career-connected learning.</p>
+					<h4>Components</h4>
+					<ul class="link-list">
+						{components['meaningful-learning-experiences'].map((component) => (
+
+							<li>
+								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+									<span class="icon-container">
+										<IconArrow classes={['destination']} />
+									</span>
+									<span class="text-container">
+										<span class="text">{component.data.tag} {component.data.title}</span>
+									</span>
+								</a>
+							</li>
+
+						))}
+					</ul>
+				</Accordion>
+
+			</div>
+
+			<p>When a school self-assesses their progress within one indicator, they'll review and reflect on all its components. There's one developmental continuum for each component, and each continuum spans four phases of growth and success.</p>
+
+		</section>
+
+		<hr class="section">
+
+		<section>
+			<h2 id="what-are-the-four-phases-of-growth-and-success">What are the four phases of growth and success?</h2>
+			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
+				<IconArrow/>
+				<span style="display: flex; flex-flow: row; align-items: center; gap: 0.375rem"><PhaseIcons phase={'initiating'}/> Initiating · <PhaseIcons phase={'implementing'}/> Implementing · <PhaseIcons phase={'developing'}/> Developing · <PhaseIcons phase={'sustaining'}/> Sustaining</span>
+			</p>
+			<p>Each of the four phases—Initiating, Implementing, Developing, and Sustaining—has a discrete focus and associated considerations. The Initiating Phase of the developmental continuum for "Student Voice, Choice, and Reflection (7.1),” for example, is as follows:</p>
+
+			<div class="tab-group">
+
+				<Tab title={'Phase'}>
+
+					<Image src={phaseScreenshot} alt="" slot="media" />
+
+					<!-- TODO: Need alt text for each screenshot -->
+
+					<p>Every project begins with a phase of controlled chaos. It's the stage where ideas arrive uninvited, scribbled on napkins and the backs of envelopes, competing for attention like street performers on a busy corner.</p>
+					<p>This phase has no regard for neat timelines or polite introductions; it demands exploration, curiosity, and at least one late-night revelation fueled by coffee or stubbornness. Success here isn't measured in perfection, but in momentum—the kind that rolls downhill, gathering possibility as it goes.</p>
+
+				</Tab>
+
+				<Tab title={'Focus'}>
+
+					<Image src={focusScreenshot} alt="" slot="media" />
+
+					<p>Focus is the antidote to the first phase's noisy enthusiasm. It's the moment when you stop chasing shiny things and start sharpening tools. Here, distractions are politely escorted to the door: the side quests, the maybe-laters, the “what if we added jetpacks?” ideas. Focus loves a good list, a clear calendar, and the satisfying click of puzzle pieces falling into place. It's less about working harder and more about aiming better—like turning a lantern into a laser beam.</p>
+
+					<!-- TODO: Need alt text for each screenshot -->
+
+				</Tab>
+
+				<Tab title={'Considerations'}>
+
+					<Image src={considerationScreenshot} alt="" slot="media" />
+
+					<p>Consideration is the quiet diplomat of the process. It asks inconvenient questions like “Is this sustainable?” and “Who might we be leaving out?” when everyone else is ready to sprint ahead. This stage weighs trade-offs, balances priorities, and reads the fine print before signing anything. Consideration doesn't kill creativity; it gives it roots. Without it, great ideas risk collapsing like a house of cards at the first unexpected gust of reality.</p>
+
+					<!-- TODO: Need alt text for each screenshot -->
+
+				</Tab>
+
+				<Tab title={'Resources'}>
+
+					<Image src={resourcesScreenshot} alt="" slot="media" />
+
+					<p>Resources are the unsung heroes, often discovered only after someone panics about the budget or asks where the extension cord is. They come in many forms—time, tools, talent, coffee refills—and they decide whether a brilliant plan soars or stalls in place. A resourceful team treats every constraint like a secret challenge: Can we turn this shoestring into a bridge? Can we build a cathedral out of spare parts and leftover meeting snacks? Often, the answer is yes—if you know where to look.</p>
+
+					<!-- TODO: Need alt text for each screenshot -->
+
+				</Tab>
+
+			</div>
+
+			<!-- TODO: Tab component -->
+
+		</section>
+
+		<hr class="section">
+
+		<section>
+			<h2 id="when-self-assessing-how-will-schools-know-which-phase-theyre-in">When self-assessing, how will schools know which phase they're in?</h2>
+			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
+				<IconArrow/>
+				By considering the developmental continuum, its focus, and its considerations in detail.
+			</p>
+			<p>Use the below information about each phase as a guide.</p>
+
+			<div class="accordion-group">
+
+				<Accordion title={'Initiating'}>
+					<PhaseIcons phase={'initiating'} slot="button-icon"/>
+					<p>If a school is in the Initiating Phase, they have not yet considered the developmental continuum and its focus in detail, either because they didn't think it was important, they didn't know how to begin, or they needed to direct their time, effort, and/or resources elsewhere.</p>
+				</Accordion>
+
+				<Accordion title={'Implementing'}>
+					<PhaseIcons phase={'implementing'} slot="button-icon"/>
+					<p>If a school is in the Implementing Phase, they have a plan for how to implement and they have likely observed some examples of progress and achievement. At this point, they'll need to decide whether implementation is a priority or not, as it will take time and dedication.</p>
+				</Accordion>
+
+				<Accordion title={'Developing'}>
+					<PhaseIcons phase={'developing'} slot="button-icon"/>
+					<p>If a school is in the Developing Phase, they have some processes and procedures in place—they're part way there! Our advice for schools in this phase is: <em>Don't slow down, you're doing great!</em></p>
+				</Accordion>
+
+				<Accordion title={'Sustaining'}>
+					<PhaseIcons phase={'sustaining'} slot="button-icon"/>
+					<p>If a school is in the Sustaining Phase, <em>they've nailed it</em>! At this point, they'll need to strive to consistently maintain the processes and knowledge that are needed to preserve this practice.</p>
+				</Accordion>
+
+			</div>
+
+			<p>Check out the video below to walk through this in detail.</p>
+
+			<video></video>
+
+		</section>
+
+		<hr class="section">
+
+		<section>
+			<h2 id="how-can-the-framework-help-with-continuous-improvement-planning">How can the framework help with continuous improvement planning?</h2>
+			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
+				<IconArrow/>
+				It can deepen and extend the work already being done.
+			</p>
+			<p>The <em>Conditions for Success Developmental Continuums</em> framework is designed to deepen and extend the work already underway in schools through the <a href="">Provincial School Improvement Indicators</a>, district-based goals, and improvement planning processes. While the four provincial domains: Systemic School Planning, Leadership and Teaming, Instructional Practices, and Learning Environments, remain consistent across grades K-12, this framework offers Middle Program Block-level teams a practical, student-centered lens to support ongoing improvement and can even help schools use the <a href="">Response to Intervention (RTI) framework</a> more effectively.</p>
+			<p>Specifically developed for the unique needs of young adolescents, the framework helps Middle Schools:</p>
+			<ul class="checklist" data-theme="red">
+				<!-- TODO: Checklist component -->
+				<li>
+					<IconCheckmark/>
+					<span>
+						<strong>Clarify priority areas</strong> by reflecting on their current level of implementation, from Initiating to Sustaining, across “The Big Seven” indicators.
+					</span>
+				</li>
+				<li>
+					<IconCheckmark/>
+					<span>
+						<strong>Align daily practice with provincial and district goals</strong> by strengthening the connection between what happens in the Middle Program Block and the broader School Improvement Planning (SIP) process.
+					</span>
+				</li>
+				<li>
+					<IconCheckmark/>
+					<span>
+						<strong>Maintain local autonomy</strong> by guiding schools in determining how to move forward within what has been established by provincial and district expectations.
+					</span>
+				</li>
+				<li>
+					<IconCheckmark/>
+					<span>
+						<strong>Deepen shared understanding</strong> and collaboration among staff, which contributes to sustained progress and builds internal capacity for change.
+					</span>
+				</li>
+				<li>
+					<IconCheckmark/>
+					<span>
+						<strong>Use evidence intentionally</strong>, making the continuum a tool for both celebration and critical reflection during SIP monitoring and review cycles.
+					</span>
+				</li>
+			</ul>
+			<p>Overall, the framework is a scaffold to help schools move from broad aspirations to focused actions, while supporting the sustained practices that are aligned with their SIP goals.</p>
+
+
+		</section>
+
+	</div>
+	
+</BaseLayout>
