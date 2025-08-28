@@ -114,17 +114,17 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 			if (!consideration) return;
 
-			let accordionHeading = consideration.closest('.accordion-group')?.querySelector('.accordion');
-			let accordionBtn = accordionHeading?.querySelector('button');
+			let accordion = consideration.closest('.accordion');
+			let accordionBtn = accordion?.querySelector('.heading button') as HTMLButtonElement;
 
-			if (!accordionHeading || !accordionBtn) return;
+			if (!accordion || !accordionBtn) return;
 
 			if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
 
 			accordionBtn.click();
 
 			setTimeout(() => {
-				accordionHeading.scrollIntoView({ block: 'start', behavior: 'smooth' });
+				accordion.scrollIntoView({ block: 'start', behavior: 'smooth' });
 				// TODO: Should I be using the helper here instead?
 			}, 50);
 
