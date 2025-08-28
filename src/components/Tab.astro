@@ -1,0 +1,417 @@
+---
+import { toKebabCase } from "../utilities/helpers";
+
+const { title, id, dataset } = Astro.props;
+
+let datasetAttrs = {};
+if (dataset) {
+	for (let data of dataset) {
+		datasetAttrs[`data-${data.key}`] = data.value;
+	}
+}
+---
+
+<div class="tab" {...datasetAttrs}>
+	<div class="media-container"><slot name="media"/></div>
+	<div class="text-container">
+		<h3 id={id ? id : toKebabCase(title)} class="heading">{title}</h3>
+		<slot/>
+	</div>
+</div>
+
+<style is:global>
+
+	.tab-group {
+		margin: 2.5rem 0;
+	}
+
+	.tab-group nav {
+		margin: 0 0 1rem;
+	}
+
+	.tab-group nav ul {
+		list-style-type: none;
+		padding: 0;
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.tab-group nav ul li button[aria-selected="true"] {
+		--button-background-colour: transparent;
+		--button-outline-colour: var(--colour-border-accent-subtle, var(--colour-border-neutral-subtle));
+		pointer-events: none;
+	}
+
+	.tab-group nav ul li button {
+		--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		--button-border-radius: var(--border-radius-normal);
+		height: 3rem;
+		padding: 0 1rem;
+		font-size: 1.25rem;
+	}
+
+	.tab-group nav ul li button[] {
+		--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		--button-border-radius: var(--border-radius-normal);
+		height: 3rem;
+		padding: 0 1rem;
+		font-size: 1.25rem;
+	}
+
+	.tab-group .tab {
+		display: grid;
+		grid-template-columns: auto;
+		grid-template-rows: auto auto;
+	}
+
+	.tab-group[data-overlapping] .tab {
+		grid-template-columns: auto;
+		grid-template-rows: auto;
+	}
+
+	.tab-group[data-overlapping] .tab > * {
+		grid-column: 1 / 2;
+		grid-row: 1 / 2;
+	}
+
+	.tab-group .tab .media-container:empty {
+		display: none;
+	}
+
+	.tab-group .tab .media-container {
+		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
+		overflow: hidden;
+	}
+
+	.tab-group .tab .media-container img {
+		display: block;
+	}
+
+	.tab-group .tab .text-container {
+		padding: 2rem;
+		background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		border-radius: var(--border-radius-normal);
+	}
+
+	.tab-group .tab:has(.media-container:not(:empty)) .text-container {
+		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+	}
+
+	.tab-group .tab:has(.media-container:not(:empty)) .text-container .heading {
+		font-size: 1.25rem;
+		margin: 1rem 0 1rem;
+	}
+
+	.tab-group .tab:has(.media-container:not(:empty)) .text-container :where(p, li, a) {
+		font-size: 1rem;
+	}
+
+</style>
+
+<script>
+	import {
+		isInViewport,
+		scrollIntoView,
+		stopVideo,
+	} from "../utilities/helpers";
+
+	let tabs = (() => {
+
+		//
+		// DOM Setup
+		//
+
+		let setupDOM = ({ tabGroup, tabGroupIndex }) => {
+			// Get the panels
+			let tabPanels = tabGroup.querySelectorAll(".tab");
+
+			// If there is one or fewer panels, bail
+			if (tabPanels <= 1) return;
+
+			// Create the tab list
+			let tabList = document.createElement("ul");
+			tabList.setAttribute("role", "tablist");
+
+			// Create a tab button for each panel
+			for (let i = 0; i < tabPanels.length; i++) {
+				// Store the tab panel index as 1-based
+				let tabPanelIndex = i + 1;
+
+				// Get the panel
+				let tabPanel = tabPanels[i];
+
+				// Assign the panel an id
+				tabPanel.id = `tab-panel${tabGroupIndex}-${tabPanelIndex}`;
+
+				// Get the tab name
+				let tabName = tabPanel
+					.querySelector(".heading")
+					.textContent.trim();
+
+				// Create a tab item
+				let tabItem = document.createElement("li");
+
+				// Remove the item's implicit ARIA semantics from being exposed to the accessibility tree (no longer considered a list item)
+				tabItem.setAttribute("role", "presentation");
+
+				// Add it to the list
+				tabList.append(tabItem);
+
+				// Create a tab button
+				let tabBtn = document.createElement("button");
+				tabBtn.setAttribute("type", "button");
+
+				// Link to the tab panel
+				tabBtn.setAttribute("aria-controls", `${tabPanel.id}`);
+
+				// Add [role] and [aria-selected] attributes
+				tabBtn.setAttribute("role", "tab");
+				tabBtn.setAttribute(
+					"aria-selected",
+					i === 0 ? "true" : "false",
+				);
+
+				// Add [aria-label]
+				tabBtn.setAttribute("aria-label", tabName);
+
+				// Add name to button
+				tabBtn.innerHTML = tabName;
+
+				// Assign it an id
+				tabBtn.id = `tab-button_${tabPanel.id}`;
+
+				// Add the button to the item
+				tabItem.append(tabBtn);
+
+				// Add ARIA to tab panel
+				tabPanel.setAttribute("role", "tabpanel");
+				tabPanel.setAttribute("aria-labelledby", tabBtn.id);
+
+				// If it's not the active (first) tab,
+				if (i > 0) {
+					// Remove focus (navigation with arrow keys instead)
+					tabBtn.setAttribute("tabindex", "-1");
+				}
+
+				// If not the active panel, hide it
+				if (i !== 0) {
+					tabPanel.setAttribute("hidden", "");
+				}
+			}
+
+			// Create the new nav element
+			let nav = document.createElement("nav");
+
+			tabGroup.prepend(nav);
+
+			nav.append(tabList);
+
+			// Flag heading as initialized
+			tabGroup.setAttribute("data-initialized", "");
+		};
+
+		/**
+		 * Update tab content on keyboard events
+		 * @param  {Event} event The event object
+		 */
+		let navKeyHandler = (event) => {
+			// Only run for left and right arrow keys
+			if (!["ArrowLeft", "ArrowRight"].includes(event.code)) return;
+
+			// Only run if the element in focus is a tab
+			let focusedTab = document.activeElement.closest('[role="tab"]');
+			if (!focusedTab) return;
+
+			// Get the component
+			let tabGroup = event.target.closest(".tab-group");
+
+			// Get the active tab
+			let activeTab = tabGroup.querySelector('[role="tab"][aria-selected="true"]');
+
+			if (!activeTab) return;
+
+			// TODO: Run methods through gpt for optimization.
+
+			// Get the parent nav item
+			let navItem = activeTab.closest("li");
+
+			// Get all tab buttons
+			let tabBtns = tabGroup.querySelectorAll('nav [role="tab"]');
+
+			// If right arrow, get the next sibling
+			// Otherwise, get the previous sibling
+			let targetNavItem =
+				event.code === "ArrowRight"
+					? navItem.nextElementSibling
+					: navItem.previousElementSibling;
+
+			// If there is no next or previous sibling, bail
+			if (!targetNavItem) return;
+
+			// Otherwise, get the target tab
+			let targetTab = targetNavItem.querySelector("button");
+
+			toggleTab({tabGroup, targetTab});
+
+			// Move focus to the target tab
+			targetTab.focus();
+		};
+
+
+		/**
+		 * Show the target panel and close other panels
+		 * @param {Node} tabGroup the parent component
+		 * @param  {Node} targetTab the tab button that was targeted
+		 */
+		let toggleTab = ({tabGroup, targetTab}) => {
+			
+			// Get the target tab panel
+			let targetPanel = tabGroup.querySelector(
+				`#${targetTab.getAttribute("aria-controls")}`,
+			);
+
+			if (!targetPanel) return;
+
+			// Get the active tab and content
+			let activeTab = tabGroup.querySelector('[aria-selected="true"]');
+			let activePanel = tabGroup?.querySelector(
+				`#${activeTab.getAttribute("aria-controls")}`,
+			);
+
+			// If the target tab is already open, bail
+			if (targetTab === activeTab) return;
+
+			// Update the selected tab
+			targetTab.setAttribute("aria-selected", true);
+			activeTab.setAttribute("aria-selected", false);
+
+			// Update the visible tab panel
+			targetPanel.removeAttribute("hidden");
+			activePanel.setAttribute("hidden", "");
+
+			// If the active panel contains a video, pause it
+			if (activePanel.querySelector("video, .embed")) {
+				stopVideo(activePanel);
+			}
+
+			// Make sure the target tab can be focused and other tabs cannot
+			targetTab.removeAttribute("tabindex");
+			activeTab.setAttribute("tabindex", -1);
+		};
+
+
+		//
+		// Methods
+		//
+
+		/**
+		 * Toggle tab visibility
+		 * @param  {Node} targetTab The tab to show
+		 */
+
+
+		//
+		// Event Handlers
+		//
+
+		let onClick = (event) => {
+			// Only run on tab buttons
+			if (!event.target.matches('[role="tab"]')) return;
+
+			// Get the component
+			let tabGroup = event.target.closest(".tab-group");
+
+			let targetTab = event.target;
+
+			// Ignore the active tab
+			if (targetTab.matches('[aria-selected="true"]')) return;
+
+			toggleTab({tabGroup, targetTab});
+		};
+
+		let onKey = (event) => {
+
+			// Only run for left and right arrow keys
+			if (!["ArrowLeft", "ArrowRight"].includes(event.code)) return;
+
+			// Only run if the element in focus is a tab
+			let focusedTab = document.activeElement.closest('[role="tab"]');
+			if (!focusedTab) return;
+
+			// Get the component
+			let tabGroup = event.target.closest(".tab-group");
+
+			// Get the active tab
+			let activeTab = tabGroup.querySelector('[role="tab"][aria-selected="true"]');
+
+			if (!activeTab) return;
+
+			// TODO: Run methods through gpt for optimization.
+
+			// Get the parent nav item
+			let navItem = activeTab.closest("li");
+
+			// Get all tab buttons
+			let tabBtns = tabGroup.querySelectorAll('nav [role="tab"]');
+
+			// If right arrow, get the next sibling
+			// Otherwise, get the previous sibling
+			let targetNavItem =
+				event.code === "ArrowRight"
+					? navItem.nextElementSibling
+					: navItem.previousElementSibling;
+
+			// If there is no next or previous sibling, bail
+			if (!targetNavItem) return;
+
+			// Otherwise, get the target tab
+			let targetTab = targetNavItem.querySelector("button");
+
+			toggleTab({tabGroup, targetTab});
+
+			// Move focus to the target tab
+			targetTab.focus();
+
+			// TODO: Focus not staying on buttons
+
+			// TODO: Ensure after swap doesn't reset up the dom
+
+		}
+
+		//
+		// Init and Destroy
+		//
+
+		let init = () => {
+			// Get all accordion headings
+			let tabGroups = document.querySelectorAll(".tab-group");
+			for (let i = 0; i < tabGroups.length; i++) {
+				let tabGroup = tabGroups[i];
+				if (tabGroup.getAttribute("data-initalized")) return;
+				setupDOM({
+					tabGroup,
+					tabGroupIndex: i + 1,
+				});
+			}
+			document.addEventListener("click", onClick);
+			document.addEventListener("keydown", onKey);
+		};
+
+		let destroy = () => {
+			document.removeEventListener("click", onClick);
+			document.removeEventListener("keydown", onKey);
+		};
+
+		return { init, destroy };
+	})();
+
+	//
+	// Inits & Event Listeners
+	//
+
+	tabs.init();
+	document.addEventListener("astro:before-swap", tabs.destroy);
+	document.addEventListener("astro:after-swap", tabs.init);
+</script>
