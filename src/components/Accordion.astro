@@ -25,34 +25,38 @@ let IconCross = crossIcons[crossIconSize];
 
 ---
 
-<h3 id={id ? id : toKebabCase(title)} class="accordion" {...datasetAttrs}>
+<div class="accordion" {...datasetAttrs}>
 
-	<span class="icon-and-label-container">
-		<slot name="button-icon"/>
-		<span class="label-container">
-			<span class="label">{title}</span>
+	<h3 id={id ? id : toKebabCase(title)} class="heading">
+	
+		<span class="icon-and-label-container">
+			<slot name="button-icon"/>
+			<span class="label-container">
+				<span class="label">{title}</span>
+			</span>
 		</span>
-	</span>
-
-	<slot name="button-meta"/>
-
-	<IconCross />
-
-</h3>
-
-<div>
-
-	{ wrapper ? 
-		
-		<div class="content">
+	
+		<slot name="button-meta"/>
+	
+		<IconCross />
+	
+	</h3>
+	
+	<div class="panel">
+	
+		{ wrapper ?
+	
+			<div class="content">
+				<slot />
+			</div>
+	
+			:
+	
 			<slot />
-		</div>
-		
-		: 
-
-		<slot />
-
-	}
+	
+		}
+	
+	</div>
 
 </div>
 
@@ -71,8 +75,12 @@ let IconCross = crossIcons[crossIconSize];
 		scroll-margin-top: 5.75rem;
 	}
 
-	.accordion button {
-		--button-background-colour: var(--colour-fill-accent-subtle-muted);
+	.accordion .heading {
+		margin: 0;
+	}
+
+	.accordion .heading button {
+		--button-background-colour: var(--colour-fill-accent-subtle);
 		--button-border-radius: var(--border-radius-normal);
 		--button-ui-colour: var(--colour-ui-neutral);
 		--icon-colour: var(--colour-ui-accent);
@@ -91,61 +99,80 @@ let IconCross = crossIcons[crossIconSize];
 			outline-color var(--transition-linear-fast);
 	}
 
-	.accordion button:is(:hover, :focus-visible) {
+	.accordion .heading button:is(:hover, :focus-visible) {
 		--button-background-colour: transparent;
 		--button-ui-colour: var(--button-ui-colour);
 	}
 
-	.accordion button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
-		outline: 2px solid var(--colour-border-accent-subtle-muted);
+	.accordion .heading button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+		outline: 2px solid var(--colour-border-accent-subtle);
 		outline-offset: -1px;
 	}
 
-	.accordion button[aria-expanded="true"] {
-		--button-background-colour: var(--colour-fill-accent-bold-muted);
+	.accordion .heading button[aria-expanded="true"] {
+		--button-background-colour: var(--colour-fill-accent-bold);
 		--icon-colour: var(--colour-ui-reverse);
 		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
 	}
 
-	.accordion button .icon-and-label-container {
+	.accordion .heading button .icon-and-label-container {
 		--container-gap: 0.75rem;
 		--label-size: 1.5rem;
 		flex-grow: 1;
 	}
 
-	.accordion button[aria-expanded="true"] .icon-and-label-container {
+	.accordion .heading button[aria-expanded="true"] .icon-and-label-container {
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	.accordion button > .icon.caret {
+	.accordion .heading button > .icon.caret {
 		transition: rotate var(--transition-ease-medium);
 		transform-origin: center;
 	}
 
-	.accordion button[aria-expanded="true"] > .icon.caret {
+	.accordion .heading button[aria-expanded="true"] > .icon.caret {
 		rotate: x 180deg;
 	}
 
-	.accordion button .considerations-status {
+	.accordion .heading button .considerations-status {
 		--label-colour: var(--colour-ui-accent-subtle);
 	}
 
-	.accordion button[aria-expanded="true"] .considerations-status {
+	.accordion .heading button[aria-expanded="true"] .considerations-status {
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	.accordion + * {
-		border: 1px solid var(--colour-border-accent-bold-muted);
+	.accordion .heading button .tag {
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--colour-ui-accent-subtle);
+		line-height: 1.2;
+		text-align: center;
+		min-width: 1rem;
+	}
+
+	.accordion .heading button[aria-expanded="true"] .tag {
+		color: var(--colour-ui-reverse);
+	}
+
+	.accordion .panel {
+		border: 1px solid var(--colour-border-accent-bold);
 		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
 	}
 	
-	.accordion + * :where(p, li, a) {
+	.accordion .panel :where(p, li, a) {
 		font-size: 1rem;
 		line-height: 1.2;
 	}
 
-	.accordion + * > .content {
+	.accordion .panel > .content {
 		padding: 1.25rem;
+		font-size: 1.25rem;
+	}
+	
+	.accordion .panel > .content :where(p, li, a) {
+		font-size: inherit;
+		line-height: 1.6;
 	}
 
 </style>
@@ -205,10 +232,10 @@ let IconCross = crossIcons[crossIconSize];
 			let allowMultiple = accordionGroup ? accordionGroup.hasAttribute('data-allow-multiple') : false;
 
 			// Get the target accordion toggle button
-			let targetToggle = targetAccordion.querySelector('button');
+			let targetToggle = targetAccordion.querySelector('.accordion .heading button');
 
 			// Get the target accordion panel
-			let targetPanel = targetAccordion.nextElementSibling;
+			let targetPanel = targetAccordion.querySelector('.accordion .panel');
 
 			// Check if the target panel is expanded
 			let isExpanded = targetToggle.getAttribute('aria-expanded') == 'true';
@@ -217,7 +244,7 @@ let IconCross = crossIcons[crossIconSize];
 			let activeToggle = accordionGroup ? accordionGroup.querySelector('[aria-expanded="true"]') : null;
 
 			// Get the active panel
-			let activePanel = activeToggle ? activeToggle.closest('.accordion').nextElementSibling : null;
+			let activePanel = activeToggle ? activeToggle.closest('.accordion').querySelector('.panel') : null;
 
 			// If the active panel contains a video, pause it
 			if (activePanel && (activePanel.matches('video, .embed') || activePanel.querySelector('video, .embed'))) {
@@ -257,6 +284,8 @@ let IconCross = crossIcons[crossIconSize];
 
 			}
 
+			// TODO: Set up smooth transition of accordion opening like in UDL
+
 			// Get the transition length and convert it to a number
 			let transitionLength = Number(getComputedStyle(targetAccordion).getPropertyValue('transition-duration').replace(/[^0-9\.]/g, ''));
 
@@ -290,7 +319,7 @@ let IconCross = crossIcons[crossIconSize];
 
 		let init = () => {
 			// Get all accordion headings
-			let headings = document.querySelectorAll('.accordion');
+			let headings = document.querySelectorAll('.accordion .heading');
 			for (let heading of headings) {
 				if (heading.getAttribute('data-initalized')) return;
 				setupDOM(heading);
