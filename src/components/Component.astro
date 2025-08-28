@@ -1,18 +1,15 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
+
 import Accordion from "../components/Accordion.astro";
-import ResourceIcons from "./icons/ResourceIcons.astro";
+import ResourceLink from "./ResourceLink.astro";
+
 import PhaseIcons from "./icons/PhaseIcons.astro";
 import IconFlag from "./icons/IconFlag_24.astro";
 import IconFocus from "./icons/IconTarget_20.astro";
 import IconCompass from "./icons/IconCompass_14.astro";
-import IconFilter from "./icons/IconFilter_16.astro";
-import IconArrow from "./icons/IconArrowRight_16.astro";
 import IconCheckmark from "./icons/IconCheckmark_12.astro";
-import IconDownload from "./icons/IconDownload_16.astro";
-import IconExternal from "./icons/IconExternal_16.astro";
 import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
-import { getResourcePath } from "src/utilities/helpers";
 
 const { entry } = Astro.props;
 
@@ -258,27 +255,11 @@ let phases = [
 																		{
 																			consideration.resources.map((resource) => {
 																				let { data } = resource;
-																				let { title, type, linkedIndicators, linkedComponents, linkedConsiderations } = data;
-																				let path = getResourcePath(resource);
+																				let { title, linkedIndicators, linkedComponents, linkedConsiderations } = data;
 																				return (
 																					<li data-title={title.toLowerCase()}
 																						data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-																						<a href={path}
-																						>
-																							<ResourceIcons type={type} classes={['type']} />
-																							<span class="text-container">
-																								<span class="text">{title}</span>
-																							</span>
-																							<span class="icon-container">
-																								{type === 'document'
-																									|| type === 'presentation'
-																									? <IconDownload classes={['destination']}/> : ''}
-																								{type === 'audio'
-																									|| type === 'video'
-																									|| type === 'website'
-																									? <IconExternal classes={['destination']}/> : ''}
-																							</span>
-																						</a>
+																						<ResourceLink resource={resource}/>
 																					</li>
 																				)
 																			}

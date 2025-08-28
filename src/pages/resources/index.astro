@@ -1,20 +1,15 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SectionNav from "../../components/SectionNav.astro";
+import Accordion from "src/components/Accordion.astro";
+import MediaDialog from "src/components/MediaDialog.astro";
+import ResourceLink from "src/components/ResourceLink.astro";
+
 import IconCheckmark from "../../components/icons/IconCheckmark_8.astro";
-import IconDownload from "../../components/icons/IconDownload_16.astro";
-import IconExternal from "../../components/icons/IconExternal_16.astro";
-import IconFilter from "src/components/icons/IconFilter_20.astro";
 import IconFilterClear from "src/components/icons/IconFilterClear_20.astro";
 import IconWarning from "src/components/icons/IconWarning_16.astro";
 import IconSearch from "src/components/icons/IconSearch_20.astro";
-import ResourceIcons from "src/components/icons/ResourceIcons.astro";
-
-import { getResourcePath } from "../../utilities/helpers";
-import Accordion from "src/components/Accordion.astro";
-
-
 
 let allResources = await getCollection("resources");
 
@@ -39,6 +34,8 @@ let types = [
 ---
 
 <BaseLayout pageTitle={'Resources'}>
+
+	<MediaDialog/>
 
 	<aside class="filters-container">
 
@@ -154,28 +151,10 @@ let types = [
 					let { data } = resource;
 					let { title, type, linkedIndicators, linkedComponents, linkedConsiderations } = data;
 
-					let path = getResourcePath(resource);
-
 					return (
 						<li data-title={title.toLowerCase()} data-type={type}
 							data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-								{/* TODO: Audio and Video should be button dialog open with all necessary data attrs */}
-							<a href={path}
-							>
-								<ResourceIcons type={type} classes={['type']} />
-								<span class="text-container">
-									<span class="text">{title}</span>
-								</span>
-								<span class="icon-container">
-									{type === 'document'
-										|| type === 'presentation'
-										? <IconDownload classes={['destination']}/> : ''}
-									{type === 'audio'
-										|| type === 'video'
-										|| type === 'website'
-										? <IconExternal classes={['destination']}/> : ''}
-								</span>
-							</a>
+							<ResourceLink resource={resource}/>
 						</li>
 					)
 				})}

@@ -1,0 +1,43 @@
+---
+import { getResourcePath } from "src/utilities/helpers";
+import ResourceIcons from "./icons/ResourceIcons.astro";
+import IconExpand from "./icons/IconExpand_16.astro";
+import IconExternal from "./icons/IconExternal_16.astro";
+import IconDownload from "./icons/IconDownload_16.astro";
+
+let { resource } = Astro.props;
+let { data } = resource;
+let { title, type, external } = data;
+let path = getResourcePath(resource)
+
+---
+
+{ ['video', 'audio'].includes(type) && (
+
+	<button class="open-dialog" type="button" data-style-as="link" data-dialog="media-dialog" data-media-type={type} data-media-src={path} data-media-storage-location={external.discriminant ? 'external' : 'internal'}>
+		<ResourceIcons type={type} classes={['type']} />
+		<span class="text-container">
+			<span class="text">{title}</span>
+		</span>
+		<span class="icon-container">
+			<IconExpand classes={['destination']}/>
+		</span>									
+	</button>
+
+)}
+
+{ ['document', 'presentation', 'website'].includes(type) && (
+
+	<a href={path}>
+		<ResourceIcons type={type} classes={['type']} />
+		<span class="text-container">
+			<span class="text">{title}</span>
+		</span>
+		<span class="icon-container">
+			{type !== 'website'
+				? <IconDownload classes={['destination']}/> : <IconExternal classes={['destination']}/>
+			}
+		</span>
+	</a>
+
+)}
