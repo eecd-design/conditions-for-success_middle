@@ -354,8 +354,8 @@ let phases = [
 		gap: 1rem;
 		align-items: center;
 		padding: 0.75rem 1.25rem;
-		background-color: var(--colour-fill-neutral-subtle-muted);
-		border-bottom: 1px solid var(--colour-border-neutral-subtle-muted);
+		background-color: var(--colour-fill-neutral-subtle);
+		border-bottom: 1px solid var(--colour-border-neutral-subtle);
 	}
 
 	.focus-container .label {
@@ -373,7 +373,7 @@ let phases = [
 	}
 
 	.focus-container .statement  {
-		border-left: 1px solid var(--colour-border-neutral-subtle-muted);
+		border-left: 1px solid var(--colour-border-neutral-subtle);
 		padding: 0 0 0 1rem;
 	}
 
@@ -392,7 +392,7 @@ let phases = [
 	}
 
 	.considerations-list > li:not(:first-of-type) {
-		border-top: 1px solid var(--colour-border-neutral-subtle-muted);
+		border-top: 1px solid var(--colour-border-neutral-subtle);
 	}
 
 	.considerations-list .label-group {
@@ -418,7 +418,7 @@ let phases = [
 		align-items: center;
 		height: 1.5rem;
 		padding: 0 0.5rem 0 0;
-		background-color: var(--colour-fill-accent-subtle-muted);
+		background-color: var(--colour-fill-accent-subtle);
 		border-radius: var(--border-radius-small);
 		cursor: pointer;
 		user-select: none;
@@ -427,11 +427,11 @@ let phases = [
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
-		background-color: var(--colour-fill-accent-subtle-muted-highlight);
+		background-color: var(--colour-fill-accent-subtle-highlight);
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]:checked) {
-		background-color: var(--colour-fill-accent-bold-muted);
+		background-color: var(--colour-fill-accent-bold);
 	}
 
 	.considerations-list form label input {
@@ -456,7 +456,7 @@ let phases = [
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked))::before {
-		border-color: var(--colour-border-accent-bold-muted);
+		border-color: var(--colour-border-accent-bold);
 	}
 
 	.considerations-list form label .tag {
@@ -588,20 +588,21 @@ let phases = [
 
 			let tag = component.getAttribute('data-component-tag');
 
-			let accordionBtns = component.querySelectorAll('.accordion');
+			let accordions = component.querySelectorAll('.accordion');
 
 			completion[tag] = {};
 	
-			for (let accordion of accordionBtns) {
+			for (let accordion of accordions) {
+
+				let heading = accordion.querySelector('.heading');
+				let panel = accordion.querySelector('.panel');
 
 				let phase = accordion.getAttribute('data-phase');
-	
-				let panel = accordion.nextElementSibling;
-	
+		
 				let inputs = panel.querySelectorAll('input[name="considerationsEstablished"]');
 				let checkedInputs = panel.querySelectorAll('input[name="considerationsEstablished"]:checked');
 	
-				let considerationStatusField = accordion.querySelector('[data-field="considerationsEstablished"]');
+				let considerationStatusField = heading.querySelector('[data-field="considerationsEstablished"]');
 	
 				if (!considerationStatusField) continue;
 	
