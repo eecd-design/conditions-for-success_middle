@@ -819,7 +819,21 @@ p {
 }
 
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text {
+	display: flex;
+	flex-flow: column;
+	gap: 0.5rem;
+}
+
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .title {
 	font-size: 1rem;
+}
+
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .description {
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: var(--colour-ui-neutral-subtle);
+	line-height: 1.4;
+	transition: max-height var(--transition-ease-medium);
 }
 
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {

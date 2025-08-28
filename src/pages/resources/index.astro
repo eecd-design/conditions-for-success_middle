@@ -136,6 +136,9 @@ let types = [
 
 		</form>
 
+		<!-- TODO: Add sort dropdown -->
+		<!-- TODO: Add layout toggle (compact = no description, description) -->
+
 		<div class="list-container">
 
 			<p id="resource-list_error" class="error-status" role="status" hidden>
@@ -154,7 +157,7 @@ let types = [
 					return (
 						<li data-title={title.toLowerCase()} data-type={type}
 							data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-							<ResourceLink resource={resource}/>
+							<ResourceLink resource={resource} showDescription={true}/>
 						</li>
 					)
 				})}

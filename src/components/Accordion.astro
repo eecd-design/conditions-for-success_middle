@@ -310,8 +310,8 @@ let IconCross = crossIcons[crossIconSize];
 		//
 
 		let onClick = (event) => {
+			if (!event.target.matches('.accordion .heading button')) return;
 			let targetAccordion = event.target.closest('.accordion');
-			if (!targetAccordion) return;
 			toggleAccordion(targetAccordion);
 		}
 

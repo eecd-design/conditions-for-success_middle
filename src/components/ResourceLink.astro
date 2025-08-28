@@ -5,9 +5,9 @@ import IconExpand from "./icons/IconExpand_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
-let { resource } = Astro.props;
+let { resource, showDescription } = Astro.props;
 let { data } = resource;
-let { title, type, external } = data;
+let { title, type, external, description } = data;
 let path = getResourcePath(resource)
 
 ---
@@ -17,7 +17,12 @@ let path = getResourcePath(resource)
 	<button class="open-dialog" type="button" data-style-as="link" data-dialog="media-dialog" data-media-type={type} data-media-src={path} data-media-storage-location={external.discriminant ? 'external' : 'internal'}>
 		<ResourceIcons type={type} classes={['type']} />
 		<span class="text-container">
-			<span class="text">{title}</span>
+			<span class="text">
+				<span class="title">{title}</span>
+				{(description && showDescription) && (
+					<span class="description">{description}</span>
+				)}
+			</span>
 		</span>
 		<span class="icon-container">
 			<IconExpand classes={['destination']}/>
@@ -31,7 +36,12 @@ let path = getResourcePath(resource)
 	<a href={path}>
 		<ResourceIcons type={type} classes={['type']} />
 		<span class="text-container">
-			<span class="text">{title}</span>
+			<span class="text">
+				<span class="title">{title}</span>
+				{(description && showDescription) && (
+					<span class="description">{description}</span>
+				)}
+			</span>
 		</span>
 		<span class="icon-container">
 			{type !== 'website'
@@ -41,3 +51,9 @@ let path = getResourcePath(resource)
 	</a>
 
 )}
+
+<script>
+
+
+
+</script>
