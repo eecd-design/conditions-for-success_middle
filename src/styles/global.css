@@ -163,14 +163,14 @@
 
 	/* TODO: Set up highlight colour */
 
-	--colour-fill-neutral-faint-muted: var(--gray-muted-50);
+	--colour-fill-neutral-faint: var(--gray-muted-50);
 	--colour-fill-neutral-subtle: var(--gray-muted-75);
 	--colour-fill-neutral-subtle-highlight: var(--gray-muted-100);
-	--colour-fill-neutral-mid-muted: var(--gray-muted-500);
+	--colour-fill-neutral-mid: var(--gray-muted-500);
 	--colour-fill-neutral-bold: var(--gray-muted-700);
 
 	--colour-border-neutral-subtle: var(--gray-muted-200);
-	--colour-border-neutral-mid-muted: var(--gray-muted-300);
+	--colour-border-neutral-mid: var(--gray-muted-300);
 	--colour-border-neutral-bold: var(--gray-muted-500);
 
 	--border-radius-small: 0.25rem;
@@ -225,7 +225,7 @@
 	--colour-fill-accent-bold: var(--orange-muted-500);
 
 	--colour-border-accent-subtle: var(--orange-muted-200);
-	--colour-border-accent-mid-muted: var(--orange-muted-300);
+	--colour-border-accent-mid: var(--orange-muted-300);
 	--colour-border-accent-bold: var(--orange-muted-500);
 }
 
@@ -252,7 +252,7 @@
 	--colour-fill-accent-bold: var(--yellow-muted-500);
 
 	--colour-border-accent-subtle: var(--yellow-muted-200);
-	--colour-border-accent-mid-muted: var(--yellow-muted-300);
+	--colour-border-accent-mid: var(--yellow-muted-300);
 	--colour-border-accent-bold: var(--yellow-muted-500);
 }
 
@@ -279,7 +279,7 @@
 	--colour-fill-accent-bold: var(--green-muted-500);
 
 	--colour-border-accent-subtle: var(--green-muted-200);
-	--colour-border-accent-mid-muted: var(--green-muted-300);
+	--colour-border-accent-mid: var(--green-muted-300);
 	--colour-border-accent-bold: var(--green-muted-500);
 }
 
@@ -306,7 +306,7 @@
 	--colour-fill-accent-bold: var(--teal-muted-500);
 
 	--colour-border-accent-subtle: var(--teal-muted-200);
-	--colour-border-accent-mid-muted: var(--teal-muted-300);
+	--colour-border-accent-mid: var(--teal-muted-300);
 	--colour-border-accent-bold: var(--teal-muted-500);
 }
 
@@ -333,7 +333,7 @@
 	--colour-fill-accent-bold: var(--blue-muted-500);
 
 	--colour-border-accent-subtle: var(--blue-muted-200);
-	--colour-border-accent-mid-muted: var(--blue-muted-300);
+	--colour-border-accent-mid: var(--blue-muted-300);
 	--colour-border-accent-bold: var(--blue-muted-500);
 }
 
@@ -360,7 +360,7 @@
 	--colour-fill-accent-bold: var(--purple-muted-500);
 
 	--colour-border-accent-subtle: var(--purple-muted-200);
-	--colour-border-accent-mid-muted: var(--purple-muted-300);
+	--colour-border-accent-mid: var(--purple-muted-300);
 	--colour-border-accent-bold: var(--purple-muted-500);
 }
 
@@ -476,7 +476,7 @@ h2,
 	margin: 0 0 1.5rem;
 }
 
-:is(h2, [data-style-as="h2"]) + .heading-subtitle .icon {
+:is(h2, [data-style-as="h2"]) + .heading-subtitle > .icon {
 	margin-top: 0.25rem;
 }
 
@@ -576,7 +576,7 @@ p {
 }
 
 :is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
-	--button-background-colour: var(--colour-fill-neutral-mid-muted);
+	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
 	--button-outline-colour: transparent;
 }
@@ -614,7 +614,7 @@ p {
 }
 
 :is(button, [data-style-as="button"])[data-style="solid"] {
-	--button-background-colour: var(--colour-fill-neutral-mid-muted);
+	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
 }
 
@@ -827,7 +827,7 @@ a:has(.icon-container:first-child):has(.icon.destination.arrow):is(:hover, :focu
 }
 
 .link-list[data-style="divided"] a:is(:hover, :focus-visible) .text-container {
-	--container-border-colour: var(--colour-border-accent-mid-muted, var(--colour-border-neutral-mid-muted));
+	--container-border-colour: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 }
 
 .link-list[data-style="divided"] a .text {
@@ -1175,7 +1175,7 @@ form .radio-container:has(input:checked)::after {
 	left: 0.875rem;
 	height: 0.5rem;
 	width: 0.5rem;
-	background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid-muted));
+	background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
 	border-radius: 100rem;
 	pointer-events: none;
 	z-index: 2;
@@ -1732,9 +1732,6 @@ ol.fancy {
 	margin: 2rem 0;
 }
 
-ol.fancy li::marker {
-}
-
 ol.fancy li {
 	counter-increment: fancy-ol;
 	display: flex;
@@ -1769,6 +1766,30 @@ ol.fancy li .text {
 	font-size: 1.5rem;
 	font-weight: 500;
 	line-height: 1.2;
+}
+
+/* CHECKLIST */
+
+ul.checklist {
+	list-style-type: none;
+	padding: 0;
+	display: flex;
+	flex-flow: column;
+	gap: 0.75rem;
+	margin: 2rem 0;
+}
+
+ul.checklist li {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: start;
+	gap: 1.25rem;
+}
+
+ul.checklist li > .icon.checkmark {
+	--icon-size: 1rem;
+	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+	margin-top: 0.5rem;
 }
 
 
@@ -1972,7 +1993,9 @@ svg {
 }
 
 video {
+	aspect-ratio: 16 / 9;
 	width: 100%;
+	background-color: var(--colour-fill-neutral-subtle);
 }
 
 audio {
