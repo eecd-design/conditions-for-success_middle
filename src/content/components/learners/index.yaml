@@ -4,25 +4,25 @@ title: Learners
 initiating:
   considerations:
     - tag: 5.2.1
-      description: >-
+      title: >-
         Staff acknowledge and recognize the importance of learners’ identities
         in shaping their learning experiences.
       compass: false
       categories: []
     - tag: 5.2.2
-      description: >-
+      title: >-
         Conversations around learners’ identities are beginning but are
         inconsistent across classrooms.
       compass: false
       categories: []
     - tag: 5.2.3
-      description: >-
+      title: >-
         Learners have limited opportunities to express their identities in
         school.
       compass: false
       categories: []
     - tag: 5.2.4
-      description: >-
+      title: >-
         Schools identify advocates to support all identities (e.g., 2SLGBTQIA+,
         Indigenous, etc.).
       compass: false
@@ -30,26 +30,26 @@ initiating:
 implementing:
   considerations:
     - tag: 5.2.5
-      description: >-
+      title: >-
         Educators begin incorporating learners’ identities into daily
         instruction and classroom activities.
       compass: false
       categories: []
     - tag: 5.2.6
-      description: >-
+      title: >-
         Learners report that their identities are reflected in community-engaged
         events or activities (e.g., guest speakers).
       compass: false
       categories: []
     - tag: 5.2.7
-      description: >-
+      title: >-
         SEL (i.e., self-awareness, self-management, social awareness,
         relationship skills, making responsible decisions), is tied to learners’
         personal and cultural backgrounds.
       compass: false
       categories: []
     - tag: 5.2.8
-      description: >-
+      title: >-
         School provides social opportunities for learners to explore their
         identity (e.g., Global Minds, cultural clubs, GSA, etc.).
       compass: false
@@ -57,21 +57,21 @@ implementing:
 developing:
   considerations:
     - tag: 5.2.9
-      description: >-
+      title: >-
         Classroom and school-wide activities regularly acknowledge and affirm
         learners’ identities (e.g., incorporating diverse perspectives into
         curriculum, hosting identity-based community events).
       compass: false
       categories: []
     - tag: 5.2.10
-      description: >-
+      title: >-
         Educators consistently incorporate SEL strategies and intercultural
         competence into their teaching to support learners’ social and emotional
         development.
       compass: false
       categories: []
     - tag: 5.2.11
-      description: >-
+      title: >-
         Learners regularly share and explore their identities through structured
         activities, such as presentations, group discussions, or projects.
       compass: false
@@ -79,14 +79,14 @@ developing:
 sustaining:
   considerations:
     - tag: 5.2.12
-      description: >-
+      title: >-
         School culture consistently affirms and values diverse learner
         identities, with regular events, celebrations, and curriculum that
         reflects these identities.
       compass: false
       categories: []
     - tag: 5.2.13
-      description: >-
+      title: >-
         Staff consistently use a range of SEL practices to ensure that
         self-awareness, self-management, social awareness, and other key SEL
         outcomes are grounded in learners’ unique developmental and cultural
@@ -94,7 +94,7 @@ sustaining:
       compass: false
       categories: []
     - tag: 5.2.14
-      description: >-
+      title: >-
         Learners take an active role in sharing and exploring identities, with
         leadership opportunities (e.g., clubs, panels, peer mentorship) that
         allow for self-expression and community involvement.

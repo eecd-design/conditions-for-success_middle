@@ -4,13 +4,13 @@ title: Problem Solving
 initiating:
   considerations:
     - tag: 7.2.1
-      description: >-
+      title: >-
         Educators provide simple, structured problem-solving tasks, such as
         individual projects or reflection journals.
       compass: false
       categories: []
     - tag: 7.2.2
-      description: >-
+      title: >-
         Problem-solving is guided by educator-led questions, with limited
         learner autonomy.
       compass: false
@@ -18,13 +18,13 @@ initiating:
 implementing:
   considerations:
     - tag: 7.2.3
-      description: >-
+      title: >-
         Learners engage in open-ended tasks requiring independent inquiry and
         reflection, such as research projects or design challenges.
       compass: false
       categories: []
     - tag: 7.2.4
-      description: >-
+      title: >-
         Educators provide scaffolds, including goal-setting templates and
         reflection prompts, to support problem-solving.
       compass: false
@@ -32,13 +32,13 @@ implementing:
 developing:
   considerations:
     - tag: 7.2.5
-      description: >-
+      title: >-
         Learners design and manage their own learning projects, set personal
         goals, and reflect on outcomes with educator support.
       compass: false
       categories: []
     - tag: 7.2.6
-      description: >-
+      title: >-
         Problem-solving includes real-world applications, like community
         projects or service learning.
       compass: false
@@ -46,13 +46,13 @@ developing:
 sustaining:
   considerations:
     - tag: 7.2.7
-      description: >-
+      title: >-
         Learners routinely take ownership of their learning by identifying
         problems, researching solutions, and presenting outcomes.
       compass: false
       categories: []
     - tag: 7.2.8
-      description: >-
+      title: >-
         Reflection and goal setting are ongoing, and learners help design future
         learning opportunities.
       compass: false

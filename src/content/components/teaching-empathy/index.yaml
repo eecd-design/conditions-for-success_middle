@@ -4,7 +4,7 @@ title: Teaching Empathy
 initiating:
   considerations:
     - tag: 4.2.1
-      description: >-
+      title: >-
         Staff can describe each of the SEL outcomes (i.e., self-awareness,
         self-management, social awareness, relationship skills, making
         responsible decisions).
@@ -13,13 +13,13 @@ initiating:
 implementing:
   considerations:
     - tag: 4.2.2
-      description: >-
+      title: >-
         Leadership models empathy by recognizing staff efforts and providing
         emotional support.
       compass: false
       categories: []
     - tag: 4.2.3
-      description: >-
+      title: >-
         Staff look for intentional opportunities in the prescribed curriculum to
         teach empathy.
       compass: false
@@ -27,13 +27,13 @@ implementing:
 developing:
   considerations:
     - tag: 4.2.4
-      description: >-
+      title: >-
         Staff embed best practices (e.g., restorative circles) to assist
         learners in understanding multiple perspectives, solving problems, etc.
       compass: false
       categories: []
     - tag: 4.2.5
-      description: >-
+      title: >-
         Peer support groups or mentorships are established to foster mutual care
         among staff.
       compass: false
@@ -41,13 +41,13 @@ developing:
 sustaining:
   considerations:
     - tag: 4.2.6
-      description: >-
+      title: >-
         Empathy is consistently demonstrated in staff interactions and
         decision-making.
       compass: false
       categories: []
     - tag: 4.2.7
-      description: >-
+      title: >-
         School culture emphasizes teaching learners to help care for themselves
         and those around them.
       compass: false

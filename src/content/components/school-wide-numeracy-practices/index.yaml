@@ -4,28 +4,28 @@ title: School-wide Numeracy Practices
 initiating:
   considerations:
     - tag: 6.3.1
-      description: >-
+      title: >-
         Educators refer to the Curriculum Framework to identify concepts and
         skills in their assigned subject areas. Learners cannot articulate goals
         or connect them to prior learning or other contexts.
       compass: false
       categories: []
     - tag: 6.3.2
-      description: >-
+      title: >-
         Educators design tasks that are primarily procedural and/or lack
         opportunities for deeper learning. Learners are dependent on educators
         to complete tasks and have a fixed mindset about their ability in math.
       compass: false
       categories: []
     - tag: 6.3.3
-      description: >-
+      title: >-
         Educators lead class discussions through direct questioning and
         demonstrate how to use specific models. Learners respond to specific
         questions and use mathematical representations only as directed.
       compass: false
       categories: []
     - tag: 6.3.4
-      description: >-
+      title: >-
         Educators are aware of formative assessment strategies but primarily use
         summative tasks to gather evidence. Feedback is generally focused on
         errors. Learners rely on educators to monitor their progress.

@@ -4,13 +4,13 @@ title: School Personnel
 initiating:
   considerations:
     - tag: 5.1.1
-      description: >-
+      title: >-
         School leadership begins conversations about the significance of staff
         members’ cultural, linguistic, and personal identities.
       compass: false
       categories: []
     - tag: 5.1.2
-      description: >-
+      title: >-
         Staff are encouraged to reflect individually on how their own
         backgrounds influence their teaching and interactions.
       compass: false
@@ -18,13 +18,13 @@ initiating:
 implementing:
   considerations:
     - tag: 5.1.3
-      description: >-
+      title: >-
         The school offers sessions or trainings on identity-related topics
         (e.g., implicit bias, equity, multicultural education).
       compass: false
       categories: []
     - tag: 5.1.4
-      description: >-
+      title: >-
         Staff develop a shared vocabulary around identity, culture, and
         inclusion, fostering a safe space for dialogue.
       compass: false
@@ -32,27 +32,27 @@ implementing:
 developing:
   considerations:
     - tag: 5.1.5
-      description: >-
+      title: >-
         Regular, embedded learning opportunities encourage staff to explore
         intersectionality, cultural humility, and anti-bias practices.
       compass: false
       categories: []
     - tag: 5.1.6
-      description: >-
+      title: >-
         Reflection on staff identities is more comprehensive, tying personal
         identity to instructional approaches, curriculum choices, and learner
         outcomes.
       compass: false
       categories: []
     - tag: 5.1.7
-      description: >-
+      title: >-
         School rituals, traditions, and events increasingly spotlight the varied
         backgrounds of staff—helping learners see a diverse range of adult role
         models.
       compass: false
       categories: []
     - tag: 5.1.8
-      description: >-
+      title: >-
         Staff from underrepresented groups feel more comfortable voicing
         perspectives, and leaders actively seek input to ensure a wide range of
         voices inform school decisions.
@@ -61,21 +61,21 @@ developing:
 sustaining:
   considerations:
     - tag: 5.1.9
-      description: >-
+      title: >-
         The school’s policies, structures, and leadership behaviours
         consistently promote an environment where all staff identities are
         recognized, valued, and used as a resource for growth.
       compass: false
       categories: []
     - tag: 5.1.10
-      description: >-
+      title: >-
         Staff members lead ongoing dialogue, trainings, etc. related to
         diversity, equity, and inclusion—reflecting a collective commitment to
         honouring staff identities.
       compass: false
       categories: []
     - tag: 5.1.11
-      description: >-
+      title: >-
         Partnerships with families and community members are strengthened by
         staff who bring cultural and linguistic assets into those relationships.
       compass: false

@@ -4,20 +4,20 @@ title: Well-being at School
 initiating:
   considerations:
     - tag: 2.1.1
-      description: >-
+      title: >-
         Staff provide access to physical activity, healthy eating habits, and
         screen reduced environments.
       compass: false
       categories: []
     - tag: 2.1.2
-      description: >-
+      title: >-
         Learners have regular opportunities at school to create and develop
         relationships with learners and staff to foster a positive sense of
         belonging.
       compass: false
       categories: []
     - tag: 2.1.3
-      description: >-
+      title: >-
         School promotes equity, diversity, inclusion, accessibility and
         decolonizing practices.
       compass: false
@@ -25,19 +25,19 @@ initiating:
 implementing:
   considerations:
     - tag: 2.1.4
-      description: >-
+      title: >-
         Staff provide a positive classroom environment which includes
         self-regulatory practices and procedures.
       compass: false
       categories: []
     - tag: 2.1.5
-      description: >-
+      title: >-
         Learners develop self-awareness and self-management skills to support
         their social and emotional development.
       compass: false
       categories: []
     - tag: 2.1.6
-      description: >-
+      title: >-
         School uses demographic and learner wellness data to inform what health
         and well-being resources are needed to support learner populations
         centering equity-owed groups.
@@ -46,19 +46,19 @@ implementing:
 developing:
   considerations:
     - tag: 2.1.7
-      description: >-
+      title: >-
         School-wide SEL and well-being procedures have been developed and are
         consistently implemented.
       compass: false
       categories: []
     - tag: 2.1.8
-      description: >-
+      title: >-
         Learners are engaged in social awareness and responsible decision-making
         activities to enhance empathy and problem-solving skills.
       compass: false
       categories: []
     - tag: 2.1.9
-      description: >-
+      title: >-
         School works with families and community providers to reduce the
         barriers to accessing well-being services in and out of school.
       compass: false
@@ -66,20 +66,20 @@ developing:
 sustaining:
   considerations:
     - tag: 2.1.10
-      description: >-
+      title: >-
         There is a whole school approach to promoting health and well-being
         where the needs of all learners are consistently monitored and
         evaluated.
       compass: false
       categories: []
     - tag: 2.1.11
-      description: >-
+      title: >-
         School makes social and emotional learning a priority and is embedded in
         all curricular areas.
       compass: false
       categories: []
     - tag: 2.1.12
-      description: >-
+      title: >-
         School provides access to health and well-being proactive and
         intervention services to support learner populations, centering
         equity-owed groups.

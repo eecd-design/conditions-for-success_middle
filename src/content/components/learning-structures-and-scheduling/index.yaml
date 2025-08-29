@@ -4,7 +4,7 @@ title: Learning Structures and Scheduling
 initiating:
   considerations:
     - tag: 1.3.1
-      description: >-
+      title: >-
         The school day is divided into fixed periods (e.g., Period 1:
         Mathematics, Period 2: Science), with each learning area taught in
         isolation. Learners transition between classes based on a rigid
@@ -13,7 +13,7 @@ initiating:
       categories:
         - Structure
     - tag: 1.3.2
-      description: >-
+      title: >-
         Minimal interdisciplinary planning. Educators focus on individual
         learning area instruction with limited opportunities for
         cross-curricular connections.
@@ -21,21 +21,21 @@ initiating:
       categories:
         - Educator Collaboration
     - tag: 1.3.3
-      description: >-
+      title: >-
         Learners move from one learning area to another without explicit
         connections between content areas. Learning remains compartmentalized.
       compass: false
       categories:
         - Learner Experience
     - tag: 1.3.4
-      description: >-
+      title: >-
         Limited unstructured time. Informal learning primarily occurs in brief
         recesses, lunch breaks, or before/after school.
       compass: false
       categories:
         - Informal Learning
     - tag: 1.3.5
-      description: >-
+      title: >-
         Learner achievements are typically assessed and displayed within
         individual classes. School-wide exhibitions or interdisciplinary
         showcases are rare.
@@ -45,7 +45,7 @@ initiating:
 implementing:
   considerations:
     - tag: 1.3.6
-      description: >-
+      title: >-
         Learning areas are scheduled in longer blocks (e.g., 80-90 minutes),
         allowing for fewer transitions and more in-depth exploration of topics.
         Blocks may rotate every other day.
@@ -53,7 +53,7 @@ implementing:
       categories:
         - Structure
     - tag: 1.3.7
-      description: >-
+      title: >-
         More time for educators to design engaging, hands-on activities and
         incorporate elements of project-based learning within their learning
         areas.
@@ -61,14 +61,14 @@ implementing:
       categories:
         - Educator Collaboration
     - tag: 1.3.8
-      description: >-
+      title: >-
         Learners engage more deeply in each learning area due to extended class
         time, though learning areas are still largely taught separately.
       compass: false
       categories:
         - Learner Experience
     - tag: 1.3.9
-      description: >-
+      title: >-
         Some flexibility is built into longer periods, allowing learners to
         explore topics in greater depth, collaborate on projects, or engage in
         independent work.
@@ -76,7 +76,7 @@ implementing:
       categories:
         - Informal Learning
     - tag: 1.3.10
-      description: >-
+      title: >-
         Interdisciplinary projects may be presented in class or within
         small-scale school events, but they remain secondary to learning
         area-based assessment.
@@ -86,7 +86,7 @@ implementing:
 developing:
   considerations:
     - tag: 1.3.11
-      description: >-
+      title: >-
         Schedules are designed to support interdisciplinary learning, with
         flexible blocks of time that allow for co-teaching and cross-curricular
         units.
@@ -94,7 +94,7 @@ developing:
       categories:
         - Structure
     - tag: 1.3.12
-      description: >-
+      title: >-
         Educators meet regularly to plan interdisciplinary lessons, aligning
         instruction across multiple learning areas to create meaningful
         connections.
@@ -102,21 +102,21 @@ developing:
       categories:
         - Educator Collaboration
     - tag: 1.3.13
-      description: >-
+      title: >-
         Learning is structured around themes, projects, or inquiry-based
         experiences that help learners apply knowledge across disciplines.
       compass: false
       categories:
         - Learner Experience
     - tag: 1.3.14
-      description: >-
+      title: >-
         Schools create structured but flexible time for learner-led exploration,
         mentorship, and collaborative projects beyond formal class periods.
       compass: false
       categories:
         - Informal Learning
     - tag: 1.3.15
-      description: >-
+      title: >-
         Learners participate in exhibitions, presentations, or performances that
         highlight interdisciplinary learning and demonstrate real-world
         applications of their knowledge.
@@ -126,7 +126,7 @@ developing:
 sustaining:
   considerations:
     - tag: 1.3.16
-      description: >-
+      title: >-
         Highly flexible schedules allow learners to design personalized learning
         paths, integrating multiple learning areas based on their interests and
         goals.
@@ -134,7 +134,7 @@ sustaining:
       categories:
         - Structure
     - tag: 1.3.17
-      description: >-
+      title: >-
         Educators serve as facilitators and mentors, guiding learners in
         personalized learning experiences that blend academic and real-world
         applications.
@@ -142,7 +142,7 @@ sustaining:
       categories:
         - Educator Collaboration
     - tag: 1.3.18
-      description: >-
+      title: >-
         Learners take an active role in shaping their education, choosing
         projects, working collaboratively, and engaging in authentic learning
         experiences.
@@ -150,14 +150,14 @@ sustaining:
       categories:
         - Learner Experience
     - tag: 1.3.19
-      description: >-
+      title: >-
         Abundant opportunities for informal learning through flexible schedules,
         open learning spaces, access to mentors, and self-directed inquiry.
       compass: false
       categories:
         - Informal Learning
     - tag: 1.3.20
-      description: >-
+      title: >-
         Learners regularly present their work to diverse audiences, including
         peers, educators, families, and community members, through exhibitions,
         portfolios, and real-world demonstrations.

@@ -4,13 +4,13 @@ title: Professional Learning Communities
 initiating:
   considerations:
     - tag: 1.5.1
-      description: >-
+      title: >-
         Discuss Skill Descriptors but lack a structured approach to the four PLC
         questions.
       compass: false
       categories: []
     - tag: 1.5.2
-      description: >-
+      title: >-
         Rely primarily on individual assessment practices without common
         assessment and shared analysis of learner learning.
       compass: false
@@ -18,21 +18,21 @@ initiating:
 implementing:
   considerations:
     - tag: 1.5.3
-      description: >-
+      title: >-
         Identifies Skill Descriptors that they will provide explicit instruction
         in.
       compass: false
       categories: []
     - tag: 1.5.4
-      description: Begin to develop common assessments.
+      title: Begin to develop common assessments.
       compass: false
       categories: []
     - tag: 1.5.5
-      description: Begin to analyze learner data collectively.
+      title: Begin to analyze learner data collectively.
       compass: false
       categories: []
     - tag: 1.5.6
-      description: >-
+      title: >-
         Start discussing intervention response to learners who haven’t and have
         learned it but apply them inconsistently.
       compass: false
@@ -40,27 +40,27 @@ implementing:
 developing:
   considerations:
     - tag: 1.5.7
-      description: Regularly uses common assessments to monitor learner progress.
+      title: Regularly uses common assessments to monitor learner progress.
       compass: false
       categories: []
     - tag: 1.5.8
-      description: Uses results of common assessment to inform instructional decisions.
+      title: Uses results of common assessment to inform instructional decisions.
       compass: true
       categories: []
     - tag: 1.5.9
-      description: Implements targeted interventions based on learner needs.
+      title: Implements targeted interventions based on learner needs.
       compass: true
       categories: []
 sustaining:
   considerations:
     - tag: 1.5.10
-      description: >-
+      title: >-
         Continuously refines instructional practices based on learner data,
         ensuring all learners receive appropriate support and challenge.
       compass: false
       categories: []
     - tag: 1.5.11
-      description: >-
+      title: >-
         Embeds the four PLC questions into daily decision-making, fostering a
         culture of continuous improvement.
       compass: false

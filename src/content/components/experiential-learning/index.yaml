@@ -4,26 +4,26 @@ title: Experiential Learning
 initiating:
   considerations:
     - tag: 7.3.1
-      description: >-
+      title: >-
         Educators plan occasional experiential activities, such as outdoor
         observations or classroom experiments, with limited learner input.
       compass: false
       categories: []
     - tag: 7.3.2
-      description: Reflection on experiential activities is minimal or informal.
+      title: Reflection on experiential activities is minimal or informal.
       compass: false
       categories: []
 implementing:
   considerations:
     - tag: 7.3.3
-      description: >-
+      title: >-
         Learners participate in outdoor activities, like nature walks, local
         field studies, or Land-based learning opportunities connected to
         curriculum goals.
       compass: false
       categories: []
     - tag: 7.3.4
-      description: >-
+      title: >-
         Educators guide learners in reflecting on outdoor experiences through
         journals or group discussions.
       compass: false
@@ -31,14 +31,14 @@ implementing:
 developing:
   considerations:
     - tag: 7.3.5
-      description: >-
+      title: >-
         Learners collaborate to design experiential learning activities, such as
         community engagement projects, outdoor investigations, or Land-based
         learning.
       compass: false
       categories: []
     - tag: 7.3.6
-      description: >-
+      title: >-
         Reflection on experiential learning activities includes sharing learning
         outcomes with peers or the broader school community.
       compass: false
@@ -46,14 +46,14 @@ developing:
 sustaining:
   considerations:
     - tag: 7.3.7
-      description: >-
+      title: >-
         Experiential, outdoor learning, and Land-based learning are fully
         integrated, with learners routinely engaging in hands-on, real-world
         problem-solving.
       compass: false
       categories: []
     - tag: 7.3.8
-      description: >-
+      title: >-
         Learners present their learning to external audiences, such as parents
         or community members.
       compass: false

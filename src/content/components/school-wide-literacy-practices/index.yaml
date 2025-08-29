@@ -4,14 +4,14 @@ title: School-wide Literacy Practices
 initiating:
   considerations:
     - tag: 6.2.1
-      description: >-
+      title: >-
         Direct instruction focuses on isolated skills rather than deeper meaning
         (e.g., educators explicitly define literary terms before reading but do
         not connect them to learners’ unique strengths or prior knowledge).
       compass: false
       categories: []
     - tag: 6.2.2
-      description: >-
+      title: >-
         Vocabulary instruction relies on word lists rather than developing
         thematic and technical vocabulary across learning areas (e.g., learners
         memorize definitions instead of using new vocabulary to communicate
@@ -19,7 +19,7 @@ initiating:
       compass: false
       categories: []
     - tag: 6.2.3
-      description: >-
+      title: >-
         Summarizing and note-taking involve copying text rather than connecting
         reading and writing or increasing stamina (e.g., learners complete
         fill-in-the-blank summaries rather than constructing their own responses
@@ -27,7 +27,7 @@ initiating:
       compass: false
       categories: []
     - tag: 6.2.4
-      description: >-
+      title: >-
         Questioning is recall-based, with minimal opportunities to seek
         clarification or evaluate and respond to ideas (e.g., educators ask,
         “What happened in the story?” rather than prompting learners to explain
@@ -35,7 +35,7 @@ initiating:
       compass: false
       categories: []
     - tag: 6.2.5
-      description: >-
+      title: >-
         Assessment is summative, with little formative feedback for learners to
         reflect and grow as independent readers and writers.
       compass: false
@@ -43,7 +43,7 @@ initiating:
 implementing:
   considerations:
     - tag: 6.2.6
-      description: >-
+      title: >-
         Reciprocal teaching is introduced, allowing learners to use talk to own
         thinking and understanding through peer discussions (e.g., in pairs,
         learners take turns leading discussions about a shared text, practicing
@@ -51,7 +51,7 @@ implementing:
       compass: false
       categories: []
     - tag: 6.2.7
-      description: >-
+      title: >-
         Vocabulary instruction is embedded in reading and writing activities,
         leveraging prior knowledge to support meaning-making across texts (e.g.,
         before reading XX, learners connect historical context to the novel’s
@@ -59,7 +59,7 @@ implementing:
       compass: false
       categories: []
     - tag: 6.2.8
-      description: >-
+      title: >-
         Summarizing and note-taking are modeled, with learners beginning to
         apply these strategies independently to reference texts for verification
         (e.g., learners use graphic organizers to track key ideas while reading
@@ -67,7 +67,7 @@ implementing:
       compass: false
       categories: []
     - tag: 6.2.9
-      description: >-
+      title: >-
         Class discussion and cooperative learning emerge, allowing learners to
         begin supporting and defending their ideas with evidence (e.g., after
         reading an editorial, learners engage in a structured debate, practicing
@@ -75,7 +75,7 @@ implementing:
       compass: false
       categories: []
     - tag: 6.2.10
-      description: >-
+      title: >-
         Formative assessment is used, but learners rely on the educator for
         corrections rather than reflecting authentically on their progress
         (e.g., learners complete exit tickets, but reflection is still prompted
@@ -85,7 +85,7 @@ implementing:
 developing:
   considerations:
     - tag: 6.2.11
-      description: >-
+      title: >-
         Reciprocal teaching, questioning, and self-questioning are learner-led,
         allowing them to seek information and analyze critically (e.g., learners
         generate their own discussion questions, make connections between texts,
@@ -93,7 +93,7 @@ developing:
       compass: false
       categories: []
     - tag: 6.2.12
-      description: >-
+      title: >-
         Metacognitive strategies are used to reflect on and apply feedback from
         others (e.g., learners write reading reflections, identifying challenges
         and strategies they used to understand the text and how they plan to
@@ -101,7 +101,7 @@ developing:
       compass: false
       categories: []
     - tag: 6.2.13
-      description: >-
+      title: >-
         Cooperative learning and peer tutoring promote deeper engagement in
         assessing self and others (e.g., learners provide structured peer
         feedback on each other’s essays, using a rubric to guide constructive
@@ -109,7 +109,7 @@ developing:
       compass: false
       categories: []
     - tag: 6.2.14
-      description: >-
+      title: >-
         Class discussion and formal discussions (e.g., Socratic seminars,
         debates) are learner-driven, reinforcing the importance of supporting
         and extending understanding (e.g., learners facilitate their own
@@ -118,7 +118,7 @@ developing:
       compass: false
       categories: []
     - tag: 6.2.15
-      description: >-
+      title: >-
         Formative assessment and feedback loops guide instruction and learning
         (e.g., learners use self-assessment checklists and peer review
         strategies to refine their writing and questioning skills).
@@ -127,7 +127,7 @@ developing:
 sustaining:
   considerations:
     - tag: 6.2.16
-      description: >-
+      title: >-
         Self-questioning and metacognitive strategies are routine, allowing
         learners to read and write to learn about self, world, and others (e.g.,
         learners annotate texts independently, making inferences and drawing
@@ -135,14 +135,14 @@ sustaining:
       compass: false
       categories: []
     - tag: 6.2.17
-      description: >-
+      title: >-
         Scaffolding is dynamic, with learners adjusting their own supports as
         needed (e.g., some learners choose audiobooks, annotation tools, or
         graphic organizers that best support their comprehension needs.)
       compass: false
       categories: []
     - tag: 6.2.18
-      description: >-
+      title: >-
         Class discussions are fully learner-led, with deeper textual analysis
         supporting questioning and analyzing situations (e.g., in a
         learner-moderated debate, participants cite multiple texts as evidence
@@ -150,7 +150,7 @@ sustaining:
       compass: false
       categories: []
     - tag: 6.2.19
-      description: >-
+      title: >-
         Formal discussions (e.g., structured debates, peer-led literature
         circles) replace educator-led questioning (e.g., learners explore
         multiple representations by analyzing a novel, documentary, and opinion
@@ -158,7 +158,7 @@ sustaining:
       compass: false
       categories: []
     - tag: 6.2.20
-      description: >-
+      title: >-
         Formative assessment is fully integrated, with learners self-regulating
         their learning and demonstrating knowledge by writing for a variety of
         purposes (e.g., learners track their growth over time using a reading

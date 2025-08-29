@@ -6,33 +6,33 @@ title: >-
 initiating:
   considerations:
     - tag: 6.4.1
-      description: >-
+      title: >-
         Educators know how many of their learners are new to learning the
         language of instruction.
       compass: false
       categories: []
     - tag: 6.4.2
-      description: >-
+      title: >-
         Knowledge of the Common European Framework of Reference for Languages
         (CEFR) and language levels is minimal, and the levels are rarely
         discussed.
       compass: false
       categories: []
     - tag: 6.4.3
-      description: >-
+      title: >-
         Educators have heard the phrase, “every educator is a language
         educator,” but do not yet understand what it means.
       compass: false
       categories: []
     - tag: 6.4.4
-      description: >-
+      title: >-
         Educators are exploring how to provide scaffolds that are essential for
         some, but beneficial for all (e.g., visuals, sentence frames), but
         practices are siloed and inconsistent.
       compass: false
       categories: []
     - tag: 6.4.5
-      description: >-
+      title: >-
         Educators feel unsupported in meeting the needs of the learners in their
         classes who are learning language at the same time as content.
       compass: false
@@ -40,30 +40,30 @@ initiating:
 implementing:
   considerations:
     - tag: 6.4.6
-      description: >-
+      title: >-
         Educators know the CEFR levels of their learners who are new to the
         language of instruction.
       compass: false
       categories: []
     - tag: 6.4.7
-      description: Educators can share a basic understanding of the CEFR and its levels.
+      title: Educators can share a basic understanding of the CEFR and its levels.
       compass: false
       categories: []
     - tag: 6.4.8
-      description: >-
+      title: >-
         Educators can explain their role in the language development of their
         learners.
       compass: false
       categories: []
     - tag: 6.4.9
-      description: >-
+      title: >-
         Educators are exploring how to add language scaffolds to instruction and
         assessment (e.g., visuals, sentence frames, word banks, graphic
         organizers, judicious translation), but practices are inconsistent.
       compass: false
       categories: []
     - tag: 6.4.10
-      description: >-
+      title: >-
         Educators can name who to reach out to with questions they have about
         supporting the language learners and newcomers in their classes.
       compass: false
@@ -71,32 +71,32 @@ implementing:
 developing:
   considerations:
     - tag: 6.4.11
-      description: >-
+      title: >-
         Educators use learners’ CEFR levels to inform the entry point to the
         content they teach, and plan for appropriate scaffolds; they know what
         learners can do in language, and what they are working on.
       compass: false
       categories: []
     - tag: 6.4.12
-      description: >-
+      title: >-
         Some educators include language objectives in their lesson plans, along
         with content objectives.
       compass: false
       categories: []
     - tag: 6.4.13
-      description: >-
+      title: >-
         Educators can explain the phrase, “every educator is a language
         educator,” and how it applies in their practice.
       compass: false
       categories: []
     - tag: 6.4.14
-      description: >-
+      title: >-
         Language scaffolds for both instruction and assessment are consistently
         applied in most classrooms.
       compass: true
       categories: []
     - tag: 6.4.15
-      description: >-
+      title: >-
         Educators feel supported in meeting the needs of the learners in their
         classes who are learning language at the same time as content.
       compass: false
@@ -104,31 +104,31 @@ developing:
 sustaining:
   considerations:
     - tag: 6.4.16
-      description: >-
+      title: >-
         Educators use the CEFR levels of their learners to plan for instruction
         and assessment, using data to refine supports.
       compass: false
       categories: []
     - tag: 6.4.17
-      description: >-
+      title: >-
         Language objectives are consistently embedded in lesson planning across
         learning areas.
       compass: false
       categories: []
     - tag: 6.4.18
-      description: >-
+      title: >-
         Educators share with others how they plan and enact linguistically
         inclusive instruction in their learning area.
       compass: false
       categories: []
     - tag: 6.4.19
-      description: >-
+      title: >-
         Language scaffolds for both instruction and assessment are consistently
         applied across the school.
       compass: false
       categories: []
     - tag: 6.4.20
-      description: >-
+      title: >-
         Educators can share information with others (new educators, team
         members) about strategies to use to meet the needs of the learners in
         their classes who are learning language at the same time as content.

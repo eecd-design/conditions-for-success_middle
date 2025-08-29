@@ -4,19 +4,19 @@ title: Accessing Resources
 initiating:
   considerations:
     - tag: 2.4.1
-      description: >-
+      title: >-
         A formal system for requesting additional resources is in the early
         stages and may not be widely understood or used.
       compass: false
       categories: []
     - tag: 2.4.2
-      description: >-
+      title: >-
         Educators are unsure of how to request additional support and resources
         for learners.
       compass: false
       categories: []
     - tag: 2.4.3
-      description: >-
+      title: >-
         Some resources are available, but access is inconsistent and often
         reactive.
       compass: false
@@ -24,19 +24,19 @@ initiating:
 implementing:
   considerations:
     - tag: 2.4.4
-      description: >-
+      title: >-
         A formal system is in place for requesting and accessing resources, with
         educators beginning to use it regularly.
       compass: false
       categories: []
     - tag: 2.4.5
-      description: >-
+      title: >-
         Staff are becoming familiar with available academic, linguistic,
         social-cultural, social-emotional, and behavioural supports.
       compass: false
       categories: []
     - tag: 2.4.6
-      description: >-
+      title: >-
         Some resources are consistently used to support learners, but barriers
         to access may still exist (e.g., MLLs using technology to access grade
         level text).
@@ -45,13 +45,13 @@ implementing:
 developing:
   considerations:
     - tag: 2.4.7
-      description: >-
+      title: >-
         The resource request system is streamlined, ensuring staff can access
         the support they need in a timely manner.
       compass: false
       categories: []
     - tag: 2.4.8
-      description: >-
+      title: >-
         Educators have easy access to resources to support learners achieving
         below grade level expectations in literacy and numeracy, learning
         language at the same time as content, and achieving above grade level
@@ -59,7 +59,7 @@ developing:
       compass: true
       categories: []
     - tag: 2.4.9
-      description: >-
+      title: >-
         Collaboration between staff and external supports and services (e.g.,
         Central Office Curriculum and ESS Coordinators).
       compass: true
@@ -67,25 +67,25 @@ developing:
 sustaining:
   considerations:
     - tag: 2.4.10
-      description: >-
+      title: >-
         Educators in rural schools establish virtual collaboration systems
         (e.g., Microsoft Teams) for cross-school PLCs.
       compass: false
       categories: []
     - tag: 2.4.11
-      description: >-
+      title: >-
         The system for accessing resources is fully embedded and efficient,
         ensuring all learners thrive.
       compass: true
       categories: []
     - tag: 2.4.12
-      description: >-
+      title: >-
         Educators have quick and effective access to resources to meet learners'
         academic, linguistic, social-emotional, and behavioural needs.
       compass: true
       categories: []
     - tag: 2.4.13
-      description: >-
+      title: >-
         There is a continuous process for evaluating and adapting the resource
         system to meet changing needs.
       compass: true

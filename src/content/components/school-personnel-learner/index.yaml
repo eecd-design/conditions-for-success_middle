@@ -4,26 +4,26 @@ title: School Personnel-Learner
 initiating:
   considerations:
     - tag: 3.1.1
-      description: >-
+      title: >-
         Begin incorporating short, culturally-responsive lessons on conflict
         resolution or active listening into academic or advisory time.
       compass: false
       categories: []
     - tag: 3.1.2
-      description: >-
+      title: >-
         Provide structured opportunities for staff to demonstrate respectful
         interactions with learners during transitions, lunch, and recess.
       compass: false
       categories: []
     - tag: 3.1.3
-      description: >-
+      title: >-
         Ask each learner if they feel connected to at least one peer and one
         adult; use this information to address gaps (e.g., pairing a learner
         with a mentor).
       compass: false
       categories: []
     - tag: 3.1.4
-      description: >-
+      title: >-
         Offer introductory professional learning on trauma-informed approaches
         so educators understand how to create emotionally safe spaces.
       compass: false
@@ -31,19 +31,19 @@ initiating:
 implementing:
   considerations:
     - tag: 3.1.5
-      description: >-
+      title: >-
         Create dedicated times (e.g., morning meetings, advisory periods) to
         explicitly teach and practice positive relationship-building.
       compass: false
       categories: []
     - tag: 3.1.6
-      description: >-
+      title: >-
         Organize social clubs or intramurals where staff focus on fostering
         inclusion and respectful peer interactions.
       compass: false
       categories: []
     - tag: 3.1.7
-      description: >-
+      title: >-
         Assign learners to smaller cohorts with a core set of educators,
         allowing deeper connections and better knowledge of each learner’s
         background and needs. Implement systems like “Check-In/Check-Out” so
@@ -52,7 +52,7 @@ implementing:
       compass: true
       categories: []
     - tag: 3.1.8
-      description: >-
+      title: >-
         Train staff in de-escalation techniques, empathetic listening, and
         recognizing signs of stress in learners.
       compass: false
@@ -60,7 +60,7 @@ implementing:
 developing:
   considerations:
     - tag: 3.1.9
-      description: >-
+      title: >-
         Embed collaborative tasks or projects in different learning areas,
         guiding learners to practice empathy, communication, and conflict
         resolution. Train staff in restorative circles or peer mediation to
@@ -69,19 +69,19 @@ developing:
       compass: false
       categories: []
     - tag: 3.1.10
-      description: >-
+      title: >-
         Expand opportunities for learners to work in diverse groups, encouraging
         them to draw on each other’s strengths and perspectives.
       compass: true
       categories: []
     - tag: 3.1.11
-      description: >-
+      title: >-
         Facilitate regular one-on-one or small-group check-ins where learners
         share successes, challenges, and set personal goals with a staff mentor.
       compass: true
       categories: []
     - tag: 3.1.12
-      description: >-
+      title: >-
         Continue professional learning on trauma-invested strategies, focusing
         on building resilience and a sense of belonging in every classroom.
       compass: false
@@ -89,26 +89,26 @@ developing:
 sustaining:
   considerations:
     - tag: 3.1.13
-      description: >-
+      title: >-
         Use feedback from learners and staff to continually update relationship
         skills instruction, ensuring relevance and effectiveness.
       compass: false
       categories: []
     - tag: 3.1.14
-      description: >-
+      title: >-
         Maintain and broaden social clubs, lunch groups, or advisory formats
         informed by learner voice to meet evolving interests.
       compass: false
       categories: []
     - tag: 3.1.15
-      description: >-
+      title: >-
         Encourage learners and staff to regularly share positive experiences,
         celebrate individual growth, and acknowledge milestones (e.g.,
         “Shout-Out Boards”).
       compass: false
       categories: []
     - tag: 3.1.16
-      description: >-
+      title: >-
         School leaders champion a trauma-invested culture modeling empathic
         communication, promoting emotional safety, and providing ongoing
         support/training.

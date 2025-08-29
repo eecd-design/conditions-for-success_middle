@@ -149,7 +149,7 @@ export default config({
 									}
 								}
 							}),
-							description: fields.text({
+							title: fields.text({
 								label: 'Description',
 								multiline: true,
 							}),
@@ -199,7 +199,7 @@ export default config({
 									}
 								}
 							}),
-							description: fields.text({
+							title: fields.text({
 								label: 'Description',
 								multiline: true,
 							}),
@@ -249,7 +249,7 @@ export default config({
 									}
 								}
 							}),
-							description: fields.text({
+							title: fields.text({
 								label: 'Description',
 								multiline: true,
 							}),
@@ -299,7 +299,7 @@ export default config({
 									}
 								}
 							}),
-							description: fields.text({
+							title: fields.text({
 								label: 'Description',
 								multiline: true,
 							}),

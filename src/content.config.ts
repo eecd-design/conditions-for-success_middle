@@ -24,7 +24,7 @@ const components = defineCollection({
             considerations: z.array(
                 z.object({
                     tag: z.string(),
-                    description: z.string(),
+                    title: z.string(),
                     compass: z.boolean(),
 					categories: z.array(z.string()),
                 })
@@ -34,7 +34,7 @@ const components = defineCollection({
             considerations: z.array(
                 z.object({
                     tag: z.string(),
-                    description: z.string(),
+                    title: z.string(),
                     compass: z.boolean(),
 					categories: z.array(z.string()),
                 })
@@ -44,7 +44,7 @@ const components = defineCollection({
             considerations: z.array(
                 z.object({
                     tag: z.string(),
-                    description: z.string(),
+                    title: z.string(),
                     compass: z.boolean(),
 					categories: z.array(z.string()),
                 })
@@ -54,7 +54,7 @@ const components = defineCollection({
             considerations: z.array(
                 z.object({
                     tag: z.string(),
-                    description: z.string(),
+                    title: z.string(),
                     compass: z.boolean(),
 					categories: z.array(z.string()),
                 })
