@@ -1,0 +1,129 @@
+---
+import { getResourcePath } from "src/utilities/helpers";
+
+import { toTitleCase } from "src/utilities/helpers";
+
+import ResourceIcons from "./icons/ResourceIcons.astro";
+import IconArrowRight from "./icons/IconArrowRight_16.astro";
+import IconExpand from "./icons/IconExpand_16.astro";
+import IconExternal from "./icons/IconExternal_16.astro";
+import IconDownload from "./icons/IconDownload_16.astro";
+
+let { itemData } = Astro.props;
+console.log('Item Data', itemData);
+// TODO: Convert showDescription to layout compact/detailed
+let {
+	category = null,
+	colour = null,
+	title = null,
+	tag = null,
+	type = null,
+	dateAdded = null,
+	description = null,
+	external = null,
+	indicator = null,
+	slug = null,
+	linkedIndicators = null,
+	linkedComponents = null,
+	linkedConsiderations = null,
+} = itemData;
+
+let path;
+let date = null;
+if (category === 'resource') {
+	path = getResourcePath(itemData);
+	date = new Date(dateAdded).toLocaleDateString("en-US", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+} else {
+	if (category === 'indicator') path = `/big-seven/${slug}`;
+	else path = `/big-seven/${indicator}#${category}-${tag.replaceAll('.', '-')}`;
+}
+
+let ItemWrapper = "li";
+let itemWrapperAttrs =
+	type === "resource"
+		? {
+				"data-category": category,
+				"data-date-added": dateAdded,
+				"data-description": description,
+				"data-title": title.toLowerCase(),
+				"data-type": type,
+				"data-indicators": JSON.stringify(linkedIndicators),
+				"data-components": JSON.stringify(linkedComponents),
+				"data-considerations": JSON.stringify(linkedConsiderations),
+			}
+		: {
+				"data-category": category,
+				"data-tag": tag,
+				"data-theme": colour,
+				"data-title": title.toLowerCase(),
+			};
+
+let InteractiveWrapper = ["video", "audio"].includes(type) ? "button" : "a";
+let interactiveWrapperAttrs = ["video", "audio"].includes(type)
+	? {
+			class: "open-dialog",
+			type: "button",
+			"data-style-as": "link",
+			"data-dialog": "media-dialog",
+			"data-media-type": type,
+			"data-media-src": path,
+			// TODO: Convert external/internal to true/false
+			"data-media-storage-location": external.discriminant
+				? "external"
+				: "internal",
+		}
+	: {
+			href: path,
+		};
+
+let DestinationIcon = null;
+if (category !== 'resource') {
+    DestinationIcon = IconArrowRight;
+} else if (['video', 'audio'].includes(type)) {
+    DestinationIcon = IconExpand;
+} else if (['document', 'presentation'].includes(type)) {
+    DestinationIcon = IconDownload;
+} else if (type === 'website') {
+    DestinationIcon = IconExternal;
+}
+---
+
+<ItemWrapper {...itemWrapperAttrs}>
+	<InteractiveWrapper {...interactiveWrapperAttrs}>
+		<ResourceIcons type={type} classes={["type"]} dataset={[{key: "restrict-content", value: "resources"}]}/>
+		<div class="separator group" data-orientation="vertical" data-restrict-content="resources" aria-hidden="true"></div>
+		<span class="text-container">
+			<!-- TODO: Investigate whether I can get rid of this text span -->
+			<span class="text">
+				<span class="label" data-restrict-content="mixed">
+					{category !== 'resource' ? `${toTitleCase(category)} ${tag}` : `${toTitleCase(type)} Resource`}
+				</span>
+				<span class="title">{title}</span>
+				{ date && (
+					<span
+						class="date"
+						data-theme="red"
+						data-restrict-layout="detailed"
+						data-restrict-content="resources">Date Added: {date}</span>
+				)}
+				{
+					description && (
+						<span
+							class="description"
+							data-restrict-layout="detailed"
+						>
+							{description}
+						</span>
+					)
+				}
+			</span>
+		</span>
+		<span class="icon-container">
+			<DestinationIcon classes={['destination']} />
+		</span>
+	</InteractiveWrapper>
+</ItemWrapper>

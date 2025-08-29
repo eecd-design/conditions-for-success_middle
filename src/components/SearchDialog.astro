@@ -1,14 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 
-import { findObjectByKey, getResourcePath, toTitleCase } from "../utilities/helpers"
+import { findObjectByKey } from "../utilities/helpers"
 
 import IconXmark from "./icons/IconXmark_20.astro";
 import IconWarningSmall from "./icons/IconWarning_16.astro";
-import IconArrowRight from "./icons/IconArrowRight_16.astro";
-import IconDownload from "./icons/IconDownload_16.astro";
-import IconExternal from "./icons/IconExternal_16.astro";
 import IconSearch from "./icons/IconSearch_20.astro";
+import LinkListItem from "./LinkListItem.astro";
 
 let searchList = [];
 
@@ -16,13 +14,10 @@ let searchList = [];
 let allIndicators = await getCollection("indicators");
 
 for (let indicator of allIndicators) {
-	searchList.push({
-		category: 'indicator',
-		tag: indicator.data.tag,
-		title: indicator.data.title,
-		path: `/big-seven/${indicator.id}`,
-		colour: indicator.data.colour,
-	})
+	let data = JSON.parse(JSON.stringify(indicator.data));
+	data.category = 'indicator';
+	data.slug = indicator.id;
+	searchList.push(data);
 }
 
 // Get all indicator components
@@ -32,22 +27,19 @@ for (let component of allComponents) {
 
 	let colour = findObjectByKey(allIndicators, 'id', component.data.indicator)?.data.colour;
 
-	searchList.push({
-		category: 'component',
-		tag: component.data.tag,
-		title: component.data.title,
-		path: `/big-seven/${component.data.indicator}#component-${component.data.tag.replaceAll('.', '-')}`,
-		colour: colour,
-	})
+	let componentData = JSON.parse(JSON.stringify(component.data));
+	componentData.category = 'component';
+	componentData.colour = colour;
+	searchList.push(componentData);
 
 	for (let consideration of component.data['initiating'].considerations) {
-		searchList.push({
-			category: 'consideration',
-			tag: consideration.tag,
-			title: consideration.description,
-			path: `/big-seven/${component.data.indicator}#consideration-${consideration.tag.replaceAll('.', '-')}`,
-			colour: colour,
-		})
+
+		let considerationData = JSON.parse(JSON.stringify(consideration));
+		considerationData.category = 'consideration';
+		considerationData.indicator = component.data.indicator;
+		considerationData.colour = colour;
+		searchList.push(considerationData);		
+
 	}
 
 }
@@ -57,18 +49,10 @@ let allResources = await getCollection("resources");
 
 for (let resource of allResources) {
 
-	let { data } = resource;
-	let { title, type, external } = data;
+	let data = JSON.parse(JSON.stringify(resource.data));
+	data.category = 'resource';
+	searchList.push(data);
 
-	let path = getResourcePath(resource);
-
-	searchList.push({
-		category: 'resource',
-		type: type,
-		title: title,
-		path: path,
-		external: external.discriminant,
-	})
 }
 
 ---
@@ -87,7 +71,7 @@ for (let resource of allResources) {
 		Search
 	</h2>
 
-	<form data-no-value-behaviour="hidden" data-search-list="site-content-list">
+	<form data-no-value-behaviour="hidden" data-list="site-content-list">
 
 		<fieldset class="search">
 			<p
@@ -121,38 +105,10 @@ for (let resource of allResources) {
 			>
 		</p>
 
-		<ul id="site-content-list" class="link-list" data-style="divided" hidden>
-			{searchList.map((item) => {
-				return (
-					<li
-						data-category={item.category}
-						data-title={item.title.toLowerCase()}
-						data-tag={item.tag ?? null}
-						data-type={item.type ?? null}
-						data-theme={item.colour ?? null}
-						data-external={item.external}
-					>
-						<a href={item.path}>
-							<span class="text-container">
-								<span class="label">
-									{item.category !== 'resource' ? `${toTitleCase(item.category)} ${item.tag}` : `${toTitleCase(item.type)} Resource`}
-								</span>
-								<span class="text">
-									{item.title}
-								</span>
-							</span>
-							<span class="icon-container">
-								{item.category !== 'resource' ?
-									<IconArrowRight classes={['destination']} />
-								:
-									item.type === 'document' || item.type === 'presentation' ?
-									<IconDownload classes={['destination']} /> : <IconExternal classes={['destination']} />
-								}
-							</span>
-						</a>
-					</li>
-				)
-			})}
+		<ul id="site-content-list" class="link-list" data-style="divided" data-content="mixed" hidden>
+			{searchList.map((item) => (
+				<LinkListItem itemData={item}/>
+			))}
 		</ul>
 
 	</div>
@@ -170,7 +126,7 @@ for (let resource of allResources) {
 
 <script>
 
-	import { search } from "../utilities/filter";
+	import { search } from "../utilities/list";
 
 	search.init();
 	document.addEventListener('astro:before-swap', search.destroy);

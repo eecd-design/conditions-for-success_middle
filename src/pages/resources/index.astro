@@ -4,17 +4,22 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Accordion from "src/components/Accordion.astro";
 import MediaDialog from "src/components/MediaDialog.astro";
-import ResourceLink from "src/components/ResourceLink.astro";
+import LinkListItem from "src/components/LinkListItem.astro";
 
 import IconCheckmark from "../../components/icons/IconCheckmark_8.astro";
 import IconFilterClear from "src/components/icons/IconFilterClear_20.astro";
 import IconWarning from "src/components/icons/IconWarning_16.astro";
 import IconSearch from "src/components/icons/IconSearch_20.astro";
+import IconSortAlpha from "src/components/icons/IconSortAlpha_20.astro";
+import IconSortTime from "src/components/icons/IconSortTime_20.astro";
+import IconCompact from "src/components/icons/IconCompact_20.astro";
+import IconDetailed from "src/components/icons/IconDetailed_20.astro";
 
 let allResources = await getCollection("resources");
 
 allResources.sort((a, b) => {
-	return (a.data.title || '').localeCompare(b.data.title || '');
+	let toDate = (value?: Date) => value ? new Date(value) : new Date(0);
+	return toDate(b.data.dateAdded).getTime() - toDate(a.data.dateAdded).getTime();
 });
 
 let allIndicators = await getCollection("indicators");
@@ -39,7 +44,7 @@ let types = [
 
 	<aside class="filters-container">
 
-		<form data-no-value-behaviour="shown" data-filter-list="resources-list" data-tag-list="active-filters-list">
+		<form data-no-value-behaviour="shown" data-list="resources-list" data-tag-list="active-filters-list">
 			
 			<div class="heading-group">
 				<h2 class="heading">
@@ -117,7 +122,7 @@ let types = [
 
 		<ul id="active-filters-list"></ul>
 
-		<form data-no-value-behaviour="shown" data-search-list="resources-list">		
+		<form class="list-controls" data-no-value-behaviour="shown" data-list="resources-list">		
 
 			<fieldset class="search">
 				<div class="input-container">
@@ -134,10 +139,59 @@ let types = [
 				</div>
 			</fieldset>
 
+			<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
+
+			<fieldset class="sort">
+				<!-- TODO: Add sort icon https://mui.com/material-ui/material-icons/?theme=Outlined&query=sort -->
+				<legend aria-label="List Sort Options">Sort</legend>
+				<div class="button-group">
+					<button type="button" value="date" aria-label="Sort list by date added" aria-pressed="true">
+						<span class="icon-and-label-container">
+							<IconSortTime />
+							<span class="label-container">
+								<span class="label">Date</span>
+							</span>
+						</span>
+					</button>
+					<button type="button" value="title" aria-label="Sort list by title">
+						<span class="icon-and-label-container">
+							<IconSortAlpha />
+							<span class="label-container">
+								<span class="label">Title</span>
+							</span>
+						</span>
+					</button>
+				</div>
+			</fieldset>
+
+			<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
+
+			<fieldset class="layout">
+				<legend aria-label="List Layout Options">Layout</legend>
+				<div class="button-group">
+					<button type="button" value="compact" aria-label="Switch to compact list layout" aria-pressed="true">
+						<span class="icon-and-label-container">
+							<IconCompact />
+							<span class="label-container">
+								<span class="label">Compact</span>
+							</span>
+						</span>
+					</button>
+					<button type="button" value="detailed" aria-label="Switch to compact list layout">
+						<span class="icon-and-label-container">
+							<IconDetailed />
+							<span class="label-container">
+								<span class="label">Detailed</span>
+							</span>
+						</span>
+					</button>
+				</div>
+			</fieldset>
+
 		</form>
 
 		<!-- TODO: Add sort dropdown -->
-		<!-- TODO: Add layout toggle (compact = no description, description) -->
+		<!-- TODO: Add show/hide descriptions toggle -->
 
 		<div class="list-container">
 
@@ -148,18 +202,12 @@ let types = [
 				>
 			</p>
 
-			<ul id="resources-list" class="link-list" data-style="divided">
+			<ul id="resources-list" class="link-list" data-style="divided" data-layout="compact" data-content="resources">
 				{allResources.map((resource) => {
-
-					let { data } = resource;
-					let { title, type, linkedIndicators, linkedComponents, linkedConsiderations } = data;
-
-					return (
-						<li data-title={title.toLowerCase()} data-type={type}
-							data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-							<ResourceLink resource={resource} showDescription={true}/>
-						</li>
-					)
+					let data = JSON.parse(JSON.stringify(resource.data));
+					data.category = 'resource';
+					data.slug = resource.id;
+					return <LinkListItem itemData={data}/> 
 				})}
 			</ul>
 		</div>
@@ -395,6 +443,57 @@ let types = [
 
 	/* TODO: Update the assessor buttons to match these. */	
 
+	form.list-controls {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: end;
+		gap: 1rem;
+	}
+
+	form.list-controls fieldset.search {
+		flex-grow: 1;
+	}
+
+	form.list-controls fieldset:is(.sort, .layout) {
+		--group-gap: 0.5rem;
+	}
+
+	form.list-controls fieldset:is(.sort, .layout) legend {
+		font-size: 0.75rem;
+		color: var(--colour-ui-neutral-subtle);
+		margin: 0 0 0.325rem;
+	}
+
+	form.list-controls fieldset:is(.sort, .layout) button {
+		--icon-size: 1.25rem;
+		font-size: 0.875rem;
+		height: 2rem;
+	}
+
+	form.list-controls fieldset:is(.sort, .layout) button:is(:hover, :focus-visible, [aria-pressed="true"]) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+	}
+
+	form.list-controls fieldset:is(.sort, .layout):has(button:not([aria-pressed="true"]):is(:hover, :focus-visible)) button[aria-pressed="true"] {
+		--button-background-colour: var(--colour-fill-neutral-subtle);
+		--icon-colour: var(--colour-ui-neutral);
+		--label-colour: var(--colour-ui-neutral);
+	}
+
+	form.list-controls fieldset:is(.sort, .layout) button[aria-pressed="true"] {
+		pointer-events: none;
+	}
+
+	form.list-controls fieldset:is(.sort, .layout) button .label-container {
+		display: none;
+	}
+
+	form.list-controls .separator {
+		--separator-long-edge-dimension: 1.5rem;
+		margin-bottom: 0.25rem;
+	}
+
 </style>
 
 <script>
@@ -403,9 +502,7 @@ let types = [
 	// Imports
 	//
 
-	import { filter, search } from "src/utilities/filter";
-	import { htmlToElement } from "src/utilities/helpers";
-
+	import { filter, search, sort, layout } from "src/utilities/list";
 
 
 	//
@@ -425,6 +522,14 @@ let types = [
 	search.init();
 	document.addEventListener('astro:before-swap', search.destroy);
 	document.addEventListener('astro:after-swap', search.init);
+
+	sort.init();
+	document.addEventListener('astro:before-swap', sort.destroy);
+	document.addEventListener('astro:after-swap', sort.init);
+
+	layout.init();
+	document.addEventListener('astro:before-swap', layout.destroy);
+	document.addEventListener('astro:after-swap', layout.init);
 
 
 </script>

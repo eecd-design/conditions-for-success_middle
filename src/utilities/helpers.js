@@ -74,10 +74,9 @@ let formatDateHTML = (timestamp) => {
 
 let getResourcePath = (resource) => {
 
-	let { id, data } = resource;
-	let { type, external } = data;
+	let { slug, type, external } = resource;
 
-	if (!id || !data || !type || !external) return null;
+	if (!slug || !type || !external) return null;
 	
 	if (external.discriminant === true) {
 
@@ -132,7 +131,7 @@ let getResourcePath = (resource) => {
 
 		} 
 			
-		path = `/assets/${subfolder}/${id}.${fileType}`; 
+		path = `/assets/${subfolder}/${slug}.${fileType}`; 
 		return path;
 
 	} else {

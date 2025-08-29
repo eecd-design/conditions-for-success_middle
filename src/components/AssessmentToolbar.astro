@@ -380,6 +380,8 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		// Get the update fields
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 
+		// TODO: Only run in assessment mode
+
 		exportField.textContent = getExportStatus();
 
 	};

@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 
 import Accordion from "../components/Accordion.astro";
-import ResourceLink from "./ResourceLink.astro";
+import LinkListItem from "./LinkListItem.astro";
 
 import PhaseIcons from "./icons/PhaseIcons.astro";
 import IconFlag from "./icons/IconFlag_24.astro";
@@ -239,7 +239,7 @@ let phases = [
 														</div>
 	
 														<div class="description-container">
-															<p>{consideration.description}</p>
+															<p>{consideration.title}</p>
 														</div>
 
 														{ consideration.resources && consideration.resources.length > 0 && (
@@ -250,20 +250,16 @@ let phases = [
 																	<IconCaretDown14/>
 																</summary>
 
+																{/* TODO: Investigate style alternative to border separting button from list. Marcia brought this up. Will need an example with multiple resources to see how that looks. */}
+
 																<div class="contents">
-																	<ul class="link-list" data-style="divided">
-																		{
-																			consideration.resources.map((resource) => {
-																				let { data } = resource;
-																				let { title, linkedIndicators, linkedComponents, linkedConsiderations } = data;
-																				return (
-																					<li data-title={title.toLowerCase()}
-																						data-indicators={JSON.stringify(linkedIndicators)} data-components={JSON.stringify(linkedComponents)} data-considerations={JSON.stringify(linkedConsiderations)}>
-																						<ResourceLink resource={resource} showDescription={true}/>
-																					</li>
-																				)
-																			}
-																		)}
+																	<ul class="link-list" data-style="divided" data-layout="detailed" data-content="resources">
+																		{consideration.resources.map((resource) => {
+																			let data = JSON.parse(JSON.stringify(resource.data));
+																			data.category = 'resource';
+																			data.slug = resource.id;
+																			return <LinkListItem itemData={data}/> 
+																		})}
 																	</ul>
 																</div>
 
@@ -500,6 +496,10 @@ let phases = [
 		margin: 0.75rem 0 0;
 	}
 
+	.considerations-list .resources li .text-container .date  {
+		display: none;
+	}
+
 
 </style>
 
@@ -509,7 +509,7 @@ let phases = [
 	// Imports
 	//
 
-	import { filter } from "src/utilities/filter";
+	import { filter } from "src/utilities/list";
 
 	import {
 		updateChangeLog,

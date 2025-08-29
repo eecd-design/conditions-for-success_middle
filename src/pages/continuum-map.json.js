@@ -55,7 +55,7 @@ for (let component of allComponents) {
 			// Add consideration data to the map
 			mapPhase.considerations.push({
 				tag: consideration.tag.trim(),
-				description: consideration.description.trim(),
+				description: consideration.title.trim(),
 			});
 	
 			// Update the consideration count at all levels

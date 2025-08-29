@@ -1,5 +1,9 @@
 import { htmlToElement, toTitleCase } from "./helpers";
 
+//
+// Shared Methods
+//
+
 /**
  * Filters a list of <li> items based on a filter button value and hides non-matching items.
  * 
@@ -12,8 +16,8 @@ let filterListByFilterBtns = ({ filters, list }) => {
 
 	let results = [];
 	let matches = 0;
-	let sortType = 'byRelevance';
-	let presortType = 'byTitle';
+	let sortType = 'relevance';
+	let presortType = 'title';
 
 	let items = list.querySelectorAll('li');
 
@@ -37,7 +41,7 @@ let filterListByFilterBtns = ({ filters, list }) => {
 
 			result.match = true;
 			matches += 1;
-			sortType = 'byTitle';
+			sortType = 'title';
 			presortType = null;
 
 		} else {
@@ -134,22 +138,20 @@ let filterListByFilterBtns = ({ filters, list }) => {
  *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
  * @param {String} options.noValueBehaviour - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
  */
-let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
+let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 
 	let value = input.value.trim();
 
 	let results = [];
 	let matches = 0;
-	let presortType = value.length === 0 ? null : 'byTitle';
-	let sortType = 	value.length === 0 ? 'byTitle' : 'byRelevance';
-	console.log(sortType);
+	let presortType = value.length === 0 ? null : 'title';
+	let sortType = 	value.length === 0 ? 'title' : 'relevance';
 
 	let items = list.querySelectorAll('li');
 
 	for (const item of items) {
 		
 		// Get the item data
-		let type = item.getAttribute('data-type');
 		let title = item.getAttribute('data-title');
 		let tag = item.getAttribute('data-tag');
 		
@@ -180,7 +182,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 		// 1. Check for tag match
 		if (tag && tag.startsWith(value)) {
 			markMatch(10);
-			presortType = 'byTag';
+			presortType = 'tag';
 			
 		// 2. Check for title match
 		} else if (title) {
@@ -242,19 +244,17 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
  * Sorts and reorders list items based on a given type and optional presort.
  *
  * @param {Object} options
- * @param {string} [options.sortType='byTitle'] - Primary sort: 'byTitle', 'byDate', 'byDateNumAsc', 'byDateNumDesc', or 'byRelevance'.
- * @param {string|null} [options.presortType=null] - Optional presort: 'byTag' or 'byTitle'.
+ * @param {string} [options.sortType='title'] - Primary sort: 'title', 'date', or 'relevance'.
+ * @param {string|null} [options.presortType=null] - Optional presort: 'tag' or 'title'.
  * @param {HTMLElement} options.list - Container holding the list items.
  * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
  */
-let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
-
-	console.log('Before Sort', items);
+let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
 
 	if (!list || !items || !Array.isArray(items)) return;
 
 	// Ensure all items have a numeric relevance score
-	if (sortType === 'byRelevance') {
+	if (sortType === 'relevance') {
 		for (let item of items) {
 			if (item.relevance === undefined || isNaN(item.relevance)) {
 				item.relevance = 0;
@@ -263,11 +263,11 @@ let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
 	}
 
 	// Optional presort (by tag or title)
-	if (presortType === 'byTag') {
+	if (presortType === 'tag') {
 		items.sort((a, b) => {
 			return (a.tag || '').localeCompare(b.tag || '');
 		});
-	} else if (presortType === 'byTitle') {
+	} else if (presortType === 'title') {
 		items.sort((a, b) => {
 			return (a.title || '').localeCompare(b.title || '');
 		});
@@ -275,36 +275,20 @@ let sortList = ({ sortType = 'byTitle', presortType = null, list, items }) => {
 
 	// Primary sort
 	items.sort((a, b) => {
-		if (sortType === 'byTitle') {
+		if (sortType === 'title') {
 			return (a.title || '').localeCompare(b.title || '');
 		}
 
-		if (sortType === 'byDate') {
-			let dateA = Date.parse(a.elem?.getAttribute('data-date') || '');
-			let dateB = Date.parse(b.elem?.getAttribute('data-date') || '');
-			return dateB - dateA;
+		if (sortType === 'date') {
+			return new Date(b.date) - new Date(a.date);
 		}
 
-		if (sortType === 'byDateNumAsc') {
-			let numA = Number(a.elem?.getAttribute('data-date'));
-			let numB = Number(b.elem?.getAttribute('data-date'));
-			return numA - numB;
-		}
-
-		if (sortType === 'byDateNumDesc') {
-			let numA = Number(a.elem?.getAttribute('data-date'));
-			let numB = Number(b.elem?.getAttribute('data-date'));
-			return numB - numA;
-		}
-
-		if (sortType === 'byRelevance') {
+		if (sortType === 'relevance') {
 			return b.relevance - a.relevance;
 		}
 
 		return 0;
 	});
-
-	console.log('After Sort', items);
 
 	// Reorder elements in the DOM
 	for (let item of items) {
@@ -334,6 +318,12 @@ let getFilters = (form) => {
 	return result;
 }
 
+let getList = (form) => {
+	let listId = form.getAttribute('data-list');
+	let list = document.querySelector(`#${listId}`);
+	return list ?? null;
+}
+
 let debounce = (fn, delay = 200) => {
 	let timeout;
 	return (...args) => {
@@ -343,8 +333,15 @@ let debounce = (fn, delay = 200) => {
 };
 
 let debouncedFilter = debounce(({ input, list, noValueBehaviour }) => {
-	filterListByTextInput({ input, list, noValueBehaviour });
+	filterListtextInput({ input, list, noValueBehaviour });
 }, 200);
+
+let updateToggles = (target) => {
+	let active = target.parentElement.querySelector('[aria-pressed="true"]');
+	active.removeAttribute('aria-pressed');
+	target.setAttribute('aria-pressed', 'true');
+}
+
 
 let filter = (() => {
 
@@ -440,16 +437,6 @@ let filter = (() => {
 
 	let updateInput = (input) => {
 		input.checked = !input.checked;
-	}
-
-	//
-	// List
-	//
-
-	let getList = (form) => {
-		let listId = form.getAttribute('data-filter-list');
-		let list = document.querySelector(`#${listId}`);
-		return list ?? null;
 	}
 
 	//
@@ -589,18 +576,10 @@ let search = (() => {
 	let onInput = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.search input')) return;
-
 		let form = target.closest('form');
-		if (!form) return;
-
-		let listId = form.getAttribute('data-search-list');
-		if (!listId) return;
-
-		let list = document.querySelector(`#${listId}`);
-		if (!list) return;
-
+		let list = getList(form);
+		if (!form || !list) return;
 		let options = formOptions.get(form) ?? {};
-
 		if (target.value.trim().length > 0) {
 			list.removeAttribute('hidden');
 			debouncedFilter({ input: target, list });
@@ -640,4 +619,102 @@ let search = (() => {
 
 })();
 
-export { filter, search };
+let sort = (() => {
+
+	/**
+	 * Handles filter tag button clicks
+	 * @param {Event} event
+	 */
+	let onClick = (event) => {
+		let target = event.target;
+		if (!target.matches('fieldset.sort button')) return;
+		let form = target.closest('form') ?? null;
+		let list = getList(form);
+		if (!form || !list) return;
+		let sortType = target.value;
+		if (sortType !== 'date' && sortType !== 'title') return;
+		console.log('Sorting');
+		let items = [];
+		for (const item of list.querySelectorAll('li')) {
+			let title = item.getAttribute('data-title');
+			let date = item.getAttribute('data-date-added');
+			items.push({
+				elem: item,
+				title: title ?? null,
+				date: date ?? null,
+			})
+		}
+		sortList({ sortType, list, items });
+		updateToggles(target);
+	}
+
+	/**
+	 * Initializes search forms
+	 */
+	let init = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.sort)');
+		for (let form of forms) {
+			form.addEventListener('click', onClick);
+		}
+	};
+
+	/**
+	 * Cleans up event listeners
+	 */
+	let destroy = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.sort)');
+		for (let form of forms) {
+			form.addEventListener('click', onClick);
+		}
+	};
+
+	return { init, destroy };
+
+})();
+
+let layout = (() => {
+
+	/**
+	 * Handles filter tag button clicks
+	 * @param {Event} event
+	 */
+	let onClick = (event) => {
+		let target = event.target;
+		if (!target.matches('fieldset.layout button')) return;
+		let form = target.closest('form') ?? null;
+		let list = getList(form);
+		if (!form || !list) return;
+		let layoutType = target.value;
+		if (layoutType !== 'compact' && layoutType !== 'detailed') return;
+		console.log('Layouting');
+		list.setAttribute('data-layout', layoutType);
+		updateToggles(target);
+	}
+
+	/**
+	 * Initializes search forms
+	 */
+	let init = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.layout)');
+		for (let form of forms) {
+			form.addEventListener('click', onClick);
+		}
+	};
+
+	/**
+	 * Cleans up event listeners
+	 */
+	let destroy = () => {
+		let forms = document.querySelectorAll('form:has(fieldset.layout)');
+		for (let form of forms) {
+			form.addEventListener('click', onClick);
+		}
+	};
+
+	return { init, destroy };
+
+})();
+
+export { filter, search, sort, layout };
+
+// TODO: Include resource descriptions as part of search (resource page only)

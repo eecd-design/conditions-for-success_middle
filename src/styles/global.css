@@ -587,7 +587,7 @@ p {
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"]):is([aria-pressed="true"], :has(input:checked)) {
-	--button-background-colour: var(--colour-fill-neutral-bold);
+	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
 	--button-outline-colour: transparent;
 }
@@ -685,11 +685,6 @@ p {
 
 :is(a, [data-style-as="link"]) .text-container {
 	flex-grow: 1;
-}
-
-:is(a, [data-style-as="link"]):has(.icon.type) .text-container {
-	border-left: 1px solid var(--container-border-colour, var(--colour-border-neutral-subtle));
-	padding-left: 0.75rem;
 }
 
 :is(a, [data-style-as="link"]) .text-container:has(.label) {
@@ -814,8 +809,12 @@ p {
 	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container {
-	--container-border-colour: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .separator {
+	align-self: stretch;
+}
+
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .separator {
+	background-color: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 }
 
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text {
@@ -828,12 +827,21 @@ p {
 	font-size: 1rem;
 }
 
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .date {
+	font-size: 0.75rem;
+	color: var(--colour-ui-accent-subtle);
+}
+
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .description {
 	font-size: 0.875rem;
 	font-weight: 400;
 	color: var(--colour-ui-neutral-subtle);
 	line-height: 1.4;
 	transition: max-height var(--transition-ease-medium);
+}
+
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .description {
+	color: var(--colour-ui-neutral);
 }
 
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
@@ -853,7 +861,7 @@ p {
 	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 }
 
-/* TODO: Create new resource link layout with description included */
+/* TODO: Should probably move this into the LinkListItem component */
 
 /*
 ** HTML & BODY
@@ -966,6 +974,18 @@ main:not([data-assessor="true"]) [data-restrict-assessor="true"] {
 }
 
 main:not([data-assessor="false"]) [data-restrict-assessor="false"] {
+	display: none !important;
+}
+
+.link-list:not([data-layout="detailed"]) [data-restrict-layout="detailed"] {
+	display: none !important;
+}
+
+.link-list:not([data-content="resources"]) [data-restrict-content="resources"] {
+	display: none !important;
+}
+
+.link-list:not([data-content="mixed"]) [data-restrict-content="mixed"] {
 	display: none !important;
 }
 
@@ -2032,6 +2052,7 @@ hr {
 }
 
 :is(hr, .separator, [role="separator"]):is([data-orientation="vertical"], [aria-orientation="vertical"]) {
+	--separator-long-edge-dimension: auto;
 	width: var(--separator-short-edge-dimension);
 	height: var(--separator-long-edge-dimension);
 }

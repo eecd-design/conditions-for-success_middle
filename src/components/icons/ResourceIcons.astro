@@ -21,7 +21,14 @@ const resourceLabels = {
 	website: 'Website'
 }
 
-const { type, classes } = Astro.props;
+const { type, classes, dataset } = Astro.props;
+
+let datasetAttrs = {};
+if (dataset) {
+	for (let data of dataset) {
+		datasetAttrs[`data-${data.key}`] = data.value;
+	}
+}
 
 let Icon = resourceIcons[type];
 let label = resourceLabels[type];
@@ -30,7 +37,7 @@ let label = resourceLabels[type];
 
 { Icon && label && (
 
-	<div class="icon-and-label-container" data-collapsible>
+	<div class="icon-and-label-container" data-collapsible {...datasetAttrs}>
 		<Icon classes={classes} />
 		<span class="label-container">
 			<span class="label">{label}</span>
