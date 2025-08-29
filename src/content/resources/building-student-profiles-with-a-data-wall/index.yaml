@@ -1,12 +1,15 @@
 title: Building Student Profiles with a Data Wall
 dateAdded: 2025-08-26
+type: video
 description: >-
   Learn how to consolidate data in an Excel-based data wall to create meaningful
   student profiles that guide teaching and assessment practices.
-type: video
 topics: []
 external:
-  discriminant: false
+  discriminant: true
+  value:
+    url: >-
+      https://pedex.nbed.nb.ca/DesignTeam/middle/conditions-for-success/assets/media/building-student-profiles-with-a-data-wall.mp4
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
