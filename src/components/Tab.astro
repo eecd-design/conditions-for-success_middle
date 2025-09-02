@@ -41,6 +41,7 @@ if (dataset) {
 	.tab-group nav ul li button[aria-selected="true"] {
 		--button-background-colour: transparent;
 		--button-outline-colour: var(--colour-border-accent-subtle, var(--colour-border-neutral-subtle));
+		--button-ui-colour: var(--colour-ui-neutral);
 		pointer-events: none;
 	}
 
@@ -52,7 +53,7 @@ if (dataset) {
 		font-size: 1.25rem;
 	}
 
-	.tab-group nav ul li button[] {
+	.tab-group nav ul li button {
 		--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
 		--button-border-radius: var(--border-radius-normal);
 		height: 3rem;
@@ -128,7 +129,7 @@ if (dataset) {
 			let tabPanels = tabGroup.querySelectorAll(".tab");
 
 			// If there is one or fewer panels, bail
-			if (tabPanels <= 1) return;
+			if (tabPanels.length <= 1) return;
 
 			// Create the tab list
 			let tabList = document.createElement("ul");
@@ -212,53 +213,6 @@ if (dataset) {
 			tabGroup.setAttribute("data-initialized", "");
 		};
 
-		/**
-		 * Update tab content on keyboard events
-		 * @param  {Event} event The event object
-		 */
-		let navKeyHandler = (event) => {
-			// Only run for left and right arrow keys
-			if (!["ArrowLeft", "ArrowRight"].includes(event.code)) return;
-
-			// Only run if the element in focus is a tab
-			let focusedTab = document.activeElement.closest('[role="tab"]');
-			if (!focusedTab) return;
-
-			// Get the component
-			let tabGroup = event.target.closest(".tab-group");
-
-			// Get the active tab
-			let activeTab = tabGroup.querySelector('[role="tab"][aria-selected="true"]');
-
-			if (!activeTab) return;
-
-			// TODO: Run methods through gpt for optimization.
-
-			// Get the parent nav item
-			let navItem = activeTab.closest("li");
-
-			// Get all tab buttons
-			let tabBtns = tabGroup.querySelectorAll('nav [role="tab"]');
-
-			// If right arrow, get the next sibling
-			// Otherwise, get the previous sibling
-			let targetNavItem =
-				event.code === "ArrowRight"
-					? navItem.nextElementSibling
-					: navItem.previousElementSibling;
-
-			// If there is no next or previous sibling, bail
-			if (!targetNavItem) return;
-
-			// Otherwise, get the target tab
-			let targetTab = targetNavItem.querySelector("button");
-
-			toggleTab({tabGroup, targetTab});
-
-			// Move focus to the target tab
-			targetTab.focus();
-		};
-
 
 		/**
 		 * Show the target panel and close other panels
@@ -267,6 +221,12 @@ if (dataset) {
 		 */
 		let toggleTab = ({tabGroup, targetTab}) => {
 			
+			// Get the active tab and panel
+			let { activeTab, activePanel } = tabGroup._tabs;
+
+			// If the target tab is already open, bail
+			if (!targetTab || targetTab === activeTab) return;
+
 			// Get the target tab panel
 			let targetPanel = tabGroup.querySelector(
 				`#${targetTab.getAttribute("aria-controls")}`,
@@ -274,31 +234,26 @@ if (dataset) {
 
 			if (!targetPanel) return;
 
-			// Get the active tab and content
-			let activeTab = tabGroup.querySelector('[aria-selected="true"]');
-			let activePanel = tabGroup?.querySelector(
-				`#${activeTab.getAttribute("aria-controls")}`,
-			);
-
-			// If the target tab is already open, bail
-			if (targetTab === activeTab) return;
-
-			// Update the selected tab
-			targetTab.setAttribute("aria-selected", true);
+			// Reset active tab attributes
+			activeTab.setAttribute("tabindex", -1);
 			activeTab.setAttribute("aria-selected", false);
-
-			// Update the visible tab panel
-			targetPanel.removeAttribute("hidden");
-			activePanel.setAttribute("hidden", "");
+			
+			// Set target tab attributes
+			targetTab.removeAttribute("tabindex");
+			targetTab.setAttribute("aria-selected", true);
 
 			// If the active panel contains a video, pause it
 			if (activePanel.querySelector("video, .embed")) {
 				stopVideo(activePanel);
 			}
 
-			// Make sure the target tab can be focused and other tabs cannot
-			targetTab.removeAttribute("tabindex");
-			activeTab.setAttribute("tabindex", -1);
+			// Update panel visibility
+			activePanel.setAttribute("hidden", "");
+			targetPanel.removeAttribute("hidden");
+
+			targetTab.focus();
+			console.log(document.activeElement);
+
 		};
 
 
@@ -320,9 +275,8 @@ if (dataset) {
 			// Only run on tab buttons
 			if (!event.target.matches('[role="tab"]')) return;
 
-			// Get the component
+			// Get the tab group and target tab
 			let tabGroup = event.target.closest(".tab-group");
-
 			let targetTab = event.target;
 
 			// Ignore the active tab
@@ -340,21 +294,15 @@ if (dataset) {
 			let focusedTab = document.activeElement.closest('[role="tab"]');
 			if (!focusedTab) return;
 
-			// Get the component
+			event.preventDefault();
+
 			let tabGroup = event.target.closest(".tab-group");
+			let { activeTab } = tabGroup._tabs;
 
-			// Get the active tab
-			let activeTab = tabGroup.querySelector('[role="tab"][aria-selected="true"]');
-
-			if (!activeTab) return;
-
-			// TODO: Run methods through gpt for optimization.
+			if (!tabGroup || !activeTab) return;
 
 			// Get the parent nav item
 			let navItem = activeTab.closest("li");
-
-			// Get all tab buttons
-			let tabBtns = tabGroup.querySelectorAll('nav [role="tab"]');
 
 			// If right arrow, get the next sibling
 			// Otherwise, get the previous sibling
@@ -371,13 +319,6 @@ if (dataset) {
 
 			toggleTab({tabGroup, targetTab});
 
-			// Move focus to the target tab
-			targetTab.focus();
-
-			// TODO: Focus not staying on buttons
-
-			// TODO: Ensure after swap doesn't reset up the dom
-
 		}
 
 		//
@@ -389,11 +330,22 @@ if (dataset) {
 			let tabGroups = document.querySelectorAll(".tab-group");
 			for (let i = 0; i < tabGroups.length; i++) {
 				let tabGroup = tabGroups[i];
-				if (tabGroup.getAttribute("data-initalized")) return;
+				if (tabGroup.getAttribute("data-initialized")) continue;
 				setupDOM({
 					tabGroup,
 					tabGroupIndex: i + 1,
 				});
+				(tabGroup as any)._tabs = {
+					buttons: tabGroup.querySelectorAll('[role="tab"]'),
+					panels: tabGroup.querySelectorAll('[role="tabpanel"]'),
+					get activeTab() {
+						return tabGroup.querySelector('[role="tab"][aria-selected="true"]');
+					},
+					get activePanel() {
+						let tab = this.activeTab;
+						return tab ? tabGroup.querySelector(`#${tab.getAttribute("aria-controls")}`) : null;
+					}
+				}
 			}
 			document.addEventListener("click", onClick);
 			document.addEventListener("keydown", onKey);
@@ -414,4 +366,14 @@ if (dataset) {
 	tabs.init();
 	document.addEventListener("astro:before-swap", tabs.destroy);
 	document.addEventListener("astro:after-swap", tabs.init);
+	document.addEventListener('focus', ()=>{
+		console.log(document.activeElement);
+	})
+	document.addEventListener('focusin', ()=>{
+		console.log('Focus In', document.activeElement);
+	})
+	document.addEventListener('focusout', ()=>{
+		console.log('Focus Out', document.activeElement);
+	})
+
 </script>
