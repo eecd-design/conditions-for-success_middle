@@ -24,7 +24,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			</span>
 		</div>
 
-		<div class="field-container label-container" data-style="shading-and-outline">
+		<div class="field-container label-container" data-style="shading-and-outline" data-vibrancy="vivid">
 			<span class="label" data-field="status"></span>
 		</div>
 		
@@ -271,6 +271,10 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	.assessment-controls .field-container:has([data-field="exportStatus"]) {
 		--label-colour: var(--colour-ui-neutral-subtle);		
+	}
+
+	.assessment-controls .separator.group {
+		--separator-long-edge-dimension: 100%;
 	}
 
 	.assessment-controls .separator.item {
