@@ -1,3 +1,5 @@
+import { stopVideo } from "./helpers";
+
 let dialogControl = (() => {
 
 	let open = (dialogId) => {
@@ -13,6 +15,7 @@ let dialogControl = (() => {
 	let close = (target) => {
 		let dialog = target.closest('dialog');
 		if (!dialog) return;
+		stopVideo(dialog);
 		dialog.close();
 	}
 
