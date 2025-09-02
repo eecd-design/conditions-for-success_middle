@@ -706,7 +706,6 @@ let sort = (() => {
 			})
 		}
 		sortList({ sortType, list, items });
-		// TODO: Only working on the first click, investigate
 		updateToggles(target);
 	}
 
@@ -778,5 +777,3 @@ let layout = (() => {
 })();
 
 export { filter, search, sort, layout };
-
-// TODO: Include resource descriptions as part of search (resource page only)
