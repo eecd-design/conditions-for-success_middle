@@ -86,6 +86,7 @@ let path = url.pathname;
 								<IconInfo20/>
 								<span class="label-container">
 									<span class="label">Learn about the continuums</span>
+									{/* TODO: Change link text if onboarding is complete? As in, they've clicked this link before? */}
 								</span>
 							</div>
 						</a>
@@ -334,8 +335,6 @@ let createLaunchpadLink = ({title, path}) => {
 let updateLaunchpad = (data) => {
 
 	let launchpad = document.querySelector('.launchpad');
-
-	console.log(launchpad);
 
 	if (!launchpad) return;
 

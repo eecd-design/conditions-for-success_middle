@@ -108,7 +108,6 @@ let getResourcePath = (resource) => {
 		
 		if (fileType) {
 
-			console.log(fileType);
 			fileType = fileType.replaceAll('.', '').trim();
 
 		} else {
