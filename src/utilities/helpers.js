@@ -306,6 +306,16 @@ let stopVideo = (elem) => {
 };
 
 /**
+ * Converts a string to a boolean.
+ * @param {string} str - The string to convert.
+ * @returns {boolean} True if the string is "true" (case-insensitive), otherwise false.
+ */
+let stringToBoolean = function(str) {
+    if (typeof str !== 'string') return false;
+    return str.trim().toLowerCase() === 'true';
+};
+
+/**
  * Converts a string to kebab-case.
  * 
  * @param {string} str - The input string.
@@ -333,4 +343,4 @@ let toTitleCase = function (str) {
   });
 };
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getResourcePath, getTimeDifference, htmlToElement, isEqual, isInViewport, joinWithAnd, kebabToCamel, sanitizeHTML, scrollIntoView, stopVideo, toKebabCase, toTitleCase };
+export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getResourcePath, getTimeDifference, htmlToElement, isEqual, isInViewport, joinWithAnd, kebabToCamel, sanitizeHTML, scrollIntoView, stopVideo, stringToBoolean, toKebabCase, toTitleCase };
