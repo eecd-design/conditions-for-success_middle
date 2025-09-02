@@ -38,8 +38,8 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 	<script>
 
-		import { getActiveAssessmentData, getExportStatus, getUserData, subscribe } from "src/stores/userDataStore";
-		import { findObjectByKey } from "src/utilities/helpers";
+		import { getActiveAssessmentData, subscribe } from "src/stores/userDataStore";
+		import { scrollIntoView } from "src/utilities/helpers";
 		import { dialogControl } from "src/utilities/dialog";
 
 		let updateTheme = (data) => {
@@ -124,8 +124,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 			accordionBtn.click();
 
 			setTimeout(() => {
-				accordion.scrollIntoView({ block: 'start', behavior: 'smooth' });
-				// TODO: Should I be using the helper here instead?
+				scrollIntoView(accordion, { behavior: 'smooth' });
 			}, 50);
 
 		}
