@@ -44,7 +44,7 @@ let types = [
 
 	<aside class="filters-container">
 
-		<form data-no-value-behaviour="shown" data-list="resources-list" data-tag-list="active-filters-list">
+		<form id="resources-list-secondary-controls" class="list-secondary-controls" data-no-value-behaviour="shown" data-list="resources-list" data-tag-list="active-filters-list" data-sort-control="resources-list-primary-controls">
 			
 			<div class="heading-group">
 				<h2 class="heading">
@@ -122,7 +122,7 @@ let types = [
 
 		<ul id="active-filters-list"></ul>
 
-		<form class="list-controls" data-no-value-behaviour="shown" data-list="resources-list">		
+		<form id="resources-list-primary-controls" class="list-primary-controls" data-no-value-behaviour="shown" data-list="resources-list">		
 
 			<fieldset class="search">
 				<div class="input-container">
@@ -439,53 +439,53 @@ let types = [
 
 	/* TODO: Update the assessor buttons to match these. */	
 
-	form.list-controls {
+	form.list-primary-controls {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: end;
 		gap: 1rem;
 	}
 
-	form.list-controls fieldset.search {
+	form.list-primary-controls fieldset.search {
 		flex-grow: 1;
 	}
 
-	form.list-controls fieldset:is(.sort, .layout) {
+	form.list-primary-controls fieldset:is(.sort, .layout) {
 		--group-gap: 0.5rem;
 	}
 
-	form.list-controls fieldset:is(.sort, .layout) legend {
+	form.list-primary-controls fieldset:is(.sort, .layout) legend {
 		font-size: 0.75rem;
 		color: var(--colour-ui-neutral-subtle);
 		margin: 0 0 0.325rem;
 	}
 
-	form.list-controls fieldset:is(.sort, .layout) button {
+	form.list-primary-controls fieldset:is(.sort, .layout) button {
 		--icon-size: 1.25rem;
 		font-size: 0.875rem;
 		height: 2rem;
 	}
 
-	form.list-controls fieldset:is(.sort, .layout) button:is(:hover, :focus-visible, [aria-pressed="true"]) {
+	form.list-primary-controls fieldset:is(.sort, .layout) button:is(:hover, :focus-visible, [aria-pressed="true"]) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	form.list-controls fieldset:is(.sort, .layout):has(button:not([aria-pressed="true"]):is(:hover, :focus-visible)) button[aria-pressed="true"] {
+	form.list-primary-controls fieldset:is(.sort, .layout):has(button:not([aria-pressed="true"]):is(:hover, :focus-visible)) button[aria-pressed="true"] {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 		--icon-colour: var(--colour-ui-neutral);
 		--label-colour: var(--colour-ui-neutral);
 	}
 
-	form.list-controls fieldset:is(.sort, .layout) button[aria-pressed="true"] {
+	form.list-primary-controls fieldset:is(.sort, .layout) button[aria-pressed="true"] {
 		pointer-events: none;
 	}
 
-	form.list-controls fieldset:is(.sort, .layout) button .label-container {
+	form.list-primary-controls fieldset:is(.sort, .layout) button .label-container {
 		display: none;
 	}
 
-	form.list-controls .separator {
+	form.list-primary-controls .separator {
 		--separator-long-edge-dimension: 1.5rem;
 		margin-bottom: 0.25rem;
 	}

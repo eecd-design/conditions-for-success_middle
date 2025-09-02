@@ -11,13 +11,12 @@ import { htmlToElement, toTitleCase } from "./helpers";
  * @param {Object} options.filters - An object of filter values by category used to filter the list.
  * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
  *   data attributes like `data-title`, `data-indicators`, `data-components`, `data-considerations`, and `data-type`.
+ * @param {String} options.sortType - The user selected sort type
  */
-let filterListByFilterBtns = ({ filters, list }) => {
+let filterListByFilterBtns = ({ filters, list, sortType }) => {
 
 	let results = [];
 	let matches = 0;
-	let sortType = 'relevance';
-	let presortType = 'title';
 
 	let items = list.querySelectorAll('li');
 
@@ -41,8 +40,7 @@ let filterListByFilterBtns = ({ filters, list }) => {
 
 			result.match = true;
 			matches += 1;
-			sortType = 'title';
-			presortType = null;
+			sortType = sortType ?? 'title';
 
 		} else {
 
@@ -104,8 +102,8 @@ let filterListByFilterBtns = ({ filters, list }) => {
 		sortList({
 			list: list,
 			items: results,
-			sortType: sortType,
-			presortType: presortType,
+			sortType: sortType ?? 'relevance',
+			presortType: sortType ? null : 'title',
 		});
 
 	}
@@ -137,15 +135,20 @@ let filterListByFilterBtns = ({ filters, list }) => {
  * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
  *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
  * @param {String} options.noValueBehaviour - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
+ * @param {String} options.sortType - The user selected sort type
  */
-let filterListTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
+let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortType }) => {
 
 	let value = input.value.trim();
 
 	let results = [];
 	let matches = 0;
-	let presortType = value.length === 0 ? null : 'title';
-	let sortType = 	value.length === 0 ? 'title' : 'relevance';
+	let presortType = null; 
+
+	if (!sortType) {
+		sortType = value.length === 0 ? 'title' : 'relevance';
+		presortType = value.length === 0 ? null : 'title';
+	}
 
 	let items = list.querySelectorAll('li');
 
@@ -353,8 +356,8 @@ let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
 
 	// Reorder elements in the DOM
 	for (let item of items) {
-		if (item.elem instanceof HTMLElement) {
-			list.appendChild(item.elem);
+		if (item.elem instanceof HTMLElement && !item.elem.hasAttribute('hidden')) {
+			list.append(item.elem);
 		}
 	}
 
@@ -385,6 +388,20 @@ let getList = (form) => {
 	return list ?? null;
 }
 
+let getSortType = (form) => {
+	let sortControl = form.querySelector('fieldset.sort');
+	if (sortControl) {
+		let activeSort = sortControl.querySelector('button[aria-pressed="true"]');
+		return activeSort.value;
+	}
+	if (form.hasAttribute('data-sort-control')) {
+		sortControl = document.querySelector(`#${form.getAttribute('data-sort-control')} fieldset.sort`);
+		if (!sortControl) return;
+		let activeSort = sortControl.querySelector('button[aria-pressed="true"]');
+		return activeSort.value;
+	}
+}
+
 let debounce = (fn, delay = 200) => {
 	let timeout;
 	return (...args) => {
@@ -393,8 +410,8 @@ let debounce = (fn, delay = 200) => {
 	};
 };
 
-let debouncedFilter = debounce(({ input, list, noValueBehaviour }) => {
-	filterListTextInput({ input, list, noValueBehaviour });
+let debouncedFilter = debounce(({ input, list, noValueBehaviour, sortType }) => {
+	filterListByTextInput({ input, list, noValueBehaviour, sortType });
 }, 200);
 
 let updateToggles = (target) => {
@@ -484,6 +501,7 @@ let filter = (() => {
 		return form ?? null;
 	}
 
+
 	//
 	// Inputs
 	//
@@ -515,7 +533,8 @@ let filter = (() => {
 		let list = getList(form);
 		if (!form || !list) return;
 		let filters = getFilters(form);
-		filterListByFilterBtns({ filters, list });
+		let sortType = getSortType(form);
+		filterListByFilterBtns({ filters, list, sortType });
 		let statusOperation;
 		if (target.checked) {
 			statusOperation = 'add';
@@ -550,7 +569,8 @@ let filter = (() => {
 		let list = getList(form);
 		if (!form || !list) return;
 		let filters = {};
-		filterListByFilterBtns({ filters, list });
+		let sortType = getSortType();
+		filterListByFilterBtns({ filters, list, sortType });
 		let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
 		for (let field of statusFields) {
 			updateStatus({
@@ -582,7 +602,8 @@ let filter = (() => {
 		let list = getList(form);
 		if (!form || !list) return;
 		let filters = getFilters(form);
-		filterListByFilterBtns({ filters, list });
+		let sortType = getSortType();
+		filterListByFilterBtns({ filters, list, sortType });
 		let statusField = getStatusField(tag);
 		if (statusField) {
 			updateStatus({
@@ -640,15 +661,16 @@ let search = (() => {
 		let form = target.closest('form');
 		let list = getList(form);
 		if (!form || !list) return;
+		let sortType = getSortType(form);
 		let options = formOptions.get(form) ?? {};
 		if (target.value.trim().length > 0) {
 			list.removeAttribute('hidden');
-			debouncedFilter({ input: target, list });
+			debouncedFilter({ input: target, list, sortType });
 		} else {
 			if (options.noValueBehaviour === 'hidden') {
 				list.setAttribute('hidden', '');
 			} else {
-				debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour });
+				debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
 			}
 		}
 	};
@@ -694,7 +716,6 @@ let sort = (() => {
 		if (!form || !list) return;
 		let sortType = target.value;
 		if (sortType !== 'date' && sortType !== 'title') return;
-		console.log('Sorting');
 		let items = [];
 		for (const item of list.querySelectorAll('li')) {
 			let title = item.getAttribute('data-title');
@@ -747,7 +768,6 @@ let layout = (() => {
 		if (!form || !list) return;
 		let layoutType = target.value;
 		if (layoutType !== 'compact' && layoutType !== 'detailed') return;
-		console.log('Layouting');
 		list.setAttribute('data-layout', layoutType);
 		updateToggles(target);
 	}
