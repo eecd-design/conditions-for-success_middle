@@ -20,15 +20,20 @@ let data = {
 		activeAssessmentId: null,
 		activeAssessor: null,
 		lastModifiedPage: null,
-		lastVisitedPage: typeof window !== 'undefined' ? window.location.pathname : null,
+		lastVisitedPage: typeof window !== 'undefined' ? { 
+			title: document.querySelector('h1').textContent, 
+			path: window.location.pathname 
+		} : null,
 		mode: 'reading',
 		onboardingCompleted: false,
-		schemaVersion: '0.1',
+		schemaVersion: '0.2',
 	},
 	assessments: [],
 };
 
 let subscribers = [];
+
+let countPromise;
 
 
 //
@@ -170,6 +175,10 @@ let setState = (update) => {
 let setAssessment = (update) => {
 	let assessmentId = data.uiState.activeAssessmentId;
 	if (!assessmentId) return;
+	data.uiState.lastModifiedPage = typeof window !== 'undefined' ? {
+		title: document.querySelector('h1').textContent,
+		path: window.location.pathname,
+	} : null;
 	let index = findIndexByKey(data.assessments, 'id', assessmentId);
 	if (index === -1) {
 		data.assessments.push(update);
@@ -327,9 +336,20 @@ let subscribe = (fn) => {
 // Inits
 //
 
-let countPromise = fetch('/consideration-count.json').then(res => res.json());
-save();
-notify();
+let userDataStore = (() => {
+
+	let init = () => {
+		countPromise = fetch('/consideration-count.json').then(res => res.json());
+		save();
+		notify();
+	}
+
+	return { init };
+
+})();
+
+userDataStore.init();
+document.addEventListener("astro:after-swap", userDataStore.init);
 
 
 //
