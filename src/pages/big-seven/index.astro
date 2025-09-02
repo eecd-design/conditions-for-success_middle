@@ -7,7 +7,8 @@ import AssessmentDialogs from "../../components/AssessmentDialogs.astro";
 import Accordion from "../../components/Accordion.astro";
 import Tab from "../../components/Tab.astro";
 import PhaseIcons from "../../components/icons/PhaseIcons.astro";
-import IconArrow from "src/components/icons/IconArrowRight_16.astro";
+import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
+import IconArrowRightBig from "src/components/icons/IconArrowRight_20.astro";
 import { Image } from 'astro:assets';
 import phaseScreenshot from "../../images/phase-highlight-screenshot.png";
 import focusScreenshot from "../../images/focus-highlight-screenshot.png";
@@ -42,7 +43,7 @@ for (let indicator of allIndicators) {
 				<li>
 					<a href="#what-are-the-big-seven-indicators">
 						<span class="icon-container">
-							<IconArrow classes={['destination']} />
+							<IconArrowRightSmall classes={['destination']} />
 						</span>
 						<span class="text-container">
 							<span class="text">What are “The Big Seven” indicators?</span>
@@ -52,7 +53,7 @@ for (let indicator of allIndicators) {
 				<li>
 					<a href="#what-are-the-four-phases-of-growth-and-success">
 						<span class="icon-container">
-							<IconArrow classes={['destination']} />
+							<IconArrowRightSmall classes={['destination']} />
 						</span>
 						<span class="text-container">
 							<span class="text">What are the four phases of growth and success?</span>
@@ -62,7 +63,7 @@ for (let indicator of allIndicators) {
 				<li>
 					<a href="#when-self-assessing-how-will-schools-know-which-phase-theyre-in">
 						<span class="icon-container">
-							<IconArrow classes={['destination']} />
+							<IconArrowRightSmall classes={['destination']} />
 						</span>
 						<span class="text-container">
 							<span class="text">When self-assessing, how will schools know which phase they're in?</span>
@@ -72,7 +73,7 @@ for (let indicator of allIndicators) {
 				<li>
 					<a href="#how-can-the-framework-help-with-continuous-improvement-planning">
 						<span class="icon-container">
-							<IconArrow classes={['destination']} />
+							<IconArrowRightSmall classes={['destination']} />
 						</span>
 						<span class="text-container">
 							<span class="text">How can the framework help with continuous improvement planning?</span>
@@ -105,7 +106,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -127,7 +128,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -149,7 +150,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -171,7 +172,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -193,7 +194,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -215,7 +216,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -237,7 +238,7 @@ for (let indicator of allIndicators) {
 							<li>
 								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
 									<span class="icon-container">
-										<IconArrow classes={['destination']} />
+										<IconArrowRightSmall classes={['destination']} />
 									</span>
 									<span class="text-container">
 										<span class="text">{component.data.tag} {component.data.title}</span>
@@ -260,7 +261,7 @@ for (let indicator of allIndicators) {
 		<section>
 			<h2 id="what-are-the-four-phases-of-growth-and-success">What are the four phases of growth and success?</h2>
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
-				<IconArrow/>
+				<IconArrowRightBig/>
 				<span style="display: flex; flex-flow: row; align-items: center; gap: 0.375rem"><PhaseIcons phase={'initiating'}/> Initiating · <PhaseIcons phase={'implementing'}/> Implementing · <PhaseIcons phase={'developing'}/> Developing · <PhaseIcons phase={'sustaining'}/> Sustaining</span>
 			</p>
 			<p>Each of the four phases—Initiating, Implementing, Developing, and Sustaining—has a discrete focus and associated considerations. The Initiating Phase of the developmental continuum for "Student Voice, Choice, and Reflection (7.1),” for example, is as follows:</p>
@@ -311,7 +312,7 @@ for (let indicator of allIndicators) {
 		<section>
 			<h2 id="when-self-assessing-how-will-schools-know-which-phase-theyre-in">When self-assessing, how will schools know which phase they're in?</h2>
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
-				<IconArrow/>
+				<IconArrowRightBig/>
 				By considering the developmental continuum, its focus, and its considerations in detail.
 			</p>
 			<p>Use the below information about each phase as a guide.</p>
@@ -351,7 +352,7 @@ for (let indicator of allIndicators) {
 		<section>
 			<h2 id="how-can-the-framework-help-with-continuous-improvement-planning">How can the framework help with continuous improvement planning?</h2>
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
-				<IconArrow/>
+				<IconArrowRightBig/>
 				It can deepen and extend the work already being done.
 			</p>
 			<p>The <em>Conditions for Success Developmental Continuums</em> framework is designed to deepen and extend the work already underway in schools through the <a href="">Provincial School Improvement Indicators</a>, district-based goals, and improvement planning processes. While the four provincial domains: Systemic School Planning, Leadership and Teaming, Instructional Practices, and Learning Environments, remain consistent across grades K-12, this framework offers Middle Program Block-level teams a practical, student-centered lens to support ongoing improvement and can even help schools use the <a href="">Response to Intervention (RTI) framework</a> more effectively.</p>
