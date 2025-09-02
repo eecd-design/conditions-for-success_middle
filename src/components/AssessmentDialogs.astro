@@ -1047,6 +1047,18 @@ let schoolList = {
 	</section>
 </dialog>
 
+<style is:global>
+
+.saved-assessments {
+	--group-margin: 0;
+}
+
+.saved-assessments .card .heading {
+	--icon-colour: var(--colour-ui-neutral-subtle);
+}
+
+</style>
+
 <script>
 	//
 	// Imports
@@ -1209,7 +1221,7 @@ let schoolList = {
 
 		let template = `
 			<li class="card" ${active ? "data-active" : ""}>
-				${active ? `<div class="banner" data-theme="${getStatusColour()}">${status === "In Progress" ? `Editing` : `Reviewing`}</div>` : ""}
+				${active ? `<div class="banner" data-theme="${getStatusColour()}" data-vibrancy="vivid">${status === "In Progress" ? `Editing` : `Reviewing`}</div>` : ""}
 				<div class="wrapper">
 					<h4 class="heading icon-and-label-container">
 						<svg class="icon assessment" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -1219,7 +1231,7 @@ let schoolList = {
 					</h4>
 					<div class="details">
 						<span class="label-group">
-							<div class="edit-status label-container field-container" data-theme="${getStatusColour(assessment)}" data-style="solid">
+							<div class="edit-status label-container field-container" data-theme="${getStatusColour(assessment)}" data-vibrancy="vivid" data-style="solid">
 								<span class="label">${status}</span>
 							</div>
 							${unexportedChanges ? `
