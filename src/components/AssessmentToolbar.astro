@@ -284,7 +284,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 </style>
 
 <script>
-	import { getActiveAssessmentData, getAssessmentName, getExportStatus, getStatusColour, setState, subscribe } from "src/stores/userDataStore";
+	import { getActiveAssessmentData, getAssessmentName, getExportStatus, getStatusColour, getUserData, setState, subscribe } from "src/stores/userDataStore";
 	import { findObjectByKey, getTimeDifference } from "src/utilities/helpers";
 
 	let updateToolbar = (data) => {
@@ -376,6 +376,10 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	let updateToolbarExportStatus = () => {
 
+		let userData = getUserData();
+
+		if (userData.uiState.mode !== 'assessment') return;
+
 		// Get the toolbar
 		let toolbar = document.querySelector(".assessment-controls");
 
@@ -383,8 +387,6 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 		// Get the update fields
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
-
-		// TODO: Only run in assessment mode
 
 		exportField.textContent = getExportStatus();
 
