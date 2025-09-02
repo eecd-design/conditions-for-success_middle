@@ -157,11 +157,8 @@
 	--colour-ui-link-underline: var(--colour-ui-neutral-subtle);
 	--colour-ui-error: var(--red-vivid-400);
 
-	--colour-highlight: #fbf9c9;
-	--colour-fill-highlight: var(--color-highlight);
-	--colour-on-highlight: inherit;
-
-	/* TODO: Set up highlight colour */
+	--colour-highlight-fill: var(--red-muted-100);
+	--colour-highlight-ui: var(--red-muted-800);
 
 	--colour-fill-neutral-faint: var(--gray-muted-50);
 	--colour-fill-neutral-subtle: var(--gray-muted-75);
@@ -463,7 +460,6 @@ h2,
 :is(h2, [data-style-as="h2"]) + .heading-subtitle {
 	--icon-colour: var(--colour-ui-accent);
 	--icon-size: 1.25rem;
-	/* TODO: Make arrow icon @ 20px */
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
@@ -664,8 +660,6 @@ p {
 	text-decoration-color: transparent;
 }
 
-/* TODO: Update destination class to all icons */
-
 :is(a, [data-style-as="link"]):has(.icon.destination, .icon.type) {
 	display: flex;
 	flex-flow: row nowrap;
@@ -863,6 +857,11 @@ p {
 
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) :is(.icon.destination, .icon.type) {
 	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+}
+
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) span.highlight {
+	--highlight-background-colour: transparent;
+	--highlight-ui-colour: var(--colour-ui-neutral);
 }
 
 /* TODO: Should probably move this into the LinkListItem component */
@@ -1545,7 +1544,6 @@ dialog section:has(.elem-group:empty) {
 
 .callout[data-style="outline"][data-elem-on-path="icon"] .icon-container {
 	--icon-size: 2.5rem;
-	/* TODO: Export 44px version of icons */
 	--icon-colour: var(--colour-ui-accent-subtle);
 	position: absolute;
 	top: -1.25rem;
@@ -2068,7 +2066,9 @@ hr.section {
 /* Use <div role="separator" aria-orientation="vertical"></div> for 'meaningful separators' vertical separators */
 
 span.highlight {
-	background-color: var(--green-vivid-100);
+	background-color: var(--highlight-background-colour, var(--colour-highlight-fill));
+	color: var(--highlight-ui-colour, var(--colour-highlight-ui));
+	transition: background-color var(--transition-linear-fast), color var(--transition-linear-fast);
 }
 
 
