@@ -817,22 +817,26 @@ p {
 	background-color: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text {
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container {
 	display: flex;
 	flex-flow: column;
 	gap: 0.5rem;
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .title {
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .title {
 	font-size: 1rem;
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .date {
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .date {
 	font-size: 0.75rem;
-	color: var(--colour-ui-accent-subtle);
+	color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text .description {
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .date {
+	color: var(--colour-ui-accent, var(--colour-ui-neutral));
+}
+
+.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .description {
 	font-size: 0.875rem;
 	font-weight: 400;
 	color: var(--colour-ui-neutral-subtle);
@@ -2062,6 +2066,10 @@ hr.section {
 }
 
 /* Use <div role="separator" aria-orientation="vertical"></div> for 'meaningful separators' vertical separators */
+
+span.highlight {
+	background-color: var(--green-vivid-100);
+}
 
 
 /*

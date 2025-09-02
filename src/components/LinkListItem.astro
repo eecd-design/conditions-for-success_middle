@@ -10,8 +10,7 @@ import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
 let { itemData } = Astro.props;
-console.log('Item Data', itemData);
-// TODO: Convert showDescription to layout compact/detailed
+
 let {
 	category = null,
 	colour = null,
@@ -44,7 +43,7 @@ if (category === 'resource') {
 
 let ItemWrapper = "li";
 let itemWrapperAttrs =
-	type === "resource"
+	category === "resource"
 		? {
 				"data-category": category,
 				"data-date-added": dateAdded,
@@ -71,10 +70,7 @@ let interactiveWrapperAttrs = ["video", "audio"].includes(type)
 			"data-dialog": "media-dialog",
 			"data-media-type": type,
 			"data-media-src": path,
-			// TODO: Convert external/internal to true/false
-			"data-media-storage-location": external.discriminant
-				? "external"
-				: "internal",
+			"data-media-external": external.discriminant,
 		}
 	: {
 			href: path,
@@ -97,30 +93,27 @@ if (category !== 'resource') {
 		<ResourceIcons type={type} classes={["type"]} dataset={[{key: "restrict-content", value: "resources"}]}/>
 		<div class="separator group" data-orientation="vertical" data-restrict-content="resources" aria-hidden="true"></div>
 		<span class="text-container">
-			<!-- TODO: Investigate whether I can get rid of this text span -->
-			<span class="text">
-				<span class="label" data-restrict-content="mixed">
-					{category !== 'resource' ? `${toTitleCase(category)} ${tag}` : `${toTitleCase(type)} Resource`}
-				</span>
-				<span class="title">{title}</span>
-				{ date && (
-					<span
-						class="date"
-						data-theme="red"
-						data-restrict-layout="detailed"
-						data-restrict-content="resources">Date Added: {date}</span>
-				)}
-				{
-					description && (
-						<span
-							class="description"
-							data-restrict-layout="detailed"
-						>
-							{description}
-						</span>
-					)
-				}
+			<span class="label" data-restrict-content="mixed">
+				{category !== 'resource' ? `${toTitleCase(category)} ${tag}` : `${toTitleCase(type)} Resource`}
 			</span>
+			<span class="title">{title}</span>
+			{ date && (
+				<span
+					class="date"
+					data-theme="red"
+					data-restrict-layout="detailed"
+					data-restrict-content="resources">Date Added: {date}</span>
+			)}
+			{
+				description && (
+					<span
+						class="description"
+						data-restrict-layout="detailed"
+					>
+						{description}
+					</span>
+				)
+			}
 		</span>
 		<span class="icon-container">
 			<DestinationIcon classes={['destination']} />

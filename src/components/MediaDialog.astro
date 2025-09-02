@@ -45,6 +45,7 @@ import IconXmark from "./icons/IconXmark_20.astro";
 	//
 
 	import { dialogControl } from "src/utilities/dialog";
+import { stringToBoolean } from "src/utilities/helpers";
 
 	//
 	// Variables
@@ -126,7 +127,7 @@ import IconXmark from "./icons/IconXmark_20.astro";
 
 		// Get the media data from the button
 		let mediaType = target.getAttribute('data-media-type');
-		let mediaStorageLocation = target.getAttribute('data-media-storage-location');
+		let mediaExternal = target.getAttribute('data-media-external') ? stringToBoolean(target.getAttribute('data-media-external')) : false;
 		let mediaSrc = target.getAttribute('data-media-src');
 
 		if (!mediaType && !mediaSrc) return;
@@ -136,13 +137,13 @@ import IconXmark from "./icons/IconXmark_20.astro";
 
 		if (mediaType === 'video') {
 
-			if (mediaStorageLocation === 'internal') {
+			if (!mediaExternal) {
 				video.setAttribute('src', mediaSrc);
 				video.setAttribute('poster', `${mediaSrcPathOnly}.png`);
 				video.removeAttribute('hidden');
 				captions.setAttribute('src', `${mediaSrcPathOnly}.vtt`);
 
-			} else if (mediaStorageLocation === 'external') {
+			} else {
 				iframe.setAttribute('src', convertURLToEmbedURL(mediaSrc));
 				iframe.removeAttribute('hidden');
 			}
