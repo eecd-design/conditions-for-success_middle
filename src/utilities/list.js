@@ -138,7 +138,7 @@ let filterListByFilterBtns = ({ filters, list }) => {
  *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
  * @param {String} options.noValueBehaviour - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
  */
-let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
+let filterListTextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 
 	let value = input.value.trim();
 
@@ -150,15 +150,19 @@ let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 	let items = list.querySelectorAll('li');
 
 	for (const item of items) {
+
+		clearTextHighlights(item);
 		
 		// Get the item data
 		let title = item.getAttribute('data-title');
 		let tag = item.getAttribute('data-tag');
+		let description = item.getAttribute('data-description');
 		
 		let result = {
 			elem: item,
 			title: title ?? null,
 			tag: tag ?? null,
+			description: description ?? null,
 			match: false,
 			relevance: 0,
 		}
@@ -181,7 +185,7 @@ let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 
 		// 1. Check for tag match
 		if (tag && tag.startsWith(value)) {
-			markMatch(10);
+			markMatch(100);
 			presortType = 'tag';
 			
 		// 2. Check for title match
@@ -190,8 +194,8 @@ let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 			// Full phrase match
 			if (value.includes(' ')) {
 
-				if (title.startsWith(value)) markMatch(10);
-				else if (title.includes(value)) markMatch(1);
+				if (title.startsWith(value)) markMatch(100);
+				else if (title.includes(value)) markMatch(10);
 
 			// Single word match
 			} else {
@@ -200,12 +204,39 @@ let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 				for (let i = 0; i < words.length; i++) {
 					if (words[i].startsWith(value)) {
 						// Give higher relevance to first word matches
-						markMatch(i === 0 ? 10 : 1)
-						break;
+						markMatch(i === 0 ? 100 : 10)
 					}
 				}
 
 			}	
+
+		} 
+		
+		// 3. Check for description match
+		if (description && value.length > 2) {
+
+			// Full phrase match
+			if (value.includes(' ')) {
+
+				if (description.includes(value)) markMatch(10);
+
+			// Single word match
+			} else {
+
+				let words = description.split(' ');
+				for (let i = 0; i < words.length; i++) {
+					if (words[i].startsWith(value)) markMatch(1);
+				}
+
+			}
+			
+
+			if (matches > 0) {
+				
+				let descriptionElem = item.querySelector('.text-container .description');
+				highlightText(descriptionElem, value);
+
+			}
 
 		}
 
@@ -239,6 +270,36 @@ let filterListtextInput = ({ input, list, noValueBehaviour = 'hidden' }) => {
 	}
 
 }
+
+/**
+ * Highlights all occurrences of a substring in an element's text.
+ * @param {HTMLElement} elem - The element to modify.
+ * @param {string} searchValue - The substring to highlight.
+ */
+let highlightText = function(elem, searchValue) {
+    if (!elem || !searchValue) return;
+
+    // Escape special regex characters
+    let escapedValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let regex = new RegExp(`(${escapedValue})`, 'gi');
+
+    // Work with plain text, then insert highlight spans
+    let content = elem.textContent;
+    let highlighted = content.replace(regex, '<span class="highlight">$1</span>');
+
+    // Apply result as HTML to preserve highlight spans
+    elem.innerHTML = highlighted;
+};
+
+/**
+ * Clear highlighted substrings in an element's text.
+ * @param {HTMLElement} elem - The element to modify.
+ */
+let clearTextHighlights = function(elem) {
+    if (!elem) return;
+	// Replace all <span class="highlight">...</span> with just the inner text
+    elem.innerHTML = elem.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
+};
 
 /**
  * Sorts and reorders list items based on a given type and optional presort.
@@ -333,7 +394,7 @@ let debounce = (fn, delay = 200) => {
 };
 
 let debouncedFilter = debounce(({ input, list, noValueBehaviour }) => {
-	filterListtextInput({ input, list, noValueBehaviour });
+	filterListTextInput({ input, list, noValueBehaviour });
 }, 200);
 
 let updateToggles = (target) => {
@@ -645,6 +706,7 @@ let sort = (() => {
 			})
 		}
 		sortList({ sortType, list, items });
+		// TODO: Only working on the first click, investigate
 		updateToggles(target);
 	}
 
