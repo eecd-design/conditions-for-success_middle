@@ -366,14 +366,5 @@ if (dataset) {
 	tabs.init();
 	document.addEventListener("astro:before-swap", tabs.destroy);
 	document.addEventListener("astro:after-swap", tabs.init);
-	document.addEventListener('focus', ()=>{
-		console.log(document.activeElement);
-	})
-	document.addEventListener('focusin', ()=>{
-		console.log('Focus In', document.activeElement);
-	})
-	document.addEventListener('focusout', ()=>{
-		console.log('Focus Out', document.activeElement);
-	})
 
 </script>
