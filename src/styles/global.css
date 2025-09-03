@@ -717,7 +717,6 @@ p {
 	opacity: 0;
 	translate: -0.25rem;
 	transition: opacity var(--transition-linear-fast), translate var(--transition-ease-fast);
-	/* TODO: Media check for hover, and if not, have icon appear always */
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon.destination.arrow {
@@ -786,9 +785,8 @@ p {
 	padding-bottom: 0 !important;
 }
 
-.link-list[data-style="divided"] > li:not(:first-of-type) {
-	border-top: 1px solid var(--colour-border-neutral-subtle);
-	/* TODO: This doesn't work for filtering ^, unless you sort */
+.link-list[data-style="divided"] > li:has(+ li:not([hidden])) {
+	border-bottom: 1px solid var(--colour-border-neutral-subtle);
 }
 
 .link-list[data-style="divided"] :is(a, [data-style-as="link"]) {
@@ -1616,8 +1614,14 @@ dialog section:has(.elem-group:empty) {
 	container: card / inline-size;
 	display: flex;
 	flex-flow: column;
-	border: 2px solid var(--colour-border-neutral-subtle);
+	outline: 2px solid var(--colour-border-neutral-subtle);
 	border-radius: var(--border-radius-normal);
+	transition: outline var(--transition-linear-fast);
+}
+
+.card:has(button:is(:hover, :focus-visible)) {
+	outline-color: var(--colour-border-neutral-bold);
+	outline-width: 3px;
 }
 
 .card .banner {
