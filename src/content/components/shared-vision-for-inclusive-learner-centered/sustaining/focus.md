@@ -1,1 +1,1 @@
-Inclusive, learner-centered middle level education is a core value, with continuous reflection ensuring all learners thrive.
+Inclusive, learner-centered middle level education is a core value, and continuous reflection helps to ensure all learners thrive.
