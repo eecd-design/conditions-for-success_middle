@@ -1,0 +1,879 @@
+---
+import IconCaretDown from 'src/components/icons/IconCaretDown_14.astro';
+import IconEdit from 'src/components/icons/IconEdit_14.astro';
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
+import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import Toast from 'src/components/Toast.astro';
+import IconCheckmark from '../icons/IconCheckmark_12.astro';
+
+let schoolList = {
+	east: [
+		'Alternative Pathways to Graduation',
+		'Arnold H. McLeod School',
+		'Beaverbrook School',
+		'Bernice MacNaughton High School',
+		'Bessborough School',
+		'Birchmount School',
+		'Caledonia Regional High School',
+		'Claude D. Taylor School',
+		'Dorchester Consolidated School',
+		'Edith Cavell School',
+		'Evergreen Park School',
+		'Forest Glen School',
+		'Frank L. Bowser School',
+		'Harrison Trimble High School',
+		'Havelock School',
+		'Hillsborough Elementary School',
+		'Lewisville Middle School',
+		'Lou MacNarin School',
+		'Magnetic Hill School',
+		'Maplehurst Middle School',
+		'Marshview Middle School',
+		'Moncton High School',
+		'Mountain View School',
+		'Northrop Frye School',
+		'Petitcodiac Regional School',
+		'Port Elgin Regional School',
+		'Queen Elizabeth School',
+		'Riverside Consolidated School',
+		'Riverview East School',
+		'Riverview High School',
+		'Riverview Middle School',
+		'Salem Elementary School',
+		'Salisbury Elementary School',
+		'Salisbury Regional School',
+		'Shediac Cape School',
+		'Sunny Brae Middle School',
+		'Tantramar Regional High School',
+		'Wabanaki School',
+		'West Riverview School',
+	],
+	north: [
+		'Bathurst High School',
+		'Bathurst Transition Center',
+		'Bengals II',
+		'Blackville School',
+		'Bonar Law Memorial School',
+		'Campbellton Learning Center',
+		'Campbellton Middle School',
+		'Dalhousie Learning Center',
+		'Dalhousie Regional High School',
+		'Dr. Losier Middle School',
+		'Eleanor W. Graham Middle School',
+		'Gretna Green School',
+		'Harcourt School',
+		'Jacquet River School',
+		'James M. Hill Memorial High School',
+		'Janeville Elementary School',
+		'King Street Elementary School',
+		'L.E. Reinsborough School',
+		'Lord Beaverbrook School',
+		'Max Aitken Academy',
+		'Millerton Elementary & Junior High School',
+		'Miramichi Rural School',
+		'Miramichi Valley High School',
+		'Napan Elementary School',
+		'Nelson Rural School',
+		'North & South Esk Elementary School',
+		'North & South Esk Regional High School',
+		'Parkwood Heights Elementary School',
+		'Pulamoo II',
+		'Rexton Elementary School',
+		'Sugarloaf Senior High School',
+		'Superior Middle School',
+		'Tabusintac Community School',
+		'Terry Fox Elementary School',
+		'Tommies II',
+	],
+	south: [
+		'Apohaqui Elementary School',
+		'Back Bay Elementary School',
+		'Barnhill Memorial School',
+		'Bayside Middle School',
+		'Bayview School',
+		'Beaconsfield Middle School',
+		'Belleisle Elementary School',
+		'Belleisle Regional High School',
+		'Blacks Harbour School',
+		'Campobello Island Consolidated School',
+		'Centennial School',
+		'Champlain Heights School',
+		'Chris Saunders Memorial Elementary School',
+		'Compass Education Support Program-Saint John',
+		'Compass Education Support Program-Sussex',
+		'Deer Island Community School',
+		'Dr. A. T. Leatherbarrow Primary School',
+		'Fairvale Elementary School',
+		'Forest Hills School',
+		'Fundy Middle and High School',
+		'Fundy Shores School',
+		'Glen Falls School',
+		'Grand Bay Primary School',
+		'Grand Manan Community School',
+		'Hammond River Valley Elementary School',
+		'Hampton Elementary School',
+		'Hampton High School',
+		'Hampton Middle School',
+		'Harbour View High School',
+		'Harry Miller Middle School',
+		'Hazen-White-St. Francis School',
+		'Inglewood School',
+		'Island View School',
+		'Kennebecasis Park Elementary School',
+		'Kennebecasis Valley High School',
+		'Lakefield Elementary School',
+		'Lakewood Heights School',
+		'Lawrence Station Elementary School',
+		'Loch Lomond School',
+		'M. Gerald Teed Memorial School',
+		'Macdonald Consolidated School',
+		'Millidgeville North School',
+		'Milltown Elementary School',
+		'Norton Elementary School',
+		'Prince Charles School',
+		'Princess Elizabeth School',
+		'Quispamsis Elementary School',
+		'Quispamsis Middle School',
+		'River Valley Middle School',
+		'Rothesay Elementary School',
+		'Rothesay High School',
+		'Rothesay Park School',
+		'Saint John High School',
+		'Saint Rose School',
+		'Seaside Park Elementary School',
+		'Simonds High School',
+		'Sir James Dunn Academy',
+		'St. George Elementary School',
+		'St. John the Baptist/King Edward School',
+		"St. Malachy's Memorial High School",
+		'St. Martins School',
+		'St. Stephen Elementary School',
+		'St. Stephen High School',
+		'St. Stephen Middle School',
+		'Sussex Corner Elementary School',
+		'Sussex Elementary School',
+		'Sussex Middle School',
+		'Sussex Regional High School',
+		'Vincent Massey Elementary School',
+		'Westfield School',
+		'White Head Elementary School',
+	],
+	west: [
+		'Andover Elementary School',
+		'Assiniboine Avenue Elementary School',
+		'Barkers Point Elementary School',
+		'Bath Community School',
+		'Bliss Carman Middle School',
+		'Bristol Elementary School',
+		'Burton Elementary School',
+		'Cambridge-Narrows Community School',
+		'Canterbury High School',
+		'Carleton North High School',
+		'Central New Brunswick Academy',
+		'Centreville Community School',
+		'Chipman Elementary School',
+		'Chipman Forest Avenue School',
+		'Connaught Street School',
+		'Cuffman Street Elementary',
+		'Devon Middle School',
+		'Doaktown Elementary School',
+		'Donald Fraser Memorial School',
+		'Florenceville Elementary School',
+		'Florenceville Middle School',
+		'Forest Hill Elementary School',
+		'Fredericton Education Centre (Enterprise Centre)',
+		'Fredericton High School',
+		'Gagetown School',
+		'Garden Creek School',
+		'Geary Elementary Community School',
+		'George Street Middle School',
+		'Gesner Street Elementary School',
+		'Gibson-Neill Memorial Elementary School',
+		'Hanwell Park Academy',
+		'Harold Peterson Middle School',
+		'Hartland Community School',
+		'Harvey Elementary School',
+		'Harvey High School',
+		'Hubbard Elementary School',
+		'John Caldwell School',
+		'Keswick Ridge School',
+		'Keswick Valley Memorial School',
+		'Kingsclear Community School',
+		'Leo Hayes High School',
+		'Lincoln Elementary Community School',
+		'Liverpool Street Elementary School',
+		'McAdam Elementary School',
+		'McAdam High School',
+		'Meduxnekeag Consolidated School',
+		'Minto Elementary Middle School',
+		'Minto Memorial High School',
+		'Montgomery Street Elementary School',
+		'Nackawic Elementary School',
+		'Nackawic Middle School',
+		'Nackawic Senior High School',
+		'Nashwaak Valley School',
+		'Nashwaaksis Middle School',
+		'New Maryland Elementary School',
+		'Oromocto High School',
+		'Park Street Elementary School',
+		'Perth-Andover Middle School',
+		'Priestman Street Elementary School',
+		'Ridgeview Middle School',
+		'Royal Road Elementary School',
+		"Saint Mary's Academy",
+		'Southern Victoria High School',
+		'Stanley Consolidated School',
+		'Summerhill Street Elementary School',
+		'Sunbury West School',
+		'Sunset Acres Elementary School',
+		'Tobique Valley High School',
+		'Townsview School',
+		'Upper Miramichi Elementary School',
+		'Woodstock High School',
+	],
+};
+// TODO: Filter school list to only include middle schools
+---
+
+<dialog id="edit-assessment-properties-dialog" aria-labelledby="edit-assessment-properties-dialog_heading">
+	<button class="close-dialog clear" type="button" aria-label="Close Create Assessment Dialog">
+		<IconXmark />
+	</button>
+
+	<h2 id="edit-assessment-properties-dialog_heading" class="heading" data-default-text="Create Assessment">Create Assessment</h2>
+
+	<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
+		<div class="icon-container">
+			<IconWarningBig />
+		</div>
+
+		<div class="text-container">
+			<p>All information collected is stored exclusively on the browser. Download a copy of your assessment regularly to keep your data safe and restore it if needed.</p>
+		</div>
+	</div>
+
+	<form data-reset-custom-lists>
+		<fieldset>
+			<label for="edit-assessment-properties-dialog_district-select">School District</label>
+			<div class="select-container">
+				<select id="edit-assessment-properties-dialog_district-select" name="district" aria-describedby="edit-assessment-properties-dialog_district-select_error" required>
+					<option value="">Select a district...</option>
+					<option value="ASD-W">ASD-W</option>
+					<option value="ASD-N">ASD-N</option>
+					<option value="ASD-E">ASD-E</option>
+					<option value="ASD-S">ASD-S</option>
+				</select>
+				<IconCaretDown />
+			</div>
+			<p id="edit-assessment-properties-dialog_district-select_error" class="error-status" role="status" hidden>
+				<IconWarningSmall />
+				<span>Please select a school district from the list.</span>
+			</p>
+		</fieldset>
+
+		<fieldset>
+			<label for="edit-assessment-properties-dialog_school-select">School</label>
+			<div class="select-container">
+				<select id="edit-assessment-properties-dialog_school-select" name="school" required disabled>
+					<option value="">Select a school...</option>
+					<optgroup label="ASD-W Schools" class="asd-w-schools" hidden>
+						{schoolList.west.map((school) => <option value={school}>{school}</option>)}
+					</optgroup>
+					<optgroup label="ASD-N Schools" class="asd-n-schools" hidden>
+						{schoolList.north.map((school) => <option value={school}>{school}</option>)}
+					</optgroup>
+					<optgroup label="ASD-E Schools" class="asd-e-schools" hidden>
+						{schoolList.east.map((school) => <option value={school}>{school}</option>)}
+					</optgroup>
+					<optgroup label="ASD-S Schools" class="asd-s-schools" hidden>
+						{schoolList.south.map((school) => <option value={school}>{school}</option>)}
+					</optgroup>
+				</select>
+				<IconCaretDown />
+			</div>
+			<p id="edit-assessment-properties-dialog_school-select_error" class="error-status" role="status" hidden>
+				<IconWarningSmall />
+				<span>Please select a school from the list.</span>
+			</p>
+		</fieldset>
+
+		<fieldset>
+			<label for="edit-assessment-properties-dialog_reporting-year-input">Reporting Year</label>
+			<p id="edit-assessment-properties-dialog_reporting-year-input_help" class="instructions">Enter a 4-digit year (e.g., 2025).</p>
+			<div class="input-container">
+				<input
+					id="edit-assessment-properties-dialog_reporting-year-input"
+					name="reportingYear"
+					type="text"
+					required
+					placeholder="Enter a year..."
+					pattern="\\d{4}"
+					aria-describedby="edit-assessment-properties-dialog_reporting-year-input_help, edit-assessment-properties-dialog_reporting-year-input_error"
+				/>
+			</div>
+			<p id="edit-assessment-properties-dialog_reporting-year-input_error" class="error-status" role="status" hidden>
+				<IconWarningSmall />
+				<span>Please enter a valid year.</span>
+			</p>
+		</fieldset>
+
+		<!-- Creation Success Toast in Assessors Dialog -->
+		<Toast id={'edit-assessment-properties-dialog_create-toast_failure'} message={`Unable to create assessment. Please reload the page to try again.`} colour={'red'} type={'failure'}>
+			<IconWarningSmall slot={'icon'} />
+		</Toast>
+		<!-- Save Success Toast in Assessment Dialogs -->
+		<Toast id={'edit-assessment-properties-dialog_save-toast_failure'} message={`Unable to save. Please reload the page to try again.`} colour={'red'} type={'failure'}>
+			<IconWarningSmall slot={'icon'} />
+		</Toast>
+
+		<div class="button-group">
+			<button class="close-dialog clear" type="button" data-size="large" data-style="outline">Cancel</button>
+			<button
+				class="create"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-restrict-context="setup"
+				data-toast-success="edit-assessment-properties-dialog_create-toast_success"
+				data-toast-failure="edit-assessment-properties-dialog_create-toast_failure">Create</button
+			>
+			<button
+				class="save"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-restrict-context="configure"
+				data-toast-success="edit-assessment-properties-dialog_save-toast_success"
+				data-toast-failure="edit-assessment-properties-dialog_save-toast_failure"
+				disabled>Save</button
+			>
+		</div>
+	</form>
+</dialog>
+
+<dialog id="view-assessment-properties-dialog" aria-describedby="view-assessment-properties-dialog_heading">
+	<button class="close-dialog" type="button" aria-label="Close Assessment Properties Dialog"><IconXmark /></button>
+
+	<h2 id="view-assessment-properties-dialog_heading" class="heading" data-default-text="Assessment Properties">Assessment Properties</h2>
+
+	<section>
+		<button
+			class="open-dialog"
+			data-dialog="edit-assessment-properties-dialog"
+			data-dialog-heading="Edit Assessment Properties"
+			data-dialog-context="configure"
+			type="button"
+			aria-label="Edit Assessment General Information">
+			<div class="icon-and-label-container">
+				<IconEdit />
+				<span class="label-container">
+					<span class="label">Edit General Information</span>
+				</span>
+			</div>
+		</button>
+		<h3 class="heading">General Information</h3>
+		<dl>
+			<div class="detail-container field-container">
+				<dt>Date Created:</dt>
+				<dd data-field="dateCreated"></dd>
+			</div>
+			<div class="detail-container">
+				<dt>School District:</dt>
+				<dd data-field="district"></dd>
+			</div>
+			<div class="detail-container">
+				<dt>School:</dt>
+				<dd data-field="school"></dd>
+			</div>
+			<div class="detail-container">
+				<dt>Reporting Year:</dt>
+				<dd data-field="reportingYear"></dd>
+			</div>
+		</dl>
+	</section>
+
+	<hr class="group" />
+
+	<section>
+		<button class="open-dialog" data-dialog="assessor-dialog" data-dialog-heading="Edit Assessors" data-dialog-context="configure" type="button" aria-label="Edit Assessment Assessors">
+			<div class="icon-and-label-container">
+				<IconEdit />
+				<span class="label-container">
+					<span class="label">Edit Assessors</span>
+				</span>
+			</div>
+		</button>
+		<h3 class="heading">Assessors</h3>
+		<dl>
+			<div class="detail-container">
+				<dt>Assessor(s):</dt>
+				<dd data-field="assessors"></dd>
+			</div>
+			<div class="detail-container field-container">
+				<dt>Active Assessor:</dt>
+				<dd data-field="activeAssessor"></dd>
+			</div>
+		</dl>
+	</section>
+
+	<hr class="group" />
+
+	<section>
+		<button class="open-dialog" data-dialog="edit-status-dialog" type="button" aria-label="Edit Assessment Status">
+			<div class="icon-and-label-container">
+				<IconEdit />
+				<span class="label-container">
+					<span class="label">Edit Status</span>
+				</span>
+			</div>
+		</button>
+		<h3 class="heading">Status</h3>
+		<dl>
+			<div class="detail-container">
+				<dt>Status:</dt>
+				<dd data-field="status"></dd>
+			</div>
+		</dl>
+	</section>
+
+	<hr class="group" />
+
+	<section>
+		<h3 class="heading">Change History</h3>
+		<dl class="change-log-list">
+			<template>
+				<div class="detail-container">
+					<dt></dt>
+					<dd></dd>
+				</div>
+			</template>
+		</dl>
+	</section>
+
+	<!-- TODO: Add Delete Assessment section and button (with double warning) -->
+</dialog>
+
+<style>
+	#view-assessment-properties-dialog :is(button, [data-style-as='button']) {
+		--icon-size: 0.875rem;
+	}
+
+	#view-assessment-properties-dialog :is(button, [data-style-as='button']):is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+		--button-background-colour: var(--colour-fill-neutral-mid);
+	}
+
+	#view-assessment-properties-dialog hr.group {
+		margin: 1.5rem 0;
+	}
+
+	#view-assessment-properties-dialog dl {
+		margin: 1rem 0;
+		line-height: 1;
+	}
+
+	#view-assessment-properties-dialog dl :is(dt, dd) {
+		font-size: 0.875rem;
+	}
+
+	.heading-button-container {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-between;
+		align-items: start;
+		gap: 1rem;
+	}
+
+	#view-assessment-properties-dialog section h3 {
+		margin: 0 0 1rem;
+		font-size: 1.25rem;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	#view-assessment-properties-dialog button.open-dialog {
+		float: right;
+		margin: 0 0 1rem 1rem;
+	}
+
+</style>
+
+<script>
+	//
+	// Imports
+	//
+
+	import { checkForChanges, createAssessment, updateChangeLog, getActiveAssessmentData, getAssessmentDate, getStatusColour, setAssessment, subscribe, getUserData } from 'src/stores/userDataStore';
+	import { getFormValues, resetForm, validateForm, validateField } from 'src/utilities/form';
+	import { formatDateAsString, joinWithAnd, toTitleCase } from 'src/utilities/helpers.js';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
+
+	//
+	// Methods
+	//
+
+	let revealSchoolOptionGroup = (districtSelect) => {
+		let schoolSelect = districtSelect.closest('form').querySelector(`select[name="school"]`) as HTMLSelectElement;
+		let schoolOptionGroups = schoolSelect?.querySelectorAll('optgroup');
+
+		// If the district select has a value, enable school select and show paired option group
+		if (districtSelect.value !== '') {
+			schoolSelect.removeAttribute('disabled');
+			schoolSelect.querySelector(`.${districtSelect.value.toLowerCase()}-schools`).removeAttribute('hidden');
+			// Otherwise, disabled school select and hide all options groups
+		} else {
+			schoolSelect.value = '';
+			schoolSelect.setAttribute('disabled', '');
+			for (let group of schoolOptionGroups) {
+				group.setAttribute('hidden', '');
+			}
+		}
+	};
+
+	let createDetailListItem = ({template, term, definition}) => {
+
+		if (!template || !term || !definition) return;
+
+		// Clone the template
+		let item = template.content.cloneNode(true) as HTMLElement;
+
+		let dt = item.querySelector('dt');
+		let dd = item.querySelector('dd');
+
+		dt.textContent = term;
+		dd.textContent = definition;
+
+		return item;
+
+	}
+
+	let updateFieldsFromAssessmentData = ({ assessment, dialog }: { assessment: Assessment; dialog: HTMLDialogElement }) => {
+		let form = dialog.querySelector('form');
+
+		for (let [key, value] of Object.entries(assessment)) {
+			// 1. Update form fields (input, select, etc.)
+			let formfield = form?.elements?.[key];
+
+			if (formfield) {
+				// 1.1 Update radio group
+				if (formfield instanceof RadioNodeList) {
+					formfield.value = String(value);
+					let radios = Array.from(formfield) as HTMLInputElement[];
+					for (let radio of radios) {
+						let isMatch = radio.value === String(value);
+						radio.checked = isMatch;
+						if (isMatch) {
+							radio.setAttribute('checked', '');
+						} else {
+							radio.removeAttribute('checked');
+						}
+					}
+					// 1.2 Update checkboxes
+				} else if (formfield.type === 'checkbox') {
+					formfield.checked = !!value;
+					formfield.setAttribute('checked', !!value);
+					// 1.3 Update text inputs
+				} else if (formfield.type === 'text') {
+					formfield.value = String(value ?? '');
+					formfield.setAttribute('value', String(value ?? ''));
+					// 1.4 Update selects
+				} else if (formfield.type === 'select-one') {
+					formfield.value = String(value ?? '');
+					let option = formfield.querySelector(`option[value="${String(value ?? '')}"]`);
+					option.setAttribute('selected', '');
+				}
+			}
+
+			// 2. Update static fields (dd, div, span, etc.)
+			let staticField = dialog.querySelector(`[data-field="${key}"]`);
+
+			if (staticField) {
+				// If value is array, flatten into comma separated string
+				if (Array.isArray(value)) {
+					staticField.textContent = value.join(', ');
+					// If value is date, retrieve formatted date from assessment data
+				} else if (key.startsWith('date') && typeof value === 'number') {
+					staticField.innerHTML = getAssessmentDate({ type: key });
+					// Otherwise, use value as is
+				} else {
+					staticField.textContent = String(value ?? '');
+
+					// If key is status, update field theme as well
+					if (key === 'status') {
+						staticField.setAttribute('data-theme', getStatusColour());
+					}
+				}
+			}
+		}
+	};
+
+	let updateFieldsFromStateData = ({ state, dialog }: { state: State; dialog: HTMLDialogElement }) => {
+		for (let [key, value] of Object.entries(state)) {
+			let field = dialog.querySelector(`[data-field="${key}"]`);
+
+			if (field) {
+				// If value is array, flatten into comma separated string
+				if (Array.isArray(value)) {
+					field.textContent = value.join(', ');
+					// Otherwise, use value as is
+				} else {
+					field.textContent = String(value ?? '');
+				}
+			}
+		}
+	};
+
+	//
+	// DOM Updates
+	//
+
+	/**
+	 * Update the view assessment properties dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateViewAssessmentPropertiesDialog = (data: UserData) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = viewAssessmentPropertiesDialog as HTMLDialogElement;
+		let changeLogList = dialog.querySelector('dl.change-log-list');
+
+		updateFieldsFromAssessmentData({
+			assessment: assessment,
+			dialog: dialog,
+		});
+
+		updateFieldsFromStateData({
+			state: data.uiState,
+			dialog: dialog,
+		});
+
+		for (let child of changeLogList.querySelectorAll(':not(template)')) {
+			child.remove();
+		}
+
+		for (let change of assessment.changeLog) {
+
+			let template = dialog.querySelector('dl template');
+
+			let dateFormatter = new Intl.DateTimeFormat('en-US', {
+				dateStyle: 'medium',
+				timeStyle: 'short' 
+			});
+
+			let date = dateFormatter.format(change.date);
+			
+			let message;
+			
+			if (change.assessor) {
+				message = `${change.assessor} ${change.message}`
+			} else {
+				message = change.message.charAt(0).toUpperCase() + change.message.slice(1);
+			} 
+
+			let item = createDetailListItem({
+				template,
+				term: date,
+				definition: message
+			})
+
+			changeLogList.append(item);
+
+		}
+
+	};
+
+	/**
+	 * Update the edit assessment properties dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateEditAssessmentPropertiesDialog = (data: UserData) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let dialog = editAssessmentPropertiesDialog as HTMLDialogElement;
+		let context = dialog.getAttribute('data-context');
+
+		if (context === 'setup') {
+			let forms = dialog.querySelectorAll('form');
+			for (let form of forms) {
+				resetForm({ form, resetType: 'hard' });
+			}
+		} else if (context === 'configure' || !context) {
+			updateFieldsFromAssessmentData({
+				assessment: assessment,
+				dialog: dialog,
+			});
+		}
+		let districtSelect = dialog.querySelector('select[name="district"]');
+		revealSchoolOptionGroup(districtSelect);
+	};
+
+	//
+	// Event Listeners
+	//
+
+	let editAssessmentPropertiesDialog = document.querySelector('#edit-assessment-properties-dialog');
+	let viewAssessmentPropertiesDialog = document.querySelector('#view-assessment-properties-dialog');
+	let saveBtn = editAssessmentPropertiesDialog?.querySelector('button.save') as HTMLButtonElement;
+
+	// Track which fields the user has interacted with
+	let touchedFormFields = new Set();
+
+	editAssessmentPropertiesDialog.addEventListener('click', (event) => {
+		let target = event.target as HTMLButtonElement;
+		let dialog = editAssessmentPropertiesDialog as HTMLDialogElement;
+
+		// Clear out all form fields on dialog close
+		if (target.matches('button.clear')) {
+			let forms = dialog.querySelectorAll('form');
+			for (let form of forms) {
+				resetForm({ form });
+				// Reset touched fields
+				touchedFormFields.clear();
+			}
+		}
+
+		if (target.matches('button.create')) {
+			let form = target.closest('form');
+
+			// Mark all fields as interacted with
+			let fields = form.querySelectorAll('input[required], select[required]');
+			for (let field of fields) touchedFormFields.add(field);
+
+			let formValidity = validateForm({ form, touchedFormFields });
+			if (!formValidity) return;
+
+			try {
+				// Get the form values and create the assessment
+				let values = getFormValues(form);
+				createAssessment(values);
+
+				toastControl.show({ target, type: 'success' });
+
+				// Open assessor dialog
+				dialogControl.open({
+					dialogId: 'assessor-dialog',
+					context: 'setup',
+				});
+
+				// Reset forms
+				let forms = dialog.querySelectorAll('form');
+				for (let form of forms) {
+					resetForm({ form });
+				}
+
+				// Reset touched fields
+				touchedFormFields.clear();
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+
+		if (target.matches('button.save')) {
+			let form = target.closest('form');
+
+			// Mark all fields as interacted with
+			let inputs = form.querySelectorAll('input[required], select[required]');
+			for (let input of inputs) touchedFormFields.add(input);
+
+			let formValidity = validateForm({ form, touchedFormFields });
+			if (!formValidity) return;
+
+			try {
+				// Get the form values and assessment data
+				let values = getFormValues(form);
+				let assessment = getActiveAssessmentData();
+				if (!assessment) {
+					throw new Error('No active assessment data to update.');
+				}
+
+				let check = checkForChanges({
+					data: assessment,
+					update: values,
+				});
+
+				if (check) {
+					let update = check.changedValues;
+					update.unexportedChanges = true;
+					update.dateModified = Date.now();
+
+					let formattedKeys = check.updatedKeys.map((updatedKey) => {
+						return toTitleCase(updatedKey.key).toLowerCase();
+					});
+
+					update.changeLog = updateChangeLog({
+						message: `updated assessment ${joinWithAnd(formattedKeys)}.`,
+					});
+
+					setAssessment(update);
+				}
+
+				toastControl.show({ target, type: 'success' });
+
+				// Close the dialog
+				dialog.close();
+
+				// Reset forms
+				let forms = dialog.querySelectorAll('form');
+				for (let form of forms) {
+					resetForm({ form });
+				}
+
+				// Reset touched fields
+				touchedFormFields.clear();
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+	});
+
+	editAssessmentPropertiesDialog.addEventListener('toggle', (event) => {
+		let dialog = event.target as HTMLDialogElement;
+
+		// On open, update dialog form with current assessment data
+		if (dialog === editAssessmentPropertiesDialog && dialog.open) {
+			updateEditAssessmentPropertiesDialog(getUserData());
+		}
+	});
+
+	editAssessmentPropertiesDialog.addEventListener('input', (event) => {
+		let target = event.target as HTMLInputElement | HTMLSelectElement;
+		if (target.matches(`select[name="district"]`)) {
+			revealSchoolOptionGroup(target);
+		}
+		if (target.matches('input')) {
+			saveBtn.removeAttribute('disabled');
+		}
+	});
+
+	editAssessmentPropertiesDialog.addEventListener('focusout', (event) => {
+		let target = event.target as any;
+		if (target.matches('select[required], input[required]')) {
+			touchedFormFields.add(target);
+			validateField({ field: target, touchedFormFields });
+			saveBtn.removeAttribute('disabled');
+		}
+	});
+
+	editAssessmentPropertiesDialog.addEventListener('change', async (event) => {
+		let target = event.target as any;
+		if (target.matches('select[required], input[required]')) {
+			touchedFormFields.add(target);
+			validateField({ field: target, touchedFormFields });
+			saveBtn.removeAttribute('disabled');
+		}
+	});
+
+	//
+	// Inits
+	//
+
+	subscribe(updateViewAssessmentPropertiesDialog);
+	subscribe(updateEditAssessmentPropertiesDialog);
+</script>

@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 
-import { findObjectByKey } from "../utilities/helpers"
+import { findObjectByKey } from "src/utilities/helpers"
 
-import IconXmark from "./icons/IconXmark_20.astro";
-import IconWarningSmall from "./icons/IconWarning_16.astro";
-import IconSearch from "./icons/IconSearch_20.astro";
-import LinkListItem from "./LinkListItem.astro";
+import IconXmark from "src/components/icons/IconXmark_20.astro";
+import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
+import IconSearch from "src/components/icons/IconSearch_20.astro";
+import LinkListItem from "src/components/LinkListItem.astro";
 
 let searchList = [];
 
@@ -67,7 +67,7 @@ for (let resource of allResources) {
 		aria-label="Close Search Dialog"><IconXmark /></button
 	>
 
-	<h2 id="search-dialog_heading" class="heading">
+	<h2 id="search-dialog_heading" class="heading" data-default-text="Search">
 		Search
 	</h2>
 
@@ -126,7 +126,7 @@ for (let resource of allResources) {
 
 <script>
 
-	import { search } from "../utilities/list";
+	import { search } from "src/utilities/list";
 
 	search.init();
 	document.addEventListener('astro:before-swap', search.destroy);

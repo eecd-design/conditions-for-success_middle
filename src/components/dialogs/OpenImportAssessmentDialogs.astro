@@ -1,0 +1,712 @@
+---
+import IconAssessment from 'src/components/icons/IconAssessment_20.astro';
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
+import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import Toast from 'src/components/Toast.astro';
+import IconCheckmark from '../icons/IconCheckmark_12.astro';
+---
+
+<dialog id="open-assessment-dialog" aria-describedby="open-assessment-dialog_heading">
+	<button class="close-dialog" type="button" aria-label="Close Open Assessment Dialog"><IconXmark /></button>
+
+	<h2 id="open-assessment-dialog_heading" class="heading" data-default-text="Open Assessment">Open or Import Assessment</h2>
+
+	<section class="import">
+		<h3>Import Assessment</h3>
+
+		<Toast id={'import-conflict-dialog_overwrite-toast_success'} message={`Assessment overwritten.`} colour={'green'} type={'success'}>
+			<IconCheckmark slot={'icon'} />
+		</Toast>
+
+		<Toast id={'open-assessment-dialog_import-file-toast_success'} message={`Assessment imported into 'Saved Assessments'.`} colour={'green'} type={'success'}>
+			<IconCheckmark slot={'icon'} />
+		</Toast>
+		<Toast id={'open-assessment-dialog_import-file-toast_failure'} message={`Unable to import assessment. Please reload the page to try again.`} colour={'red'} type={'failure'}>
+			<IconWarningSmall slot={'icon'} />
+		</Toast>
+
+		<form>
+			<fieldset class="file">
+				<!-- <h4 class="heading">File</h4> -->
+				<label class="file-input-container" data-toast-success="open-assessment-dialog_import-file-toast_success" data-toast-failure="open-assessment-dialog_import-file-toast_failure">
+					<span data-style-as="button" data-style="solid" data-size="large">Choose File</span>
+					<input type="file" accept=".xlsx,.xls,.csv" />
+				</label>
+			</fieldset>
+
+			<div class="separator item" data-orientation="vertical"></div>
+
+			<fieldset class="code">
+				<!-- <h4 class="heading">Code</h4> -->
+				<div class="code-container input-container">
+					<input type="text" name="import-code" placeholder="Paste code here..." />
+					<button
+						class="import-code"
+						type="button"
+						aria-label="Import assessment code"
+						data-toast-success="open-assessment-dialog_import-code-toast_success"
+						data-toast-failure="open-assessment-dialog_import-code-toast_failure"
+						disabled>
+						Import
+					</button>
+				</div>
+			</fieldset>
+		</form>
+	</section>
+
+	<hr class="group" />
+
+	<section>
+		<h3>Saved Assessments</h3>
+
+		<!-- Success Toast located in Assessors Dialogs -->
+		<Toast id={'open-assessment-dialog_open-toast_failure'} message={`Unable to open assessment. Please reload the page to try again.`} colour={'red'} type={'failure'}>
+			<IconWarningSmall slot={'icon'} />
+		</Toast>
+
+		<ul class="saved-assessments elem-group" data-fit="compact" data-columns="2">
+			<template>
+				<li class="card">
+					<div class="banner" data-theme="blue" data-vibrancy="vivid" data-field="banner" hidden></div>
+					<div class="wrapper">
+						<h4 class="heading icon-and-label-container">
+							<IconAssessment />
+							<!-- TODO: Do we need this icon? -->
+							<span class="label-container" data-field="title"></span>
+						</h4>
+						<div class="details">
+							<span class="label-group">
+								<div class="edit-status label-container field-container" data-theme="blue" data-vibrancy="vivid" data-style="solid">
+									<span class="label" data-field="edit-status"></span>
+								</div>
+								<div class="export-status label-container field-container" data-theme="red" hidden>
+									<span class="label" data-field="export-status">*Unexported Changes</span>
+								</div>
+							</span>
+							<dl data-fit="compact">
+								<div class="date-created detail-container">
+									<dt>Date Created:</dt>
+									<dd data-field="date-created"></dd>
+								</div>
+								<div class="date-exported detail-container" hidden>
+									<dt>Date Exported:</dt>
+									<dd data-field="date-exported"></dd>
+								</div>
+								<div class="date-modified detail-container" hidden>
+									<dt>Date Modified:</dt>
+									<dd data-field="date-modified"></dd>
+								</div>
+							</dl>
+						</div>
+						<button
+							class="open-assessment"
+							type="button"
+							data-size="large"
+							data-toast-success="open-assessment-dialog_open-toast_success"
+							data-toast-failure="open-assessment-dialog_open-toast_failure"
+							hidden>Open</button
+						>
+					</div>
+				</li>
+			</template>
+		</ul>
+	</section>
+</dialog>
+
+<dialog id="import-conflict-dialog" aria-describedby="import-conflict-dialog_heading">
+	<button class="close-dialog" type="button" aria-label="Close Open Assessment Dialog"><IconXmark /></button>
+
+	<h2 id="status-warning-dialog_heading" class="heading" data-default-text="Import Conflict">Import Conflict</h2>
+	<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="red">
+		<div class="icon-container">
+			<IconWarningBig />
+		</div>
+		<div class="text-container">
+			<p>
+				The imported assessment conflicts with an assessment already saved in the browser. <strong>Each school can have only one assessment per reporting year</strong>.
+			</p>
+			<p>Review the assessment properties below and choose whether to keep the saved assessment or overwrite it.</p>
+		</div>
+	</div>
+	<template class="highlight">
+		<div class="highlight-container" data-theme="red" data-vibrancy="vivid">
+			<IconWarningSmall />
+			<span>
+				<span class="value"></span>
+				<span class="sr-only">, conflicting value</span>
+			</span>
+		</div>
+	</template>
+	<div class="conflicting-assessments elem-group" data-columns="2">
+		<div class="card local">
+			<div class="banner" data-theme="blue" data-vibrancy="vivid">Saved</div>
+			<div class="wrapper">
+				<h4 class="heading icon-and-label-container">
+					<IconAssessment />
+					<span class="label-container" data-field="school"></span>
+				</h4>
+				<div class="details">
+					<dl data-fit="compact">
+						<div class="detail-container">
+							<dt>Reporting Year:</dt>
+							<dd data-field="reportingYear"></dd>
+						</div>
+						<div class="detail-container">
+							<dt>Status:</dt>
+							<dd data-field="status"></dd>
+						</div>
+						<div class="detail-container">
+							<dt>Date Modified:</dt>
+							<dd data-field="dateModified"></dd>
+						</div>
+						<div class="detail-container">
+							<dt>Last Modified By:</dt>
+							<dd data-field="lastModifiedBy"></dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="card imported">
+			<div class="banner" data-theme="yellow" data-vibrancy="vivid">Imported</div>
+			<div class="wrapper">
+				<h4 class="heading icon-and-label-container">
+					<IconAssessment />
+					<span class="label-container" data-field="school"></span>
+				</h4>
+				<div class="details">
+					<dl data-fit="compact">
+						<div class="detail-container">
+							<dt>Reporting Year:</dt>
+							<dd data-field="reportingYear"></dd>
+						</div>
+						<div class="detail-container">
+							<dt>Status:</dt>
+							<dd data-field="status"></dd>
+						</div>
+						<div class="detail-container">
+							<dt>Date Modified:</dt>
+							<dd data-field="dateModified"></dd>
+						</div>
+						<div class="detail-container">
+							<dt>Last Modified By:</dt>
+							<dd data-field="lastModifiedBy"></dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Success Toast in Open Assessment Dialog -->
+	<Toast id={'import-conflict-dialog_overwrite-toast_failure'} message={`Unable to overwrite assessment. Please reload the page to try again.`} colour={'red'} type={'failure'}>
+		<IconWarningSmall slot={'icon'} />
+	</Toast>
+
+	<div class="button-group">
+		<button class="keep close-dialog" type="button" data-size="large" data-style="outline">Keep Saved</button>
+		<button
+			class="overwrite"
+			type="button"
+			data-size="large"
+			data-style="solid"
+			data-toast-success="import-conflict-dialog_overwrite-toast_success"
+			data-toast-failure="import-conflict-dialog_overwrite-toast_failure">Overwrite</button
+		>
+	</div>
+</dialog>
+
+<style is:global>
+	/* 
+	// Open Assessment Dialog
+	*/
+
+	#open-assessment-dialog input[type='file'] {
+		font-size: 0.75rem;
+		overflow: visible !important;
+	}
+
+	#open-assessment-dialog input[type='file']::file-selector-button {
+		overflow: visible !important;
+	}
+
+	#open-assessment-dialog section.import form {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	#open-assessment-dialog section.import form fieldset.code {
+		flex-grow: 1;
+	}
+
+	#open-assessment-dialog section.import form fieldset .heading {
+		font-size: 1rem;
+		font-weight: 500;
+		margin: 0 0 0.5rem;
+	}
+
+	#open-assessment-dialog section.import form .separator.item {
+		--separator-long-edge-dimension: 2rem;
+	}
+
+	#open-assessment-dialog section:not(:has(~ :not([hidden]))) {
+		margin-bottom: 0 !important;
+	}
+
+	#open-assessment-dialog .saved-assessments {
+		--group-margin: 0;
+	}
+
+	#open-assessment-dialog .saved-assessments .card .heading {
+		--icon-colour: var(--colour-ui-neutral-subtle);
+	}
+
+	/* 
+	// Import Conflict Dialog
+	*/
+
+	#import-conflict-dialog:has(button.overwrite:is(:hover, :focus-visible)) .card.imported {
+		outline-color: var(--colour-border-neutral-bold);
+	}
+
+	#import-conflict-dialog:has(button.overwrite:is(:hover, :focus-visible)) .card.local {
+		opacity: 0.5;
+	}
+
+	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible)) .card.local {
+		outline-color: var(--colour-border-neutral-bold);
+	}
+
+	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible)) .card.imported {
+		opacity: 0.5;
+	}
+
+	.conflicting-assessments {
+		--group-margin: 2rem 0;
+	}
+
+	.highlight-container {
+		--icon-size: 1rem;
+		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: start;
+		gap: 0.5rem;
+
+		color: var(--colour-ui-accent, var(--colour-ui-neutral));
+	}
+</style>
+
+<script>
+	//
+	// Imports
+	//
+
+	import { findIndexByKey, formatDateAsHTML, sanitizeHTML } from 'src/utilities/helpers';
+	import { getUserData, getAssessmentName, getAssessmentDate, getStatusColour, setState, setAssessment, importAssessment, subscribe, decompressData } from 'src/stores/userDataStore';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
+	import {
+		getActiveAssessmentData,
+		findAssessmentConflicts,
+		setImportConflictData,
+		getImportConflictData,
+		deleteAssessment,
+		generateContinuumCompletion,
+		deleteImportConflictData,
+	} from 'src/stores/userDataStore';
+
+	//
+	// Methods
+	//
+
+	let createAssessmentCard = (assessment: Assessment, active: boolean = false) => {
+		if (!assessment || assessment === undefined) return;
+		let { dateExported, status, id, unexportedChanges } = assessment;
+
+		let template = document.querySelector('#open-assessment-dialog .saved-assessments template') as HTMLTemplateElement;
+
+		if (!template) return;
+
+		// Clone the template
+		let card = template.content.cloneNode(true) as HTMLElement;
+
+		// Set active status
+		let li = card.querySelector('li');
+		if (active) li.setAttribute('data-active', '');
+
+		// Set banner attributes
+		let banner = card.querySelector('.banner');
+		if (active) {
+			banner.removeAttribute('hidden');
+			banner.setAttribute('data-theme', getStatusColour(assessment));
+			banner.textContent = status === 'In Progress' ? 'Editing' : 'Reviewing';
+		}
+
+		// Set title text
+		let titleField = card.querySelector('[data-field="title"]');
+		titleField.textContent = getAssessmentName(assessment);
+
+		// Set edit status field
+		let editStatusField = card.querySelector('[data-field="edit-status"]');
+		editStatusField.setAttribute('data-theme', getStatusColour(assessment));
+		editStatusField.textContent = status;
+
+		// Set export status field
+		if (unexportedChanges) {
+			let exportStatusField = card.querySelector('[data-field="export-status"]');
+			exportStatusField.closest('.field-container').removeAttribute('hidden');
+		}
+
+		// Set dates
+		let dateCreatedField = card.querySelector('[data-field="date-created"]');
+		dateCreatedField.innerHTML = getAssessmentDate({ assessment: assessment, type: 'dateCreated' });
+
+		if (dateExported) {
+			let dateExportedField = card.querySelector('[data-field="date-exported"]');
+			dateExportedField.innerHTML = getAssessmentDate({ assessment: assessment, type: 'dateExported' });
+			dateExportedField.closest('.detail-container').removeAttribute('hidden');
+		} else {
+			let dateModifiedField = card.querySelector('[data-field="date-modified"]');
+			dateModifiedField.innerHTML = getAssessmentDate({ assessment: assessment, type: 'dateModified' });
+			dateModifiedField.closest('.detail-container').removeAttribute('hidden');
+		}
+
+		// Show open buttons
+		if (!active) {
+			let btn = card.querySelector('button.open-assessment');
+			btn.removeAttribute('hidden');
+			btn.setAttribute('data-id', String(id));
+		}
+
+		return card;
+	};
+
+	let handleAssessmentImport = async (importedAssessment) => {
+		let userData = getUserData();
+		let localAssessments = userData.assessments;
+
+		// Compare imported assessment to saved assessment to identify conflicts
+		let { idConflict, schoolYearConflict } = findAssessmentConflicts({ importedAssessment, localAssessments });
+
+		// If there's a school/year conflict, open import conflict dialog
+		if (schoolYearConflict) {
+			console.log('School/Year Conflict Detected');
+
+			setImportConflictData({
+				importedAssessment,
+				localAssessment: schoolYearConflict,
+			});
+
+			updateImportConflictDialog({ importedAssessment, localAssessment: schoolYearConflict });
+
+			// TODO: Make sure that users can't create a conflicting assessment.
+
+			dialogControl.open({
+				dialogId: 'import-conflict-dialog',
+			});
+
+			return false;
+		}
+
+		// If there's an id conflict (but no school/year conflict), assign assessment a new id
+		if (idConflict) {
+			console.log('ID Conflict Detected');
+			let ids = localAssessments.map((a) => a.id).filter(Boolean);
+			let newId = ids.length ? Math.max(...ids) + 1 : 1;
+			importedAssessment.id = newId;
+		}
+
+		// Add missing keys and default values
+		importedAssessment.activeAssessor = null;
+		importedAssessment.unexportedChanges = false;
+		if (importedAssessment.continuumCompletion === undefined) {
+			importedAssessment.continuumCompletion = await generateContinuumCompletion(importedAssessment);
+		}
+
+		// Save assessment to user data
+		setAssessment(importedAssessment);
+
+		// Clear out the import conflict data cache
+		deleteImportConflictData();
+
+		return true;
+	};
+
+	//
+	// DOM Updates
+	//
+
+	/**
+	 * Update the open-assessment dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateOpenAssessmentDialog = (data: UserData) => {
+		let dialog = document.querySelector('#open-assessment-dialog');
+		let savedAssessmentList = dialog?.querySelector('ul.saved-assessments');
+		let savedAssessmentListItems = savedAssessmentList?.querySelectorAll('li');
+		let savedAssessmentsSection = savedAssessmentList.closest('section');
+		let hr = dialog.querySelector('hr.group');
+
+		if (!dialog || !savedAssessmentList) return;
+
+		// Clear out the list
+		for (let item of savedAssessmentListItems) item.remove();
+
+		if (data.assessments.length > 0) {
+			// Create a shallow copy of the array
+			let assessments = [...data.assessments];
+
+			// Sort array of assessments by date modified
+			assessments.sort((a, b) => b.dateModified - a.dateModified);
+
+			let activeAssessmentId = data.uiState.activeAssessmentId;
+
+			if (activeAssessmentId) {
+				// Get the index of the active assessment
+				let activeIndex = findIndexByKey(assessments, 'id', activeAssessmentId);
+
+				// Move it to the top of the array, if not already
+				if (activeIndex > 0) {
+					let [activeItem] = assessments.splice(activeIndex, 1);
+					assessments.unshift(activeItem);
+				}
+			}
+
+			// Create cards for the saved assessments and add them to the DOM
+			for (let i = 0; i < assessments.length; i++) {
+				let assessment = assessments[i];
+				let active = false;
+
+				if (assessment !== null) {
+					if (activeAssessmentId && i === 0) active = true;
+
+					let card = createAssessmentCard(assessment, active);
+					savedAssessmentList.append(card);
+				}
+			}
+			savedAssessmentsSection.removeAttribute('hidden');
+			hr.removeAttribute('hidden');
+		} else {
+			savedAssessmentsSection.setAttribute('hidden', '');
+			hr.setAttribute('hidden', '');
+		}
+	};
+
+	let updateImportConflictDialog = ({ importedAssessment, localAssessment }) => {
+		if (!importedAssessment || !localAssessment) return;
+
+		let dialog = importConflictDialog;
+		let localCard = dialog.querySelector('.conflicting-assessments .local');
+		let importedCard = dialog.querySelector('.conflicting-assessments .imported');
+		let highlightTemplate = dialog.querySelector('template.highlight') as HTMLTemplateElement;
+
+		let metadataKeys = ['school', 'status', 'reportingYear', 'dateModified', 'lastModifiedBy'];
+
+		/**
+		 * Compare two objects with the same schema and return keys with mismatched values.
+		 * Falsy values (null, undefined, '', 0, false) are considered a match.
+		 * @param {Object} objA - The first object to compare
+		 * @param {Object} objB - The second object to compare
+		 * @returns {string[]} Array of keys whose values differ
+		 */
+		let getMismatchedKeys = (objA, objB) => {
+			let mismatches = [];
+
+			for (let key of metadataKeys) {
+				let a = objA[key];
+				let b = objB[key];
+
+				// Treat all falsy values as equivalent
+				if (!a && !b) continue;
+
+				// Compare strings trimmed, else strict equality
+				if (typeof a === 'string' && typeof b === 'string') {
+					if (a.trim() !== b.trim()) mismatches.push(key);
+				} else if (a !== b) {
+					mismatches.push(key);
+				}
+			}
+
+			return mismatches;
+		};
+
+		let updateCard = (card, assessment) => {
+			let mismatchedKeys = getMismatchedKeys(localAssessment, importedAssessment);
+
+			for (let key of metadataKeys) {
+				let field = card.querySelector(`[data-field="${key}"]`);
+				if (!field) return;
+				console.log(key, assessment[key]);
+				let value = assessment[key] || '(none)';
+				if (value !== '(none)' && key.startsWith('date')) value = formatDateAsHTML(value);
+
+				if (card.matches('.imported') && mismatchedKeys.includes(key)) {
+					let highlightContainer = highlightTemplate.content.cloneNode(true) as HTMLElement;
+					highlightContainer.querySelector('.value').innerHTML = value;
+					field.append(highlightContainer);
+				} else {
+					field.innerHTML = value;
+				}
+			}
+		};
+
+		updateCard(localCard, localAssessment);
+		updateCard(importedCard, importedAssessment);
+	};
+
+	//
+	// Event Listeners
+	//
+
+	let openAssessmentDialog = document.querySelector('#open-assessment-dialog');
+	let importConflictDialog = document.querySelector('#import-conflict-dialog');
+
+	openAssessmentDialog.addEventListener('click', (event) => {
+		let target = event.target as HTMLButtonElement;
+
+		if (target.matches('button.open-assessment')) {
+			try {
+				let assessment = getActiveAssessmentData();
+				if (assessment) {
+					// Set existing assessment active assessor to null prior to opening new one
+					setAssessment({
+						activeAssessor: null,
+					});
+				}
+
+				setState({
+					mode: 'assessment',
+					activeAssessmentId: Number(target.getAttribute('data-id')),
+				});
+
+				toastControl.show({ target, type: 'success' });
+
+				// Open select assessor dialog
+				dialogControl.open({
+					dialogId: 'assessor-dialog',
+					headingText: 'Select Active Assessor',
+					context: 'setup',
+				});
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+
+		if (target.matches('button.import-code')) {
+			try {
+				let codeInput = target.closest('fieldset').querySelector('input');
+
+				let importedCode = sanitizeHTML(codeInput.value);
+
+				if (importedCode.length === 0) {
+					throw new Error('Import code is empty');
+				}
+
+				let importedAssessment = decompressData(importedCode);
+				console.log('Imported Assessment (Code)', JSON.parse(JSON.stringify(importedAssessment)));
+
+				let importResult = handleAssessmentImport(importedAssessment);
+
+				if (importResult) toastControl.show({ target, type: 'success' });
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+	});
+
+	openAssessmentDialog.addEventListener('change', async (event) => {
+		let target = event.target as any;
+
+		if (target.matches('input[type="file"]')) {
+			// Get the user uploaded file
+			let file = target.files[0];
+			if (!file) return;
+
+			try {
+				let importedAssessment = await importAssessment(file);
+				console.log('Imported Assessment (File)', JSON.parse(JSON.stringify(importedAssessment)));
+
+				// TODO: Investigate file validation for more detailed failure toasts (or even an error line under the button like we do for inputs)
+
+				let importResult = handleAssessmentImport(importedAssessment);
+
+				if (importResult) toastControl.show({ target, type: 'success' });
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+
+			// Clear user uploaded file, so it can be selected again if needed
+			target.value = '';
+		}
+	});
+
+	openAssessmentDialog.addEventListener('input', (event) => {
+		let target = event.target as any;
+
+		if (target.matches('[type="text"][name="import-code"]')) {
+			let importBtn = target.closest('fieldset').querySelector('button.import-code');
+
+			if (target.value.length > 0) {
+				importBtn.removeAttribute('disabled');
+			} else {
+				importBtn.setAttribute('disabled', '');
+			}
+		}
+	});
+
+	importConflictDialog.addEventListener('click', async (event) => {
+		let target = event.target as any;
+
+		if (target.matches('button.overwrite')) {
+			try {
+				let { importedAssessment, localAssessment } = getImportConflictData();
+				if (!importedAssessment || !localAssessment) return;
+
+				// Make sure the ids match
+				importedAssessment.id = localAssessment.id;
+
+				deleteAssessment(localAssessment.id);
+
+				// Add missing keys and default values
+				importedAssessment.activeAssessor = null;
+				importedAssessment.unexportedChanges = false;
+				if (importedAssessment.continuumCompletion === undefined) {
+					importedAssessment.continuumCompletion = await generateContinuumCompletion(importedAssessment);
+				}
+
+				// Save assessment to user data
+				setAssessment(importedAssessment);
+
+				// Clear out the import conflict data cache
+				deleteImportConflictData();
+
+				toastControl.show({ target, type: 'success' });
+
+				dialogControl.open({
+					dialogId: 'open-assessment-dialog',
+				});
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+
+		if (target.matches('button.keep')) {
+			deleteImportConflictData();
+		}
+	});
+
+	//
+	// Inits
+	//
+
+	subscribe(updateOpenAssessmentDialog);
+</script>

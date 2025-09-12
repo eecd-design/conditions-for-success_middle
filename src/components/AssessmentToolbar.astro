@@ -1,60 +1,66 @@
 ---
-import IconCross from "./icons/IconCross_16.astro";
-import IconInfo from "./icons/IconInfo_20.astro";
-import IconFolder from "./icons/IconFolder_20.astro";
-import IconSave from "./icons/IconSave_20.astro";
-import IconChart from "./icons/IconChart_20.astro";
-import IconEdit from "./icons/IconEdit_20.astro";
-import IconEditStop from "./icons/IconEditStop_20.astro";
-import IconSwap from "./icons/IconSwap_20.astro";
-import IconAssessor from "./icons/IconAssessor_20.astro";
-import IconAssessment from "./icons/IconAssessment_20.astro";
+import IconCross from './icons/IconCross_16.astro';
+import IconInfo from './icons/IconInfo_20.astro';
+import IconFolder from './icons/IconFolder_20.astro';
+import IconSave from './icons/IconSave_20.astro';
+import IconChart from './icons/IconChart_20.astro';
+import IconEdit from './icons/IconEdit_20.astro';
+import IconEditSmall from './icons/IconEdit_14.astro';
+import IconEditStop from './icons/IconEditStop_20.astro';
+import IconSwap from './icons/IconSwap_20.astro';
+import IconAssessor from './icons/IconAssessor_20.astro';
+import IconAssessment from './icons/IconAssessment_20.astro';
 ---
 
 <section class="assessment-controls" aria-label="Assessment Controls Toolbar" role="toolbar" transition:persist>
 	<!-- TODO: Investigate the use of transition persist throughout -->
+	 <!-- TODO: Add a warning for phone users to use larger device to enable assessment mode -->
 
 	<div class="info-group button-group" data-restrict-mode="assessment">
-
+		<!-- Assessment Title -->
 		<div class="field-container icon-and-label-container">
 			<IconAssessment />
 			<span class="label-container" data-restrict-length>
-				<span class="label" data-field="activeAssessmentName" 
-				></span>
+				<span class="label" data-field="activeAssessmentName"></span>
 			</span>
 		</div>
 
-		<div class="field-container label-container" data-style="shading-and-outline" data-vibrancy="vivid">
-			<span class="label" data-field="status"></span>
-		</div>
-		
-		<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
-
+		<!-- Edit Status -->
 		<button
-			class="open-dialog"
-			data-dialog="info-assessment-dialog"
 			type="button"
-			aria-label="View Assessment Info"
-		>
-			<div class="icon-and-label-container">
-				<IconInfo />
-				<span class="label-container">
-					<span class="label">Info</span>
-				</span>
+			class="open-dialog field-container icon-and-label-container"
+			data-dialog="edit-status-dialog"
+			aria-label="Update Assessment Status"
+			data-size="small"
+			data-style="solid-outline"
+			data-vibrancy="vivid"
+			data-collapsible="icon">
+			<div class="label-container">
+				<span class="label" data-field="status"></span>
+			</div>
+			<div class="icon-container">
+				<IconEditSmall />
 			</div>
 		</button>
 
+		<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
+
+		<!-- Assessment Properties Button -->
+		<button class="open-dialog" data-dialog="view-assessment-properties-dialog" type="button" aria-label="View Assessment Properties">
+			<div class="icon-and-label-container">
+				<IconInfo />
+				<span class="label-container">
+					<span class="label">Properties</span>
+				</span>
+			</div>
+		</button>
 	</div>
-	
+
 	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" aria-hidden="true"></div>
-	
+
 	<div class="file-group button-group">
-		<button
-			class="open-dialog"
-			data-dialog="create-assessment-dialog"
-			aria-label="New Assessment"
-			type="button"
-			>
+		<!-- Create Assessment Button -->
+		<button class="open-dialog" data-dialog="edit-assessment-properties-dialog" data-dialog-context="setup" aria-label="Create New Assessment" type="button">
 			<div class="icon-and-label-container">
 				<IconCross />
 				<span class="label-container">
@@ -62,15 +68,11 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 				</span>
 			</div>
 		</button>
-		
+
 		<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
-		
-		<button
-			class="open-dialog"
-			data-dialog="open-assessment-dialog"
-			aria-label="Open Assessment"
-			type="button"
-			>
+
+		<!-- Open/Import Assessment Button -->
+		<button class="open-dialog" data-dialog="open-assessment-dialog" aria-label="Open or Import Assessment" type="button">
 			<div class="icon-and-label-container">
 				<IconFolder />
 				<span class="label-container">
@@ -78,25 +80,13 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 				</span>
 			</div>
 		</button>
-
 	</div>
 
 	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" aria-hidden="true"></div>
-	
-	<div class="export-group button-group" data-restrict-mode="assessment"> 
 
-		<div class="field-container label-container" data-restrict-status="in-progress">
-			<span class="label" data-field="exportStatus"></span>
-		</div>
-
-		<div class="separator item" data-orientation="vertical" data-restrict-status="in-progress" aria-hidden="true"></div>
-		
-		<button
-			class="open-dialog"
-			data-dialog="export-assessment-dialog"
-			type="button"
-			aria-label="Export"
-		>
+	<div class="export-group button-group" data-restrict-mode="assessment">
+		<!-- Export Assessment Button -->
+		<button class="open-dialog" data-dialog="export-assessment-dialog" type="button" aria-label="Export">
 			<div class="icon-and-label-container">
 				<IconSave />
 				<span class="label-container">
@@ -105,95 +95,66 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			</div>
 		</button>
 
+		<div class="separator item" data-orientation="vertical" data-restrict-status="in-progress" aria-hidden="true"></div>
+
+		<!-- Export Status -->
+		<div class="field-container label-container" data-restrict-status="in-progress">
+			<span class="label" data-field="exportStatus"></span>
+		</div>
 	</div>
 
 	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" aria-hidden="true"></div>
 
-	<div class="report-group button-group" data-restrict-mode="assessment">
-
-		<a
-			data-style-as="button"
-			href="/big-seven/report"
-			aria-label="View Report"
-		>
-			<div class="icon-and-label-container">
-				<IconChart />
-				<span class="label-container">
-					<span class="label">Report</span>
-				</span>
-			</div>
-		</a>
-
-	</div>
-
-	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" data-restrict-status="in-progress" aria-hidden="true"></div>
+	<!-- <div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" data-restrict-status="in-progress" aria-hidden="true"></div> -->
 
 	<div class="user-group button-group" data-restrict-mode="assessment" data-restrict-status="in-progress">
-		
-		<div class="field-container icon-and-label-container" data-restrict-assessor="true">
-			<IconAssessor />
-			<span class="label-container" data-restrict-length>
-				<span class="label" data-field="activeAssessorName"></span>
-			</span>
-		</div>
-
-		<div class="separator item" data-orientation="vertical" data-restrict-assessor="true" aria-hidden="true"></div>
-
-		<button
-			class="open-dialog"
-			data-dialog="change-assessor-dialog"
-			data-restrict-assessor="true"
-			type="button"
-			aria-label="Change Active Assessor"
-		>
-			<div class="icon-and-label-container">
-				<IconSwap />
-				<span class="label-container">
-					<span class="label">Change</span>
-				</span>
-			</div>
-		</button>
-
-		<button
-			class="open-dialog"
-			data-dialog="select-assessor-dialog"
-			data-restrict-assessor="false"
-			type="button"
-			aria-label="Select Active Assessor"
-		>
+		<!-- Edit Assessors Button -->
+		<button class="open-dialog" data-dialog="assessor-dialog" data-dialog-heading="Edit Assessors" data-dialog-context="configure" type="button" aria-label="Assign Assessors">
 			<div class="icon-and-label-container">
 				<IconAssessor />
 				<span class="label-container">
-					<span class="label">Select Assessor</span>
+					<span class="label">Assessors</span>
 				</span>
 			</div>
 		</button>
 
+		<div class="separator item" data-orientation="vertical" data-restrict-assessor="true" aria-hidden="true"></div>
+
+		<!-- Active Assessor -->
+		<button
+			type="button"
+			class="open-dialog field-container icon-and-label-container"
+			data-dialog="assessor-dialog"
+			aria-label="Change Active Assessor"
+			data-style="solid-outline"
+			data-vibrancy="vivid"
+			data-collapsible="icon"
+			data-theme="purple"
+			data-restrict-assessor="true">
+			<div class="label-container" data-restrict-length="short">
+				<span class="label" data-field="activeAssessor"></span>
+			</div>
+			<div class="icon-container">
+				<IconEditSmall />
+			</div>
+		</button>
 	</div>
 
 	<div class="separator group" data-orientation="vertical" data-restrict-mode="assessment" aria-hidden="true"></div>
 
 	<div class="mode-group button-group" data-restrict-mode="assessment">
-
-		<button
-			class="stop-editing"
-			type="button"
-			data-restrict-status="in-progress"
-		>
+		<!-- Stop Editing Button -->
+		<button class="stop-editing" type="button" data-restrict-status="in-progress">
 			<div class="icon-and-label-container">
 				<IconEditStop />
 				<span class="label-container">
-					<span class="label"> Stop Editing </span>
+					<span class="label">Stop Editing</span>
 				</span>
 			</div>
 		</button>
 
-		<button
-			class="open-dialog"
-			data-dialog="status-warning-dialog"
-			type="button"
-			data-restrict-status="complete"
-		>
+		<!-- Start Editing Button -->
+		<button class="open-dialog" data-dialog="status-warning-dialog" type="button" data-restrict-status="complete">
 			<div class="icon-and-label-container">
 				<IconEdit />
 				<span class="label-container">
@@ -201,9 +162,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 				</span>
 			</div>
 		</button>
-		
 	</div>
-
 </section>
 
 <style is:global>
@@ -223,7 +182,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		z-index: 100;
 	}
 
-	[data-mode="assessment"] .assessment-controls {
+	[data-mode='assessment'] .assessment-controls {
 		position: sticky;
 	}
 
@@ -231,27 +190,23 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		--group-gap: 0.5rem;
 	}
 
-	.assessment-controls .report-group {
+	.assessment-controls .export-group {
 		flex-grow: 1;
 	}
 
-	.assessment-controls :is(button, [data-style-as="button"]) {
+	.assessment-controls :is(button, [data-style-as='button']) {
 		--icon-size: 1.25rem;
 		--button-background-colour: transparent;
 	}
 
-	.assessment-controls
-		:is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
+	.assessment-controls :is(button, [data-style-as='button']):is(:hover, :focus-visible) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 		--button-background-colour: var(--colour-fill-neutral-bold);
 	}
 
-	@container assessment-controls (width < 1440px) {
-		main[data-mode="assessment"]
-			.assessment-controls
-			:is(button, [data-style-as="button"])
-			.label-container {
+	@container assessment-controls (width < 1520px) {
+		main[data-mode='assessment'] .assessment-controls :is(button, [data-style-as='button']):not(.field-container) .label-container {
 			display: none;
 		}
 	}
@@ -259,18 +214,25 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	.assessment-controls .field-container {
 		--icon-size: 1.25rem;
 		--label-size: 0.875rem;
-		margin: 0 0.5rem;
 		user-select: none;
 	}
 
-	.assessment-controls .field-container:has([data-field="activeAssessmentName"], [data-field="activeAssessorName"]) {
+	.assessment-controls .field-container:has([data-field='activeAssessmentName']) {
 		--label-size: 0.9375rem;
 		--label-weight: 700;
-		gap: 0.75rem		
+		gap: 0.75rem;
 	}
 
-	.assessment-controls .field-container:has([data-field="exportStatus"]) {
-		--label-colour: var(--colour-ui-neutral-subtle);		
+	.assessment-controls .field-container:has([data-field='status'], [data-field='activeAssessor']) {
+		--container-padding: 0.5rem;
+		--icon-size: 0.875rem;
+		height: 1.75rem;
+		margin: 0 0.5rem !important;
+	}
+
+	.assessment-controls .field-container:has([data-field='exportStatus']) {
+		--label-colour: var(--colour-ui-neutral-subtle);
+		margin: 0 0.5rem !important;
 	}
 
 	.assessment-controls .separator.group {
@@ -280,131 +242,104 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	.assessment-controls .separator.item {
 		--separator-long-edge-dimension: 1.75rem;
 	}
-
 </style>
 
 <script>
-	import { getActiveAssessmentData, getAssessmentName, getExportStatus, getStatusColour, getUserData, setState, subscribe } from "src/stores/userDataStore";
-	import { findObjectByKey, getTimeDifference } from "src/utilities/helpers";
+	import { getActiveAssessmentData, getAssessmentName, getExportStatus, getStatusColour, getUserData, subscribe } from 'src/stores/userDataStore';
 
-	let updateToolbar = (data) => {
-		let { uiState, assessments } = data;
-
-		if (!uiState.activeAssessmentId) return;
+	let updateToolbar = (data: UserData) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
 
 		// Get the toolbar
-		let toolbar = document.querySelector(".assessment-controls");
-
+		let toolbar = document.querySelector('.assessment-controls');
 		if (!toolbar) return;
 
 		// Get the update fields
-		let statusField = toolbar?.querySelector(
-			'[data-field="status"]',
-		);
-		let assessmentField = toolbar?.querySelector(
-			'[data-field="activeAssessmentName"]',
-		);
+		let statusField = toolbar?.querySelector('[data-field="status"]');
+		let assessmentField = toolbar?.querySelector('[data-field="activeAssessmentName"]');
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
-		let assessorField = toolbar?.querySelector(
-			'[data-field="activeAssessorName"]',
-		);
+		let assessorField = toolbar?.querySelector('[data-field="activeAssessor"]');
 
-		// Get the active assessment
-		let activeAssessment = getActiveAssessmentData();
-
-		if (!activeAssessment) return;
+		if (!assessment) return;
 
 		// 1. Update the assessment status
 		if (statusField) {
-			if (
-				activeAssessment.status === undefined
-			) {
-				statusField.setAttribute("hidden", "");
+			if (assessment.status === undefined) {
+				statusField.setAttribute('hidden', '');
 			} else {
-				statusField.removeAttribute("hidden");
+				statusField.removeAttribute('hidden');
 			}
 
 			// Create the assessment title string and inject it
-			let statusStr = `${activeAssessment.status}`;
+			let statusStr = `${assessment.status}`;
 			statusField.textContent = statusStr;
-			statusField.setAttribute("title", statusStr);
+			statusField.setAttribute('title', statusStr);
 			statusField.closest('.field-container')?.setAttribute('data-theme', getStatusColour());
 		}
 
 		// 2. Update the assessment name
 		if (assessmentField) {
-			if (
-				activeAssessment.reportingYear === undefined ||
-				activeAssessment.school === undefined
-			) {
-				assessmentField.setAttribute("hidden", "");
+			if (assessment.reportingYear === undefined || assessment.school === undefined) {
+				assessmentField.setAttribute('hidden', '');
 			} else {
-				assessmentField.removeAttribute("hidden");
+				assessmentField.removeAttribute('hidden');
 			}
 
 			// Create the assessment title string and inject it
 			let assessmentStr = getAssessmentName();
 			assessmentField.textContent = assessmentStr;
-			assessmentField.setAttribute("title", assessmentStr);
+			assessmentField.setAttribute('title', assessmentStr);
 		}
 
 		// 3. Update the export status
 		if (exportField) {
-			if (activeAssessment.unexportedChanges === undefined || activeAssessment.status === "Complete") {
-				exportField.setAttribute("hidden", "");
+			if (assessment.unexportedChanges === undefined || assessment.status === 'Complete') {
+				exportField.setAttribute('hidden', '');
 			} else {
-				exportField.removeAttribute("hidden");
+				exportField.removeAttribute('hidden');
 			}
 
-			exportField.textContent = getExportStatus();
+			exportField.textContent = getExportStatus({}) as string;
 		}
 
 		// 4. Update the assessor name
 		if (assessorField) {
-			if (uiState.activeAssessor === undefined) {
-				assessorField.setAttribute("hidden", "");
+			if (assessment.activeAssessor === undefined) {
+				assessorField.setAttribute('hidden', '');
 			} else {
-				assessorField.removeAttribute("hidden");
+				assessorField.removeAttribute('hidden');
+				let assessorStr = `Active: ${assessment.activeAssessor}`;
+				assessorField.textContent = assessorStr;
+				assessorField.setAttribute('title', assessorStr);
 			}
-
-			let assessorStr = uiState.activeAssessor;
-			assessorField.textContent = assessorStr;
-			assessorField.setAttribute("title", assessorStr);
 		}
-
 	};
 
 	let updateToolbarExportStatus = () => {
-
 		let userData = getUserData();
 
 		if (userData.uiState.mode !== 'assessment') return;
 
 		// Get the toolbar
-		let toolbar = document.querySelector(".assessment-controls");
+		let toolbar = document.querySelector('.assessment-controls');
 
 		if (!toolbar) return;
 
 		// Get the update fields
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 
-		exportField.textContent = getExportStatus();
-
+		exportField.textContent = getExportStatus({}) as string;
 	};
 
 	subscribe(updateToolbar);
 
-	document.addEventListener("click", (event) => {
-
+	document.addEventListener('click', (event) => {
 		let target = event.target as HTMLButtonElement;
-
 	});
 
 	// Reset save status every minute
 	setInterval(() => {
-
 		updateToolbarExportStatus();
-
 	}, 60_000);
-	
 </script>

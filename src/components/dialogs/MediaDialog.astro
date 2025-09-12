@@ -1,26 +1,16 @@
 ---
-import Accordion from "./Accordion.astro";
-import IconXmark from "./icons/IconXmark_20.astro";
-
+import Accordion from 'src/components/Accordion.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
 ---
 
-<dialog
-	id="media-dialog"
-	class="media"
-	aria-labelledby="media-dialog_heading"
->
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Media Dialog"><IconXmark /></button
-	>
+<dialog id="media-dialog" class="media" aria-labelledby="media-dialog_heading">
+	<button class="close-dialog" type="button" aria-label="Close Media Dialog"><IconXmark /></button>
 
-	<h2 id="media-dialog_heading" class="heading">
-		Media Resource
-	</h2>
+	<h2 id="media-dialog_heading" class="heading" data-default-text="Media Resource">Media Resource</h2>
 
 	<video controls poster="" hidden>
-		<source src="">
+		<source src="" />
 		<track default kind="captions" src="" srclang="en" />
 	</video>
 
@@ -29,31 +19,20 @@ import IconXmark from "./icons/IconXmark_20.astro";
 	<iframe src="" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen hidden></iframe>
 
 	<div class="transcript accordion-group" hidden>
-		<Accordion title={'Transcript'}>
-			<!-- TODO: Create a transcript icon -->
+		<Accordion title={'Transcript'} >
+			<IconTranscript slot="button-icon"/>
 			<p>Transcript goes here...</p>
 		</Accordion>
 	</div>
-
 </dialog>
 
-
 <script>
-
 	//
 	// Imports
 	//
 
-	import { dialogControl } from "src/utilities/dialog";
-import { stringToBoolean } from "src/utilities/helpers";
-
-	//
-	// Variables
-	//
-
-	let mediaDialog = document.querySelector(
-		"#media-dialog",
-	);
+	import { dialogControl } from 'src/utilities/dialog';
+	import { stringToBoolean } from 'src/utilities/helpers';
 
 	//
 	// Methods
@@ -65,7 +44,6 @@ import { stringToBoolean } from "src/utilities/helpers";
 	 * @returns {HTMLIFrameElement|null} iframe element or null if URL is invalid
 	 */
 	let convertURLToEmbedURL = function (url) {
-
 		let videoId, embedUrl;
 
 		// YouTube URLs
@@ -82,14 +60,11 @@ import { stringToBoolean } from "src/utilities/helpers";
 			if (!match) return null;
 			videoId = match[1];
 			embedUrl = `https://player.vimeo.com/video/${videoId}`;
-		}
-
-		else {
+		} else {
 			return null; // Unsupported platform
 		}
 
 		return embedUrl;
-
 	};
 
 	/**
@@ -101,13 +76,13 @@ import { stringToBoolean } from "src/utilities/helpers";
 		return url.replace(/\.[^.\/?#]+(?=$|[?#])/, '');
 	};
 
-
 	//
 	// Inits & Event Listeners
 	//
 
-	document.addEventListener("click", (event) => {
+	let mediaDialog = document.querySelector('#media-dialog');
 
+	document.addEventListener('click', (event) => {
 		let target = event.target as HTMLButtonElement;
 
 		if (!mediaDialog || !target.matches(`button.open-dialog[data-dialog="media-dialog"]`)) return;
@@ -136,18 +111,15 @@ import { stringToBoolean } from "src/utilities/helpers";
 		let mediaSrcPathOnly = removeFileExtension(mediaSrc);
 
 		if (mediaType === 'video') {
-
 			if (!mediaExternal) {
 				video.setAttribute('src', mediaSrc);
 				video.setAttribute('poster', `${mediaSrcPathOnly}.png`);
 				video.removeAttribute('hidden');
 				captions.setAttribute('src', `${mediaSrcPathOnly}.vtt`);
-
 			} else {
 				iframe.setAttribute('src', convertURLToEmbedURL(mediaSrc));
 				iframe.removeAttribute('hidden');
 			}
-
 		} else if (mediaType === 'audio') {
 			audio.setAttribute('src', mediaSrc);
 			audio.removeAttribute('hidden');
@@ -156,13 +128,9 @@ import { stringToBoolean } from "src/utilities/helpers";
 			transcriptPanel.innerHTML = '<p>Updated transcript...</p>';
 
 			// TODO: Figure out how we're going to save transcripts.
-
 		} else {
-
 			console.warn('Invalid Resource Type');
-
+			// TODO: Better error handling here
 		}
-
 	});
-
 </script>

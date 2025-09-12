@@ -1,0 +1,373 @@
+---
+import IconCaretDown from '../icons/IconCaretDown_14.astro';
+import IconCross from 'src/components/icons/IconCross_16.astro';
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
+import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
+import IconXmarkSmall from 'src/components/icons/IconXmark_12.astro';
+
+import Toast from 'src/components/Toast.astro';
+import IconCheckmark from '../icons/IconCheckmark_12.astro';
+import IconWarningSmall from '../icons/IconWarning_16.astro';
+import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
+---
+
+<dialog id="assessor-dialog" aria-describedby="assessor-dialog_heading">
+	<button class="close-dialog" type="button" aria-label="Close Select Assessor Dialog"><IconXmarkBig /></button>
+
+	<h2 id="assessor-dialog_heading" class="heading" data-default-text="Assign Assessors">Assign Assessors</h2>
+
+	<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
+		<div class="icon-container">
+			<IconWarningBig />
+		</div>
+		<div class="text-container">
+			<p>Adding assessors is optional but recommended for collaborative workflows.</p>
+		</div>
+	</div>
+
+	<form>
+		<fieldset class="assessors">
+			<label for="create-assessment-dialog_assessor-input">Assessors</label>
+			<div class="input-container">
+				<input id="create-assessment-dialog_assessor-input" class="assessor" type="text" placeholder="Enter a name..." />
+				<button class="add-assessor" type="button">
+					<span class="icon-and-label-container">
+						<IconCross />
+						<span class="label-container">
+							<span class="label">Add</span>
+						</span>
+					</span>
+				</button>
+			</div>
+			<ul class="assessor-list form-list" data-field="assessors" hidden>
+				<template>
+					<li>
+						<!-- <span class="group">Assessor</span> -->
+						<span class="title" data-field-value></span>
+						<button class="clear" type="button" aria-label="Remove Assessor">
+							<IconXmarkSmall />
+						</button>
+					</li>
+				</template>
+			</ul>
+		</fieldset>
+
+		<fieldset class="active-assessor" hidden>
+			<label for="assessor-dialog_active-assessor-select">Active Assessor</label>
+			<p class="instructions">Choose the person currently making changes to this assessment.</p>
+			<p class="instructions">This helps maintain clear version history and makes it easier to understand who last updated the data when it's shared with others.</p>
+			<div class="select-container">
+				<select name="active-assessor" id="assessor-dialog_active-assessor-select">
+					<option value="">Select the active assessor...</option>
+				</select>
+				<IconCaretDown />
+			</div>
+		</fieldset>
+
+		<Toast id={'edit-assessment-properties-dialog_create-toast_success'} message={`Assessment created!`} colour={'green'} type={'success'}>
+			<IconCheckmark slot={'icon'} />
+		</Toast>
+		<Toast id={'open-assessment-dialog_open-toast_success'} message={`Assessment opened!`} colour={'green'} type={'success'}>
+			<IconCheckmark slot={'icon'} />
+		</Toast>
+		<Toast id={'status-warning-dialog_change-status-toast_success'} message={`Status updated to 'In Progress'.`} colour={'green'} type={'success'}>
+			<IconCheckmark slot={'icon'} />
+		</Toast>
+
+		<!-- Save Toast located in Assessment Dialogs -->
+		<Toast id={'assessor-dialog_save-toast_failure'} message={`Unable to save. Please reload the page to try again.`} colour={'red'} type={'failure'}>
+			<IconWarningSmall slot={'icon'} />
+		</Toast>
+
+		<div class="button-group">
+			<button class="close-dialog" type="button" data-size="large" data-style="outline" data-restrict-context="setup">Skip</button>
+			<button class="close-dialog" type="button" data-size="large" data-style="outline" data-restrict-context="configure">Cancel</button>
+			<button
+				class="save"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				data-toast-success="assessor-dialog_save-toast_success"
+				data-toast-failure="assessor-dialog_save-toast_failure"
+				disabled>Save</button
+			>
+		</div>
+	</form>
+</dialog>
+
+<script>
+	//
+	// Imports
+	//
+
+	import { checkForChanges, getActiveAssessmentData, getActiveAssessor, setAssessment, setState, subscribe, updateChangeLog } from 'src/stores/userDataStore';
+	import { sanitizeHTML } from 'src/utilities/helpers.js';
+	import { getFormValues } from 'src/utilities/form';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
+
+	//
+	// Methods
+	//
+
+	let createAssessorListItem = (name) => {
+		if (!name || name === undefined) return;
+
+		let template = dialog.querySelector('.assessor-list template') as HTMLTemplateElement;
+
+		if (!template) return;
+
+		// Clone the template
+		let item = template.content.cloneNode(true) as HTMLElement;
+
+		// Update the label
+		item.querySelector('.title').textContent = sanitizeHTML(name).trim();
+
+		return item;
+	};
+
+	let addAssessorToList = (target: HTMLButtonElement | HTMLInputElement) => {
+		let input = target.closest('.input-container').querySelector('input');
+		let item = createAssessorListItem(input.value);
+		if (!item) return;
+		let list = target.closest('form').querySelector('.assessor-list');
+		list.append(item);
+		input.value = '';
+	};
+
+	let removeAssessorFromList = (target: HTMLButtonElement) => {
+		let item = target.closest('li');
+		item.remove();
+	};
+
+	let createAssessorSelectOption = (assessor) => {
+		if (!assessor || assessor === undefined) return;
+
+		let option = document.createElement('option');
+		option.setAttribute('value', assessor);
+		option.textContent = assessor;
+
+		return option;
+	};
+
+	//
+	// DOM Updates
+	//
+
+	let updateAssessorList = ({ dialog, assessors }) => {
+		if (!Array.isArray(assessors) || !dialog) return;
+
+		let list = dialog.querySelector('.assessor-list');
+		let items = list?.querySelectorAll('li');
+
+		// Clear previous items
+		for (let item of items) item.remove();
+
+		// If there are no assessors, hide list
+		if (assessors.length === 0) {
+			list.setAttribute('hidden', '');
+			return;
+		}
+
+		// Create items for each assessor
+		for (let assessor of assessors) {
+			let item = createAssessorListItem(assessor);
+			if (item) list.append(item);
+		}
+
+		// Show list
+		list.removeAttribute('hidden');
+	};
+
+	let updateActiveAssessorSelect = ({ dialog, assessors, activeAssessor = null }) => {
+		if (!assessors || !dialog) return;
+
+		let fieldset = dialog?.querySelector('fieldset.active-assessor');
+
+		if (assessors.length === 0) {
+			fieldset.setAttribute('hidden', '');
+			return;
+		}
+
+		let select = dialog?.querySelector('fieldset.active-assessor select');
+		if (!select) return;
+
+		// Reset select options
+		for (let option of select.querySelectorAll('option:not([value=""]')) {
+			option.remove();
+		}
+
+		// Generate the inputs and add them to the group
+		for (let assessor of assessors) {
+			let option = createAssessorSelectOption(assessor);
+			select.append(option);
+
+			// If there is an active assessor, set it to checked
+			if (activeAssessor && assessor === activeAssessor) {
+				option.selected = true;
+			}
+		}
+
+		fieldset.removeAttribute('hidden');
+	};
+
+	/**
+	 * Update the select-assessor dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateAssessorDialog = (data: UserData) => {
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let { assessors, activeAssessor } = assessment;
+
+		updateAssessorList({
+			dialog,
+			assessors,
+		});
+
+		updateActiveAssessorSelect({
+			dialog,
+			assessors,
+			activeAssessor,
+		});
+	};
+
+	//
+	// Event Listeners
+	//
+
+	let dialog = document.querySelector('#assessor-dialog') as HTMLDialogElement;
+	let form = dialog?.querySelector('form') as HTMLFormElement;
+	let saveBtn = dialog?.querySelector('button.save') as HTMLButtonElement;
+
+	dialog.addEventListener('click', (event) => {
+		let target = event.target as HTMLButtonElement;
+
+		if (target.matches('button.close-dialog')) {
+			saveBtn.setAttribute('disabled', '');
+		}
+
+		if (target.matches('button.add-assessor')) {
+			addAssessorToList(target);
+			let values = getFormValues(form);
+			let activeAssessor = getActiveAssessor();
+			updateActiveAssessorSelect({
+				dialog,
+				assessors: values.assessors,
+				activeAssessor,
+			});
+			saveBtn.removeAttribute('disabled');
+		}
+
+		if (target.matches('button.remove-assessor')) {
+			removeAssessorFromList(target);
+			let values = getFormValues(form);
+			let activeAssessor = getActiveAssessor();
+			updateActiveAssessorSelect({
+				dialog,
+				assessors: values.assessors,
+				activeAssessor,
+			});
+			saveBtn.removeAttribute('disabled');
+		}
+
+		if (target.matches('button.save')) {
+			try {
+				let values = getFormValues(form);
+				let assessment = getActiveAssessmentData();
+				if (!assessment) {
+					throw new Error('No active assessment data to update.');
+				}
+
+				let check = checkForChanges({
+					data: assessment,
+					update: values,
+				});
+
+				if (!check) return;
+
+				let update = check.changedValues;
+
+				if (update.assessors) {
+					update.unexportedChanges = true;
+					update.dateModified = Date.now();
+
+					let message;
+
+					for (let entry of check.updatedKeys) {
+						if (entry.changes) {
+							let parts = [];
+
+							let lastAction;
+
+							for (let change of entry.changes) {
+								if (!change.value || !change.value.length) continue;
+								let values = Array.isArray(change.value) ? change.value.join(', ') : change.value;
+								parts.push(`${change.type} ${values}`);
+								lastAction = change.type;
+							}
+
+							if (parts.length) {
+								message = `${parts.join(', and ')} ${lastAction === 'added' ? 'to' : 'from'} the assessor list.`;
+							}
+						}
+					}
+
+					update.changeLog = updateChangeLog({
+						message,
+					});
+				}
+
+				// If the active assessor is set to none
+				if (update.activeAssessor === '') {
+					update.activeAssessor = null;
+				}
+
+				setAssessment(update);
+
+				toastControl.show({ target, type: 'success' });
+
+				dialogControl.close(target);
+				saveBtn.setAttribute('disabled', '');
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+	});
+
+	dialog.addEventListener('keydown', (event) => {
+		if (event.key === 'Enter') {
+			let target = event.target as HTMLInputElement;
+
+			if (target.matches(`input.assessor`)) {
+				addAssessorToList(target);
+				let values = getFormValues(form);
+				let activeAssessor = getActiveAssessor();
+				updateActiveAssessorSelect({
+					dialog,
+					assessors: values.assessors,
+					activeAssessor,
+				});
+				saveBtn.removeAttribute('disabled');
+			}
+
+			event.preventDefault();
+		}
+	});
+
+	dialog.addEventListener('change', (event) => {
+		let target = event.target as HTMLInputElement | HTMLSelectElement;
+
+		if (target.matches(`select[name="active-assessor"]`)) {
+			saveBtn.removeAttribute('disabled');
+		}
+	});
+
+	//
+	// Inits
+	//
+
+	subscribe(updateAssessorDialog);
+</script>
