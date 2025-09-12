@@ -2,10 +2,163 @@
 // Helpers
 //
 
+
+//
+// Dates
+//
+
 let dateFormatter = new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short' 
 });
+
+/**
+ * Convert Excel numeric date to JS timestamp
+ * @param {number} excelDate
+ * @returns {number} timestamp in ms since epoch
+ */
+let excelDateToTimestamp = (excelDate) => {
+	if (typeof excelDate !== 'number') return null;
+
+	// Excel day 0 = 1899-12-30 (accounts for 1900 leap year bug)
+	let epoch = new Date(Date.UTC(1899, 11, 30));
+	let days = Math.floor(excelDate);
+	let msInDay = Math.round((excelDate - days) * 24 * 60 * 60 * 1000);
+
+	return epoch.getTime() + days * 24 * 60 * 60 * 1000 + msInDay;
+};
+
+/**
+ * Parse exported date string back to timestamp
+ * @param {string} str - Exported date string like '2025-09-03 07:03:09.009'
+ * @returns {number|null}
+ */
+let parseImportedDateString = (str) => {
+	if (!str || typeof str !== 'string') return null;
+
+	let match = str.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})$/);
+	if (!match) return null;
+
+	let [ , year, month, day, hours, minutes, seconds, ms ] = match;
+	let d = new Date(
+		Number(year),
+		Number(month) - 1,
+		Number(day),
+		Number(hours),
+		Number(minutes),
+		Number(seconds),
+		Number(ms)
+	);
+
+	return d.getTime();
+};
+
+/**
+ * Normalize any imported date to JS timestamp
+ * Supports:
+ *   - Excel numeric dates
+ *   - JS timestamps
+ *   - Exported date strings
+ * @param {string|number|Date} value
+ * @returns {number|null} timestamp in ms since epoch
+ */
+let normalizeImportedDate = (value) => {
+	if (value == null) return null;
+
+	// Already a JS timestamp
+	if (typeof value === 'number' && value > 1000000000) return value;
+
+	// Excel numeric date
+	if (typeof value === 'number') return excelDateToTimestamp(value);
+
+	// Date object
+	if (value instanceof Date) return value.getTime();
+
+	// String
+	if (typeof value === 'string') return parseImportedDateString(value);
+
+	return null;
+};
+
+let formatDateAsHTML = (timestamp) => {
+	let parts = dateFormatter.format(new Date(timestamp)).split(", ");
+	return parts
+		.map((str, index) => {
+			if (index === 0) return `<span class="day">${str}</span>`;
+			if (index === 1) return `<span class="year">, ${str}</span>`;
+			return `<span class="time">, ${str}</span>`;
+		})
+		.join("");
+};
+
+
+/**
+ * Returns the human-readable time difference between two date strings or timestamps.
+ * @param {string|number} d1 - First date (string, ms timestamp, or Unix seconds).
+ * @param {string|number} d2 - Second date (string, ms timestamp, or Unix seconds).
+ * @returns {string} Human-readable time difference.
+ */
+let getTimeDifference = (d1, d2) => {
+	let normalize = (input) => {
+		if (typeof input === 'number' && input.toString().length === 10) {
+			return new Date(input * 1000); // Unix timestamp in seconds
+		}
+		return new Date(input);
+	};
+
+	let date1 = normalize(d1);
+	let date2 = normalize(d2);
+	let diffMs = Math.abs(date2 - date1);
+
+	let diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+	diffMs %= 1000 * 60 * 60 * 24;
+
+	let diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+	diffMs %= 1000 * 60 * 60;
+
+	let diffMinutes = Math.floor(diffMs / (1000 * 60));
+	diffMs %= 1000 * 60;
+
+	let diffSeconds = Math.floor(diffMs / 1000);
+
+	let parts = [];
+	if (diffDays > 0) parts.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
+	if (diffHours > 0) parts.push(`${diffHours} hour${diffHours !== 1 ? 's' : ''}`);
+	if (diffMinutes > 0) parts.push(`${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}`);
+	if (diffSeconds > 0 || parts.length === 0) parts.push(`${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}`);
+
+	return parts.join(', ');
+};
+
+/**
+ * Format a date for export (human-readable, reversible)
+ * @param {Date|number|string} date
+ * @returns {string} Formatted as 'YYYY-MM-DD HH:mm:ss.SSS' or empty string
+ */
+let formatDateAsString = (date, includeTime = true) => {
+	if (!date) return '';
+	let d = date instanceof Date ? date : new Date(date);
+
+	let year = d.getFullYear();
+	let month = String(d.getMonth() + 1).padStart(2, '0');
+	let day = String(d.getDate()).padStart(2, '0');
+	let hours = String(d.getHours()).padStart(2, '0');
+	let minutes = String(d.getMinutes()).padStart(2, '0');
+	let seconds = String(d.getSeconds()).padStart(2, '0');
+	let ms = String(d.getMilliseconds()).padStart(3, '0');
+
+	if (includeTime) {
+		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${ms}`;
+	} else {
+		return `${year}-${month}-${day}`;
+	}
+};
+
+
+
+//
+// Object/Array Traversal
+//
 
 /**
  * Finds the highest numeric value for a given key in an array of objects.
@@ -61,16 +214,98 @@ let findObjectByKey = (arr, key, value) => {
 	return null;
 };
 
-let formatDateHTML = (timestamp) => {
-	let parts = dateFormatter.format(new Date(timestamp)).split(", ");
-	return parts
-		.map((str, index) => {
-			if (index === 0) return `<span class="day">${str}</span>`;
-			if (index === 1) return `<span class="year">, ${str}</span>`;
-			return `<span class="time">, ${str}</span>`;
-		})
-		.join("");
+
+
+
+//
+// String Transformations
+//
+
+let sanitizeHTML = (input) => {
+	return input.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
+}
+
+/**
+ * Converts a string to a boolean.
+ * @param {string} str - The string to convert.
+ * @returns {boolean} True if the string is "true" (case-insensitive), otherwise false.
+ */
+let stringToBoolean = function(str) {
+    if (typeof str !== 'string') return false;
+    return str.trim().toLowerCase() === 'true';
 };
+
+/**
+ * Convert string to camelCase
+ * Handles snake_case, kebab-case, PascalCase, Title Case, etc.
+ * @param {string} str
+ * @returns {string}
+ */
+let toCamelCase = function(str) {
+    if (!str) return '';
+    // Normalize separators and spaces
+    str = str.replace(/[_-\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '');
+    // Lowercase first character
+    return str.charAt(0).toLowerCase() + str.slice(1);
+};
+
+/**
+ * Convert string to kebab-case
+ * Handles camelCase, PascalCase, snake_case, Title Case, etc.
+ * @param {string} str
+ * @returns {string}
+ */
+let toKebabCase = function(str) {
+    if (!str) return '';
+    // Replace underscores and spaces with dashes
+    str = str.replace(/[_\s]+/g, '-');
+    // Insert dash before uppercase letters (camelCase/PascalCase)
+    str = str.replace(/([a-z])([A-Z])/g, '$1-$2');
+    str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2');
+    return str.toLowerCase();
+};
+
+/**
+ * Convert string to Title Case
+ * Handles snake_case, kebab-case, camelCase, PascalCase, and normal sentences
+ * @param {string} str
+ * @returns {string}
+ */
+let toTitleCase = function(str) {
+    if (!str) return '';
+    // Replace underscores and dashes with spaces
+    str = str.replace(/[_-]/g, ' ');
+    // Insert spaces before capital letters (camelCase/PascalCase)
+    str = str.replace(/([a-z])([A-Z])/g, '$1 $2');
+    str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2');
+    // Capitalize first letter of each word
+    return str
+        .toLowerCase()
+        .replace(/\b\w/g, char => char.toUpperCase());
+};
+
+/**
+ * Join keys with commas and "and" before the last
+ * @param {string[]} arr
+ * @returns {string}
+ */
+let joinWithAnd = function (arr) {
+	if (arr.length === 0) return '';
+	if (arr.length === 1) return arr[0];
+	if (arr.length === 2) return `${arr[0]} and ${arr[1]}`;
+	return `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
+};
+
+
+
+
+//
+// Misc
+//
 
 let getResourcePath = (resource) => {
 
@@ -138,43 +373,7 @@ let getResourcePath = (resource) => {
 	}
 }
 
-/**
- * Returns the human-readable time difference between two date strings or timestamps.
- * @param {string|number} d1 - First date (string, ms timestamp, or Unix seconds).
- * @param {string|number} d2 - Second date (string, ms timestamp, or Unix seconds).
- * @returns {string} Human-readable time difference.
- */
-let getTimeDifference = (d1, d2) => {
-	let normalize = (input) => {
-		if (typeof input === 'number' && input.toString().length === 10) {
-			return new Date(input * 1000); // Unix timestamp in seconds
-		}
-		return new Date(input);
-	};
 
-	let date1 = normalize(d1);
-	let date2 = normalize(d2);
-	let diffMs = Math.abs(date2 - date1);
-
-	let diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-	diffMs %= 1000 * 60 * 60 * 24;
-
-	let diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-	diffMs %= 1000 * 60 * 60;
-
-	let diffMinutes = Math.floor(diffMs / (1000 * 60));
-	diffMs %= 1000 * 60;
-
-	let diffSeconds = Math.floor(diffMs / 1000);
-
-	let parts = [];
-	if (diffDays > 0) parts.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
-	if (diffHours > 0) parts.push(`${diffHours} hour${diffHours !== 1 ? 's' : ''}`);
-	if (diffMinutes > 0) parts.push(`${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}`);
-	if (diffSeconds > 0 || parts.length === 0) parts.push(`${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}`);
-
-	return parts.join(', ');
-};
 
 /**
  * Create an DOM element from HTML string
@@ -239,35 +438,6 @@ let isInViewport = (elem, options = {}) => {
 }
 
 /**
- * Join keys with commas and "and" before the last
- * @param {string[]} arr
- * @returns {string}
- */
-let joinWithAnd = function (arr) {
-	if (arr.length === 0) return '';
-	if (arr.length === 1) return arr[0];
-	if (arr.length === 2) return `${arr[0]} and ${arr[1]}`;
-	return `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
-};
-
-/**
- * Converts a kebab-case string to camelCase.
- * @param {string} str - The kebab-case string.
- * @returns {string} The camelCase version.
- */
-let kebabToCamel = (str) => {
-	return str.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-};
-
-let sanitizeHTML = (input) => {
-	return input.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
-}
-
-/**
  * Scroll an element into view
  * @param  {Node} elem The elem to show
  */
@@ -304,42 +474,30 @@ let stopVideo = (elem) => {
 	}
 };
 
-/**
- * Converts a string to a boolean.
- * @param {string} str - The string to convert.
- * @returns {boolean} True if the string is "true" (case-insensitive), otherwise false.
- */
-let stringToBoolean = function(str) {
-    if (typeof str !== 'string') return false;
-    return str.trim().toLowerCase() === 'true';
-};
 
-/**
- * Converts a string to kebab-case.
- * 
- * @param {string} str - The input string.
- * @returns {string} The kebab-cased string.
- */
-let toKebabCase = (str) => {
-  return str
-	.replace(/([a-z])([A-Z])/g, '$1-$2')   // handle camelCase/PascalCase
-	.replace(/[\s_]+/g, '-')               // replace spaces/underscores
-	.toLowerCase()                         // lowercase everything
-	.replace(/[^a-z0-9-]/g, '')            // remove non-alphanumerics except -
-	.replace(/--+/g, '-')                  // collapse multiple -
-	.replace(/^-+|-+$/g, '');              // trim - from ends
-};
 
-/**
- * Converts a string to Title Case.
- * Words are split by whitespace and non-letter characters are preserved.
- * @param {string} str - The input string to convert.
- * @returns {string} The converted Title Case string.
- */
-let toTitleCase = function (str) {
-  return str.replace(/\w\S*/g, function (word) {
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  });
-};
+//
+// Exports
+//
 
-export { findHighestValueByKey, findIndexByKey, findObjectByKey, formatDateHTML, getResourcePath, getTimeDifference, htmlToElement, isEqual, isInViewport, joinWithAnd, kebabToCamel, sanitizeHTML, scrollIntoView, stopVideo, stringToBoolean, toKebabCase, toTitleCase };
+export { 
+	findHighestValueByKey, 
+	findIndexByKey, 
+	findObjectByKey, 
+	formatDateAsHTML,
+	formatDateAsString, 
+	getResourcePath, 
+	getTimeDifference, 
+	htmlToElement, 
+	isEqual, 
+	isInViewport, 
+	joinWithAnd, 
+	normalizeImportedDate, 
+	sanitizeHTML, 
+	scrollIntoView, 
+	stopVideo, 
+	stringToBoolean, 
+	toCamelCase, 
+	toKebabCase, 
+	toTitleCase, 
+};
