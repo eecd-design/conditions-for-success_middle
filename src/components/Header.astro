@@ -20,10 +20,12 @@ let path = url.pathname;
 	<div class="site-masthead">
 		<nav class="global">
 			<ul class="menu">
-					<li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
-					<li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
-					<li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
-				</ul>
+				<li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
+				<li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
+				<!-- TODO: Active state should not make unclickable, no need to hover -->
+				<li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
+				<li><a class={path.includes('/report') ? 'active' : ''} href="/report">Report</a></li>
+			</ul>
 		</nav>
 		<div class="global-controls">
 			<button
@@ -115,7 +117,6 @@ let path = url.pathname;
 
 				<h2>Last time, I was working on...</h2>
 				<ul class="recent-shortcuts">
-					{/* TODO: Should this be last modified or last visited? Or modified if set, visited if not? */}
 				</ul>
 
 			</div>
@@ -376,6 +377,6 @@ let updateLaunchpad = (data) => {
 
 }
 
-subscribe(updateLaunchpad);
+if (window.location.pathname === '/') subscribe(updateLaunchpad);
 
 </script>
