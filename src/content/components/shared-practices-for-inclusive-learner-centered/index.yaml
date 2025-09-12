@@ -20,14 +20,14 @@ initiating:
     - tag: 1.2.4
       title: >-
         Staff are beginning to reflect on their role in a diverse school (e.g.,
-        what does it mean to be a educator of learners with diverse academic,
+        what does it mean to be an educator of learners with diverse academic,
         linguistic, and social-emotional strengths and needs?)
       compass: false
       categories: []
     - tag: 1.2.5
       title: >-
         Learner voice is valued among school staff, but learners have limited
-        opportunities to provide feedback to decisions impacting them at school.
+        opportunities to provide feedback on decisions impacting them at school.
       compass: false
       categories: []
 implementing:
@@ -46,7 +46,7 @@ implementing:
       categories: []
     - tag: 1.2.8
       title: >-
-        Staff have engaged in professional learning to reflect on bias, empathy
+        Staff have engaged in professional learning to reflect on bias, empathy,
         and inclusive practices.
       compass: false
       categories: []
@@ -110,15 +110,15 @@ sustaining:
       categories: []
     - tag: 1.2.18
       title: >-
-        Professional learning and sharing of practices are ongoing, as the
-        school maintains commitment to an inclusive, bias-aware learning
-        environment where all learners and families are welcomed and supported.
+        Professional learning and sharing of practices are ongoing as the school
+        maintains commitment to an inclusive, bias-aware learning environment in
+        which all learners and families are welcomed and supported.
       compass: false
       categories: []
     - tag: 1.2.19
       title: >-
-        The school serves as a model for inclusion, regularly sharing evolution
-        of practice through ongoing reflection and data analysis.
+        The school serves as a model for inclusion, with staff regularly sharing
+        evolution of practice through ongoing reflection and data analysis.
       compass: false
       categories: []
     - tag: 1.2.20

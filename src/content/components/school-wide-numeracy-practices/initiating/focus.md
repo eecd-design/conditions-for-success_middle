@@ -1,1 +1,1 @@
-Educators focus instruction on isolated numeracy skills with limited implementation of effective numeracy instructional practices. Learners inconsistently apply prior mathematical knowledge and are reluctant to engage in problem solving tasks.
+Instruction is focused on isolated numeracy skills with limited implementation of numeracy instructional practices. Learners are developing their ability to apply prior mathematical knowledge and, with some encouragement, are building confidence in tackling problem-solving tasks.
