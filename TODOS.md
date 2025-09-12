@@ -1,31 +1,27 @@
-# 404 Page
+# TODOS
 
-Can we have a custom page that redirects users to the middle.nbed.ca page if they get the url wrong
-
-# Middle Landing Page
-
-Create a simple landing page at middle.nbed.ca that links off to the Conditions for Success site
-
-# Submit NBED Subdomain Request
-
-middle.nbed.ca/conditions-for-success
-
-# Each Indicator, Subindicator, or Focus Item should have url anchor
-
-# Assessment Mode should be restricted to tablets and larger devices
-
-# Research the ability to download pdf of report page
-
-# Conflict and merge mechanism if user uploads data over that which is saved in the browser
-
-# Save alert should mention that the changes are saved in the browser, but also with a time since last manual save.
-
-# Announcement Banner for 'Resrouce being added continually' on indicator
-
-# Investigate shortening anchor hashes
-
+TODO: Can we have a custom page that redirects users to the middle.nbed.ca page if they get the url wrong
+TODO: Create a simple landing page at middle.nbed.ca that links off to the Conditions for Success site
+TODO: Each Indicator, Subindicator, or Focus Item should have url anchor
+TODO: Assessment Mode should be restricted to tablets and larger devices
+TODO: Research the ability to download pdf of report page
+TODO: Announcement Banner for 'Resrouce being added continually' on indicator
 
 
 # FIXES
 
-- Underline on resource icon labels. 
+
+
+# TESTING
+
+## Scenario 1
+
+Context: No saved assessment data in the browser
+
+1. User selects 'create assessment'
+2. User fills forms incorrectly
+3. User is prompted to fix fields
+4. User submits form
+5. Assessment is opened
+
+  
