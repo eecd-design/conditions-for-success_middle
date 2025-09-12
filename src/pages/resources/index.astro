@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Accordion from "src/components/Accordion.astro";
-import MediaDialog from "src/components/MediaDialog.astro";
+import MediaDialog from "src/components/dialogs/MediaDialog.astro";
 import LinkListItem from "src/components/LinkListItem.astro";
 
 import IconCheckmark from "../../components/icons/IconCheckmark_8.astro";
@@ -14,6 +14,7 @@ import IconSortAlpha from "src/components/icons/IconSortAlpha_20.astro";
 import IconSortTime from "src/components/icons/IconSortTime_20.astro";
 import IconCompact from "src/components/icons/IconCompact_20.astro";
 import IconDetailed from "src/components/icons/IconDetailed_20.astro";
+import IconXmarkSmall from "src/components/icons/IconXmark_12.astro";
 
 let allResources = await getCollection("resources");
 
@@ -112,6 +113,8 @@ let types = [
 				
 			</Accordion>
 
+			<!-- TODO: Add components filter as a single list -->
+
 		</form>
 
 	</aside>
@@ -120,7 +123,17 @@ let types = [
 
 		<h1>Resources</h1>
 
-		<ul id="active-filters-list"></ul>
+		<ul id="active-filters-list" class="form-list">
+			<template>
+				<li class="filter-tag" data-group="" data-value="" data-status-field="">
+				<span class="group"></span>
+				<span class="title" title=""></span>
+				<button class="clear" type="button" aria-label="">
+					<IconXmarkSmall/>
+				</button>
+			</li>
+			</template>
+		</ul>
 
 		<form id="resources-list-primary-controls" class="list-primary-controls" data-no-value-behaviour="shown" data-list="resources-list">		
 
@@ -373,71 +386,6 @@ let types = [
 	fieldset.filters label > span {
 		flex-grow: 1;
 	}
-
-	#active-filters-list {
-		display: flex;
-		flex-flow: row wrap;
-		column-gap: 0.5rem;
-		row-gap: 0.75rem;
-		list-style-type: none;
-		padding: 0;
-		margin: 1rem 0;
-	}
-
-	#active-filters-list li {
-		line-height: 1.2;
-	}
-
-	#active-filters-list .filter-tag {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.875rem;
-		height: 2rem;
-		border-radius: var(--border-radius-normal);
-		background-color: var(--colour-fill-neutral-subtle);
-		padding: 0 0 0 0.75rem;
-		transition: background-color var(--transition-linear-fast);
-	}
-
-	#active-filters-list .filter-tag:has(button.clear:is(:hover, :focus-visible)) {
-		background-color: var(--colour-fill-neutral-subtle-highlight);
-	}
-
-	#active-filters-list .filter-tag .group {
-		padding-right: 0.5rem;
-		border-right: 1px solid var(--colour-border-neutral-subtle);
-		font-weight: 700;
-	}
-
-	#active-filters-list .filter-tag .title {
-		font-weight: 500;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		max-width: 8rem;
-	}
-
-	#active-filters-list .filter-tag button.clear {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-		--icon-size: 0.75rem;
-		--icon-colour: var(--colour-ui-neutral-subtle);
-		display: inline-flex;
-		height: 2rem;
-		min-width: 2rem;
-		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal) 0;
-		border-left: 1px solid var(--colour-border-neutral-subtle);
-		border
-	}
-
-	#active-filters-list .filter-tag button.clear:is(:hover, :focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-bold);
-		--icon-colour: var(--colour-ui-reverse);
-		border-color: var(--button-background-colour);
-	}
-
-	/* TODO: Update the assessor buttons to match these. */	
 
 	form.list-primary-controls {
 		display: flex;
