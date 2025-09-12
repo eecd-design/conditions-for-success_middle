@@ -519,13 +519,10 @@ let phases = [
 		updateContinuumCompletion
 	} from "src/stores/userDataStore.js";
 
-	//
-	// Variables
-	//
 
 
 	//
-	// Methods
+	// DOM Updates
 	//
 
 	let updateConsiderations = () => {
@@ -548,7 +545,6 @@ let phases = [
 			return match[1] === currentIndicatorTag;
 
 		});
-
 
 		// 1. Update checkboxes to match checked state
 		for (let consideration of relevantConsiderationsEstablished) {
@@ -616,8 +612,6 @@ let phases = [
 	// Inits & Event Listeners
 	//
 
-	subscribe(updateConsiderations);
-
 	document.addEventListener("input", async (event) => {
 
 		let target = event.target as HTMLInputElement;
@@ -637,7 +631,7 @@ let phases = [
 
 				operation = 'add';
 
-				changeMessage = `Marked ${target.value} as established`;
+				changeMessage = `marked ${target.value} as established.`;
 
 			} else {
 
@@ -649,7 +643,7 @@ let phases = [
 
 				operation = 'substract';
 
-				changeMessage = `Updated ${target.value} as not established`;
+				changeMessage = `marked ${target.value} as not established.`;
 
 			}
 
@@ -658,7 +652,7 @@ let phases = [
 			})
 
 			let updatedContinuumCompletion = await updateContinuumCompletion({
-				considerationTag: target.value,
+				consideration: target.value,
 				operation: operation,
 			})
 
@@ -666,11 +660,15 @@ let phases = [
 				changeLog: updatedChangeLog,
 				considerationsEstablished: assessment.considerationsEstablished,
 				continuumCompletion: updatedContinuumCompletion,
+				unexportedChanges: true,
+				dateModified: Date.now(),
 			})
 
 		}
 
 	});
+
+	subscribe(updateConsiderations);
 
 	filter.init();
 	document.addEventListener('astro:before-swap', filter.destroy);
