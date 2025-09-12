@@ -68,6 +68,7 @@ let interactiveWrapperAttrs = ["video", "audio"].includes(type)
 			type: "button",
 			"data-style-as": "link",
 			"data-dialog": "media-dialog",
+			"data-dialog-heading": title,
 			"data-media-type": type,
 			"data-media-src": path,
 			"data-media-external": external.discriminant,
@@ -97,6 +98,7 @@ if (category !== 'resource') {
 				{category !== 'resource' ? `${toTitleCase(category)} ${tag}` : `${toTitleCase(type)} Resource`}
 			</span>
 			<span class="title">{title}</span>
+			<!-- TODO: Add tagged considerations, components, indicators -->
 			{ date && (
 				<span
 					class="date"
