@@ -2,13 +2,17 @@ import { stopVideo } from "./helpers";
 
 let dialogControl = (() => {
 
-	let open = (dialogId) => {
+	let open = ({dialogId, headingText = null, context = null}) => {
 		let activeDialog = document.querySelector(
 		"dialog[open]");
 		let targetDialog = document.querySelector(
 		`#${dialogId}`);
 		if (!targetDialog) return;
 		if (activeDialog) activeDialog.close();
+		if (context) targetDialog.setAttribute('data-context', context);
+		let heading = targetDialog.querySelector('h2');
+		headingText = headingText ? headingText.trim() : heading.getAttribute('data-default-text').trim();
+		if (heading && headingText !== heading.textContent) heading.textContent = headingText;
 		targetDialog.showModal();
 	}
 
@@ -23,7 +27,13 @@ let dialogControl = (() => {
 		let target = event.target;
 		if (target.matches('button.open-dialog')) {
 			let dialogId = target.getAttribute('data-dialog');
-			open(dialogId);
+			let headingText = target.getAttribute('data-dialog-heading');
+			let context = target.getAttribute('data-dialog-context');
+			open({
+				dialogId,
+				headingText,
+				context 
+			});
 		} else if (target.matches('dialog button.close-dialog')) {
 			close(target);
 		}
@@ -37,7 +47,7 @@ let dialogControl = (() => {
 		document.removeEventListener('click', onClick);
 	}
 
-	return { init, destroy, open };
+	return { init, destroy, open, close };
 
 })();
 
