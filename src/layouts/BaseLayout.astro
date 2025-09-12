@@ -1,51 +1,45 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 
-import { ViewTransitions } from "astro:transitions";
+import Header from '../components/Header.astro';
 
-import Header from "../components/Header.astro";
-
-import "../styles/normalize.css";
-import "../styles/global.css";
+import '../styles/normalize.css';
+import '../styles/global.css';
 
 const { pageTitle, indicatorTag } = Astro.props;
-
 ---
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="generator" content={Astro.generator} />
-        <!-- <meta name="color-scheme" content="dark light" /> -->
-        <title>{pageTitle}</title>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<!-- <meta name="color-scheme" content="dark light" /> -->
+		<title>{pageTitle}</title>
 		<!-- Public Sans Font ~ Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900" rel="stylesheet" />
 		<!-- Aesthet Nova Font ~ Adobe Fonts -->
-		<link rel="stylesheet" href="https://use.typekit.net/omy5wmz.css">
-        <ViewTransitions />
-    </head>
-    <body>
+		<link rel="stylesheet" href="https://use.typekit.net/omy5wmz.css" />
+		<ViewTransitions />
+	</head>
+	<body>
 		<Header />
 		<main data-mode="reading" data-indicator-tag={indicatorTag ? indicatorTag : null}>
-        	<slot />
+			<slot />
 		</main>
 		<footer></footer>
-    </body>
-
-	<script>
-
-		import { getActiveAssessmentData, setState, subscribe } from "src/stores/userDataStore";
-		import { scrollIntoView } from "src/utilities/helpers";
-		import { dialogControl } from "src/utilities/dialog";
+	</body><script>
+		import { getActiveAssessmentData, setState, subscribe } from 'src/stores/userDataStore';
+		import { scrollIntoView } from 'src/utilities/helpers';
+		import { dialogControl } from 'src/utilities/dialog';
 
 		let updateTheme = (data) => {
-
 			let theme = data.uiPreferences.theme;
-	
+
 			if (theme !== 'dark' && theme !== 'light') return;
 
 			// Get the html root
@@ -53,11 +47,9 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 			// Update the theme
 			html.setAttribute('data-theme', theme);
-
-		}
+		};
 
 		let updateMode = (data) => {
-
 			let mode = data.uiState.mode;
 
 			if (mode !== 'assessment' && mode !== 'reading') mode = 'reading';
@@ -67,11 +59,9 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 			// Update the mode
 			main.setAttribute('data-mode', mode);
-
-		}
+		};
 
 		let updateStatus = (data) => {
-
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
 
@@ -83,33 +73,25 @@ const { pageTitle, indicatorTag } = Astro.props;
 			let main = document.querySelector('main');
 
 			// Update the status
-			main.setAttribute('data-status', status.split(" ").join('-').toLowerCase());
-
-		}
+			main.setAttribute('data-status', status.split(' ').join('-').toLowerCase());
+		};
 
 		let updateAssessor = (data) => {
+			let assessment = getActiveAssessmentData();
+			if (!assessment) return;
 
-			let activeAssessor = data.uiState.activeAssessor;
-			
 			// Get the main
 			let main = document.querySelector('main');
 
 			// Update the assessor
-			if (!activeAssessor || activeAssessor === undefined) {
+			if (!assessment.activeAssessor || assessment.activeAssessor === undefined) {
 				main.setAttribute('data-assessor', 'false');
 			} else {
 				main.setAttribute('data-assessor', 'true');
 			}
-
-		}
-
-		subscribe(updateTheme);
-		subscribe(updateMode);
-		subscribe(updateStatus);
-		subscribe(updateAssessor);
+		};
 
 		let scrollToConsideration = (tag) => {
-
 			let consideration = document.querySelector(`[value="${tag}"]`);
 
 			if (!consideration) return;
@@ -126,11 +108,14 @@ const { pageTitle, indicatorTag } = Astro.props;
 			setTimeout(() => {
 				scrollIntoView(accordion, { behavior: 'smooth' });
 			}, 50);
+		};
 
-		}
+		//
+		// Inits & Event listeners
+		//
 
 		window.addEventListener('popstate', () => {
-  			let hash = window.location.hash;
+			let hash = window.location.hash;
 			if (!hash) return;
 
 			// If link was within a dialog, close it
@@ -138,24 +123,21 @@ const { pageTitle, indicatorTag } = Astro.props;
 			if (activeDialog) activeDialog.close();
 
 			if (hash.includes('consideration')) {
-				let tag = hash.replace(/^#consideration-/, "").replace(/-/g, ".");
+				let tag = hash.replace(/^#consideration-/, '').replace(/-/g, '.');
 				scrollToConsideration(tag);
 			}
 		});
 
 		document.addEventListener('astro:page-load', () => {
-
 			let currentPagePath = window.location.pathname;
 
 			if (currentPagePath !== '/') {
-
 				setState({
 					lastVisitedPage: {
 						title: document.querySelector('h1').textContent,
 						path: window.location.pathname,
-					}
-				})
-
+					},
+				});
 			}
 
 			let hash = window.location.hash;
@@ -163,16 +145,18 @@ const { pageTitle, indicatorTag } = Astro.props;
 			if (!hash) return;
 
 			if (hash.includes('consideration')) {
-				let tag = hash.replace(/^#consideration-/, "").replace(/-/g, ".");
+				let tag = hash.replace(/^#consideration-/, '').replace(/-/g, '.');
 				scrollToConsideration(tag);
 			}
+		});
 
-		})
+		subscribe(updateTheme);
+		subscribe(updateMode);
+		subscribe(updateStatus);
+		subscribe(updateAssessor);
 
 		dialogControl.init();
 		document.addEventListener('astro:before-swap', dialogControl.destroy);
 		document.addEventListener('astro:after-swap', dialogControl.init);
-
 	</script>
-
 </html>
