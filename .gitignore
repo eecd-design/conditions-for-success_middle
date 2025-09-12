@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # resources assets
 public/assets/
+
+# Local Netlify folder
+.netlify
