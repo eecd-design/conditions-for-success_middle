@@ -139,6 +139,9 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
  */
 let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortType }) => {
 
+
+	// TODO: Trigger layout shift if description search, return to user preference once search is complete (cleared)
+
 	let value = input.value.trim();
 
 	let results = [];
@@ -345,6 +348,7 @@ let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
 
 		if (sortType === 'date') {
 			return new Date(b.date) - new Date(a.date);
+			// TODO: Show date when sorting by date
 		}
 
 		if (sortType === 'relevance') {
@@ -427,25 +431,39 @@ let filter = (() => {
 	// Tags
 	//
 
-	let createTag = (target) => {
+	let createTag = (target, tagList) => {
+	
+		let template = tagList.querySelector('template');
+		if (!template) return;
+		
+		// Clone the template
+		let tag = template.content.cloneNode(true);
+
+		let li = tag.querySelector('li');
+		if (!li) return;
+		
 		let group = target.getAttribute('name');
 		let title = target.getAttribute('data-title');
 		let value = target.getAttribute('value');
 		let field = target.getAttribute('data-status-field');
 		if (!group || !title || !value) return;
-		let template = `
-			<li class="filter-tag" data-group="${group}" data-value="${value}" data-status-field="${field ?? null}">
-				<span class="group">${toTitleCase(group)}</span>
-				<span class="title" title="${title}">${title}</span>
-				<button class="clear" type="button" aria-label="Clear ${title} Filter">
-					<svg class="icon xmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
-						<path d="m7.41 6 4.3-4.29A.996.996 0 1 0 10.3.3L6.01 4.59 1.71.29C1.32-.1.68-.1.29.29s-.39 1.03 0 1.42L4.58 6 .29 10.29a.996.996 0 0 0 .71 1.7c.26 0 .51-.1.71-.29L6 7.41l4.29 4.29c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L7.42 6Z"/>
-					</svg>
-				</button>
-			</li>
-		`;
-		let tag = htmlToElement(template);
+
+		li.setAttribute('data-group', group);
+		li.setAttribute('data-value', value);
+		li.setAttribute('data-status-field', field ?? null);
+
+		let groupField = tag.querySelector('.group');
+		let titleField = tag.querySelector('.title');
+		let clearBtn = tag.querySelector('button.clear');
+		if (!groupField || !titleField || !clearBtn) return;
+		
+		groupField.textContent = toTitleCase(group);
+		titleField.textContent = title;
+		titleField.setAttribute('title', title);
+		clearBtn.setAttribute('aria-label', `Clear ${title} Filter`);
+
 		return tag;
+
 	}
 
 	let getTag = (target) => {
@@ -541,7 +559,7 @@ let filter = (() => {
 			let tagListId = form.getAttribute('data-tag-list');
 			let tagList = document.querySelector(`#${tagListId}`);
 			if (tagList) {
-				let tag = createTag(target);
+				let tag = createTag(target, tagList);
 				tagList.append(tag);
 			}
 		} else {
@@ -569,7 +587,7 @@ let filter = (() => {
 		let list = getList(form);
 		if (!form || !list) return;
 		let filters = {};
-		let sortType = getSortType();
+		let sortType = getSortType(form);
 		filterListByFilterBtns({ filters, list, sortType });
 		let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
 		for (let field of statusFields) {
@@ -581,7 +599,8 @@ let filter = (() => {
 		let tagListId = form.getAttribute('data-tag-list');
 		let tagList = document.querySelector(`#${tagListId}`);
 		if (tagList) {
-			tagList.innerHTML = '';
+			let items = tagList.querySelectorAll('li');
+			for (let item of items) item.remove();
 		}
 	}
 
@@ -591,7 +610,7 @@ let filter = (() => {
 	 */
 	let onClick = (event) => {
 		let target = event.target;
-		if (!target.matches('.filter-tag button')) return;
+		if (!target.matches('.filter-tag button.clear')) return;
 		let tag = getTag(target);
 		if (!tag) return;
 		let input = getInput(tag);
@@ -602,7 +621,7 @@ let filter = (() => {
 		let list = getList(form);
 		if (!form || !list) return;
 		let filters = getFilters(form);
-		let sortType = getSortType();
+		let sortType = getSortType(form);
 		filterListByFilterBtns({ filters, list, sortType });
 		let statusField = getStatusField(tag);
 		if (statusField) {
@@ -674,6 +693,8 @@ let search = (() => {
 			}
 		}
 	};
+
+	// TODO: Keydown on search button, prevent.default
 
 	/**
 	 * Initializes search forms
