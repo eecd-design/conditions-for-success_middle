@@ -44,7 +44,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 					<li>
 						<!-- <span class="group">Assessor</span> -->
 						<span class="title" data-field-value></span>
-						<button class="clear" type="button" aria-label="Remove Assessor">
+						<button class="clear remove-assessor" type="button" aria-label="Remove Assessor">
 							<IconXmarkSmall />
 						</button>
 					</li>
@@ -132,12 +132,17 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 		if (!item) return;
 		let list = target.closest('form').querySelector('.assessor-list');
 		list.append(item);
+		list.removeAttribute('hidden');
 		input.value = '';
 	};
 
 	let removeAssessorFromList = (target: HTMLButtonElement) => {
 		let item = target.closest('li');
+		let list = target.closest('form').querySelector('.assessor-list');
+		if (!item) return;
 		item.remove();
+		let items = list.querySelectorAll('li');
+		if (items.length === 0) list.setAttribute('hidden', '');
 	};
 
 	let createAssessorSelectOption = (assessor) => {
@@ -220,6 +225,8 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 		if (!assessment) return;
 
 		let { assessors, activeAssessor } = assessment;
+
+		console.log('Updating Dialog')
 
 		updateAssessorList({
 			dialog,
