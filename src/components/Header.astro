@@ -22,7 +22,6 @@ let path = url.pathname;
 			<ul class="menu">
 				<li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
 				<li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
-				<!-- TODO: Active state should not make unclickable, no need to hover -->
 				<li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
 				<li><a class={path.includes('/report') ? 'active' : ''} href="/report">Report</a></li>
 			</ul>
@@ -209,10 +208,12 @@ let path = url.pathname;
 		color: var(--colour-ui-neutral);
 	}
 	
-	header nav.global .menu :not(.home) a.active {
+	header nav.global .menu :not(.home) a.active,
+	header nav.global .menu :not(.home) a.active:is(:hover, :focus-visible) {
+		background-color: transparent;
 		outline: 2px solid var(--colour-border-neutral-subtle);
 		outline-offset: -1px;
-		pointer-events: none;
+		color: var(--colour-ui-reverse);
 	}
 
 	header .global-controls {

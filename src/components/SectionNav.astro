@@ -65,14 +65,11 @@ let path = url.pathname;
 		color: var(--colour-ui-neutral);
 	}
 	
-	nav.section a.active {
+	nav.section a.active,
+	nav.section a.active:is(:hover, :focus-visible) {
 		outline: 2px solid var(--colour-border-neutral-subtle);
 		outline-offset: -1px;
-		pointer-events: none;
-	}
-
-	nav.section ul ul a {
-
+		background-color: transparent;
 	}
 
 </style>
