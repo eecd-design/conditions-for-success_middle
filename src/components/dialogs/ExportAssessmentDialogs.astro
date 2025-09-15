@@ -53,7 +53,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 	<section class="export-file">
 		<h3>Export File</h3>
 		<p class="instructions">
-			Download a copy of this assessment to backup your work. Both CSV and Excel files can be used to restore the assessment later or continue working on it on another device.
+			Download a copy of this assessment to backup your work. This file can be used to restore the assessment later or continue working on it on another device.
 		</p>
 
 			<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
@@ -74,13 +74,13 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 
 		<div class="button-group">
 			<button
-				class="export-assessment download-csv-file"
+				class="export-assessment download-file"
 				type="button"
 				data-style="solid"
 				data-size="large"
 				aria-label="Download assessment data as CSV file"
 				data-toast-success="export-assessment-dialog_export-file-toast_success"
-				data-toast-failure="export-assessment-dialog_export-file-toast_failure">Download CSV</button
+				data-toast-failure="export-assessment-dialog_export-file-toast_failure">Download File</button
 			>
 		</div>
 	</section>
@@ -256,7 +256,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 			}
 		}
 
-		if (target.matches('button.export-assessment')) {
+		if (target.matches('button.download-file')) {
 			try {
 				exportAssessment(getActiveAssessmentData());
 
