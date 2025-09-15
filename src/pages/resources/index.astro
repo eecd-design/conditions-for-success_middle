@@ -15,6 +15,7 @@ import IconSortTime from "src/components/icons/IconSortTime_20.astro";
 import IconCompact from "src/components/icons/IconCompact_20.astro";
 import IconDetailed from "src/components/icons/IconDetailed_20.astro";
 import IconXmarkSmall from "src/components/icons/IconXmark_12.astro";
+import { findObjectByKey } from "src/utilities/helpers";
 
 let allResources = await getCollection("resources");
 
@@ -26,6 +27,17 @@ allResources.sort((a, b) => {
 let allIndicators = await getCollection("indicators");
 
 allIndicators.sort((a, b) => {
+	return (a.data.tag || '').localeCompare(b.data.tag || '');
+});
+
+let allComponents = await getCollection("components");
+
+allComponents.map((component) => {
+	let indicator = findObjectByKey(allIndicators, 'id', component.data.indicator);
+	component.data['colour'] = indicator.data.colour;
+})
+
+allComponents.sort((a, b) => {
 	return (a.data.tag || '').localeCompare(b.data.tag || '');
 });
 
@@ -80,7 +92,7 @@ let types = [
 							<label>
 								<input type="checkbox" name="types" value={type.toLowerCase()} data-title={type} data-status-field="filters-types-status"/>
 								<IconCheckmark/>
-								<span>{type}</span>
+								<span class="text-container">{type}</span>
 							</label>
 						))
 					}
@@ -105,7 +117,37 @@ let types = [
 							<label>
 								<input type="checkbox" name="indicators" value={indicator.data.tag} data-title={indicator.data.title} data-status-field="filters-indicators-status"/>
 								<IconCheckmark/>
-								<span>{indicator.data.title}</span>
+								<span class="text-container">
+									<span class="tag" data-theme={indicator.data['colour']} data-vibrancy="vivid">{indicator.data.tag}</span>
+									<span class="text">{indicator.data.title}</span>
+								</span>
+							</label>
+						))
+					}
+				</fieldset>
+				
+			</Accordion>
+
+			<div class="separator group" aria-hidden="true"></div>
+
+			<Accordion title={'Component'} id={'filters_components'} crossIconSize={'small'} wrapper={false}>
+
+				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
+					<span data-field="filters-components-status" >0</span>&nbsp;Selected</span>
+				</span>
+
+				<div class="separator item" aria-hidden="true"></div>
+
+				<fieldset class="filters" aria-labelledby="filters_component">
+					{
+						allComponents.map((component) => (
+							<label>
+								<input type="checkbox" name="components" value={component.data.tag} data-title={component.data.title} data-status-field="filters-components-status"/>
+								<IconCheckmark/>
+								<span class="text-container">
+									<span class="tag" data-theme={component.data['colour']} data-vibrancy="vivid">{component.data.tag}</span>
+									<span class="text">{component.data.title}</span>
+								</span>
 							</label>
 						))
 					}
@@ -324,12 +366,14 @@ let types = [
 
 	fieldset.filters {
 		padding: 0.75rem 0 0.25rem;
+		max-height: min(500px, 50vh);
+		overflow: auto;
 	}
 
 	fieldset.filters label {
 		display: flex;
 		flex-flow: row nowrap;
-		align-items: center;
+		align-items: start;
 		gap: 0.75rem;
 		margin: 0 0.75rem;
 		padding: 0.5rem 0.75rem;
@@ -338,6 +382,7 @@ let types = [
 		cursor: pointer;
 		user-select: none;
 		position: relative;
+		transition: all var(--transition-linear-fast);
 	}
 
 	fieldset.filters label:is(:hover, :focus-visible) {
@@ -350,6 +395,7 @@ let types = [
 		opacity: 0;
 		cursor: pointer;
 		z-index: 0;
+		flex-shrink: 0;
 	}
 
 	fieldset.filters label:is(:hover, :focus-visible, :has(input[type="checkbox"]:checked))::before {
@@ -373,6 +419,7 @@ let types = [
 		--icon-colour: var(--colour-ui-neutral);
 		--icon-size: 0.5rem;
 		position: absolute;
+		top: 0.75rem;
 		left: 1rem;
 		z-index: 2;
 		opacity: 0;
@@ -383,8 +430,32 @@ let types = [
 		opacity: 1;
 	}
 
-	fieldset.filters label > span {
+	fieldset.filters label .text-container {
 		flex-grow: 1;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: start;
+		gap: 0.5rem;
+	}
+
+	fieldset.filters label .text-container .tag {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 0.25rem;
+		height: 1.125rem;
+		min-width: 1.125rem;
+		border-radius: var(--border-radius-small);
+		background-color: var(--colour-fill-accent-subtle);
+		font-size: 0.75rem;
+		color: var(--colour-ui-accent);
+		line-height: 1;
+		transition: all var(--transition-linear-fast);
+	}
+
+	fieldset.filters label:is(:hover, :focus-visible) .text-container .tag {
+		background-color: var(--colour-fill-neutral-mid);
+		color: var(--colour-ui-reverse);
 	}
 
 	form.list-primary-controls {

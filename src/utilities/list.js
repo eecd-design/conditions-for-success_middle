@@ -452,14 +452,20 @@ let filter = (() => {
 		li.setAttribute('data-value', value);
 		li.setAttribute('data-status-field', field ?? null);
 
+		let tagText = title;
+
+		if (group === 'indicators' || group === 'components') {
+			tagText = `${value} – ${title}`;
+		}
+
 		let groupField = tag.querySelector('.group');
 		let titleField = tag.querySelector('.title');
 		let clearBtn = tag.querySelector('button.clear');
 		if (!groupField || !titleField || !clearBtn) return;
 		
 		groupField.textContent = toTitleCase(group);
-		titleField.textContent = title;
-		titleField.setAttribute('title', title);
+		titleField.textContent = tagText;
+		titleField.setAttribute('title', tagText);
 		clearBtn.setAttribute('aria-label', `Clear ${title} Filter`);
 
 		return tag;
