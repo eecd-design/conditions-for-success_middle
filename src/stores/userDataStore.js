@@ -12,7 +12,7 @@ import {
 	normalizeImportedDate, 
 	toKebabCase 
 } from "src/utilities/helpers.js";
-import * as XLSX from 'xlsx'; // Sheets.js (XLSX) is used to create and interpret CSV and Excel files
+import Papa from "papaparse";
 import LZString from 'lz-string'; // LZString is used to compress data into the exportcode
 
 
@@ -432,37 +432,12 @@ let deleteImportConflictData = () => importConflictData = null;
 //
 
 /**
- * Export assessment object as CSV or Excel
+ * Export assessment object as CSV
  * @param {Object} assessment - Assessment data
- * @param {string} format - 'csv' or 'xlsx'
  */
-let exportAssessment = (assessment, format = 'csv') => {
-
-	/**
-	 * Auto fit column widths based on content
-	 * @param {Object} worksheet - XLSX worksheet
-	 */
-	let autoFitColumns = function (worksheet) {
-		let range = XLSX.utils.decode_range(worksheet['!ref']);
-		let colWidths = [];
-
-		for (let C = range.s.c; C <= range.e.c; C++) {
-			let maxLength = 10; // minimum width
-			for (let R = range.s.r; R <= range.e.r; R++) {
-				let cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
-				let cell = worksheet[cellAddress];
-				if (cell && cell.v) {
-					let len = String(cell.v).length;
-					if (len > maxLength) maxLength = len;
-				}
-			}
-			colWidths.push({ wch: maxLength + 2 }); // add a little padding
-		}
-		worksheet['!cols'] = colWidths;
-	};
-
-	// Define columns and order for the main sheet
-	let mainData = {
+let exportAssessment = (assessment) => {
+	// Define columns for the main CSV
+	let mainData = [{
 		'Id': assessment.id || '',
 		'School': assessment.school || '',
 		'District': assessment.district || '',
@@ -476,70 +451,62 @@ let exportAssessment = (assessment, format = 'csv') => {
 		'Considerations Established': (assessment.considerationsEstablished || []).join(', '),
 		'Continuum Version': assessment.continuumVersion || '',
 		'Schema Version': assessment.schemaVersion || '',
-	};
+	}];
 
-	// Define columns and order for the change log sheet
+	// Define change log CSV
 	let changeLogData = (assessment.changeLog || []).map(log => ({
 		'Date': formatDateAsString(log.date) || '',
 		'Message': log.message || '',
 		'Assessor': log.assessor || '',
 	}));
 
-	let workbook = XLSX.utils.book_new();
-	let mainSheet = XLSX.utils.json_to_sheet([mainData]);
-	let logSheet = XLSX.utils.json_to_sheet(changeLogData.length ? changeLogData : [{ Note: 'No change log' }]);
-
-	// Auto-fit columns
-	autoFitColumns(mainSheet);
-	autoFitColumns(logSheet);
-
-	XLSX.utils.book_append_sheet(workbook, mainSheet, 'Assessment Info');
-	XLSX.utils.book_append_sheet(workbook, logSheet, 'Change Log');
-
-	// Filename with date
-	let fileDate = formatDateAsString(assessment.dateExported || new Date(), false);
-	let filename = `assessment_${toKebabCase(assessment.school)}_${assessment.reportingYear}_export-${fileDate}`;
-
-
-	if (format === 'csv') {
-		// Convert sheets to csv and combine
-		let csv = XLSX.utils.sheet_to_csv(mainSheet) + '\n\n' + XLSX.utils.sheet_to_csv(logSheet);
-		let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-		let link = document.createElement('a');
-		link.href = URL.createObjectURL(blob);
-		link.download = `${filename}.csv`;
-		link.click();
-	} else {
-		// Save as Excel
-		XLSX.writeFile(workbook, `${filename}.xlsx`);
+	if (!changeLogData.length) {
+		changeLogData = [{ Note: 'No change log' }];
 	}
 
-}
+	// Convert both sections to CSV
+	let mainCsv = Papa.unparse(mainData);
+	let logCsv = Papa.unparse(changeLogData);
+
+	// Combine with separation
+	let combinedCsv = mainCsv + "\n\n" + logCsv;
+
+	// Filename
+	let fileDate = formatDateAsString(assessment.dateExported || new Date(), false);
+	let filename = `assessment_${toKebabCase(assessment.school)}_${assessment.reportingYear}_export-${fileDate}.csv`;
+
+	// Trigger download
+	let blob = new Blob([combinedCsv], { type: 'text/csv;charset=utf-8;' });
+	let link = document.createElement('a');
+	link.href = URL.createObjectURL(blob);
+	link.download = filename;
+	link.click();
+};
 
 /**
- * Parse a CSV or Excel file and convert it back into an assessment object
+ * Parse a CSV file and convert it back into an assessment object
  * @param {File} file - File uploaded by the user
  * @returns {Promise<Object>} Parsed assessment object
  */
 let importAssessment = (file) => {
-
 	return new Promise((resolve, reject) => {
 		let reader = new FileReader();
 
 		reader.onload = (event) => {
 			let data = event.target.result;
-			let workbook = XLSX.read(data, { type: 'binary' });
 
-			// Read main sheet (assumes first sheet is main data)
-			let mainSheetName = workbook.SheetNames[0];
-			let mainSheet = workbook.Sheets[mainSheetName];
-			let mainDataArray = XLSX.utils.sheet_to_json(mainSheet, { defval: '' });
+			// Split the combined CSV into main and change log parts
+			let [mainCsv, logCsv] = data.split(/\n\s*\n/);
 
-			if (!mainDataArray || !mainDataArray.length) {
-				return reject('No main data found in the file');
+			// Parse with PapaParse
+			let mainResult = Papa.parse(mainCsv, { header: true, skipEmptyLines: true });
+			let logResult = Papa.parse(logCsv || "", { header: true, skipEmptyLines: true });
+
+			if (!mainResult.data || !mainResult.data.length) {
+				return reject("No main data found in the file");
 			}
 
-			let mainRow = mainDataArray[0]; // Only one row expected
+			let mainRow = mainResult.data[0]; // Only one row expected
 			let assessment = {
 				id: mainRow['Id'] || '',
 				school: mainRow['School'] || '',
@@ -557,28 +524,21 @@ let importAssessment = (file) => {
 				changeLog: []
 			};
 
-			// Read change log sheet (assumes second sheet)
-			if (workbook.SheetNames.length > 1) {
-				let logSheetName = workbook.SheetNames[1];
-				let logSheet = workbook.Sheets[logSheetName];
-				let logData = XLSX.utils.sheet_to_json(logSheet, { defval: '' });
-
-				assessment.changeLog = logData.map(log => ({
+			// Parse change log rows
+			if (logResult.data && logResult.data.length) {
+				assessment.changeLog = logResult.data.map(log => ({
 					date: log['Date'] ? normalizeImportedDate(log['Date']) : null,
 					assessor: log['Assessor'] || '',
-					message: log['Message'] || ''
+					message: log['Message'] || log['Note'] || ''
 				}));
 			}
 
 			resolve(assessment);
 		};
 
-		reader.onerror = (err) => {
-			reject(err);
-		};
+		reader.onerror = (err) => reject(err);
 
-		reader.readAsArrayBuffer(file);
-
+		reader.readAsText(file);
 	});
 };
 

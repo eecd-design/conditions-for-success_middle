@@ -82,15 +82,6 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 				data-toast-success="export-assessment-dialog_export-file-toast_success"
 				data-toast-failure="export-assessment-dialog_export-file-toast_failure">Download CSV</button
 			>
-			<button
-				class="export-assessment download-excel-file"
-				type="button"
-				data-style="solid"
-				data-size="large"
-				aria-label="Download assessment data as Excel file"
-				data-toast-success="export-assessment-dialog_export-file-toast_success"
-				data-toast-failure="export-assessment-dialog_export-file-toast_failure">Download Excel</button
-			>
 		</div>
 	</section>
 
@@ -267,11 +258,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 
 		if (target.matches('button.export-assessment')) {
 			try {
-				if (target.matches('.download-csv-file')) {
-					exportAssessment(getActiveAssessmentData(), 'csv');
-				} else if (target.matches('.download-excel-file')) {
-					exportAssessment(getActiveAssessmentData(), 'xlsx');
-				}
+				exportAssessment(getActiveAssessmentData());
 
 				setAssessment({
 					unexportedChanges: false,
