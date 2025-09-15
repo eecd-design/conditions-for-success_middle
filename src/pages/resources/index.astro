@@ -155,8 +155,6 @@ let types = [
 				
 			</Accordion>
 
-			<!-- TODO: Add components filter as a single list -->
-
 		</form>
 
 	</aside>
@@ -207,7 +205,7 @@ let types = [
 							</span>
 						</span>
 					</button>
-					<button type="button" value="title" aria-label="Sort list by title">
+					<button type="button" value="title" aria-label="Sort list by title" aria-pressed="false">
 						<span class="icon-and-label-container">
 							<IconSortAlpha />
 							<span class="label-container">
@@ -228,10 +226,11 @@ let types = [
 							<IconCompact />
 							<span class="label-container">
 								<span class="label">Compact</span>
+								<span class="visually-hidden" hidden>Compact view unavailable for this filter</span>
 							</span>
 						</span>
 					</button>
-					<button type="button" value="detailed" aria-label="Switch to compact list layout">
+					<button type="button" value="detailed" aria-label="Switch to compact list layout" aria-pressed="false">
 						<span class="icon-and-label-container">
 							<IconDetailed />
 							<span class="label-container">
@@ -379,6 +378,7 @@ let types = [
 		padding: 0.5rem 0.75rem;
 		border-radius: var(--border-radius-small);
 		font-size: 0.875rem;
+		font-weight: 400;
 		cursor: pointer;
 		user-select: none;
 		position: relative;
@@ -442,12 +442,14 @@ let types = [
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-shrink: 0;
 		padding: 0 0.25rem;
 		height: 1.125rem;
 		min-width: 1.125rem;
 		border-radius: var(--border-radius-small);
 		background-color: var(--colour-fill-accent-subtle);
 		font-size: 0.75rem;
+		font-weight: 600;
 		color: var(--colour-ui-accent);
 		line-height: 1;
 		transition: all var(--transition-linear-fast);
@@ -517,7 +519,8 @@ let types = [
 	// Imports
 	//
 
-	import { filter, search, sort, layout } from "src/utilities/list";
+	import { getUserData } from "src/stores/userDataStore";
+import { filter, search, sort, layout } from "src/utilities/list";
 
 
 	//
@@ -525,10 +528,62 @@ let types = [
 	//
 
 
+	let toggleForcedLayout = (forceLayout: Boolean) => {
+		
+		let resourcesList = document.querySelector('#resources-list');
+		let layoutDetailedBtn = document.querySelector('fieldset.layout button[value="detailed"]');
+		let layoutCompactBtn = document.querySelector('fieldset.layout button[value="compact"]');
+		let screenReaderContext = layoutCompactBtn.querySelector('.visually-hidden');
+
+		if (forceLayout) {
+
+			resourcesList.setAttribute('data-layout', 'detailed');
+			layoutCompactBtn.setAttribute('disabled', '');
+			layoutCompactBtn.setAttribute('aria-pressed', 'false');
+			screenReaderContext.removeAttribute('hidden');
+			layoutDetailedBtn.setAttribute('aria-pressed', 'true');
+
+		} else {
+
+			let userLayoutPreference = getUserData().uiPreferences.resourcePageLayout;
+
+			if (userLayoutPreference === 'compact') {
+				resourcesList.setAttribute('data-layout', 'compact');
+				layoutCompactBtn.setAttribute('aria-pressed', 'true');
+				layoutDetailedBtn.setAttribute('aria-pressed', 'false');
+			} else {
+				resourcesList.setAttribute('data-layout', 'detailed');
+				layoutCompactBtn.setAttribute('aria-pressed', 'false');
+				layoutDetailedBtn.setAttribute('aria-pressed', 'true');
+			}
+
+			layoutCompactBtn.removeAttribute('disabled');
+			screenReaderContext.setAttribute('hidden', '');
+
+		}
+
+	}
+
 
 	//
 	// Inits & Event Listeners
 	//
+
+	document.addEventListener('filterChange', (event: CustomEvent) => {
+		let activeFilters = event.detail.activeFilters;
+		if (!activeFilters) return;
+		let forceGroups = ['indicators', 'components', 'considerations'];
+		let forceLayout = forceGroups.some((term) =>
+			Object.keys(activeFilters).includes(term)
+		);
+		toggleForcedLayout(forceLayout);
+	})
+
+	document.addEventListener('searchMatchFound', (event: CustomEvent) => {
+		let matchTypes = event.detail.matchTypes;
+		let forceLayout = matchTypes.has('description');
+		toggleForcedLayout(forceLayout);
+	})
 
 	filter.init();
 	document.addEventListener('astro:before-swap', filter.destroy);

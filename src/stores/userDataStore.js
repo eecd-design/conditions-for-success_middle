@@ -24,8 +24,10 @@ let key = 'user';
 
 let data = {
 	uiPreferences: {
+		resourcePageSort: 'date',
+		resourcePageLayout: 'compact',
 		theme: 'light',
-		schemaVersion: '0.1'
+		schemaVersion: '0.1',
 	},
 	uiState: {
 		activeAssessmentId: null,

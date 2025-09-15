@@ -781,102 +781,6 @@ p {
 }
 
 
-/* ICON LINK LIST */
-
-.link-list[data-style="divided"] {
-	gap: 0;
-}
-
-.link-list[data-style="divided"]>li {
-	padding: 0.5rem 0;
-}
-
-.link-list[data-style="divided"]>li:first-child {
-	padding-top: 0 !important;
-}
-
-.link-list[data-style="divided"]>li:last-child {
-	padding-bottom: 0 !important;
-}
-
-.link-list[data-style="divided"]>li:has(+ li:not([hidden])) {
-	border-bottom: 1px solid var(--colour-border-neutral-subtle);
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) {
-	padding: 0.75rem 1rem 0.75rem 0.75rem;
-	border-radius: var(--border-radius-normal);
-	gap: 0.75rem;
-	text-decoration: none;
-	width: 100%;
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
-	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .separator {
-	align-self: stretch;
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .separator {
-	background-color: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container {
-	display: flex;
-	flex-flow: column;
-	gap: 0.5rem;
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .title {
-	font-size: 1rem;
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .date {
-	font-size: 0.75rem;
-	color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .date {
-	color: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .description {
-	font-size: 0.875rem;
-	font-weight: 400;
-	color: var(--colour-ui-neutral-subtle);
-	line-height: 1.4;
-	transition: max-height var(--transition-ease-medium);
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .description {
-	color: var(--colour-ui-neutral);
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
-	--label-size: 0.875rem;
-	--label-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .label {
-	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon-and-label-container {
-	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) :is(.icon.destination, .icon.type) {
-	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
-
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) span.highlight {
-	--highlight-background-colour: transparent;
-	--highlight-ui-colour: var(--colour-ui-neutral);
-}
-
-/* TODO: Should probably move this into the LinkListItem component */
 
 /*
 ** HTML & BODY
@@ -2204,7 +2108,7 @@ span.highlight {
 	transition: background-color var(--transition-linear-fast), color var(--transition-linear-fast);
 }
 
-.sr-only {
+.visually-hidden {
 	position: absolute;
 	width: 1px;
 	height: 1px;

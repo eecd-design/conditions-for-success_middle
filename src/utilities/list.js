@@ -1,4 +1,5 @@
-import { htmlToElement, toTitleCase } from "./helpers";
+import { setPreferences } from "src/stores/userDataStore";
+import { emitEvent, htmlToElement, toTitleCase } from "./helpers";
 
 //
 // Shared Methods
@@ -18,7 +19,7 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 	let results = [];
 	let matches = 0;
 
-	let items = list.querySelectorAll('li');
+	let items = list.querySelectorAll(':scope > li');
 
 	for (const item of items) {
 
@@ -139,21 +140,19 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
  */
 let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortType }) => {
 
-
-	// TODO: Trigger layout shift if description search, return to user preference once search is complete (cleared)
-
 	let value = input.value.trim();
 
 	let results = [];
 	let matches = 0;
-	let presortType = null; 
+	let presortType = null;
+	let matchTypes = new Set; 
 
 	if (!sortType) {
 		sortType = value.length === 0 ? 'title' : 'relevance';
 		presortType = value.length === 0 ? null : 'title';
 	}
 
-	let items = list.querySelectorAll('li');
+	let items = list.querySelectorAll(':scope > li');
 
 	for (const item of items) {
 
@@ -193,6 +192,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 		if (tag && tag.startsWith(value)) {
 			markMatch(100);
 			presortType = 'tag';
+			matchTypes.add('tag');
 			
 		// 2. Check for title match
 		} else if (title) {
@@ -200,8 +200,13 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			// Full phrase match
 			if (value.includes(' ')) {
 
-				if (title.startsWith(value)) markMatch(100);
-				else if (title.includes(value)) markMatch(10);
+				if (title.startsWith(value)) {
+					markMatch(100);
+					matchTypes.add('title');
+				} else if (title.includes(value)) {
+					markMatch(10);
+					matchTypes.add('title');
+				}
 
 			// Single word match
 			} else {
@@ -211,6 +216,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 					if (words[i].startsWith(value)) {
 						// Give higher relevance to first word matches
 						markMatch(i === 0 ? 100 : 10)
+						matchTypes.add('title');
 					}
 				}
 
@@ -224,14 +230,20 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			// Full phrase match
 			if (value.includes(' ')) {
 
-				if (description.includes(value)) markMatch(10);
+				if (description.includes(value)) {
+					markMatch(10);
+					matchTypes.add('description');
+				}
 
 			// Single word match
 			} else {
 
 				let words = description.split(' ');
 				for (let i = 0; i < words.length; i++) {
-					if (words[i].startsWith(value)) markMatch(1);
+					if (words[i].startsWith(value)) {
+						markMatch(1);
+						matchTypes.add('description');
+					}
 				}
 
 			}
@@ -272,6 +284,18 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			errorMessage.setAttribute('hidden', '');
 			list.removeAttribute('hidden');
 		}
+
+	}
+
+	if (matches > 0) {
+
+		emitEvent({
+			target: document,
+			name: 'searchMatchFound',
+			detail: {
+				matchTypes,
+			}
+		})
 
 	}
 
@@ -348,7 +372,6 @@ let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
 
 		if (sortType === 'date') {
 			return new Date(b.date) - new Date(a.date);
-			// TODO: Show date when sorting by date
 		}
 
 		if (sortType === 'relevance') {
@@ -580,6 +603,13 @@ let filter = (() => {
 				operation: statusOperation,
 			});
 		}
+		emitEvent({
+			target: document,
+			name: 'filterChange',
+			detail: {
+				activeFilters: filters,
+			}
+		})
 	}
 
 	/**
@@ -605,9 +635,16 @@ let filter = (() => {
 		let tagListId = form.getAttribute('data-tag-list');
 		let tagList = document.querySelector(`#${tagListId}`);
 		if (tagList) {
-			let items = tagList.querySelectorAll('li');
+			let items = tagList.querySelectorAll(':scope > li');
 			for (let item of items) item.remove();
 		}
+		emitEvent({
+			target: document,
+			name: 'filterChange',
+			detail: {
+				activeFilters: filters,
+			}
+		})
 	}
 
 	/**
@@ -637,6 +674,13 @@ let filter = (() => {
 			});
 		}
 		removeTag(tag);
+		emitEvent({
+			target: document,
+			name: 'filterChange',
+			detail: {
+				activeFilters: filters,
+			}
+		})
 	}
 
 	/**
@@ -700,7 +744,9 @@ let search = (() => {
 		}
 	};
 
-	// TODO: Keydown on search button, prevent.default
+	let onKey = (event) => {
+		if (event.key === 'Enter') event.preventDefault();
+	}
 
 	/**
 	 * Initializes search forms
@@ -711,6 +757,7 @@ let search = (() => {
 			let noValueBehaviour = form.getAttribute('data-no-value-behaviour') ?? null;
 			formOptions.set(form, { noValueBehaviour });
 			form.addEventListener('input', onInput);
+			form.addEventListener('keydown', onKey);
 		}
 	};
 
@@ -722,6 +769,7 @@ let search = (() => {
 		for (let form of forms) {
 			formOptions.delete(form);
 			form.removeEventListener('input', onInput);
+			form.removeEventListener('keydown', onKey);
 		}
 	};
 
@@ -744,7 +792,7 @@ let sort = (() => {
 		let sortType = target.value;
 		if (sortType !== 'date' && sortType !== 'title') return;
 		let items = [];
-		for (const item of list.querySelectorAll('li')) {
+		for (const item of list.querySelectorAll(':scope > li')) {
 			let title = item.getAttribute('data-title');
 			let date = item.getAttribute('data-date-added');
 			items.push({
@@ -755,6 +803,9 @@ let sort = (() => {
 		}
 		sortList({ sortType, list, items });
 		updateToggles(target);
+		setPreferences({
+			resourcePageSort: sortType,
+		})
 	}
 
 	/**
@@ -797,6 +848,9 @@ let layout = (() => {
 		if (layoutType !== 'compact' && layoutType !== 'detailed') return;
 		list.setAttribute('data-layout', layoutType);
 		updateToggles(target);
+		setPreferences({
+			resourcePageLayout: layoutType,
+		})
 	}
 
 	/**

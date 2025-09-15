@@ -307,6 +307,21 @@ let joinWithAnd = function (arr) {
 // Misc
 //
 
+/**
+ * Emit a custom event
+ * @param {Element} target - Element to dispatch the event from
+ * @param {string} name - Name of the event
+ * @param {Object} [detail={}] - Extra data passed with the event
+ */
+let emitEvent = ({target, name, detail = {}}) => {
+  let event = new CustomEvent(name, {
+    detail,
+    bubbles: true,   // let the event bubble up through the DOM
+    composed: true   // allow crossing shadow DOM boundaries if needed
+  });
+  target.dispatchEvent(event);
+};
+
 let getResourcePath = (resource) => {
 
 	let { slug, type, external } = resource;
@@ -481,6 +496,7 @@ let stopVideo = (elem) => {
 //
 
 export { 
+	emitEvent,
 	findHighestValueByKey, 
 	findIndexByKey, 
 	findObjectByKey, 

@@ -9,6 +9,8 @@ declare global {
 	type Preferences = {
 		schemaVersion: string,
 		theme: string,
+		resourcePageSort: string,
+		resourcePageLayout: string,
 	}
 
 	type State = {

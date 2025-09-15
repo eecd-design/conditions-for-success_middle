@@ -141,7 +141,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 		let list = target.closest('form').querySelector('.assessor-list');
 		if (!item) return;
 		item.remove();
-		let items = list.querySelectorAll('li');
+		let items = list.querySelectorAll(':scope > li');
 		if (items.length === 0) list.setAttribute('hidden', '');
 	};
 
@@ -163,7 +163,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 		if (!Array.isArray(assessors) || !dialog) return;
 
 		let list = dialog.querySelector('.assessor-list');
-		let items = list?.querySelectorAll('li');
+		let items = list?.querySelectorAll(':scope > li');
 
 		// Clear previous items
 		for (let item of items) item.remove();
