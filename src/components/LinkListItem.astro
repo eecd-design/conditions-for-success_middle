@@ -121,20 +121,21 @@ if (category !== 'resource') {
 			<span class="label" data-restrict-content="mixed">
 				{category !== 'resource' ? `${toTitleCase(category)} ${tag}` : `${toTitleCase(type)} Resource`}
 			</span>
-			<span class="title">{title}</span>
-			<!-- TODO: Add tagged considerations, components, indicators -->
-			{ tags && (
-				<ul class="tag-list" data-restrict-layout="detailed" data-restrict-content="resources">
-					{ tags.map((tag) => (
+			<span class="title">
+				{title}
+				{ tags && (
+					<ul class="tags-list" data-restrict-content="resources">
+						{ tags.map((tag) => (
 
-						<li class="tag" data-theme={tag.colour} data-vibrancy="vivid">
-							{tag.tag}
-						</li>
-						
-					))}
-				</ul>
-				)
-			}
+							<li class="tag" data-theme={tag.colour} data-vibrancy="vivid">
+								{tag.tag}
+							</li>
+							
+						))}
+					</ul>
+					)
+				}
+			</span>
 			{ date && (
 				<span
 					class="date"
@@ -160,27 +161,27 @@ if (category !== 'resource') {
 
 <style is:global>
 
-.link-list[data-style="divided"] {
+.links-list[data-style="divided"] {
 	gap: 0;
 }
 
-.link-list[data-style="divided"]>li {
+.links-list[data-style="divided"]>li {
 	padding: 0.5rem 0;
 }
 
-.link-list[data-style="divided"]>li:first-child {
+.links-list[data-style="divided"]>li:first-child {
 	padding-top: 0 !important;
 }
 
-.link-list[data-style="divided"]>li:last-child {
+.links-list[data-style="divided"]>li:last-child {
 	padding-bottom: 0 !important;
 }
 
-.link-list[data-style="divided"]>li:has(+ li:not([hidden])) {
+.links-list[data-style="divided"]>li:has(+ li:not([hidden])) {
 	border-bottom: 1px solid var(--colour-border-neutral-subtle);
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) {
 	padding: 0.75rem 1rem 0.75rem 0.75rem;
 	border-radius: var(--border-radius-normal);
 	gap: 0.75rem;
@@ -188,24 +189,24 @@ if (category !== 'resource') {
 	width: 100%;
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
 	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
 }
 
 /* SEPARATOR */
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .separator {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .separator {
 	align-self: stretch;
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .separator {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .separator {
 	background-color: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 }
 
 
 /* TEXT CONTAINER */
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container {
 	display: flex;
 	flex-flow: column;
 	gap: 0.5rem;
@@ -213,24 +214,29 @@ if (category !== 'resource') {
 
 /* TITLE */
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .title {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .title {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: start;
+	gap: 0.5rem;
 	font-size: 1rem;
 }
 
 /* DATE */
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .date {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .date {
 	font-size: 0.75rem;
-	color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+	font-weight: 500;
+	color: var(--colour-ui-neutral-subtle);
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .date {
-	color: var(--colour-ui-accent, var(--colour-ui-neutral));
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .date {
+	color: var(--colour-ui-neutral);
 }
 
 /* TAGS */
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container ul.tag-list {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .tags-list {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: start;
@@ -241,7 +247,7 @@ if (category !== 'resource') {
 	margin: 0;
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container ul.tag-list li {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .tags-list li {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -256,43 +262,43 @@ if (category !== 'resource') {
 	transition: all var(--transition-linear-fast);
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container ul.tag-list li {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .tags-list li {
 	background-color: var(--colour-fill-neutral-mid);
 	color: var(--colour-ui-reverse);
 }
 
 /* DESCRIPTION */
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .description {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .description {
 	font-size: 0.875rem;
-	font-weight: 400;
+	font-weight: 500;
 	color: var(--colour-ui-neutral-subtle);
 	line-height: 1.4;
 	transition: max-height var(--transition-ease-medium);
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .description {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .description {
 	color: var(--colour-ui-neutral);
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
 	--label-size: 0.875rem;
 	--label-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .label {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .label {
 	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon-and-label-container {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon-and-label-container {
 	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) :is(.icon.destination, .icon.type) {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) :is(.icon.destination, .icon.type) {
 	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 }
 
-.link-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) span.highlight {
+.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) span.highlight {
 	--highlight-background-colour: transparent;
 	--highlight-ui-colour: var(--colour-ui-neutral);
 }

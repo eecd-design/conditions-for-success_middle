@@ -53,7 +53,7 @@ let components = allComponents.filter((component => component.data.indicator ===
 	<aside class="on-page-nav-container">
 		<nav class="on-page">
 			<h2 class="heading">On this page</h2>
-			<ul class="link-list">
+			<ul class="links-list">
 				{components.map((component) => (
 					<li>
 						<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
@@ -76,7 +76,7 @@ let components = allComponents.filter((component => component.data.indicator ===
 
 		{description && <description.Content />}
 
-		<ul class="link-list">
+		<ul class="links-list">
 			{components.map((component) => (
 
 				<li>

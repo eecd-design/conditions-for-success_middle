@@ -71,7 +71,7 @@ for (let resource of allResources) {
 		Search
 	</h2>
 
-	<form data-no-value-behaviour="hidden" data-list="site-content-list">
+	<form data-no-value-behaviour="hidden" data-list="site-contents-list">
 
 		<fieldset class="search">
 			<p
@@ -87,7 +87,7 @@ for (let resource of allResources) {
 					type="text"
 					placeholder="Enter search term..."
 					aria-labelledby="search-dialog_heading"
-					aria-describedby="search-dialog_search-input_help, site-content-list_error"
+					aria-describedby="search-dialog_search-input_help, site-contents-list_error"
 					autofocus
 				/>
 				<IconSearch />
@@ -98,14 +98,14 @@ for (let resource of allResources) {
 
 	<div class="list-container">
 
-		<p id="site-content-list_error" class="error-status" role="status" hidden>
+		<p id="site-contents-list_error" class="error-status" role="status" hidden>
 			<IconWarningSmall />
 			<span
 				>There are no results that match the search term.</span
 			>
 		</p>
 
-		<ul id="site-content-list" class="link-list" data-style="divided" data-content="mixed" hidden>
+		<ul id="site-contents-list" class="links-list" data-style="divided" data-content="mixed" hidden>
 			{searchList.map((item) => (
 				<LinkListItem itemData={item}/>
 			))}

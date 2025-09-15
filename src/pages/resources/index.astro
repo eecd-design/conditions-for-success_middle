@@ -57,7 +57,7 @@ let types = [
 
 	<aside class="filters-container">
 
-		<form id="resources-list-secondary-controls" class="list-secondary-controls" data-no-value-behaviour="shown" data-list="resources-list" data-tag-list="active-filters-list" data-sort-control="resources-list-primary-controls">
+		<form id="resources-list-secondary-controls" class="list-secondary-controls" data-no-value-behaviour="shown" data-list="resources-list" data-tags-list="active-filters-list" data-sort-control="resources-list-primary-controls">
 			
 			<div class="heading-group">
 				<h2 class="heading">
@@ -163,7 +163,7 @@ let types = [
 
 		<h1>Resources</h1>
 
-		<ul id="active-filters-list" class="form-list">
+		<ul id="active-filters-list" class="field-values-list">
 			<template>
 				<li class="filter-tag" data-group="" data-value="" data-status-field="">
 				<span class="group"></span>
@@ -185,7 +185,7 @@ let types = [
 						type="text"
 						placeholder="Search these resources..."
 						aria-label="Search Resources"
-						aria-describedby="resource-list_error" 
+						aria-describedby="resources-list_error" 
 						autofocus
 					/>
 					<IconSearch/>
@@ -245,14 +245,14 @@ let types = [
 
 		<div class="list-container">
 
-			<p id="resource-list_error" class="error-status" role="status" hidden>
+			<p id="resources-list_error" class="error-status" role="status" hidden>
 				<IconWarning aria-hidden="true" />
 				<span
 					>There are no results that match the search term.</span
 				>
 			</p>
 
-			<ul id="resources-list" class="link-list" data-style="divided" data-layout="compact" data-content="resources">
+			<ul id="resources-list" class="links-list" data-style="divided" data-layout="compact" data-content="resources">
 				{allResources.map((resource) => {
 					let data = JSON.parse(JSON.stringify(resource.data));
 					data.category = 'resource';
@@ -568,16 +568,6 @@ import { filter, search, sort, layout } from "src/utilities/list";
 	//
 	// Inits & Event Listeners
 	//
-
-	document.addEventListener('filterChange', (event: CustomEvent) => {
-		let activeFilters = event.detail.activeFilters;
-		if (!activeFilters) return;
-		let forceGroups = ['indicators', 'components', 'considerations'];
-		let forceLayout = forceGroups.some((term) =>
-			Object.keys(activeFilters).includes(term)
-		);
-		toggleForcedLayout(forceLayout);
-	})
 
 	document.addEventListener('searchMatchFound', (event: CustomEvent) => {
 		let matchTypes = event.detail.matchTypes;

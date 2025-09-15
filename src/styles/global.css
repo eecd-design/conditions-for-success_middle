@@ -771,7 +771,7 @@ p {
 	margin: 1.5rem 0;
 }
 
-.link-list {
+.links-list {
 	display: flex;
 	flex-flow: column;
 	gap: 1rem;
@@ -896,15 +896,15 @@ main:not([data-assessor="false"]) [data-restrict-assessor="false"] {
 	display: none !important;
 }
 
-.link-list:not([data-layout="detailed"]) [data-restrict-layout="detailed"] {
+.links-list:not([data-layout="detailed"]) [data-restrict-layout="detailed"] {
 	display: none !important;
 }
 
-.link-list:not([data-content="resources"]) [data-restrict-content="resources"] {
+.links-list:not([data-content="resources"]) [data-restrict-content="resources"] {
 	display: none !important;
 }
 
-.link-list:not([data-content="mixed"]) [data-restrict-content="mixed"] {
+.links-list:not([data-content="mixed"]) [data-restrict-content="mixed"] {
 	display: none !important;
 }
 
@@ -1230,7 +1230,7 @@ label.file-input-container input[type="file"] {
 
 /* CUSTOM VALUE LIST */
 
-ul.form-list {
+ul.field-values-list {
 	display: flex;
 	flex-flow: row wrap;
 	column-gap: 0.5rem;
@@ -1240,7 +1240,7 @@ ul.form-list {
 	margin: 1rem 0;
 }
 
-ul.form-list li {
+ul.field-values-list li {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
@@ -1254,17 +1254,17 @@ ul.form-list li {
 	transition: background-color var(--transition-linear-fast);
 }
 
-ul.form-list li:has(button.clear:is(:hover, :focus-visible)) {
+ul.field-values-list li:has(button.clear:is(:hover, :focus-visible)) {
 	background-color: var(--colour-fill-neutral-subtle-highlight);
 }
 
-ul.form-list li .group {
+ul.field-values-list li .group {
 	padding-right: 0.5rem;
 	border-right: 1px solid var(--colour-border-neutral-subtle);
 	font-weight: 700;
 }
 
-ul.form-list li .title {
+ul.field-values-list li .title {
 	font-weight: 500;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -1272,7 +1272,7 @@ ul.form-list li .title {
 	max-width: 8rem;
 }
 
-ul.form-list li button.clear {
+ul.field-values-list li button.clear {
 	--button-background-colour: var(--colour-fill-neutral-subtle);
 	--icon-size: 0.75rem;
 	--icon-colour: var(--colour-ui-neutral-subtle);
@@ -1283,7 +1283,7 @@ ul.form-list li button.clear {
 	border-left: 1px solid var(--colour-border-neutral-subtle);
 }
 
-ul.form-list li button.clear:is(:hover, :focus-visible) {
+ul.field-values-list li button.clear:is(:hover, :focus-visible) {
 	--button-background-colour: var(--colour-fill-neutral-bold);
 	--icon-colour: var(--colour-ui-reverse);
 	border-color: var(--button-background-colour);
@@ -1837,9 +1837,10 @@ summary {
 	list-style: none;
 	height: 2.5rem;
 	margin: 0;
-	padding: 0 1rem 0 0;
+	padding: 0;
 	background-color: transparent;
 	border-radius: var(--border-radius-normal);
+	position: relative;
 	cursor: pointer;
 	user-select: none;
 	font-weight: 700;
@@ -1866,10 +1867,24 @@ details[open] summary .icon {
 	rotate: x 180deg;
 }
 
+summary::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    height: 1px;
+    width: 100%;
+    background-color: transparent;
+	transition: background-color var(--transition-linear-fast);
+}
+
+details[open] summary::after {
+	background-color: var(--colour-border-accent-subtle);
+}
+
 details .contents {
-	padding: 0.5rem 0 0;
-	margin: 0.5rem 0 0;
-	border-top: 1px solid var(--colour-border-accent-subtle);
+	margin: 1rem 0 0;
 }
 
 

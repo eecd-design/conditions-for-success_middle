@@ -19,7 +19,7 @@ let path = url.pathname;
 
 	<div class="site-masthead">
 		<nav class="global">
-			<ul class="menu">
+			<ul class="nav-links-list">
 				<li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
 				<li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
 				<li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
@@ -80,7 +80,7 @@ let path = url.pathname;
 			<div class="quick-links-container callout" data-style="solid" data-intensity="bold">
 
 				<h2>I want to...</h2>
-				<ul class="favourite-shortcuts">
+				<ul class="shortcuts-list favourite">
 					<li>
 						<a href="#the-middle-program-block" data-style-as="button" data-style="solid" data-size="large">
 							<div class="icon-and-label-container">
@@ -115,7 +115,7 @@ let path = url.pathname;
 				</ul>
 
 				<h2>Last time, I was working on...</h2>
-				<ul class="recent-shortcuts">
+				<ul class="shortcuts-list recent">
 				</ul>
 
 			</div>
@@ -169,7 +169,7 @@ let path = url.pathname;
 		flex-grow: 1;
 	}
 
-	header nav.global .menu {
+	header nav.global .nav-links-list {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
@@ -190,7 +190,7 @@ let path = url.pathname;
 		color: var(--colour-ui-reverse);
 	}
 
-	header nav.global .menu :not(.home) a,
+	header nav.global .nav-links-list :not(.home) a,
 	header .global-controls button {
 		display: flex;
 		align-items: center;
@@ -202,14 +202,14 @@ let path = url.pathname;
 		color: var(--colour-ui-reverse);
 	}
 
-	header nav.global .menu :not(.home) a:is(:hover, :focus-visible),
+	header nav.global .nav-links-list :not(.home) a:is(:hover, :focus-visible),
 	header .global-controls button:is(:hover, :focus-visible) {
 		background-color: var(--colour-fill-neutral-subtle);
 		color: var(--colour-ui-neutral);
 	}
 	
-	header nav.global .menu :not(.home) a.active,
-	header nav.global .menu :not(.home) a.active:is(:hover, :focus-visible) {
+	header nav.global .nav-links-list :not(.home) a.active,
+	header nav.global .nav-links-list :not(.home) a.active:is(:hover, :focus-visible) {
 		background-color: transparent;
 		outline: 2px solid var(--colour-border-neutral-subtle);
 		outline-offset: -1px;
@@ -361,7 +361,7 @@ let updateLaunchpad = (data) => {
 
 	// Update the recent page button
 
-	let recentShortcutsList = launchpad.querySelector('.recent-shortcuts');
+	let recentShortcutsList = launchpad.querySelector('.shortcuts-list.recent');
 
 	if (lastVisitedPage.path !== '/') {
 

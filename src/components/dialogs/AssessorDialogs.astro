@@ -39,7 +39,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 					</span>
 				</button>
 			</div>
-			<ul class="assessor-list form-list" data-field="assessors" hidden>
+			<ul class="assessors-list field-values-list" data-field="assessors" hidden>
 				<template>
 					<li>
 						<!-- <span class="group">Assessor</span> -->
@@ -113,7 +113,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 	let createAssessorListItem = (name) => {
 		if (!name || name === undefined) return;
 
-		let template = dialog.querySelector('.assessor-list template') as HTMLTemplateElement;
+		let template = dialog.querySelector('.assessors-list template') as HTMLTemplateElement;
 
 		if (!template) return;
 
@@ -130,7 +130,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 		let input = target.closest('.input-container').querySelector('input');
 		let item = createAssessorListItem(input.value);
 		if (!item) return;
-		let list = target.closest('form').querySelector('.assessor-list');
+		let list = target.closest('form').querySelector('.assessors-list');
 		list.append(item);
 		list.removeAttribute('hidden');
 		input.value = '';
@@ -138,7 +138,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 
 	let removeAssessorFromList = (target: HTMLButtonElement) => {
 		let item = target.closest('li');
-		let list = target.closest('form').querySelector('.assessor-list');
+		let list = target.closest('form').querySelector('.assessors-list');
 		if (!item) return;
 		item.remove();
 		let items = list.querySelectorAll(':scope > li');
@@ -162,7 +162,7 @@ import IconXmark12 from 'src/components/icons/IconXmark_12.astro';
 	let updateAssessorList = ({ dialog, assessors }) => {
 		if (!Array.isArray(assessors) || !dialog) return;
 
-		let list = dialog.querySelector('.assessor-list');
+		let list = dialog.querySelector('.assessors-list');
 		let items = list?.querySelectorAll(':scope > li');
 
 		// Clear previous items

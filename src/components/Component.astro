@@ -253,7 +253,7 @@ let phases = [
 																{/* TODO: Investigate style alternative to border separting button from list. Marcia brought this up. Will need an example with multiple resources to see how that looks. */}
 
 																<div class="contents">
-																	<ul class="link-list" data-style="divided" data-layout="detailed" data-content="resources">
+																	<ul class="resources-list links-list" data-style="divided" data-layout="detailed" data-content="resources">
 																		{consideration.resources.map((resource) => {
 																			let data = JSON.parse(JSON.stringify(resource.data));
 																			data.category = 'resource';
@@ -496,8 +496,12 @@ let phases = [
 		margin: 0.75rem 0 0;
 	}
 
-	.considerations-list .resources li .text-container .date  {
-		display: none;
+	.considerations-list .resources .resources-list .text-container .date  {
+		display: none !important;
+	}
+
+	.considerations-list .resources .resources-list .text-container .tags-list  {
+		display: none !important;
 	}
 
 

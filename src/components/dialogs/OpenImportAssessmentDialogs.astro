@@ -65,7 +65,7 @@ import IconCheckmark from '../icons/IconCheckmark_12.astro';
 			<IconWarningSmall slot={'icon'} />
 		</Toast>
 
-		<ul class="saved-assessments elem-group" data-fit="compact" data-columns="2">
+		<ul class="saved-assessments-list elem-group" data-fit="compact" data-columns="2">
 			<template>
 				<li class="card">
 					<div class="banner" data-theme="blue" data-vibrancy="vivid" data-field="banner" hidden></div>
@@ -256,11 +256,11 @@ import IconCheckmark from '../icons/IconCheckmark_12.astro';
 		margin-bottom: 0 !important;
 	}
 
-	#open-assessment-dialog .saved-assessments {
+	#open-assessment-dialog .saved-assessments-list {
 		--group-margin: 0;
 	}
 
-	#open-assessment-dialog .saved-assessments .card .heading {
+	#open-assessment-dialog .saved-assessments-list .card .heading {
 		--icon-colour: var(--colour-ui-neutral-subtle);
 	}
 
@@ -328,7 +328,7 @@ import IconCheckmark from '../icons/IconCheckmark_12.astro';
 		if (!assessment || assessment === undefined) return;
 		let { dateExported, status, id, unexportedChanges } = assessment;
 
-		let template = document.querySelector('#open-assessment-dialog .saved-assessments template') as HTMLTemplateElement;
+		let template = document.querySelector('#open-assessment-dialog .saved-assessments-list template') as HTMLTemplateElement;
 
 		if (!template) return;
 
@@ -447,7 +447,7 @@ import IconCheckmark from '../icons/IconCheckmark_12.astro';
 	 */
 	let updateOpenAssessmentDialog = (data: UserData) => {
 		let dialog = document.querySelector('#open-assessment-dialog');
-		let savedAssessmentList = dialog?.querySelector('ul.saved-assessments');
+		let savedAssessmentList = dialog?.querySelector('ul.saved-assessments-list');
 		let savedAssessmentListItems = savedAssessmentList?.querySelectorAll('li');
 		let savedAssessmentsSection = savedAssessmentList.closest('section');
 		let hr = dialog.querySelector('hr.group');

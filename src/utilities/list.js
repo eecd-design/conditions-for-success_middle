@@ -585,7 +585,7 @@ let filter = (() => {
 		let statusOperation;
 		if (target.checked) {
 			statusOperation = 'add';
-			let tagListId = form.getAttribute('data-tag-list');
+			let tagListId = form.getAttribute('data-tags-list');
 			let tagList = document.querySelector(`#${tagListId}`);
 			if (tagList) {
 				let tag = createTag(target, tagList);
@@ -632,7 +632,7 @@ let filter = (() => {
 				operation: 'reset',
 			})
 		}
-		let tagListId = form.getAttribute('data-tag-list');
+		let tagListId = form.getAttribute('data-tags-list');
 		let tagList = document.querySelector(`#${tagListId}`);
 		if (tagList) {
 			let items = tagList.querySelectorAll(':scope > li');
