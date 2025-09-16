@@ -1,10 +1,11 @@
 title: Problematic Expectations
 dateAdded: 2025-05-18
-description: ''
 type: video
-topics: []
+topics:
+  - test
 external:
   discriminant: false
+  value: {}
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
