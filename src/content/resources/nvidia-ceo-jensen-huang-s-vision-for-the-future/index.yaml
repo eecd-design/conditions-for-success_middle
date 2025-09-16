@@ -1,4 +1,4 @@
-title: NVIDIA CEO Jensen Huang's Vision for the Future T
+title: NVIDIA CEO Jensen Huang's Vision for the Future
 dateAdded: 2025-08-28
 type: video
 description: >-
@@ -6,7 +6,8 @@ description: >-
   most valuable companies. That's because, beginning in the 90s, they led a
   fundamental shift in how computers work, now unleashing the current explosion
   of what’s possible with technology.
-topics: []
+topics:
+  - test
 external:
   discriminant: true
   value:
