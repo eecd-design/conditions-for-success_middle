@@ -553,7 +553,6 @@ let importAssessment = (file) => {
 let findAssessmentConflicts = ({ importedAssessment, localAssessments }) => {
 	let idConflict = false;
 	let schoolYearConflict = false;
-
 	for (let assessment of localAssessments) {
 		if (assessment.id === importedAssessment.id) {
 			idConflict = assessment;

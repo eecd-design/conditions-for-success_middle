@@ -1,3 +1,4 @@
+import { findAssessmentConflicts, getUserData } from "src/stores/userDataStore";
 import { toCamelCase } from "./helpers";
 
 let getFormValues = (form) => {
@@ -21,7 +22,7 @@ let getFormValues = (form) => {
 			if ((field).checked) {
 				result[name] = field.value;
 			}
-		// 2. Handle checkboxes
+			// 2. Handle checkboxes
 		} else if (type === 'checkbox') {
 			// Create an array to hold checkbox group values
 			if (!result[name]) result[name] = [];
@@ -29,7 +30,7 @@ let getFormValues = (form) => {
 			if ((field).checked) {
 				result[name].push(field.value);
 			}
-		// 3. Handle text inputs and selects
+			// 3. Handle text inputs and selects
 		} else {
 			result[name] = field.value;
 		}
@@ -49,13 +50,14 @@ let getFormValues = (form) => {
 	return result;
 };
 
-let resetForm = ({form, resetType = 'soft'}) => {
+let resetForm = ({ form, resetType = 'soft' }) => {
 
 	// Soft reset: Restore fields to original value state
 	if (resetType === 'soft') {
 		form.reset();
+	} 
 	// Hard reset: Set all fields to blank
-	} else if (resetType === 'hard') {
+	else if (resetType === 'hard') {
 		for (let field of form.querySelectorAll('input, select')) {
 			if (field.type === 'checkbox' || field.type === 'radio') {
 				field.checked = false;
@@ -87,47 +89,86 @@ let resetForm = ({form, resetType = 'soft'}) => {
 	}
 };
 
-let validateField = ({field, touchedFormFields}) => {
-	// Prevent browser default validitiy popup
+let validateField = ({ field, form, touchedFormFields}) => {
+	// Clear previous custom validity
 	field.setCustomValidity('');
 
-	let errorStatus = document.getElementById(`${field.id}_error`);
-	if (!errorStatus) return;
+	let error = document.getElementById(`${field.id}_error`);
+	if (!error) return;
 
-	// If the field is valid, reset and hide error status
-	if (field.validity.valid) {
-		errorStatus.querySelector('span').textContent = '';
-		errorStatus.setAttribute('hidden', '');
-		field.removeAttribute('aria-invalid');
+	// Set a custom error message
+	let message = '';
 
-	// Otherwise,
-	} else {
+	if (field.validity.valueMissing) {
+		message = 'This field is required.';
+	} else if (field.name === 'reportingYear' && field.validity.patternMismatch) {
+		message = 'Year must be 4 digits.';
+	}
 
-		// Set a custom error message
-		let message = '';
-		if (field.validity.valueMissing) {
-			message = 'This field is required.';
-		} else if (field.name === 'reportingYear' && field.validity.patternMismatch) {
-			message = 'Year must be 4 digits.';
-		}
+	// Cross-field check for reporting year
+	if (field.name === 'reportingYear') {
 
-		// If the field was interacted with, show the error status and flag the field
-		if (touchedFormFields.has(field)) {
-			field.setCustomValidity(message);
-			errorStatus.querySelector('span').textContent = message;
-			errorStatus.removeAttribute('hidden');
-			field.setAttribute('aria-invalid', 'true');
+		let schoolField = form.querySelector('select[name="school"]');
+		
+        // If school is empty, skip conflict check
+        if (!schoolField.value) {
+            // Reset error if no school is selected
+            field.setCustomValidity('');
+            error.querySelector('span').textContent = '';
+            error.setAttribute('hidden', '');
+            field.removeAttribute('aria-invalid');
+            return;
+        }
+
+		let userData = getUserData();
+		let schoolYearConflict = userData.assessments.some(a =>
+			a.school === schoolField.value && a.reportingYear === field.value
+		);
+		if (schoolYearConflict) {
+			message = 'There is already an assessment saved to the browser for that school and year.';
 		}
 	}
+
+	// If the field was interacted with, show the error status and flag the field
+	if (touchedFormFields.has(field)) {
+		if (message) {
+			field.setCustomValidity(message);
+			error.querySelector('span').textContent = message;
+			error.removeAttribute('hidden');
+			field.setAttribute('aria-invalid', 'true');
+		} else {
+			field.setCustomValidity('');
+			error.querySelector('span').textContent = '';
+			error.setAttribute('hidden', '');
+			field.removeAttribute('aria-invalid');
+		}
+	}
+
+	// If school field changes, reset reportingYear error
+    if (field.name === 'school') {
+
+        let reportingYearField = form.querySelector('input[name="reportingYear"]');
+
+        if (reportingYearField.value) {
+            let reportingYearError = document.getElementById(`${reportingYearField.id}_error`);
+            reportingYearField.setCustomValidity('');
+			reportingYearError.querySelector('span').textContent = '';
+			reportingYearError.setAttribute('hidden', '');
+            reportingYearField.removeAttribute('aria-invalid');
+        }
+    }
+
 };
 
-let validateForm = ({form, touchedFormFields}) => {
+let validateForm = ({ form, touchedFormFields }) => {
 	let firstInvalid = null;
 
 	// Validate every field in the form
 	let fields = form.querySelectorAll('input[required], select[required]');
 	for (let field of fields) {
-		validateField({field, touchedFormFields});
+
+		validateField({ field, form, touchedFormFields });
+
 		// Store the first invalid field
 		if (!field.validity.valid && !firstInvalid) {
 			firstInvalid = field;

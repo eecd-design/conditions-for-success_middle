@@ -8,230 +8,99 @@ import Toast from 'src/components/Toast.astro';
 import IconCheckmark from '../icons/IconCheckmark_12.astro';
 
 let schoolList = {
-	east: [
-		'Alternative Pathways to Graduation',
-		'Arnold H. McLeod School',
-		'Beaverbrook School',
-		'Bernice MacNaughton High School',
-		'Bessborough School',
-		'Birchmount School',
-		'Caledonia Regional High School',
-		'Claude D. Taylor School',
-		'Dorchester Consolidated School',
-		'Edith Cavell School',
-		'Evergreen Park School',
-		'Forest Glen School',
-		'Frank L. Bowser School',
-		'Harrison Trimble High School',
-		'Havelock School',
-		'Hillsborough Elementary School',
-		'Lewisville Middle School',
-		'Lou MacNarin School',
-		'Magnetic Hill School',
-		'Maplehurst Middle School',
-		'Marshview Middle School',
-		'Moncton High School',
-		'Mountain View School',
-		'Northrop Frye School',
-		'Petitcodiac Regional School',
-		'Port Elgin Regional School',
-		'Queen Elizabeth School',
-		'Riverside Consolidated School',
-		'Riverview East School',
-		'Riverview High School',
-		'Riverview Middle School',
-		'Salem Elementary School',
-		'Salisbury Elementary School',
-		'Salisbury Regional School',
-		'Shediac Cape School',
-		'Sunny Brae Middle School',
-		'Tantramar Regional High School',
-		'Wabanaki School',
-		'West Riverview School',
-	],
-	north: [
-		'Bathurst High School',
-		'Bathurst Transition Center',
-		'Bengals II',
-		'Blackville School',
-		'Bonar Law Memorial School',
-		'Campbellton Learning Center',
-		'Campbellton Middle School',
-		'Dalhousie Learning Center',
-		'Dalhousie Regional High School',
-		'Dr. Losier Middle School',
-		'Eleanor W. Graham Middle School',
-		'Gretna Green School',
-		'Harcourt School',
-		'Jacquet River School',
-		'James M. Hill Memorial High School',
-		'Janeville Elementary School',
-		'King Street Elementary School',
-		'L.E. Reinsborough School',
-		'Lord Beaverbrook School',
-		'Max Aitken Academy',
-		'Millerton Elementary & Junior High School',
-		'Miramichi Rural School',
-		'Miramichi Valley High School',
-		'Napan Elementary School',
-		'Nelson Rural School',
-		'North & South Esk Elementary School',
-		'North & South Esk Regional High School',
-		'Parkwood Heights Elementary School',
-		'Pulamoo II',
-		'Rexton Elementary School',
-		'Sugarloaf Senior High School',
-		'Superior Middle School',
-		'Tabusintac Community School',
-		'Terry Fox Elementary School',
-		'Tommies II',
-	],
-	south: [
-		'Apohaqui Elementary School',
-		'Back Bay Elementary School',
-		'Barnhill Memorial School',
-		'Bayside Middle School',
-		'Bayview School',
-		'Beaconsfield Middle School',
-		'Belleisle Elementary School',
-		'Belleisle Regional High School',
-		'Blacks Harbour School',
-		'Campobello Island Consolidated School',
-		'Centennial School',
-		'Champlain Heights School',
-		'Chris Saunders Memorial Elementary School',
-		'Compass Education Support Program-Saint John',
-		'Compass Education Support Program-Sussex',
-		'Deer Island Community School',
-		'Dr. A. T. Leatherbarrow Primary School',
-		'Fairvale Elementary School',
-		'Forest Hills School',
-		'Fundy Middle and High School',
-		'Fundy Shores School',
-		'Glen Falls School',
-		'Grand Bay Primary School',
-		'Grand Manan Community School',
-		'Hammond River Valley Elementary School',
-		'Hampton Elementary School',
-		'Hampton High School',
-		'Hampton Middle School',
-		'Harbour View High School',
-		'Harry Miller Middle School',
-		'Hazen-White-St. Francis School',
-		'Inglewood School',
-		'Island View School',
-		'Kennebecasis Park Elementary School',
-		'Kennebecasis Valley High School',
-		'Lakefield Elementary School',
-		'Lakewood Heights School',
-		'Lawrence Station Elementary School',
-		'Loch Lomond School',
-		'M. Gerald Teed Memorial School',
-		'Macdonald Consolidated School',
-		'Millidgeville North School',
-		'Milltown Elementary School',
-		'Norton Elementary School',
-		'Prince Charles School',
-		'Princess Elizabeth School',
-		'Quispamsis Elementary School',
-		'Quispamsis Middle School',
-		'River Valley Middle School',
-		'Rothesay Elementary School',
-		'Rothesay High School',
-		'Rothesay Park School',
-		'Saint John High School',
-		'Saint Rose School',
-		'Seaside Park Elementary School',
-		'Simonds High School',
-		'Sir James Dunn Academy',
-		'St. George Elementary School',
-		'St. John the Baptist/King Edward School',
-		"St. Malachy's Memorial High School",
-		'St. Martins School',
-		'St. Stephen Elementary School',
-		'St. Stephen High School',
-		'St. Stephen Middle School',
-		'Sussex Corner Elementary School',
-		'Sussex Elementary School',
-		'Sussex Middle School',
-		'Sussex Regional High School',
-		'Vincent Massey Elementary School',
-		'Westfield School',
-		'White Head Elementary School',
-	],
-	west: [
-		'Andover Elementary School',
-		'Assiniboine Avenue Elementary School',
-		'Barkers Point Elementary School',
-		'Bath Community School',
-		'Bliss Carman Middle School',
-		'Bristol Elementary School',
-		'Burton Elementary School',
-		'Cambridge-Narrows Community School',
-		'Canterbury High School',
-		'Carleton North High School',
-		'Central New Brunswick Academy',
-		'Centreville Community School',
-		'Chipman Elementary School',
-		'Chipman Forest Avenue School',
-		'Connaught Street School',
-		'Cuffman Street Elementary',
-		'Devon Middle School',
-		'Doaktown Elementary School',
-		'Donald Fraser Memorial School',
-		'Florenceville Elementary School',
-		'Florenceville Middle School',
-		'Forest Hill Elementary School',
-		'Fredericton Education Centre (Enterprise Centre)',
-		'Fredericton High School',
-		'Gagetown School',
-		'Garden Creek School',
-		'Geary Elementary Community School',
-		'George Street Middle School',
-		'Gesner Street Elementary School',
-		'Gibson-Neill Memorial Elementary School',
-		'Hanwell Park Academy',
-		'Harold Peterson Middle School',
-		'Hartland Community School',
-		'Harvey Elementary School',
-		'Harvey High School',
-		'Hubbard Elementary School',
-		'John Caldwell School',
-		'Keswick Ridge School',
-		'Keswick Valley Memorial School',
-		'Kingsclear Community School',
-		'Leo Hayes High School',
-		'Lincoln Elementary Community School',
-		'Liverpool Street Elementary School',
-		'McAdam Elementary School',
-		'McAdam High School',
-		'Meduxnekeag Consolidated School',
-		'Minto Elementary Middle School',
-		'Minto Memorial High School',
-		'Montgomery Street Elementary School',
-		'Nackawic Elementary School',
-		'Nackawic Middle School',
-		'Nackawic Senior High School',
-		'Nashwaak Valley School',
-		'Nashwaaksis Middle School',
-		'New Maryland Elementary School',
-		'Oromocto High School',
-		'Park Street Elementary School',
-		'Perth-Andover Middle School',
-		'Priestman Street Elementary School',
-		'Ridgeview Middle School',
-		'Royal Road Elementary School',
-		"Saint Mary's Academy",
-		'Southern Victoria High School',
-		'Stanley Consolidated School',
-		'Summerhill Street Elementary School',
-		'Sunbury West School',
-		'Sunset Acres Elementary School',
-		'Tobique Valley High School',
-		'Townsview School',
-		'Upper Miramichi Elementary School',
-		'Woodstock High School',
-	],
+    east: [
+        "Beaverbrook School",
+        "Birchmount School",
+        "Caledonia Regional High School",
+        "Dorchester Consolidated School",
+        "Lewisville Middle School",
+        "Magnetic Hill School",
+        "Maplehurst Middle School",
+        "Marshview Middle School",
+        "Petitcodiac Regional School",
+        "Port Elgin Regional School",
+        "Queen Elizabeth School",
+        "Riverview Middle School",
+        "Salisbury Regional School",
+        "Shediac Cape School",
+        "Sunny Brae Middle School",
+        "Wabanaki School"
+    ],
+    north: [
+        "Blackville School",
+        "Campbellton Middle School",
+        "Dalhousie Regional High School",
+        "Dr. Losier Middle School",
+        "Eleanor W. Graham Middle School",
+        "Gretna Green School",
+        "Jacquet River School",
+        "Max Aitken Academy",
+        "Millerton Elementary & Junior High School",
+        "Miramichi Rural School",
+        "Nelson Rural School",
+        "North & South Esk Elementary School",
+        "North & South Esk Regional High School",
+        "Pulamoo II",
+        "Superior Middle School",
+        "Tabusintac Community School"
+    ],
+    south: [
+        "Barnhill Memorial School",
+        "Bayside Middle School",
+        "Beaconsfield Middle School",
+        "Belleisle Regional High School",
+        "Campobello Island Consolidated School",
+        "Deer Island Community School",
+        "Forest Hills School",
+        "Fundy Middle and High School",
+        "Grand Manan Community School",
+        "Hampton Middle School",
+        "Harry Miller Middle School",
+        "Macdonald Consolidated School",
+        "Millidgeville North School",
+        "Prince Charles School",
+        "Princess Elizabeth School",
+        "Quispamsis Middle School",
+        "River Valley Middle School",
+        "Rothesay Park School",
+        "Sir James Dunn Academy",
+        "St. John the Baptist/King Edward School",
+        "St. Stephen Middle School",
+        "Sussex Middle School"
+    ],
+    west: [
+        "Bath Community School",
+        "Bliss Carman Middle School",
+        "Cambridge-Narrows Community School",
+        "Canterbury High School",
+        "Central New Brunswick Academy",
+        "Centreville Community School",
+        "Chipman Forest Avenue School",
+        "Devon Middle School",
+        "Florenceville Middle School",
+        "Fredericton Education Centre (Enterprise Centre)",
+        "Gagetown School",
+        "George Street Middle School",
+        "Hanwell Park Academy",
+        "Harold Peterson Middle School",
+        "Hartland Community School",
+        "Harvey High School",
+        "John Caldwell School",
+        "Keswick Ridge School",
+        "Keswick Valley Memorial School",
+        "McAdam High School",
+        "Meduxnekeag Consolidated School",
+        "Minto Elementary Middle School",
+        "Nackawic Middle School",
+        "Nashwaaksis Middle School",
+        "Perth-Andover Middle School",
+        "Ridgeview Middle School",
+        "Saint Mary's Academy",
+        "Stanley Consolidated School",
+        "Sunbury West School",
+        "Tobique Valley High School",
+        "Townsview School"
+    ]
 };
 // TODO: Filter school list to only include middle schools
 ---
@@ -505,7 +374,7 @@ let schoolList = {
 	// Imports
 	//
 
-	import { checkForChanges, createAssessment, updateChangeLog, getActiveAssessmentData, getAssessmentDate, getStatusColour, setAssessment, subscribe, getUserData } from 'src/stores/userDataStore';
+	import { checkForChanges, createAssessment, updateChangeLog, getActiveAssessmentData, getAssessmentDate, getStatusColour, setAssessment, subscribe, getUserData, findAssessmentConflicts } from 'src/stores/userDataStore';
 	import { getFormValues, resetForm, validateForm, validateField } from 'src/utilities/form';
 	import { formatDateAsString, joinWithAnd, toTitleCase } from 'src/utilities/helpers.js';
 	import { dialogControl } from 'src/utilities/dialog';
@@ -841,33 +710,58 @@ let schoolList = {
 			updateEditAssessmentPropertiesDialog(getUserData());
 		}
 	});
+	
+	editAssessmentPropertiesDialog.addEventListener('focusout', (event) => {
+		let target = event.target as any;
 
-	editAssessmentPropertiesDialog.addEventListener('input', (event) => {
-		let target = event.target as HTMLInputElement | HTMLSelectElement;
-		if (target.matches(`select[name="district"]`)) {
-			revealSchoolOptionGroup(target);
-		}
-		if (target.matches('input')) {
-			saveBtn.removeAttribute('disabled');
+		// Track touched form fields
+		if (target.matches('select, input')) {
+			touchedFormFields.add(target);
+			if (target.matches('input')) {
+				let form = target.closest('form');
+				validateField({
+					field: target,
+					form,
+					touchedFormFields,
+				})
+			}
 		}
 	});
 
-	editAssessmentPropertiesDialog.addEventListener('focusout', (event) => {
-		let target = event.target as any;
-		if (target.matches('select[required], input[required]')) {
-			touchedFormFields.add(target);
-			validateField({ field: target, touchedFormFields });
-			saveBtn.removeAttribute('disabled');
+	editAssessmentPropertiesDialog.addEventListener('input', (event) => {
+		let target = event.target as HTMLInputElement | HTMLSelectElement;
+
+		if (target.matches('input')) {
+			if (touchedFormFields.has(target)) {
+				let form = target.closest('form');
+				validateField({
+					field: target,
+					form,
+					touchedFormFields,
+				})
+			}
 		}
+
 	});
 
 	editAssessmentPropertiesDialog.addEventListener('change', async (event) => {
 		let target = event.target as any;
-		if (target.matches('select[required], input[required]')) {
-			touchedFormFields.add(target);
-			validateField({ field: target, touchedFormFields });
-			saveBtn.removeAttribute('disabled');
+
+		if (target.matches(`select[name="district"]`)) {
+			revealSchoolOptionGroup(target);
 		}
+
+		if (target.matches('select')) {
+			touchedFormFields.add(target);
+			let form = target.closest('form');
+			validateField({
+				field: target,
+				form,
+				touchedFormFields,
+			})
+		}
+
+		saveBtn.removeAttribute('disabled');
 	});
 
 	//
