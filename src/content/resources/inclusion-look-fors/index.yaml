@@ -6,7 +6,7 @@ external:
   discriminant: true
   value:
     url: >-
-      nbed.sharepoint.com/sites/Toolkit/Shared
+      https://nbed.sharepoint.com/sites/Toolkit/Shared
       Documents/Forms/AllItems.aspx?id=%2Fsites%2FToolkit%2FShared
       Documents%2FInclusion Look-fors%2Epdf&parent=%2Fsites%2FToolkit%2FShared
       Documents
