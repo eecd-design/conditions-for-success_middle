@@ -9,6 +9,7 @@ declare global {
 	type Preferences = {
 		schemaVersion: string,
 		theme: string,
+		reportIncludedIndicators: string[],
 		resourcePageSort: string,
 		resourcePageLayout: string,
 	}
@@ -16,6 +17,7 @@ declare global {
 	type State = {
 		schemaVersion: string,
 		activeAssessmentId: number;
+		activeReportId: number;
 		lastModifiedPage: Page;
 		lastVisitedPage: Page;
 		mode: string;
@@ -33,6 +35,7 @@ declare global {
 		dateCreated: number;
 		dateExported: number;
 		dateModified: number;
+		dateCompleted: number;
 		district: string;
 		id: number;
 		lastModifiedBy: string;

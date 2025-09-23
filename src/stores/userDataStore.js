@@ -26,19 +26,21 @@ let data = {
 	uiPreferences: {
 		resourcePageSort: 'date',
 		resourcePageLayout: 'compact',
+		reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
 		theme: 'light',
-		schemaVersion: '0.1',
+		schemaVersion: '0.2',
 	},
 	uiState: {
 		activeAssessmentId: null,
+		activeReportId: null,
 		lastModifiedPage: null,
 		lastVisitedPage: typeof window !== 'undefined' ? {
-			title: document.querySelector('h1').textContent,
+			title: document.querySelector('h1')?.textContent,
 			path: window.location.pathname
 		} : null,
 		mode: 'reading',
 		onboardingCompleted: false,
-		schemaVersion: '0.3',
+		schemaVersion: '0.4',
 	},
 	assessments: [],
 };
@@ -46,6 +48,8 @@ let data = {
 let subscribers = [];
 
 let importConflictData = null;
+
+let currentContinuumVersion = '1.2';
 
 
 //
@@ -81,6 +85,13 @@ let getUserData = () => {
  */
 let getActiveAssessmentData = () => {
 	return findObjectByKey(data.assessments, 'id', data.uiState.activeAssessmentId);
+};
+
+/**
+ * Get the active assessment data
+ */
+let getActiveReportData = () => {
+	return findObjectByKey(data.assessments, 'id', data.uiState.activeReportId);
 };
 
 /**
@@ -123,6 +134,8 @@ let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true 
 		}
 		return verbose ? 'Saved in browser. Export for backup.' : 0;
 	}
+
+	// TODO: Update so that it shows hours and then days
 
 	return verbose ? 'No changes since last export.' : 0;
 };
@@ -226,7 +239,8 @@ let createAssessment = (values) => {
 		}],
 		continuumCompletion: {},
 		considerationsEstablished: [],
-		continuumVersion: '1.0',
+		continuumVersion: currentContinuumVersion,
+		dateCompleted: null,
 		dateCreated: Date.now(),
 		dateExported: null,
 		dateModified: Date.now(),
@@ -236,7 +250,7 @@ let createAssessment = (values) => {
 		reportingYear,
 		school,
 		status: 'In Progress',
-		schemaVersion: '0.1',
+		schemaVersion: '0.2',
 		unexportedChanges: true,
 	};
 
@@ -275,19 +289,33 @@ let updateChangeLog = ({ assessment = getActiveAssessmentData(), assessor = getA
 
 }
 
-let updateContinuumCompletionEntry = async ({ count, completion, key, system, phase, operation }) => {
+let updateContinuumVersion = (assessment) => {
+	assessment.continuumVersion = currentContinuumVersion;	
+}
 
-	let entry = completion[key] ?? {
-		totalCount: 0,
+let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, scope, phase, operation }) => {
+
+	if (!count[scope]) return;
+
+	let entry = continuumCompletion[key] ?? {
+		count: 0,
 		initiatingCount: 0,
 		implementingCount: 0,
 		developingCount: 0,
 		sustainingCount: 0,
-		totalRatio: 0,
+
+		total: count[scope].total ?? 0,
+		initiatingTotal: count[scope].initiating ?? 0,
+		implementingTotal: count[scope].implementing ?? 0,
+		developingTotal: count[scope].developing ?? 0,
+		sustainingTotal: count[scope].sustaining ?? 0,
+
+		ratio: 0,
 		initiatingRatio: 0,
 		implementingRatio: 0,
 		developingRatio: 0,
 		sustainingRatio: 0,
+
 		phase: 'Initiating'
 	};
 
@@ -295,15 +323,15 @@ let updateContinuumCompletionEntry = async ({ count, completion, key, system, ph
 	let phaseRatioKey = `${phase}Ratio`;
 
 	if (operation === 'add') {
-		entry.totalCount += 1;
+		entry.count += 1;
 		entry[phaseCountKey] += 1;
 	} else {
-		entry.totalCount = Math.max(0, entry.totalCount - 1);
+		entry.count = Math.max(0, entry.count - 1);
 		entry[phaseCountKey] = Math.max(0, entry[phaseCountKey] - 1);
 	}
 
-	entry.totalRatio = count[system].total ? entry.totalCount / count[system].total : 0;
-	entry[phaseRatioKey] = count[system][phase] ? entry[phaseCountKey] / count[system][phase] : 0;
+	entry.ratio = count[scope].total ? entry.count / count[scope].total : 0;
+	entry[phaseRatioKey] = count[scope][phase] ? entry[phaseCountKey] / count[scope][phase] : 0;
 
 	if ((entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) || entry.initiatingRatio === 1) {
 		entry.phase = 'Implementing';
@@ -317,35 +345,44 @@ let updateContinuumCompletionEntry = async ({ count, completion, key, system, ph
 		entry.phase = 'Initiating';
 	}
 
-	completion[key] = entry;
+	continuumCompletion[key] = entry;
 
 };
 
 let generateContinuumCompletion = async (assessment) => {
 	if (!assessment) return;
 
-	let completion = assessment.continuumCompletion ?? {};
+	let { considerationsEstablished, continuumCompletion, continuumVersion } = assessment;
 
-	let { considerationsEstablished } = assessment;
-	if (considerationsEstablished.length === 0) return completion;
+	if (considerationsEstablished.length === 0) return {};
+
+	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
+		return continuumCompletion;
+	} else {
+		continuumCompletion = {};
+	}		
 
 	let count = await userDataStore.getConsiderationCount();
 	if (!count) return;
 
 	for (let consideration of considerationsEstablished) {
 
+		if (!count[consideration]) continue;
+
 		// Get the connections
 		let phase = count[consideration].phase;
 		let indicator = count[consideration].indicator;
 		let component = count[consideration].component;
 
-		updateContinuumCompletionEntry({ count, completion, key: 'continuum', system: 'continuum', phase, operation: 'add' });
-		updateContinuumCompletionEntry({ count, completion, key: indicator, system: indicator, phase, operation: 'add' });
-		updateContinuumCompletionEntry({ count, completion, key: component, system: component, phase, operation: 'add' });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation: 'add' });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation: 'add' });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation: 'add' });
 
 	}
 
-	return completion;
+	updateContinuumVersion(assessment);
+
+	return continuumCompletion;
 
 }
 
@@ -353,23 +390,32 @@ let updateContinuumCompletion = async ({ assessment = getActiveAssessmentData(),
 
 	if (!assessment || !consideration || !/^\d+\.\d+\.\d+$/.test(consideration)) return;
 
-	let count = await userDataStore.getConsiderationCount();
+	let { continuumCompletion, continuumVersion } = assessment;
 
-	if (!count || !count[consideration]) return;
+	if (continuumVersion !== currentContinuumVersion) {
 
-	// Get the connections
-	let phase = count[consideration].phase;
-	let indicator = count[consideration].indicator;
-	let component = count[consideration].component;
+		return generateContinuumCompletion(assessment);
 
-	let completion = assessment.continuumCompletion;
-	if (!completion) return;
+	} else {
 
-	updateContinuumCompletionEntry({ count, completion, key: 'continuum', system: 'continuum', phase, operation });
-	updateContinuumCompletionEntry({ count, completion, key: indicator, system: indicator, phase, operation });
-	updateContinuumCompletionEntry({ count, completion, key: component, system: component, phase, operation });
+		let count = await userDataStore.getConsiderationCount();
+	
+		if (!count || !count[consideration]) return;
+	
+		// Get the connections
+		let phase = count[consideration].phase;
+		let indicator = count[consideration].indicator;
+		let component = count[consideration].component;
+	
+		if (!continuumCompletion) return;
+	
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation });
+	
+		return continuumCompletion;
 
-	return completion;
+	}
 
 }
 
@@ -445,6 +491,7 @@ let exportAssessment = (assessment) => {
 		'District': assessment.district || '',
 		'Reporting Year': assessment.reportingYear || '',
 		'Status': assessment.status || '',
+		'Date Completed': formatDateAsString(assessment.dateCompleted),
 		'Date Created': formatDateAsString(assessment.dateCreated),
 		'Date Modified': formatDateAsString(assessment.dateModified),
 		'Date Exported': formatDateAsString(assessment.dateExported),
@@ -516,6 +563,7 @@ let importAssessment = (file) => {
 				reportingYear: mainRow['Reporting Year'] || '',
 				status: mainRow['Status'] || '',
 				continuumVersion: mainRow['Continuum Version'] || '',
+				dateCompleted: mainRow['Date Completed'] ? normalizeImportedDate(mainRow['Date Completed']) : null,
 				dateCreated: mainRow['Date Created'] ? normalizeImportedDate(mainRow['Date Created']) : null,
 				dateModified: mainRow['Date Modified'] ? normalizeImportedDate(mainRow['Date Modified']) : null,
 				dateExported: mainRow['Date Exported'] ? normalizeImportedDate(mainRow['Date Exported']) : null,
@@ -654,6 +702,7 @@ export {
 	decompressData,
 	findAssessmentConflicts,
 	getActiveAssessmentData,
+	getActiveReportData,
 	getAssessmentDate,
 	getAssessmentName,
 	getActiveAssessor,
@@ -673,5 +722,6 @@ export {
 	updateChangeLog,
 	updateContinuumCompletion,
 	generateContinuumCompletion,
-	deleteImportConflictData
+	deleteImportConflictData,
+	userDataStore,
 };
