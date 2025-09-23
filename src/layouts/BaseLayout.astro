@@ -1,10 +1,10 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions } from "astro:transitions";
 
-import Header from '../components/Header.astro';
+import Header from "../components/Header.astro";
 
-import '../styles/normalize.css';
-import '../styles/global.css';
+import "../styles/normalize.css";
+import "../styles/global.css";
 
 const { pageTitle, indicatorTag } = Astro.props;
 ---
@@ -21,44 +21,54 @@ const { pageTitle, indicatorTag } = Astro.props;
 		<!-- Public Sans Font ~ Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900" rel="stylesheet" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900"
+			rel="stylesheet"
+		/>
 		<!-- Aesthet Nova Font ~ Adobe Fonts -->
 		<link rel="stylesheet" href="https://use.typekit.net/omy5wmz.css" />
 		<ViewTransitions />
 	</head>
 	<body>
 		<Header />
-		<main data-mode="reading" data-indicator-tag={indicatorTag ? indicatorTag : null}>
+		<main
+			data-mode="reading"
+			data-indicator-tag={indicatorTag ? indicatorTag : null}
+		>
 			<slot />
 		</main>
 		<footer></footer>
 	</body><script>
-		import { getActiveAssessmentData, setState, subscribe } from 'src/stores/userDataStore';
-		import { scrollIntoView } from 'src/utilities/helpers';
-		import { dialogControl } from 'src/utilities/dialog';
+		import {
+			getActiveAssessmentData,
+			setState,
+			subscribe,
+		} from "src/stores/userDataStore";
+		import { scrollIntoView } from "src/utilities/helpers";
+		import { dialogControl } from "src/utilities/dialog";
 
 		let updateTheme = (data) => {
 			let theme = data.uiPreferences.theme;
 
-			if (theme !== 'dark' && theme !== 'light') return;
+			if (theme !== "dark" && theme !== "light") return;
 
 			// Get the html root
 			let html = document.documentElement;
 
 			// Update the theme
-			html.setAttribute('data-theme', theme);
+			html.setAttribute("data-theme", theme);
 		};
 
 		let updateMode = (data) => {
 			let mode = data.uiState.mode;
 
-			if (mode !== 'assessment' && mode !== 'reading') mode = 'reading';
+			if (mode !== "assessment" && mode !== "reading") mode = "reading";
 
 			// Get the main
-			let main = document.querySelector('main');
+			let main = document.querySelector("main");
 
 			// Update the mode
-			main.setAttribute('data-mode', mode);
+			main.setAttribute("data-mode", mode);
 		};
 
 		let updateStatus = (data) => {
@@ -67,13 +77,17 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 			let status = assessment.status;
 
-			if (status !== 'In Progress' && status !== 'Complete') status = 'In Progress';
+			if (status !== "In Progress" && status !== "Complete")
+				status = "In Progress";
 
 			// Get the main
-			let main = document.querySelector('main');
+			let main = document.querySelector("main");
 
 			// Update the status
-			main.setAttribute('data-status', status.split(' ').join('-').toLowerCase());
+			main.setAttribute(
+				"data-status",
+				status.split(" ").join("-").toLowerCase(),
+			);
 		};
 
 		let updateAssessor = (data) => {
@@ -81,13 +95,16 @@ const { pageTitle, indicatorTag } = Astro.props;
 			if (!assessment) return;
 
 			// Get the main
-			let main = document.querySelector('main');
+			let main = document.querySelector("main");
 
 			// Update the assessor
-			if (!assessment.activeAssessor || assessment.activeAssessor === undefined) {
-				main.setAttribute('data-assessor', 'false');
+			if (
+				!assessment.activeAssessor ||
+				assessment.activeAssessor === undefined
+			) {
+				main.setAttribute("data-assessor", "false");
 			} else {
-				main.setAttribute('data-assessor', 'true');
+				main.setAttribute("data-assessor", "true");
 			}
 		};
 
@@ -96,17 +113,19 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 			if (!consideration) return;
 
-			let accordion = consideration.closest('.accordion');
-			let accordionBtn = accordion?.querySelector('.heading button') as HTMLButtonElement;
+			let accordion = consideration.closest(".accordion");
+			let accordionBtn = accordion?.querySelector(
+				".heading button",
+			) as HTMLButtonElement;
 
 			if (!accordion || !accordionBtn) return;
 
-			if (accordionBtn.getAttribute('aria-expanded') === 'true') return;
+			if (accordionBtn.getAttribute("aria-expanded") === "true") return;
 
 			accordionBtn.click();
 
 			setTimeout(() => {
-				scrollIntoView(accordion, { behavior: 'smooth' });
+				scrollIntoView(accordion, { behavior: "smooth" });
 			}, 50);
 		};
 
@@ -114,27 +133,31 @@ const { pageTitle, indicatorTag } = Astro.props;
 		// Inits & Event listeners
 		//
 
-		window.addEventListener('popstate', () => {
+		window.addEventListener("popstate", () => {
 			let hash = window.location.hash;
 			if (!hash) return;
 
 			// If link was within a dialog, close it
-			let activeDialog = document.querySelector('dialog:open') as HTMLDialogElement;
+			let activeDialog = document.querySelector(
+				"dialog:open",
+			) as HTMLDialogElement;
 			if (activeDialog) activeDialog.close();
 
-			if (hash.includes('consideration')) {
-				let tag = hash.replace(/^#consideration-/, '').replace(/-/g, '.');
+			if (hash.includes("consideration")) {
+				let tag = hash
+					.replace(/^#consideration-/, "")
+					.replace(/-/g, ".");
 				scrollToConsideration(tag);
 			}
 		});
 
-		document.addEventListener('astro:page-load', () => {
+		document.addEventListener("astro:page-load", () => {
 			let currentPagePath = window.location.pathname;
 
-			if (currentPagePath !== '/') {
+			if (currentPagePath !== "/") {
 				setState({
 					lastVisitedPage: {
-						title: document.querySelector('h1').textContent,
+						title: document.querySelector("h1").textContent,
 						path: window.location.pathname,
 					},
 				});
@@ -142,11 +165,23 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 			let hash = window.location.hash;
 
-			if (!hash) return;
-
-			if (hash.includes('consideration')) {
-				let tag = hash.replace(/^#consideration-/, '').replace(/-/g, '.');
+			if (hash.includes("consideration")) {
+				let tag = hash
+					.replace(/^#consideration-/, "")
+					.replace(/-/g, ".");
 				scrollToConsideration(tag);
+			}
+
+			let query = new URLSearchParams(window.location.search);
+			let dialog = query.get("dialog");
+			if (dialog) {
+				let dialogId;
+				if (dialog === "create-assessment")
+					dialogId = "edit-assessment-properties-dialog";
+				dialogControl.open({
+					dialogId,
+					context: "setup",
+				});
 			}
 		});
 
@@ -156,7 +191,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 		subscribe(updateAssessor);
 
 		dialogControl.init();
-		document.addEventListener('astro:before-swap', dialogControl.destroy);
-		document.addEventListener('astro:after-swap', dialogControl.init);
+		document.addEventListener("astro:before-swap", dialogControl.destroy);
+		document.addEventListener("astro:after-swap", dialogControl.init);
 	</script>
 </html>
