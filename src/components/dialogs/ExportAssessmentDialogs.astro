@@ -56,14 +56,14 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 			Download a copy of this assessment to backup your work. This file can be used to restore the assessment later or continue working on it on another device.
 		</p>
 
-			<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
-		<div class="icon-container">
-			<IconWarningBig />
+		<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
+			<div class="icon-container">
+				<IconWarningBig />
+			</div>
+			<div class="text-container">
+				<p><strong>Warning</strong>: Editing this file may prevent it from being imported again.</p>
+			</div>
 		</div>
-		<div class="text-container">
-			<p><strong>Warning</strong>: Editing this file may prevent it from being imported again.</p>
-		</div>
-	</div>
 
 		<Toast id={'export-assessment-dialog_export-file-toast_success'} message={`File exported!`} colour={'green'} type={'success'}>
 			<IconCheckmark slot={'icon'} />
@@ -100,7 +100,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 
 		<div class="code-container" data-style-as="input-container">
 			<div class="url" data-style-as="input">
-				<span data-field="export-code"></span>
+				<span data-field="exportCode"></span>
 			</div>
 			<button
 				class="copy-code"
@@ -168,7 +168,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 
 		let dialog = document.querySelector('#export-assessment-dialog') as HTMLDialogElement;
 		let exportCodeSection = dialog.querySelector('section.export-code');
-		let codeField = dialog.querySelector('[data-field="export-code"]');
+		let codeField = dialog.querySelector('[data-field="exportCode"]');
 
 		editStatusSection({ dialog, status: assessment.status });
 
@@ -274,7 +274,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 
 		if (target.matches('button.copy-code')) {
 			try {
-				let codeField = target.closest('dialog').querySelector('[data-field="export-code"]');
+				let codeField = target.closest('dialog').querySelector('[data-field="exportCode"]');
 
 				copyToClipboard(codeField.textContent);
 
@@ -288,7 +288,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 
 	exportWarningDialog.addEventListener('click', (event) => {
 		let target = event.target as HTMLButtonElement;
-
+// TODO: Not working
 		if (target.matches('button.close-dialog')) {
 			setAssessment({
 				activeAssessor: null,
