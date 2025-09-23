@@ -1,0 +1,267 @@
+---
+import { getCollection, render } from "astro:content";
+import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
+
+import Toast from "src/components/Toast.astro";
+import IconCheckmark from "../icons/IconCheckmark_8.astro";
+import IconWarningSmall from "../icons/IconWarning_16.astro";
+import IconXmark12 from "src/components/icons/IconXmark_12.astro";
+
+// Get all indicators
+let allIndicators = await getCollection("indicators");
+
+let indicators = allIndicators.sort((a, b) =>
+	a.data.tag.localeCompare(b.data.tag),
+);
+---
+
+<dialog
+	id="report-settings-dialog"
+	aria-describedby="report-settings-dialog_heading"
+>
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Report Settings Dialog"><IconXmarkBig /></button
+	>
+
+	<h2
+		id="report-settings-dialog_heading"
+		class="heading"
+		data-default-text="Report Settings"
+	>
+		Report Settings
+	</h2>
+
+	<form>
+		<fieldset
+			class="indicators"
+			aria-labelledby="report-settings-dialog_indicators-fieldset-heading"
+		>
+			<h3
+				id="report-settings-dialog_indicators-fieldset-heading"
+				data-style-as="label"
+			>
+				Included Indicators
+			</h3>
+			<div class="button-group">
+				<button
+					class="select"
+					type="button"
+					value="all"
+					data-size="small">Select All</button
+				>
+				<button
+					class="select"
+					type="button"
+					value="assessed"
+					data-size="small">Select Assessed*</button
+				>
+			</div>
+
+			<div class="elem-group">
+				{
+					indicators.map((indicator) => (
+						<label>
+							<input
+								type="checkbox"
+								name="reportIncludedIndicators"
+								value={indicator.data.tag}
+								checked
+							/>
+							<IconCheckmark />
+							<span class="text-container">
+								<span
+									class="tag"
+									data-theme={indicator.data.colour}
+									data-vibrancy="vivid"
+								>
+									{indicator.data.tag}
+								</span>
+								<span class="text">{indicator.data.title}</span>
+							</span>
+						</label>
+					))
+				}
+			</div>
+		</fieldset>
+
+		<p class="instructions">
+			*Assessed indicators have at least one consideration estalished.
+		</p>
+
+		<!-- Save Toast located in Assessment Dialogs -->
+		<Toast
+			id={"report-settings-dialog_save-toast_failure"}
+			message={`Unable to save. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline">Cancel</button
+			>
+			<button
+				class="save"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				data-toast-success="report-settings-dialog_save-toast_success"
+				data-toast-failure="report-settings-dialog_save-toast_failure"
+				disabled>Save</button
+			>
+		</div>
+	</form>
+</dialog>
+
+<style is:global>
+	fieldset.indicators .elem-group {
+		--group-gap: 1rem;
+		--group-margin: 1rem 0;
+	}
+
+	fieldset.indicators .button-group {
+		--group-gap: 0.5rem;
+		margin-top: 0.5rem;
+	}
+</style>
+
+<script>
+	//
+	// Imports
+	//
+
+	import {
+		checkForChanges,
+		getActiveAssessmentData,
+		getActiveReportData,
+		getUserData,
+		setPreferences,
+		subscribe,
+	} from "src/stores/userDataStore";
+	import { getFormValues, resetForm } from "src/utilities/form";
+	import { dialogControl } from "src/utilities/dialog";
+	import { toastControl } from "src/utilities/toast";
+
+	//
+	// Methods
+	//
+
+	//
+	// DOM Updates
+	//
+
+	/**
+	 * Update the select-assessor dialog UI from stored assessment data
+	 * @param data
+	 */
+	let updateReportSettingsDialog = (data: UserData) => {
+		let preferences = data.uiPreferences;
+		if (!preferences) return;
+
+		let assessment = getActiveReportData();
+
+		let checkboxes = dialog.querySelectorAll(
+			"fieldset.indicators input",
+		) as NodeListOf<HTMLInputElement>;
+
+		for (let checkbox of checkboxes) {
+			if (preferences.reportIncludedIndicators.includes(checkbox.value))
+				checkbox.setAttribute("checked", "");
+			else checkbox.removeAttribute("checked");
+
+			if (assessment?.continuumCompletion[checkbox.value])
+				checkbox.setAttribute("data-assessed", "");
+			else checkbox.removeAttribute("data-assessed");
+		}
+	};
+
+	//
+	// Event Listeners
+	//
+
+	let dialog = document.querySelector(
+		"#report-settings-dialog",
+	) as HTMLDialogElement;
+	let form = dialog?.querySelector("form") as HTMLFormElement;
+	let saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
+
+	dialog.addEventListener("click", (event) => {
+		let target = event.target as HTMLButtonElement;
+
+		if (target.matches("button.close-dialog")) {
+			saveBtn.setAttribute("disabled", "");
+			let form = dialog.querySelector("form");
+			resetForm({ form });
+		}
+
+		if (target.matches("button.save")) {
+			try {
+				let values = getFormValues(form);
+				let preferences = getUserData().uiPreferences;
+				if (!preferences) {
+					throw new Error("No user preferences data to update.");
+				}
+
+				let check = checkForChanges({
+					data: preferences,
+					update: values,
+				});
+
+				console.log(check);
+
+				if (!check) return;
+
+				let update = check.changedValues;
+
+				setPreferences(update);
+
+				toastControl.show({ target, type: "success" });
+
+				dialogControl.close(target);
+				saveBtn.setAttribute("disabled", "");
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: "failure" });
+			}
+		}
+
+		if (target.matches("button.select")) {
+			let checkboxes = dialog.querySelectorAll(
+				"fieldset.indicators input",
+			) as NodeListOf<HTMLInputElement>;
+
+			for (let checkbox of checkboxes) {
+				if (target.value === "all") checkbox.checked = true;
+				else if (
+					target.value === "assessed" &&
+					checkbox.hasAttribute("data-assessed")
+				)
+					checkbox.checked = true;
+				else checkbox.checked = false;
+			}
+
+			saveBtn.removeAttribute("disabled");
+		}
+	});
+
+	dialog.addEventListener("change", (event) => {
+		let target = event.target as HTMLInputElement | HTMLSelectElement;
+
+		if (target.matches(`input[type="checkbox"]`)) {
+			saveBtn.removeAttribute("disabled");
+		}
+	});
+
+	//
+	// Inits
+	//
+
+	subscribe(updateReportSettingsDialog);
+</script>

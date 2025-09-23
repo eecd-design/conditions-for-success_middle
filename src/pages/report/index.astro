@@ -1,15 +1,627 @@
 ---
+import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import IconArrowRight16 from "src/components/icons/IconArrowRight_16.astro";
+import IconFolder20 from "src/components/icons/IconFolder_20.astro";
+import IconCross20 from "src/components/icons/IconCross_20.astro";
+import IconDownload20 from "src/components/icons/IconDownload_20.astro";
+import IconXmark16 from "src/components/icons/IconXmark_16.astro";
+import ProgressChart from "src/components/charts/ProgressChart.astro";
+import MatrixChart from "src/components/charts/MatrixChart.astro";
+import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssessmentDialogs.astro";
+import ReportDialogs from "src/components/dialogs/ReportDialogs.astro";
+
+// Get all indicators
+let allIndicators = await getCollection("indicators");
+
+let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+
+// Get all components
+let allComponents = await getCollection("components");
 
 ---
 <BaseLayout pageTitle={'Report'}>
 
-	<div class="content">
+	<aside class="on-page-nav-container" data-restrict-report="active">
+		<nav class="on-page">
+			<h2 class="heading">In this report</h2>
+			<ul class="links-list">
+				<li>
+					<a href={`#overview`} data-tag="0"> 
+						<span class="icon-container">
+							<IconArrowRight16 classes={['destination']} />
+						</span>
+						<span class="text-container">
+							<span class="text">Overview</span>
+						</span>
+					</a>
+				</li>
+				{indicators.map((indicator) => (
+					<li>
+						<a href={`#indicator-${indicator.data.tag}`} data-tag={indicator.data.tag}>
+						{/* TODO: Hide depending on prefrences */}
+							<span class="icon-container">
+								<IconArrowRight16 classes={['destination']} />
+							</span>
+							<span class="text-container">
+								<span class="text">{indicator.data.title}</span>
+							</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	</aside>
 
-		<h1>Report</h1>
+	<OpenImportAssessmentDialogs context={'report'}/>
+	<ReportDialogs/>
+
+	<div class="content report">
+
+		<!-- TODO: Add toggle to not show unassessed indicators (0 considerations/established) -->
+
+		<h1 aria-live="polite">
+			<span class="title" data-field="reportSchool">Report</span>
+			<span class="subtitle" data-font-type="sans-serif" data-restrict-report="active">
+				<span data-field="reportYear"></span>
+				Report
+			</span>
+		</h1>
+
+		<div class="callout" data-restrict-report="inactive">
+			<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
+			<div class="button-group">
+				<a href="/big-seven?dialog=create-assessment" aria-label="Create Assessment" data-style-as="button" data-style="solid" data-size="large">
+					<div class="icon-and-label-container">
+						<IconCross20/>
+						<span class="label-container">
+							<span class="label">Create</span>
+						</span>
+					</div>
+				</a>
+				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button" data-style="solid" data-size="large">
+					<div class="icon-and-label-container">
+						<IconFolder20/>
+						<span class="label-container">
+							<span class="label">Open</span>
+						</span>
+					</div>
+				</button>
+			</div>
+		</div>
+
+		<div class="report-controls" data-print="false" data-restrict-report="active">
+			<div class="button-group">
+				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button">
+					<div class="icon-and-label-container">
+						<IconFolder20/>
+						<span class="label-container">
+							<span class="label">Open</span>
+						</span>
+					</div>
+				</button>
+
+				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
+
+				<button class="open-dialog" data-dialog="report-settings-dialog" aria-label="Modify Report Settings" type="button" >
+					<div class="icon-and-label-container">
+						<IconDownload20/>
+						<!-- TODO: Create settings icon -->
+						<span class="label-container">
+							<span class="label">Settings</span>
+						</span>
+					</div>
+				</button>
+				
+				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
+
+				<button class="download-report" aria-label="Download Assessment Report" type="button" >
+					<div class="icon-and-label-container">
+						<IconDownload20/>
+						<span class="label-container">
+							<span class="label">Download</span>
+						</span>
+					</div>
+				</button>
+				
+				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
+
+				<button class="close-report" data-dialog="open-assessment-dialog" aria-label="Close Assessment Report" type="button" >
+					<div class="icon-and-label-container">
+						<IconXmark16/>
+						<span class="label-container">
+							<span class="label">Close</span>
+						</span>
+					</div>
+				</button>
+			</div>
+		</div>
+
+		<hr class="section" data-print="false" data-restrict-report="active"/>
+
+		<div id="report-container" data-restrict-report="active">
+
+			<section id="#overview" data-tag="0">
+				<h2>Overview</h2>
+				<h3>Continuum Progress</h3>
+				<ProgressChart/>
+				<h3>Indicator Progress</h3>
+				<MatrixChart entries={indicators}/>
+			</section>
+
+			{indicators.map((indicator) => {
+
+				// Get all current indicator components
+				let components = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+
+				console.log(components[0]);
+				
+				return (
+
+					<hr class="section" data-print="false" />
+
+					<section data-tag={indicator.data.tag} data-theme={indicator.data.colour} data-vibrancy="vivid">
+						<h2 id={`indicator-${indicator.data.tag}`}>
+							{/* <span class="tag" data-font-type="sans-serif">
+								<span class="number">{indicator.data?.tag}</span>
+							</span> */}
+							<span class="title">{indicator.data?.title}</span>
+						</h2>
+						<h3>Indicator</h3>
+						<ProgressChart/>
+						<h3>Components</h3>
+						<MatrixChart entries={components} />
+					</section>
+
+				)
+				
+			})}
+
+		</div>
 
 	</div>
 
 </BaseLayout>
 
 <!-- TODO: Should include a welcome screen for when there are no assessment to report on. -->
+
+<style is:global>
+
+	.content.report h1 .subtitle {
+		display: block;
+		font-weight: 400;
+		font-size: 1.75rem;
+		color: var(--colour-ui-neutral-subtle);
+		margin: 0.5rem 0 0;
+	}
+
+	.content.report > .callout :is(button, [data-style-as="button"]) {
+		--container-gap: 0.75rem;
+		--label-size: 1rem;
+		--label-colour: var(--colour-ui-reverse);
+		--icon-size: 1.25rem;
+		--icon-colour: var(--colour-ui-reverse); 
+	}
+
+	.content.report > .callout :is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
+		--label-colour: var(--colour-ui-neutral);
+		--icon-colour: var(--colour-ui-neutral); 
+	}
+
+	.report-controls {
+		--group-gap: 0.5rem;
+		display: inline-flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.5rem;
+		height: 3.25rem;
+		padding: 0 0.5rem;
+		margin: 1rem 0 0;
+		background-color: var(--colour-fill-neutral-subtle);
+		border-radius: var(--border-radius-normal);
+	}
+
+	.report-controls :is(button, [data-style-as='button']) {
+		--icon-size: 1.25rem;
+		--button-background-colour: transparent;
+	}
+
+	.report-controls :is(button, [data-style-as='button']):is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--label-colour: var(--colour-ui-reverse);
+		--button-background-colour: var(--colour-fill-neutral-bold);
+	}
+
+	.report-controls button.close-report {
+		--icon-size: 1rem;
+	}
+
+	.report-controls .separator.item {
+		--separator-long-edge-dimension: 1.75rem;
+	}
+
+	#report-container h3 {
+		display: inline-block;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--colour-border-neutral-subtle);
+		font-weight: 400;
+	}
+
+	hr:has(+ #report-container[hidden]) {
+		display: none;
+	}
+
+	#report-container hr:has(+ section[hidden]) {
+		display: none;
+	}
+
+	@media print {
+		header,
+		main > aside,
+		dialog,
+		hr,
+		.report-controls,
+		footer {
+			display: none !important;
+		}
+	}
+
+</style>
+
+<script>
+	//
+	// Imports
+	//
+
+	import { findIndexByKey, formatDateAsHTML, formatDateAsString, sanitizeHTML } from 'src/utilities/helpers';
+	import { userDataStore, getUserData, getAssessmentName, getAssessmentDate, getStatusColour, setState, setAssessment, importAssessment, subscribe, decompressData, setPreferences } from 'src/stores/userDataStore';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
+	import {
+		getActiveReportData,
+	} from 'src/stores/userDataStore';
+	import html2canvas from 'html2canvas';
+	import jsPDF from 'jspdf';
+
+	//
+	// Methods
+	//
+
+
+	//
+	// DOM Updates
+	//
+
+	let updateReport = async (data: UserData) => {
+
+		let main = document.querySelector('main');
+
+		let report = document.querySelector('#report-container');
+		let sections = report?.querySelectorAll(':scope > section');
+		let onPageNav = document.querySelector('aside.on-page-nav-container');
+		let reportHeading = document.querySelector('h1');
+		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
+		let reportHeadingYear = reportHeading?.querySelector('[data-field="reportYear"]');
+
+		if (!data.uiState.activeReportId) {
+
+			main.setAttribute('data-report', 'inactive');
+			reportHeadingSchool.textContent = 'Report';
+
+		} else {
+
+			let assessment = getActiveReportData();
+			if (!assessment) return;
+			
+			main.setAttribute('data-report', 'active');
+			
+			let onPageNavLinks = onPageNav.querySelectorAll('a');
+			for (let link of onPageNavLinks) {
+				if (link.getAttribute('data-tag') === '0') continue;
+				if (data.uiPreferences.reportIncludedIndicators.includes(link.getAttribute('data-tag'))) link.closest('li').removeAttribute('hidden');
+				else link.closest('li').setAttribute('hidden', '');
+			}
+
+			reportHeadingSchool.textContent = assessment.school;
+			reportHeadingYear.textContent = assessment.reportingYear;
+
+			for (let section of sections) {
+
+				let mainScopeTag = section.getAttribute('data-tag');
+				let mainScopeCompletion = mainScopeTag === '0' ? assessment.continuumCompletion.continuum : assessment.continuumCompletion[mainScopeTag];
+
+				let progressChart = section.querySelector('.progress');
+				let progressChartSegments = progressChart.querySelectorAll('.segment-container');
+
+				for (let segment of progressChartSegments) {
+
+					let phase = segment.getAttribute('data-phase');
+
+					let activePhase = mainScopeCompletion ? mainScopeCompletion.phase.toLowerCase() : 'initiating';
+
+					if (phase.toLowerCase() === activePhase) {
+						segment.setAttribute('data-active', '');
+					} else {
+						segment.removeAttribute('data-active');
+					}
+
+					let countField = segment.querySelector('[data-field="count"]');
+					let totalField = segment.querySelector('[data-field="total"]');
+
+					let phaseTotal;
+					if (!mainScopeCompletion) {
+						let count = await userDataStore.getConsiderationCount();
+						phaseTotal = mainScopeTag === '0' ? count.continuum[phase] : count[mainScopeTag][phase];
+					}
+
+					countField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
+					totalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
+
+				}
+
+				let matrixChart = section.querySelector('.matrix');
+				let matrixChartRows = matrixChart.querySelectorAll('tr');
+
+				for (let row of matrixChartRows) {
+
+					let subScopeTag = row.getAttribute('data-tag');
+
+					let subScopeCompletion = assessment.continuumCompletion[subScopeTag];
+
+					if (!subScopeCompletion) continue;
+
+					row.setAttribute('data-phase', subScopeCompletion.phase.toLowerCase());
+
+				}
+
+
+				let reportIncludedIndicators = data.uiPreferences.reportIncludedIndicators;
+
+				if (mainScopeTag === '0' || reportIncludedIndicators.includes(mainScopeTag)) section.removeAttribute('hidden');
+				else section.setAttribute('hidden', '');
+
+			}
+
+		}
+	}
+
+	let fetchFontBase64 = async (url: string) => {
+		const res = await fetch(url);
+		const arrayBuffer = await res.arrayBuffer();
+		const uint8 = new Uint8Array(arrayBuffer);
+
+		// Convert to base64
+		let binary = "";
+		for (let i = 0; i < uint8.length; i++) {
+			binary += String.fromCharCode(uint8[i]);
+		}
+		return btoa(binary);
+	};
+	
+	let fetchPngBase64 = async (image) => {
+		let res = await fetch(image);
+		const arrayBuffer = await res.arrayBuffer();
+		const uint8 = new Uint8Array(arrayBuffer);
+
+		// Convert to base64
+		let binary = "";
+		for (let i = 0; i < uint8.length; i++) {
+			binary += String.fromCharCode(uint8[i]);
+		}
+		return btoa(binary);
+	};	
+
+	let packageReport = async () => {
+
+		// TODO: trigger exporting loading bar...
+
+		/**
+		 * Add wrapped text to jsPDF
+		 * @param {object} doc - jsPDF instance
+		 * @param {string} text - Text to render
+		 * @param {number} x - Left position (margin start)
+		 * @param {number} y - Top position
+		 * @param {number} maxWidth - Max width available for text
+		 * @param {number} lineHeight - Line height (spacing between lines)
+		 * @returns {number} - Final y position after text block
+		 */
+		let addWrappedText = (doc, text, x, y, maxWidth, lineHeight = doc.getLineHeight()) => {
+
+			console.log('Current Y (Prior to add wrapped text)', y);
+			
+			let lines = doc.splitTextToSize(text, maxWidth);
+			
+			// Account for baseline text placement
+			y += lineHeight;
+			console.log('Current Y (Adjusted for first line)', y);
+			
+			for (let i = 0; i < lines.length; i++) {
+				doc.text(lines[i], x, y);
+				
+				// Only increase y if not on the last line
+				if (i < lines.length - 1) {
+					y += lineHeight;
+				}
+			}
+
+			console.log('Current Y (After adding text)', y);
+
+			return y; // return new Y so you can keep adding below
+		};
+		
+		let reportContainer = document.querySelector('main .content') as HTMLElement;
+		if (!reportContainer) return;
+
+		let sections = reportContainer.querySelectorAll('section:not([hidden])');
+
+		let assessment = getActiveReportData();
+		
+		let pdf = new jsPDF({
+			orientation: 'portrait',
+			unit: 'pt',
+			format: 'letter',
+		});
+
+		let margin = 72;
+		let pageHeight = pdf.internal.pageSize.getHeight();
+		let pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+		let currentYPosition = margin;
+		pdf.setLineHeightFactor(1.1);
+
+		let aesthetNovaMediumBase64 = await fetchFontBase64('src/fonts/AesthetNova-Medium.ttf');
+		let aesthetNovaBoldBase64 = await fetchFontBase64('src/fonts/AesthetNova-Bold.ttf');
+		let publicSansRegularBase64 = await fetchFontBase64('src/fonts/PublicSans-Regular.ttf');
+		let publicSansBoldBase64 = await fetchFontBase64('src/fonts/PublicSans-Bold.ttf');
+
+		pdf.addFileToVFS('AesthetNova-Medium.ttf', aesthetNovaMediumBase64);
+		pdf.addFont('AesthetNova-Medium.ttf', 'Aesthet Nova', 'normal')
+		pdf.addFileToVFS('AesthetNova-Bold.ttf', aesthetNovaBoldBase64);
+		pdf.addFont('AesthetNova-Bold.ttf', 'Aesthet Nova', 'bold')
+		pdf.addFileToVFS('PublicSans-Regular.ttf', publicSansRegularBase64);
+		pdf.addFont('PublicSans-Regular.ttf', 'Public Sans', 'normal');
+		pdf.addFileToVFS('PublicSans-Bold.ttf', publicSansBoldBase64);
+		pdf.addFont('PublicSans-Bold.ttf', 'Public Sans', 'bold');
+
+		let gnbLogoBase64 = await fetchPngBase64('src/images/gnb-logo-colour.png');
+
+		// 1. Create the report cover page
+
+		let gnbLogoHeight = 34.4073;
+		pdf.addImage(gnbLogoBase64, margin, 160, 100, gnbLogoHeight);
+		currentYPosition = 160 + gnbLogoHeight;
+
+		currentYPosition += 24;
+
+		let websiteTitle = 'New Brunswick Middle Schools';
+		pdf.setFont('Aesthet Nova', 'bold');
+		pdf.setFontSize(32);
+		pdf.setTextColor('#162130');
+		currentYPosition = addWrappedText(pdf, websiteTitle, margin, currentYPosition, pageWidth);
+
+		currentYPosition += 18;
+
+		pdf.setFillColor('#8c3b43');
+		pdf.roundedRect(margin, currentYPosition, 424, 36, 8, 8, 'F');
+
+		let websiteSubtitle = 'Conditions for Success Developmental Continuums';
+		pdf.setFont('Aesthet Nova', 'normal');
+		pdf.setFontSize(18);
+		pdf.setTextColor('#FFFFFF');
+		currentYPosition = addWrappedText(pdf, websiteSubtitle, margin + 14, currentYPosition + 3, pageWidth);
+
+		currentYPosition += 280;
+
+		let schoolName = assessment.school;
+		pdf.setFont('Aesthet Nova', 'bold');
+		pdf.setFontSize(24);
+		pdf.setTextColor('#162130');
+		currentYPosition = addWrappedText(pdf, schoolName, margin, currentYPosition, pageWidth);
+		
+		currentYPosition += 12;
+		
+		let reportingYear = `${assessment.reportingYear} Report`;
+		pdf.setFont('Public Sans', 'normal');
+		pdf.setFontSize(18);
+		currentYPosition = addWrappedText(pdf, reportingYear, margin, currentYPosition, pageWidth);
+
+		currentYPosition += 36;
+
+		let assessmentCompletionDate = `Assessment Completed: ${formatDateAsString(assessment.dateCompleted, false)}`;
+		pdf.setFont('Public Sans', 'normal');
+		pdf.setFontSize(12);
+		currentYPosition = addWrappedText(pdf, assessmentCompletionDate, margin, currentYPosition, pageWidth);
+
+		currentYPosition += 6;
+
+		let reportDate = `Report Created: ${formatDateAsString(Date.now(), false)}`;
+		pdf.setFont('Public Sans', 'normal');
+		pdf.setFontSize(12);
+		currentYPosition = addWrappedText(pdf, reportDate, margin, currentYPosition, pageWidth);
+
+		
+		// 2. Create the chart pages
+		
+		margin = 54;
+		pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+		
+		for (let [index, section] of sections.entries()) {
+			
+			pdf.addPage();
+			currentYPosition = margin - 8; // Account for section heading line height padding
+
+			// Convert on screen charts to images
+
+			let progressChartElem = section.querySelector('.progress') as HTMLElement;
+			if (!progressChartElem) continue;
+			let progressChartCanvas = await html2canvas(progressChartElem, {
+				scale: 3,
+			}) as HTMLCanvasElement;
+			let progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
+			let progressChartImgHeight = (progressChartImgProps.height * pageWidth) / progressChartImgProps.width;
+
+			let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
+			if (!matrixChartElem) continue;
+			let matrixChartCanvas = await html2canvas(matrixChartElem, {
+				scale: 3,
+			}) as HTMLCanvasElement;
+			let matrixChartImgProps = pdf.getImageProperties(matrixChartCanvas);
+			let matrixChartImgHeight = (matrixChartImgProps.height * pageWidth) / matrixChartImgProps.width;
+			
+			// Create page layout 
+
+			let sectionHeading = section.querySelector('h2').textContent.trim();
+			pdf.setFont('Aesthet Nova', 'bold');
+			pdf.setFontSize(24);
+			currentYPosition = addWrappedText(pdf, sectionHeading, margin, currentYPosition, pageWidth);
+
+			currentYPosition += 18;
+			
+			let chartHeading1 = 'Overall Progress';
+			pdf.setFont('Public Sans', 'normal');
+			pdf.setFontSize(18);
+			currentYPosition = addWrappedText(pdf, chartHeading1, margin, currentYPosition, pageWidth);
+
+			currentYPosition += 24;
+
+			pdf.addImage(progressChartCanvas, margin, currentYPosition, pageWidth, progressChartImgHeight);
+			currentYPosition += progressChartImgHeight;
+
+			currentYPosition += 12;
+			
+			let chartHeading2 = `${index === 0 ? 'Indicator' : 'Component'} Progress`;
+			pdf.setFont('Public Sans', 'normal');
+			pdf.setFontSize(18);
+			currentYPosition = addWrappedText(pdf, chartHeading2, margin, currentYPosition, pageWidth);
+
+			currentYPosition += 24;
+
+			pdf.addImage(matrixChartCanvas, margin, currentYPosition, pageWidth, matrixChartImgHeight);
+
+		}
+
+		pdf.save('report.pdf');
+
+	}
+
+	document.addEventListener('click', async (event) => {
+		let target = event.target as any;
+
+		if (target.matches('button.download-report')) {
+			packageReport();
+		}
+
+		if (target.matches('button.close-report')) {
+			setState({
+				activeReportId: null,
+			})
+
+			setPreferences({
+				reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
+			})
+		}
+
+	})
+
+	subscribe(updateReport);
+
+</script>
