@@ -896,6 +896,14 @@ main:not([data-assessor="false"]) [data-restrict-assessor="false"] {
 	display: none !important;
 }
 
+main:not([data-report="active"]) [data-restrict-report="active"] {
+	display: none !important;
+}
+
+main:not([data-report="inactive"]) [data-restrict-report="inactive"] {
+	display: none !important;
+}
+
 .links-list:not([data-layout="detailed"]) [data-restrict-layout="detailed"] {
 	display: none !important;
 }
@@ -986,7 +994,7 @@ nav a {
 	position: relative;
 }
 
-:is(h3, [data-style-as="h3"]):has(> .icon)::after {
+/* :is(h3, [data-style-as="h3"]):has(> .icon)::after {
 	content: "";
 	height: 2px;
 	background-color: var(--colour-border-neutral-subtle);
@@ -994,7 +1002,7 @@ nav a {
 	top: calc(0.75rem - 1px);
 	left: 7rem;
 	right: 0;
-}
+} */
 
 
 /*
@@ -1128,6 +1136,95 @@ form .radio-container:has(input:checked)::after {
 	pointer-events: none;
 	z-index: 2;
 }
+
+/* CHECKBOX INPUTS */
+
+form label:has(input[type="checkbox"]) {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: start;
+	gap: 0.75rem;
+	margin: 0;
+	padding: 0;
+	font-size: 0.875rem;
+	font-weight: 400;
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+	transition: all var(--transition-linear-fast);
+}
+
+form label:has(input[type="checkbox"]) input {
+	height: 1rem;
+	width: 1rem;
+	opacity: 0;
+	cursor: pointer;
+	z-index: 0;
+	flex-shrink: 0;
+}
+
+form label:has(input[type="checkbox"]):is(:hover, :focus-visible, :checked)::before {
+	border-color: var(--colour-border-neutral-bold);
+}
+
+form label:has(input[type="checkbox"])::before {
+	content: "";
+	position: absolute;
+	height: 1rem;
+	width: 1rem;
+	background-color: var(--colour-background);
+	border: 2px solid var(--colour-border-neutral-mid);
+	border-radius: var(--border-radius-small);
+	pointer-events: none;
+	z-index: 1;
+	transition: border-color var(--transition-linear-fast);
+}
+
+form label:has(input[type="checkbox"]) .icon.checkmark {
+	--icon-colour: var(--colour-ui-neutral);
+	--icon-size: 0.5rem;
+	position: absolute;
+	top: 0.25rem;
+	left: 0.25rem;
+	z-index: 2;
+	opacity: 0;
+	transition: opacity var(--transition-linear-fast);
+}
+
+form label:has(input[type="checkbox"]:checked) .icon.checkmark {
+	opacity: 1;
+}
+
+form label:has(input[type="checkbox"]) .text-container {
+	flex-grow: 1;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: start;
+	gap: 0.5rem;
+}
+
+form label:has(input[type="checkbox"]) .text-container .tag {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	padding: 0 0.25rem;
+	height: 1.125rem;
+	min-width: 1.125rem;
+	border-radius: var(--border-radius-small);
+	background-color: var(--colour-fill-accent-subtle);
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--colour-ui-accent);
+	line-height: 1;
+	transition: all var(--transition-linear-fast);
+}
+
+form label:has(input[type="checkbox"]):is(:hover, :focus-visible) .text-container .tag {
+	background-color: var(--colour-fill-neutral-mid);
+	color: var(--colour-ui-reverse);
+}
+
 
 
 /* TEXT AND SELECT INPUTS */
@@ -1668,7 +1765,7 @@ dialog form hr.group {
 
 @container card (max-width: 300px) {
 
-	.card .date-created dd .time {
+	.card :is(.date-completed, .date-created) dd .time {
 		display: none;
 	}
 
@@ -1869,14 +1966,14 @@ details[open] summary .icon {
 }
 
 summary::after {
-    content: "";
-    display: block;
-    position: absolute;
-    left: 0;
-    bottom: -0.5rem;
-    height: 1px;
-    width: 100%;
-    background-color: transparent;
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: -0.5rem;
+	height: 1px;
+	width: 100%;
+	background-color: transparent;
 	transition: background-color var(--transition-linear-fast);
 }
 
