@@ -82,7 +82,7 @@ let path = url.pathname;
 				<h2>I want to...</h2>
 				<ul class="shortcuts-list favourite">
 					<li>
-						<a href="#the-middle-program-block" data-style-as="button" data-style="solid" data-size="large">
+						<a href="/big-seven" data-style-as="button" data-style="solid" data-size="large">
 							<div class="icon-and-label-container">
 								<IconInfo20/>
 								<span class="label-container">
@@ -93,11 +93,11 @@ let path = url.pathname;
 						</a>
 					</li>
 					<li>
-						<a href="/big-seven" data-style-as="button" data-style="solid" data-size="large">
+						<a href="/big-seven?dialog=create-assessment" data-style-as="button" data-style="solid" data-size="large">
 							<div class="icon-and-label-container">
 								<IconEdit20/>
 								<span class="label-container">
-									<span class="label" data-field="assessment-shortcut">Start an assessment</span>
+									<span class="label" data-field="assessmentShortcut">Start an assessment</span>
 								</span>
 							</div>
 						</a>
@@ -343,7 +343,7 @@ let updateLaunchpad = (data) => {
 	let { mode, lastVisitedPage, lastModifiedPage } = data.uiState;
 	
 	// Update the assessment button
-	let assessmentShortcutField = launchpad.querySelector('.quick-links-container [data-field="assessment-shortcut"]');
+	let assessmentShortcutField = launchpad.querySelector('.quick-links-container [data-field="assessmentShortcut"]');
 
 	if (assessmentShortcutField) {
 
