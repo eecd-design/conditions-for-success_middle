@@ -2,15 +2,15 @@
 // Imports
 //
 
-import { 
-	findHighestValueByKey, 
-	findIndexByKey, 
-	findObjectByKey, 
-	formatDateAsHTML, 
-	formatDateAsString, 
-	isEqual, 
-	normalizeImportedDate, 
-	toKebabCase 
+import {
+	findHighestValueByKey,
+	findIndexByKey,
+	findObjectByKey,
+	formatDateAsHTML,
+	formatDateAsString,
+	isEqual,
+	normalizeImportedDate,
+	toKebabCase
 } from "src/utilities/helpers.js";
 import Papa from "papaparse";
 import LZString from 'lz-string'; // LZString is used to compress data into the exportcode
@@ -157,6 +157,20 @@ let getImportConflictData = () => importConflictData;
 // Methods (Setters)
 //
 
+/**
+ * Update user data values
+ * @param {data>} update
+ */
+let setUserData = (update) => {
+	// console.log('Setting User Data', update);
+	Object.assign(data, update);
+	let changes = {};
+	for (let key of Object.keys(update)) {
+		changes[key] = Object.keys(update[key]);
+	}
+	save();
+	notify(changes);
+};
 
 /**
  * Update user preference values
@@ -165,8 +179,11 @@ let getImportConflictData = () => importConflictData;
 let setPreferences = (update) => {
 	// console.log('Setting Preferences', update);
 	Object.assign(data.uiPreferences, update);
+	let changes = {
+		uiPreferences: Object.keys(update),
+	}
 	save();
-	notify();
+	notify(changes);
 };
 
 /**
@@ -176,8 +193,11 @@ let setPreferences = (update) => {
 let setState = (update) => {
 	// console.log('Setting State', update);
 	Object.assign(data.uiState, update);
+	let changes = {
+		uiState: Object.keys(update),
+	}
 	save();
-	notify();
+	notify(changes);
 };
 
 /**
@@ -198,8 +218,9 @@ let setAssessment = (update) => {
 	if (index === -1) {
 		data.assessments.push(update);
 
-		// Otherwise, update the assessment
-	} else {
+	}
+	// Otherwise, update the assessment
+	else {
 
 		// Update last modified page
 		let pageTitle = document.querySelector('h1')?.textContent;
@@ -213,10 +234,19 @@ let setAssessment = (update) => {
 		update.lastModifiedBy = update.activeAssessor ?? data.assessments[index].activeAssessor;
 		Object.assign(data.assessments[index], update);
 	}
-
+	let changes = {
+		assessments: Object.keys(update),
+	}
 	save();
-	notify();
+	notify(changes);
 };
+
+
+
+
+//
+// Methods (Creators)
+//
 
 /**
  * Create an assessment data object
@@ -270,6 +300,50 @@ let setImportConflictData = ({ importedAssessment, localAssessment }) => {
 	};
 }
 
+let generateContinuumCompletion = async (assessment) => {
+	if (!assessment) return;
+
+	let { considerationsEstablished, continuumCompletion, continuumVersion } = assessment;
+
+	if (considerationsEstablished.length === 0) return {};
+
+	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
+		return continuumCompletion;
+	} else {
+		continuumCompletion = {};
+	}
+
+	let count = await userDataStore.getConsiderationCount();
+	if (!count) return;
+
+	for (let consideration of considerationsEstablished) {
+
+		if (!count[consideration]) continue;
+
+		// Get the connections
+		let phase = count[consideration].phase;
+		let indicator = count[consideration].indicator;
+		let component = count[consideration].component;
+
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation: 'add' });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation: 'add' });
+		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation: 'add' });
+
+	}
+
+	updateContinuumVersion(assessment);
+
+	return continuumCompletion;
+
+}
+
+
+
+
+//
+// Methods (Updaters)
+//
+
 let updateChangeLog = ({ assessment = getActiveAssessmentData(), assessor = getActiveAssessor(), message }) => {
 
 	if (!assessment || !message) return;
@@ -290,7 +364,7 @@ let updateChangeLog = ({ assessment = getActiveAssessmentData(), assessor = getA
 }
 
 let updateContinuumVersion = (assessment) => {
-	assessment.continuumVersion = currentContinuumVersion;	
+	assessment.continuumVersion = currentContinuumVersion;
 }
 
 let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, scope, phase, operation }) => {
@@ -349,43 +423,6 @@ let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, s
 
 };
 
-let generateContinuumCompletion = async (assessment) => {
-	if (!assessment) return;
-
-	let { considerationsEstablished, continuumCompletion, continuumVersion } = assessment;
-
-	if (considerationsEstablished.length === 0) return {};
-
-	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
-		return continuumCompletion;
-	} else {
-		continuumCompletion = {};
-	}		
-
-	let count = await userDataStore.getConsiderationCount();
-	if (!count) return;
-
-	for (let consideration of considerationsEstablished) {
-
-		if (!count[consideration]) continue;
-
-		// Get the connections
-		let phase = count[consideration].phase;
-		let indicator = count[consideration].indicator;
-		let component = count[consideration].component;
-
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation: 'add' });
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation: 'add' });
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation: 'add' });
-
-	}
-
-	updateContinuumVersion(assessment);
-
-	return continuumCompletion;
-
-}
-
 let updateContinuumCompletion = async ({ assessment = getActiveAssessmentData(), consideration, operation }) => {
 
 	if (!assessment || !consideration || !/^\d+\.\d+\.\d+$/.test(consideration)) return;
@@ -399,25 +436,32 @@ let updateContinuumCompletion = async ({ assessment = getActiveAssessmentData(),
 	} else {
 
 		let count = await userDataStore.getConsiderationCount();
-	
+
 		if (!count || !count[consideration]) return;
-	
+
 		// Get the connections
 		let phase = count[consideration].phase;
 		let indicator = count[consideration].indicator;
 		let component = count[consideration].component;
-	
+
 		if (!continuumCompletion) return;
-	
+
 		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation });
 		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation });
 		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation });
-	
+
 		return continuumCompletion;
 
 	}
 
 }
+
+
+
+
+//
+// Methods (Checkers)
+//
 
 let checkForChanges = ({ data, update }) => {
 	let updatedKeys = [];
@@ -441,10 +485,10 @@ let checkForChanges = ({ data, update }) => {
 				});
 				changedValues[key] = value;
 			}
-		} 
+		}
 		// Normal comparison for other types
 		else if (!isEqual(value, oldValue)) {
-			updatedKeys.push({key});
+			updatedKeys.push({ key });
 			changedValues[key] = value;
 		}
 	}
@@ -455,6 +499,8 @@ let checkForChanges = ({ data, update }) => {
 		return false;
 	}
 }
+
+
 
 
 //
@@ -474,6 +520,9 @@ let deleteAssessment = (id) => {
 }
 
 let deleteImportConflictData = () => importConflictData = null;
+
+
+
 
 //
 // Methods (Import/Export)
@@ -639,8 +688,9 @@ let decompressData = (data) => {
 /**
  * Notify all components of data update
  */
-let notify = () => {
-	for (let fn of subscribers) fn(structuredClone(data));
+let notify = (changes) => {
+	// console.log('Notifying', subscribers);
+	for (let fn of subscribers) fn(structuredClone(data), changes);
 };
 
 /**
@@ -652,13 +702,22 @@ let save = () => {
 
 /**
  * Subscribe to data updates
- * @param {(data: typeof data) => void} fn
+ * @param {(data: typeof data, changes: any) => void} fn
  */
 let subscribe = (fn) => {
 	if (!subscribers.includes(fn)) {
+		// console.log('Subscribing', fn.name);
 		subscribers.push(fn);
-		fn(structuredClone(data));
+		let changes = {
+			initiating: true,
+		}
+		fn(structuredClone(data), changes);
 	}
+	// Return a function that removes the subscriber
+	return () => {
+		// console.log('Unsubscribing', fn.name);
+		subscribers = subscribers.filter((sub) => sub !== fn);
+	};
 };
 
 
@@ -679,7 +738,10 @@ let userDataStore = (() => {
 				return null;
 			});
 		save();
-		notify();
+		let changes = {
+			initiating: true,
+		}
+		notify(changes);
 	}
 
 	let getConsiderationCount = () => considerationCountPromise;
