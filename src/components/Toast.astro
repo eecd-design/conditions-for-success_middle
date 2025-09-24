@@ -2,8 +2,18 @@
 const { id, message, colour, type } = Astro.props;
 ---
 
-<div id={id} class="toast-container" role="status" aria-live={type === 'success' ? 'polite' : 'assertive'}>
-	<div class="toast" data-theme={colour} data-vibrancy="vivid" data-type={type}>
+<div
+	id={id}
+	class="toast-container"
+	role="status"
+	aria-live={type === "success" ? "polite" : "assertive"}
+>
+	<div
+		class="toast"
+		data-theme={colour}
+		data-vibrancy="vivid"
+		data-type={type}
+	>
 		<slot name="icon" />
 		<span>{message}</span>
 	</div>
@@ -26,7 +36,7 @@ const { id, message, colour, type } = Astro.props;
 			bottom var(--transition-ease-fast);
 	}
 
-	.toast-container[open]{
+	.toast-container[open] {
 		opacity: 1;
 		bottom: 1rem;
 		transition:
@@ -43,7 +53,10 @@ const { id, message, colour, type } = Astro.props;
 		gap: 0.75rem;
 		padding: 0 1rem;
 		height: 3rem;
-		background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		background-color: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
 		/* border: 1px solid var(--colour-border-accent-bold); */
 		border-radius: var(--border-radius-normal);
 		font-size: 0.875rem;
@@ -54,7 +67,4 @@ const { id, message, colour, type } = Astro.props;
 	.toast[data-type="failure"] {
 		--icon-size: 1rem;
 	}
-
 </style>
-
-<script></script>

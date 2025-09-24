@@ -1,12 +1,17 @@
 ---
-
 import IconCaretSmall from "./icons/IconCaretDown_14.astro";
 import IconCaretMedium from "./icons/IconCaretDown_16.astro";
 import IconCaretLarge from "./icons/IconCaretDown_20.astro";
 
 import { toKebabCase } from "../utilities/helpers";
 
-const { title, id, dataset, crossIconSize = 'large', wrapper = true } = Astro.props;
+const {
+	title,
+	id,
+	dataset,
+	crossIconSize = "large",
+	wrapper = true,
+} = Astro.props;
 
 let datasetAttrs = {};
 if (dataset) {
@@ -19,49 +24,39 @@ const crossIcons = {
 	small: IconCaretSmall,
 	medium: IconCaretMedium,
 	large: IconCaretLarge,
-}
+};
 
 let IconCross = crossIcons[crossIconSize];
-
 ---
 
 <div class="accordion" {...datasetAttrs}>
-
 	<h3 id={id ? id : toKebabCase(title)} class="heading">
-	
 		<span class="icon-and-label-container">
-			<slot name="button-icon"/>
+			<slot name="button-icon" />
 			<span class="label-container">
 				<span class="label">{title}</span>
 			</span>
 		</span>
-	
-		<slot name="button-meta"/>
-	
-		<IconCross />
-	
-	</h3>
-	
-	<div class="panel">
-	
-		{ wrapper ?
-	
-			<div class="content">
-				<slot />
-			</div>
-	
-			:
-	
-			<slot />
-	
-		}
-	
-	</div>
 
+		<slot name="button-meta" />
+
+		<IconCross />
+	</h3>
+
+	<div class="panel">
+		{
+			wrapper ? (
+				<div class="content">
+					<slot />
+				</div>
+			) : (
+				<slot />
+			)
+		}
+	</div>
 </div>
 
 <style is:global>
-
 	.accordion-group {
 		display: flex;
 		flex-flow: column;
@@ -82,7 +77,10 @@ let IconCross = crossIcons[crossIconSize];
 	}
 
 	.accordion .heading button {
-		--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		--button-background-colour: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
 		--button-border-radius: var(--border-radius-normal);
 		--button-ui-colour: var(--colour-ui-neutral);
 		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
@@ -95,7 +93,7 @@ let IconCross = crossIcons[crossIconSize];
 		width: 100%;
 		padding: 0.75rem 1.25rem 0.75rem 1rem;
 		outline-color: transparent;
-		transition: 
+		transition:
 			background-color var(--transition-linear-fast),
 			outline-color var(--transition-linear-fast);
 	}
@@ -105,15 +103,25 @@ let IconCross = crossIcons[crossIconSize];
 		--button-ui-colour: var(--button-ui-colour);
 	}
 
-	.accordion .heading button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
-		outline: 2px solid var(--colour-border-accent-subtle, var(--colour-border-neutral-subtle));
+	.accordion
+		.heading
+		button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+		outline: 2px solid
+			var(
+				--colour-border-accent-subtle,
+				var(--colour-border-neutral-subtle)
+			);
 		outline-offset: -1px;
 	}
 
 	.accordion .heading button[aria-expanded="true"] {
-		--button-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+		--button-background-colour: var(
+			--colour-fill-accent-bold,
+			var(--colour-fill-neutral-mid)
+		);
 		--icon-colour: var(--colour-ui-reverse);
-		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
+		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0
+			0;
 	}
 
 	.accordion .heading button .icon-and-label-container {
@@ -138,7 +146,10 @@ let IconCross = crossIcons[crossIconSize];
 	}
 
 	.accordion .heading button .considerations-status {
-		--label-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+		--label-colour: var(
+			--colour-ui-accent-subtle,
+			var(--colour-ui-neutral-subtle)
+		);
 	}
 
 	.accordion .heading button[aria-expanded="true"] .considerations-status {
@@ -159,10 +170,12 @@ let IconCross = crossIcons[crossIconSize];
 	}
 
 	.accordion .panel {
-		border: 1px solid var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
-		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+		border: 1px solid
+			var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+		border-radius: 0 0 var(--border-radius-normal)
+			var(--border-radius-normal);
 	}
-	
+
 	.accordion .panel :where(p, li, a) {
 		font-size: 1rem;
 		line-height: 1.2;
@@ -172,28 +185,36 @@ let IconCross = crossIcons[crossIconSize];
 		padding: 1.5rem;
 		font-size: 1.25rem;
 	}
-	
+
 	.accordion .panel > .content :where(p, li, a) {
 		font-size: inherit;
 		line-height: 1.6;
 	}
-
 </style>
 
 <script>
+	//
+	// Imports
+	//
 
-	import { isInViewport, scrollIntoView, stopVideo } from "../utilities/helpers";
+	import {
+		isInViewport,
+		scrollIntoView,
+		stopVideo,
+	} from "../utilities/helpers";
+
+	//
+	// Module
+	//
 
 	let accordion = (() => {
-
 		//
 		// DOM Setup
 		//
-			
-		let setupDOM = (heading) => {
 
+		let setupDOM = (heading) => {
 			// Create a button
-			let btn = document.createElement('button');
+			let btn = document.createElement("button");
 
 			// Add heading nodes to the button
 			while (heading.firstChild) {
@@ -201,22 +222,21 @@ let IconCross = crossIcons[crossIconSize];
 			}
 
 			// Remove duplicate heading content and replace it with the button
-			heading.innerHTML = '';
+			heading.innerHTML = "";
 			heading.append(btn);
 
 			// Hide the content
-			heading.nextElementSibling.setAttribute('hidden', '');
+			heading.nextElementSibling.setAttribute("hidden", "");
 
 			// Change button type
-			btn.setAttribute('type', 'button');
+			btn.setAttribute("type", "button");
 
 			// Add ARIA
-			btn.setAttribute('aria-expanded', 'false');
+			btn.setAttribute("aria-expanded", "false");
 
 			// Flag heading as initialized
-			heading.setAttribute('data-initialized', '');
-
-		}
+			heading.setAttribute("data-initialized", "");
+		};
 
 		//
 		// Methods
@@ -227,94 +247,104 @@ let IconCross = crossIcons[crossIconSize];
 		 * @param  {Node} targetAccordion The accordion to show
 		 */
 		let toggleAccordion = (targetAccordion) => {
-
 			// Get the accordion group, if there is one
-			let accordionGroup = targetAccordion.closest('.accordion-group');
-			
+			let accordionGroup = targetAccordion.closest(".accordion-group");
+
 			// If there is an accordion group, check whether it allows multiple open panels, default to false
-			let allowMultiple = accordionGroup ? accordionGroup.hasAttribute('data-allow-multiple') : false;
+			let allowMultiple = accordionGroup
+				? accordionGroup.hasAttribute("data-allow-multiple")
+				: false;
 
 			// Get the target accordion toggle button
-			let targetToggle = targetAccordion.querySelector('.accordion .heading button');
+			let targetToggle = targetAccordion.querySelector(
+				".accordion .heading button",
+			);
 
 			// Get the target accordion panel
-			let targetPanel = targetAccordion.querySelector('.accordion .panel');
+			let targetPanel =
+				targetAccordion.querySelector(".accordion .panel");
 
 			// Check if the target panel is expanded
-			let isExpanded = targetToggle.getAttribute('aria-expanded') == 'true';
-			
+			let isExpanded =
+				targetToggle.getAttribute("aria-expanded") == "true";
+
 			// Get the active toggle button
-			let activeToggle = accordionGroup ? accordionGroup.querySelector('[aria-expanded="true"]') : null;
+			let activeToggle = accordionGroup
+				? accordionGroup.querySelector('[aria-expanded="true"]')
+				: null;
 
 			// Get the active panel
-			let activePanel = activeToggle ? activeToggle.closest('.accordion').querySelector('.panel') : null;
+			let activePanel = activeToggle
+				? activeToggle.closest(".accordion").querySelector(".panel")
+				: null;
 
 			// If the active panel contains a video, pause it
-			if (activePanel && (activePanel.matches('video, .embed') || activePanel.querySelector('video, .embed'))) {
+			if (
+				activePanel &&
+				(activePanel.matches("video, .embed") ||
+					activePanel.querySelector("video, .embed"))
+			) {
 				stopVideo(activePanel);
 			}
 
-			// If accordion group does not allows multiple open panels and the target toggle is not the active toggle 
-			if (!allowMultiple && activeToggle && activeToggle !== targetToggle) {
-
+			// If accordion group does not allows multiple open panels and the target toggle is not the active toggle
+			if (
+				!allowMultiple &&
+				activeToggle &&
+				activeToggle !== targetToggle
+			) {
 				// Reset the active toggle
-				activeToggle.setAttribute('aria-expanded', 'false');
-				
-				// Hide the active panel
-				activePanel.setAttribute('hidden', '');
+				activeToggle.setAttribute("aria-expanded", "false");
 
+				// Hide the active panel
+				activePanel.setAttribute("hidden", "");
 			}
 
 			// If the target is collapsed, expand it
 			if (!isExpanded) {
-
 				// Set the toggle to expanded
-				targetToggle.setAttribute('aria-expanded', 'true');
+				targetToggle.setAttribute("aria-expanded", "true");
 
 				// Show the target panel
-				targetPanel.removeAttribute('hidden');
-
+				targetPanel.removeAttribute("hidden");
 			}
 
 			// If the target is expanded, collapse it
 			else if (isExpanded) {
-
 				// Set the expanded state on the triggering element
-				targetToggle.setAttribute('aria-expanded', 'false');
+				targetToggle.setAttribute("aria-expanded", "false");
 
 				// Hide the target panel
-				targetPanel.setAttribute('hidden', '');
-
+				targetPanel.setAttribute("hidden", "");
 			}
 
 			// TODO: Set up smooth transition of accordion opening like in UDL
 
 			// Get the transition length and convert it to a number
-			let transitionLength = Number(getComputedStyle(targetAccordion).getPropertyValue('transition-duration').replace(/[^0-9\.]/g, ''));
+			let transitionLength = Number(
+				getComputedStyle(targetAccordion)
+					.getPropertyValue("transition-duration")
+					.replace(/[^0-9\.]/g, ""),
+			);
 
 			setTimeout(() => {
-
 				// If the target toggle is not in view after the transition
 				if (!isInViewport(targetToggle)) {
-
 					// Scroll it into view
 					scrollIntoView(targetToggle);
-
 				}
-
 			}, transitionLength * 1000);
-
-		}		
+		};
 
 		//
 		// Event Handlers
 		//
 
 		let onClick = (event) => {
-			if (!event.target.matches('.accordion .heading button')) return;
-			let targetAccordion = event.target.closest('.accordion');
+			if (!event.target.matches(".accordion .heading button")) return;
+			let targetAccordion = event.target.closest(".accordion");
 			toggleAccordion(targetAccordion);
-		}
+		};
 
 		//
 		// Init and Destroy
@@ -322,30 +352,26 @@ let IconCross = crossIcons[crossIconSize];
 
 		let init = () => {
 			// Get all accordion headings
-			let headings = document.querySelectorAll('.accordion .heading');
+			let headings = document.querySelectorAll(".accordion .heading");
 			for (let heading of headings) {
-				if (heading.getAttribute('data-initalized')) return;
+				if (heading.getAttribute("data-initalized")) return;
 				setupDOM(heading);
 			}
-			document.addEventListener('click', onClick);
-		}
+			document.addEventListener("click", onClick);
+		};
 
 		let destroy = () => {
-			document.removeEventListener('click', onClick);
-		}
+			document.removeEventListener("click", onClick);
+		};
 
-		return { init, destroy };	
-
+		return { init, destroy };
 	})();
 
 	//
-	// Inits & Event Listeners
+	// Inits
 	//
 
 	accordion.init();
-	document.addEventListener('astro:before-swap', accordion.destroy);
-	document.addEventListener('astro:after-swap', accordion.init);
-
+	document.addEventListener("astro:before-swap", accordion.destroy);
+	document.addEventListener("astro:after-swap", accordion.init);
 </script>
-
-

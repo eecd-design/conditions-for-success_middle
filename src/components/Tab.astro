@@ -12,15 +12,14 @@ if (dataset) {
 ---
 
 <div class="tab" {...datasetAttrs}>
-	<div class="media-container"><slot name="media"/></div>
+	<div class="media-container"><slot name="media" /></div>
 	<div class="text-container">
 		<h3 id={id ? id : toKebabCase(title)} class="heading">{title}</h3>
-		<slot/>
+		<slot />
 	</div>
 </div>
 
 <style is:global>
-
 	.tab-group {
 		margin: 2.5rem 0;
 	}
@@ -40,13 +39,19 @@ if (dataset) {
 
 	.tab-group nav ul li button[aria-selected="true"] {
 		--button-background-colour: transparent;
-		--button-outline-colour: var(--colour-border-accent-subtle, var(--colour-border-neutral-subtle));
+		--button-outline-colour: var(
+			--colour-border-accent-subtle,
+			var(--colour-border-neutral-subtle)
+		);
 		--button-ui-colour: var(--colour-ui-neutral);
 		pointer-events: none;
 	}
 
 	.tab-group nav ul li button {
-		--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		--button-background-colour: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
 		--button-border-radius: var(--border-radius-normal);
 		height: 3rem;
 		padding: 0 1rem;
@@ -54,7 +59,10 @@ if (dataset) {
 	}
 
 	.tab-group nav ul li button {
-		--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		--button-background-colour: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
 		--button-border-radius: var(--border-radius-normal);
 		height: 3rem;
 		padding: 0 1rem;
@@ -82,7 +90,8 @@ if (dataset) {
 	}
 
 	.tab-group .tab .media-container {
-		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
+		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0
+			0;
 		overflow: hidden;
 	}
 
@@ -92,12 +101,16 @@ if (dataset) {
 
 	.tab-group .tab .text-container {
 		padding: 2rem;
-		background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		background-color: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
 		border-radius: var(--border-radius-normal);
 	}
 
 	.tab-group .tab:has(.media-container:not(:empty)) .text-container {
-		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+		border-radius: 0 0 var(--border-radius-normal)
+			var(--border-radius-normal);
 	}
 
 	.tab-group .tab:has(.media-container:not(:empty)) .text-container .heading {
@@ -105,21 +118,30 @@ if (dataset) {
 		margin: 1rem 0 1rem;
 	}
 
-	.tab-group .tab:has(.media-container:not(:empty)) .text-container :where(p, li, a) {
+	.tab-group
+		.tab:has(.media-container:not(:empty))
+		.text-container
+		:where(p, li, a) {
 		font-size: 1rem;
 	}
-
 </style>
 
 <script>
+	//
+	// Imports
+	//
+
 	import {
 		isInViewport,
 		scrollIntoView,
 		stopVideo,
 	} from "../utilities/helpers";
 
-	let tabs = (() => {
+	//
+	// Module
+	//
 
+	let tabs = (() => {
 		//
 		// DOM Setup
 		//
@@ -213,14 +235,16 @@ if (dataset) {
 			tabGroup.setAttribute("data-initialized", "");
 		};
 
+		//
+		// Methods
+		//
 
 		/**
 		 * Show the target panel and close other panels
 		 * @param {Node} tabGroup the parent component
 		 * @param  {Node} targetTab the tab button that was targeted
 		 */
-		let toggleTab = ({tabGroup, targetTab}) => {
-			
+		let toggleTab = ({ tabGroup, targetTab }) => {
 			// Get the active tab and panel
 			let { activeTab, activePanel } = tabGroup._tabs;
 
@@ -237,7 +261,7 @@ if (dataset) {
 			// Reset active tab attributes
 			activeTab.setAttribute("tabindex", -1);
 			activeTab.setAttribute("aria-selected", false);
-			
+
 			// Set target tab attributes
 			targetTab.removeAttribute("tabindex");
 			targetTab.setAttribute("aria-selected", true);
@@ -252,19 +276,7 @@ if (dataset) {
 			targetPanel.removeAttribute("hidden");
 
 			targetTab.focus();
-
 		};
-
-
-		//
-		// Methods
-		//
-
-		/**
-		 * Toggle tab visibility
-		 * @param  {Node} targetTab The tab to show
-		 */
-
 
 		//
 		// Event Handlers
@@ -281,11 +293,10 @@ if (dataset) {
 			// Ignore the active tab
 			if (targetTab.matches('[aria-selected="true"]')) return;
 
-			toggleTab({tabGroup, targetTab});
+			toggleTab({ tabGroup, targetTab });
 		};
 
 		let onKey = (event) => {
-
 			// Only run for left and right arrow keys
 			if (!["ArrowLeft", "ArrowRight"].includes(event.code)) return;
 
@@ -316,9 +327,8 @@ if (dataset) {
 			// Otherwise, get the target tab
 			let targetTab = targetNavItem.querySelector("button");
 
-			toggleTab({tabGroup, targetTab});
-
-		}
+			toggleTab({ tabGroup, targetTab });
+		};
 
 		//
 		// Init and Destroy
@@ -338,13 +348,19 @@ if (dataset) {
 					buttons: tabGroup.querySelectorAll('[role="tab"]'),
 					panels: tabGroup.querySelectorAll('[role="tabpanel"]'),
 					get activeTab() {
-						return tabGroup.querySelector('[role="tab"][aria-selected="true"]');
+						return tabGroup.querySelector(
+							'[role="tab"][aria-selected="true"]',
+						);
 					},
 					get activePanel() {
 						let tab = this.activeTab;
-						return tab ? tabGroup.querySelector(`#${tab.getAttribute("aria-controls")}`) : null;
-					}
-				}
+						return tab
+							? tabGroup.querySelector(
+									`#${tab.getAttribute("aria-controls")}`,
+								)
+							: null;
+					},
+				};
 			}
 			document.addEventListener("click", onClick);
 			document.addEventListener("keydown", onKey);
@@ -359,11 +375,10 @@ if (dataset) {
 	})();
 
 	//
-	// Inits & Event Listeners
+	// Inits
 	//
 
 	tabs.init();
 	document.addEventListener("astro:before-swap", tabs.destroy);
 	document.addEventListener("astro:after-swap", tabs.init);
-
 </script>
