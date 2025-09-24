@@ -643,6 +643,8 @@ p {
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="solid-outline"]:is(:hover, :focus-visible) {
 	--button-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
+	--label-colour: var(--colour-ui-reverse);
+	--icon-colour: var(--colour-ui-reverse);
 }
 
 
@@ -831,14 +833,14 @@ main {
 		"left-aside content right-aside";
 }
 
-main:has(.assessment-controls) {
+main:has(#assessment-controls) {
 	grid-template-rows: auto 1fr;
 	grid-template-areas:
 		"toolbar toolbar toolbar"
 		"left-aside content right-aside";
 }
 
-.assessment-controls {
+#assessment-controls {
 	grid-area: toolbar;
 }
 
@@ -1163,8 +1165,8 @@ form label:has(input[type="checkbox"]) input {
 	flex-shrink: 0;
 }
 
-form label:has(input[type="checkbox"]):is(:hover, :focus-visible, :checked)::before {
-	border-color: var(--colour-border-neutral-bold);
+form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked))::before {
+	border-color: var(--colour-border-accent-bold, var(--colour-border-neutral-bold));
 }
 
 form label:has(input[type="checkbox"])::before {
@@ -1173,7 +1175,7 @@ form label:has(input[type="checkbox"])::before {
 	height: 1rem;
 	width: 1rem;
 	background-color: var(--colour-background);
-	border: 2px solid var(--colour-border-neutral-mid);
+	border: 2px solid var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 	border-radius: var(--border-radius-small);
 	pointer-events: none;
 	z-index: 1;
@@ -1181,7 +1183,7 @@ form label:has(input[type="checkbox"])::before {
 }
 
 form label:has(input[type="checkbox"]) .icon.checkmark {
-	--icon-colour: var(--colour-ui-neutral);
+	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	--icon-size: 0.5rem;
 	position: absolute;
 	top: 0.25rem;
