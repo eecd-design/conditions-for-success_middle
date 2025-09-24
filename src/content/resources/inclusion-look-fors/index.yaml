@@ -13,4 +13,5 @@ external:
 linkedIndicators: []
 linkedComponents:
   - '1.2'
-linkedConsiderations: []
+linkedConsiderations:
+  - 1.2.1
