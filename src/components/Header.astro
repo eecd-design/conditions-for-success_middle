@@ -308,76 +308,108 @@ let path = url.pathname;
 
 <script>
 
-import { subscribe } from "src/stores/userDataStore";
-import { htmlToElement } from "src/utilities/helpers";
+	//
+	// Imports
+	//
 
-let createLaunchpadLink = ({title, path}) => {
+	import { subscribe } from "src/stores/userDataStore";
+	import { htmlToElement } from "src/utilities/helpers";
 
-	let template = `
-		<li>
-			<a href="${path}" data-style-as="button" data-style="solid" data-size="large">
-				<div class="icon-and-label-container">
-					<svg class="icon history" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-						<path d="M20 10c0 4.96-4.04 9-9 9-3.77 0-7.17-2.38-8.46-5.92a.998.998 0 0 1 .6-1.28.998.998 0 0 1 1.28.6c1 2.75 3.65 4.61 6.58 4.61 3.86 0 7-3.14 7-7s-3.14-7-7-7c-2.97 0-5.59 1.9-6.57 4.66l1.06-.39a.998.998 0 0 1 1.28.6.998.998 0 0 1-.6 1.28l-3.32 1.21a.998.998 0 0 1-1.28-.6L.36 6.44a.998.998 0 0 1 .6-1.28.998.998 0 0 1 1.28.6l.37 1.01A8.996 8.996 0 0 1 11 1c4.96 0 9 4.04 9 9Zm-9-5c-.55 0-1 .45-1 1v4c0 .27.11.52.29.71l2 2c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L12 9.59V6c0-.55-.45-1-1-1Z"/>
-					</svg>
-					<span class="label-container">
-						<span class="label">${title}</span>
-					</span>
-				</div>
-			</a>
-		</li>
-	`
+	// 
+	// Methods
+	//
 
-	let elem = htmlToElement(template);
+	let createLaunchpadLink = ({title, path}) => {
 
-	return elem;
+		let template = `
+			<li>
+				<a href="${path}" data-style-as="button" data-style="solid" data-size="large">
+					<div class="icon-and-label-container">
+						<svg class="icon history" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+							<path d="M20 10c0 4.96-4.04 9-9 9-3.77 0-7.17-2.38-8.46-5.92a.998.998 0 0 1 .6-1.28.998.998 0 0 1 1.28.6c1 2.75 3.65 4.61 6.58 4.61 3.86 0 7-3.14 7-7s-3.14-7-7-7c-2.97 0-5.59 1.9-6.57 4.66l1.06-.39a.998.998 0 0 1 1.28.6.998.998 0 0 1-.6 1.28l-3.32 1.21a.998.998 0 0 1-1.28-.6L.36 6.44a.998.998 0 0 1 .6-1.28.998.998 0 0 1 1.28.6l.37 1.01A8.996 8.996 0 0 1 11 1c4.96 0 9 4.04 9 9Zm-9-5c-.55 0-1 .45-1 1v4c0 .27.11.52.29.71l2 2c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L12 9.59V6c0-.55-.45-1-1-1Z"/>
+						</svg>
+						<span class="label-container">
+							<span class="label">${title}</span>
+						</span>
+					</div>
+				</a>
+			</li>
+		`
 
-}
+		let elem = htmlToElement(template);
 
-let updateLaunchpad = (data) => {
+		return elem;
 
-	let launchpad = document.querySelector('.launchpad');
+	}
 
-	if (!launchpad) return;
+	// TODO: Convert this to template elem
 
-	let { mode, lastVisitedPage, lastModifiedPage } = data.uiState;
-	
-	// Update the assessment button
-	let assessmentShortcutField = launchpad.querySelector('.quick-links-container [data-field="assessmentShortcut"]');
+	//
+	// DOM Updates
+	//
 
-	if (assessmentShortcutField) {
+	let updateLaunchpad = (data: UserData, changes) => {
+		let launchpad = document.querySelector('.launchpad');
+		if (!launchpad) return;
 
-		let assessmentShortcutLink = assessmentShortcutField.closest('a');
+		let triggerKeys = [
+			"mode",
+			"lastVisitedPage",
+			"lastModifiedPage",
+		];
+		if (
+			!changes.initiating &&
+			!(
+				changes.uiState &&
+				triggerKeys.some((val) => changes.uiState.includes(val))
+			)
+		)
+			return;
 
-		if (mode === 'assessment') {
-			assessmentShortcutField.textContent = 'Continue assessment';
-			assessmentShortcutLink.href = lastModifiedPage?.path ?? '/big-seven/leadership-and-teaming';
-		} else {
-			assessmentShortcutField.textContent = 'Start an assessment';
-			assessmentShortcutLink.href = '/big-seven';
+		console.log('Updating Launchpad');
+
+		let { mode, lastVisitedPage, lastModifiedPage } = data.uiState;
+		
+		// Update the assessment button
+		let assessmentShortcutField = launchpad.querySelector('.quick-links-container [data-field="assessmentShortcut"]');
+
+		if (assessmentShortcutField) {
+
+			let assessmentShortcutLink = assessmentShortcutField.closest('a');
+
+			if (mode === 'assessment' && lastModifiedPage) {
+				assessmentShortcutField.textContent = 'Continue assessment';
+				assessmentShortcutLink.href = lastModifiedPage?.path ?? '/big-seven/leadership-and-teaming';
+			} else {
+				assessmentShortcutField.textContent = 'Start an assessment';
+				assessmentShortcutLink.href = '/big-seven';
+			}
+
 		}
 
+		// Update the recent page button
+
+		let recentShortcutsList = launchpad.querySelector('.shortcuts-list.recent');
+
+		if (lastVisitedPage && lastVisitedPage.path !== '/') {
+
+			let link = createLaunchpadLink({
+				title: lastVisitedPage.title,
+				path: lastVisitedPage.path,
+			});
+
+			recentShortcutsList.innerHTML = '';
+			recentShortcutsList.append(link);
+
+		}
+
+
 	}
 
-	// Update the recent page button
+	// 
+	// Inits
+	//
 
-	let recentShortcutsList = launchpad.querySelector('.shortcuts-list.recent');
-
-	if (lastVisitedPage.path !== '/') {
-
-		let link = createLaunchpadLink({
-			title: lastVisitedPage.title,
-			path: lastVisitedPage.path,
-		});
-
-		recentShortcutsList.innerHTML = '';
-		recentShortcutsList.append(link);
-
-	}
-
-
-}
-
-if (window.location.pathname === '/') subscribe(updateLaunchpad);
+	if (window.location.pathname === '/') subscribe(updateLaunchpad);
 
 </script>

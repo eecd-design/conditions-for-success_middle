@@ -250,8 +250,6 @@ let phases = [
 																	<IconCaretDown14/>
 																</summary>
 
-																{/* TODO: Investigate style alternative to border separting button from list. Marcia brought this up. Will need an example with multiple resources to see how that looks. */}
-
 																<div class="contents">
 																	<ul class="resources-list links-list" data-style="divided" data-layout="detailed" data-content="resources">
 																		{consideration.resources.map((resource) => {
@@ -259,6 +257,7 @@ let phases = [
 																			data.category = 'resource';
 																			data.slug = resource.id;
 																			return <LinkListItem itemData={data}/> 
+																			// TODO: Add priority to inhouse videos
 																		})}
 																	</ul>
 																</div>
@@ -390,17 +389,13 @@ let phases = [
 		margin: 0.75rem 0 0;
 	}
 
-	.considerations-list form label {
-		display: flex;
+	.considerations-list form label:has(input[type="checkbox"]) {
 		align-items: center;
+		gap: 0;
 		height: 1.5rem;
 		padding: 0 0.5rem 0 0;
 		background-color: var(--colour-fill-accent-subtle);
 		border-radius: var(--border-radius-small);
-		cursor: pointer;
-		user-select: none;
-		position: relative;
-		transition: background-color var(--transition-linear-fast);	
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
@@ -411,32 +406,13 @@ let phases = [
 		background-color: var(--colour-fill-accent-bold);
 	}
 
-	.considerations-list form label input {
+	.considerations-list form label:has(input[type="checkbox"]) input, 
+	.considerations-list form label:has(input[type="checkbox"])::before {
 		height: 1.5rem;
 		width: 1.5rem;
-		opacity: 0;
-		cursor: pointer;
-		z-index: 0;
 	}
 
-	.considerations-list form label::before {
-		content: "";
-		position: absolute;
-		height: 1.5rem;
-		width: 1.5rem;
-		background-color: var(--colour-background);
-		border: 2px solid var(--colour-border-accent-mid);
-		border-radius: var(--border-radius-small);
-		pointer-events: none;
-		z-index: 1;
-		transition: border-color var(--transition-linear-fast);
-	}
-
-	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked))::before {
-		border-color: var(--colour-border-accent-bold);
-	}
-
-	.considerations-list form label .tag {
+	.considerations-list form label:has(input[type="checkbox"]) .tag {
 		margin: 0 0 0 0.375rem;
 		font-size: 0.875rem;
 		font-weight: 700;
@@ -453,22 +429,13 @@ let phases = [
 		color: var(--colour-ui-reverse);
 	}
 	
-	.considerations-list form label .icon.checkmark {
-		--icon-colour: var(--colour-ui-accent);
+	.considerations-list form label:has(input[type="checkbox"]) .icon.checkmark {
 		--icon-size: 0.75rem;
-		position: absolute;
 		top: 0.375rem;
 		left: 0.375rem;
-		z-index: 2;
-		opacity: 0;
-		transition: opacity var(--transition-linear-fast);
 	}
 	
-	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible, :checked)) .icon.checkmark {
-		opacity: 1;
-	}
-	
-	.considerations-list form label .icon.compass {
+	.considerations-list form label:has(input[type="checkbox"]) .icon.compass {
 		--icon-colour: var(--colour-ui-accent);
 		--icon-size: 0.875rem;
 		margin: 0 0 0 0.25rem;
@@ -478,12 +445,12 @@ let phases = [
 		--icon-colour: var(--colour-ui-reverse);
 	}
 
-	main:not([data-mode="assessment"]) .considerations-list form label {
+	main:not([data-mode="assessment"]) .considerations-list form label:has(input[type="checkbox"]) {
 		pointer-events: none;
 	}
 
-	main:not([data-mode="assessment"]) .considerations-list form label :is(input, .icon.checkmark),
-	main:not([data-mode="assessment"]) .considerations-list form label::before {
+	main:not([data-mode="assessment"]) .considerations-list form label:has(input[type="checkbox"]) :is(input, .icon.checkmark),
+	main:not([data-mode="assessment"]) .considerations-list form label:has(input[type="checkbox"])::before {
 		display: none;
 	}
 
@@ -514,7 +481,6 @@ let phases = [
 	//
 
 	import { filter } from "src/utilities/list";
-
 	import {
 		updateChangeLog,
 		getActiveAssessmentData,
@@ -522,6 +488,7 @@ let phases = [
 		setAssessment,
 		updateContinuumCompletion
 	} from "src/stores/userDataStore.js";
+	import { eventControl } from "src/utilities/event";
 
 
 
@@ -529,13 +496,28 @@ let phases = [
 	// DOM Updates
 	//
 
-	let updateConsiderations = () => {
+	let updateConsiderations = (data: UserData, changes) => {
+
+		let triggerKeys = [
+			"considerationsEstablished",
+			"continuumCompletion",
+		];
+		if (
+			!changes.initiating &&
+			!(
+				changes.assessments &&
+				triggerKeys.some((val) => changes.assessments.includes(val))
+			)
+		)
+			return;
 
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 		
 		let currentIndicatorTag = document.querySelector('main').getAttribute('data-indicator-tag');
 		if (!currentIndicatorTag) return;
+
+		console.log('Updating Considerations');
 
 		let relevantConsiderationsEstablished = assessment.considerationsEstablished.filter((consideration) => {
 
@@ -613,10 +595,20 @@ let phases = [
 	}
 
 	//
-	// Inits & Event Listeners
+	// Inits
 	//
 
-	document.addEventListener("input", async (event) => {
+	filter.init();
+	document.addEventListener('astro:before-swap', filter.destroy);
+	document.addEventListener('astro:after-swap', filter.init);
+	
+	subscribe(updateConsiderations);
+
+	//
+	// Event Listeners
+	//
+
+	let onInput = async (event) => {
 
 		let target = event.target as HTMLInputElement;
 
@@ -670,12 +662,12 @@ let phases = [
 
 		}
 
-	});
+	};
+	eventControl.initEvent({
+		elem: document as any,
+		eventType: 'input',
+		fn: onInput,
+	})
 
-	subscribe(updateConsiderations);
-
-	filter.init();
-	document.addEventListener('astro:before-swap', filter.destroy);
-	document.addEventListener('astro:after-swap', filter.init);
 
 </script>

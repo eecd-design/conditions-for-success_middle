@@ -1,13 +1,21 @@
 ---
-import Accordion from 'src/components/Accordion.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
-import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
+import Accordion from "src/components/Accordion.astro";
+import IconXmark from "src/components/icons/IconXmark_20.astro";
+import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 ---
 
 <dialog id="media-dialog" class="media" aria-labelledby="media-dialog_heading">
-	<button class="close-dialog" type="button" aria-label="Close Media Dialog"><IconXmark /></button>
+	<button class="close-dialog" type="button" aria-label="Close Media Dialog"
+		><IconXmark /></button
+	>
 
-	<h2 id="media-dialog_heading" class="heading" data-default-text="Media Resource">Media Resource</h2>
+	<h2
+		id="media-dialog_heading"
+		class="heading"
+		data-default-text="Media Resource"
+	>
+		Media Resource
+	</h2>
 
 	<video controls poster="" hidden>
 		<source src="" />
@@ -16,11 +24,16 @@ import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
 
 	<audio controls src="" hidden></audio>
 
-	<iframe src="" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen hidden></iframe>
+	<iframe
+		src=""
+		frameborder="0"
+		referrerpolicy="strict-origin-when-cross-origin"
+		allowfullscreen
+		hidden></iframe>
 
 	<div class="transcript accordion-group" hidden>
-		<Accordion title={'Transcript'} >
-			<IconTranscript slot="button-icon"/>
+		<Accordion title={"Transcript"}>
+			<IconTranscript slot="button-icon" />
 			<p>Transcript goes here...</p>
 		</Accordion>
 	</div>
@@ -31,8 +44,9 @@ import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
 	// Imports
 	//
 
-	import { dialogControl } from 'src/utilities/dialog';
-	import { stringToBoolean } from 'src/utilities/helpers';
+	import { dialogControl } from "src/utilities/dialog";
+	import { eventControl } from "src/utilities/event";
+	import { stringToBoolean } from "src/utilities/helpers";
 
 	//
 	// Methods
@@ -73,64 +87,82 @@ import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
 	 * @returns {string} URL without the file extension
 	 */
 	let removeFileExtension = function (url) {
-		return url.replace(/\.[^.\/?#]+(?=$|[?#])/, '');
+		return url.replace(/\.[^.\/?#]+(?=$|[?#])/, "");
 	};
 
 	//
-	// Inits & Event Listeners
+	// Inits
 	//
 
-	let mediaDialog = document.querySelector('#media-dialog');
+	let mediaDialog = document.querySelector("#media-dialog");
 
-	document.addEventListener('click', (event) => {
+	document.addEventListener("astro:after-swap", () => {
+		mediaDialog = document.querySelector("#media-dialog");
+	});
+
+	//
+	// Event Listeners
+	//
+
+	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		if (!mediaDialog || !target.matches(`button.open-dialog[data-dialog="media-dialog"]`)) return;
+		if (
+			!mediaDialog ||
+			!target.matches(`button.open-dialog[data-dialog="media-dialog"]`)
+		)
+			return;
 
 		// Get the media elements
-		let video = mediaDialog.querySelector('video');
-		let captions = video?.querySelector('track');
-		let iframe = mediaDialog.querySelector('iframe');
-		let audio = mediaDialog.querySelector('audio');
-		let transcriptAccordion = mediaDialog.querySelector('.transcript');
+		let video = mediaDialog.querySelector("video");
+		let captions = video?.querySelector("track");
+		let iframe = mediaDialog.querySelector("iframe");
+		let audio = mediaDialog.querySelector("audio");
+		let transcriptAccordion = mediaDialog.querySelector(".transcript");
 
 		// Reset visibility
-		video.setAttribute('hidden', '');
-		iframe.setAttribute('hidden', '');
-		audio.setAttribute('hidden', '');
-		transcriptAccordion.setAttribute('hidden', '');
+		video.setAttribute("hidden", "");
+		iframe.setAttribute("hidden", "");
+		audio.setAttribute("hidden", "");
+		transcriptAccordion.setAttribute("hidden", "");
 
 		// Get the media data from the button
-		let mediaType = target.getAttribute('data-media-type');
-		let mediaExternal = target.getAttribute('data-media-external') ? stringToBoolean(target.getAttribute('data-media-external')) : false;
-		let mediaSrc = target.getAttribute('data-media-src');
+		let mediaType = target.getAttribute("data-media-type");
+		let mediaExternal = target.getAttribute("data-media-external")
+			? stringToBoolean(target.getAttribute("data-media-external"))
+			: false;
+		let mediaSrc = target.getAttribute("data-media-src");
 
 		if (!mediaType && !mediaSrc) return;
 
 		// Get a path only verison of the src url
 		let mediaSrcPathOnly = removeFileExtension(mediaSrc);
 
-		if (mediaType === 'video') {
+		if (mediaType === "video") {
 			if (!mediaExternal) {
-				video.setAttribute('src', mediaSrc);
-				video.setAttribute('poster', `${mediaSrcPathOnly}.png`);
-				video.removeAttribute('hidden');
-				captions.setAttribute('src', `${mediaSrcPathOnly}.vtt`);
+				video.setAttribute("src", mediaSrc);
+				video.setAttribute("poster", `${mediaSrcPathOnly}.png`);
+				video.removeAttribute("hidden");
+				captions.setAttribute("src", `${mediaSrcPathOnly}.vtt`);
 			} else {
-				iframe.setAttribute('src', convertURLToEmbedURL(mediaSrc));
-				iframe.removeAttribute('hidden');
+				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
+				iframe.removeAttribute("hidden");
 			}
-		} else if (mediaType === 'audio') {
-			audio.setAttribute('src', mediaSrc);
-			audio.removeAttribute('hidden');
-			transcriptAccordion.removeAttribute('hidden');
-			let transcriptPanel = transcriptAccordion.querySelector('.panel > .content');
-			transcriptPanel.innerHTML = '<p>Updated transcript...</p>';
-
-			// TODO: Figure out how we're going to save transcripts.
+		} else if (mediaType === "audio") {
+			audio.setAttribute("src", mediaSrc);
+			audio.removeAttribute("hidden");
+			transcriptAccordion.removeAttribute("hidden");
+			let transcriptPanel =
+				transcriptAccordion.querySelector(".panel > .content");
+			transcriptPanel.innerHTML = "<p>Updated transcript...</p>";
 		} else {
-			console.warn('Invalid Resource Type');
+			console.warn("Invalid Resource Type");
 			// TODO: Better error handling here
 		}
+	};
+	eventControl.initEvent({
+		elem: document as any,
+		eventType: "click",
+		fn: onClick,
 	});
 </script>

@@ -1,30 +1,55 @@
 ---
-import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
-import Toast from 'src/components/Toast.astro';
-import IconCheckmark from '../icons/IconCheckmark_12.astro';
-import IconWarningSmall from '../icons/IconWarning_16.astro';
+import IconWarningBig from "src/components/icons/IconWarning_24.astro";
+import IconXmark from "src/components/icons/IconXmark_20.astro";
+import Toast from "src/components/Toast.astro";
+import IconCheckmark from "../icons/IconCheckmark_12.astro";
+import IconWarningSmall from "../icons/IconWarning_16.astro";
 ---
 
 <dialog id="edit-status-dialog" aria-describedby="edit-status-dialog_heading">
-	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"><IconXmark /></button>
+	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"
+		><IconXmark /></button
+	>
 
-	<h2 id="edit-status-dialog_heading" class="heading" data-default-text="Update Assessment Status">Update Assessment Status</h2>
+	<h2
+		id="edit-status-dialog_heading"
+		class="heading"
+		data-default-text="Update Assessment Status"
+	>
+		Update Assessment Status
+	</h2>
 	<p id="edit-status-dialog_in-progress-instructions" class="instructions">
-		This assessment is marked as <strong>In Progress</strong>. Mark it as <strong>Complete</strong> to lock editing and make it available on the Report page.
+		This assessment is marked as <strong>In Progress</strong>. Mark it as <strong
+			>Complete</strong
+		> to lock editing and make it available on the Report page.
 	</p>
-	<p id="edit-status-dialog_complete-instructions" class="instructions" hidden>
-		This assessment is marked as <strong>Complete</strong>. Mark it as <strong>In Progress</strong> to unlock editing.
+	<p
+		id="edit-status-dialog_complete-instructions"
+		class="instructions"
+		hidden
+	>
+		This assessment is marked as <strong>Complete</strong>. Mark it as <strong
+			>In Progress</strong
+		> to unlock editing.
 	</p>
-
 
 	<!-- Success Toast located in Assessment Dialogs -->
-	<Toast id={'edit-status-dialog_change-status-toast_failure'} message={`Unable to save. Please reload the page to try again.`} colour={'red'} type={'failure'}>
-		<IconWarningSmall slot={'icon'} />
+	<Toast
+		id={"edit-status-dialog_change-status-toast_failure"}
+		message={`Unable to save. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	>
+		<IconWarningSmall slot={"icon"} />
 	</Toast>
 
 	<div class="button-group">
-		<button class="close-dialog" type="button" data-size="large" data-style="outline">Cancel</button>
+		<button
+			class="close-dialog"
+			type="button"
+			data-size="large"
+			data-style="outline">Cancel</button
+		>
 		<button
 			class="change-status"
 			type="button"
@@ -32,97 +57,183 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 			data-size="large"
 			data-toast-success="edit-status-dialog_change-status-toast_success"
 			data-toast-failure="edit-status-dialog_change-status-toast_failure"
-			aria-describedby="edit-status-dialog_in-progress-instructions">Mark as Complete</button
+			aria-describedby="edit-status-dialog_in-progress-instructions"
+			>Mark as Complete</button
 		>
 	</div>
 </dialog>
 
-<dialog id="status-warning-dialog" aria-describedby="status-warning-dialog_heading">
-	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"><IconXmark /></button>
+<dialog
+	id="status-warning-dialog"
+	aria-describedby="status-warning-dialog_heading"
+>
+	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"
+		><IconXmark /></button
+	>
 
-	<h2 id="status-warning-dialog_heading" class="heading" data-default-text="Reopen Assessment for Editing?">Reopen Assessment for Editing?</h2>
+	<h2
+		id="status-warning-dialog_heading"
+		class="heading"
+		data-default-text="Reopen Assessment for Editing?"
+	>
+		Reopen Assessment for Editing?
+	</h2>
 
-	<div class="callout" data-style="solid" data-vibrancy="vivid" data-fit="compact" data-theme="yellow">
+	<div
+		class="callout"
+		data-style="solid"
+		data-vibrancy="vivid"
+		data-fit="compact"
+		data-theme="yellow"
+	>
 		<div class="icon-container">
 			<IconWarningBig />
 		</div>
 		<div class="text-container">
 			<p>
-				This assessment is marked as <strong>Complete</strong>. To make changes, its status will be updated to <strong>In Progress</strong>.
+				This assessment is marked as <strong>Complete</strong>. To make
+				changes, its status will be updated to <strong
+					>In Progress</strong
+				>.
 			</p>
 		</div>
 	</div>
 
 	<p class="instructions">Do you want to continue?</p>
 
-
 	<!-- Success Toast located in Assessor Dialogs -->
-	<Toast id={'status-warning-dialog_change-status-toast_failure'} message={`Unable to change status. Please reload the page to try again.`} colour={'red'} type={'failure'}>
-		<IconWarningSmall slot={'icon'} />
+	<Toast
+		id={"status-warning-dialog_change-status-toast_failure"}
+		message={`Unable to change status. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	>
+		<IconWarningSmall slot={"icon"} />
 	</Toast>
 
 	<div class="button-group">
-		<button class="close-dialog" type="button" data-size="large" data-style="outline">Cancel</button>
+		<button
+			class="close-dialog"
+			type="button"
+			data-size="large"
+			data-style="outline">Cancel</button
+		>
 		<button
 			class="change-status"
 			type="button"
 			data-style="solid"
 			data-size="large"
 			data-toast-success="status-warning-dialog_change-status-toast_success"
-			data-toast-failure="status-warning-dialog_change-status-toast_failure">Edit Assessment</button
+			data-toast-failure="status-warning-dialog_change-status-toast_failure"
+			>Edit Assessment</button
 		>
 	</div>
 </dialog>
 
 <script>
-	import { getActiveAssessmentData, setState, setAssessment, subscribe, updateChangeLog } from 'src/stores/userDataStore';
-import { dialogControl } from 'src/utilities/dialog';
-	import { toastControl } from 'src/utilities/toast';
+	//
+	// Imports
+	//
+
+	import {
+		getActiveAssessmentData,
+		setState,
+		setAssessment,
+		subscribe,
+		updateChangeLog,
+	} from "src/stores/userDataStore";
+	import { dialogControl } from "src/utilities/dialog";
+	import { eventControl } from "src/utilities/event";
+	import { toastControl } from "src/utilities/toast";
 
 	//
 	// DOM Updates
 	//
 
-	let updateEditStatusDialog = (data: UserData) => {
+	let updateEditStatusDialog = (data: UserData, changes) => {
 		let dialog = editStatusDialog;
+		if (!dialog) return;
+
+		let triggerKeys = ["status"];
+		if (
+			!changes.initiating &&
+			!(
+				changes.assessments &&
+				triggerKeys.some((val) => changes.assessments.includes(val))
+			)
+		)
+			return;
+
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		let isComplete = assessment.status === 'Complete';
+		console.log("Updating Dialog (status)");
 
-		let completeInstructions = dialog.querySelector('#edit-status-dialog_complete-instructions');
-		let inProgressInstructions = dialog.querySelector('#edit-status-dialog_in-progress-instructions');
-		completeInstructions.toggleAttribute('hidden', !isComplete);
-		inProgressInstructions.toggleAttribute('hidden', isComplete);
+		let isComplete = assessment.status === "Complete";
 
-		let btn = dialog.querySelector('button.change-status');
+		let completeInstructions = dialog.querySelector(
+			"#edit-status-dialog_complete-instructions",
+		);
+		let inProgressInstructions = dialog.querySelector(
+			"#edit-status-dialog_in-progress-instructions",
+		);
+		completeInstructions.toggleAttribute("hidden", !isComplete);
+		inProgressInstructions.toggleAttribute("hidden", isComplete);
 
-		btn.textContent = isComplete ? 'Mark as In Progress' : 'Mark as Complete';
-		btn.setAttribute('aria-describedby', isComplete ? 'edit-status-dialog_complete-instructions' : 'edit-status-dialog_in-progress-instructions');
+		let btn = dialog.querySelector("button.change-status");
+
+		btn.textContent = isComplete
+			? "Mark as In Progress"
+			: "Mark as Complete";
+		btn.setAttribute(
+			"aria-describedby",
+			isComplete
+				? "edit-status-dialog_complete-instructions"
+				: "edit-status-dialog_in-progress-instructions",
+		);
 	};
+	//
+	// Inits
+	//
 
+	let editStatusDialog = document.querySelector(
+		"#edit-status-dialog",
+	) as HTMLDialogElement;
+	let statusWarningDialog = document.querySelector(
+		"#status-warning-dialog",
+	) as HTMLDialogElement;
+
+	document.addEventListener("astro:after-swap", () => {
+		editStatusDialog = document.querySelector(
+			"#edit-status-dialog",
+		) as HTMLDialogElement;
+		statusWarningDialog = document.querySelector(
+			"#status-warning-dialog",
+		) as HTMLDialogElement;
+	});
+
+	subscribe(updateEditStatusDialog);
 
 	//
 	// Event Listeners
 	//
 
-	let editStatusDialog = document.querySelector('#edit-status-dialog');
-	let statusWarningDialog = document.querySelector('#status-warning-dialog');
-
-	editStatusDialog.addEventListener('click', (event) => {
+	let onEditStatusClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 		let dialog = editStatusDialog as HTMLDialogElement;
 
-		if (target.matches('button.change-status')) {
+		if (target.matches("button.change-status")) {
 			try {
 				let assessment = getActiveAssessmentData();
 
 				let { status } = assessment;
-				let newStatus = status === 'In Progress' ? 'Complete' : 'In Progress';
+				let newStatus =
+					status === "In Progress" ? "Complete" : "In Progress";
 
 				setAssessment({
 					status: newStatus,
-					dateCompleted: newStatus === 'In Progress' ? null : Date.now(),
+					dateCompleted:
+						newStatus === "In Progress" ? null : Date.now(),
 					changeLog: updateChangeLog({
 						message: `updated assessment status to ${newStatus.toLowerCase()}.`,
 					}),
@@ -131,50 +242,52 @@ import { dialogControl } from 'src/utilities/dialog';
 				// Close the dialog
 				dialog.close();
 
-				toastControl.show({ target, type: 'success' });
+				toastControl.show({ target, type: "success" });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: 'failure' });
+				toastControl.show({ target, type: "failure" });
 			}
 		}
+	};
+	eventControl.initEvent({
+		elem: editStatusDialog,
+		eventType: "click",
+		fn: onEditStatusClick,
 	});
 
-	statusWarningDialog.addEventListener('click', (event) => {
+	let onStatusWarningClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		if (target.matches('button.change-status')) {
+		if (target.matches("button.change-status")) {
 			try {
 				setAssessment({
-					status: 'In Progress',
+					status: "In Progress",
 					dateCompleted: null,
 					changeLog: updateChangeLog({
 						message: `updated assessment status to in progress.`,
 					}),
 				});
 
-				toastControl.show({ target, type: 'success' });
+				toastControl.show({ target, type: "success" });
 
 				setState({
-					mode: 'assessment',
+					mode: "assessment",
 				});
 
 				dialogControl.open({
-					dialogId: 'assessor-dialog',
-					headingText: 'Select Active Assessor',
-					context: 'setup',
+					dialogId: "assessor-dialog",
+					headingText: "Select Active Assessor",
+					context: "setup",
 				});
-
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: 'failure' });
+				toastControl.show({ target, type: "failure" });
 			}
 		}
+	};
+	eventControl.initEvent({
+		elem: statusWarningDialog,
+		eventType: "click",
+		fn: onStatusWarningClick,
 	});
-
-
-	//
-	// Inits
-	//
-
-	subscribe(updateEditStatusDialog);
 </script>

@@ -148,6 +148,7 @@ let indicators = allIndicators.sort((a, b) =>
 	import { getFormValues, resetForm } from "src/utilities/form";
 	import { dialogControl } from "src/utilities/dialog";
 	import { toastControl } from "src/utilities/toast";
+	import { eventControl } from "src/utilities/event";
 
 	//
 	// Methods
@@ -161,11 +162,31 @@ let indicators = allIndicators.sort((a, b) =>
 	 * Update the select-assessor dialog UI from stored assessment data
 	 * @param data
 	 */
-	let updateReportSettingsDialog = (data: UserData) => {
+	let updateReportSettingsDialog = (data: UserData, changes) => {
+		if (!dialog) return;
+
+		let preferencesTriggerKeys = ["reportIncludedIndicators"];
+		let assessmentTriggerKeys = ["continuumCompletion"];
+		if (
+			!changes.initiating &&
+			!(
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) =>
+						changes.assessments.includes(val),
+					)) ||
+				(changes.uiPreferences &&
+					preferencesTriggerKeys.some((val) =>
+						changes.uiPreferences.includes(val),
+					))
+			)
+		)
+			return;
+
 		let preferences = data.uiPreferences;
 		if (!preferences) return;
 
 		let assessment = getActiveReportData();
+		if (!assessment) return;
 
 		let checkboxes = dialog.querySelectorAll(
 			"fieldset.indicators input",
@@ -176,14 +197,13 @@ let indicators = allIndicators.sort((a, b) =>
 				checkbox.setAttribute("checked", "");
 			else checkbox.removeAttribute("checked");
 
-			if (assessment?.continuumCompletion[checkbox.value])
+			if (assessment.continuumCompletion[checkbox.value])
 				checkbox.setAttribute("data-assessed", "");
 			else checkbox.removeAttribute("data-assessed");
 		}
 	};
-
 	//
-	// Event Listeners
+	// Inits
 	//
 
 	let dialog = document.querySelector(
@@ -192,7 +212,21 @@ let indicators = allIndicators.sort((a, b) =>
 	let form = dialog?.querySelector("form") as HTMLFormElement;
 	let saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
 
-	dialog.addEventListener("click", (event) => {
+	document.addEventListener("astro:after-swap", () => {
+		dialog = document.querySelector(
+			"#report-settings-dialog",
+		) as HTMLDialogElement;
+		form = dialog?.querySelector("form") as HTMLFormElement;
+		saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
+	});
+
+	subscribe(updateReportSettingsDialog);
+
+	//
+	// Event Listeners
+	//
+
+	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
 		if (target.matches("button.close-dialog")) {
@@ -249,19 +283,23 @@ let indicators = allIndicators.sort((a, b) =>
 
 			saveBtn.removeAttribute("disabled");
 		}
+	};
+	eventControl.initEvent({
+		elem: dialog,
+		eventType: "click",
+		fn: onClick,
 	});
 
-	dialog.addEventListener("change", (event) => {
+	let onChange = (event) => {
 		let target = event.target as HTMLInputElement | HTMLSelectElement;
 
 		if (target.matches(`input[type="checkbox"]`)) {
 			saveBtn.removeAttribute("disabled");
 		}
+	};
+	eventControl.initEvent({
+		elem: dialog,
+		eventType: "change",
+		fn: onChange,
 	});
-
-	//
-	// Inits
-	//
-
-	subscribe(updateReportSettingsDialog);
 </script>

@@ -5,14 +5,11 @@ import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconXmark from "src/components/icons/IconXmark_20.astro";
 import Toast from "src/components/Toast.astro";
 import IconCheckmark from "../icons/IconCheckmark_12.astro";
-
-let { context } = Astro.props;
 ---
 
 <dialog
 	id="open-assessment-dialog"
 	aria-describedby="open-assessment-dialog_heading"
-	data-context={context ?? "assessment"}
 >
 	<button
 		class="close-dialog"
@@ -505,6 +502,7 @@ let { context } = Astro.props;
 		generateContinuumCompletion,
 		deleteImportConflictData,
 	} from "src/stores/userDataStore";
+	import { eventControl } from "src/utilities/event";
 
 	//
 	// Methods
@@ -668,9 +666,25 @@ let { context } = Astro.props;
 	 * Update the open-assessment dialog UI from stored assessment data
 	 * @param data
 	 */
-	let updateOpenAssessmentDialog = (data: UserData) => {
+	let updateOpenAssessmentDialog = (data: UserData, changes) => {
 		let dialog = document.querySelector("#open-assessment-dialog");
-		let context = dialog.getAttribute("data-context") ?? "assessment";
+		if (!dialog) return;
+
+		let stateTriggerKeys = ["activeAssessmentId", "activeReportId"];
+		if (
+			!changes.initiating &&
+			!(
+				changes.assessments ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
+			)
+		)
+			return;
+
+		let context =
+			window.location.pathname === "/report" ? "report" : "assessment";
 		let savedAssessmentList = dialog?.querySelector(
 			"ul.saved-assessments-list",
 		);
@@ -679,7 +693,7 @@ let { context } = Astro.props;
 		let savedAssessmentsSection = savedAssessmentList.closest("section");
 		let hr = dialog.querySelector("hr.group");
 
-		if (!dialog || !savedAssessmentList) return;
+		if (!savedAssessmentList) return;
 
 		// Clear out the list
 		for (let item of savedAssessmentListItems) item.remove();
@@ -744,9 +758,11 @@ let { context } = Astro.props;
 		importedAssessment,
 		localAssessment,
 	}) => {
+		let dialog = importConflictDialog;
+		if (!dialog) return;
+
 		if (!importedAssessment || !localAssessment) return;
 
-		let dialog = importConflictDialog;
 		let localCard = dialog.querySelector(".conflicting-assessments .local");
 		let importedCard = dialog.querySelector(
 			".conflicting-assessments .imported",
@@ -800,7 +816,6 @@ let { context } = Astro.props;
 			for (let key of metadataKeys) {
 				let field = card.querySelector(`[data-field="${key}"]`);
 				if (!field) return;
-				console.log(key, assessment[key]);
 				let value = assessment[key] || "(none)";
 				if (value !== "(none)" && key.startsWith("date"))
 					value = formatDateAsHTML(value);
@@ -824,22 +839,41 @@ let { context } = Astro.props;
 	};
 
 	//
-	// Event Listeners
+	// Inits
 	//
 
 	let openAssessmentDialog = document.querySelector(
 		"#open-assessment-dialog",
-	);
+	) as HTMLDialogElement;
 	let importConflictDialog = document.querySelector(
 		"#import-conflict-dialog",
-	);
+	) as HTMLDialogElement;
 
-	openAssessmentDialog.addEventListener("click", (event) => {
+	document.addEventListener("astro:after-swap", () => {
+		openAssessmentDialog = document.querySelector(
+			"#open-assessment-dialog",
+		) as HTMLDialogElement;
+		importConflictDialog = document.querySelector(
+			"#import-conflict-dialog",
+		) as HTMLDialogElement;
+	});
+
+	subscribe(updateOpenAssessmentDialog);
+
+	//
+	// Event Listeners
+	//
+
+	let onOpenAssessmentClick = (event) => {
 		let target = event.target as HTMLButtonElement;
+		let dialog = openAssessmentDialog;
 
 		if (target.matches("button.open-assessment")) {
 			try {
-				let context = openAssessmentDialog.getAttribute("data-context");
+				let context =
+					window.location.pathname === "/report"
+						? "report"
+						: "assessment";
 
 				if (context === "assessment") {
 					let assessment = getActiveAssessmentData();
@@ -891,7 +925,7 @@ let { context } = Astro.props;
 					toastControl.show({ target, type: "success" });
 					// TODO: Customize toast to report
 
-					dialogControl.close(openAssessmentDialog);
+					dialogControl.close(dialog);
 				}
 			} catch (error) {
 				console.error(error);
@@ -926,9 +960,14 @@ let { context } = Astro.props;
 				toastControl.show({ target, type: "failure" });
 			}
 		}
+	};
+	eventControl.initEvent({
+		elem: openAssessmentDialog,
+		eventType: "click",
+		fn: onOpenAssessmentClick,
 	});
 
-	openAssessmentDialog.addEventListener("change", async (event) => {
+	let onOpenAssessmentChange = async (event) => {
 		let target = event.target as any;
 
 		if (target.matches('input[type="file"]')) {
@@ -957,9 +996,14 @@ let { context } = Astro.props;
 			// Clear user uploaded file, so it can be selected again if needed
 			target.value = "";
 		}
+	};
+	eventControl.initEvent({
+		elem: openAssessmentDialog,
+		eventType: "change",
+		fn: onOpenAssessmentChange,
 	});
 
-	openAssessmentDialog.addEventListener("input", (event) => {
+	let onOpenAssessmentInput = (event) => {
 		let target = event.target as any;
 
 		if (target.matches('[type="text"][name="import-code"]')) {
@@ -973,9 +1017,14 @@ let { context } = Astro.props;
 				importBtn.setAttribute("disabled", "");
 			}
 		}
+	};
+	eventControl.initEvent({
+		elem: openAssessmentDialog,
+		eventType: "input",
+		fn: onOpenAssessmentInput,
 	});
 
-	importConflictDialog.addEventListener("click", async (event) => {
+	let onImportConflictClick = async (event) => {
 		let target = event.target as any;
 
 		if (target.matches("button.overwrite")) {
@@ -1017,11 +1066,10 @@ let { context } = Astro.props;
 		if (target.matches("button.keep")) {
 			deleteImportConflictData();
 		}
+	};
+	eventControl.initEvent({
+		elem: importConflictDialog,
+		eventType: "click",
+		fn: onImportConflictClick,
 	});
-
-	//
-	// Inits
-	//
-
-	subscribe(updateOpenAssessmentDialog);
 </script>

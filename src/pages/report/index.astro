@@ -5,6 +5,7 @@ import IconArrowRight16 from "src/components/icons/IconArrowRight_16.astro";
 import IconFolder20 from "src/components/icons/IconFolder_20.astro";
 import IconCross20 from "src/components/icons/IconCross_20.astro";
 import IconDownload20 from "src/components/icons/IconDownload_20.astro";
+import IconCog20 from "src/components/icons/IconCog_20.astro";
 import IconXmark16 from "src/components/icons/IconXmark_16.astro";
 import ProgressChart from "src/components/charts/ProgressChart.astro";
 import MatrixChart from "src/components/charts/MatrixChart.astro";
@@ -39,7 +40,6 @@ let allComponents = await getCollection("components");
 				{indicators.map((indicator) => (
 					<li>
 						<a href={`#indicator-${indicator.data.tag}`} data-tag={indicator.data.tag}>
-						{/* TODO: Hide depending on prefrences */}
 							<span class="icon-container">
 								<IconArrowRight16 classes={['destination']} />
 							</span>
@@ -57,8 +57,6 @@ let allComponents = await getCollection("components");
 	<ReportDialogs/>
 
 	<div class="content report">
-
-		<!-- TODO: Add toggle to not show unassessed indicators (0 considerations/established) -->
 
 		<h1 aria-live="polite">
 			<span class="title" data-field="reportSchool">Report</span>
@@ -79,7 +77,7 @@ let allComponents = await getCollection("components");
 						</span>
 					</div>
 				</a>
-				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button" data-style="solid" data-size="large">
+				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-context="report" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button" data-style="solid" data-size="large">
 					<div class="icon-and-label-container">
 						<IconFolder20/>
 						<span class="label-container">
@@ -90,9 +88,9 @@ let allComponents = await getCollection("components");
 			</div>
 		</div>
 
-		<div class="report-controls" data-print="false" data-restrict-report="active">
+		<div id="report-controls" data-print="false" data-restrict-report="active">
 			<div class="button-group">
-				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button">
+				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-context="report" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button">
 					<div class="icon-and-label-container">
 						<IconFolder20/>
 						<span class="label-container">
@@ -105,8 +103,7 @@ let allComponents = await getCollection("components");
 
 				<button class="open-dialog" data-dialog="report-settings-dialog" aria-label="Modify Report Settings" type="button" >
 					<div class="icon-and-label-container">
-						<IconDownload20/>
-						<!-- TODO: Create settings icon -->
+						<IconCog20/>
 						<span class="label-container">
 							<span class="label">Settings</span>
 						</span>
@@ -126,7 +123,7 @@ let allComponents = await getCollection("components");
 				
 				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
 
-				<button class="close-report" data-dialog="open-assessment-dialog" aria-label="Close Assessment Report" type="button" >
+				<button class="close-report" aria-label="Close Assessment Report" type="button" >
 					<div class="icon-and-label-container">
 						<IconXmark16/>
 						<span class="label-container">
@@ -183,8 +180,6 @@ let allComponents = await getCollection("components");
 
 </BaseLayout>
 
-<!-- TODO: Should include a welcome screen for when there are no assessment to report on. -->
-
 <style is:global>
 
 	.content.report h1 .subtitle {
@@ -208,7 +203,7 @@ let allComponents = await getCollection("components");
 		--icon-colour: var(--colour-ui-neutral); 
 	}
 
-	.report-controls {
+	#report-controls {
 		--group-gap: 0.5rem;
 		display: inline-flex;
 		flex-flow: row nowrap;
@@ -221,22 +216,22 @@ let allComponents = await getCollection("components");
 		border-radius: var(--border-radius-normal);
 	}
 
-	.report-controls :is(button, [data-style-as='button']) {
+	#report-controls :is(button, [data-style-as='button']) {
 		--icon-size: 1.25rem;
 		--button-background-colour: transparent;
 	}
 
-	.report-controls :is(button, [data-style-as='button']):is(:hover, :focus-visible) {
+	#report-controls :is(button, [data-style-as='button']):is(:hover, :focus-visible) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 		--button-background-colour: var(--colour-fill-neutral-bold);
 	}
 
-	.report-controls button.close-report {
+	#report-controls button.close-report {
 		--icon-size: 1rem;
 	}
 
-	.report-controls .separator.item {
+	#report-controls .separator.item {
 		--separator-long-edge-dimension: 1.75rem;
 	}
 
@@ -260,7 +255,7 @@ let allComponents = await getCollection("components");
 		main > aside,
 		dialog,
 		hr,
-		.report-controls,
+		#report-controls,
 		footer {
 			display: none !important;
 		}
@@ -273,117 +268,19 @@ let allComponents = await getCollection("components");
 	// Imports
 	//
 
-	import { findIndexByKey, formatDateAsHTML, formatDateAsString, sanitizeHTML } from 'src/utilities/helpers';
-	import { userDataStore, getUserData, getAssessmentName, getAssessmentDate, getStatusColour, setState, setAssessment, importAssessment, subscribe, decompressData, setPreferences } from 'src/stores/userDataStore';
-	import { dialogControl } from 'src/utilities/dialog';
-	import { toastControl } from 'src/utilities/toast';
+	import { formatDateAsString } from 'src/utilities/helpers';
+	import { userDataStore, setState, subscribe, setPreferences } from 'src/stores/userDataStore';
 	import {
 		getActiveReportData,
 	} from 'src/stores/userDataStore';
 	import html2canvas from 'html2canvas';
 	import jsPDF from 'jspdf';
+	import { eventControl } from 'src/utilities/event';
 
 	//
 	// Methods
 	//
 
-
-	//
-	// DOM Updates
-	//
-
-	let updateReport = async (data: UserData) => {
-
-		let main = document.querySelector('main');
-
-		let report = document.querySelector('#report-container');
-		let sections = report?.querySelectorAll(':scope > section');
-		let onPageNav = document.querySelector('aside.on-page-nav-container');
-		let reportHeading = document.querySelector('h1');
-		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
-		let reportHeadingYear = reportHeading?.querySelector('[data-field="reportYear"]');
-
-		if (!data.uiState.activeReportId) {
-
-			main.setAttribute('data-report', 'inactive');
-			reportHeadingSchool.textContent = 'Report';
-
-		} else {
-
-			let assessment = getActiveReportData();
-			if (!assessment) return;
-			
-			main.setAttribute('data-report', 'active');
-			
-			let onPageNavLinks = onPageNav.querySelectorAll('a');
-			for (let link of onPageNavLinks) {
-				if (link.getAttribute('data-tag') === '0') continue;
-				if (data.uiPreferences.reportIncludedIndicators.includes(link.getAttribute('data-tag'))) link.closest('li').removeAttribute('hidden');
-				else link.closest('li').setAttribute('hidden', '');
-			}
-
-			reportHeadingSchool.textContent = assessment.school;
-			reportHeadingYear.textContent = assessment.reportingYear;
-
-			for (let section of sections) {
-
-				let mainScopeTag = section.getAttribute('data-tag');
-				let mainScopeCompletion = mainScopeTag === '0' ? assessment.continuumCompletion.continuum : assessment.continuumCompletion[mainScopeTag];
-
-				let progressChart = section.querySelector('.progress');
-				let progressChartSegments = progressChart.querySelectorAll('.segment-container');
-
-				for (let segment of progressChartSegments) {
-
-					let phase = segment.getAttribute('data-phase');
-
-					let activePhase = mainScopeCompletion ? mainScopeCompletion.phase.toLowerCase() : 'initiating';
-
-					if (phase.toLowerCase() === activePhase) {
-						segment.setAttribute('data-active', '');
-					} else {
-						segment.removeAttribute('data-active');
-					}
-
-					let countField = segment.querySelector('[data-field="count"]');
-					let totalField = segment.querySelector('[data-field="total"]');
-
-					let phaseTotal;
-					if (!mainScopeCompletion) {
-						let count = await userDataStore.getConsiderationCount();
-						phaseTotal = mainScopeTag === '0' ? count.continuum[phase] : count[mainScopeTag][phase];
-					}
-
-					countField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
-					totalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
-
-				}
-
-				let matrixChart = section.querySelector('.matrix');
-				let matrixChartRows = matrixChart.querySelectorAll('tr');
-
-				for (let row of matrixChartRows) {
-
-					let subScopeTag = row.getAttribute('data-tag');
-
-					let subScopeCompletion = assessment.continuumCompletion[subScopeTag];
-
-					if (!subScopeCompletion) continue;
-
-					row.setAttribute('data-phase', subScopeCompletion.phase.toLowerCase());
-
-				}
-
-
-				let reportIncludedIndicators = data.uiPreferences.reportIncludedIndicators;
-
-				if (mainScopeTag === '0' || reportIncludedIndicators.includes(mainScopeTag)) section.removeAttribute('hidden');
-				else section.setAttribute('hidden', '');
-
-			}
-
-		}
-	}
 
 	let fetchFontBase64 = async (url: string) => {
 		const res = await fetch(url);
@@ -603,7 +500,142 @@ let allComponents = await getCollection("components");
 
 	}
 
-	document.addEventListener('click', async (event) => {
+	//
+	// DOM Updates
+	//
+
+	let updateReport = async (data: UserData, changes) => {		
+		let reportContainer = document.querySelector('#report-container');
+		if (!reportContainer) return;
+
+		let stateTriggerKeys = ["activeReportId"];
+		let preferencesTriggerKeys = ["reportIncludedIndicators"];
+		let assessmentTriggerKeys = ["school", "reportingYear", "continuumCompletion"];
+		if (
+			!changes.initiating &&
+			!(
+				(changes.assessments &&
+				assessmentTriggerKeys.some((val) => changes.assessments.includes(val)))
+			||
+				(changes.uiPreferences &&
+				preferencesTriggerKeys.some((val) => changes.uiPreferences.includes(val)))
+			||
+				(changes.uiState &&
+				stateTriggerKeys.some((val) => changes.uiState.includes(val))) 
+			)
+		)
+			return;	
+			
+		console.log('Updating Report (page)');
+		
+		let main = document.querySelector('main');
+		let sections = reportContainer?.querySelectorAll(':scope > section');
+		let onPageNav = document.querySelector('aside.on-page-nav-container');
+		let reportHeading = document.querySelector('h1');
+		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
+		let reportHeadingYear = reportHeading?.querySelector('[data-field="reportYear"]');
+
+		if (!data.uiState.activeReportId) {
+
+			main.setAttribute('data-report', 'inactive');
+			reportHeadingSchool.textContent = 'Report';
+
+		} else {
+
+			let assessment = getActiveReportData();
+			if (!assessment) return;
+
+			console.log('Updating Report (report)');
+			
+			main.setAttribute('data-report', 'active');
+			
+			let onPageNavLinks = onPageNav.querySelectorAll('a');
+			for (let link of onPageNavLinks) {
+				if (link.getAttribute('data-tag') === '0') continue;
+				if (data.uiPreferences.reportIncludedIndicators.includes(link.getAttribute('data-tag'))) link.closest('li').removeAttribute('hidden');
+				else link.closest('li').setAttribute('hidden', '');
+			}
+
+			reportHeadingSchool.textContent = assessment.school;
+			reportHeadingYear.textContent = assessment.reportingYear;
+
+			for (let section of sections) {
+
+				let mainScopeTag = section.getAttribute('data-tag');
+				let mainScopeCompletion = mainScopeTag === '0' ? assessment.continuumCompletion.continuum : assessment.continuumCompletion[mainScopeTag];
+
+				let progressChart = section.querySelector('.progress');
+				let progressChartSegments = progressChart.querySelectorAll('.segment-container');
+
+				for (let segment of progressChartSegments) {
+
+					let phase = segment.getAttribute('data-phase');
+
+					let activePhase = mainScopeCompletion ? mainScopeCompletion.phase.toLowerCase() : 'initiating';
+
+					if (phase.toLowerCase() === activePhase) {
+						segment.setAttribute('data-active', '');
+					} else {
+						segment.removeAttribute('data-active');
+					}
+
+					let countField = segment.querySelector('[data-field="count"]');
+					let totalField = segment.querySelector('[data-field="total"]');
+
+					let phaseTotal;
+					if (!mainScopeCompletion) {
+						let count = await userDataStore.getConsiderationCount();
+						phaseTotal = mainScopeTag === '0' ? count.continuum[phase] : count[mainScopeTag][phase];
+					}
+
+					countField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
+					totalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
+
+				}
+
+				let matrixChart = section.querySelector('.matrix');
+				let matrixChartRows = matrixChart.querySelectorAll('tr');
+
+				for (let row of matrixChartRows) {
+
+					let subScopeTag = row.getAttribute('data-tag');
+
+					let subScopeCompletion = assessment.continuumCompletion[subScopeTag];
+
+					if (!subScopeCompletion) continue;
+
+					row.setAttribute('data-phase', subScopeCompletion.phase.toLowerCase());
+
+				}
+
+
+				let reportIncludedIndicators = data.uiPreferences.reportIncludedIndicators;
+
+				if (mainScopeTag === '0' || reportIncludedIndicators.includes(mainScopeTag)) section.removeAttribute('hidden');
+				else section.setAttribute('hidden', '');
+
+			}
+
+		}
+	}
+
+	//
+	// Inits
+	//
+
+	let reportToolbar = document.querySelector('#report-controls') as HTMLElement;
+
+	document.addEventListener("astro:after-swap", () => {
+		reportToolbar = document.querySelector('#report-controls') as HTMLElement;
+	});	
+
+	subscribe(updateReport);
+
+	//
+	// Event Listeners
+	//
+
+	let onClick = async (event) => {
 		let target = event.target as any;
 
 		if (target.matches('button.download-report')) {
@@ -620,8 +652,14 @@ let allComponents = await getCollection("components");
 			})
 		}
 
+	}
+	eventControl.initEvent({
+		elem: reportToolbar,
+		eventType: 'click',
+		fn: onClick,
 	})
 
-	subscribe(updateReport);
+
+
 
 </script>

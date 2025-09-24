@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 import Header from "../components/Header.astro";
 
@@ -27,7 +27,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 		/>
 		<!-- Aesthet Nova Font ~ Adobe Fonts -->
 		<link rel="stylesheet" href="https://use.typekit.net/omy5wmz.css" />
-		<ViewTransitions />
+		<ClientRouter />
 	</head>
 	<body>
 		<Header />
@@ -39,6 +39,10 @@ const { pageTitle, indicatorTag } = Astro.props;
 		</main>
 		<footer></footer>
 	</body><script>
+		//
+		// Imports
+		//
+
 		import {
 			getActiveAssessmentData,
 			setState,
@@ -47,10 +51,27 @@ const { pageTitle, indicatorTag } = Astro.props;
 		import { scrollIntoView } from "src/utilities/helpers";
 		import { dialogControl } from "src/utilities/dialog";
 
-		let updateTheme = (data) => {
-			let theme = data.uiPreferences.theme;
+		//
+		// DOM Updates
+		//
 
+		let updateTheme = (data: UserData, changes) => {
+			let triggerKeys = ["theme"];
+			if (
+				!changes.initiating &&
+				!(
+					changes.uiPreferences &&
+					triggerKeys.some((val) =>
+						changes.uiPreferences.includes(val),
+					)
+				)
+			)
+				return;
+
+			let theme = data.uiPreferences.theme;
 			if (theme !== "dark" && theme !== "light") return;
+
+			console.log("Updating Theme (on html)");
 
 			// Get the html root
 			let html = document.documentElement;
@@ -59,10 +80,21 @@ const { pageTitle, indicatorTag } = Astro.props;
 			html.setAttribute("data-theme", theme);
 		};
 
-		let updateMode = (data) => {
-			let mode = data.uiState.mode;
+		let updateMode = (data: UserData, changes) => {
+			let triggerKeys = ["mode"];
+			if (
+				!changes.initiating &&
+				!(
+					changes.uiState &&
+					triggerKeys.some((val) => changes.uiState.includes(val))
+				)
+			)
+				return;
 
+			let mode = data.uiState.mode;
 			if (mode !== "assessment" && mode !== "reading") mode = "reading";
+
+			console.log("Updating Mode (on main)");
 
 			// Get the main
 			let main = document.querySelector("main");
@@ -71,12 +103,23 @@ const { pageTitle, indicatorTag } = Astro.props;
 			main.setAttribute("data-mode", mode);
 		};
 
-		let updateStatus = (data) => {
+		let updateStatus = (data: UserData, changes) => {
+			let triggerKeys = ["status"];
+			if (
+				!changes.initiating &&
+				!(
+					changes.assessments &&
+					triggerKeys.some((val) => changes.assessments.includes(val))
+				)
+			)
+				return;
+
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
 
-			let status = assessment.status;
+			console.log("Updating Status (on main)");
 
+			let status = assessment.status;
 			if (status !== "In Progress" && status !== "Complete")
 				status = "In Progress";
 
@@ -90,9 +133,21 @@ const { pageTitle, indicatorTag } = Astro.props;
 			);
 		};
 
-		let updateAssessor = (data) => {
+		let updateAssessor = (data: UserData, changes) => {
+			let triggerKeys = ["status"];
+			if (
+				!changes.initiating &&
+				!(
+					changes.assessments &&
+					triggerKeys.some((val) => changes.assessments.includes(val))
+				)
+			)
+				return;
+
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
+
+			console.log("Updating Assessor (on main)");
 
 			// Get the main
 			let main = document.querySelector("main");
@@ -107,6 +162,10 @@ const { pageTitle, indicatorTag } = Astro.props;
 				main.setAttribute("data-assessor", "true");
 			}
 		};
+
+		//
+		// Methods
+		//
 
 		let scrollToConsideration = (tag) => {
 			let consideration = document.querySelector(`[value="${tag}"]`);
@@ -130,10 +189,25 @@ const { pageTitle, indicatorTag } = Astro.props;
 		};
 
 		//
-		// Inits & Event listeners
+		// Inits
+		//
+
+		subscribe(updateTheme);
+		subscribe(updateMode);
+		subscribe(updateStatus);
+		subscribe(updateAssessor);
+
+		dialogControl.init();
+		document.addEventListener("astro:before-swap", dialogControl.destroy);
+		document.addEventListener("astro:after-swap", dialogControl.init);
+
+		//
+		// Event listeners
 		//
 
 		window.addEventListener("popstate", () => {
+			// Handles hash changes on the active page
+
 			let hash = window.location.hash;
 			if (!hash) return;
 
@@ -163,6 +237,8 @@ const { pageTitle, indicatorTag } = Astro.props;
 				});
 			}
 
+			// Handles hash changes on a new page
+
 			let hash = window.location.hash;
 
 			if (hash.includes("consideration")) {
@@ -184,14 +260,5 @@ const { pageTitle, indicatorTag } = Astro.props;
 				});
 			}
 		});
-
-		subscribe(updateTheme);
-		subscribe(updateMode);
-		subscribe(updateStatus);
-		subscribe(updateAssessor);
-
-		dialogControl.init();
-		document.addEventListener("astro:before-swap", dialogControl.destroy);
-		document.addEventListener("astro:after-swap", dialogControl.init);
 	</script>
 </html>
