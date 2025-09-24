@@ -20,51 +20,59 @@ import { findObjectByKey } from "src/utilities/helpers";
 let allResources = await getCollection("resources");
 
 allResources.sort((a, b) => {
-	let toDate = (value?: Date) => value ? new Date(value) : new Date(0);
-	return toDate(b.data.dateAdded).getTime() - toDate(a.data.dateAdded).getTime();
+	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
+	return (
+		toDate(b.data.dateAdded).getTime() - toDate(a.data.dateAdded).getTime()
+	);
 });
 
 let allIndicators = await getCollection("indicators");
 
 allIndicators.sort((a, b) => {
-	return (a.data.tag || '').localeCompare(b.data.tag || '');
+	return (a.data.tag || "").localeCompare(b.data.tag || "");
 });
 
 let allComponents = await getCollection("components");
 
 allComponents.map((component) => {
-	let indicator = findObjectByKey(allIndicators, 'id', component.data.indicator);
-	component.data['colour'] = indicator.data.colour;
-})
-
-allComponents.sort((a, b) => {
-	return (a.data.tag || '').localeCompare(b.data.tag || '');
+	let indicator = findObjectByKey(
+		allIndicators,
+		"id",
+		component.data.indicator,
+	);
+	component.data["colour"] = indicator.data.colour;
 });
 
-let types = [
-	'Audio',
-	'Document',
-	'Presentation',
-	'Video',
-	'Website',
-];
+allComponents.sort((a, b) => {
+	return (a.data.tag || "").localeCompare(b.data.tag || "");
+});
 
+let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 ---
 
-<BaseLayout pageTitle={'Resources'}>
-
-	<MediaDialog/>
+<BaseLayout pageTitle={"Resources"}>
+	<MediaDialog />
 
 	<aside class="filters-container">
-
-		<form id="resources-list-secondary-controls" class="list-secondary-controls" data-no-value-behaviour="shown" data-list="resources-list" data-tags-list="active-filters-list" data-sort-control="resources-list-primary-controls">
-			
+		<form
+			id="resources-list-secondary-controls"
+			class="list-secondary-controls"
+			data-no-value-behaviour="shown"
+			data-list="resources-list"
+			data-tags-list="active-filters-list"
+			data-sort-control="resources-list-primary-controls"
+		>
 			<div class="heading-group">
 				<h2 class="heading">
 					<!-- <IconFilter /> -->
 					<span>Filters</span>
 				</h2>
-				<div class="separator" data-orientation="vertical" aria-hidden="true"></div>
+				<div
+					class="separator"
+					data-orientation="vertical"
+					aria-hidden="true"
+				>
+				</div>
 				<label class="filters-reset" data-style-as="button">
 					<div class="icon-and-label-container">
 						<IconFilterClear />
@@ -72,17 +80,26 @@ let types = [
 							<span class="label">Clear Filters</span>
 						</span> -->
 					</div>
-					<input type="reset" value=""/>
+					<input type="reset" value="" />
 				</label>
 			</div>
 
 			<div class="separator group" aria-hidden="true"></div>
-			
-			<Accordion title={'Type'} id={'filters_type'} crossIconSize={'small'} wrapper={false}>
 
-				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
-					<span data-field="filtersTypesStatus" >0</span>&nbsp;Selected</span>
-				</span>
+			<Accordion
+				title={"Type"}
+				id={"filters_type"}
+				crossIconSize={"small"}
+				wrapper={false}
+			>
+				<span
+					class="filter-group-status label-container field-container"
+					slot="button-meta"
+					hidden
+				>
+					<span data-field="filtersTypesStatus">0</span
+					>&nbsp;Selected</span
+				>
 
 				<div class="separator item" aria-hidden="true"></div>
 
@@ -90,24 +107,37 @@ let types = [
 					{
 						types.map((type) => (
 							<label>
-								<input type="checkbox" name="types" value={type.toLowerCase()} data-title={type} data-status-field="filtersTypesStatus"/>
-								<IconCheckmark/>
+								<input
+									type="checkbox"
+									name="types"
+									value={type.toLowerCase()}
+									data-title={type}
+									data-status-field="filtersTypesStatus"
+								/>
+								<IconCheckmark />
 								<span class="text-container">{type}</span>
 							</label>
 						))
 					}
 				</fieldset>
-
 			</Accordion>
-			
 
 			<div class="separator group" aria-hidden="true"></div>
 
-			<Accordion title={'Indicator'} id={'filters_indicator'} crossIconSize={'small'} wrapper={false}>
-
-				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
-					<span data-field="filtersIndicatorsStatus" >0</span>&nbsp;Selected</span>
-				</span>
+			<Accordion
+				title={"Indicator"}
+				id={"filters_indicator"}
+				crossIconSize={"small"}
+				wrapper={false}
+			>
+				<span
+					class="filter-group-status label-container field-container"
+					slot="button-meta"
+					hidden
+				>
+					<span data-field="filtersIndicatorsStatus">0</span
+					>&nbsp;Selected</span
+				>
 
 				<div class="separator item" aria-hidden="true"></div>
 
@@ -115,26 +145,48 @@ let types = [
 					{
 						allIndicators.map((indicator) => (
 							<label>
-								<input type="checkbox" name="indicators" value={indicator.data.tag} data-title={indicator.data.title} data-status-field="filtersIndicatorsStatus"/>
-								<IconCheckmark/>
+								<input
+									type="checkbox"
+									name="indicators"
+									value={indicator.data.tag}
+									data-title={indicator.data.title}
+									data-status-field="filtersIndicatorsStatus"
+								/>
+								<IconCheckmark />
 								<span class="text-container">
-									<span class="tag" data-theme={indicator.data['colour']} data-vibrancy="vivid">{indicator.data.tag}</span>
-									<span class="text">{indicator.data.title}</span>
+									<span
+										class="tag"
+										data-theme={indicator.data["colour"]}
+										data-vibrancy="vivid"
+									>
+										{indicator.data.tag}
+									</span>
+									<span class="text">
+										{indicator.data.title}
+									</span>
 								</span>
 							</label>
 						))
 					}
 				</fieldset>
-				
 			</Accordion>
 
 			<div class="separator group" aria-hidden="true"></div>
 
-			<Accordion title={'Component'} id={'filters_components'} crossIconSize={'small'} wrapper={false}>
-
-				<span class="filter-group-status label-container field-container" slot="button-meta" hidden>
-					<span data-field="filtersComponentsStatus" >0</span>&nbsp;Selected</span>
-				</span>
+			<Accordion
+				title={"Component"}
+				id={"filters_components"}
+				crossIconSize={"small"}
+				wrapper={false}
+			>
+				<span
+					class="filter-group-status label-container field-container"
+					slot="button-meta"
+					hidden
+				>
+					<span data-field="filtersComponentsStatus">0</span
+					>&nbsp;Selected</span
+				>
 
 				<div class="separator item" aria-hidden="true"></div>
 
@@ -142,41 +194,60 @@ let types = [
 					{
 						allComponents.map((component) => (
 							<label>
-								<input type="checkbox" name="components" value={component.data.tag} data-title={component.data.title} data-status-field="filtersComponentsStatus"/>
-								<IconCheckmark/>
+								<input
+									type="checkbox"
+									name="components"
+									value={component.data.tag}
+									data-title={component.data.title}
+									data-status-field="filtersComponentsStatus"
+								/>
+								<IconCheckmark />
 								<span class="text-container">
-									<span class="tag" data-theme={component.data['colour']} data-vibrancy="vivid">{component.data.tag}</span>
-									<span class="text">{component.data.title}</span>
+									<span
+										class="tag"
+										data-theme={component.data["colour"]}
+										data-vibrancy="vivid"
+									>
+										{component.data.tag}
+									</span>
+									<span class="text">
+										{component.data.title}
+									</span>
 								</span>
 							</label>
 						))
 					}
 				</fieldset>
-				
 			</Accordion>
-
 		</form>
-
 	</aside>
 
 	<div class="content">
-
 		<h1>Resources</h1>
 
 		<ul id="active-filters-list" class="field-values-list">
 			<template>
-				<li class="filter-tag" data-group="" data-value="" data-status-field="">
-				<span class="group"></span>
-				<span class="title" title=""></span>
-				<button class="clear" type="button" aria-label="">
-					<IconXmarkSmall/>
-				</button>
-			</li>
+				<li
+					class="filter-tag"
+					data-group=""
+					data-value=""
+					data-status-field=""
+				>
+					<span class="group"></span>
+					<span class="title" title=""></span>
+					<button class="clear" type="button" aria-label="">
+						<IconXmarkSmall />
+					</button>
+				</li>
 			</template>
 		</ul>
 
-		<form id="resources-list-primary-controls" class="list-primary-controls" data-no-value-behaviour="shown" data-list="resources-list">		
-
+		<form
+			id="resources-list-primary-controls"
+			class="list-primary-controls"
+			data-no-value-behaviour="shown"
+			data-list="resources-list"
+		>
 			<fieldset class="search">
 				<div class="input-container">
 					<input
@@ -185,19 +256,29 @@ let types = [
 						type="text"
 						placeholder="Search these resources..."
 						aria-label="Search Resources"
-						aria-describedby="resources-list_error" 
+						aria-describedby="resources-list_error"
 						autofocus
 					/>
-					<IconSearch/>
+					<IconSearch />
 				</div>
 			</fieldset>
 
-			<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				aria-hidden="true"
+			>
+			</div>
 
 			<fieldset class="sort">
 				<legend aria-label="List Sort Options">Sort</legend>
 				<div class="button-group">
-					<button type="button" value="date" aria-label="Sort list by date added" aria-pressed="true">
+					<button
+						type="button"
+						value="date"
+						aria-label="Sort list by date added"
+						aria-pressed="true"
+					>
 						<span class="icon-and-label-container">
 							<IconSortTime />
 							<span class="label-container">
@@ -205,7 +286,12 @@ let types = [
 							</span>
 						</span>
 					</button>
-					<button type="button" value="title" aria-label="Sort list by title" aria-pressed="false">
+					<button
+						type="button"
+						value="title"
+						aria-label="Sort list by title"
+						aria-pressed="false"
+					>
 						<span class="icon-and-label-container">
 							<IconSortAlpha />
 							<span class="label-container">
@@ -216,21 +302,38 @@ let types = [
 				</div>
 			</fieldset>
 
-			<div class="separator item" data-orientation="vertical" aria-hidden="true"></div>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				aria-hidden="true"
+			>
+			</div>
 
 			<fieldset class="layout">
 				<legend aria-label="List Layout Options">Layout</legend>
 				<div class="button-group">
-					<button type="button" value="compact" aria-label="Switch to compact list layout" aria-pressed="true">
+					<button
+						type="button"
+						value="compact"
+						aria-label="Switch to compact list layout"
+						aria-pressed="true"
+					>
 						<span class="icon-and-label-container">
 							<IconCompact />
 							<span class="label-container">
 								<span class="label">Compact</span>
-								<span class="visually-hidden" hidden>Compact view unavailable for this filter</span>
+								<span class="visually-hidden" hidden
+									>Compact view unavailable for this filter</span
+								>
 							</span>
 						</span>
 					</button>
-					<button type="button" value="detailed" aria-label="Switch to compact list layout" aria-pressed="false">
+					<button
+						type="button"
+						value="detailed"
+						aria-label="Switch to compact list layout"
+						aria-pressed="false"
+					>
 						<span class="icon-and-label-container">
 							<IconDetailed />
 							<span class="label-container">
@@ -240,36 +343,42 @@ let types = [
 					</button>
 				</div>
 			</fieldset>
-
 		</form>
 
 		<div class="list-container">
-
-			<p id="resources-list_error" class="error-status" role="status" hidden>
+			<p
+				id="resources-list_error"
+				class="error-status"
+				role="status"
+				hidden
+			>
 				<IconWarning aria-hidden="true" />
-				<span
-					>There are no results that match the search term.</span
-				>
+				<span>There are no results that match the search term.</span>
 			</p>
 
-			<ul id="resources-list" class="links-list" data-style="divided" data-layout="compact" data-content="resources">
-				{allResources.map((resource) => {
-					let data = JSON.parse(JSON.stringify(resource.data));
-					data.category = 'resource';
-					data.slug = resource.id;
-					return <LinkListItem itemData={data}/> 
-				})}
+			<ul
+				id="resources-list"
+				class="links-list"
+				data-style="divided"
+				data-layout="compact"
+				data-content="resources"
+			>
+				{
+					allResources.map((resource) => {
+						let data = JSON.parse(JSON.stringify(resource.data));
+						data.category = "resource";
+						data.slug = resource.id;
+						return <LinkListItem itemData={data} />;
+					})
+				}
 			</ul>
 		</div>
-
 	</div>
-
 </BaseLayout>
 
-<!-- TODO: How to handle the progressive enhancement popping in of accordions? -->
+<!-- TODO: How to handle the progressive enhancement popping in of accordions? https://docs.astro.build/en/guides/view-transitions/#script-re-execution -->
 
 <style is:global>
-
 	.filters-container {
 		grid-area: left-aside;
 		margin: 0 5rem 0 0;
@@ -302,7 +411,9 @@ let types = [
 		--icon-size: 1.25rem;
 	}
 
-	.filters-container .heading-group [data-style-as="button"]:is(:hover, :focus-visible) {
+	.filters-container
+		.heading-group
+		[data-style-as="button"]:is(:hover, :focus-visible) {
 		/* --icon-colour: var(--colour-ui-reverse); */
 		/* --label-colour: var(--colour-ui-reverse); */
 		--button-background-colour: var(--colour-fill-neutral-subtle);
@@ -327,11 +438,17 @@ let types = [
 	}
 
 	.filters-container .accordion .heading button:is(:hover, :focus-visible),
-	.filters-container .accordion .heading button[aria-expanded="true"]:is(:hover, :focus-visible) {
+	.filters-container
+		.accordion
+		.heading
+		button[aria-expanded="true"]:is(:hover, :focus-visible) {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 	}
 
-	.filters-container .accordion .heading button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+	.filters-container
+		.accordion
+		.heading
+		button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
 		outline-color: transparent;
 	}
 
@@ -347,9 +464,12 @@ let types = [
 		--label-weight: 600;
 	}
 
-	.filters-container .accordion .heading button[aria-expanded="true"] .icon-and-label-container {
+	.filters-container
+		.accordion
+		.heading
+		button[aria-expanded="true"]
+		.icon-and-label-container {
 		--label-colour: unset;
-		
 	}
 
 	.filters-container .accordion .panel {
@@ -375,7 +495,8 @@ let types = [
 		border-radius: var(--border-radius-small);
 	}
 
-	fieldset.filters label:has(input[type="checkbox"]):is(:hover, :focus-visible) {
+	fieldset.filters
+		label:has(input[type="checkbox"]):is(:hover, :focus-visible) {
 		background-color: var(--colour-fill-neutral-subtle);
 	}
 
@@ -411,22 +532,33 @@ let types = [
 		height: 2rem;
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout) button:is(:hover, :focus-visible, [aria-pressed="true"]) {
+	form.list-primary-controls
+		fieldset:is(.sort, .layout)
+		button:is(:hover, :focus-visible, [aria-pressed="true"]) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout):has(button:not([aria-pressed="true"]):is(:hover, :focus-visible)) button[aria-pressed="true"] {
+	form.list-primary-controls
+		fieldset:is(.sort, .layout):has(
+			button:not([aria-pressed="true"]):is(:hover, :focus-visible)
+		)
+		button[aria-pressed="true"] {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 		--icon-colour: var(--colour-ui-neutral);
 		--label-colour: var(--colour-ui-neutral);
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout) button[aria-pressed="true"] {
+	form.list-primary-controls
+		fieldset:is(.sort, .layout)
+		button[aria-pressed="true"] {
 		pointer-events: none;
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout) button .label-container {
+	form.list-primary-controls
+		fieldset:is(.sort, .layout)
+		button
+		.label-container {
 		display: none;
 	}
 
@@ -434,86 +566,93 @@ let types = [
 		--separator-long-edge-dimension: 1.5rem;
 		margin-bottom: 0.25rem;
 	}
-
 </style>
 
 <script>
-		
 	//
 	// Imports
 	//
 
 	import { getUserData } from "src/stores/userDataStore";
-import { filter, search, sort, layout } from "src/utilities/list";
-
+	import { eventControl } from "src/utilities/event";
+	import { filter, search, sort, layout } from "src/utilities/list";
 
 	//
 	// Methods
 	//
 
-
 	let toggleForcedLayout = (forceLayout: Boolean) => {
-		
-		let resourcesList = document.querySelector('#resources-list');
-		let layoutDetailedBtn = document.querySelector('fieldset.layout button[value="detailed"]');
-		let layoutCompactBtn = document.querySelector('fieldset.layout button[value="compact"]');
-		let screenReaderContext = layoutCompactBtn.querySelector('.visually-hidden');
+		let resourcesList = document.querySelector("#resources-list");
+		let layoutDetailedBtn = document.querySelector(
+			'fieldset.layout button[value="detailed"]',
+		);
+		let layoutCompactBtn = document.querySelector(
+			'fieldset.layout button[value="compact"]',
+		);
+		let screenReaderContext =
+			layoutCompactBtn.querySelector(".visually-hidden");
 
 		if (forceLayout) {
-
-			resourcesList.setAttribute('data-layout', 'detailed');
-			layoutCompactBtn.setAttribute('disabled', '');
-			layoutCompactBtn.setAttribute('aria-pressed', 'false');
-			screenReaderContext.removeAttribute('hidden');
-			layoutDetailedBtn.setAttribute('aria-pressed', 'true');
-
+			resourcesList.setAttribute("data-layout", "detailed");
+			layoutCompactBtn.setAttribute("disabled", "");
+			layoutCompactBtn.setAttribute("aria-pressed", "false");
+			screenReaderContext.removeAttribute("hidden");
+			layoutDetailedBtn.setAttribute("aria-pressed", "true");
 		} else {
+			let userLayoutPreference =
+				getUserData().uiPreferences.resourcePageLayout;
 
-			let userLayoutPreference = getUserData().uiPreferences.resourcePageLayout;
-
-			if (userLayoutPreference === 'compact') {
-				resourcesList.setAttribute('data-layout', 'compact');
-				layoutCompactBtn.setAttribute('aria-pressed', 'true');
-				layoutDetailedBtn.setAttribute('aria-pressed', 'false');
+			if (userLayoutPreference === "compact") {
+				resourcesList.setAttribute("data-layout", "compact");
+				layoutCompactBtn.setAttribute("aria-pressed", "true");
+				layoutDetailedBtn.setAttribute("aria-pressed", "false");
 			} else {
-				resourcesList.setAttribute('data-layout', 'detailed');
-				layoutCompactBtn.setAttribute('aria-pressed', 'false');
-				layoutDetailedBtn.setAttribute('aria-pressed', 'true');
+				resourcesList.setAttribute("data-layout", "detailed");
+				layoutCompactBtn.setAttribute("aria-pressed", "false");
+				layoutDetailedBtn.setAttribute("aria-pressed", "true");
 			}
 
-			layoutCompactBtn.removeAttribute('disabled');
-			screenReaderContext.setAttribute('hidden', '');
-
+			layoutCompactBtn.removeAttribute("disabled");
+			screenReaderContext.setAttribute("hidden", "");
 		}
-
-	}
-
+	};
 
 	//
-	// Inits & Event Listeners
+	// Inits
 	//
-
-	document.addEventListener('searchMatchFound', (event: CustomEvent) => {
-		let matchTypes = event.detail.matchTypes;
-		let forceLayout = matchTypes.has('description');
-		toggleForcedLayout(forceLayout);
-	})
 
 	filter.init();
-	document.addEventListener('astro:before-swap', filter.destroy);
-	document.addEventListener('astro:after-swap', filter.init);
+	document.addEventListener("astro:before-swap", filter.destroy);
+	document.addEventListener("astro:after-swap", filter.init);
 
 	search.init();
-	document.addEventListener('astro:before-swap', search.destroy);
-	document.addEventListener('astro:after-swap', search.init);
+	document.addEventListener("astro:before-swap", search.destroy);
+	document.addEventListener("astro:after-swap", search.init);
 
 	sort.init();
-	document.addEventListener('astro:before-swap', sort.destroy);
-	document.addEventListener('astro:after-swap', sort.init);
+	document.addEventListener("astro:before-swap", sort.destroy);
+	document.addEventListener("astro:after-swap", sort.init);
 
 	layout.init();
-	document.addEventListener('astro:before-swap', layout.destroy);
-	document.addEventListener('astro:after-swap', layout.init);
+	document.addEventListener("astro:before-swap", layout.destroy);
+	document.addEventListener("astro:after-swap", layout.init);
 
+	//
+	// Event Listeners
+	//
 
+	document.addEventListener("astro:after-swap", () => {
+		console.log("After Swap");
+	});
+
+	let onSearchMatchFound = (event: CustomEvent) => {
+		let matchTypes = event.detail.matchTypes;
+		let forceLayout = matchTypes.has("description");
+		toggleForcedLayout(forceLayout);
+	};
+	eventControl.initEvent({
+		elem: document as any,
+		eventType: "searchMatchFound",
+		fn: onSearchMatchFound,
+	});
 </script>

@@ -2,11 +2,11 @@ import { stopVideo } from "./helpers";
 
 let dialogControl = (() => {
 
-	let open = ({dialogId, headingText = null, context = null}) => {
+	let open = ({ dialogId, headingText = null, context = null }) => {
 		let activeDialog = document.querySelector(
-		"dialog[open]");
+			"dialog[open]");
 		let targetDialog = document.querySelector(
-		`#${dialogId}`);
+			`#${dialogId}`);
 		if (!targetDialog) return;
 		if (activeDialog) activeDialog.close();
 		if (context) targetDialog.setAttribute('data-context', context);
@@ -32,12 +32,16 @@ let dialogControl = (() => {
 			open({
 				dialogId,
 				headingText,
-				context 
+				context
 			});
 		} else if (target.matches('dialog button.close-dialog')) {
 			close(target);
 		}
 	}
+
+	// TODO: event prevent default on enter key inside input fields
+
+	// TODO: Unable to enter press button in assessor's dialog
 
 	let init = () => {
 		document.addEventListener('click', onClick);

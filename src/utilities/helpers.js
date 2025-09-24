@@ -8,8 +8,8 @@
 //
 
 let dateFormatter = new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'medium',
-    timeStyle: 'short' 
+	dateStyle: 'medium',
+	timeStyle: 'short'
 });
 
 /**
@@ -39,7 +39,7 @@ let parseImportedDateString = (str) => {
 	let match = str.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})$/);
 	if (!match) return null;
 
-	let [ , year, month, day, hours, minutes, seconds, ms ] = match;
+	let [, year, month, day, hours, minutes, seconds, ms] = match;
 	let d = new Date(
 		Number(year),
 		Number(month) - 1,
@@ -234,9 +234,9 @@ let sanitizeHTML = (input) => {
  * @param {string} str - The string to convert.
  * @returns {boolean} True if the string is "true" (case-insensitive), otherwise false.
  */
-let stringToBoolean = function(str) {
-    if (typeof str !== 'string') return false;
-    return str.trim().toLowerCase() === 'true';
+let stringToBoolean = function (str) {
+	if (typeof str !== 'string') return false;
+	return str.trim().toLowerCase() === 'true';
 };
 
 /**
@@ -245,12 +245,12 @@ let stringToBoolean = function(str) {
  * @param {string} str
  * @returns {string}
  */
-let toCamelCase = function(str) {
-    if (!str) return '';
-    // Normalize separators and spaces
-    str = str.replace(/[_-\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '');
-    // Lowercase first character
-    return str.charAt(0).toLowerCase() + str.slice(1);
+let toCamelCase = function (str) {
+	if (!str) return '';
+	// Normalize separators and spaces
+	str = str.replace(/[_-\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '');
+	// Lowercase first character
+	return str.charAt(0).toLowerCase() + str.slice(1);
 };
 
 /**
@@ -259,14 +259,14 @@ let toCamelCase = function(str) {
  * @param {string} str
  * @returns {string}
  */
-let toKebabCase = function(str) {
-    if (!str) return '';
-    // Replace underscores and spaces with dashes
-    str = str.replace(/[_\s]+/g, '-');
-    // Insert dash before uppercase letters (camelCase/PascalCase)
-    str = str.replace(/([a-z])([A-Z])/g, '$1-$2');
-    str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2');
-    return str.toLowerCase();
+let toKebabCase = function (str) {
+	if (!str) return '';
+	// Replace underscores and spaces with dashes
+	str = str.replace(/[_\s]+/g, '-');
+	// Insert dash before uppercase letters (camelCase/PascalCase)
+	str = str.replace(/([a-z])([A-Z])/g, '$1-$2');
+	str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2');
+	return str.toLowerCase();
 };
 
 /**
@@ -275,17 +275,17 @@ let toKebabCase = function(str) {
  * @param {string} str
  * @returns {string}
  */
-let toTitleCase = function(str) {
-    if (!str) return '';
-    // Replace underscores and dashes with spaces
-    str = str.replace(/[_-]/g, ' ');
-    // Insert spaces before capital letters (camelCase/PascalCase)
-    str = str.replace(/([a-z])([A-Z])/g, '$1 $2');
-    str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2');
-    // Capitalize first letter of each word
-    return str
-        .toLowerCase()
-        .replace(/\b\w/g, char => char.toUpperCase());
+let toTitleCase = function (str) {
+	if (!str) return '';
+	// Replace underscores and dashes with spaces
+	str = str.replace(/[_-]/g, ' ');
+	// Insert spaces before capital letters (camelCase/PascalCase)
+	str = str.replace(/([a-z])([A-Z])/g, '$1 $2');
+	str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2');
+	// Capitalize first letter of each word
+	return str
+		.toLowerCase()
+		.replace(/\b\w/g, char => char.toUpperCase());
 };
 
 /**
@@ -313,13 +313,13 @@ let joinWithAnd = function (arr) {
  * @param {string} name - Name of the event
  * @param {Object} [detail={}] - Extra data passed with the event
  */
-let emitEvent = ({target, name, detail = {}}) => {
-  let event = new CustomEvent(name, {
-    detail,
-    bubbles: true,   // let the event bubble up through the DOM
-    composed: true   // allow crossing shadow DOM boundaries if needed
-  });
-  target.dispatchEvent(event);
+let emitEvent = ({ target, name, detail = {} }) => {
+	let event = new CustomEvent(name, {
+		detail,
+		bubbles: true,   // let the event bubble up through the DOM
+		composed: true   // allow crossing shadow DOM boundaries if needed
+	});
+	target.dispatchEvent(event);
 };
 
 let getResourcePath = (resource) => {
@@ -327,7 +327,7 @@ let getResourcePath = (resource) => {
 	let { slug, type, external } = resource;
 
 	if (!slug || !type || !external) return null;
-	
+
 	if (external.discriminant === true) {
 
 		return external.value.url;
@@ -355,7 +355,7 @@ let getResourcePath = (resource) => {
 		}
 
 		let fileType = external.value?.fileType ?? null;
-		
+
 		if (fileType) {
 
 			fileType = fileType.replaceAll('.', '').trim();
@@ -378,8 +378,8 @@ let getResourcePath = (resource) => {
 				default:
 			}
 
-		} 
-			
+		}
+
 		// path = `/assets/${subfolder}/${slug}.${fileType}`; 
 		path = `https://middle.nbed.ca/conditions-for-success/assets/${subfolder}/${slug}.${fileType}`; // Temporary Testing Path
 		return path;
@@ -460,7 +460,7 @@ let isInViewport = (elem, options = {}) => {
 let scrollIntoView = (elem, options = {}) => {
 
 	let { block = 'start' } = options;
-	
+
 	let fullyInView = isInViewport(elem, {
 		fully: true,
 	});
@@ -496,25 +496,25 @@ let stopVideo = (elem) => {
 // Exports
 //
 
-export { 
+export {
 	emitEvent,
-	findHighestValueByKey, 
-	findIndexByKey, 
-	findObjectByKey, 
+	findHighestValueByKey,
+	findIndexByKey,
+	findObjectByKey,
 	formatDateAsHTML,
-	formatDateAsString, 
-	getResourcePath, 
-	getTimeDifference, 
-	htmlToElement, 
-	isEqual, 
-	isInViewport, 
-	joinWithAnd, 
-	normalizeImportedDate, 
-	sanitizeHTML, 
-	scrollIntoView, 
-	stopVideo, 
-	stringToBoolean, 
-	toCamelCase, 
-	toKebabCase, 
-	toTitleCase, 
+	formatDateAsString,
+	getResourcePath,
+	getTimeDifference,
+	htmlToElement,
+	isEqual,
+	isInViewport,
+	joinWithAnd,
+	normalizeImportedDate,
+	sanitizeHTML,
+	scrollIntoView,
+	stopVideo,
+	stringToBoolean,
+	toCamelCase,
+	toKebabCase,
+	toTitleCase,
 };
