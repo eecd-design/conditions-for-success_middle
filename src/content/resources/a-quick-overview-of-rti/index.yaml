@@ -6,8 +6,9 @@ description: >-
   protocol approach, open the IRIS Module from the website.
 topics: []
 external:
-  discriminant: false
-  value: {}
+  discriminant: true
+  value:
+    url: https://iris.peabody.vanderbilt.edu/module/rti02/cresource/q1/p01/
 linkedIndicators: []
 linkedComponents:
   - '2.2'
