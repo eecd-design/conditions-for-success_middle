@@ -10,4 +10,5 @@ external:
 linkedIndicators: []
 linkedComponents:
   - '2.1'
+  - '2.3'
 linkedConsiderations: []
