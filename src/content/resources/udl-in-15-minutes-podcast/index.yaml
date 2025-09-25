@@ -1,0 +1,12 @@
+title: UDL in 15 Minutes Podcast
+dateAdded: 2025-09-25
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://theudlapproach.com/podcasts/
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 2.6.6
