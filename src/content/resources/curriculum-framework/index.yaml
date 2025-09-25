@@ -1,0 +1,12 @@
+title: Curriculum Framework
+dateAdded: 2025-09-25
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://curriculum.nbed.ca/
+linkedIndicators: []
+linkedComponents:
+  - '2.5'
+linkedConsiderations: []
