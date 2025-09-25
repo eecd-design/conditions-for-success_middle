@@ -1740,7 +1740,7 @@ dialog form hr.group {
 }
 
 .card .wrapper:has(> button) {
-	grid-auto-rows: auto auto 1fr;
+	grid-auto-rows: auto 1fr auto;
 }
 
 .card .wrapper>.heading {
