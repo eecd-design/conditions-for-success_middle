@@ -134,6 +134,15 @@ let allComponents = await getCollection("components");
 			</div>
 		</div>
 
+		<div id="pdf-export-progress-container" role="status" aria-live="polite" aria-atomic="true" data-theme="blue" data-vibrancy="vivid" hidden>
+			<div class="text-container" data-field="pdfExportMessage">
+				Preparing report for download.
+			</div>
+			<div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+				<div data-role="bar"></div>
+			</div>
+		</div>
+
 		<hr class="section" data-print="false" data-restrict-report="active"/>
 
 		<div id="report-container" data-restrict-report="active">
@@ -250,6 +259,32 @@ let allComponents = await getCollection("components");
 		display: none;
 	}
 
+	#pdf-export-progress-container {
+		width: 100%;
+		max-width: 400px;
+		margin: 1.5rem 0 0;
+	}
+
+	#pdf-export-progress-container .text-container {
+		font-size: 1rem;
+		color: var(--colour-ui-neutral-subtle);
+		margin: 0 0 0.75rem;
+	}
+
+	#pdf-export-progress-container [role="progressbar"] {
+		width: 100%;
+		height: 1rem;
+		border-radius: var(--border-radius-normal);
+		background-color: var(--colour-fill-neutral-subtle);
+		overflow: hidden;
+	}
+
+	#pdf-export-progress-container [role="progressbar"] [data-role="bar"] {
+		width: 0%;
+		height: 100%;
+		background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
+	}
+
 	@media print {
 		header,
 		main > aside,
@@ -306,7 +341,81 @@ let allComponents = await getCollection("components");
 			binary += String.fromCharCode(uint8[i]);
 		}
 		return btoa(binary);
-	};	
+	};
+	
+	let progressTracker = (() => {
+
+		let container, 
+		barContainer, 
+		bar,
+		messageField,
+		statusField, 
+		current = 0, 
+		target = 0, 
+		rafId;
+
+		let animate = () => {
+			if (current < target) {
+				// move faster when gap is large, slower when near target
+				current += (target - current) * 0.20; // 20% of the gap per frame
+				if (Math.abs(target - current) < 0.1) current = target; // snap to target if very close
+				bar.style.width = current + '%';
+			}
+			rafId = requestAnimationFrame(animate);
+		};
+
+		let init = (selector) => {
+			container = document.querySelector(selector);
+			if (!container) return;
+			barContainer = container.querySelector('[role="progressbar"]');
+			bar = container.querySelector('[data-role="bar"]');
+			if (!bar) return;
+			messageField = container.querySelector('[data-field="pdfExportMessage"]');
+			statusField = container.querySelector('[data-field="pdfExportStatus"]');
+
+			current = 0;
+			target = 0;
+			bar.style.width = '0%';
+			cancelAnimationFrame(rafId);
+			rafId = requestAnimationFrame(animate);
+		};
+
+		let start = (totalPages) => {
+			if (!container || !barContainer) return;
+			container.removeAttribute('hidden');
+			barContainer.setAttribute('aria-valuemin', 0);
+			barContainer.setAttribute('aria-valuemax', totalPages);
+			barContainer.setAttribute('aria-valuenow', 0);
+			let estimatedDuration = Math.floor(totalPages * 3.66); 
+			let message = `Preparing report for download (about ${estimatedDuration} seconds)...`;
+			messageField.textContent = message;
+			barContainer.setAttribute('aria-valuetext', message);
+		};
+
+		let update = (page, totalPages) => {
+			if (!barContainer) return;
+			target = Math.round((page / totalPages) * 100);
+			barContainer.setAttribute('aria-valuenow', page);
+			let message = `${page} of ${totalPages} pages complete.`
+			messageField.textContent = message;
+			barContainer.setAttribute('aria-valuetext', message);
+		};
+
+		let finish = () => {
+			if (!barContainer) return;
+			target = 100;
+			barContainer.setAttribute('aria-valuenow', barContainer.getAttribute('aria-valuemax'));
+			let message = `Report is ready. Downloading now...`
+			messageField.textContent = message;
+			barContainer.setAttribute('aria-valuetext', message);
+			setTimeout(() => {
+				container.setAttribute('hidden', '');
+			}, 2000);
+		};
+
+		return { init, start, update, finish };
+
+	})();
 
 	let packageReport = async () => {
 
@@ -350,6 +459,10 @@ let allComponents = await getCollection("components");
 		if (!reportContainer) return;
 
 		let sections = reportContainer.querySelectorAll('section:not([hidden])');
+		let totalPages = sections.length + 1; // Cover + charts
+
+		progressTracker.init('#pdf-export-progress-container');
+		progressTracker.start(totalPages);
 
 		let assessment = getActiveReportData();
 		
@@ -360,7 +473,6 @@ let allComponents = await getCollection("components");
 		});
 
 		let margin = 72;
-		let pageHeight = pdf.internal.pageSize.getHeight();
 		let pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
 		let currentYPosition = margin;
 		pdf.setLineHeightFactor(1.1);
@@ -435,6 +547,7 @@ let allComponents = await getCollection("components");
 		pdf.setFontSize(12);
 		currentYPosition = addWrappedText(pdf, reportDate, margin, currentYPosition, pageWidth);
 
+		progressTracker.update(1, totalPages);
 		
 		// 2. Create the chart pages
 		
@@ -494,9 +607,12 @@ let allComponents = await getCollection("components");
 
 			pdf.addImage(matrixChartCanvas, margin, currentYPosition, pageWidth, matrixChartImgHeight);
 
-		}
+			progressTracker.update(index + 2, totalPages);
 
+		}
+		
 		pdf.save('report.pdf');
+		progressTracker.finish();
 
 	}
 
