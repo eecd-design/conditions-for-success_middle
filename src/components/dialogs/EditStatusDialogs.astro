@@ -226,6 +226,12 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					}),
 				});
 
+				if (newStatus === "In Progress") {
+					setState({
+						activeReportId: null,
+					});
+				}
+
 				// Close the dialog
 				dialog.close();
 
@@ -259,6 +265,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 				setState({
 					mode: "assessment",
+					activeReportId: null,
 				});
 
 				dialogControl.open({

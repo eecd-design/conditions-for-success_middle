@@ -752,7 +752,7 @@ let schoolList = {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		// console.log("Updating Dialog (edit properties)");
+		console.log("Updating Dialog (edit properties)");
 
 		let context = dialog.getAttribute("data-context");
 
@@ -916,11 +916,10 @@ let schoolList = {
 			// TODO: This is broken, on new assessment showing existing info
 		}
 	};
-	eventControl.add({
-		selector: "#edit-assessment-properties-dialog",
-		eventType: "toggle",
-		fn: onToggle,
-	});
+	// Special case event listener, cannot be attached to the document, and delegated
+	document
+		.querySelector("#edit-assessment-properties-dialog")
+		.addEventListener("toggle", onToggle);
 
 	let onFocusout = (event) => {
 		let target = event.target as any;

@@ -136,7 +136,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 		};
 
 		let updateAssessor = (data: UserData, changes) => {
-			let triggerKeys = ["status"];
+			let triggerKeys = ["activeAssessor"];
 			if (
 				!changes.initiating &&
 				!(
