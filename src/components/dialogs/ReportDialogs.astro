@@ -163,6 +163,9 @@ let indicators = allIndicators.sort((a, b) =>
 	 * @param data
 	 */
 	let updateReportSettingsDialog = (data: UserData, changes) => {
+		let dialog = document.querySelector(
+			"#report-settings-dialog",
+		) as HTMLDialogElement;
 		if (!dialog) return;
 
 		let preferencesTriggerKeys = ["reportIncludedIndicators"];
@@ -202,23 +205,10 @@ let indicators = allIndicators.sort((a, b) =>
 			else checkbox.removeAttribute("data-assessed");
 		}
 	};
+
 	//
 	// Inits
 	//
-
-	let dialog = document.querySelector(
-		"#report-settings-dialog",
-	) as HTMLDialogElement;
-	let form = dialog?.querySelector("form") as HTMLFormElement;
-	let saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		dialog = document.querySelector(
-			"#report-settings-dialog",
-		) as HTMLDialogElement;
-		form = dialog?.querySelector("form") as HTMLFormElement;
-		saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
-	});
 
 	subscribe(updateReportSettingsDialog);
 
@@ -228,6 +218,12 @@ let indicators = allIndicators.sort((a, b) =>
 
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
+
+		let form = dialog.querySelector("form") as HTMLFormElement;
+		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
 
 		if (target.matches("button.close-dialog")) {
 			saveBtn.setAttribute("disabled", "");
@@ -284,8 +280,8 @@ let indicators = allIndicators.sort((a, b) =>
 			saveBtn.removeAttribute("disabled");
 		}
 	};
-	eventControl.initEvent({
-		elem: dialog,
+	eventControl.add({
+		selector: "#report-settings-dialog",
 		eventType: "click",
 		fn: onClick,
 	});
@@ -293,12 +289,17 @@ let indicators = allIndicators.sort((a, b) =>
 	let onChange = (event) => {
 		let target = event.target as HTMLInputElement | HTMLSelectElement;
 
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
+
+		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
+
 		if (target.matches(`input[type="checkbox"]`)) {
 			saveBtn.removeAttribute("disabled");
 		}
 	};
-	eventControl.initEvent({
-		elem: dialog,
+	eventControl.add({
+		selector: "#report-settings-dialog",
 		eventType: "change",
 		fn: onChange,
 	});

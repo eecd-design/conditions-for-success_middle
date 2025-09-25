@@ -50,6 +50,8 @@ const { pageTitle, indicatorTag } = Astro.props;
 		} from "src/stores/userDataStore";
 		import { scrollIntoView } from "src/utilities/helpers";
 		import { dialogControl } from "src/utilities/dialog";
+		import { eventControl } from "src/utilities/event";
+		import { search } from "src/utilities/list";
 
 		//
 		// DOM Updates
@@ -71,7 +73,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 			let theme = data.uiPreferences.theme;
 			if (theme !== "dark" && theme !== "light") return;
 
-			console.log("Updating Theme (on html)");
+			// console.log("Updating Theme (on html)");
 
 			// Get the html root
 			let html = document.documentElement;
@@ -94,7 +96,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 			let mode = data.uiState.mode;
 			if (mode !== "assessment" && mode !== "reading") mode = "reading";
 
-			console.log("Updating Mode (on main)");
+			// console.log("Updating Mode (on main)");
 
 			// Get the main
 			let main = document.querySelector("main");
@@ -117,7 +119,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
 
-			console.log("Updating Status (on main)");
+			// console.log("Updating Status (on main)");
 
 			let status = assessment.status;
 			if (status !== "In Progress" && status !== "Complete")
@@ -147,7 +149,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
 
-			console.log("Updating Assessor (on main)");
+			// console.log("Updating Assessor (on main)");
 
 			// Get the main
 			let main = document.querySelector("main");
@@ -198,14 +200,29 @@ const { pageTitle, indicatorTag } = Astro.props;
 		subscribe(updateAssessor);
 
 		dialogControl.init();
-		document.addEventListener("astro:before-swap", dialogControl.destroy);
-		document.addEventListener("astro:after-swap", dialogControl.init);
+		eventControl.add({
+			selector: "document",
+			eventType: "astro:after-swap",
+			fn: dialogControl.init,
+		});
+
+		search.init();
+		eventControl.add({
+			selector: "document",
+			eventType: "astro:before-swap",
+			fn: search.destroy,
+		});
+		eventControl.add({
+			selector: "document",
+			eventType: "astro:after-swap",
+			fn: search.init,
+		});
 
 		//
 		// Event listeners
 		//
 
-		window.addEventListener("popstate", () => {
+		let onPopstate = () => {
 			// Handles hash changes on the active page
 
 			let hash = window.location.hash;
@@ -223,9 +240,14 @@ const { pageTitle, indicatorTag } = Astro.props;
 					.replace(/-/g, ".");
 				scrollToConsideration(tag);
 			}
+		};
+		eventControl.add({
+			selector: "window",
+			eventType: "popstate",
+			fn: onPopstate,
 		});
 
-		document.addEventListener("astro:page-load", () => {
+		let onPageLoad = () => {
 			let currentPagePath = window.location.pathname;
 
 			if (currentPagePath !== "/") {
@@ -259,6 +281,11 @@ const { pageTitle, indicatorTag } = Astro.props;
 					context: "setup",
 				});
 			}
+		};
+		eventControl.add({
+			selector: "document",
+			eventType: "astro:page-load",
+			fn: onPageLoad,
 		});
 	</script>
 </html>

@@ -698,11 +698,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		// Clear out the list
 		for (let item of savedAssessmentListItems) item.remove();
 
-		if (
-			data.assessments.length > 0 &&
-			(context !== "report" ||
-				findIndexByKey(data.assessments, "status", "Complete") !== -1)
-		) {
+		if (data.assessments.length > 0) {
 			// Create a shallow copy of the array
 			let assessments = [...data.assessments];
 
@@ -758,7 +754,9 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		importedAssessment,
 		localAssessment,
 	}) => {
-		let dialog = importConflictDialog;
+		let dialog = document.querySelector(
+			"#import-conflict-dialog",
+		) as HTMLDialogElement;
 		if (!dialog) return;
 
 		if (!importedAssessment || !localAssessment) return;
@@ -842,22 +840,6 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 	// Inits
 	//
 
-	let openAssessmentDialog = document.querySelector(
-		"#open-assessment-dialog",
-	) as HTMLDialogElement;
-	let importConflictDialog = document.querySelector(
-		"#import-conflict-dialog",
-	) as HTMLDialogElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		openAssessmentDialog = document.querySelector(
-			"#open-assessment-dialog",
-		) as HTMLDialogElement;
-		importConflictDialog = document.querySelector(
-			"#import-conflict-dialog",
-		) as HTMLDialogElement;
-	});
-
 	subscribe(updateOpenAssessmentDialog);
 
 	//
@@ -866,7 +848,9 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 
 	let onOpenAssessmentClick = (event) => {
 		let target = event.target as HTMLButtonElement;
-		let dialog = openAssessmentDialog;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
 
 		if (target.matches("button.open-assessment")) {
 			try {
@@ -904,6 +888,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 						setAssessment({
 							status: "Complete",
 						});
+						// TODO: Add change log item
 					}
 
 					setState({
@@ -961,14 +946,17 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: openAssessmentDialog,
+	eventControl.add({
+		selector: "#open-assessment-dialog",
 		eventType: "click",
 		fn: onOpenAssessmentClick,
 	});
 
 	let onOpenAssessmentChange = async (event) => {
 		let target = event.target as any;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
 
 		if (target.matches('input[type="file"]')) {
 			// Get the user uploaded file
@@ -997,14 +985,17 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 			target.value = "";
 		}
 	};
-	eventControl.initEvent({
-		elem: openAssessmentDialog,
+	eventControl.add({
+		selector: "#open-assessment-dialog",
 		eventType: "change",
 		fn: onOpenAssessmentChange,
 	});
 
 	let onOpenAssessmentInput = (event) => {
 		let target = event.target as any;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
 
 		if (target.matches('[type="text"][name="import-code"]')) {
 			let importBtn = target
@@ -1018,14 +1009,17 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: openAssessmentDialog,
+	eventControl.add({
+		selector: "#open-assessment-dialog",
 		eventType: "input",
 		fn: onOpenAssessmentInput,
 	});
 
 	let onImportConflictClick = async (event) => {
 		let target = event.target as any;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
 
 		if (target.matches("button.overwrite")) {
 			try {
@@ -1067,8 +1061,8 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 			deleteImportConflictData();
 		}
 	};
-	eventControl.initEvent({
-		elem: importConflictDialog,
+	eventControl.add({
+		selector: "#import-conflict-dialog",
 		eventType: "click",
 		fn: onImportConflictClick,
 	});

@@ -1,3 +1,4 @@
+import { eventControl } from "./event";
 import { stopVideo } from "./helpers";
 
 let dialogControl = (() => {
@@ -44,14 +45,14 @@ let dialogControl = (() => {
 	// TODO: Unable to enter press button in assessor's dialog
 
 	let init = () => {
-		document.addEventListener('click', onClick);
+		eventControl.add({
+			selector: 'document',
+			eventType: 'click',
+			fn: onClick,
+		})
 	}
 
-	let destroy = () => {
-		document.removeEventListener('click', onClick);
-	}
-
-	return { init, destroy, open, close };
+	return { init, open, close };
 
 })();
 

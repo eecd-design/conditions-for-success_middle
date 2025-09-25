@@ -151,7 +151,9 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	//
 
 	let updateEditStatusDialog = (data: UserData, changes) => {
-		let dialog = editStatusDialog;
+		let dialog = document.querySelector(
+			"#edit-status-dialog",
+		) as HTMLDialogElement;
 		if (!dialog) return;
 
 		let triggerKeys = ["status"];
@@ -167,7 +169,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (status)");
+		// console.log("Updating Dialog (status)");
 
 		let isComplete = assessment.status === "Complete";
 
@@ -192,25 +194,10 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				: "edit-status-dialog_in-progress-instructions",
 		);
 	};
+
 	//
 	// Inits
 	//
-
-	let editStatusDialog = document.querySelector(
-		"#edit-status-dialog",
-	) as HTMLDialogElement;
-	let statusWarningDialog = document.querySelector(
-		"#status-warning-dialog",
-	) as HTMLDialogElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		editStatusDialog = document.querySelector(
-			"#edit-status-dialog",
-		) as HTMLDialogElement;
-		statusWarningDialog = document.querySelector(
-			"#status-warning-dialog",
-		) as HTMLDialogElement;
-	});
 
 	subscribe(updateEditStatusDialog);
 
@@ -220,7 +207,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 	let onEditStatusClick = (event) => {
 		let target = event.target as HTMLButtonElement;
-		let dialog = editStatusDialog as HTMLDialogElement;
+		let dialog = target.closest("dialog") as HTMLDialogElement;
 
 		if (target.matches("button.change-status")) {
 			try {
@@ -249,8 +236,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: editStatusDialog,
+	eventControl.add({
+		selector: "#edit-status-dialog",
 		eventType: "click",
 		fn: onEditStatusClick,
 	});
@@ -285,8 +272,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: statusWarningDialog,
+	eventControl.add({
+		selector: "#status-warning-dialog",
 		eventType: "click",
 		fn: onStatusWarningClick,
 	});

@@ -94,18 +94,13 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 	// Inits
 	//
 
-	let mediaDialog = document.querySelector("#media-dialog");
-
-	document.addEventListener("astro:after-swap", () => {
-		mediaDialog = document.querySelector("#media-dialog");
-	});
-
 	//
 	// Event Listeners
 	//
 
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
+		let mediaDialog = document.querySelector("#media-dialog");
 
 		if (
 			!mediaDialog ||
@@ -160,8 +155,8 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 			// TODO: Better error handling here
 		}
 	};
-	eventControl.initEvent({
-		elem: document as any,
+	eventControl.add({
+		selector: "button.open-dialog",
 		eventType: "click",
 		fn: onClick,
 	});

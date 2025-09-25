@@ -14,7 +14,6 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	id="assessment-controls"
 	aria-label="Assessment Controls Toolbar"
 	role="toolbar"
-	transition:persist
 >
 	<!-- TODO: Investigate the use of transition persist throughout -->
 	<!-- TODO: Add a warning for phone users to use larger device to enable assessment mode -->
@@ -218,6 +217,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 				<IconEditSmall />
 			</div>
 		</button>
+		<!-- TODO: Not showing up anymore -->
 	</div>
 
 	<div
@@ -376,6 +376,9 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	//
 
 	let updateToolbar = (data: UserData, changes) => {
+		let toolbar = document.querySelector(
+			"#assessment-controls",
+		) as HTMLElement;
 		if (!toolbar) return;
 
 		let stateTriggerKeys = ["activeAssessmentId"];
@@ -482,6 +485,9 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	};
 
 	let updateToolbarExportStatus = () => {
+		let toolbar = document.querySelector(
+			"#assessment-controls",
+		) as HTMLElement;
 		if (!toolbar) return;
 
 		let userData = getUserData();
@@ -497,11 +503,7 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	// Inits
 	//
 
-	let toolbar = document.querySelector("#assessment-controls") as HTMLElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		toolbar = document.querySelector("#assessment-controls") as HTMLElement;
-	});
+	// TODO: Move all elem variables into the dom update methods
 
 	subscribe(updateToolbar);
 
@@ -516,6 +518,11 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
+
+		let toolbar = document.querySelector(
+			"#assessment-controls",
+		) as HTMLElement;
+		if (!toolbar) return;
 
 		if (target.matches("button.stop-editing")) {
 			let activeAssessment = getActiveAssessmentData();
@@ -535,8 +542,8 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: toolbar,
+	eventControl.add({
+		selector: "#assessment-controls",
 		eventType: "click",
 		fn: onClick,
 	});

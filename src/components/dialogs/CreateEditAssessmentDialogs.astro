@@ -657,7 +657,9 @@ let schoolList = {
 	 * @param data
 	 */
 	let updateViewAssessmentPropertiesDialog = (data: UserData, changes) => {
-		let dialog = viewAssessmentPropertiesDialog as HTMLDialogElement;
+		let dialog = document.querySelector(
+			"#view-assessment-properties-dialog",
+		) as HTMLDialogElement;
 		if (!dialog) return;
 
 		let triggerKeys = [
@@ -682,7 +684,7 @@ let schoolList = {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (view properties)");
+		// console.log("Updating Dialog (view properties)");
 
 		let changeLogList = dialog.querySelector("dl.change-log-list");
 
@@ -732,7 +734,9 @@ let schoolList = {
 	 * @param data
 	 */
 	let updateEditAssessmentPropertiesDialog = (data: UserData, changes) => {
-		let dialog = editAssessmentPropertiesDialog as HTMLDialogElement;
+		let dialog = document.querySelector(
+			"#edit-assessment-properties-dialog",
+		) as HTMLDialogElement;
 		if (!dialog) return;
 
 		let triggerKeys = ["district", "school", "reportingYear"];
@@ -748,7 +752,7 @@ let schoolList = {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (edit properties)");
+		// console.log("Updating Dialog (edit properties)");
 
 		let context = dialog.getAttribute("data-context");
 
@@ -771,28 +775,6 @@ let schoolList = {
 	// Inits
 	//
 
-	let editAssessmentPropertiesDialog = document.querySelector(
-		"#edit-assessment-properties-dialog",
-	) as HTMLDialogElement;
-	let viewAssessmentPropertiesDialog = document.querySelector(
-		"#view-assessment-properties-dialog",
-	) as HTMLDialogElement;
-	let saveBtn = editAssessmentPropertiesDialog?.querySelector(
-		"button.save",
-	) as HTMLButtonElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		editAssessmentPropertiesDialog = document.querySelector(
-			"#edit-assessment-properties-dialog",
-		) as HTMLDialogElement;
-		viewAssessmentPropertiesDialog = document.querySelector(
-			"#view-assessment-properties-dialog",
-		) as HTMLDialogElement;
-		saveBtn = editAssessmentPropertiesDialog?.querySelector(
-			"button.save",
-		) as HTMLButtonElement;
-	});
-
 	subscribe(updateViewAssessmentPropertiesDialog);
 	subscribe(updateEditAssessmentPropertiesDialog);
 
@@ -805,7 +787,7 @@ let schoolList = {
 
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
-		let dialog = editAssessmentPropertiesDialog as HTMLDialogElement;
+		let dialog = target.closest("dialog") as HTMLDialogElement;
 
 		// Clear out all form fields on dialog close
 		if (target.matches("button.clear")) {
@@ -916,8 +898,8 @@ let schoolList = {
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: editAssessmentPropertiesDialog,
+	eventControl.add({
+		selector: "#edit-assessment-properties-dialog",
 		eventType: "click",
 		fn: onClick,
 	});
@@ -926,15 +908,16 @@ let schoolList = {
 		let dialog = event.target as HTMLDialogElement;
 
 		// On open, update dialog form with current assessment data
-		if (dialog === editAssessmentPropertiesDialog && dialog.open) {
+		if (dialog.open) {
 			let changes = {
 				initiating: true,
 			};
 			updateEditAssessmentPropertiesDialog(getUserData(), changes);
+			// TODO: This is broken, on new assessment showing existing info
 		}
 	};
-	eventControl.initEvent({
-		elem: editAssessmentPropertiesDialog,
+	eventControl.add({
+		selector: "#edit-assessment-properties-dialog",
 		eventType: "toggle",
 		fn: onToggle,
 	});
@@ -955,8 +938,8 @@ let schoolList = {
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: editAssessmentPropertiesDialog,
+	eventControl.add({
+		selector: "#edit-assessment-properties-dialog",
 		eventType: "focusout",
 		fn: onFocusout,
 	});
@@ -975,14 +958,19 @@ let schoolList = {
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: editAssessmentPropertiesDialog,
+	eventControl.add({
+		selector: "#edit-assessment-properties-dialog",
 		eventType: "input",
 		fn: onInput,
 	});
 
 	let onChange = async (event) => {
 		let target = event.target as any;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
+
+		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
 
 		if (target.matches(`select[name="district"]`)) {
 			revealSchoolOptionGroup(target);
@@ -1000,8 +988,8 @@ let schoolList = {
 
 		saveBtn.removeAttribute("disabled");
 	};
-	eventControl.initEvent({
-		elem: editAssessmentPropertiesDialog,
+	eventControl.add({
+		selector: "#edit-assessment-properties-dialog",
 		eventType: "change",
 		fn: onChange,
 	});

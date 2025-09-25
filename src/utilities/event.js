@@ -1,54 +1,44 @@
 let eventControl = (() => {
+	let registry = {}
 
-	/**
-	 * Event manager for Astro view transitions
-	 * Ensures events are reattached correctly after swaps
-	 */
-	let eventRegistry = [];
+	let ensureListener = (eventType) => {
+		if (!registry[eventType]) {
+			registry[eventType] = new Map()
+			document.addEventListener(eventType, (e) => {
+				console.log(`Event Triggered (${eventType})`)
+				for (let { selector, fn } of registry[eventType].values()) {
+					let target;
+					if (selector === 'document') {
+						target = document
+					} else if (selector === 'window') {
+						target = window
+					} else {
+						target = e.target.closest(selector)
+					}
+					if (target) {
+						console.log(`Running Function (${fn.name}) in`, selector)
+						fn(e, target)
 
-	/**
-	 * Register an event listener on an element that persists across swaps
-	 * @param {Object} options
-	 * @param {HTMLElement} options.elem - The element to bind the event on
-	 * @param {string} options.eventType - The event type (e.g. "click")
-	 * @param {Function} options.fn - The event handler
-	 */
-	let initEvent = ({ elem, eventType, fn }) => {
-		if (!elem) return;
-
-		// Store event in registry
-		eventRegistry.push({ elem, eventType, fn });
-
-		// Attach immediately
-		elem.addEventListener(eventType, fn);
-	};
-
-	/**
-	 * Remove all registered listeners
-	 */
-	let detachAll = () => {
-		for (let { elem, eventType, fn } of eventRegistry) {
-			elem.removeEventListener(eventType, fn);
+					}
+				}
+			})
 		}
-	};
+	}
 
-	/**
-	 * Reattach all registered listeners
-	 */
-	let attachAll = () => {
-		for (let { elem, eventType, fn } of eventRegistry) {
-			// Re-query in case the element was replaced during swap
-			let freshElem = document.getElementById(elem.id) || elem;
-			freshElem.addEventListener(eventType, fn);
+	let add = ({ eventType, selector, fn }) => {
+		ensureListener(eventType)
+		let key = `${selector}::${fn.toString()}`
+		if (!registry[eventType].has(key)) {
+			registry[eventType].set(key, { selector, fn })
 		}
-	};
+	}
 
-	// Attach lifecycle handlers only once
-	document.addEventListener("astro:before-swap", detachAll);
-	document.addEventListener("astro:after-swap", attachAll);
+	let remove = ({ eventType, selector, fn }) => {
+		let key = `${selector}::${fn.toString()}`
+		registry[eventType]?.delete(key)
+	}
 
-	return { initEvent };
-
-})();
+	return { add, remove }
+})()
 
 export { eventControl };

@@ -14,6 +14,7 @@ import {
 } from "src/utilities/helpers.js";
 import Papa from "papaparse";
 import LZString from 'lz-string'; // LZString is used to compress data into the exportcode
+import { eventControl } from "src/utilities/event";
 
 
 //
@@ -689,7 +690,7 @@ let decompressData = (data) => {
  * Notify all components of data update
  */
 let notify = (changes) => {
-	// console.log('Notifying', subscribers);
+	console.log('Notifying', subscribers);
 	for (let fn of subscribers) fn(structuredClone(data), changes);
 };
 
@@ -751,7 +752,11 @@ let userDataStore = (() => {
 })();
 
 userDataStore.init();
-document.addEventListener("astro:after-swap", userDataStore.init);
+eventControl.add({
+	selector: "document",
+	eventType: "astro:after-swap",
+	fn: userDataStore.init,
+});
 
 
 //

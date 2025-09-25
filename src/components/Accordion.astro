@@ -197,6 +197,7 @@ let IconCross = crossIcons[crossIconSize];
 	// Imports
 	//
 
+	import { eventControl } from "src/utilities/event";
 	import {
 		isInViewport,
 		scrollIntoView,
@@ -357,14 +358,14 @@ let IconCross = crossIcons[crossIconSize];
 				if (heading.getAttribute("data-initalized")) return;
 				setupDOM(heading);
 			}
-			document.addEventListener("click", onClick);
+			eventControl.add({
+				selector: ".accordion",
+				eventType: "click",
+				fn: onClick,
+			});
 		};
 
-		let destroy = () => {
-			document.removeEventListener("click", onClick);
-		};
-
-		return { init, destroy };
+		return { init };
 	})();
 
 	//
@@ -372,6 +373,9 @@ let IconCross = crossIcons[crossIconSize];
 	//
 
 	accordion.init();
-	document.addEventListener("astro:before-swap", accordion.destroy);
-	document.addEventListener("astro:after-swap", accordion.init);
+	eventControl.add({
+		selector: "document",
+		eventType: "astro:after-swap",
+		fn: accordion.init,
+	});
 </script>

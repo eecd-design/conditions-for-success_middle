@@ -623,12 +623,6 @@ let allComponents = await getCollection("components");
 	// Inits
 	//
 
-	let reportToolbar = document.querySelector('#report-controls') as HTMLElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		reportToolbar = document.querySelector('#report-controls') as HTMLElement;
-	});	
-
 	subscribe(updateReport);
 
 	//
@@ -637,6 +631,9 @@ let allComponents = await getCollection("components");
 
 	let onClick = async (event) => {
 		let target = event.target as any;
+
+		let toolbar = target.closest('#report-controls');
+		if (!toolbar) return;
 
 		if (target.matches('button.download-report')) {
 			packageReport();
@@ -653,8 +650,8 @@ let allComponents = await getCollection("components");
 		}
 
 	}
-	eventControl.initEvent({
-		elem: reportToolbar,
+	eventControl.add({
+		selector: '#report-controls',
 		eventType: 'click',
 		fn: onClick,
 	})

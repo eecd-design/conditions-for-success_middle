@@ -622,36 +622,37 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 	//
 
 	filter.init();
-	document.addEventListener("astro:before-swap", filter.destroy);
-	document.addEventListener("astro:after-swap", filter.init);
-
-	search.init();
-	document.addEventListener("astro:before-swap", search.destroy);
-	document.addEventListener("astro:after-swap", search.init);
+	eventControl.add({
+		selector: "document",
+		eventType: "astro:after-swap",
+		fn: filter.init,
+	});
 
 	sort.init();
-	document.addEventListener("astro:before-swap", sort.destroy);
-	document.addEventListener("astro:after-swap", sort.init);
+	eventControl.add({
+		selector: "document",
+		eventType: "astro:after-swap",
+		fn: sort.init,
+	});
 
 	layout.init();
-	document.addEventListener("astro:before-swap", layout.destroy);
-	document.addEventListener("astro:after-swap", layout.init);
+	eventControl.add({
+		selector: "document",
+		eventType: "astro:after-swap",
+		fn: layout.init,
+	});
 
 	//
 	// Event Listeners
 	//
-
-	document.addEventListener("astro:after-swap", () => {
-		console.log("After Swap");
-	});
 
 	let onSearchMatchFound = (event: CustomEvent) => {
 		let matchTypes = event.detail.matchTypes;
 		let forceLayout = matchTypes.has("description");
 		toggleForcedLayout(forceLayout);
 	};
-	eventControl.initEvent({
-		elem: document as any,
+	eventControl.add({
+		selector: "document",
 		eventType: "searchMatchFound",
 		fn: onSearchMatchFound,
 	});

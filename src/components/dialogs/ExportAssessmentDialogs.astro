@@ -282,7 +282,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (export)");
+		// console.log("Updating Dialog (export)");
 
 		let exportCodeSection = dialog.querySelector("section.export-code");
 		let codeField = dialog.querySelector('[data-field="exportCode"]');
@@ -350,7 +350,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (export warning)");
+		// console.log("Updating Dialog (export warning)");
 
 		let exportStatusField = dialog.querySelector(
 			'[data-field="exportStatus"]',
@@ -378,22 +378,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	// Inits
 	//
 
-	let exportAssessmentDialog = document.querySelector(
-		"#export-assessment-dialog",
-	) as HTMLDialogElement;
-	let exportWarningDialog = document.querySelector(
-		"#export-warning-dialog",
-	) as HTMLDialogElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		exportAssessmentDialog = document.querySelector(
-			"#export-assessment-dialog",
-		) as HTMLDialogElement;
-		exportWarningDialog = document.querySelector(
-			"#export-warning-dialog",
-		) as HTMLDialogElement;
-	});
-
 	subscribe(updateExportAssessmentDialog);
 	subscribe(updateExportWarningDialog);
 
@@ -404,7 +388,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	let onExportAssessmentClick = async (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		console.log("Export Dialog Click", target);
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
 
 		if (target.matches("button.change-status")) {
 			try {
@@ -460,14 +445,18 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: exportAssessmentDialog,
+	eventControl.add({
+		selector: "#export-assessment-dialog",
 		eventType: "click",
 		fn: onExportAssessmentClick,
 	});
 
 	let onExportWarningClick = (event) => {
 		let target = event.target as HTMLButtonElement;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
+
 		// TODO: Not working
 		// TODO: Consolidate multiple consecutive set calls into setUserData
 		if (target.matches("button.close-dialog")) {
@@ -480,8 +469,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			});
 		}
 	};
-	eventControl.initEvent({
-		elem: exportWarningDialog,
+	eventControl.add({
+		selector: "#export-warning-dialog",
 		eventType: "click",
 		fn: onExportWarningClick,
 	});

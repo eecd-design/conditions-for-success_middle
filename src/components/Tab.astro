@@ -131,6 +131,7 @@ if (dataset) {
 	// Imports
 	//
 
+	import { eventControl } from "src/utilities/event";
 	import {
 		isInViewport,
 		scrollIntoView,
@@ -296,7 +297,7 @@ if (dataset) {
 			toggleTab({ tabGroup, targetTab });
 		};
 
-		let onKey = (event) => {
+		let onKeydown = (event) => {
 			// Only run for left and right arrow keys
 			if (!["ArrowLeft", "ArrowRight"].includes(event.code)) return;
 
@@ -362,16 +363,19 @@ if (dataset) {
 					},
 				};
 			}
-			document.addEventListener("click", onClick);
-			document.addEventListener("keydown", onKey);
+			eventControl.add({
+				selector: ".tab-group",
+				eventType: "click",
+				fn: onClick,
+			});
+			eventControl.add({
+				selector: ".tab-group",
+				eventType: "keydown",
+				fn: onKeydown,
+			});
 		};
 
-		let destroy = () => {
-			document.removeEventListener("click", onClick);
-			document.removeEventListener("keydown", onKey);
-		};
-
-		return { init, destroy };
+		return { init };
 	})();
 
 	//
@@ -379,6 +383,9 @@ if (dataset) {
 	//
 
 	tabs.init();
-	document.addEventListener("astro:before-swap", tabs.destroy);
-	document.addEventListener("astro:after-swap", tabs.init);
+	eventControl.add({
+		selector: "document",
+		eventType: "astro:after-swap",
+		fn: tabs.init,
+	});
 </script>

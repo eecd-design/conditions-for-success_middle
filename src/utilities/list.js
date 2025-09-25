@@ -1,5 +1,6 @@
 import { setPreferences } from "src/stores/userDataStore";
 import { emitEvent, htmlToElement, toTitleCase } from "./helpers";
+import { eventControl } from "./event";
 
 //
 // Shared Methods
@@ -55,7 +56,7 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 			}
 
 			if (filters.indicators) {
-				let match = filters.indicators.some((v) => 
+				let match = filters.indicators.some((v) =>
 					indicators.some(tag => tag.startsWith(v)) ||
 					components.some(tag => tag.startsWith(v)) ||
 					considerations.some(tag => tag.startsWith(v))
@@ -65,7 +66,7 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 			}
 
 			if (filters.components) {
-				let match = filters.components.some((v) => 
+				let match = filters.components.some((v) =>
 					components.some(tag => tag.startsWith(v)) ||
 					considerations.some(tag => tag.startsWith(v))
 				);
@@ -111,14 +112,14 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 
 	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
 
-	if (errorMessage){
+	if (errorMessage) {
 
 		// If there are no positive results, reveal the error message
 		if (matches === 0) {
 			errorMessage.removeAttribute('hidden');
 			list.setAttribute('hidden', '');
 
-		// Otherwise, hide the error message
+			// Otherwise, hide the error message
 		} else {
 			errorMessage.setAttribute('hidden', '');
 			list.removeAttribute('hidden');
@@ -145,7 +146,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 	let results = [];
 	let matches = 0;
 	let presortType = null;
-	let matchTypes = new Set; 
+	let matchTypes = new Set;
 
 	if (!sortType) {
 		sortType = value.length === 0 ? 'title' : 'relevance';
@@ -157,12 +158,12 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 	for (const item of items) {
 
 		clearTextHighlights(item);
-		
+
 		// Get the item data
 		let title = item.getAttribute('data-title');
 		let tag = item.getAttribute('data-tag');
 		let description = item.getAttribute('data-description');
-		
+
 		let result = {
 			elem: item,
 			title: title ?? null,
@@ -184,17 +185,17 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 				markMatch(0);
 			}
 			results.push(result);
-    		item.toggleAttribute('hidden', !result.match);
+			item.toggleAttribute('hidden', !result.match);
 
-		} 
+		}
 
 		// 1. Check for tag match
 		if (tag && tag.startsWith(value)) {
 			markMatch(100);
 			presortType = 'tag';
 			matchTypes.add('tag');
-			
-		// 2. Check for title match
+
+			// 2. Check for title match
 		} else if (title) {
 
 			// Full phrase match
@@ -208,7 +209,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 					matchTypes.add('title');
 				}
 
-			// Single word match
+				// Single word match
 			} else {
 
 				let words = title.split(' ');
@@ -220,10 +221,10 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 					}
 				}
 
-			}	
+			}
 
-		} 
-		
+		}
+
 		// 3. Check for description match
 		if (description && value.length > 2) {
 
@@ -235,7 +236,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 					matchTypes.add('description');
 				}
 
-			// Single word match
+				// Single word match
 			} else {
 
 				let words = description.split(' ');
@@ -247,10 +248,10 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 				}
 
 			}
-			
+
 
 			if (matches > 0) {
-				
+
 				let descriptionElem = item.querySelector('.text-container .description');
 				highlightText(descriptionElem, value);
 
@@ -279,7 +280,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			errorMessage.removeAttribute('hidden');
 			list.setAttribute('hidden', '');
 
-		// Otherwise, hide the error message
+			// Otherwise, hide the error message
 		} else {
 			errorMessage.setAttribute('hidden', '');
 			list.removeAttribute('hidden');
@@ -306,29 +307,29 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
  * @param {HTMLElement} elem - The element to modify.
  * @param {string} searchValue - The substring to highlight.
  */
-let highlightText = function(elem, searchValue) {
-    if (!elem || !searchValue) return;
+let highlightText = function (elem, searchValue) {
+	if (!elem || !searchValue) return;
 
-    // Escape special regex characters
-    let escapedValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    let regex = new RegExp(`(${escapedValue})`, 'gi');
+	// Escape special regex characters
+	let escapedValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	let regex = new RegExp(`(${escapedValue})`, 'gi');
 
-    // Work with plain text, then insert highlight spans
-    let content = elem.textContent;
-    let highlighted = content.replace(regex, '<span class="highlight">$1</span>');
+	// Work with plain text, then insert highlight spans
+	let content = elem.textContent;
+	let highlighted = content.replace(regex, '<span class="highlight">$1</span>');
 
-    // Apply result as HTML to preserve highlight spans
-    elem.innerHTML = highlighted;
+	// Apply result as HTML to preserve highlight spans
+	elem.innerHTML = highlighted;
 };
 
 /**
  * Clear highlighted substrings in an element's text.
  * @param {HTMLElement} elem - The element to modify.
  */
-let clearTextHighlights = function(elem) {
-    if (!elem) return;
+let clearTextHighlights = function (elem) {
+	if (!elem) return;
 	// Replace all <span class="highlight">...</span> with just the inner text
-    elem.innerHTML = elem.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
+	elem.innerHTML = elem.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
 };
 
 /**
@@ -455,16 +456,16 @@ let filter = (() => {
 	//
 
 	let createTag = (target, tagList) => {
-	
+
 		let template = tagList.querySelector('template');
 		if (!template) return;
-		
+
 		// Clone the template
 		let tag = template.content.cloneNode(true);
 
 		let li = tag.querySelector('li');
 		if (!li) return;
-		
+
 		let group = target.getAttribute('name');
 		let title = target.getAttribute('data-title');
 		let value = target.getAttribute('value');
@@ -485,7 +486,7 @@ let filter = (() => {
 		let titleField = tag.querySelector('.title');
 		let clearBtn = tag.querySelector('button.clear');
 		if (!groupField || !titleField || !clearBtn) return;
-		
+
 		groupField.textContent = toTitleCase(group);
 		titleField.textContent = tagText;
 		titleField.setAttribute('title', tagText);
@@ -524,10 +525,10 @@ let filter = (() => {
 		return field ?? null;
 	}
 
-	let updateStatus = ({field, operation}) => {
+	let updateStatus = ({ field, operation }) => {
 		let currentStatus = Number(field.textContent);
-		if (operation === 'add') currentStatus ++;
-		if (operation === 'subtract') currentStatus --;
+		if (operation === 'add') currentStatus++;
+		if (operation === 'subtract') currentStatus--;
 		if (operation === 'reset') currentStatus = 0;
 		field.textContent = currentStatus;
 		let fieldContainer = field.closest('.field-container');
@@ -572,7 +573,7 @@ let filter = (() => {
 	/**
 	 * Handles input inside filter form
 	 * @param {Event} event
-	 */	
+	 */
 	let onInput = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.filters input')) return;
@@ -615,7 +616,7 @@ let filter = (() => {
 	/**
 	 * Handles filter form reset
 	 * @param {Event} event
-	 */	
+	 */
 	let onReset = (event) => {
 		let target = event.target;
 		if (!target.matches('form:has(fieldset.filters)')) return;
@@ -687,27 +688,24 @@ let filter = (() => {
 	 * Initializes filter forms
 	 */
 	let init = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.filters)');
-		for (let form of forms) {
-			form.addEventListener('input', onInput);
-			form.addEventListener('reset', onReset);
-			document.addEventListener('click', onClick);
-		}
+		eventControl.add({
+			selector: '#active-filters-list',
+			eventType: 'click',
+			fn: onClick,
+		})
+		eventControl.add({
+			selector: 'form:has(fieldset.filters)',
+			eventType: 'input',
+			fn: onInput,
+		})
+		eventControl.add({
+			selector: 'form:has(fieldset.filters)',
+			eventType: 'reset',
+			fn: onReset,
+		})
 	}
 
-	/**
-	 * Cleans up event listeners
-	 */
-	let destroy = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.filters)');
-		for (let form of forms) {
-			form.removeEventListener('input', onInput);
-			form.removeEventListener('reset', onReset);
-			document.removeEventListener('click', onClick);
-		}
-	}
-
-	return { init, destroy };
+	return { init };
 
 })();
 
@@ -744,7 +742,7 @@ let search = (() => {
 		}
 	};
 
-	let onKey = (event) => {
+	let onKeydown = (event) => {
 		if (event.key === 'Enter') event.preventDefault();
 	}
 
@@ -756,20 +754,23 @@ let search = (() => {
 		for (let form of forms) {
 			let noValueBehaviour = form.getAttribute('data-no-value-behaviour') ?? null;
 			formOptions.set(form, { noValueBehaviour });
-			form.addEventListener('input', onInput);
-			form.addEventListener('keydown', onKey);
 		}
+		eventControl.add({
+			selector: 'form:has(fieldset.search)',
+			eventType: 'input',
+			fn: onInput,
+		})
+		eventControl.add({
+			selector: 'form:has(fieldset.search)',
+			eventType: 'keydown',
+			fn: onKeydown,
+		})
 	};
 
-	/**
-	 * Cleans up event listeners
-	 */
 	let destroy = () => {
 		let forms = document.querySelectorAll('form:has(fieldset.search)');
 		for (let form of forms) {
 			formOptions.delete(form);
-			form.removeEventListener('input', onInput);
-			form.removeEventListener('keydown', onKey);
 		}
 	};
 
@@ -779,10 +780,6 @@ let search = (() => {
 
 let sort = (() => {
 
-	/**
-	 * Handles filter tag button clicks
-	 * @param {Event} event
-	 */
 	let onClick = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.sort button')) return;
@@ -808,36 +805,20 @@ let sort = (() => {
 		})
 	}
 
-	/**
-	 * Initializes search forms
-	 */
 	let init = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.sort)');
-		for (let form of forms) {
-			form.addEventListener('click', onClick);
-		}
+		eventControl.add({
+			selector: 'form:has(fieldset.sort)',
+			eventType: 'click',
+			fn: onClick,
+		})
 	};
 
-	/**
-	 * Cleans up event listeners
-	 */
-	let destroy = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.sort)');
-		for (let form of forms) {
-			form.addEventListener('click', onClick);
-		}
-	};
-
-	return { init, destroy };
+	return { init };
 
 })();
 
 let layout = (() => {
 
-	/**
-	 * Handles filter tag button clicks
-	 * @param {Event} event
-	 */
 	let onClick = (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.layout button')) return;
@@ -853,27 +834,15 @@ let layout = (() => {
 		})
 	}
 
-	/**
-	 * Initializes search forms
-	 */
 	let init = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.layout)');
-		for (let form of forms) {
-			form.addEventListener('click', onClick);
-		}
+		eventControl.add({
+			selector: 'form:has(fieldset.layout)',
+			eventType: 'click',
+			fn: onClick,
+		})
 	};
 
-	/**
-	 * Cleans up event listeners
-	 */
-	let destroy = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.layout)');
-		for (let form of forms) {
-			form.addEventListener('click', onClick);
-		}
-	};
-
-	return { init, destroy };
+	return { init };
 
 })();
 

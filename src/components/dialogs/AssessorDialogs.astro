@@ -194,13 +194,12 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 	// Methods
 	//
 
-	let createAssessorListItem = (name) => {
-		if (!name || name === undefined) return;
+	let createAssessorListItem = (name, dialog) => {
+		if (!name || name === undefined || !dialog) return;
 
 		let template = dialog.querySelector(
 			".assessors-list template",
 		) as HTMLTemplateElement;
-
 		if (!template) return;
 
 		// Clone the template
@@ -212,9 +211,12 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 		return item;
 	};
 
-	let addAssessorToList = (target: HTMLButtonElement | HTMLInputElement) => {
+	let addAssessorToList = (
+		target: HTMLButtonElement | HTMLInputElement,
+		dialog,
+	) => {
 		let input = target.closest(".input-container").querySelector("input");
-		let item = createAssessorListItem(input.value);
+		let item = createAssessorListItem(input.value, dialog);
 		if (!item) return;
 		let list = target.closest("form").querySelector(".assessors-list");
 		list.append(item);
@@ -262,7 +264,7 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 
 		// Create items for each assessor
 		for (let assessor of assessors) {
-			let item = createAssessorListItem(assessor);
+			let item = createAssessorListItem(assessor, dialog);
 			if (item) list.append(item);
 		}
 
@@ -311,6 +313,9 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 	 * @param data
 	 */
 	let updateAssessorDialog = (data: UserData, changes) => {
+		let dialog = document.querySelector(
+			"#assessor-dialog",
+		) as HTMLDialogElement;
 		if (!dialog) return;
 
 		let triggerKeys = ["assessors", "activeAssessor"];
@@ -328,7 +333,7 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 
 		let { assessors, activeAssessor } = assessment;
 
-		console.log("Updating Dialog (assessor)");
+		// console.log("Updating Dialog (assessor)");
 
 		updateAssessorList({
 			dialog,
@@ -346,20 +351,6 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 	// Inits
 	//
 
-	let dialog = document.querySelector(
-		"#assessor-dialog",
-	) as HTMLDialogElement;
-	let form = dialog?.querySelector("form") as HTMLFormElement;
-	let saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
-
-	document.addEventListener("astro:after-swap", () => {
-		dialog = document.querySelector(
-			"#assessor-dialog",
-		) as HTMLDialogElement;
-		form = dialog?.querySelector("form") as HTMLFormElement;
-		saveBtn = dialog?.querySelector("button.save") as HTMLButtonElement;
-	});
-
 	subscribe(updateAssessorDialog);
 
 	//
@@ -369,12 +360,18 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
+		let dialog = target.closest("dialog") as HTMLDialogElement;
+		if (!dialog) return;
+
+		let form = dialog.querySelector("form") as HTMLFormElement;
+		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
+
 		if (target.matches("button.close-dialog")) {
 			saveBtn.setAttribute("disabled", "");
 		}
 
 		if (target.matches("button.add-assessor")) {
-			addAssessorToList(target);
+			addAssessorToList(target, dialog);
 			let values = getFormValues(form);
 			let activeAssessor = getActiveAssessor();
 			updateActiveAssessorSelect({
@@ -464,8 +461,8 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 			}
 		}
 	};
-	eventControl.initEvent({
-		elem: dialog,
+	eventControl.add({
+		selector: "#assessor-dialog",
 		eventType: "click",
 		fn: onClick,
 	});
@@ -474,8 +471,16 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 		if (event.key === "Enter") {
 			let target = event.target as HTMLInputElement;
 
+			let dialog = target.closest("dialog") as HTMLDialogElement;
+			if (!dialog) return;
+
+			let form = dialog.querySelector("form") as HTMLFormElement;
+			let saveBtn = dialog.querySelector(
+				"button.save",
+			) as HTMLButtonElement;
+
 			if (target.matches(`input.assessor`)) {
-				addAssessorToList(target);
+				addAssessorToList(target, dialog);
 				let values = getFormValues(form);
 				let activeAssessor = getActiveAssessor();
 				updateActiveAssessorSelect({
@@ -489,8 +494,8 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 			event.preventDefault();
 		}
 	};
-	eventControl.initEvent({
-		elem: dialog,
+	eventControl.add({
+		selector: "#assessor-dialog",
 		eventType: "keydown",
 		fn: onKeydown,
 	});
@@ -498,12 +503,17 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 	let onChange = (event) => {
 		let target = event.target as HTMLInputElement | HTMLSelectElement;
 
+		let dialog = target.closest("dialog") as HTMLDialogElement;
+		if (!dialog) return;
+
+		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
+
 		if (target.matches(`select[name="active-assessor"]`)) {
 			saveBtn.removeAttribute("disabled");
 		}
 	};
-	eventControl.initEvent({
-		elem: dialog,
+	eventControl.add({
+		selector: "#assessor-dialog",
 		eventType: "change",
 		fn: onChange,
 	});
