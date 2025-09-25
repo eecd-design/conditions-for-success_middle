@@ -1,0 +1,12 @@
+title: 'CAST: Accessible Educational Materials'
+dateAdded: 2025-09-25
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://aem.cast.org/
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 2.6.7
