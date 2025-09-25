@@ -1,0 +1,12 @@
+title: Data-based Decision Making
+dateAdded: 2025-09-25
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://www.pbis.org/topics/data-based-decision-making
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 2.3.12
