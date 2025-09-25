@@ -4,7 +4,8 @@ type: document
 topics: []
 external:
   discriminant: false
-  value: {}
+  value:
+    fileType: .jpg
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
