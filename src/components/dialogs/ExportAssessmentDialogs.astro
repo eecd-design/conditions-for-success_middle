@@ -282,7 +282,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		// console.log("Updating Dialog (export)");
+		console.log("Updating Dialog (export)");
 
 		let exportCodeSection = dialog.querySelector("section.export-code");
 		let codeField = dialog.querySelector('[data-field="exportCode"]');
@@ -406,6 +406,12 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 						message: `updated assessment status to ${newStatus.toLowerCase()}.`,
 					}),
 				});
+
+				if (newStatus === "In Progress") {
+					setState({
+						activeReportId: null,
+					});
+				}
 
 				toastControl.show({ target, type: "success" });
 			} catch (error) {
