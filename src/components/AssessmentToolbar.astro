@@ -217,7 +217,6 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 				<IconEditSmall />
 			</div>
 		</button>
-		<!-- TODO: Not showing up anymore -->
 	</div>
 
 	<div
@@ -404,8 +403,6 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 		)
 			return;
 
-		// TODO: Check all subscribes to make sure those affect by activeId change are setup good
-
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
@@ -502,8 +499,6 @@ import IconAssessment from "./icons/IconAssessment_20.astro";
 	//
 	// Inits
 	//
-
-	// TODO: Move all elem variables into the dom update methods
 
 	subscribe(updateToolbar);
 

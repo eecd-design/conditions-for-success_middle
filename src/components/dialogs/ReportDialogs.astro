@@ -168,11 +168,16 @@ let indicators = allIndicators.sort((a, b) =>
 		) as HTMLDialogElement;
 		if (!dialog) return;
 
+		let stateTriggerKeys = ["activeReportId"];
 		let preferencesTriggerKeys = ["reportIncludedIndicators"];
 		let assessmentTriggerKeys = ["continuumCompletion"];
 		if (
 			!changes.initiating &&
 			!(
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					)) ||
 				(changes.assessments &&
 					assessmentTriggerKeys.some((val) =>
 						changes.assessments.includes(val),

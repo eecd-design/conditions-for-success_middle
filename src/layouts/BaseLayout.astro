@@ -106,12 +106,19 @@ const { pageTitle, indicatorTag } = Astro.props;
 		};
 
 		let updateStatus = (data: UserData, changes) => {
-			let triggerKeys = ["status"];
+			let stateTriggerKeys = ["activeAssessmentId"];
+			let assessmentTriggerKeys = ["status"];
 			if (
 				!changes.initiating &&
 				!(
-					changes.assessments &&
-					triggerKeys.some((val) => changes.assessments.includes(val))
+					(changes.assessments &&
+						assessmentTriggerKeys.some((val) =>
+							changes.assessments.includes(val),
+						)) ||
+					(changes.uiState &&
+						stateTriggerKeys.some((val) =>
+							changes.uiState.includes(val),
+						))
 				)
 			)
 				return;
@@ -136,12 +143,19 @@ const { pageTitle, indicatorTag } = Astro.props;
 		};
 
 		let updateAssessor = (data: UserData, changes) => {
-			let triggerKeys = ["activeAssessor"];
+			let stateTriggerKeys = ["activeAssessmentId"];
+			let assessmentTriggerKeys = ["activeAssessor"];
 			if (
 				!changes.initiating &&
 				!(
-					changes.assessments &&
-					triggerKeys.some((val) => changes.assessments.includes(val))
+					(changes.assessments &&
+						assessmentTriggerKeys.some((val) =>
+							changes.assessments.includes(val),
+						)) ||
+					(changes.uiState &&
+						stateTriggerKeys.some((val) =>
+							changes.uiState.includes(val),
+						))
 				)
 			)
 				return;

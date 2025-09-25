@@ -318,12 +318,19 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 		) as HTMLDialogElement;
 		if (!dialog) return;
 
-		let triggerKeys = ["assessors", "activeAssessor"];
+		let stateTriggerKeys = ["activeAssessmentId"];
+		let assessmentTriggerKeys = ["assessors", "activeAssessor"];
 		if (
 			!changes.initiating &&
 			!(
-				changes.assessments &&
-				triggerKeys.some((val) => changes.assessments.includes(val))
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) =>
+						changes.assessments.includes(val),
+					)) ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
 			)
 		)
 			return;

@@ -497,16 +497,23 @@ let phases = [
 	//
 
 	let updateConsiderations = (data: UserData, changes) => {
-
-		let triggerKeys = [
+		
+		let stateTriggerKeys = ["activeAssessmentId"];
+		let assessmentTriggerKeys = [
 			"considerationsEstablished",
 			"continuumCompletion",
 		];
 		if (
 			!changes.initiating &&
 			!(
-				changes.assessments &&
-				triggerKeys.some((val) => changes.assessments.includes(val))
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) =>
+						changes.assessments.includes(val),
+					)) ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
 			)
 		)
 			return;

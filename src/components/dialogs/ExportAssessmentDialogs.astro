@@ -277,6 +277,19 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		) as HTMLDialogElement;
 		if (!dialog) return;
 
+		let stateTriggerKeys = ["activeAssessmentId"];
+		if (
+			!changes.initiating &&
+			!(
+				changes.assessments ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
+			)
+		)
+			return;
+
 		if (!changes.initiating && !changes.assessments) return;
 
 		let assessment = getActiveAssessmentData();
@@ -337,12 +350,19 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		) as HTMLDialogElement;
 		if (!dialog) return;
 
-		let triggerKeys = ["unexportedChanges", "dateExported"];
+		let stateTriggerKeys = ["activeAssessmentId"];
+		let assessmentTriggerKeys = ["unexportedChanges", "dateExported"];
 		if (
 			!changes.initiating &&
 			!(
-				changes.assessments &&
-				triggerKeys.some((val) => changes.assessments.includes(val))
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) =>
+						changes.assessments.includes(val),
+					)) ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
 			)
 		)
 			return;

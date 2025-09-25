@@ -662,7 +662,8 @@ let schoolList = {
 		) as HTMLDialogElement;
 		if (!dialog) return;
 
-		let triggerKeys = [
+		let stateTriggerKeys = ["activeAssessmentId"];
+		let assessmentTriggerKeys = [
 			"dateCreated",
 			"district",
 			"school",
@@ -675,8 +676,14 @@ let schoolList = {
 		if (
 			!changes.initiating &&
 			!(
-				changes.assessments &&
-				triggerKeys.some((val) => changes.assessments.includes(val))
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) =>
+						changes.assessments.includes(val),
+					)) ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
 			)
 		)
 			return;
@@ -739,12 +746,19 @@ let schoolList = {
 		) as HTMLDialogElement;
 		if (!dialog) return;
 
-		let triggerKeys = ["district", "school", "reportingYear"];
+		let stateTriggerKeys = ["activeAssessmentId"];
+		let assessmentTriggerKeys = ["district", "school", "reportingYear"];
 		if (
 			!changes.initiating &&
 			!(
-				changes.assessments &&
-				triggerKeys.some((val) => changes.assessments.includes(val))
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) =>
+						changes.assessments.includes(val),
+					)) ||
+				(changes.uiState &&
+					stateTriggerKeys.some((val) =>
+						changes.uiState.includes(val),
+					))
 			)
 		)
 			return;
