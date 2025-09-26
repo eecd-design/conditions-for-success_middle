@@ -160,8 +160,8 @@ let allComponents = await getCollection("components");
 
 			<section id="#overview" data-tag="0">
 				<h2>Overview</h2>
-				<h3>Continuum Progress</h3>
-				<ProgressChart/>
+				<!-- <h3>Continuum Progress</h3>
+				<ProgressChart/> -->
 				<h3>Indicator Progress</h3>
 				<MatrixChart entries={indicators}/>
 			</section>
@@ -184,9 +184,9 @@ let allComponents = await getCollection("components");
 							</span> */}
 							<span class="title">{indicator.data?.title}</span>
 						</h2>
-						<h3>Indicator</h3>
+						<h3>Overall Progress</h3>
 						<ProgressChart/>
-						<h3>Components</h3>
+						<h3>Component Progress</h3>
 						<MatrixChart entries={components} />
 					</section>
 
@@ -256,10 +256,8 @@ let allComponents = await getCollection("components");
 	}
 
 	#report-container h3 {
-		display: inline-block;
 		padding-bottom: 0.75rem;
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
-		font-weight: 400;
+		font-weight: 500;
 	}
 
 	hr:has(+ #report-container[hidden]) {
@@ -571,12 +569,17 @@ let allComponents = await getCollection("components");
 			// Convert on screen charts to images
 
 			let progressChartElem = section.querySelector('.progress') as HTMLElement;
-			if (!progressChartElem) continue;
-			let progressChartCanvas = await html2canvas(progressChartElem, {
-				scale: 3,
-			}) as HTMLCanvasElement;
-			let progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
-			let progressChartImgHeight = (progressChartImgProps.height * pageWidth) / progressChartImgProps.width;
+			let progressChartCanvas;
+			let progressChartImgProps;
+			let progressChartImgHeight;
+			if (index !== 0) {
+				if (!progressChartElem) continue;
+				progressChartCanvas = await html2canvas(progressChartElem, {
+					scale: 3,
+				}) as HTMLCanvasElement;
+				progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
+				progressChartImgHeight = (progressChartImgProps.height * pageWidth) / progressChartImgProps.width;
+			}
 
 			let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
 			if (!matrixChartElem) continue;
@@ -595,17 +598,19 @@ let allComponents = await getCollection("components");
 
 			currentYPosition += 18;
 			
-			let chartHeading1 = 'Overall Progress';
-			pdf.setFont('Public Sans', 'normal');
-			pdf.setFontSize(18);
-			currentYPosition = addWrappedText(pdf, chartHeading1, margin, currentYPosition, pageWidth);
+			if (index !== 0) {
+				let chartHeading1 = 'Overall Progress';
+				pdf.setFont('Public Sans', 'normal');
+				pdf.setFontSize(18);
+				currentYPosition = addWrappedText(pdf, chartHeading1, margin, currentYPosition, pageWidth);
 
-			currentYPosition += 24;
+				currentYPosition += 24;
 
-			pdf.addImage(progressChartCanvas, margin, currentYPosition, pageWidth, progressChartImgHeight);
-			currentYPosition += progressChartImgHeight;
-
-			currentYPosition += 12;
+				pdf.addImage(progressChartCanvas, margin, currentYPosition, pageWidth, progressChartImgHeight);
+				currentYPosition += progressChartImgHeight;
+	
+				currentYPosition += 12;
+			}
 			
 			let chartHeading2 = `${index === 0 ? 'Indicator' : 'Component'} Progress`;
 			pdf.setFont('Public Sans', 'normal');
@@ -692,32 +697,34 @@ let allComponents = await getCollection("components");
 				let mainScopeCompletion = mainScopeTag === '0' ? assessment.continuumCompletion.continuum : assessment.continuumCompletion[mainScopeTag];
 
 				let progressChart = section.querySelector('.progress');
-				let progressChartSegments = progressChart.querySelectorAll('.segment-container');
+				if (progressChart) {
+					let progressChartSegments = progressChart.querySelectorAll('.segment-container');
 
-				for (let segment of progressChartSegments) {
+					for (let segment of progressChartSegments) {
 
-					let phase = segment.getAttribute('data-phase');
+						let phase = segment.getAttribute('data-phase');
 
-					let activePhase = mainScopeCompletion ? mainScopeCompletion.phase.toLowerCase() : 'initiating';
+						let activePhase = mainScopeCompletion ? mainScopeCompletion.phase.toLowerCase() : 'initiating';
 
-					if (phase.toLowerCase() === activePhase) {
-						segment.setAttribute('data-active', '');
-					} else {
-						segment.removeAttribute('data-active');
+						if (phase.toLowerCase() === activePhase) {
+							segment.setAttribute('data-active', '');
+						} else {
+							segment.removeAttribute('data-active');
+						}
+
+						let countField = segment.querySelector('[data-field="count"]');
+						let totalField = segment.querySelector('[data-field="total"]');
+
+						let phaseTotal;
+						if (!mainScopeCompletion) {
+							let count = await userDataStore.getConsiderationCount();
+							phaseTotal = mainScopeTag === '0' ? count.continuum[phase] : count[mainScopeTag][phase];
+						}
+
+						countField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
+						totalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
+
 					}
-
-					let countField = segment.querySelector('[data-field="count"]');
-					let totalField = segment.querySelector('[data-field="total"]');
-
-					let phaseTotal;
-					if (!mainScopeCompletion) {
-						let count = await userDataStore.getConsiderationCount();
-						phaseTotal = mainScopeTag === '0' ? count.continuum[phase] : count[mainScopeTag][phase];
-					}
-
-					countField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
-					totalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
-
 				}
 
 				let matrixChart = section.querySelector('.matrix');
