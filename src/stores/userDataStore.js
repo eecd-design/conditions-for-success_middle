@@ -128,15 +128,29 @@ let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true 
 			let diff = Date.now() - dateExported;
 			let seconds = Math.floor(diff / 1000);
 			let minutes = Math.floor(seconds / 60);
+			let hours = Math.floor(minutes / 60);
+			let days = Math.floor(hours / 24);
 
-			if (minutes < 1) return verbose ? `Saved to browser. Exported just now.` : minutes;
-			if (minutes === 1) return verbose ? `Saved to browser. 1 min. since last export.` : minutes;
-			return verbose ? `Saved in browser. ${minutes} min. since last export.` : minutes;
+			if (minutes < 1) return verbose ? `Saved to browser. Exported just now.` : 0;
+
+			if (minutes < 60) {
+				return verbose
+					? `Saved in browser. ${minutes} min. since last export.`
+					: `${minutes} minute${minutes === 1 ? '' : 's'}`;
+			}
+
+			if (hours < 24) {
+				return verbose
+					? `Saved in browser. ${hours} hour${hours === 1 ? '' : 's'} since last export.`
+					: `${hours} hour${hours === 1 ? '' : 's'}`;
+			}
+
+			return verbose
+				? `Saved in browser. ${days} day${days === 1 ? '' : 's'} since last export.`
+				: `${days} day${days === 1 ? '' : 's'}`;
 		}
 		return verbose ? 'Saved in browser. Export for backup.' : 0;
 	}
-
-	// TODO [REQUIRED]: Update so that it shows hours and then days
 
 	return verbose ? 'No changes since last export.' : 0;
 };

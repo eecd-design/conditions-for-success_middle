@@ -380,11 +380,9 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 		if (!exportStatusField || !exportStatusFieldContainer) return;
 
-		let minutesSinceExport = getExportStatus({ verbose: false }) as number;
+		let timeSinceExport = getExportStatus({ verbose: false }) as number;
 		let exportStatus =
-			minutesSinceExport > 60
-				? ` for ${minutesSinceExport} minutes`
-				: null;
+			timeSinceExport === 0 ? null : ` for ${timeSinceExport}`;
 
 		if (exportStatus) {
 			exportStatusField.innerHTML = exportStatus;
@@ -483,8 +481,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let dialog = target.closest("dialog");
 		if (!dialog) return;
 
-		// TODO: Not working
-		// TODO: Consolidate multiple consecutive set calls into setUserData
+		// TODO [IMPROVE]: Consolidate multiple consecutive set calls into setUserData
 		if (target.matches("button.close-dialog")) {
 			setAssessment({
 				activeAssessor: null,
