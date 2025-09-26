@@ -451,8 +451,6 @@ let schoolList = {
 			</template>
 		</dl>
 	</section>
-
-	<!-- TODO: Add Delete Assessment section and button (with double warning) -->
 </dialog>
 
 <style>
@@ -625,16 +623,19 @@ let schoolList = {
 			if (staticField) {
 				// If value is array, flatten into comma separated string
 				if (Array.isArray(value)) {
-					staticField.textContent = value.join(", ");
-					// If value is date, retrieve formatted date from assessment data
-				} else if (
-					key.startsWith("date") &&
-					typeof value === "number"
-				) {
+					if (value.length > 0) {
+						staticField.textContent = value.join(", ");
+					} else {
+						staticField.textContent = "(none)";
+					}
+				}
+				// If value is date, retrieve formatted date from assessment data
+				else if (key.startsWith("date") && typeof value === "number") {
 					staticField.innerHTML = getAssessmentDate({ type: key });
-					// Otherwise, use value as is
-				} else {
-					staticField.textContent = String(value ?? "");
+				}
+				// Otherwise, use value as is
+				else {
+					staticField.textContent = String(value ?? "(none)");
 
 					// If key is status, update field theme as well
 					if (key === "status") {
@@ -699,8 +700,6 @@ let schoolList = {
 			assessment: assessment,
 			dialog: dialog,
 		});
-
-		// TODO: Hide empty values, or have a replacement value for empty (check import conflict to match)
 
 		for (let child of changeLogList.querySelectorAll(":not(template)")) {
 			child.remove();
@@ -927,7 +926,6 @@ let schoolList = {
 				initiating: true,
 			};
 			updateEditAssessmentPropertiesDialog(getUserData(), changes);
-			// TODO: This is broken, on new assessment showing existing info
 		}
 	};
 	// Special case event listener, cannot be attached to the document, and delegated
