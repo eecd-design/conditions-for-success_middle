@@ -725,10 +725,13 @@ import { toastControl } from 'src/utilities/toast';
 				let mainScopeCompletion = mainScopeTag === '0' ? assessment.continuumCompletion.continuum : assessment.continuumCompletion[mainScopeTag];
 
 				let progressChart = section.querySelector('.progress');
+				let progressSimplified = section.querySelector('.progress-simplified');
 				if (progressChart) {
 					let progressChartSegments = progressChart.querySelectorAll('.segment-container');
+					let progressSimDetails = progressSimplified.querySelectorAll('dd');
+					let progressSimPhaseField = progressSimplified.querySelector('[data-field="phase"]');
 
-					for (let segment of progressChartSegments) {
+					for (let [index, segment] of Object.entries(progressChartSegments)) {
 
 						let phase = segment.getAttribute('data-phase');
 
@@ -736,12 +739,15 @@ import { toastControl } from 'src/utilities/toast';
 
 						if (phase.toLowerCase() === activePhase) {
 							segment.setAttribute('data-active', '');
+							progressSimPhaseField.textContent = phase.charAt(0).toUpperCase() + phase.slice(1);
 						} else {
 							segment.removeAttribute('data-active');
 						}
 
 						let countField = segment.querySelector('[data-field="count"]');
 						let totalField = segment.querySelector('[data-field="total"]');
+						let progressSimCountField = progressSimDetails[index].querySelector('[data-field="count"]');
+						let progressSimTotalField = progressSimDetails[index].querySelector('[data-field="total"]');
 
 						let phaseTotal;
 						if (!mainScopeCompletion) {
@@ -751,22 +757,32 @@ import { toastControl } from 'src/utilities/toast';
 
 						countField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
 						totalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
+						progressSimCountField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Count`] : 0;
+						progressSimTotalField.textContent = mainScopeCompletion ? mainScopeCompletion[`${phase}Total`] : phaseTotal;
 
 					}
 				}
 
 				let matrixChart = section.querySelector('.matrix');
 				let matrixChartRows = matrixChart.querySelectorAll('tr');
+				let matrixSimplified = section.querySelector('.matrix-simplified');
+				let matrixSimRows = matrixSimplified.querySelectorAll('tr');
+				let matrixSimScopeField = matrixSimplified.querySelector('[data-field="scope"]');
+				matrixSimScopeField.textContent = mainScopeTag === '0' ? 'Indicators' : 'Components';
 
-				for (let row of matrixChartRows) {
-
+				for (let [index, row] of Object.entries(matrixChartRows)) {
+					
 					let subScopeTag = row.getAttribute('data-tag');
 
 					let subScopeCompletion = assessment.continuumCompletion[subScopeTag];
 
 					if (!subScopeCompletion) continue;
-
+					
 					row.setAttribute('data-phase', subScopeCompletion.phase.toLowerCase());
+					
+					let matrixSimRow = matrixSimRows[index];
+					let matrixSimPhaseField = matrixSimRow.querySelector('[data-field="phase"]');
+					matrixSimPhaseField.textContent = subScopeCompletion.phase;
 
 				}
 

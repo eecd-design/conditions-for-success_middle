@@ -6,7 +6,7 @@ import IconSapling24 from "src/components/icons/IconSapling_24.astro";
 import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 ---
 
-<div class="chart-container progress">
+<div class="chart-container progress" aria-hidden="true">
 	<div class="segment-container" data-phase="initiating">
 		<div class="title-container">
 			<div class="active-container">
@@ -22,9 +22,9 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count"
-				>0</span>&nbsp;/&nbsp;<span data-field="total"
-				>0</span>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span
+					data-field="total">0</span
+				>
 			</span>
 			<span>Considerations Established</span>
 		</div>
@@ -44,8 +44,9 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count">0</span
-				>&nbsp;/&nbsp;<span data-field="total">0</span>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span
+					data-field="total">0</span
+				>
 			</span>
 			<span>Considerations Established</span>
 		</div>
@@ -65,9 +66,9 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count"
-				>0</span>&nbsp;/&nbsp;<span data-field="total"
-				>0</span>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span
+					data-field="total">0</span
+				>
 			</span>
 			<span>Considerations Established</span>
 		</div>
@@ -87,19 +88,45 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count"
-				>0</span>&nbsp;/&nbsp;<span data-field="total"
-				>0</span>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span
+					data-field="total">0</span
+				>
 			</span>
 			<span>Considerations Established</span>
 		</div>
 	</div>
 </div>
 
-<!-- TODO: Accessible version, summary line of phase achieve, and <dl> of consideratins established per phase -->
+<div class="progress-simplified visually-hidden">
+	<p>Phase Achieved: <strong data-field="phase">Initiating</strong></p>
+	<dl>
+		<dt>Initiating</dt>
+		<dd>
+			<span data-field="count"></span> of <span data-field="total"></span>
+			considerations established
+		</dd>
+
+		<dt>Implementing</dt>
+		<dd>
+			<span data-field="count"></span> of <span data-field="total"></span>
+			considerations established
+		</dd>
+
+		<dt>Developing</dt>
+		<dd>
+			<span data-field="count"></span> of <span data-field="total"></span>
+			considerations established
+		</dd>
+
+		<dt>Sustaining</dt>
+		<dd>
+			<span data-field="count"></span> of <span data-field="total"></span>
+			considerations established
+		</dd>
+	</dl>
+</div>
 
 <style is:global>
-
 	/* 
 	// Progress Chart
 	*/
@@ -118,38 +145,64 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		position: relative;
 	}
 
-
 	/* Block */
 
 	.chart-container.progress .segment-container .block-container .block {
 		--icon-size: 2.5rem;
-		--icon-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+		--icon-colour: var(
+			--colour-ui-accent-subtle,
+			var(--colour-ui-neutral-subtle)
+		);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		height: 100px;
-		background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+		background-color: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
 	}
 
-	.chart-container.progress .segment-container:first-of-type .block-container .block {
-		border-radius: var(--border-radius-normal) 0 0 var(--border-radius-normal);
+	.chart-container.progress
+		.segment-container:first-of-type
+		.block-container
+		.block {
+		border-radius: var(--border-radius-normal) 0 0
+			var(--border-radius-normal);
 	}
 
-	.chart-container.progress .segment-container:last-of-type .block-container .block {
-		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal) 0;
+	.chart-container.progress
+		.segment-container:last-of-type
+		.block-container
+		.block {
+		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal)
+			0;
 	}
 
-	.chart-container.progress .segment-container[data-active] .block-container .block {
+	.chart-container.progress
+		.segment-container[data-active]
+		.block-container
+		.block {
 		--icon-colour: var(--colour-ui-reverse);
 		height: 140px;
 		border-radius: var(--border-radius-normal);
-		background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+		background-color: var(
+			--colour-fill-accent-bold,
+			var(--colour-fill-neutral-mid)
+		);
 	}
 
-	.chart-container.progress .segment-container:not([data-active]) + :not([data-active]) .block-container .block {
-		border-left: 2px solid var(--colour-border-accent-subtle, var(--colour-border-neutral-subtle));
+	.chart-container.progress
+		.segment-container:not([data-active])
+		+ :not([data-active])
+		.block-container
+		.block {
+		border-left: 2px solid
+			var(
+				--colour-border-accent-subtle,
+				var(--colour-border-neutral-subtle)
+			);
 	}
-
 
 	/* Title */
 
@@ -167,17 +220,25 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		font-weight: 500;
 	}
 
-	.chart-container.progress .segment-container[data-active] .title-container .title {
+	.chart-container.progress
+		.segment-container[data-active]
+		.title-container
+		.title {
 		font-size: 1.25rem;
 		font-weight: 600;
 	}
 
-
 	/* Active Flag */
 
-	.chart-container.progress .segment-container .title-container .active-container {
+	.chart-container.progress
+		.segment-container
+		.title-container
+		.active-container {
 		--icon-size: 1rem;
-		--icon-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+		--icon-colour: var(
+			--colour-ui-accent-subtle,
+			var(--colour-ui-neutral-subtle)
+		);
 		display: flex;
 		flex-flow: column nowrap;
 		align-items: center;
@@ -186,17 +247,23 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		top: -2.5rem;
 	}
 
-	.chart-container.progress .segment-container .title-container .active-container span {
+	.chart-container.progress
+		.segment-container
+		.title-container
+		.active-container
+		span {
 		font-size: 0.75rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
 	}
 
-	.chart-container.progress .segment-container:not([data-active]) .title-container .active-container {
+	.chart-container.progress
+		.segment-container:not([data-active])
+		.title-container
+		.active-container {
 		display: none;
 	}
-
 
 	/* Details */
 
@@ -216,5 +283,4 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		font-size: 1rem;
 		font-weight: 600;
 	}
-
 </style>

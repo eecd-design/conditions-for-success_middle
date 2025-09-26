@@ -7,7 +7,7 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 let { entries } = Astro.props;
 ---
 
-<table class="chart-container matrix">
+<table class="chart-container matrix" aria-hidden="true">
 	<colgroup>
 		<col style="width: 25%" />
 		<col style="width: 18.75%" />
@@ -47,11 +47,14 @@ let { entries } = Astro.props;
 	<tbody>
 		{
 			entries.map((entry) => (
-				<tr data-phase="initiating" data-tag={entry.data.tag} data-theme={entry.data.colour ?? null} data-vibrancy="vivid">
+				<tr
+					data-phase="initiating"
+					data-tag={entry.data.tag}
+					data-theme={entry.data.colour ?? null}
+					data-vibrancy="vivid"
+				>
 					<th scope="row">
-						<span class="tag">
-							{entry.data.tag}
-						</span>
+						<span class="tag">{entry.data.tag}</span>
 						{entry.data.title}
 					</th>
 					<td />
@@ -64,7 +67,31 @@ let { entries } = Astro.props;
 	</tbody>
 </table>
 
-<!-- TODO: Accessible version of the table with two columns (indicator/component | phase achieved) -->
+<table class="matrix-simplified visually-hidden">
+	<!-- TODO [IMPROVE]: Should visually-hidden be an attribute? -->
+	<thead>
+		<tr>
+			<th scope="col" data-field="scope">Indicator / Component</th>
+			<th scope="col">Phase Achieved</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			entries.map((entry) => {
+				let phase = entry.data.phase;
+				return (
+					<tr>
+						<th scope="row">
+							<span class="tag">{entry.data.tag}</span>
+							{entry.data.title}
+						</th>
+						<td data-field="phase">Initiating</td>
+					</tr>
+				);
+			})
+		}
+	</tbody>
+</table>
 
 <style is:global>
 	/* 
