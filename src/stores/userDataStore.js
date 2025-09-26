@@ -136,7 +136,7 @@ let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true 
 		return verbose ? 'Saved in browser. Export for backup.' : 0;
 	}
 
-	// TODO: Update so that it shows hours and then days
+	// TODO [REQUIRED]: Update so that it shows hours and then days
 
 	return verbose ? 'No changes since last export.' : 0;
 };
@@ -509,15 +509,25 @@ let checkForChanges = ({ data, update }) => {
 //
 
 let deleteAssessment = (id) => {
-	console.log('Deleting Assessment', id);
+	// console.log('Deleting Assessment', id);
+	let changes = {};
 	let index = data.assessments.findIndex(obj => obj.id === id);
 	if (index !== -1) {
 		let update = [...data.assessments];
 		update.splice(index, 1);
 		Object.assign(data, { assessments: update });
+		changes.assessments = [];
+	}
+	if (id === data.uiState.activeAssessmentId) {
+		let update = {
+			activeAssessmentId: null,
+			mode: "reading",
+		}
+		Object.assign(data.uiState, update);
+		changes.uiState = Object.keys(update);
 	}
 	save();
-	notify();
+	notify(changes);
 }
 
 let deleteImportConflictData = () => importConflictData = null;

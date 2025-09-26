@@ -4,7 +4,8 @@ import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconXmark from "src/components/icons/IconXmark_20.astro";
 import Toast from "src/components/Toast.astro";
-import IconCheckmark from "../icons/IconCheckmark_12.astro";
+import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
+import IconTrash from "src/components/icons/IconTrash_20.astro";
 ---
 
 <dialog
@@ -17,6 +18,23 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		aria-label="Close Open Assessment Dialog"><IconXmark /></button
 	>
 
+	<Toast
+		id={"import-conflict-dialog_overwrite-toast_success"}
+		message={`Assessment overwritten.`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"deletion-confirmation-dialog_delete-toast_success"}
+		message={`Assessment deleted.`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+
 	<h2
 		id="open-assessment-dialog_heading"
 		class="heading"
@@ -27,15 +45,6 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 
 	<section class="import">
 		<h3>Import Assessment</h3>
-
-		<Toast
-			id={"import-conflict-dialog_overwrite-toast_success"}
-			message={`Assessment overwritten.`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
 
 		<Toast
 			id={"open-assessment-dialog_import-file-toast_success"}
@@ -121,9 +130,8 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 			</div>
 		</div>
 
-		<!-- TODO: Add delete all button, and delete buttons to each assessment -->
 		<!-- Success Toast located in Assessors Dialogs -->
-		<!-- TODO: Add success toast specific to report context -->
+		<!-- TODO [REQUIRED]: Add success toast specific to report context -->
 		<Toast
 			id={"open-assessment-dialog_open-toast_failure"}
 			message={`Unable to open assessment. Please reload the page to try again.`}
@@ -139,7 +147,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 			data-columns="2"
 		>
 			<template>
-				<li class="card">
+				<li class="card" data-theme="red" data-vibrancy="vivid">
 					<div
 						class="banner"
 						data-theme="blue"
@@ -151,7 +159,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 					<div class="wrapper">
 						<h4 class="heading icon-and-label-container">
 							<IconAssessment />
-							<!-- TODO: Do we need this icon? -->
+							<!-- TODO [IMPROVE]: Do we need this icon? -->
 							<span class="label-container" data-field="title"
 							></span>
 						</h4>
@@ -205,23 +213,46 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 								</div>
 							</dl>
 						</div>
-						<button
-							class="open-assessment"
-							type="button"
-							data-size="large"
-							data-toast-success="open-assessment-dialog_open-toast_success"
-							data-toast-failure="open-assessment-dialog_open-toast_failure"
-							hidden>Open</button
-						>
-						<button
-							class="open-assessment change-status"
-							type="button"
-							data-size="large"
-							data-toast-success="open-assessment-dialog_open-toast_success"
-							data-toast-failure="open-assessment-dialog_open-toast_failure"
-							hidden>Mark Complete and Open</button
-						>
-						<!-- TODO: Do we need a new toast for this scenario? -->
+						<div class="button-group">
+							<button
+								class="open-assessment"
+								type="button"
+								data-size="large"
+								data-toast-success="open-assessment-dialog_open-toast_success"
+								data-toast-failure="open-assessment-dialog_open-toast_failure"
+								hidden>Open</button
+							>
+							<button
+								class="open-assessment change-status"
+								type="button"
+								data-size="large"
+								data-toast-success="open-assessment-dialog_open-toast_success"
+								data-toast-failure="open-assessment-dialog_open-toast_failure"
+								hidden>Mark Complete and Open</button
+							>
+							<button
+								class="delete open-dialog"
+								type="button"
+								data-size="large"
+								data-theme="red"
+								data-vibrancy="vivid"
+								aria-label="Delete Assessment"
+								data-dialog="deletion-confirmation-dialog"
+								data-dialog-context=""
+								data-id=""
+								data-toast-success="open-assessment-dialog_delete-toast_success"
+								data-toast-failure="open-assessment-dialog_delete-toast_failure"
+							>
+								<IconTrash />
+								<!-- <div class="icon-and-label-container">
+									<IconTrash />
+									<span class="label-container">
+										<span class="label">Delete</span>
+									</span>
+								</div> -->
+							</button>
+						</div>
+						<!-- TODO [REQUIRED]: Do we need a new toast for this scenario? -->
 					</div>
 				</li>
 			</template>
@@ -240,7 +271,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 	>
 
 	<h2
-		id="status-warning-dialog_heading"
+		id="import-conflict-dialog_heading"
 		class="heading"
 		data-default-text="Import Conflict"
 	>
@@ -372,6 +403,59 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 	</div>
 </dialog>
 
+<dialog
+	id="deletion-confirmation-dialog"
+	aria-describedby="deletion-confirmation-dialog_heading"
+>
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Open Assessment Dialog"><IconXmark /></button
+	>
+
+	<h2
+		id="deletion-confirmation-dialog_heading"
+		class="heading"
+		data-default-text="Delete Assessment"
+	>
+		Delete Assessment
+	</h2>
+
+	<p class="instructions">
+		Are you sure you want to delete the <strong>
+			<span data-field="reportingYear"></span>
+		</strong> assessment for <strong
+			><span data-field="school"></span></strong
+		>? This action cannot be undone.
+	</p>
+
+	<Toast
+		id={"deletion-confirmation-dialog_delete-toast_failure"}
+		message={`Unable to delete assessment. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	/>
+
+	<div class="button-group">
+		<button
+			class="cancel open-dialog"
+			type="button"
+			data-size="large"
+			data-style="outline"
+			data-dialog="open-assessment-dialog">Cancel</button
+		>
+		<button
+			class="delete"
+			type="button"
+			data-size="large"
+			data-style="solid"
+			data-toast-success="deletion-confirmation-dialog_delete-toast_success"
+			data-toast-failure="deletion-confirmation-dialog_delete-toast_failure"
+			>Delete</button
+		>
+	</div>
+</dialog>
+
 <style is:global>
 	/* 
 	// Open Assessment Dialog
@@ -415,17 +499,63 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		--group-margin: 0;
 	}
 
+	#open-assessment-dialog
+		.saved-assessments-list
+		.card:has(button.delete:is(:hover, :focus-visible)) {
+		outline-color: var(--colour-border-accent-bold);
+	}
+
 	#open-assessment-dialog .saved-assessments-list .card .heading {
 		--icon-colour: var(--colour-ui-neutral-subtle);
 	}
 
+	#open-assessment-dialog .saved-assessments-list .card .button-group {
+		--group-gap: 0.5rem;
+		margin: 0;
+	}
+
 	#open-assessment-dialog .saved-assessments-list .card button {
+		--icon-size: 1.25rem;
+		--label-size: 1rem;
 		padding: 0 0.75rem;
+	}
+
+	#open-assessment-dialog .saved-assessments-list .card button.delete {
+		min-width: 3rem;
+	}
+
+	#open-assessment-dialog
+		.saved-assessments-list
+		.card
+		button.delete:is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-reverse);
+		--button-background-colour: var(--colour-fill-accent-bold);
 	}
 
 	#open-assessment-dialog:not([data-context="report"])
 		[data-restrict-context="report"] {
 		display: none !important;
+	}
+
+	@container card (max-width: 300px) {
+		#open-assessment-dialog
+			.saved-assessments-list
+			.card
+			.button-group:has(button.open-assessment:not([hidden]))
+			button.delete
+			.label-container {
+			display: none;
+			min-width: 3rem;
+		}
+		#open-assessment-dialog
+			.saved-assessments-list
+			.card
+			.button-group:has(button.open-assessment:not([hidden]))
+			button.delete
+			.label-container {
+			display: none;
+			min-width: 3rem;
+		}
 	}
 
 	/* 
@@ -476,6 +606,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 
 	import {
 		findIndexByKey,
+		findObjectByKey,
 		formatDateAsHTML,
 		sanitizeHTML,
 	} from "src/utilities/helpers";
@@ -547,7 +678,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		// Set title text
 		let titleField = card.querySelector('[data-field="title"]');
 		titleField.textContent = getAssessmentName(assessment);
-		// TODO: Year as subtitle? Similar to report
+		// TODO [IMPROVE]: Year as subtitle? Similar to report
 
 		// Set edit status field
 		let editStatusField = card.querySelector('[data-field="editStatus"]');
@@ -599,6 +730,10 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 				btn.setAttribute("data-id", String(id));
 			}
 		}
+
+		let deleteBtn = card.querySelector("button.delete");
+		deleteBtn.setAttribute("data-id", `${assessment.id}`);
+		deleteBtn.setAttribute("data-dialog-context", `${assessment.id}`);
 
 		return card;
 	};
@@ -707,7 +842,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 				// Sort array of assessments by date modified
 				assessments.sort((a, b) => b.dateModified - a.dateModified);
 			} else if (context === "report") {
-				// TODO: Sort array of assessments by ???
+				// TODO [IMPROVE]: Sort array of assessments by ???
 			}
 
 			let activeId =
@@ -837,6 +972,29 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		updateCard(importedCard, importedAssessment);
 	};
 
+	let updateDeletionConfirmationDialog = (target) => {
+		let dialog = document.querySelector("#deletion-confirmation-dialog");
+		if (!dialog) return;
+
+		let assessmentId = target.getAttribute("data-id");
+		if (!assessmentId) return;
+
+		let assessment = findObjectByKey(
+			getUserData().assessments,
+			"id",
+			Number(assessmentId),
+		);
+		if (!assessment) return;
+
+		let reportingYearField = dialog.querySelector(
+			'[data-field="reportingYear"]',
+		);
+		let schoolField = dialog.querySelector('[data-field="school"]');
+
+		reportingYearField.textContent = assessment.reportingYear;
+		schoolField.textContent = assessment.school;
+	};
+
 	//
 	// Inits
 	//
@@ -889,7 +1047,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 						setAssessment({
 							status: "Complete",
 						});
-						// TODO: Add change log item
+						// TODO [REQUIRED]: Add change log item
 					}
 
 					setState({
@@ -909,7 +1067,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 					});
 
 					toastControl.show({ target, type: "success" });
-					// TODO: Customize toast to report
+					// TODO [REQUIRED]: Customize toast to report
 
 					dialogControl.close(dialog);
 				}
@@ -946,6 +1104,10 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 				toastControl.show({ target, type: "failure" });
 			}
 		}
+
+		if (target.matches("button.delete")) {
+			updateDeletionConfirmationDialog(target);
+		}
 	};
 	eventControl.add({
 		selector: "#open-assessment-dialog",
@@ -971,7 +1133,7 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 					JSON.parse(JSON.stringify(importedAssessment)),
 				);
 
-				// TODO: Investigate file validation for more detailed failure toasts (or even an error line under the button like we do for inputs)
+				// TODO [IMPROVE]: Investigate file validation for more detailed failure toasts (or even an error line under the button like we do for inputs)
 
 				let importResult = handleAssessmentImport(importedAssessment);
 
@@ -1066,5 +1228,34 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 		selector: "#import-conflict-dialog",
 		eventType: "click",
 		fn: onImportConflictClick,
+	});
+
+	let onDeletionConfirmationClick = async (event) => {
+		let target = event.target as any;
+
+		let dialog = target.closest("dialog");
+		if (!dialog) return;
+
+		if (target.matches("button.delete")) {
+			try {
+				let assessmentId = Number(dialog.getAttribute("data-context"));
+
+				deleteAssessment(assessmentId);
+
+				toastControl.show({ target, type: "success" });
+
+				dialogControl.open({
+					dialogId: "open-assessment-dialog",
+				});
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: "failure" });
+			}
+		}
+	};
+	eventControl.add({
+		selector: "#deletion-confirmation-dialog",
+		eventType: "click",
+		fn: onDeletionConfirmationClick,
 	});
 </script>

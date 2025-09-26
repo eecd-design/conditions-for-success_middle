@@ -648,7 +648,7 @@ p {
 }
 
 
-/* TODO: Check target size minimum for WCAG 2.2 to ensure small buttons are large enough */
+/* TODO [TEST]: Check target size minimum for WCAG 2.2 to ensure small buttons are large enough */
 
 
 
@@ -716,7 +716,7 @@ p {
 	opacity: 0;
 	scale: 90%;
 	transition: opacity var(--transition-linear-fast), scale var(--transition-ease-fast);
-	/* TODO: Media check for hover, and if not, have icon appear always */
+	/* TODO [REQUIRED]: Media check for hover, and if not, have icon appear always */
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon.destination:not(.arrow) {
@@ -1517,11 +1517,11 @@ dialog form hr.group {
 	margin: 0 !important;
 }
 
-.elem-group[data-columns="2"]:has(> *:not(template):only-child)>* {
+.elem-group[data-columns="2"]:has(> *:not(template):only-of-type)>* {
 	grid-column: span 2;
 }
 
-.elem-group[data-columns="3"]:has(> *:not(template):only-child)>* {
+.elem-group[data-columns="3"]:has(> *:not(template):only-of-type)>* {
 	grid-column: span 3;
 }
 
@@ -1754,15 +1754,14 @@ dialog form hr.group {
 	font-weight: 600;
 	margin: 0;
 	padding: 0 0 0.5rem;
-	border-bottom: 2px solid var(--colour-border-neutral-subtle);
+	border-bottom: 1px solid var(--colour-border-neutral-subtle);
 
-	/* TODO: Ellipsis hide headings over two lines? */
+	/* TODO [IMPROVE]: Ellipsis hide headings over two lines? */
 
 }
 
-.card .wrapper>button {
+.card .wrapper>.button-group {
 	place-self: end start;
-	width: 100%;
 }
 
 @container card (max-width: 300px) {
@@ -1778,7 +1777,7 @@ dialog form hr.group {
 }
 
 @container card (min-width: 460px) {
-	.card>.wrapper {
+	.card .wrapper {
 		grid-template-columns: 1fr auto;
 		grid-template-rows: auto auto;
 		row-gap: 0.75rem;
@@ -1788,7 +1787,8 @@ dialog form hr.group {
 		grid-column: span 2;
 	}
 
-	.card button {
+	.card .wrapper>.button-group {
+		height: auto;
 		place-self: end;
 	}
 }
@@ -2035,7 +2035,7 @@ details .contents {
 	border: 1px solid var(--colour-border-accent-bold, var(--colour-border-neutral-bold));
 }
 
-/* TODO: Apply this to button style as well */
+/* TODO [IMPROVE]: Apply this to button style as well */
 
 .label-container[data-restrict-length] .label {
 	overflow: hidden;
