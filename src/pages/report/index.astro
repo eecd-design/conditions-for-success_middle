@@ -11,6 +11,8 @@ import ProgressChart from "src/components/charts/ProgressChart.astro";
 import MatrixChart from "src/components/charts/MatrixChart.astro";
 import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssessmentDialogs.astro";
 import ReportDialogs from "src/components/dialogs/ReportDialogs.astro";
+import Toast from "src/components/Toast.astro";
+import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -53,7 +55,16 @@ let allComponents = await getCollection("components");
 		</nav>
 	</aside>
 
-	<OpenImportAssessmentDialogs context={'report'}/>
+	<Toast
+		id={"open-assessment-dialog_open-toast_success"}
+		message={`Report opened!`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+
+	<OpenImportAssessmentDialogs/>
 	<ReportDialogs/>
 
 	<div class="content report">
@@ -475,10 +486,10 @@ let allComponents = await getCollection("components");
 		let currentYPosition = margin;
 		pdf.setLineHeightFactor(1.1);
 
-		let aesthetNovaMediumBase64 = await fetchFontBase64('src/fonts/AesthetNova-Medium.ttf');
-		let aesthetNovaBoldBase64 = await fetchFontBase64('src/fonts/AesthetNova-Bold.ttf');
-		let publicSansRegularBase64 = await fetchFontBase64('src/fonts/PublicSans-Regular.ttf');
-		let publicSansBoldBase64 = await fetchFontBase64('src/fonts/PublicSans-Bold.ttf');
+		let aesthetNovaMediumBase64 = await fetchFontBase64('fonts/AesthetNova-Medium.ttf');
+		let aesthetNovaBoldBase64 = await fetchFontBase64('fonts/AesthetNova-Bold.ttf');
+		let publicSansRegularBase64 = await fetchFontBase64('fonts/PublicSans-Regular.ttf');
+		let publicSansBoldBase64 = await fetchFontBase64('fonts/PublicSans-Bold.ttf');
 
 		pdf.addFileToVFS('AesthetNova-Medium.ttf', aesthetNovaMediumBase64);
 		pdf.addFont('AesthetNova-Medium.ttf', 'Aesthet Nova', 'normal')
@@ -489,7 +500,7 @@ let allComponents = await getCollection("components");
 		pdf.addFileToVFS('PublicSans-Bold.ttf', publicSansBoldBase64);
 		pdf.addFont('PublicSans-Bold.ttf', 'Public Sans', 'bold');
 
-		let gnbLogoBase64 = await fetchPngBase64('src/images/gnb-logo-colour.png');
+		let gnbLogoBase64 = await fetchPngBase64('images/gnb-logo-colour.png');
 
 		// 1. Create the report cover page
 
@@ -613,6 +624,8 @@ let allComponents = await getCollection("components");
 		progressTracker.finish();
 
 	}
+
+	// TODO [REQUIRED]: Add toasts for changing settings, closed, etc. May not need it for download, as the progress tracker does it
 
 	//
 	// DOM Updates
