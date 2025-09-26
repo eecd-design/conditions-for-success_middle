@@ -13,6 +13,7 @@ import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssess
 import ReportDialogs from "src/components/dialogs/ReportDialogs.astro";
 import Toast from "src/components/Toast.astro";
 import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
+import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -62,6 +63,30 @@ let allComponents = await getCollection("components");
 		type={"success"}
 	>
 		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"report-settings-dialog_save-toast_success"}
+		message={`Report settings saved!`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"report-page_close-toast_success"}
+		message={`Report closed.`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"report-page_close-toast_failure"}
+		message={`Unable to close report. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	>
+		<IconWarningSmall slot={"icon"} />
 	</Toast>
 
 	<OpenImportAssessmentDialogs/>
@@ -134,7 +159,11 @@ let allComponents = await getCollection("components");
 				
 				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
 
-				<button class="close-report" aria-label="Close Assessment Report" type="button" >
+				<button class="close-report" 
+				aria-label="Close Assessment Report" 
+				type="button" 
+				data-toast-success="report-page_close-toast_success" 
+				data-toast-failure="report-page_close-toast_failure">
 					<div class="icon-and-label-container">
 						<IconXmark16/>
 						<span class="label-container">
@@ -320,6 +349,7 @@ let allComponents = await getCollection("components");
 	import html2canvas from 'html2canvas';
 	import jsPDF from 'jspdf';
 	import { eventControl } from 'src/utilities/event';
+import { toastControl } from 'src/utilities/toast';
 
 	//
 	// Methods
@@ -630,8 +660,6 @@ let allComponents = await getCollection("components");
 
 	}
 
-	// TODO [REQUIRED]: Add toasts for changing settings, closed, etc. May not need it for download, as the progress tracker does it
-
 	//
 	// DOM Updates
 	//
@@ -774,13 +802,21 @@ let allComponents = await getCollection("components");
 		}
 
 		if (target.matches('button.close-report')) {
-			setState({
-				activeReportId: null,
-			})
+			try {
+				setState({
+					activeReportId: null,
+				})
+	
+				setPreferences({
+					reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
+				})
 
-			setPreferences({
-				reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-			})
+				toastControl.show({ target, type: "success" });
+
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: "failure" });
+			}
 		}
 
 	}
