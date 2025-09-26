@@ -518,10 +518,17 @@ let deleteAssessment = (id) => {
 		Object.assign(data, { assessments: update });
 		changes.assessments = [];
 	}
-	if (id === data.uiState.activeAssessmentId) {
-		let update = {
-			activeAssessmentId: null,
-			mode: "reading",
+	let isActiveAssessment = id === data.uiState.activeAssessmentId;
+	let isActiveReport = id === data.uiState.activeReportId;
+
+	if (isActiveAssessment || isActiveReport) {
+		let update;
+		if (isActiveAssessment) {
+			update.activeAssessmentId = null;
+			update.mode = "reading";
+		}
+		if (isActiveReport) {
+			update.activeReportId = null;
 		}
 		Object.assign(data.uiState, update);
 		changes.uiState = Object.keys(update);
