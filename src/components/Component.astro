@@ -252,12 +252,17 @@ let phases = [
 
 																<div class="contents">
 																	<ul class="resources-list links-list" data-style="divided" data-layout="detailed" data-content="resources">
-																		{consideration.resources.map((resource) => {
+																		{consideration.resources
+																			.sort((a, b) => {
+																				let aIsInternalVideo = (a.data.type === 'video' && a.data.external.discriminant === false) ? 1 : 0;
+																				let bIsInternalVideo = (b.data.type === 'video' && a.data.external.discriminant === false) ? 1 : 0;
+																				return bIsInternalVideo - aIsInternalVideo;
+																			})
+																			.map((resource) => {
 																			let data = JSON.parse(JSON.stringify(resource.data));
 																			data.category = 'resource';
 																			data.slug = resource.id;
 																			return <LinkListItem itemData={data}/> 
-																			// TODO: Add priority to inhouse videos
 																		})}
 																	</ul>
 																</div>
