@@ -28,18 +28,18 @@ let {
 } = itemData;
 
 let colourMap = {
-	'1': 'red',
-	'2': 'orange',
-	'3': 'yellow',
-	'4': 'green',
-	'5': 'teal',
-	'6': 'blue',
-	'7': 'purple',
-}
+	"1": "red",
+	"2": "orange",
+	"3": "yellow",
+	"4": "green",
+	"5": "teal",
+	"6": "blue",
+	"7": "purple",
+};
 
 let path;
 let date = null;
-if (category === 'resource') {
+if (category === "resource") {
 	path = getResourcePath(itemData);
 	date = new Date(dateAdded).toLocaleDateString("en-US", {
 		day: "numeric",
@@ -47,8 +47,9 @@ if (category === 'resource') {
 		year: "numeric",
 	});
 } else {
-	if (category === 'indicator') path = `/big-seven/${slug}`;
-	else path = `/big-seven/${indicator}#${category}-${tag.replaceAll('.', '-')}`;
+	if (category === "indicator") path = `/big-seven/${slug}`;
+	else
+		path = `/big-seven/${indicator}#${category}-${tag.replaceAll(".", "-")}`;
 }
 
 let tags = null;
@@ -57,11 +58,11 @@ if (linkedIndicators || linkedComponents || linkedConsiderations) {
 	tags = tags.map((tag) => {
 		return {
 			colour: colourMap[tag.charAt(0)],
-			tag
-		}
-	})
+			tag,
+		};
+	});
 	tags.sort((a, b) => {
-		return (a.tag || '').localeCompare(b.tag || '')
+		return (a.tag || "").localeCompare(b.tag || "");
 	});
 }
 
@@ -102,207 +103,282 @@ let interactiveWrapperAttrs = ["video", "audio"].includes(type)
 		};
 
 let DestinationIcon = null;
-if (category !== 'resource') {
-    DestinationIcon = IconArrowRight;
-} else if (['video', 'audio'].includes(type)) {
-    DestinationIcon = IconExpand;
-} else if (['document', 'presentation'].includes(type)) {
-    DestinationIcon = IconDownload;
-} else if (type === 'website') {
-    DestinationIcon = IconExternal;
+// Pages and Locations
+if (category !== "resource") {
+	DestinationIcon = IconArrowRight;
+}
+// External Files and Websites
+else if (
+	external.discriminant === true &&
+	["document", "presentation", "website"].includes(type)
+) {
+	DestinationIcon = IconExternal;
+}
+// Internal and External Media
+else if (["video", "audio"].includes(type)) {
+	DestinationIcon = IconExpand;
+}
+// Internal Files
+else if (["document", "presentation"].includes(type)) {
+	DestinationIcon = IconDownload;
 }
 
-// TODO: External resources should all be IconExternal, regardless of type
+// TODO [REQUIRED]: External resources should all be IconExternal, regardless of type
 ---
 
 <ItemWrapper {...itemWrapperAttrs}>
 	<InteractiveWrapper {...interactiveWrapperAttrs}>
-		<ResourceIcons type={type} classes={["type"]} dataset={[{key: "restrict-content", value: "resources"}]}/>
-		<div class="separator group" data-orientation="vertical" data-restrict-content="resources" aria-hidden="true"></div>
+		<ResourceIcons
+			type={type}
+			classes={["type"]}
+			dataset={[{ key: "restrict-content", value: "resources" }]}
+		/>
+		<div
+			class="separator group"
+			data-orientation="vertical"
+			data-restrict-content="resources"
+			aria-hidden="true"
+		>
+		</div>
 		<span class="text-container">
 			<span class="label" data-restrict-content="mixed">
-				{category !== 'resource' ? `${toTitleCase(category)} ${tag}` : `${toTitleCase(type)} Resource`}
+				{
+					category !== "resource"
+						? `${toTitleCase(category)} ${tag}`
+						: `${toTitleCase(type)} Resource`
+				}
 			</span>
 			<span class="title">
 				{title}
-				{ tags && (
-					<ul class="tags-list" data-restrict-content="resources">
-						{ tags.map((tag) => (
-
-							<li class="tag" data-theme={tag.colour} data-vibrancy="vivid">
-								{tag.tag}
-							</li>
-							
-						))}
-					</ul>
+				{
+					tags && (
+						<ul class="tags-list" data-restrict-content="resources">
+							{tags.map((tag) => (
+								<li
+									class="tag"
+									data-theme={tag.colour}
+									data-vibrancy="vivid"
+								>
+									{tag.tag}
+								</li>
+							))}
+						</ul>
 					)
 				}
 			</span>
-			{ date && (
-				<span
-					class="date"
-					data-theme="red"
-					data-restrict-content="resources">Date Added: {date}</span>
-			)}
+			{
+				date && (
+					<span
+						class="date"
+						data-theme="red"
+						data-restrict-content="resources"
+					>
+						Date Added: {date}
+					</span>
+				)
+			}
 			{
 				description && (
-					<span
-						class="description"
-						data-restrict-layout="detailed"
-					>
+					<span class="description" data-restrict-layout="detailed">
 						{description}
 					</span>
 				)
 			}
 		</span>
 		<span class="icon-container">
-			<DestinationIcon classes={['destination']} />
+			<DestinationIcon classes={["destination"]} />
 		</span>
 	</InteractiveWrapper>
 </ItemWrapper>
 
 <style is:global>
+	.links-list[data-style="divided"] {
+		gap: 0;
+	}
 
-.links-list[data-style="divided"] {
-	gap: 0;
-}
+	.links-list[data-style="divided"] > li {
+		padding: 0.5rem 0;
+	}
 
-.links-list[data-style="divided"]>li {
-	padding: 0.5rem 0;
-}
+	.links-list[data-style="divided"] > li:first-child {
+		padding-top: 0 !important;
+	}
 
-.links-list[data-style="divided"]>li:first-child {
-	padding-top: 0 !important;
-}
+	.links-list[data-style="divided"] > li:last-child {
+		padding-bottom: 0 !important;
+	}
 
-.links-list[data-style="divided"]>li:last-child {
-	padding-bottom: 0 !important;
-}
+	.links-list[data-style="divided"] > li:has(+ li:not([hidden])) {
+		border-bottom: 1px solid var(--colour-border-neutral-subtle);
+	}
 
-.links-list[data-style="divided"]>li:has(+ li:not([hidden])) {
-	border-bottom: 1px solid var(--colour-border-neutral-subtle);
-}
+	.links-list[data-style="divided"] :is(a, [data-style-as="link"]) {
+		padding: 0.75rem 1rem 0.75rem 0.75rem;
+		border-radius: var(--border-radius-normal);
+		gap: 0.75rem;
+		text-decoration: none;
+		width: 100%;
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) {
-	padding: 0.75rem 1rem 0.75rem 0.75rem;
-	border-radius: var(--border-radius-normal);
-	gap: 0.75rem;
-	text-decoration: none;
-	width: 100%;
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
+		background-color: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
-	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
-}
+	/* SEPARATOR */
 
-/* SEPARATOR */
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.separator {
+		align-self: stretch;
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .separator {
-	align-self: stretch;
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		.separator {
+		background-color: var(
+			--colour-border-accent-mid,
+			var(--colour-border-neutral-mid)
+		);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .separator {
-	background-color: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
-}
+	/* TEXT CONTAINER */
 
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.text-container {
+		display: flex;
+		flex-flow: column;
+		gap: 0.5rem;
+	}
 
-/* TEXT CONTAINER */
+	/* TITLE */
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container {
-	display: flex;
-	flex-flow: column;
-	gap: 0.5rem;
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.text-container
+		.title {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: start;
+		gap: 0.5rem;
+		font-size: 1rem;
+	}
 
-/* TITLE */
+	/* DATE */
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .title {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: start;
-	gap: 0.5rem;
-	font-size: 1rem;
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.text-container
+		.date {
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--colour-ui-neutral-subtle);
+	}
 
-/* DATE */
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		.text-container
+		.date {
+		color: var(--colour-ui-neutral);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .date {
-	font-size: 0.75rem;
-	font-weight: 500;
-	color: var(--colour-ui-neutral-subtle);
-}
+	/* TAGS */
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .date {
-	color: var(--colour-ui-neutral);
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.text-container
+		.tags-list {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: start;
+		column-gap: 0.375rem;
+		row-gap: 0.375rem;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
 
-/* TAGS */
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.text-container
+		.tags-list
+		li {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 0.25rem;
+		height: 1.125rem;
+		min-width: 1.125rem;
+		border-radius: var(--border-radius-small);
+		background-color: var(--colour-fill-accent-subtle);
+		font-size: 0.75rem;
+		color: var(--colour-ui-accent);
+		line-height: 1;
+		transition: all var(--transition-linear-fast);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .tags-list {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: start;
-	column-gap: 0.375rem;
-	row-gap: 0.375rem;
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		.text-container
+		.tags-list
+		li {
+		background-color: var(--colour-fill-neutral-mid);
+		color: var(--colour-ui-reverse);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .tags-list li {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0 0.25rem;
-	height: 1.125rem;
-	min-width: 1.125rem;
-	border-radius: var(--border-radius-small);
-	background-color: var(--colour-fill-accent-subtle);
-	font-size: 0.75rem;
-	color: var(--colour-ui-accent);
-	line-height: 1;
-	transition: all var(--transition-linear-fast);
-}
+	/* DESCRIPTION */
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .text-container .tags-list li {
-	background-color: var(--colour-fill-neutral-mid);
-	color: var(--colour-ui-reverse);
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"])
+		.text-container
+		.description {
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--colour-ui-neutral-subtle);
+		line-height: 1.4;
+		transition: max-height var(--transition-ease-medium);
+	}
 
-/* DESCRIPTION */
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		.description {
+		color: var(--colour-ui-neutral);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .text-container .description {
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: var(--colour-ui-neutral-subtle);
-	line-height: 1.4;
-	transition: max-height var(--transition-ease-medium);
-}
+	.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
+		--label-size: 0.875rem;
+		--label-colour: var(
+			--colour-ui-accent-subtle,
+			var(--colour-ui-neutral-subtle)
+		);
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .description {
-	color: var(--colour-ui-neutral);
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		.label {
+		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
-	--label-size: 0.875rem;
-	--label-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		.icon-and-label-container {
+		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .label {
-	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		:is(.icon.destination, .icon.type) {
+		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+	}
 
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon-and-label-container {
-	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
-
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) :is(.icon.destination, .icon.type) {
-	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-}
-
-.links-list[data-style="divided"] :is(a, [data-style-as="link"]):is(:hover, :focus-visible) span.highlight {
-	--highlight-background-colour: transparent;
-	--highlight-ui-colour: var(--colour-ui-neutral);
-}
-
+	.links-list[data-style="divided"]
+		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+		span.highlight {
+		--highlight-background-colour: transparent;
+		--highlight-ui-colour: var(--colour-ui-neutral);
+	}
 </style>
