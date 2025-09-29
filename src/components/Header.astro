@@ -80,7 +80,6 @@ let path = url.pathname;
 					Audio
 				</button> */}
 			</div>
-			{/* TODO [REQUIRED]: Add welcome video and figure out thumbnail */}
 			<MediaDialog/>
 
 			<div class="quick-links-container callout" data-style="solid" data-intensity="bold">
@@ -93,7 +92,6 @@ let path = url.pathname;
 								<IconInfo20/>
 								<span class="label-container">
 									<span class="label">Learn about the continuums</span>
-									{/* TODO [IMPROVE]: Change link text if onboarding is complete? As in, they've clicked this link before? */}
 								</span>
 							</div>
 						</a>
@@ -122,6 +120,18 @@ let path = url.pathname;
 
 				<h2>Last time, I was working on...</h2>
 				<ul class="shortcuts-list recent">
+					<template>
+						<li>
+							<a href="" data-style-as="button" data-style="solid" data-size="large">
+								<div class="icon-and-label-container">
+									<IconHistory20/>
+									<span class="label-container">
+										<span class="label"></span>
+									</span>
+								</div>
+							</a>
+						</li>
+					</template>
 				</ul>
 
 			</div>
@@ -357,30 +367,21 @@ let path = url.pathname;
 	// Methods
 	//
 
-	let createLaunchpadLink = ({title, path}) => {
+	let createLaunchpadLink = ({list, title, path}) => {
 
-		let template = `
-			<li>
-				<a href="${path}" data-style-as="button" data-style="solid" data-size="large">
-					<div class="icon-and-label-container">
-						<svg class="icon history" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-							<path d="M20 10c0 4.96-4.04 9-9 9-3.77 0-7.17-2.38-8.46-5.92a.998.998 0 0 1 .6-1.28.998.998 0 0 1 1.28.6c1 2.75 3.65 4.61 6.58 4.61 3.86 0 7-3.14 7-7s-3.14-7-7-7c-2.97 0-5.59 1.9-6.57 4.66l1.06-.39a.998.998 0 0 1 1.28.6.998.998 0 0 1-.6 1.28l-3.32 1.21a.998.998 0 0 1-1.28-.6L.36 6.44a.998.998 0 0 1 .6-1.28.998.998 0 0 1 1.28.6l.37 1.01A8.996 8.996 0 0 1 11 1c4.96 0 9 4.04 9 9Zm-9-5c-.55 0-1 .45-1 1v4c0 .27.11.52.29.71l2 2c.2.2.45.29.71.29s.51-.1.71-.29a.996.996 0 0 0 0-1.41L12 9.59V6c0-.55-.45-1-1-1Z"/>
-						</svg>
-						<span class="label-container">
-							<span class="label">${title}</span>
-						</span>
-					</div>
-				</a>
-			</li>
-		`
+		let template = list.querySelector('template');
+		if (!template) return;
 
-		let elem = htmlToElement(template);
+		// Clone the template
+		let item = template.content.cloneNode(true) as HTMLElement;
 
-		return elem;
+		// Update the label
+		item.querySelector(".label").textContent = title.trim();
+		item.querySelector('a').href = path;
+
+		return item;
 
 	}
-
-	// TODO [IMPROVE]: Convert this to template elem
 
 	//
 	// DOM Updates
@@ -432,15 +433,18 @@ let path = url.pathname;
 		if (lastVisitedPage && lastVisitedPage.path !== '/') {
 
 			let link = createLaunchpadLink({
+				list: recentShortcutsList,
 				title: lastVisitedPage.title,
 				path: lastVisitedPage.path,
 			});
 
-			recentShortcutsList.innerHTML = '';
+			let recentShortcuts = recentShortcutsList.querySelectorAll(':scope > li');
+			for (let shortcut of recentShortcuts) {
+				shortcut.remove();
+			}
 			recentShortcutsList.append(link);
 
 		}
-
 
 	}
 
