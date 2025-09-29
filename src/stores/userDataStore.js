@@ -39,9 +39,14 @@ let data = {
 			title: document.querySelector('h1')?.textContent,
 			path: window.location.pathname
 		} : null,
+		announcementSession: {
+			views: 0,
+			lastSeen: null,
+			timeout: 24 * 60 * 60 * 1000,
+		},
 		mode: 'reading',
 		onboardingCompleted: false,
-		schemaVersion: '0.4',
+		schemaVersion: '0.5',
 	},
 	assessments: [],
 };
@@ -220,19 +225,16 @@ let setState = (update) => {
  * @param {Partial<typeof data.assessments[0]>} update
  */
 let setAssessment = (update) => {
-	console.log('Setting Assessment', update);
+	// console.log('Setting Assessment', update);
 
 	let targetId = update.id ?? data.uiState.activeAssessmentId;
 
 	// Find the active assessment in user data
 	let index = findIndexByKey(data.assessments, 'id', targetId);
 
-	console.log('Existing Assessment Index', index);
-
 	// If absent, add the new/imported assessment to user data
 	if (index === -1) {
 		data.assessments.push(update);
-
 	}
 	// Otherwise, update the assessment
 	else {
@@ -515,6 +517,43 @@ let checkForChanges = ({ data, update }) => {
 	}
 }
 
+let checkAnnouncementSession = () => {
+
+	let announcementSession = data.uiState.announcementSession ?? {
+		views: 0,
+		lastSeen: null,
+	};
+
+	let { views, lastSeen } = announcementSession;
+
+	let timeout = 24 * 60 * 60 * 1000; // 24 hours
+
+	let now = Date.now();
+
+	// Check if session expired
+	if (!lastSeen || now - lastSeen > timeout) {
+		// Reset new session
+		views = 0;
+	}
+
+	views = (views || 0) + 1;
+	// Keep track of active session, only reset if the user has not used the site in 24 hours
+	lastSeen = now;
+
+	// Show for the first 2 page views
+	let showAnnouncement = views <= 2;
+
+	setState({
+		announcementSession: {
+			views,
+			lastSeen,
+		},
+	})
+
+	return showAnnouncement;
+
+}
+
 
 
 
@@ -721,7 +760,7 @@ let decompressData = (data) => {
  * Notify all components of data update
  */
 let notify = (changes) => {
-	console.log('Notifying', subscribers);
+	// console.log('Notifying', subscribers);
 	for (let fn of subscribers) fn(structuredClone(data), changes);
 };
 
@@ -822,4 +861,5 @@ export {
 	generateContinuumCompletion,
 	deleteImportConflictData,
 	userDataStore,
+	checkAnnouncementSession,
 };

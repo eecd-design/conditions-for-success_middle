@@ -9,6 +9,7 @@ import IconEdit20 from "./icons/IconEdit_20.astro";
 import IconSearch20 from "./icons/IconSearch_20.astro";
 import IconHistory20 from "./icons/IconHistory_20.astro";
 import MediaDialog from "./dialogs/MediaDialog.astro";
+import IconMegaphone from "./icons/IconMegaphone_24.astro";
 
 const { url } = Astro;
 let path = url.pathname;
@@ -16,6 +17,11 @@ let path = url.pathname;
 ---
 
 <header data-theme="red">
+
+	<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden>
+		<IconMegaphone/>
+		<span>New resources are added regularly. <a href="/resources">Explore what's new.</a></span>
+	</div>
 
 	<div class="site-masthead">
 		<nav class="global">
@@ -67,14 +73,14 @@ let path = url.pathname;
 				<button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="https://pedex.nbed.nb.ca/DesignTeam/middle/conditions-for-success/assets/media/building-student-profiles-with-a-data-wall.mp4" data-media-external="false" type="button">
 					Internal Video
 				</button>
-				<button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="https://www.youtube.com/watch?v=hmtuvNfytjM" data-media-external="true" type="button">
+				{/* <button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="https://www.youtube.com/watch?v=hmtuvNfytjM" data-media-external="true" type="button">
 					External Video
 				</button>
 				<button class="open-dialog" data-dialog="media-dialog" data-media-type="audio" data-media-src="https://pedex.nbed.nb.ca/DesignTeam/middle/conditions-for-success/assets/media/building-student-profiles-with-a-data-wall.mp4" type="button">
 					Audio
-				</button>
+				</button> */}
 			</div>
-
+			{/* TODO [REQUIRED]: Add welcome video and figure out thumbnail */}
 			<MediaDialog/>
 
 			<div class="quick-links-container callout" data-style="solid" data-intensity="bold">
@@ -87,7 +93,7 @@ let path = url.pathname;
 								<IconInfo20/>
 								<span class="label-container">
 									<span class="label">Learn about the continuums</span>
-									{/* TODO: Change link text if onboarding is complete? As in, they've clicked this link before? */}
+									{/* TODO [IMPROVE]: Change link text if onboarding is complete? As in, they've clicked this link before? */}
 								</span>
 							</div>
 						</a>
@@ -132,8 +138,9 @@ let path = url.pathname;
 
 	header {
 		display: grid;
-		grid-template-rows: auto auto auto auto;
+		grid-template-rows: auto auto auto auto auto;
 		grid-template-areas: 
+		"announcement"
 		"masthead"
 		"title"
 		"launchpad"
@@ -144,7 +151,7 @@ let path = url.pathname;
 	
 	header .background {
 		grid-column: 1;
-		grid-row: 1 / span 3;
+		grid-row: 1 / span 4;
 		width: 100%;
 		height: 100%;
 		background: 
@@ -152,6 +159,36 @@ let path = url.pathname;
 			var(--colour-fill-neutral-bold);
 		background-blend-mode: screen;
 		z-index: -1;
+	}
+
+	header .site-announcement-container {
+		--icon-size: 1.25rem;
+		--icon-colour: var(--colour-ui-reverse);
+		grid-area: announcement;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		place-self: start;
+		margin: 0 3rem;
+		padding: 0 1.25rem 0 1.125rem;
+		background-color: var(--colour-fill-accent-bold);
+		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+		height: 3rem;
+		color: var(--colour-ui-reverse);
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+
+	header .site-announcement-container a {
+		color: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		text-decoration-color: inherit;
+	}
+
+	header .site-announcement-container a:is(:hover, :focus-visible) {
+		color: inherit;
 	}
 
 	header .site-masthead {
@@ -312,7 +349,8 @@ let path = url.pathname;
 	// Imports
 	//
 
-	import { subscribe } from "src/stores/userDataStore";
+	import { subscribe, checkAnnouncementSession } from "src/stores/userDataStore";
+	import { eventControl } from "src/utilities/event";
 	import { htmlToElement } from "src/utilities/helpers";
 
 	// 
@@ -342,7 +380,7 @@ let path = url.pathname;
 
 	}
 
-	// TODO: Convert this to template elem
+	// TODO [IMPROVE]: Convert this to template elem
 
 	//
 	// DOM Updates
@@ -411,5 +449,24 @@ let path = url.pathname;
 	//
 
 	if (window.location.pathname === '/') subscribe(updateLaunchpad);
+
+
+	let onPageLoad = (event) => {
+		let path = window.location.pathname;
+
+		if (path.includes('/big-seven')) {
+
+			let showAnnouncement = checkAnnouncementSession();
+			let announcementContainer = document.querySelector('.site-announcement-container');
+			announcementContainer.toggleAttribute('hidden', !showAnnouncement);
+
+		}
+
+	}
+	eventControl.add({
+		selector: 'window',
+		eventType: "astro:page-load",
+		fn: onPageLoad,
+	})
 
 </script>
