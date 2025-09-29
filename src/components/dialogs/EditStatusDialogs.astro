@@ -75,7 +75,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	</div>
 </dialog>
 
-<!-- TODO [REQUIRED]: Should we just have an close (X) button instead of the stop editing? would match report and be functional for complete assessment which currently have no way of closing. So, it would replace status warning (leaving that solely to the edit status dialog) -->
 <dialog
 	id="status-warning-dialog"
 	aria-describedby="status-warning-dialog_heading"
@@ -286,8 +285,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 						}
 					}
 				} else {
-					dialog.close();
 					toastControl.show({ target, type: "success" });
+					dialog.close();
 				}
 			} catch (error) {
 				console.error(error);
@@ -311,7 +310,12 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 						mode: "reading",
 						activeAssessmentId: null,
 					});
-					// TODO: Trigger toast
+					toastControl.show({
+						target,
+						type: "success",
+						selector: "edit-status-dialog_close-toast_success",
+					});
+					dialog.close();
 				}
 			}
 		}
