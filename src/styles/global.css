@@ -476,6 +476,10 @@ h2,
 	margin-top: 0.25rem;
 }
 
+[data-mode="assessment"] h2 {
+	scroll-margin-top: 5.75rem;
+}
+
 h3,
 [data-style-as="h3"] {
 	font-family: "Public Sans", sans-serif;
