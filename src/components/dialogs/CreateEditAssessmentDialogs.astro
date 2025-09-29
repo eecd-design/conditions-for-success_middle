@@ -923,8 +923,8 @@ let schoolList = {
 		fn: onClick,
 	});
 
-	// TODO [FIX]: Not working
 	let onToggle = (event) => {
+		console.log("Toggle Triggered");
 		let dialog = event.target as HTMLDialogElement;
 
 		// On open, update dialog form with current assessment data
@@ -935,10 +935,24 @@ let schoolList = {
 			updateEditAssessmentPropertiesDialog(getUserData(), changes);
 		}
 	};
-	// Special case event listener, cannot be attached to the document, and delegated
+	// Special case event listener, cannot be attached to the document and delegated
 	document
 		.querySelector("#edit-assessment-properties-dialog")
 		.addEventListener("toggle", onToggle);
+	document.addEventListener("astro:before-swap", () => {
+		let dialog = document.querySelector(
+			"#edit-assessment-properties-dialog",
+		);
+		if (!dialog) return;
+		dialog.removeEventListener("toggle", onToggle);
+	});
+	document.addEventListener("astro:after-swap", () => {
+		let dialog = document.querySelector(
+			"#edit-assessment-properties-dialog",
+		);
+		if (!dialog) return;
+		dialog.addEventListener("toggle", onToggle);
+	});
 
 	let onFocusout = (event) => {
 		let target = event.target as any;
