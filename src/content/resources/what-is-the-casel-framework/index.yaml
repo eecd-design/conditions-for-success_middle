@@ -3,8 +3,9 @@ dateAdded: 2025-09-29
 type: website
 topics: []
 external:
-  discriminant: false
-  value: {}
+  discriminant: true
+  value:
+    url: https://casel.org/fundamentals-of-sel/what-does-the-research-say/
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
