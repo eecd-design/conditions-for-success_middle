@@ -157,10 +157,14 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 					</div>
 					<div class="wrapper">
 						<h4 class="heading icon-and-label-container">
-							<IconAssessment />
-							<!-- TODO [IMPROVE]: Do we need this icon? -->
-							<span class="label-container" data-field="title"
-							></span>
+							<!-- <IconAssessment /> -->
+							<span class="label-container">
+								<span class="title" data-field="school"></span>
+								<span
+									class="subtitle"
+									data-field="reportingYear">2025</span
+								>
+							</span>
 						</h4>
 						<div class="details">
 							<span class="label-group">
@@ -301,7 +305,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			<IconWarningSmall />
 			<span>
 				<span class="value"></span>
-				<span class="visually-hidden">, conflicting value</span>
+				<span data-screen-reader>, conflicting value</span>
 			</span>
 		</div>
 	</template>
@@ -312,7 +316,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			</div>
 			<div class="wrapper">
 				<h4 class="heading icon-and-label-container">
-					<IconAssessment />
+					<!-- <IconAssessment /> -->
 					<span class="label-container" data-field="school"></span>
 				</h4>
 				<div class="details">
@@ -343,7 +347,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			</div>
 			<div class="wrapper">
 				<h4 class="heading icon-and-label-container">
-					<IconAssessment />
+					<!-- <IconAssessment /> -->
 					<span class="label-container" data-field="school"></span>
 				</h4>
 				<div class="details">
@@ -673,9 +677,12 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		}
 
 		// Set title text
-		let titleField = card.querySelector('[data-field="title"]');
-		titleField.textContent = getAssessmentName(assessment);
-		// TODO [IMPROVE]: Year as subtitle? Similar to report
+		let schoolField = card.querySelector('[data-field="school"]');
+		let reportingYearField = card.querySelector(
+			'[data-field="reportingYear"]',
+		);
+		schoolField.textContent = assessment.school;
+		reportingYearField.textContent = assessment.reportingYear;
 
 		// Set edit status field
 		let editStatusField = card.querySelector('[data-field="editStatus"]');
@@ -839,7 +846,9 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				// Sort array of assessments by date modified
 				assessments.sort((a, b) => b.dateModified - a.dateModified);
 			} else if (context === "report") {
-				// TODO [IMPROVE]: Sort array of assessments by ???
+				assessments.sort(
+					(a, b) => Number(b.reportingYear) - Number(a.reportingYear),
+				);
 			}
 
 			let activeId =
