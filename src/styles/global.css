@@ -1296,6 +1296,12 @@ form label:has(input[type="checkbox"]):is(:hover, :focus-visible) .text-containe
 	border-color: var(--colour-ui-error);
 }
 
+:is(.input-container,
+	.select-container,
+	[data-style-as="input-container"]):has(:is(input, select):focus-visible) {
+	border-color: var(--colour-border-neutral-bold);
+}
+
 input[type="text"],
 select,
 [data-style-as="input"] {
@@ -1484,6 +1490,7 @@ dialog button.close-dialog:has(.icon:only-child) {
 	--icon-size: 1.25rem;
 	float: right;
 	margin: 0 0 1rem 1.5rem;
+	min-width: 2.25rem;
 }
 
 dialog button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
