@@ -1,1 +1,1 @@
-Want to learn more about well-being in middle school? Check out this video, which outlines how creating caring relationships, modeling calming strategies, and designing purposeful learning environments can help students to feel safe, valued, and ready to thrive.
+Want to learn more about well-being in middle school? Check out **\[this video]**, which outlines how creating caring relationships, modeling calming strategies, and designing purposeful learning environments can help students to feel safe, valued, and ready to thrive.
