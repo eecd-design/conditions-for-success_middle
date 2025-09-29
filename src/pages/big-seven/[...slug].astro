@@ -7,6 +7,8 @@ import AssessmentDialogs from "../../components/dialogs/AssessmentDialogs.astro"
 import Component from "../../components/Component.astro";
 import IconArrow from "src/components/icons/IconArrowRight_16.astro";
 import IconCompass from "src/components/icons/IconCompass_24.astro";
+import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
+import IconArrowLeftSmall from "src/components/icons/IconArrowLeft_16.astro";
 
 // Get the current indicator
 export async function getStaticPaths() {
@@ -39,6 +41,12 @@ let allComponents = await getCollection("components");
 
 // Get all current indicator components
 let components = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+
+// Get all indicator components
+let allIndicators = await getCollection("indicators");
+
+let prevIndicator = indicator.data.tag === '1' ? null : allIndicators.filter((sibling => Number(sibling.data.tag) == Number(indicator.data.tag) - 1))[0];
+let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((sibling => Number(sibling.data.tag) == Number(indicator.data.tag) + 1))[0];
 
 ---
 
@@ -105,6 +113,34 @@ let components = allComponents.filter((component => component.data.indicator ===
 			<Component entry={component}/>
 
 		))}
+
+		<div id="pagination-controls">
+
+			{ prevIndicator && (
+				<div class="prev-container">
+					<span class="label">
+						<IconArrowLeftSmall />
+						Previous Indicator
+					</span>
+					<a href={`/big-seven/${prevIndicator.id}`}>
+						{prevIndicator.data.title}
+					</a>
+				</div>
+			)}
+
+			{ nextIndicator && (
+				<div class="next-container">
+					<span class="label">
+						Next Indicator
+						<IconArrowRightSmall />
+					</span>
+					<a href={`/big-seven/${nextIndicator.id}`}>
+						{nextIndicator.data.title}
+					</a>
+				</div>
+			)}
+
+		</div>
 
 		<!-- TODO [REQUIRED]: Add next/prev indicator links -->
 
