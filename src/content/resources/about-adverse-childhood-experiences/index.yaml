@@ -1,0 +1,12 @@
+title: About Adverse Childhood Experiences
+dateAdded: 2025-09-29
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://www.cdc.gov/aces/about/index.html
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 4.1.4
