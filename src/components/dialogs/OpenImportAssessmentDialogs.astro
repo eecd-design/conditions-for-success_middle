@@ -1142,8 +1142,6 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 					JSON.parse(JSON.stringify(importedAssessment)),
 				);
 
-				// TODO [IMPROVE]: Investigate file validation for more detailed failure toasts (or even an error line under the button like we do for inputs)
-
 				let importResult = handleAssessmentImport(importedAssessment);
 
 				if (importResult)

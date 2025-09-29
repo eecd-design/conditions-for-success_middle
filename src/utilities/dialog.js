@@ -40,10 +40,6 @@ let dialogControl = (() => {
 		}
 	}
 
-	// TODO [FIX]: event prevent default on enter key inside input fields
-
-	// TODO [FIX]: Unable to enter press button in assessor's dialog
-
 	let init = () => {
 		eventControl.add({
 			selector: 'document',
