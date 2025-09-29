@@ -155,6 +155,7 @@ let schoolList = {
 					name="district"
 					aria-describedby="edit-assessment-properties-dialog_district-select_error"
 					required
+					autofocus
 				>
 					<option value="">Select a district...</option>
 					<option value="ASD-W">ASD-W</option>
@@ -348,11 +349,12 @@ let schoolList = {
 	<section>
 		<button
 			class="open-dialog"
+			type="button"
+			aria-label="Edit Assessment General Information"
 			data-dialog="edit-assessment-properties-dialog"
 			data-dialog-heading="Edit Assessment Properties"
 			data-dialog-context="configure"
-			type="button"
-			aria-label="Edit Assessment General Information"
+			autofocus
 		>
 			<div class="icon-and-label-container">
 				<IconEdit />
@@ -455,11 +457,14 @@ let schoolList = {
 </dialog>
 
 <style>
-	#view-assessment-properties-dialog :is(button, [data-style-as="button"]) {
+	#view-assessment-properties-dialog
+		section
+		:is(button, [data-style-as="button"]) {
 		--icon-size: 0.875rem;
 	}
 
 	#view-assessment-properties-dialog
+		section
 		:is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);

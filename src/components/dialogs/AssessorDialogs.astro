@@ -4,11 +4,9 @@ import IconCross from "src/components/icons/IconCross_16.astro";
 import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
 import IconXmarkSmall from "src/components/icons/IconXmark_12.astro";
-
 import Toast from "src/components/Toast.astro";
 import IconCheckmark from "../icons/IconCheckmark_12.astro";
 import IconWarningSmall from "../icons/IconWarning_16.astro";
-import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 ---
 
 <dialog id="assessor-dialog" aria-describedby="assessor-dialog_heading">
@@ -53,6 +51,7 @@ import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 					class="assessor"
 					type="text"
 					placeholder="Enter a name..."
+					autofocus
 				/>
 				<button class="add-assessor" type="button">
 					<span class="icon-and-label-container">

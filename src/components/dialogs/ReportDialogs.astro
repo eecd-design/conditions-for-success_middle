@@ -1,11 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
-import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
-
 import Toast from "src/components/Toast.astro";
+import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
 import IconCheckmark from "../icons/IconCheckmark_8.astro";
 import IconWarningSmall from "../icons/IconWarning_16.astro";
-import IconXmark12 from "src/components/icons/IconXmark_12.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -114,7 +112,8 @@ let indicators = allIndicators.sort((a, b) =>
 				class="close-dialog"
 				type="button"
 				data-size="large"
-				data-style="outline">Cancel</button
+				data-style="outline"
+				autofocus>Cancel</button
 			>
 			<button
 				class="save"
