@@ -508,7 +508,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let dialog = target.closest("dialog");
 		if (!dialog) return;
 
-		// TODO [IMPROVE]: Consolidate multiple consecutive set calls into setUserData
 		if (target.matches("button.close-dialog")) {
 			try {
 				setAssessment({

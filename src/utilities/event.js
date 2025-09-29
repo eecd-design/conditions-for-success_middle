@@ -5,7 +5,7 @@ let eventControl = (() => {
 		if (!registry[eventType]) {
 			registry[eventType] = new Map()
 			document.addEventListener(eventType, (e) => {
-				console.log(`Event Triggered (${eventType})`)
+				// console.log(`Event Triggered (${eventType})`)
 				for (let { selector, fn } of registry[eventType].values()) {
 					let target;
 					if (selector === 'document') {
@@ -16,7 +16,7 @@ let eventControl = (() => {
 						target = e.target.closest(selector)
 					}
 					if (target) {
-						console.log(`Running Function (${fn.name}) in`, selector)
+						// console.log(`Running Function (${fn.name}) in`, selector)
 						fn(e, target)
 
 					}

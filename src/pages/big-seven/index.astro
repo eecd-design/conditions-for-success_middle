@@ -9,14 +9,14 @@ import Tab from "../../components/Tab.astro";
 import PhaseIcons from "../../components/icons/PhaseIcons.astro";
 import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowRightBig from "src/components/icons/IconArrowRight_20.astro";
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 import phaseScreenshot from "../../images/phase-highlight-screenshot.png";
 import focusScreenshot from "../../images/focus-highlight-screenshot.png";
 import considerationScreenshot from "../../images/consideration-highlight-screenshot.png";
 import resourcesScreenshot from "../../images/consideration-resources-highlight-screenshot.png";
 import IconCheckmark from "src/components/icons/IconCheckmark_16.astro";
 
-let allIndicators = await getCollection('indicators');
+let allIndicators = await getCollection("indicators");
 
 // Get all indicator components
 let allComponents = await getCollection("components");
@@ -24,12 +24,13 @@ let allComponents = await getCollection("components");
 // Sort components by indicator
 let components = {};
 for (let indicator of allIndicators) {
-	components[indicator.id] = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+	components[indicator.id] = allComponents
+		.filter((component) => component.data.indicator === indicator.id)
+		.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 }
-
 ---
-<BaseLayout pageTitle={'The Big Seven'}>
-	
+
+<BaseLayout pageTitle={"The Big Seven"}>
 	<AssessmentToolbar />
 
 	<AssessmentDialogs />
@@ -43,40 +44,54 @@ for (let indicator of allIndicators) {
 				<li>
 					<a href="#what-are-the-big-seven-indicators">
 						<span class="icon-container">
-							<IconArrowRightSmall classes={['destination']} />
+							<IconArrowRightSmall classes={["destination"]} />
 						</span>
 						<span class="text-container">
-							<span class="text">What are “The Big Seven” indicators?</span>
+							<span class="text"
+								>What are “The Big Seven” indicators?</span
+							>
 						</span>
 					</a>
 				</li>
 				<li>
 					<a href="#what-are-the-four-phases-of-growth-and-success">
 						<span class="icon-container">
-							<IconArrowRightSmall classes={['destination']} />
+							<IconArrowRightSmall classes={["destination"]} />
 						</span>
 						<span class="text-container">
-							<span class="text">What are the four phases of growth and success?</span>
+							<span class="text"
+								>What are the four phases of growth and success?</span
+							>
 						</span>
 					</a>
 				</li>
 				<li>
-					<a href="#when-self-assessing-how-will-schools-know-which-phase-theyre-in">
+					<a
+						href="#when-self-assessing-how-will-schools-know-which-phase-theyre-in"
+					>
 						<span class="icon-container">
-							<IconArrowRightSmall classes={['destination']} />
+							<IconArrowRightSmall classes={["destination"]} />
 						</span>
 						<span class="text-container">
-							<span class="text">When self-assessing, how will schools know which phase they're in?</span>
+							<span class="text"
+								>When self-assessing, how will schools know
+								which phase they're in?</span
+							>
 						</span>
 					</a>
 				</li>
 				<li>
-					<a href="#how-can-the-framework-help-with-continuous-improvement-planning">
+					<a
+						href="#how-can-the-framework-help-with-continuous-improvement-planning"
+					>
 						<span class="icon-container">
-							<IconArrowRightSmall classes={['destination']} />
+							<IconArrowRightSmall classes={["destination"]} />
 						</span>
 						<span class="text-container">
-							<span class="text">How can the framework help with continuous improvement planning?</span>
+							<span class="text"
+								>How can the framework help with continuous
+								improvement planning?</span
+							>
 						</span>
 					</a>
 				</li>
@@ -85,316 +100,561 @@ for (let indicator of allIndicators) {
 	</aside>
 
 	<div class="content">
-
 		<h1>The Big Seven</h1>
-		<p>Our framework enables self-assessment across seven key indicators.</p>
+		<p>
+			Our framework enables self-assessment across seven key indicators.
+		</p>
 
-		<hr class="section">
+		<hr class="section" />
 
 		<section>
-			<h2 id="what-are-the-big-seven-indicators">What are “The Big Seven” indicators?</h2>
+			<h2 id="what-are-the-big-seven-indicators">
+				What are “The Big Seven” indicators?
+			</h2>
 
 			<div class="accordion-group">
-	
-				<Accordion title={'Leadership and Teaming'} dataset={[{key: 'theme', value: 'red'}, {key: 'vibrancy', value: 'vivid'}]}>
+				<Accordion
+					title={"Leadership and Teaming"}
+					dataset={[
+						{ key: "theme", value: "red" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">1</span>
-					<p>Focuses on cultivating a shared vision, fostering inclusive collaboration, and building strong professional communities that prioritize student-centered middle-level education through flexible, responsive scheduling.</p>
+					<p>
+						Focuses on cultivating a shared vision, fostering
+						inclusive collaboration, and building strong
+						professional communities that prioritize
+						student-centered middle-level education through
+						flexible, responsive scheduling.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['leadership-and-teaming'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components["leadership-and-teaming"].map(
+								(component) => (
+									<li>
+										<a
+											href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+										>
+											<span class="icon-container">
+												<IconArrowRightSmall
+													classes={["destination"]}
+												/>
+											</span>
+											<span class="text-container">
+												<span class="text">
+													{component.data.tag}{" "}
+													{component.data.title}
+												</span>
+											</span>
+										</a>
+									</li>
+								),
+							)
+						}
 					</ul>
 				</Accordion>
-	
-				<Accordion title={'Access and Equity'} dataset={[{key: 'theme', value: 'orange'}, {key: 'vibrancy', value: 'vivid'}]}>
+
+				<Accordion
+					title={"Access and Equity"}
+					dataset={[
+						{ key: "theme", value: "orange" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">2</span>
-					<p>Focuses on ensuring inclusion and equitable access to school resources and supports through the Academic Response to Intervention, Positive Behavioral Interventions & Supports (PBIS), differentiated instruction, the Universal Design for Learning (UDL), linguistically and culturally responsive pedagogy, and acceleration-focused literacy support for all students.</p>
+					<p>
+						Focuses on ensuring inclusion and equitable access to
+						school resources and supports through the Academic
+						Response to Intervention, Positive Behavioral
+						Interventions & Supports (PBIS), differentiated
+						instruction, the Universal Design for Learning (UDL),
+						linguistically and culturally responsive pedagogy, and
+						acceleration-focused literacy support for all students.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['access-and-equity'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components["access-and-equity"].map((component) => (
+								<li>
+									<a
+										href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+									>
+										<span class="icon-container">
+											<IconArrowRightSmall
+												classes={["destination"]}
+											/>
+										</span>
+										<span class="text-container">
+											<span class="text">
+												{component.data.tag}{" "}
+												{component.data.title}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
 					</ul>
 				</Accordion>
-	
-				<Accordion title={'Relationships'} dataset={[{key: 'theme', value: 'yellow'}, {key: 'vibrancy', value: 'vivid'}]}>
+
+				<Accordion
+					title={"Relationships"}
+					dataset={[
+						{ key: "theme", value: "yellow" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">3</span>
-					<p>Focuses on strengthening connections that build trust, inclusion, and emotional safety for all, including: school personnel to student, school personnel to school personnel, student to student, and school to community.</p>
+					<p>
+						Focuses on strengthening connections that build trust,
+						inclusion, and emotional safety for all, including:
+						school personnel to student, school personnel to school
+						personnel, student to student, and school to community.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['relationships'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components["relationships"].map((component) => (
+								<li>
+									<a
+										href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+									>
+										<span class="icon-container">
+											<IconArrowRightSmall
+												classes={["destination"]}
+											/>
+										</span>
+										<span class="text-container">
+											<span class="text">
+												{component.data.tag}{" "}
+												{component.data.title}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
 					</ul>
 				</Accordion>
-	
-				<Accordion title={'Empathy'} dataset={[{key: 'theme', value: 'green'}, {key: 'vibrancy', value: 'vivid'}]}>
+
+				<Accordion
+					title={"Empathy"}
+					dataset={[
+						{ key: "theme", value: "green" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">4</span>
-					<p>Focuses on developing a culture of support through trauma-informed practices, active listening, emotional awareness, and culturally responsive approaches that support all learners.</p>
+					<p>
+						Focuses on developing a culture of support through
+						trauma-informed practices, active listening, emotional
+						awareness, and culturally responsive approaches that
+						support all learners.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['empathy'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components["empathy"].map((component) => (
+								<li>
+									<a
+										href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+									>
+										<span class="icon-container">
+											<IconArrowRightSmall
+												classes={["destination"]}
+											/>
+										</span>
+										<span class="text-container">
+											<span class="text">
+												{component.data.tag}{" "}
+												{component.data.title}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
 					</ul>
 				</Accordion>
-	
-				<Accordion title={'Identities'} dataset={[{key: 'theme', value: 'teal'}, {key: 'vibrancy', value: 'vivid'}]}>
+
+				<Accordion
+					title={"Identities"}
+					dataset={[
+						{ key: "theme", value: "teal" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">5</span>
-					<p>Focuses on recognizing and integrating diverse identities into school culture through curriculum, policies, events, and professional learning, ensuring inclusion and student empowerment.</p>
+					<p>
+						Focuses on recognizing and integrating diverse
+						identities into school culture through curriculum,
+						policies, events, and professional learning, ensuring
+						inclusion and student empowerment.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['identities'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components["identities"].map((component) => (
+								<li>
+									<a
+										href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+									>
+										<span class="icon-container">
+											<IconArrowRightSmall
+												classes={["destination"]}
+											/>
+										</span>
+										<span class="text-container">
+											<span class="text">
+												{component.data.tag}{" "}
+												{component.data.title}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
 					</ul>
 				</Accordion>
-	
-				<Accordion title={'High-yield Instructional Practices'} dataset={[{key: 'theme', value: 'blue'}, {key: 'vibrancy', value: 'vivid'}]}>
+
+				<Accordion
+					title={"High-yield Instructional Practices"}
+					dataset={[
+						{ key: "theme", value: "blue" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">6</span>
-					<p>Focuses on implementing evidence-based strategies such as cross-curricular and scaffolded learning opportunities to strengthen literacy, numeracy, and language learning.</p>
+					<p>
+						Focuses on implementing evidence-based strategies such
+						as cross-curricular and scaffolded learning
+						opportunities to strengthen literacy, numeracy, and
+						language learning.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['high-yield-instructional-practices'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components[
+								"high-yield-instructional-practices"
+							].map((component) => (
+								<li>
+									<a
+										href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+									>
+										<span class="icon-container">
+											<IconArrowRightSmall
+												classes={["destination"]}
+											/>
+										</span>
+										<span class="text-container">
+											<span class="text">
+												{component.data.tag}{" "}
+												{component.data.title}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
 					</ul>
 				</Accordion>
-	
-				<Accordion title={'Meaningful Learning Experiences'} dataset={[{key: 'theme', value: 'purple'}, {key: 'vibrancy', value: 'vivid'}]}>
+
+				<Accordion
+					title={"Meaningful Learning Experiences"}
+					dataset={[
+						{ key: "theme", value: "purple" },
+						{ key: "vibrancy", value: "vivid" },
+					]}
+				>
 					<span class="tag" slot="button-icon">7</span>
-					<p>Focuses on the design of engaging, student-centered learning through peer collaboration, interdisciplinary projects, problem-solving, experiential learning, and career-connected learning.</p>
+					<p>
+						Focuses on the design of engaging, student-centered
+						learning through peer collaboration, interdisciplinary
+						projects, problem-solving, experiential learning, and
+						career-connected learning.
+					</p>
 					<h4>Components</h4>
 					<ul class="links-list">
-						{components['meaningful-learning-experiences'].map((component) => (
-
-							<li>
-								<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-									<span class="icon-container">
-										<IconArrowRightSmall classes={['destination']} />
-									</span>
-									<span class="text-container">
-										<span class="text">{component.data.tag} {component.data.title}</span>
-									</span>
-								</a>
-							</li>
-
-						))}
+						{
+							components["meaningful-learning-experiences"].map(
+								(component) => (
+									<li>
+										<a
+											href={`#component-${component.data.tag.replaceAll(".", "-")}`}
+										>
+											<span class="icon-container">
+												<IconArrowRightSmall
+													classes={["destination"]}
+												/>
+											</span>
+											<span class="text-container">
+												<span class="text">
+													{component.data.tag}{" "}
+													{component.data.title}
+												</span>
+											</span>
+										</a>
+									</li>
+								),
+							)
+						}
 					</ul>
 				</Accordion>
-
 			</div>
 
-			<p>When a school self-assesses their progress within one indicator, they'll review and reflect on all its components. There's one developmental continuum for each component, and each continuum spans four phases of growth and success.</p>
-
+			<p>
+				When a school self-assesses their progress within one indicator,
+				they'll review and reflect on all its components. There's one
+				developmental continuum for each component, and each continuum
+				spans four phases of growth and success.
+			</p>
 		</section>
 
-		<hr class="section">
+		<hr class="section" />
 
 		<section>
-			<h2 id="what-are-the-four-phases-of-growth-and-success">What are the four phases of growth and success?</h2>
+			<h2 id="what-are-the-four-phases-of-growth-and-success">
+				What are the four phases of growth and success?
+			</h2>
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
-				<IconArrowRightBig/>
-				<span style="display: flex; flex-flow: row; align-items: center; gap: 0.375rem"><PhaseIcons phase={'initiating'}/> Initiating · <PhaseIcons phase={'implementing'}/> Implementing · <PhaseIcons phase={'developing'}/> Developing · <PhaseIcons phase={'sustaining'}/> Sustaining</span>
+				<IconArrowRightBig />
+				<span
+					style="display: flex; flex-flow: row; align-items: center; gap: 0.375rem"
+					><PhaseIcons phase={"initiating"} /> Initiating · <PhaseIcons
+						phase={"implementing"}
+					/> Implementing · <PhaseIcons phase={"developing"} /> Developing
+					· <PhaseIcons phase={"sustaining"} /> Sustaining</span
+				>
 			</p>
-			<p>Each of the four phases—Initiating, Implementing, Developing, and Sustaining—has a discrete focus and associated considerations. The Initiating Phase of the developmental continuum for "Student Voice, Choice, and Reflection (7.1),” for example, is as follows:</p>
+			<p>
+				Each of the four phases—Initiating, Implementing, Developing,
+				and Sustaining—has a discrete focus and associated
+				considerations. The Initiating Phase of the developmental
+				continuum for "Student Voice, Choice, and Reflection (7.1),” for
+				example, is as follows:
+			</p>
 
 			<div class="tab-group">
-
-				<Tab title={'Phase'}>
-
+				<Tab title={"Phase"}>
 					<Image src={phaseScreenshot} alt="" slot="media" />
 
-					<!-- TODO (MARCIA): Need alt text for each screenshot -->
+					<!-- TODO [REQUIRED]: Need alt text for each screenshot -->
 
-					<p>Each continuum spans four <strong>phases</strong> of growth and success, moving from Initiating to Sustaining. While the phases are sequential, it's important to recognize that growth is fluid and thus a school may span multiple phases at the same time.</p>
-
+					<p>
+						Each continuum spans four <strong>phases</strong> of growth
+						and success, moving from Initiating to Sustaining. While
+						the phases are sequential, it's important to recognize that
+						growth is fluid and thus a school may span multiple phases
+						at the same time.
+					</p>
 				</Tab>
 
-				<Tab title={'Focus'}>
-
+				<Tab title={"Focus"}>
 					<Image src={focusScreenshot} alt="" slot="media" />
 
-					<p>Each phase includes a <strong>focus</strong> statement, which highlights the key area of focus for that phase of the continuum.</p>
-					<p>When self-assessing their growth and success in the Initiating Phase for the "Shared Vision for Inclusive, Learner-centered Middle Level Education (1.1)" continuum, for example, a school will narrow their focus to whether leadership has introduced "a shared vision and middle block philosophy."</p>
-
+					<p>
+						Each phase includes a <strong>focus</strong> statement, which
+						highlights the key area of focus for that phase of the continuum.
+					</p>
+					<p>
+						When self-assessing their growth and success in the
+						Initiating Phase for the "Shared Vision for Inclusive,
+						Learner-centered Middle Level Education (1.1)"
+						continuum, for example, a school will narrow their focus
+						to whether leadership has introduced "a shared vision
+						and middle block philosophy."
+					</p>
 				</Tab>
 
-				<Tab title={'Considerations'}>
-
+				<Tab title={"Considerations"}>
 					<Image src={considerationScreenshot} alt="" slot="media" />
 
-					<p>Each phase includes one or several <strong>considerations</strong>, which are the key "look fors" within that phase of the continuum.</p>
-					<p>When self-assessing their growth and success in the Initiating Phase for the "Shared Vision for Inclusive, Learner-centered Middle Level Education (1.1)" continuum, for example, a school will <strong><em>specifically</em></strong> look to see whether their leadership has introduced the concept of a shared vision and mission (1.1.1), and whether their leadership has introduced the concept of middle block philosophy (1.1.2). If leadership has introduced both concepts, then the school has successfully achieved the Initiating Phase of the continuum.</p>
-
+					<p>
+						Each phase includes one or several <strong
+							>considerations</strong
+						>, which are the key "look fors" within that phase of
+						the continuum.
+					</p>
+					<p>
+						When self-assessing their growth and success in the
+						Initiating Phase for the "Shared Vision for Inclusive,
+						Learner-centered Middle Level Education (1.1)"
+						continuum, for example, a school will <strong
+							><em>specifically</em></strong
+						> look to see whether their leadership has introduced the
+						concept of a shared vision and mission (1.1.1), and whether
+						their leadership has introduced the concept of middle block
+						philosophy (1.1.2). If leadership has introduced both concepts,
+						then the school has successfully achieved the Initiating
+						Phase of the continuum.
+					</p>
 				</Tab>
 
-				<Tab title={'Resources'}>
-
+				<Tab title={"Resources"}>
 					<Image src={resourcesScreenshot} alt="" slot="media" />
 
-					<p>When there are relevant <strong>resources</strong> for a given consideration, a link will appear underneath the consideration. Select the link to show the list of relevant resources. These may include locally developed videos and documents (from our own NB Educators!) and external videos, websites, documents, and presentations.</p>
-
+					<p>
+						When there are relevant <strong>resources</strong> for a
+						given consideration, a link will appear underneath the consideration.
+						Select the link to show the list of relevant resources. These
+						may include locally developed videos and documents (from
+						our own NB Educators!) and external videos, websites, documents,
+						and presentations.
+					</p>
 				</Tab>
-
 			</div>
-
 		</section>
 
-		<hr class="section">
+		<hr class="section" />
 
 		<section>
-			<h2 id="when-self-assessing-how-will-schools-know-which-phase-theyre-in">When self-assessing, how will schools know which phase they're in?</h2>
+			<h2
+				id="when-self-assessing-how-will-schools-know-which-phase-theyre-in"
+			>
+				When self-assessing, how will schools know which phase they're
+				in?
+			</h2>
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
-				<IconArrowRightBig/>
-				By considering the developmental continuum, its focus, and its considerations in detail.
+				<IconArrowRightBig />
+				By considering the developmental continuum, its focus, and its considerations
+				in detail.
 			</p>
 			<p>Use the below information about each phase as a guide.</p>
 
 			<div class="accordion-group">
-
-				<Accordion title={'Initiating'}>
-					<PhaseIcons phase={'initiating'} slot="button-icon"/>
-					<p>If a school is in the Initiating Phase, they have not yet considered the developmental continuum and its focus in detail, either because they didn't think it was important, they didn't know how to begin, or they needed to direct their time, effort, and/or resources elsewhere.</p>
+				<Accordion title={"Initiating"}>
+					<PhaseIcons phase={"initiating"} slot="button-icon" />
+					<p>
+						If a school is in the Initiating Phase, they have not
+						yet considered the developmental continuum and its focus
+						in detail, either because they didn't think it was
+						important, they didn't know how to begin, or they needed
+						to direct their time, effort, and/or resources
+						elsewhere.
+					</p>
 				</Accordion>
 
-				<Accordion title={'Implementing'}>
-					<PhaseIcons phase={'implementing'} slot="button-icon"/>
-					<p>If a school is in the Implementing Phase, they have a plan for how to implement and they have likely observed some examples of progress and achievement. At this point, they'll need to decide whether implementation is a priority or not, as it will take time and dedication.</p>
+				<Accordion title={"Implementing"}>
+					<PhaseIcons phase={"implementing"} slot="button-icon" />
+					<p>
+						If a school is in the Implementing Phase, they have a
+						plan for how to implement and they have likely observed
+						some examples of progress and achievement. At this
+						point, they'll need to decide whether implementation is
+						a priority or not, as it will take time and dedication.
+					</p>
 				</Accordion>
 
-				<Accordion title={'Developing'}>
-					<PhaseIcons phase={'developing'} slot="button-icon"/>
-					<p>If a school is in the Developing Phase, they have some processes and procedures in place—they're part way there! Our advice for schools in this phase is: <em>Don't slow down, you're doing great!</em></p>
+				<Accordion title={"Developing"}>
+					<PhaseIcons phase={"developing"} slot="button-icon" />
+					<p>
+						If a school is in the Developing Phase, they have some
+						processes and procedures in place—they're part way
+						there! Our advice for schools in this phase is: <em
+							>Don't slow down, you're doing great!</em>
+					</p>
 				</Accordion>
 
-				<Accordion title={'Sustaining'}>
-					<PhaseIcons phase={'sustaining'} slot="button-icon"/>
-					<p>If a school is in the Sustaining Phase, <em>they've nailed it</em>! At this point, they'll need to strive to consistently maintain the processes and knowledge that are needed to preserve this practice.</p>
+				<Accordion title={"Sustaining"}>
+					<PhaseIcons phase={"sustaining"} slot="button-icon" />
+					<p>
+						If a school is in the Sustaining Phase, <em
+							>they've nailed it</em
+						>! At this point, they'll need to strive to consistently
+						maintain the processes and knowledge that are needed to
+						preserve this practice.
+					</p>
 				</Accordion>
-
 			</div>
 
 			<p>Check out the video below to walk through this in detail.</p>
 
 			<video></video>
-
 		</section>
 
-		<hr class="section">
+		<hr class="section" />
 
 		<section>
-			<h2 id="how-can-the-framework-help-with-continuous-improvement-planning">How can the framework help with continuous improvement planning?</h2>
+			<h2
+				id="how-can-the-framework-help-with-continuous-improvement-planning"
+			>
+				How can the framework help with continuous improvement planning?
+			</h2>
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
-				<IconArrowRightBig/>
+				<IconArrowRightBig />
 				It can deepen and extend the work already being done.
 			</p>
-			<p>The <em>Conditions for Success Developmental Continuums</em> framework is designed to deepen and extend the work already underway in schools through the <a href="">Provincial School Improvement Indicators</a>, district-based goals, and improvement planning processes. While the four provincial domains: Systemic School Planning, Leadership and Teaming, Instructional Practices, and Learning Environments, remain consistent across grades K-12, this framework offers Middle Program Block-level teams a practical, student-centered lens to support ongoing improvement and can even help schools use the <a href="">Response to Intervention (RTI) framework</a> more effectively.</p>
-			<p>Specifically developed for the unique needs of young adolescents, the framework helps Middle Schools:</p>
+			<p>
+				The <em>Conditions for Success Developmental Continuums</em> framework
+				is designed to deepen and extend the work already underway in schools
+				through the <a href=""
+					>Provincial School Improvement Indicators</a
+				>, district-based goals, and improvement planning processes.
+				While the four provincial domains: Systemic School Planning,
+				Leadership and Teaming, Instructional Practices, and Learning
+				Environments, remain consistent across grades K-12, this
+				framework offers Middle Program Block-level teams a practical,
+				student-centered lens to support ongoing improvement and can
+				even help schools use the <a href=""
+					>Response to Intervention (RTI) framework</a
+				> more effectively.
+			</p>
+			<p>
+				Specifically developed for the unique needs of young
+				adolescents, the framework helps Middle Schools:
+			</p>
 			<ul class="checklist" data-theme="red">
 				<li>
-					<IconCheckmark/>
+					<IconCheckmark />
 					<span>
-						<strong>Clarify priority areas</strong> by reflecting on their current level of implementation, from Initiating to Sustaining, across “The Big Seven” indicators.
+						<strong>Clarify priority areas</strong> by reflecting on
+						their current level of implementation, from Initiating to
+						Sustaining, across “The Big Seven” indicators.
 					</span>
 				</li>
 				<li>
-					<IconCheckmark/>
+					<IconCheckmark />
 					<span>
-						<strong>Align daily practice with provincial and district goals</strong> by strengthening the connection between what happens in the Middle Program Block and the broader School Improvement Planning (SIP) process.
+						<strong
+							>Align daily practice with provincial and district
+							goals</strong
+						> by strengthening the connection between what happens in
+						the Middle Program Block and the broader School Improvement
+						Planning (SIP) process.
 					</span>
 				</li>
 				<li>
-					<IconCheckmark/>
+					<IconCheckmark />
 					<span>
-						<strong>Maintain local autonomy</strong> by guiding schools in determining how to move forward within what has been established by provincial and district expectations.
+						<strong>Maintain local autonomy</strong> by guiding schools
+						in determining how to move forward within what has been established
+						by provincial and district expectations.
 					</span>
 				</li>
 				<li>
-					<IconCheckmark/>
+					<IconCheckmark />
 					<span>
-						<strong>Deepen shared understanding</strong> and collaboration among staff, which contributes to sustained progress and builds internal capacity for change.
+						<strong>Deepen shared understanding</strong> and collaboration
+						among staff, which contributes to sustained progress and
+						builds internal capacity for change.
 					</span>
 				</li>
 				<li>
-					<IconCheckmark/>
+					<IconCheckmark />
 					<span>
-						<strong>Use evidence intentionally</strong>, making the continuum a tool for both celebration and critical reflection during SIP monitoring and review cycles.
+						<strong>Use evidence intentionally</strong>, making the
+						continuum a tool for both celebration and critical
+						reflection during SIP monitoring and review cycles.
 					</span>
 				</li>
 			</ul>
-			<p>Overall, the framework is a scaffold to help schools move from broad aspirations to focused actions, while supporting the sustained practices that are aligned with their SIP goals.</p>
-
-
+			<p>
+				Overall, the framework is a scaffold to help schools move from
+				broad aspirations to focused actions, while supporting the
+				sustained practices that are aligned with their SIP goals.
+			</p>
 		</section>
-
 	</div>
-	
 </BaseLayout>
