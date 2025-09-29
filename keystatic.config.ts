@@ -155,18 +155,18 @@ export default config({
 							}),
 							compass: fields.checkbox({
 								label: 'Compass',
-								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
 							}),
 							categories: fields.array(
 								fields.text({
 									label: 'Category',
 
 								}),
-							{
-								label: 'Categories',
-								itemLabel: (props) => props.value,
-								description: 'These categories will appear next to the consideration tag with a similar styling.',
-							})
+								{
+									label: 'Categories',
+									itemLabel: (props) => props.value,
+									description: 'These categories will appear next to the consideration tag with a similar styling.',
+								})
 						}),
 						{
 							label: 'Considerations',
@@ -174,9 +174,9 @@ export default config({
 						}
 					),
 				},
-				{
-					label: 'Phase: Initiating',
-				}),
+					{
+						label: 'Phase: Initiating',
+					}),
 				implementing: fields.object({
 					focus: fields.mdx({
 						label: 'Focus',
@@ -205,18 +205,18 @@ export default config({
 							}),
 							compass: fields.checkbox({
 								label: 'Compass',
-								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
 							}),
 							categories: fields.array(
 								fields.text({
 									label: 'Category',
 
 								}),
-							{
-								label: 'Categories',
-								itemLabel: (props) => props.value,
-								description: 'These categories will appear next to the consideration tag with a similar styling.',
-							}),							
+								{
+									label: 'Categories',
+									itemLabel: (props) => props.value,
+									description: 'These categories will appear next to the consideration tag with a similar styling.',
+								}),
 						}),
 						{
 							label: 'Considerations',
@@ -224,9 +224,9 @@ export default config({
 						}
 					),
 				},
-				{
-					label: 'Phase: Implementing',
-				}),
+					{
+						label: 'Phase: Implementing',
+					}),
 				developing: fields.object({
 					focus: fields.mdx({
 						label: 'Focus',
@@ -255,18 +255,18 @@ export default config({
 							}),
 							compass: fields.checkbox({
 								label: 'Compass',
-								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
 							}),
 							categories: fields.array(
 								fields.text({
 									label: 'Category',
 
 								}),
-							{
-								label: 'Categories',
-								itemLabel: (props) => props.value,
-								description: 'These categories will appear next to the consideration tag with a similar styling.',
-							}),							
+								{
+									label: 'Categories',
+									itemLabel: (props) => props.value,
+									description: 'These categories will appear next to the consideration tag with a similar styling.',
+								}),
 						}),
 						{
 							label: 'Considerations',
@@ -274,9 +274,9 @@ export default config({
 						}
 					),
 				},
-				{
-					label: 'Phase: Developing',
-				}),
+					{
+						label: 'Phase: Developing',
+					}),
 				sustaining: fields.object({
 					focus: fields.mdx({
 						label: 'Focus',
@@ -305,18 +305,18 @@ export default config({
 							}),
 							compass: fields.checkbox({
 								label: 'Compass',
-								description: 'Flag considerations that respond to students who have not demonstrated literacy and numeracy proficiency.'
+								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
 							}),
 							categories: fields.array(
 								fields.text({
 									label: 'Category',
 
 								}),
-							{
-								label: 'Categories',
-								itemLabel: (props) => props.value,
-								description: 'These categories will appear next to the consideration tag with a similar styling.',
-							}),							
+								{
+									label: 'Categories',
+									itemLabel: (props) => props.value,
+									description: 'These categories will appear next to the consideration tag with a similar styling.',
+								}),
 						}),
 						{
 							label: 'Considerations',
@@ -324,9 +324,9 @@ export default config({
 						}
 					),
 				},
-				{
-					label: 'Phase: Sustaining',
-				})
+					{
+						label: 'Phase: Sustaining',
+					})
 			}
 		}),
 
@@ -381,16 +381,16 @@ export default config({
 					],
 				}),
 				external: fields.conditional(
-					fields.checkbox({ 
-						label: 'External Resource', 
-						description: 'Check if this resource is hosted on an external website.', 
-						defaultValue: false 
+					fields.checkbox({
+						label: 'External Resource',
+						description: 'Check if this resource is hosted on an external website.',
+						defaultValue: false
 					}),
 					{
 						true: fields.object({
-							url: fields.url({ 
+							url: fields.url({
 								label: 'External URL',
-								description: 'Provide a full, valid URL to the resource.', 
+								description: 'Provide a full, valid URL to the resource.',
 							}),
 						}),
 						false: fields.object({
@@ -417,9 +417,9 @@ export default config({
 							}
 						}
 					}), {
-						label: 'Linked Indicators',
-						itemLabel: props => props.value ?? 'Add indicator tag',
-					}
+					label: 'Linked Indicators',
+					itemLabel: props => props.value ?? 'Add indicator tag',
+				}
 				),
 				linkedComponents: fields.array(
 					fields.text({
@@ -437,9 +437,9 @@ export default config({
 							}
 						}
 					}), {
-						label: 'Linked Components',
-						itemLabel: props => props.value ?? 'Add component tag',
-					}
+					label: 'Linked Components',
+					itemLabel: props => props.value ?? 'Add component tag',
+				}
 				),
 				linkedConsiderations: fields.array(
 					fields.text({
@@ -457,9 +457,9 @@ export default config({
 							}
 						}
 					}), {
-						label: 'Linked Considerations',
-						itemLabel: props => props.value ?? 'Add consideration tag',
-					}
+					label: 'Linked Considerations',
+					itemLabel: props => props.value ?? 'Add consideration tag',
+				}
 				),
 			}
 		})
