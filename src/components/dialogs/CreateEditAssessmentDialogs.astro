@@ -419,6 +419,7 @@ let schoolList = {
 		<button
 			class="open-dialog"
 			data-dialog="edit-status-dialog"
+			data-dialog-context="configure"
 			type="button"
 			aria-label="Edit Assessment Status"
 		>
@@ -765,7 +766,7 @@ let schoolList = {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (edit properties)");
+		// console.log("Updating Dialog (edit properties)");
 
 		let context = dialog.getAttribute("data-context");
 
@@ -917,6 +918,7 @@ let schoolList = {
 		fn: onClick,
 	});
 
+	// TODO [FIX]: Not working
 	let onToggle = (event) => {
 		let dialog = event.target as HTMLDialogElement;
 

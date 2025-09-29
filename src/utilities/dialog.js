@@ -40,9 +40,9 @@ let dialogControl = (() => {
 		}
 	}
 
-	// TODO: event prevent default on enter key inside input fields
+	// TODO [FIX]: event prevent default on enter key inside input fields
 
-	// TODO: Unable to enter press button in assessor's dialog
+	// TODO [FIX]: Unable to enter press button in assessor's dialog
 
 	let init = () => {
 		eventControl.add({

@@ -39,12 +39,31 @@ import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 >
 	<IconCheckmark slot={"icon"} />
 </Toast>
+<Toast
+	id={"edit-status-dialog_change-status-and-close-toast_success"}
+	message={`Status change saved and assessment closed.`}
+	colour={"green"}
+	type={"success"}
+>
+	<IconCheckmark slot={"icon"} />
+</Toast>
+<Toast
+	id={"export-warning-dialog_close-toast_success"}
+	message={`Assessment closed.`}
+	colour={"green"}
+	type={"success"}
+>
+	<IconCheckmark slot={"icon"} />
+</Toast>
 
 <style is:global>
 	dialog:not([data-context="setup"]) [data-restrict-context="setup"] {
 		display: none !important;
 	}
 	dialog:not([data-context="configure"]) [data-restrict-context="configure"] {
+		display: none !important;
+	}
+	dialog:not([data-context="close"]) [data-restrict-context="close"] {
 		display: none !important;
 	}
 </style>

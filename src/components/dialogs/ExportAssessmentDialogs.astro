@@ -193,9 +193,23 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	id="export-warning-dialog"
 	aria-describedby="export-warning-dialog_heading"
 >
-	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Warning Dialog"
+		data-toast-success="export-warning-dialog_close-toast_success"
+		data-toast-failure="export-warning-dialog_close-toast_failure"
 		><IconXmark /></button
 	>
+
+	<Toast
+		id={"edit-status-dialog_change-status-and-warn-toast_success"}
+		message={`Status change saved.`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
 
 	<h2
 		id="export-warning-dialog_heading"
@@ -218,12 +232,25 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		Would you like to export a backup before you stop editing?
 	</p>
 
+	<!-- Success toast in Assessment Dialogs -->
+	<Toast
+		id={"export-warning-dialog_close-toast_failure"}
+		message={`Unable to close assessment. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	>
+		<IconWarningSmall slot={"icon"} />
+	</Toast>
+
 	<div class="button-group">
 		<button
 			class="close-dialog"
 			type="button"
 			data-size="large"
-			data-style="outline">Continue Without Exporting</button
+			data-style="outline"
+			data-toast-success="export-warning-dialog_close-toast_success"
+			data-toast-failure="export-warning-dialog_close-toast_failure"
+			>Continue Without Exporting</button
 		>
 		<button
 			class="open-dialog"
@@ -295,7 +322,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		console.log("Updating Dialog (export)");
+		// console.log("Updating Dialog (export)");
 
 		let exportCodeSection = dialog.querySelector("section.export-code");
 		let codeField = dialog.querySelector('[data-field="exportCode"]');
@@ -483,13 +510,20 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 		// TODO [IMPROVE]: Consolidate multiple consecutive set calls into setUserData
 		if (target.matches("button.close-dialog")) {
-			setAssessment({
-				activeAssessor: null,
-			});
-			setState({
-				mode: "reading",
-				activeAssessmentId: null,
-			});
+			try {
+				setAssessment({
+					activeAssessor: null,
+				});
+				setState({
+					mode: "reading",
+					activeAssessmentId: null,
+				});
+
+				toastControl.show({ target, type: "success" });
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: "failure" });
+			}
 		}
 	};
 	eventControl.add({

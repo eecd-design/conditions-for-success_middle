@@ -6,7 +6,11 @@ import IconCheckmark from "../icons/IconCheckmark_12.astro";
 import IconWarningSmall from "../icons/IconWarning_16.astro";
 ---
 
-<dialog id="edit-status-dialog" aria-describedby="edit-status-dialog_heading">
+<dialog
+	id="edit-status-dialog"
+	aria-describedby="edit-status-dialog_heading"
+	data-context="configure"
+>
 	<button class="close-dialog" type="button" aria-label="Close Warning Dialog"
 		><IconXmark /></button
 	>
@@ -48,7 +52,15 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			class="close-dialog"
 			type="button"
 			data-size="large"
-			data-style="outline">Cancel</button
+			data-style="outline"
+			data-restrict-context="configure">Cancel</button
+		>
+		<button
+			class="close-dialog"
+			type="button"
+			data-size="large"
+			data-style="outline"
+			data-restrict-context="close">Skip</button
 		>
 		<button
 			class="change-status"
@@ -63,6 +75,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	</div>
 </dialog>
 
+<!-- TODO [REQUIRED]: Should we just have an close (X) button instead of the stop editing? would match report and be functional for complete assessment which currently have no way of closing. So, it would replace status warning (leaving that solely to the edit status dialog) -->
 <dialog
 	id="status-warning-dialog"
 	aria-describedby="status-warning-dialog_heading"
@@ -239,13 +252,67 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					});
 				}
 
-				// Close the dialog
-				dialog.close();
+				if (dialog.getAttribute("data-context") === "close") {
+					if (assessment.unexportedChanges) {
+						toastControl.show({
+							target,
+							type: "success",
+							selector:
+								"edit-status-dialog_change-status-and-warn-toast_success",
+						});
+						dialogControl.open({
+							dialogId: "export-warning-dialog",
+						});
+					} else {
+						try {
+							setAssessment({
+								activeAssessor: null,
+							});
+							setState({
+								mode: "reading",
+								activeAssessmentId: null,
+							});
 
-				toastControl.show({ target, type: "success" });
+							toastControl.show({
+								target,
+								type: "success",
+								selector:
+									"edit-status-dialog_change-status-and-close-toast_success",
+							});
+							dialog.close();
+						} catch (error) {
+							console.error(error);
+							toastControl.show({ target, type: "failure" });
+						}
+					}
+				} else {
+					dialog.close();
+					toastControl.show({ target, type: "success" });
+				}
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: "failure" });
+			}
+		}
+
+		if (target.matches("button.close-dialog")) {
+			if (dialog.getAttribute("data-context") === "close") {
+				let activeAssessment = getActiveAssessmentData();
+				if (activeAssessment.unexportedChanges) {
+					dialogControl.open({
+						dialogId: "export-warning-dialog",
+						context: "close",
+					});
+				} else {
+					setAssessment({
+						activeAssessor: null,
+					});
+					setState({
+						mode: "reading",
+						activeAssessmentId: null,
+					});
+					// TODO: Trigger toast
+				}
 			}
 		}
 	};

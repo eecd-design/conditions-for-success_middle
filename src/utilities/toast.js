@@ -3,19 +3,28 @@ let toastControl = (() => {
 	const toastTimers = new WeakMap();
 	const activeToasts = new Set;
 
-	let show = ({ target, type }) => {
-		let toast = document.querySelector(`#${target.getAttribute(`data-toast-${type}`)}`);
+	let show = ({ target, type, selector = null }) => {
+
+		let toast;
+		if (!selector) {
+			toast = document.querySelector(`#${target.getAttribute(`data-toast-${type}`)}`);
+		} else {
+			toast = document.querySelector(`#${selector}`);
+			console.log(selector, toast);
+		}
 		if (!toast) return;
 
 		// Dismiss all other active toasts
-		for (let toast of activeToasts) {
-			toast.removeAttribute('open');
-			if (toastTimers.has(toast)) clearTimeout(toastTimers.get(toast));
+		for (let activeToast of activeToasts) {
+			console.log('target toast is active', toast === activeToast);
+			activeToast.removeAttribute('open');
+			if (toastTimers.has(activeToast)) clearTimeout(toastTimers.get(activeToast));
 		}
 		activeToasts.clear();
 
 		// Show the new toast
 		toast.setAttribute('open', '');
+		console.log('Opening Toast');
 		activeToasts.add(toast);
 
 		let duration = type === 'success' ? 2000 : 4000;
