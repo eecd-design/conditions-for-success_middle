@@ -187,8 +187,8 @@ let allComponents = await getCollection("components");
 
 		<div id="report-container" data-restrict-report="active">
 
-			<section id="#overview" data-tag="0">
-				<h2>Overview</h2>
+			<section data-tag="0">
+				<h2 id="overview">Overview</h2>
 				<!-- <h3>Continuum Progress</h3>
 				<ProgressChart/> -->
 				<h3>Indicator Progress</h3>
@@ -282,6 +282,11 @@ let allComponents = await getCollection("components");
 
 	#report-controls .separator.item {
 		--separator-long-edge-dimension: 1.75rem;
+	}
+
+	
+	#report-container h2 {
+		scroll-margin-top: 2.5rem;
 	}
 
 	#report-container h3 {
