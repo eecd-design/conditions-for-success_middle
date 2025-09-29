@@ -15,6 +15,7 @@ import focusScreenshot from "../../images/focus-highlight-screenshot.png";
 import considerationScreenshot from "../../images/consideration-highlight-screenshot.png";
 import resourcesScreenshot from "../../images/consideration-resources-highlight-screenshot.png";
 import IconCheckmark from "src/components/icons/IconCheckmark_16.astro";
+import IconMegaphone40 from "src/components/icons/IconMegaphone_40.astro";
 
 let allIndicators = await getCollection("indicators");
 
@@ -584,9 +585,21 @@ for (let indicator of allIndicators) {
 				</Accordion>
 			</div>
 
-			<p>Check out the video below to walk through this in detail.</p>
-
-			<video></video>
+			<div
+				class="callout stay-tuned"
+				data-style="outline"
+				data-elem-on-path="icon"
+				data-theme="red"
+			>
+				<div class="icon-container">
+					<IconMegaphone40 />
+				</div>
+				<p>
+					Want to learn more about the developmental continuums and
+					self-assessment? Keep an eye out for a video walkthrough
+					coming soon.
+				</p>
+			</div>
 		</section>
 
 		<hr class="section" />
@@ -673,3 +686,9 @@ for (let indicator of allIndicators) {
 		</section>
 	</div>
 </BaseLayout>
+
+<style>
+	.callout.stay-tuned {
+		--callout-margin: 3.75rem 0 0;
+	}
+</style>
