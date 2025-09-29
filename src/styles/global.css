@@ -1748,6 +1748,7 @@ dialog form hr.group {
 	--icon-size: 1.25rem;
 	--label-size: 1.125rem;
 	--label-weight: 600;
+	align-items: start;
 	gap: 0.75rem;
 
 	font-size: 1.25rem;
@@ -1755,10 +1756,22 @@ dialog form hr.group {
 	margin: 0;
 	padding: 0 0 0.5rem;
 	border-bottom: 1px solid var(--colour-border-neutral-subtle);
-
-	/* TODO [IMPROVE]: Ellipsis hide headings over two lines? */
-
 }
+
+.card .wrapper>.heading .label-container {
+	display: flex;
+	flex-flow: column;
+	align-items: start;
+	gap: 0.125rem;
+}
+
+.card .wrapper>.heading .subtitle {
+	font-size: 1rem;
+	font-weight: 500;
+	color: var(--colour-ui-neutral-subtle);
+}
+
+
 
 .card .wrapper>.button-group {
 	place-self: end start;
@@ -2035,8 +2048,6 @@ details .contents {
 	border: 1px solid var(--colour-border-accent-bold, var(--colour-border-neutral-bold));
 }
 
-/* TODO [IMPROVE]: Apply this to button style as well */
-
 .label-container[data-restrict-length] .label {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -2223,7 +2234,7 @@ span.highlight {
 	transition: background-color var(--transition-linear-fast), color var(--transition-linear-fast);
 }
 
-.visually-hidden {
+[data-screen-reader] {
 	position: absolute;
 	width: 1px;
 	height: 1px;

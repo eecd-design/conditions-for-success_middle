@@ -322,7 +322,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 							<IconCompact />
 							<span class="label-container">
 								<span class="label">Compact</span>
-								<span class="visually-hidden" hidden
+								<span data-screen-reader hidden
 									>Compact view unavailable for this filter</span
 								>
 							</span>
@@ -375,8 +375,6 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 		</div>
 	</div>
 </BaseLayout>
-
-<!-- TODO: How to handle the progressive enhancement popping in of accordions? https://docs.astro.build/en/guides/view-transitions/#script-re-execution -->
 
 <style is:global>
 	.filters-container {
@@ -589,8 +587,9 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 		let layoutCompactBtn = document.querySelector(
 			'fieldset.layout button[value="compact"]',
 		);
-		let screenReaderContext =
-			layoutCompactBtn.querySelector(".visually-hidden");
+		let screenReaderContext = layoutCompactBtn.querySelector(
+			"[data-screen-reader]",
+		);
 
 		if (forceLayout) {
 			resourcesList.setAttribute("data-layout", "detailed");
