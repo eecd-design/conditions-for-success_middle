@@ -8,6 +8,7 @@ external:
   discriminant: false
   value: {}
 linkedIndicators: []
-linkedComponents: []
+linkedComponents:
+  - '5.2'
 linkedConsiderations:
   - 2.1.2
