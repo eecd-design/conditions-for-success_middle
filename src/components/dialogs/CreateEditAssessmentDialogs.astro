@@ -982,6 +982,19 @@ let schoolList = {
 		fn: onInput,
 	});
 
+	let onKeydown = (event) => {
+		let target = event.target as HTMLInputElement;
+
+		if (target.matches(`input[type="text"]`)) {
+			if (event.key === "Enter") event.preventDefault();
+		}
+	};
+	eventControl.add({
+		selector: "#edit-assessment-properties-dialog",
+		eventType: "keydown",
+		fn: onKeydown,
+	});
+
 	let onChange = async (event) => {
 		let target = event.target as any;
 

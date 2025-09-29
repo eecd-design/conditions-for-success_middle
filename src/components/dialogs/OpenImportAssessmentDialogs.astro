@@ -1187,6 +1187,19 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		fn: onOpenAssessmentInput,
 	});
 
+	let onOpenAssessmentKeydown = (event) => {
+		let target = event.target as HTMLInputElement;
+
+		if (target.matches(`input[type="text"]`)) {
+			if (event.key === "Enter") event.preventDefault();
+		}
+	};
+	eventControl.add({
+		selector: "#open-assessment-dialog",
+		eventType: "keydown",
+		fn: onOpenAssessmentKeydown,
+	});
+
 	let onImportConflictClick = async (event) => {
 		let target = event.target as any;
 
