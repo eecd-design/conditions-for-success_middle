@@ -1,0 +1,12 @@
+title: Polypad Virtual Manipulatives
+dateAdded: 2025-10-01
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://polypad.amplify.com/
+linkedIndicators: []
+linkedComponents:
+  - '6.3'
+linkedConsiderations: []
