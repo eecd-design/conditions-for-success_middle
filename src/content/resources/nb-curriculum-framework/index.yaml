@@ -1,0 +1,14 @@
+title: NB Curriculum Framework
+dateAdded: 2025-10-01
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://curriculum.nbed.ca/curriculum-framework/
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 6.3.1
+  - 6.3.5
+  - 6.3.9
