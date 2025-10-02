@@ -1,0 +1,14 @@
+title: Innovation Kits
+dateAdded: 2025-10-02
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://www.brilliantlabs.ca/InnovationKits
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 7.3.1
+  - 7.3.5
+  - 7.3.7
