@@ -8,6 +8,7 @@ external:
     url: >-
       https://www2.gnb.ca/content/dam/gnb/Departments/ed/pdf/K12/FRL/nb-career-education-framework.pdf
 linkedIndicators: []
-linkedComponents: []
+linkedComponents:
+  - '7.4'
 linkedConsiderations:
   - 7.4.1
