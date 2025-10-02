@@ -5,9 +5,8 @@ dateAdded: 2025-10-01
 type: video
 topics: []
 external:
-  discriminant: true
-  value:
-    url: https://www.youtube.com/watch?v=NApow76Tz04
+  discriminant: false
+  value: {}
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
