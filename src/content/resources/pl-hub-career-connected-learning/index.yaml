@@ -8,6 +8,7 @@ external:
     url: >-
       https://hopefultransitions.nbed.ca/educators/pl-hub-career-connected-learning/
 linkedIndicators: []
-linkedComponents: []
+linkedComponents:
+  - '7.4'
 linkedConsiderations:
   - 7.4.7
