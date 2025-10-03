@@ -1,0 +1,1 @@
+Want to learn more about empathy in middle school classrooms? Check out \[this video, Why Empathy Matters: Supporting Learners and Strengthening Classrooms], which outlines how modeling empathy through active listening, trauma-informed practices, and peer connection, helps learners feel seen, supported, and ready to learn—all while building a culture of kindness and trust.
