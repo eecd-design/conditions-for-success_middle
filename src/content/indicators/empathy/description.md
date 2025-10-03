@@ -1,1 +1,1 @@
-Focuses on developing a culture of support through trauma-informed practices, active listening, emotional awareness, and culturally responsive approaches that support all learners.
+Focuses on developing a culture of support through trauma-informed practices, active listening, emotional awareness, and culturally responsive approaches that support all learners. Components are aligned to the [NB Curriculum](https://curriculum.nbed.ca/) and include:
