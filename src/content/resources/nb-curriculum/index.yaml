@@ -3,9 +3,9 @@ dateAdded: 2025-10-03
 type: website
 topics: []
 external:
-  discriminant: false
+  discriminant: true
   value:
-    fileType: https://curriculum.nbed.ca/
+    url: https://curriculum.nbed.ca/
 linkedIndicators: []
 linkedComponents:
   - '1.1'
