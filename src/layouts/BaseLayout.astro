@@ -35,7 +35,9 @@ const { pageTitle, indicatorTag } = Astro.props;
 			data-mode="reading"
 			data-indicator-tag={indicatorTag ? indicatorTag : null}
 		>
-			<slot />
+			<div class="wrapper">
+				<slot />
+			</div>
 		</main>
 		<footer></footer>
 	</body><script>

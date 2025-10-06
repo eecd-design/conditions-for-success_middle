@@ -12,6 +12,7 @@ import IconXmark16 from "./icons/IconXmark_16.astro";
 import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 import Toast from "./Toast.astro";
+import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 ---
 
 <section
@@ -19,271 +20,264 @@ import Toast from "./Toast.astro";
 	aria-label="Assessment Controls Toolbar"
 	role="toolbar"
 >
-	<div class="info-group button-group" data-restrict-mode="assessment">
-		<!-- Assessment Title -->
-		<div class="field-container icon-and-label-container">
-			<IconAssessment />
-			<span class="label-container" data-restrict-length>
-				<span class="label" data-field="activeAssessmentName"></span>
-			</span>
+	<div class="notice">
+		<IconWarning16 />
+		<div>
+			<p>
+				The assessment feature isn't available on small screens. Please
+				use a tablet or desktop device to access it.
+			</p>
 		</div>
+	</div>
 
-		<!-- Edit Status -->
-		<button
-			type="button"
-			class="open-dialog field-container icon-and-label-container"
-			data-dialog="edit-status-dialog"
-			data-dialog-context="configure"
-			aria-label="Update Assessment Status"
-			data-size="small"
-			data-style="solid-outline"
-			data-vibrancy="vivid"
-			data-collapsible="icon"
-		>
-			<div class="label-container">
-				<span class="label" data-field="status"></span>
+	<div class="wrapper">
+		<div class="info-group button-group" data-restrict-mode="assessment">
+			<!-- Assessment Title -->
+			<div class="field-container icon-and-label-container">
+				<IconAssessment />
+				<span class="label-container" data-restrict-length>
+					<span class="label" data-field="activeAssessmentName"
+					></span>
+				</span>
 			</div>
-			<div class="icon-container">
-				<IconEditSmall />
+			<!-- Edit Status -->
+			<button
+				type="button"
+				class="open-dialog field-container icon-and-label-container"
+				data-dialog="edit-status-dialog"
+				data-dialog-context="configure"
+				aria-label="Update Assessment Status"
+				data-size="small"
+				data-style="solid-outline"
+				data-vibrancy="vivid"
+				data-collapsible="icon"
+			>
+				<div class="label-container">
+					<span class="label" data-field="status"></span>
+				</div>
+				<div class="icon-container">
+					<IconEditSmall />
+				</div>
+			</button>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				aria-hidden="true"
+			>
 			</div>
-		</button>
-
+			<!-- Assessment Properties Button -->
+			<button
+				class="open-dialog"
+				data-dialog="view-assessment-properties-dialog"
+				type="button"
+				aria-label="View Assessment Properties"
+			>
+				<div class="icon-and-label-container">
+					<IconInfo />
+					<span class="label-container">
+						<span class="label">Properties</span>
+					</span>
+				</div>
+			</button>
+		</div>
 		<div
-			class="separator item"
+			class="separator group"
 			data-orientation="vertical"
+			data-restrict-mode="assessment"
 			aria-hidden="true"
 		>
 		</div>
-
-		<!-- Assessment Properties Button -->
-		<button
-			class="open-dialog"
-			data-dialog="view-assessment-properties-dialog"
-			type="button"
-			aria-label="View Assessment Properties"
-		>
-			<div class="icon-and-label-container">
-				<IconInfo />
-				<span class="label-container">
-					<span class="label">Properties</span>
-				</span>
+		<div class="file-group button-group">
+			<!-- Create Assessment Button -->
+			<button
+				class="open-dialog"
+				data-dialog="edit-assessment-properties-dialog"
+				data-dialog-context="setup"
+				aria-label="Create New Assessment"
+				type="button"
+			>
+				<div class="icon-and-label-container">
+					<IconCross />
+					<span class="label-container">
+						<span class="label">New</span>
+					</span>
+				</div>
+			</button>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				aria-hidden="true"
+			>
 			</div>
-		</button>
-	</div>
-
-	<div
-		class="separator group"
-		data-orientation="vertical"
-		data-restrict-mode="assessment"
-		aria-hidden="true"
-	>
-	</div>
-
-	<div class="file-group button-group">
-		<!-- Create Assessment Button -->
-		<button
-			class="open-dialog"
-			data-dialog="edit-assessment-properties-dialog"
-			data-dialog-context="setup"
-			aria-label="Create New Assessment"
-			type="button"
-		>
-			<div class="icon-and-label-container">
-				<IconCross />
-				<span class="label-container">
-					<span class="label">New</span>
-				</span>
-			</div>
-		</button>
-
+			<!-- Open/Import Assessment Button -->
+			<button
+				class="open-dialog"
+				data-dialog="open-assessment-dialog"
+				data-dialog-context="assessment"
+				aria-label="Open or Import Assessment"
+				type="button"
+			>
+				<div class="icon-and-label-container">
+					<IconFolder />
+					<span class="label-container">
+						<span class="label">Open</span>
+					</span>
+				</div>
+			</button>
+		</div>
 		<div
-			class="separator item"
+			class="separator group"
 			data-orientation="vertical"
+			data-restrict-mode="assessment"
 			aria-hidden="true"
 		>
 		</div>
-
-		<!-- Open/Import Assessment Button -->
-		<button
-			class="open-dialog"
-			data-dialog="open-assessment-dialog"
-			data-dialog-context="assessment"
-			aria-label="Open or Import Assessment"
-			type="button"
-		>
-			<div class="icon-and-label-container">
-				<IconFolder />
-				<span class="label-container">
-					<span class="label">Open</span>
-				</span>
+		<div class="export-group button-group" data-restrict-mode="assessment">
+			<!-- Export Assessment Button -->
+			<button
+				class="open-dialog"
+				data-dialog="export-assessment-dialog"
+				type="button"
+				aria-label="Export"
+			>
+				<div class="icon-and-label-container">
+					<IconSave />
+					<span class="label-container">
+						<span class="label">Export</span>
+					</span>
+				</div>
+			</button>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				data-restrict-status="in-progress"
+				aria-hidden="true"
+			>
 			</div>
-		</button>
-	</div>
-
-	<div
-		class="separator group"
-		data-orientation="vertical"
-		data-restrict-mode="assessment"
-		aria-hidden="true"
-	>
-	</div>
-
-	<div class="export-group button-group" data-restrict-mode="assessment">
-		<!-- Export Assessment Button -->
-		<button
-			class="open-dialog"
-			data-dialog="export-assessment-dialog"
-			type="button"
-			aria-label="Export"
-		>
-			<div class="icon-and-label-container">
-				<IconSave />
-				<span class="label-container">
-					<span class="label">Export</span>
-				</span>
+			<!-- Export Status -->
+			<div
+				class="field-container label-container"
+				data-restrict-status="in-progress"
+			>
+				<span class="label" data-field="exportStatus"></span>
 			</div>
-		</button>
-
+		</div>
 		<div
-			class="separator item"
+			class="separator group"
 			data-orientation="vertical"
+			data-restrict-mode="assessment"
 			data-restrict-status="in-progress"
 			aria-hidden="true"
 		>
 		</div>
-
-		<!-- Export Status -->
 		<div
-			class="field-container label-container"
+			class="user-group button-group"
+			data-restrict-mode="assessment"
 			data-restrict-status="in-progress"
 		>
-			<span class="label" data-field="exportStatus"></span>
-		</div>
-	</div>
-
-	<div
-		class="separator group"
-		data-orientation="vertical"
-		data-restrict-mode="assessment"
-		data-restrict-status="in-progress"
-		aria-hidden="true"
-	>
-	</div>
-
-	<div
-		class="user-group button-group"
-		data-restrict-mode="assessment"
-		data-restrict-status="in-progress"
-	>
-		<!-- Edit Assessors Button -->
-		<button
-			class="open-dialog"
-			data-dialog="assessor-dialog"
-			data-dialog-heading="Edit Assessors"
-			data-dialog-context="configure"
-			type="button"
-			aria-label="Assign Assessors"
-		>
-			<div class="icon-and-label-container">
-				<IconAssessor />
-				<span class="label-container">
-					<span class="label">Assessors</span>
-				</span>
+			<!-- Edit Assessors Button -->
+			<button
+				class="open-dialog"
+				data-dialog="assessor-dialog"
+				data-dialog-heading="Edit Assessors"
+				data-dialog-context="configure"
+				type="button"
+				aria-label="Assign Assessors"
+			>
+				<div class="icon-and-label-container">
+					<IconAssessor />
+					<span class="label-container">
+						<span class="label">Assessors</span>
+					</span>
+				</div>
+			</button>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				data-restrict-assessor="true"
+				aria-hidden="true"
+			>
 			</div>
-		</button>
-
+			<!-- Active Assessor -->
+			<button
+				type="button"
+				class="open-dialog field-container icon-and-label-container"
+				data-dialog="assessor-dialog"
+				aria-label="Change Active Assessor"
+				data-style="solid-outline"
+				data-vibrancy="vivid"
+				data-collapsible="icon"
+				data-theme="purple"
+				data-restrict-assessor="true"
+			>
+				<div class="label-container" data-restrict-length="short">
+					<span class="label" data-field="activeAssessor"></span>
+				</div>
+				<div class="icon-container">
+					<IconEditSmall />
+				</div>
+			</button>
+		</div>
 		<div
-			class="separator item"
+			class="separator group"
 			data-orientation="vertical"
-			data-restrict-assessor="true"
+			data-restrict-mode="assessment"
 			aria-hidden="true"
 		>
 		</div>
-
-		<!-- Active Assessor -->
-		<button
-			type="button"
-			class="open-dialog field-container icon-and-label-container"
-			data-dialog="assessor-dialog"
-			aria-label="Change Active Assessor"
-			data-style="solid-outline"
-			data-vibrancy="vivid"
-			data-collapsible="icon"
-			data-theme="purple"
-			data-restrict-assessor="true"
-		>
-			<div class="label-container" data-restrict-length="short">
-				<span class="label" data-field="activeAssessor"></span>
+		<div class="mode-group button-group" data-restrict-mode="assessment">
+			<!-- Start Editing Button -->
+			<button
+				class="open-dialog"
+				data-dialog="status-warning-dialog"
+				type="button"
+				data-restrict-status="complete"
+			>
+				<div class="icon-and-label-container">
+					<IconEdit />
+					<span class="label-container">
+						<span class="label">Edit</span>
+					</span>
+				</div>
+			</button>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+				data-restrict-status="complete"
+				aria-hidden="true"
+			>
 			</div>
-			<div class="icon-container">
-				<IconEditSmall />
-			</div>
-		</button>
-	</div>
-
-	<div
-		class="separator group"
-		data-orientation="vertical"
-		data-restrict-mode="assessment"
-		aria-hidden="true"
-	>
-	</div>
-
-	<div class="mode-group button-group" data-restrict-mode="assessment">
-		<!-- Start Editing Button -->
-		<button
-			class="open-dialog"
-			data-dialog="status-warning-dialog"
-			type="button"
-			data-restrict-status="complete"
-		>
-			<div class="icon-and-label-container">
-				<IconEdit />
-				<span class="label-container">
-					<span class="label">Edit</span>
-				</span>
-			</div>
-		</button>
-
-		<div
-			class="separator item"
-			data-orientation="vertical"
-			data-restrict-status="complete"
-			aria-hidden="true"
-		>
+			<Toast
+				id={"assessment-toolbar_close-toast_success"}
+				message={`Assessment closed.`}
+				colour={"green"}
+				type={"success"}
+			>
+				<IconCheckmark slot={"icon"} />
+			</Toast>
+			<Toast
+				id={"assessment-toolbar_close-toast_failure"}
+				message={`Unable to close assessment. Please reload the page to try again.`}
+				colour={"red"}
+				type={"failure"}
+			>
+				<IconWarningSmall slot={"icon"} />
+			</Toast>
+			<!-- Close Button -->
+			<button
+				class="close"
+				type="button"
+				data-toast-success="assessment-toolbar_close-toast_success"
+				data-toast-failure="assessment-toolbar_close-toast_failure"
+			>
+				<div class="icon-and-label-container">
+					<IconXmark16 />
+					<span class="label-container">
+						<span class="label">Close</span>
+					</span>
+				</div>
+			</button>
 		</div>
-
-		<Toast
-			id={"assessment-toolbar_close-toast_success"}
-			message={`Assessment closed.`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"assessment-toolbar_close-toast_failure"}
-			message={`Unable to close assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
-		<!-- Close Button -->
-		<button
-			class="close"
-			type="button"
-			data-toast-success="assessment-toolbar_close-toast_success"
-			data-toast-failure="assessment-toolbar_close-toast_failure"
-		>
-			<div class="icon-and-label-container">
-				<IconXmark16 />
-				<span class="label-container">
-					<span class="label">Close</span>
-				</span>
-			</div>
-		</button>
 	</div>
 </section>
 
@@ -292,12 +286,7 @@ import Toast from "./Toast.astro";
 		container-name: assessment-controls;
 		container-type: inline-size;
 
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 0.5rem;
-		height: 3.75rem;
-		padding: 0 3rem;
+		min-height: 3.75rem;
 		background-color: var(--colour-fill-neutral-subtle);
 		border-bottom: 1px solid var(--colour-border-neutral-subtle);
 		top: 0;
@@ -308,8 +297,48 @@ import Toast from "./Toast.astro";
 		position: sticky;
 	}
 
+	#assessment-controls > .notice {
+		--icon-size: 1rem;
+		display: none;
+		align-items: center;
+		gap: var(--space-sm);
+		height: 100%;
+		padding: var(--space-base) var(--space-2xl);
+	}
+
+	#assessment-controls > .notice p {
+		font-size: var(--font-size-2xs);
+		line-height: 1.2;
+		margin: 0 0 0.125rem;
+		text-wrap: balance;
+	}
+
+	#assessment-controls > .wrapper {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: var(--space-2xs);
+		height: 100%;
+		padding: 0 var(--space-2xl);
+	}
+
+	@container main (width < 848px) {
+		[data-mode="assessment"] #assessment-controls {
+			position: static;
+		}
+
+		#assessment-controls > .notice {
+			display: flex;
+		}
+
+		#assessment-controls > .wrapper {
+			display: none;
+		}
+	}
+
 	#assessment-controls .button-group {
-		--group-gap: 0.5rem;
+		--group-gap: var(--space-2xs);
+		flex-shrink: 0;
 	}
 
 	#assessment-controls .export-group {
@@ -337,7 +366,7 @@ import Toast from "./Toast.astro";
 		--icon-size: 1rem !important;
 	}
 
-	@container assessment-controls (width < 1520px) {
+	@container assessment-controls (width < 1552px) {
 		main[data-mode="assessment"]
 			#assessment-controls
 			:is(button, [data-style-as="button"]):not(.field-container)
@@ -346,17 +375,24 @@ import Toast from "./Toast.astro";
 		}
 	}
 
+	@container assessment-controls (width < 1216px) {
+		.separator:has(+ .field-container [data-field="exportStatus"]),
+		.field-container:has([data-field="exportStatus"]) {
+			display: none;
+		}
+	}
+
 	#assessment-controls .field-container {
 		--icon-size: 1.25rem;
-		--label-size: 0.875rem;
+		--label-size: var(--font-size-2xs);
 		user-select: none;
 	}
 
 	#assessment-controls
 		.field-container:has([data-field="activeAssessmentName"]) {
-		--label-size: 0.9375rem;
+		--label-size: var(--font-size-2xs);
 		--label-weight: 700;
-		gap: 0.75rem;
+		gap: var(--space-xs);
 	}
 
 	#assessment-controls
@@ -364,15 +400,15 @@ import Toast from "./Toast.astro";
 			[data-field="status"],
 			[data-field="activeAssessor"]
 		) {
-		--container-padding: 0.5rem;
+		--container-padding: var(--space-2xs);
 		--icon-size: 0.875rem;
 		height: 1.75rem;
-		margin: 0 0.5rem !important;
+		margin: 0 var(--space-2xs) !important;
 	}
 
 	#assessment-controls .field-container:has([data-field="exportStatus"]) {
 		--label-colour: var(--colour-ui-neutral-subtle);
-		margin: 0 0.5rem !important;
+		margin: 0 var(--space-2xs) !important;
 	}
 
 	#assessment-controls .separator.group {

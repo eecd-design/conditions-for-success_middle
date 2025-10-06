@@ -1,138 +1,208 @@
 ---
+import { getCollection } from "astro:content";
+
+import SearchDialog from "./dialogs/SearchDialog.astro";
+import MediaDialog from "./dialogs/MediaDialog.astro";
+import MobileNavDialog from "./dialogs/MobileNavDialog.astro";
 
 import IconSearch from "./icons/IconSearch_24.astro";
 import IconLight from "./icons/IconLight_24.astro";
 import IconDark from "./icons/IconDark_24.astro";
-import SearchDialog from "./dialogs/SearchDialog.astro";
 import IconInfo20 from "./icons/IconInfo_20.astro";
 import IconEdit20 from "./icons/IconEdit_20.astro";
 import IconSearch20 from "./icons/IconSearch_20.astro";
 import IconHistory20 from "./icons/IconHistory_20.astro";
-import MediaDialog from "./dialogs/MediaDialog.astro";
 import IconMegaphone from "./icons/IconMegaphone_24.astro";
+import IconMenu from "./icons/IconMenu_20.astro";
+import IconHome from "./icons/IconHome_24.astro";
+import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
+import IconArrowRight16 from "./icons/IconArrowRight_16.astro";
+import IconXmark from "src/components/icons/IconXmark_20.astro";
 
 const { url } = Astro;
 let path = url.pathname;
+
+let allIndicators = await getCollection("indicators");
+let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
 ---
 
 <header data-theme="red">
 
-	<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden>
-		<IconMegaphone/>
-		<span>New resources are added regularly. <a href="/resources">Explore what's new.</a></span>
-	</div>
+	<div class="wrapper">
 
-	<div class="site-masthead">
-		<nav class="global">
-			<ul class="nav-links-list">
-				<li class="home"><a href="/" data-font-type="serif">NB Middle School Conditions for Success</a></li>
-				<li><a class={path.includes('/big-seven') ? 'active' : ''} href="/big-seven">The Big Seven</a></li>
-				<li><a class={path.includes('/resources') ? 'active' : ''} href="/resources">Resources</a></li>
-				<li><a class={path.includes('/report') ? 'active' : ''} href="/report">Report</a></li>
-			</ul>
-		</nav>
-		<div class="global-controls">
-			<button
-				class="open-dialog"
-				data-dialog="search-dialog"
-				type="button"
-				aria-label="Open Search Dialog"
-			>
-				<div class="icon-and-label-container">
-					<IconSearch />
-					<span class="label-container">
-						<span class="label">Search</span>
-					</span>
-				</div>
-			</button>
-				<button class="theme-toggle" type="button" aria-label="Toggle Theme">
-				<div class="icon-and-label-container">
-					<IconLight />
-					<IconDark hidden={true}/>
-					<span class="label-container" hidden>
-						<span class="label">Change Theme</span>
-					</span>
-				</div>
-			</button>
+		<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden>
+			<IconMegaphone/>
+			<span>New resources are added regularly. <a href="/resources">Explore what's new.</a></span>
 		</div>
-	</div>
-
-	<div class="background" aria-hidden="true"></div>
-
-	{path === '/' && (
-
-		<div class="site-title-container">
-			<h1 class="site-title">New Brunswick Middle Schools: A Window of Opportunity</h1>
-			<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
+		<div class="site-masthead">
+			<nav class="global" aria-label="Main navigation">
+				<ul class="nav-links-list">
+					<li class="home-name">
+						<a href="/" data-font-type="serif">
+							NB Middle School Conditions for Success
+						</a>
+					</li>
+					<li class="home-icon">
+						<a href="/">
+							<span class="icon-and-label-container">
+								<IconHome />
+								<span class="label-container" hidden>
+									<span class="label">Home</span>
+								</span>
+							</span>
+						</a>
+					</li>
+					<li class="subnav-container">
+						<button class="subnav-toggle" type="button" aria-expanded="false">
+							<span class="icon-and-label-container">
+								<span class="label-container">
+									<span class="label">The Big Seven</span>
+								</span>
+								<IconCaretDown14/>
+							</span>
+						</button>
+						<ul class="subnav-links-list">
+							<li>
+								<a class="subnav-link"
+									aria-current={path === "/big-seven" ? "page" : null}
+									href="/big-seven">
+									<span class="icon-and-label-container">
+										<span class="label-container">
+											<span class="label">Introduction</span>
+										</span>
+										<IconArrowRight16 classes={['destination']}/>
+									</span>
+								</a
+								>
+							</li>
+							{indicators.map((indicator)=> {
+								let indicatorPath = `/big-seven/${indicator.id}`;
+								return (
+									<li>
+										<a class="subnav-link"
+											aria-current={path === indicatorPath
+												? "page"
+												: null}
+											href={indicatorPath}
+											>
+											<span class="icon-and-label-container">
+												<span class="label-container">
+													<span class="label">{indicator.data.title}</span>
+												</span>
+												<IconArrowRight16 classes={['destination']}/>
+											</span>									
+										</a>
+									</li>
+								)
+							})}
+						</ul>
+					</li>
+					<li><a class="nav-link" aria-current={path.includes('/resources') ? 'page' : null} href="/resources">Resources</a></li>
+					<li><a class="nav-link" aria-current={path.includes('/report') ? 'page' : null} href="/report">Report</a></li>
+				</ul>
+			</nav>
+			<MobileNavDialog/>
+			<div class="global-controls">
+				<button
+					class="search open-dialog"
+					data-dialog="search-dialog"
+					type="button"
+					aria-label="Open Search Dialog"
+				>
+					<span class="icon-and-label-container">
+						<IconSearch20 />
+						<span class="label-container">
+							<span class="label">Search</span>
+						</span>
+					</span>
+				</button>
+				<button class="theme" type="button" aria-label="Toggle Theme">
+					<span class="icon-and-label-container">
+						<IconLight />
+						<IconDark hidden={true}/>
+						<span class="label-container" hidden>
+							<span class="label">Change Theme</span>
+						</span>
+					</span>
+				</button>
+				<button class="menu open-dialog" data-dialog="mobile-nav-dialog" type="button" aria-label="Open Menu">
+					<span class="icon-and-label-container">
+						<IconMenu />
+						<span class="label-container">
+							<span class="label">Menu</span>
+						</span>
+					</span>
+				</button>
+			</div>
 		</div>
-
-		<div class="launchpad">
-
+		<div class="background" aria-hidden="true"></div>
+		{path === '/' && (
+			<div class="site-title-container">
+				<h1 class="site-title">New Brunswick Middle Schools: A Window of Opportunity</h1>
+				<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
+			</div>
 			<div class="media-container">
 				<button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="" data-media-external="false" type="button">
 					Internal Video
 				</button>
 			</div>
 			<MediaDialog/>
-
-			<div class="quick-links-container callout" data-style="solid" data-intensity="bold">
-
-				<h2>I want to...</h2>
-				<ul class="shortcuts-list favourite">
-					<li>
-						<a href="/big-seven" data-style-as="button" data-style="solid" data-size="large">
-							<div class="icon-and-label-container">
-								<IconInfo20/>
-								<span class="label-container">
-									<span class="label">Learn about the continuums</span>
-								</span>
-							</div>
-						</a>
-					</li>
-					<li>
-						<a href="/big-seven?dialog=create-assessment" data-style-as="button" data-style="solid" data-size="large">
-							<div class="icon-and-label-container">
-								<IconEdit20/>
-								<span class="label-container">
-									<span class="label" data-field="assessmentShortcut">Start an assessment</span>
-								</span>
-							</div>
-						</a>
-					</li>
-					<li>
-						<a href="/resources" data-style-as="button" data-style="solid" data-size="large">
-							<div class="icon-and-label-container">
-								<IconSearch20/>
-								<span class="label-container">
-									<span class="label">Find a resource</span>
-								</span>
-							</div>
-						</a>
-					</li>
-				</ul>
-
-				<h2>Last time, I was working on...</h2>
-				<ul class="shortcuts-list recent">
-					<template>
+			<div class="launchpad callout" data-style="solid" data-intensity="bold">
+				<div class="wrapper">
+					<h2>I want to...</h2>
+					<ul class="shortcuts-list favourite">
 						<li>
-							<a href="" data-style-as="button" data-style="solid" data-size="large">
-								<div class="icon-and-label-container">
-									<IconHistory20/>
+							<a href="/big-seven" data-style-as="button" data-style="solid" data-size="large">
+								<span class="icon-and-label-container">
+									<IconInfo20/>
 									<span class="label-container">
-										<span class="label"></span>
+										<span class="label">Learn about the continuums</span>
 									</span>
-								</div>
+								</span>
 							</a>
 						</li>
-					</template>
-				</ul>
-
+						<li>
+							<a href="/big-seven?dialog=create-assessment" data-style-as="button" data-style="solid" data-size="large">
+								<span class="icon-and-label-container">
+									<IconEdit20/>
+									<span class="label-container">
+										<span class="label" data-field="assessmentShortcut">Start an assessment</span>
+									</span>
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="/resources" data-style-as="button" data-style="solid" data-size="large">
+								<span class="icon-and-label-container">
+									<IconSearch20/>
+									<span class="label-container">
+										<span class="label">Find a resource</span>
+									</span>
+								</span>
+							</a>
+						</li>
+					</ul>
+					<h2>Last time, I was working on...</h2>
+					<ul class="shortcuts-list recent">
+						<template>
+							<li>
+								<a href="" data-style-as="button" data-style="solid" data-size="large">
+									<span class="icon-and-label-container">
+										<IconHistory20/>
+										<span class="label-container">
+											<span class="label"></span>
+										</span>
+									</span>
+								</a>
+							</li>
+						</template>
+					</ul>
+				</div>
 			</div>
+		)}
 
-		</div>
-
-	)}
+	</div>
 
 </header>
 
@@ -141,20 +211,42 @@ let path = url.pathname;
 <style is:global>
 
 	header {
-		display: grid;
-		grid-template-rows: auto auto auto auto auto;
-		grid-template-areas: 
-		"announcement"
-		"masthead"
-		"title"
-		"launchpad"
-		"launchpad";
-		align-items: center;
-		justify-items: center;
+		container: header / inline-size;
 	}
 	
+	header > .wrapper {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto auto auto auto;
+		grid-template-areas: 
+		"announcement announcement"
+		"masthead masthead"
+		"title title"
+		"media launchpad"
+		"media launchpad";
+		align-items: center;
+		justify-items: center;
+		column-gap: var(--space-2xl);
+	}
+
+	@container header (width < 1440px) {
+		header >.wrapper {
+			grid-template-areas: 
+			"announcement announcement"
+			"masthead masthead"
+			"title title"
+			"media media"
+			"launchpad launchpad"
+			"launchpad launchpad";
+		}
+	}
+
+	/* 
+	// Background Pattern
+	*/
+	
 	header .background {
-		grid-column: 1;
+		grid-column: 1 / span 2;
 		grid-row: 1 / span 4;
 		width: 100%;
 		height: 100%;
@@ -165,6 +257,16 @@ let path = url.pathname;
 		z-index: -1;
 	}
 
+	@container header (width < 1440px) {
+		header .background {
+			grid-row: 1 / span 5;
+		}
+	}
+
+	/* 
+	// Site Announcement
+	*/
+
 	header .site-announcement-container {
 		--icon-size: 1.25rem;
 		--icon-colour: var(--colour-ui-reverse);
@@ -172,15 +274,15 @@ let path = url.pathname;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.75rem;
+		gap: var(--space-xs);
 		place-self: start;
-		margin: 0 3rem;
-		padding: 0 1.25rem 0 1.125rem;
+		margin: 0 var(--space-2xl);
+		padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
-		height: 3rem;
+		min-height: 3rem;
 		color: var(--colour-ui-reverse);
-		font-size: 0.875rem;
+		font-size: var(--font-size-2xs);
 		font-weight: 500;
 	}
 
@@ -195,88 +297,231 @@ let path = url.pathname;
 		color: inherit;
 	}
 
+	/* 
+	// Site Masthead
+	*/
+
 	header .site-masthead {
 		grid-area: masthead;
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.5rem;
-		height: 7rem;
-		padding: 0 3rem;
-		width: 100%;
+		gap: var(--space-2xs);
+		min-height: 7rem;
+		width: calc(100% - ((2*var(--space-2xl)) - (2*(var(--space-sm)))));
 	}
+
+	@container header (width < 1088px) {
+		header .site-masthead {
+			min-height: 6rem;
+		}
+	}
+
+	@container header (width < 640px) {
+		header .site-masthead {
+			min-height: 5rem;
+		}
+	}
+
+	/* 
+	// Navigation
+	*/
 
 	header nav.global {
 		flex-grow: 1;
+	}
+
+	header nav.global ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
 	}
 
 	header nav.global .nav-links-list {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.5rem;
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
+		gap: var(--space-2xs);
+		position: relative;
 	}
 
-	header nav.global .home {
-		flex-grow: 1;
-		text-decoration: none;
-		color: var(--colour-ui-reverse);
+	header nav.global .subnav-links-list {
+		display: none;
+		flex-flow: column nowrap;
+		gap: var(--space-sm);
+		background-color: var(--colour-fill-accent-bold);
+		border-radius: var(--border-radius-normal);
+		padding: var(--space-sm);
+		box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
+		position: absolute;
+		top: calc(3rem + var(--space-xs));
+		z-index: 1000;
 	}
 
-	header nav.global .home a {
-		text-decoration: none;
-		color: var(--colour-ui-reverse);
+	header nav.global button.subnav-toggle[aria-expanded="true"] + .subnav-links-list {
+		display: flex;
 	}
 
-	header nav.global .nav-links-list :not(.home) a,
-	header .global-controls button {
+	/* Text Links and Buttons */
+
+	header :is(nav.global, .global-controls) :is(a, button) {
+		--button-background-colour: transparent;
+		--icon-size: 1.5rem;
+		--icon-colour: var(--colour-ui-reverse);
+		--label-size: var(--font-size-sm);
+		--label-colour: var(--colour-ui-reverse);
 		display: flex;
 		align-items: center;
 		height: 3rem;
-		padding: 0 1rem;
+		padding: 0 var(--space-sm);
 		border-radius: var(--border-radius-normal);
 		text-decoration: none;
-		font-size: 1.125rem;
+		font-size: var(--font-size-sm);
 		color: var(--colour-ui-reverse);
 	}
 
-	header nav.global .nav-links-list :not(.home) a:is(:hover, :focus-visible),
-	header .global-controls button:is(:hover, :focus-visible) {
+	header :is(nav.global, .global-controls) :is(a, button):is(:hover, :focus-visible) {
+		--icon-colour: var(--colour-ui-neutral);
+		--label-colour: var(--colour-ui-neutral);
 		background-color: var(--colour-fill-neutral-subtle);
 		color: var(--colour-ui-neutral);
 	}
 	
-	header nav.global .nav-links-list :not(.home) a.active,
-	header nav.global .nav-links-list :not(.home) a.active:is(:hover, :focus-visible) {
+	header nav.global .nav-link[aria-current="page"],
+	header nav.global .nav-link[aria-current="page"]:is(:hover, :focus-visible) {
 		background-color: transparent;
 		outline: 2px solid var(--colour-border-neutral-subtle);
 		outline-offset: -1px;
 		color: var(--colour-ui-reverse);
 	}
 
-	header .global-controls {
-		--button-background-colour: transparent;
+	header nav.global button.subnav-toggle[aria-expanded="true"] {
 		--icon-colour: var(--colour-ui-reverse);
-		--icon-size: 1.5rem;
 		--label-colour: var(--colour-ui-reverse);
-		--label-size: 1.125rem;
+		background-color: var(--colour-fill-accent-bold);
+		box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
+	}
+
+	header nav.global button.subnav-toggle .icon.caret {
+		--icon-size: 0.875rem;
+	}
+
+	header nav.global .subnav-link {
+		--container-gap: var(--space-sm);
+		--icon-size: 1rem;
+		--label-size: var(--font-size-xs);
+		--label-weight: 300; 
+		padding: 0;
+		height: auto;
+		text-decoration: underline;
+	}
+
+	header nav.global .subnav-link:is(:hover, :focus-visible) {
+		--label-colour: var(--colour-ui-reverse);
+		background-color: transparent;
+		text-decoration-color: transparent;
+	}
+
+	header nav.global .subnav-link .icon.destination {
+		--icon-colour: var(--colour-ui-reverse);
+	}
+
+	@container header (width < 640px) {
+		header nav.global li:not(.home-icon) {
+			display: none;
+		}
+	}
+
+	/* Home Name Link */
+
+	header nav.global .home-name {
+		flex-grow: 1;
+		margin-left: var(--space-sm);
+	}
+	
+	header nav.global .home-name a {
+		display: inline;
+		height: auto;
+		width: auto;
+		padding: 0;
+		font-size: var(--font-size-base);
+		text-decoration: none;
+		color: var(--colour-ui-reverse);
+	}
+
+	header nav.global .home-name a:is(:hover, :focus-visible) {
+		background-color: transparent;
+		color: var(--colour-ui-reverse);
+	}
+	
+	/* Home Icon Link */
+	
+	header nav.global .home-icon {
+		display: none;
+		flex-grow: 0;
+	}
+
+	header nav.global .home-icon a {
+		padding: 0 var(--space-xs);
+	}
+
+	@container header (width < 1088px) {
+		header nav.global .home-icon {
+			display: block;
+		}
+		header nav.global .home-name {
+			display: none;
+		}
+	}
+
+
+	/* 
+	// Site Controls
+	*/
+
+	header .global-controls {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 	}
 
-	header .global-controls button:is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-ui-neutral);
-		--label-colour: var(--colour-ui-neutral);
+	header .global-controls button {
+		padding: 0 var(--space-sm);
+		min-width: 3rem;
+	}
+	
+	header .global-controls button.search {
+		--icon-size: 1.25rem;
 	}
 
-	header .global-controls .theme-toggle {
-		padding: 0 0.75rem;
+	header .global-controls button.theme {
+		padding: 0 var(--space-xs);
 	}
+
+	header .global-controls button.menu {
+		--icon-size: 1.25rem;
+		display: none;
+	}
+
+	@container header (width < 640px) {
+		header .global-controls button.menu {
+			display: inline;
+		}
+	}
+
+	@container header (width < 1088px) {
+		header .global-controls button.search .label-container {
+			display: none;
+		}
+		header .global-controls button.search {
+			padding: 0 var(--space-xs);
+		}
+	}
+
+	/* 
+	// Homepage: Site Title/Subtitle
+	*/
 
 	header .site-title-container {
 		grid-area: title;
@@ -284,38 +529,48 @@ let path = url.pathname;
 		flex-flow: column;
 		justify-items: center;
 		align-items: center;
-		max-width: 680px;
-		margin: 2rem 0 5rem;
+		max-width: 720px;
+		margin: var(--space-2xl) 0 var(--space-4xl);
 	}
 
 	header .site-title-container .site-title {
 		color: var(--colour-ui-reverse);
 		text-align: center;
+		text-wrap: balance;
 	}
 
 	header .site-title-container .site-subtitle {
 		display: inline-block;
-		font-size: 1.75rem;
+		font-size: var(--font-size-xl);
 		font-weight: 500;
 		line-height: 1;
 		color: var(--colour-ui-reverse);
 		text-align: center;
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: var(--border-radius-normal);
-		padding: 1rem 1.5rem;
+		padding: var(--space-sm) var(--space-lg);
 	}
 
-	header .launchpad {
-		grid-area: launchpad;
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: 3rem;
-		margin: 0 7rem;
+	@container header (width < 1088px) {
+		header .site-title-container {
+			max-width: min(704px, calc(100% - (2*var(--space-2xl))));
+		}
+		header .site-title-container .site-title {
+			margin: 0 0 var(--space-lg);
+		}
+		header .site-title-container .site-subtitle {
+			padding: 0.875rem 1.125rem;
+		}
 	}
-
-	header .launchpad .media-container {
-		min-height: 400px;
+	
+	/* 
+	// Homepage: Welcome Media
+	*/
+	
+	header .media-container {
+		grid-area: media;
+		min-height: 506px;
+		margin: 0 0 0 var(--space-4xl);
 		aspect-ratio: 3 / 2;
 		flex-shrink: 0;
 		flex-grow: 1;
@@ -323,25 +578,51 @@ let path = url.pathname;
 		border-radius: var(--border-radius-normal);
 	}
 
-	header .launchpad .quick-links-container {
-		--callout-margin: 0;
-		flex-shrink: 1;
+	@container header (width < 1440px) {
+		header .media-container {
+			min-height: auto;
+			width: min(900px, calc(100% - (2*var(--space-2xl))));
+			margin: 0 0 var(--space-2xl);
+			aspect-ratio: 16 / 9;
+		}
 	}
 
-	header .launchpad .quick-links-container h2 {
-		font-size: 1.75rem;
+	/* 
+	// Homepage: Launchpad
+	*/
+
+	header .launchpad {
+		grid-area: launchpad;
+		justify-self: normal;
+		margin: 0 var(--space-4xl) 0 0;
+	}
+	
+	header .launchpad > .wrapper {
+		margin: 0 auto;
+	}
+
+	header .launchpad h2 {
+		font-size: var(--font-size-xl);
 		font-weight: 500;
 		line-height: 1;
 		color: var(--colour-ui-reverse);
 	}
 
-	header .launchpad .quick-links-container ul {
+	header .launchpad ul {
 		list-style-type: none;
 		padding: 0;
 		display: flex;
 		flex-flow: row wrap;
 		align-items: center;
-		gap: 1rem;
+		gap: var(--space-sm);
+	}
+
+	@container header (width < 1440px) {
+		header .launchpad {
+			width: min(900px, calc(100% - (2*var(--space-2xl))));
+			justify-self: auto;
+			margin: 0;
+		}
 	}
 
 
@@ -355,7 +636,6 @@ let path = url.pathname;
 
 	import { subscribe, checkAnnouncementSession } from "src/stores/userDataStore";
 	import { eventControl } from "src/utilities/event";
-	import { htmlToElement } from "src/utilities/helpers";
 
 	// 
 	// Methods
@@ -465,6 +745,39 @@ let path = url.pathname;
 		selector: 'window',
 		eventType: "astro:page-load",
 		fn: onPageLoad,
+	})
+
+	let onClick = (event) => {
+		let target = event.target as any;
+
+		if (target.matches('button.subnav-toggle')) {
+			let expanded = target.getAttribute('aria-expanded') === 'true';
+			target.setAttribute('aria-expanded', String(!expanded));
+		}
+
+	}
+	eventControl.add({
+		selector: 'header .site-masthead',
+		eventType: "click",
+		fn: onClick,
+	})
+
+	let onFocusout = (event) => {
+		let target = event.target as any;
+		let next = event.relatedTarget as any;
+
+		if (target.matches('button.subnav-toggle, .subnav-link')) {
+			let subnavContainer = target.closest('.subnav-container');			
+			if (subnavContainer && subnavContainer.contains(next)) return;
+			let btn = subnavContainer.querySelector('button.subnav-toggle');
+			btn.setAttribute('aria-expanded', 'false');
+		}
+
+	}
+	eventControl.add({
+		selector: 'header .site-masthead',
+		eventType: "focusout",
+		fn: onFocusout,
 	})
 
 </script>

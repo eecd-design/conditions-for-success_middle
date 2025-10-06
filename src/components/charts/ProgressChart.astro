@@ -141,7 +141,7 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 	.chart-container.progress .segment-container {
 		display: flex;
 		flex-flow: column nowrap;
-		gap: 1rem;
+		gap: var(--space-sm);
 		position: relative;
 	}
 
@@ -211,12 +211,12 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		flex-flow: column nowrap;
 		align-items: center;
 		justify-content: end;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 		flex-grow: 1;
 	}
 
 	.chart-container.progress .segment-container .title-container .title {
-		font-size: 1.125rem;
+		font-size: var(--font-size-sm);
 		font-weight: 500;
 	}
 
@@ -224,7 +224,7 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		.segment-container[data-active]
 		.title-container
 		.title {
-		font-size: 1.25rem;
+		font-size: var(--font-size-base);
 		font-weight: 600;
 	}
 
@@ -242,7 +242,7 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		display: flex;
 		flex-flow: column nowrap;
 		align-items: center;
-		gap: 0.25rem;
+		gap: var(--space-3xs);
 		position: absolute;
 		top: -2.5rem;
 	}
@@ -252,7 +252,7 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		.title-container
 		.active-container
 		span {
-		font-size: 0.75rem;
+		font-size: var(--font-size-3xs);
 		font-weight: 700;
 		text-transform: uppercase;
 		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
@@ -271,16 +271,16 @@ import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 		display: flex;
 		flex-flow: column nowrap;
 		align-items: center;
-		gap: 0.25rem;
+		gap: var(--space-3xs);
 		flex-grow: 1;
-		padding: 0 0.75rem;
-		font-size: 0.875rem;
+		padding: 0 var(--space-xs);
+		font-size: var(--font-size-2xs);
 		color: var(--colour-ui-neutral-subtle);
 		text-align: center;
 	}
 
 	.chart-container.progress .segment-container .details-container .count {
-		font-size: 1rem;
+		font-size: var(--font-size-xs);
 		font-weight: 600;
 	}
 </style>

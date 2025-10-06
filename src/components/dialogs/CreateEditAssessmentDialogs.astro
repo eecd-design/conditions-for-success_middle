@@ -131,16 +131,17 @@ let schoolList = {
 		data-fit="compact"
 		data-theme="yellow"
 	>
-		<div class="icon-container">
-			<IconWarningBig />
-		</div>
-
-		<div class="text-container">
-			<p>
-				All information collected is stored exclusively in the browser.
-				Download a copy of your assessment regularly to keep your data
-				safe and restore it if needed.
-			</p>
+		<div class="wrapper">
+			<div class="icon-container">
+				<IconWarningBig />
+			</div>
+			<div class="text-container">
+				<p>
+					All information collected is stored exclusively in the
+					browser. Download a copy of your assessment regularly to
+					keep your data safe and restore it if needed.
+				</p>
+			</div>
 		</div>
 	</div>
 
@@ -472,16 +473,16 @@ let schoolList = {
 	}
 
 	#view-assessment-properties-dialog hr.group {
-		margin: 1.5rem 0;
+		margin: var(--space-lg) 0;
 	}
 
 	#view-assessment-properties-dialog dl {
-		margin: 1rem 0;
+		margin: var(--space-sm) 0;
 		line-height: 1;
 	}
 
 	#view-assessment-properties-dialog dl :is(dt, dd) {
-		font-size: 0.875rem;
+		font-size: var(--font-size-2xs);
 	}
 
 	.heading-button-container {
@@ -489,19 +490,19 @@ let schoolList = {
 		flex-flow: row wrap;
 		justify-content: space-between;
 		align-items: start;
-		gap: 1rem;
+		gap: var(--space-sm);
 	}
 
 	#view-assessment-properties-dialog section h3 {
-		margin: 0 0 1rem;
-		font-size: 1.25rem;
+		margin: 0 0 var(--space-sm);
+		font-size: var(--font-size-base);
 		font-weight: 600;
 		line-height: 1.2;
 	}
 
 	#view-assessment-properties-dialog button.open-dialog {
 		float: right;
-		margin: 0 0 1rem 1rem;
+		margin: 0 0 var(--space-sm) var(--space-sm);
 	}
 </style>
 

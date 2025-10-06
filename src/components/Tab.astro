@@ -21,11 +21,11 @@ if (dataset) {
 
 <style is:global>
 	.tab-group {
-		margin: 2.5rem 0;
+		margin: var(--space-2xl) 0;
 	}
 
 	.tab-group nav {
-		margin: 0 0 1rem;
+		margin: 0 0 var(--space-sm);
 	}
 
 	.tab-group nav ul {
@@ -34,7 +34,7 @@ if (dataset) {
 		display: flex;
 		flex-flow: row wrap;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 	}
 
 	.tab-group nav ul li button[aria-selected="true"] {
@@ -54,8 +54,8 @@ if (dataset) {
 		);
 		--button-border-radius: var(--border-radius-normal);
 		height: 3rem;
-		padding: 0 1rem;
-		font-size: 1.25rem;
+		padding: 0 var(--space-sm);
+		font-size: var(--font-size-base);
 	}
 
 	.tab-group nav ul li button {
@@ -65,8 +65,8 @@ if (dataset) {
 		);
 		--button-border-radius: var(--border-radius-normal);
 		height: 3rem;
-		padding: 0 1rem;
-		font-size: 1.25rem;
+		padding: 0 var(--space-sm);
+		font-size: var(--font-size-base);
 	}
 
 	.tab-group .tab {
@@ -97,10 +97,14 @@ if (dataset) {
 
 	.tab-group .tab .media-container img {
 		display: block;
+		width: 100%;
+		/* height: auto; */
+		object-fit: cover;
+		object-position: left;
 	}
 
 	.tab-group .tab .text-container {
-		padding: 2rem;
+		padding: var(--space-xl);
 		background-color: var(
 			--colour-fill-accent-subtle,
 			var(--colour-fill-neutral-subtle)
@@ -114,15 +118,15 @@ if (dataset) {
 	}
 
 	.tab-group .tab:has(.media-container:not(:empty)) .text-container .heading {
-		font-size: 1.25rem;
-		margin: 1rem 0 1rem;
+		font-size: var(--font-size-base);
+		margin: var(--space-sm) 0 var(--space-sm);
 	}
 
 	.tab-group
 		.tab:has(.media-container:not(:empty))
 		.text-container
 		:where(p, li, a) {
-		font-size: 1rem;
+		font-size: var(--font-size-xs);
 	}
 </style>
 

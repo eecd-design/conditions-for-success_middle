@@ -1,39 +1,58 @@
 ---
+import { getCollection } from "astro:content";
 
 const { url } = Astro;
 let path = url.pathname;
 
+let allIndicators = await getCollection("indicators");
+let indicators = allIndicators.sort((a, b) =>
+	a.data.tag.localeCompare(b.data.tag),
+);
 ---
 
-<aside class="section-nav-container">
+<aside class="left section-nav-container">
 	<nav class="section">
 		<h2>The Big Seven</h2>
 		<ul>
-			<li><a class={path === '/big-seven' ? 'active' : ''} href="/big-seven">Introduction</a></li>
-			<li><a class={path === '/big-seven/leadership-and-teaming' ? 'active' : ''} href="/big-seven/leadership-and-teaming">Leadership and Teaming</a></li>
-			<li><a class={path === '/big-seven/access-and-equity' ? 'active' : ''} href="/big-seven/access-and-equity">Access and Equity</a></li>
-			<li><a class={path === '/big-seven/relationships' ? 'active' : ''} href="/big-seven/relationships">Relationships</a></li>
-			<li><a class={path === '/big-seven/empathy' ? 'active' : ''} href="/big-seven/empathy">Empathy</a></li>
-			<li><a class={path === '/big-seven/identities' ? 'active' : ''} href="/big-seven/identities">Identities</a></li>
-			<li><a class={path === '/big-seven/high-yield-instructional-practices' ? 'active' : ''} href="/big-seven/high-yield-instructional-practices">High-yield Instructional Practices</a></li>
-			<li><a class={path === '/big-seven/meaningful-learning-experiences' ? 'active' : ''} href="/big-seven/meaningful-learning-experiences">Meaningful Learning Experiences</a></li>
+			<li>
+				<a
+					aria-current={path === "/big-seven" ? "page" : null}
+					href="/big-seven">Introduction</a
+				>
+			</li>
+			{
+				indicators.map((indicator) => {
+					let indicatorPath = `/big-seven/${indicator.id}`;
+					return (
+						<li>
+							<a
+								aria-current={
+									path === indicatorPath ? "page" : null
+								}
+								href={indicatorPath}
+							>
+								{indicator.data.title}
+							</a>
+						</li>
+					);
+				})
+			}
 		</ul>
 	</nav>
 </aside>
 
 <style is:global>
-
 	nav.section h2 {
-		font-size: 1.5rem;
+		font-size: var(--font-size-lg);
 		border-bottom: 1px solid var(--colour-border-neutral-subtle);
-		padding: 0 0 0.5rem;
-		margin: 0 0 1rem;
+		padding: 0 0 var(--space-2xs);
+		margin: 0 0 var(--space-sm);
 	}
 
 	nav.section ul {
 		display: flex;
 		flex-flow: column;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 		margin: 0;
 		padding: 0;
 		list-style-type: none;
@@ -42,8 +61,8 @@ let path = url.pathname;
 	nav.section ul ul {
 		display: flex;
 		flex-flow: column;
-		gap: 0.5rem;
-		margin-top: 0.5rem;
+		gap: var(--space-2xs);
+		margin-top: var(--space-2xs);
 	}
 
 	nav.section ul li {
@@ -54,8 +73,8 @@ let path = url.pathname;
 		display: flex;
 		align-items: center;
 		text-decoration: none;
-		padding: 0.625rem 1rem;
-		font-size: 1rem;
+		padding: var(--space-xs) var(--space-sm);
+		font-size: var(--font-size-xs);
 		line-height: 1.2;
 		border-radius: var(--border-radius-normal);
 	}
@@ -64,12 +83,11 @@ let path = url.pathname;
 		background-color: var(--colour-fill-neutral-subtle);
 		color: var(--colour-ui-neutral);
 	}
-	
-	nav.section a.active,
-	nav.section a.active:is(:hover, :focus-visible) {
+
+	nav.section [aria-current="page"],
+	nav.section [aria-current="page"]:is(:hover, :focus-visible) {
 		outline: 2px solid var(--colour-border-neutral-subtle);
 		outline-offset: -1px;
 		background-color: transparent;
 	}
-
 </style>

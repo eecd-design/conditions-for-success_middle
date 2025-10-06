@@ -1,0 +1,180 @@
+---
+import { getCollection } from "astro:content";
+
+import IconXmark from "src/components/icons/IconXmark_20.astro";
+import IconHome from "src/components/icons/IconHome_24.astro";
+import IconArrowRight16 from "src/components/icons/IconArrowRight_16.astro";
+
+const { url } = Astro;
+let path = url.pathname;
+
+let allIndicators = await getCollection("indicators");
+let indicators = allIndicators.sort((a, b) =>
+	a.data.tag.localeCompare(b.data.tag),
+);
+---
+
+<dialog
+	id="mobile-nav-dialog"
+	data-intensity="bold"
+	data-theme="red"
+	aria-labelledby="mobile-nav-dialog_heading"
+>
+	<button class="close-dialog" type="button" aria-label="Close Media Dialog">
+		<IconXmark />
+	</button>
+	<h2 id="mobile-nav-dialog_heading" class="heading">Menu</h2>
+	<nav class="mobile" aria-label="Main navigation">
+		<ul class="nav-links-list">
+			<li class="home-icon">
+				<a
+					class="nav-link"
+					aria-current={path.includes("/") ? "page" : null}
+					href="/"
+				>
+					<span class="icon-and-label-container">
+						<span class="label-container">
+							<span class="label"> Home </span>
+						</span>
+						<IconArrowRight16 classes={["destination"]} />
+					</span>
+				</a>
+			</li>
+			<li class="subnav-container">
+				<span>The Big Seven</span>
+				<ul class="subnav-links-list">
+					<li>
+						<a
+							class="subnav-link"
+							aria-current={path === "/big-seven" ? "page" : null}
+							href="/big-seven"
+						>
+							<span class="icon-and-label-container">
+								<span class="label-container">
+									<span class="label">Introduction</span>
+								</span>
+								<IconArrowRight16 classes={["destination"]} />
+							</span>
+						</a>
+					</li>
+					{
+						indicators.map((indicator) => {
+							let indicatorPath = `/big-seven/${indicator.id}`;
+							return (
+								<li>
+									<a
+										class="subnav-link"
+										aria-current={
+											path === indicatorPath
+												? "page"
+												: null
+										}
+										href={indicatorPath}
+									>
+										<span class="icon-and-label-container">
+											<span class="label-container">
+												<span class="label">
+													{indicator.data.title}
+												</span>
+											</span>
+											<IconArrowRight16
+												classes={["destination"]}
+											/>
+										</span>
+									</a>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</li>
+			<li>
+				<a
+					class="nav-link"
+					aria-current={path.includes("/resources") ? "page" : null}
+					href="/resources"
+				>
+					<span class="icon-and-label-container">
+						<span class="label-container">
+							<span class="label"> Resources </span>
+						</span>
+						<IconArrowRight16 classes={["destination"]} />
+					</span>
+				</a>
+			</li>
+			<li>
+				<a
+					class="nav-link"
+					aria-current={path.includes("/report") ? "page" : null}
+					href="/report"
+				>
+					<span class="icon-and-label-container">
+						<span class="label-container">
+							<span class="label"> Report </span>
+						</span>
+						<IconArrowRight16 classes={["destination"]} />
+					</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+</dialog>
+
+<style is:global>
+	nav.mobile {
+		margin: var(--space-xl) 0 0;
+	}
+
+	nav.mobile ul {
+		display: flex;
+		flex-flow: column;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	nav.mobile ul li {
+		line-height: 1;
+	}
+
+	nav.mobile .nav-links-list {
+		gap: var(--space-xl);
+	}
+
+	nav.mobile .subnav-container > span {
+		display: inline-block;
+		margin: 0 0 var(--space-lg);
+		font-weight: 600;
+	}
+
+	nav.mobile .subnav-links-list {
+		padding: 0 0 0 var(--space-xl);
+		border-left: 1px solid var(--colour-border-accent-subtle);
+		gap: var(--space-lg);
+	}
+
+	nav.mobile a {
+		--container-gap: var(--space-sm);
+		--label-size: var(--font-size-base);
+		--label-colour: var(--dialog-ui-colour);
+		--label-weight: 600;
+		--icon-size: 1rem;
+		line-height: 1;
+		color: var(--dialog-ui-colour);
+		text-decoration-color: var(--dialog-ui-colour);
+		width: 100%;
+	}
+
+	nav.mobile a:is(:hover, :focus-visible) {
+		--label-colour: var(--dialog-ui-colour);
+		--icon-colour: var(--dialog-ui-colour);
+	}
+
+	nav.mobile .subnav-link {
+		--label-weight: 300;
+	}
+
+	nav.mobile a .icon.destination {
+		--icon-colour: var(--dialog-ui-colour);
+	}
+</style>

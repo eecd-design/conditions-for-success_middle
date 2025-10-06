@@ -26,7 +26,7 @@ let allComponents = await getCollection("components");
 ---
 <BaseLayout pageTitle={'Report'}>
 
-	<aside class="on-page-nav-container" data-restrict-report="active">
+	<aside class="right on-page-nav-container" data-restrict-report="active">
 		<nav class="on-page">
 			<h2 class="heading">In this report</h2>
 			<ul class="links-list">
@@ -103,24 +103,26 @@ let allComponents = await getCollection("components");
 		</h1>
 
 		<div class="callout" data-restrict-report="inactive">
-			<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
-			<div class="button-group">
-				<a href="/big-seven?dialog=create-assessment" aria-label="Create Assessment" data-style-as="button" data-style="solid" data-size="large">
-					<div class="icon-and-label-container">
-						<IconCross20/>
-						<span class="label-container">
-							<span class="label">Create</span>
-						</span>
-					</div>
-				</a>
-				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-context="report" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button" data-style="solid" data-size="large">
-					<div class="icon-and-label-container">
-						<IconFolder20/>
-						<span class="label-container">
-							<span class="label">Open</span>
-						</span>
-					</div>
-				</button>
+			<div class="wrapper">
+				<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
+				<div class="button-group">
+					<a href="/big-seven?dialog=create-assessment" aria-label="Create Assessment" data-style-as="button" data-style="solid" data-size="large">
+						<div class="icon-and-label-container">
+							<IconCross20/>
+							<span class="label-container">
+								<span class="label">Create</span>
+							</span>
+						</div>
+					</a>
+					<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-context="report" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button" data-style="solid" data-size="large">
+						<div class="icon-and-label-container">
+							<IconFolder20/>
+							<span class="label-container">
+								<span class="label">Open</span>
+							</span>
+						</div>
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -234,14 +236,14 @@ let allComponents = await getCollection("components");
 	.content.report h1 .subtitle {
 		display: block;
 		font-weight: 400;
-		font-size: 1.75rem;
+		font-size: var(--font-size-xl);
 		color: var(--colour-ui-neutral-subtle);
-		margin: 0.5rem 0 0;
+		margin: var(--space-2xs) 0 0;
 	}
 
 	.content.report > .callout :is(button, [data-style-as="button"]) {
-		--container-gap: 0.75rem;
-		--label-size: 1rem;
+		--container-gap: var(--space-xs);
+		--label-size: var(--font-size-xs);
 		--label-colour: var(--colour-ui-reverse);
 		--icon-size: 1.25rem;
 		--icon-colour: var(--colour-ui-reverse); 
@@ -253,14 +255,14 @@ let allComponents = await getCollection("components");
 	}
 
 	#report-controls {
-		--group-gap: 0.5rem;
+		--group-gap: var(--space-2xs);
 		display: inline-flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 		height: 3.25rem;
-		padding: 0 0.5rem;
-		margin: 1rem 0 0;
+		padding: 0 var(--space-2xs);
+		margin: var(--space-sm) 0 0;
 		background-color: var(--colour-fill-neutral-subtle);
 		border-radius: var(--border-radius-normal);
 	}
@@ -290,7 +292,7 @@ let allComponents = await getCollection("components");
 	}
 
 	#report-container h3 {
-		padding-bottom: 0.75rem;
+		padding-bottom: var(--space-xs);
 		font-weight: 500;
 	}
 
@@ -305,13 +307,13 @@ let allComponents = await getCollection("components");
 	#pdf-export-progress-container {
 		width: 100%;
 		max-width: 400px;
-		margin: 1.5rem 0 0;
+		margin: var(--space-lg) 0 0;
 	}
 
 	#pdf-export-progress-container .text-container {
-		font-size: 1rem;
+		font-size: var(--font-size-xs);
 		color: var(--colour-ui-neutral-subtle);
-		margin: 0 0 0.75rem;
+		margin: 0 0 var(--space-xs);
 	}
 
 	#pdf-export-progress-container [role="progressbar"] {

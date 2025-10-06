@@ -17,8 +17,73 @@
 
 :root {
 
+
 	/*
-    // BASE COLOURS
+    // Transitions
+    */
+
+	--transition-linear-fast: 75ms linear;
+	--transition-linear-medium: 150ms linear;
+	--transition-ease-fast: 100ms ease;
+	--transition-ease-medium: 200ms ease;
+	--transition-ease-slow: 300ms ease;
+
+	/*
+    // Border Radius
+    */
+
+	--border-radius-small: 0.25rem;
+	--border-radius-normal: 0.5rem;
+
+	/*
+    // Spacing
+    */
+
+	--space-3xs: 0.25rem;
+	--space-2xs: 0.5rem;
+	--space-xs: 0.75rem;
+
+	/* 16px -> 20px (base size) */
+	/* 1.25 -> 1.333 type scale ratio */
+	/* 540px screen -> 1024px screen */
+	/* https://www.fluid-type-scale.com/calculate?minFontSize=16&minWidth=540&minRatio=1.25&maxFontSize=20&maxWidth=1024&maxRatio=1.333&steps=sm%2Cbase%2Clg%2Cxl%2C2xl%2C3xl%2C4xl%2C5xl&baseStep=base&prefix=space&useContainerWidth=false&includeFallbacks=false&useRems=true&remValue=16&decimals=2&previewFont=Inter&previewText=Almost+before+we+knew+it%2C+we+had+left+the+ground&previewWidth=540 */
+
+	--space-sm: clamp(0.8rem, 0.46vi + 0.65rem, 0.94rem);
+	--space-base: clamp(1rem, 0.83vi + 0.72rem, 1.25rem);
+	--space-lg: clamp(1.25rem, 1.38vi + 0.79rem, 1.67rem);
+	--space-xl: clamp(1.56rem, 2.18vi + 0.83rem, 2.22rem);
+	--space-2xl: clamp(1.95rem, 3.33vi + 0.83rem, 2.96rem);
+	--space-3xl: clamp(2.44rem, 4.98vi + 0.76rem, 3.95rem);
+	--space-4xl: clamp(3.05rem, 7.3vi + 0.59rem, 5.26rem);
+	--space-5xl: clamp(3.81rem, 10.57vi + 0.25rem, 7.01rem);
+
+
+	/*
+    // Fonts
+    */
+
+	--font-size-3xs: 0.75rem;
+	--font-size-2xs: 0.875rem;
+	--font-size-xs: 1rem;
+
+	/* Exception to type scale (simulated as base) */
+	--font-size-sm: clamp(1rem, 0.41vi + 0.86rem, 1.13rem);
+
+	/* 18px -> 20px (base font) */
+	/* 1.1875 -> 1.2 type scale ratio */
+	/* 540px screen -> 1024px screen */
+
+	--font-size-base: clamp(1.13rem, 0.41vi + 0.99rem, 1.25rem);
+	--font-size-lg: clamp(1.34rem, 0.54vi + 1.15rem, 1.5rem);
+	--font-size-xl: clamp(1.59rem, 0.71vi + 1.35rem, 1.8rem);
+	--font-size-2xl: clamp(1.88rem, 0.91vi + 1.58rem, 2.16rem);
+	--font-size-3xl: clamp(2.24rem, 1.17vi + 1.84rem, 2.59rem);
+	--font-size-4xl: clamp(2.66rem, 1.5vi + 2.15rem, 3.11rem);
+	--font-size-5xl: clamp(3.15rem, 1.91vi + 2.51rem, 3.73rem);
+
+
+	/*
+    // Base Colours
     */
 
 	/* red */
@@ -169,15 +234,6 @@
 	--colour-border-neutral-subtle: var(--gray-muted-200);
 	--colour-border-neutral-mid: var(--gray-muted-300);
 	--colour-border-neutral-bold: var(--gray-muted-500);
-
-	--border-radius-small: 0.25rem;
-	--border-radius-normal: 0.5rem;
-
-	--transition-linear-fast: 75ms linear;
-	--transition-linear-medium: 150ms linear;
-	--transition-ease-fast: 100ms ease;
-	--transition-ease-medium: 200ms ease;
-	--transition-ease-slow: 300ms ease;
 
 }
 
@@ -438,23 +494,23 @@ html {
 
 h1 {
 	font-family: aesthet-nova, serif;
-	font-size: 3rem;
+	font-size: var(--font-size-4xl);
 	font-weight: 700;
 	line-height: 1;
-	margin: 0 0 2rem;
+	margin: 0 0 var(--space-xl);
 }
 
 h2,
 [data-style-as="h2"] {
 	font-family: aesthet-nova, serif;
-	font-size: 2rem;
+	font-size: var(--font-size-2xl);
 	font-weight: 700;
 	line-height: 1.2;
-	margin: 1.5rem 0 1.5rem;
+	margin: var(--space-lg) 0 var(--space-lg);
 }
 
 :is(h2, [data-style-as="h2"]):has(+ .heading-subtitle) {
-	margin: 1.5rem 0 0.5rem;
+	margin: var(--space-lg) 0 var(--space-2xs);
 }
 
 :is(h2, [data-style-as="h2"])+.heading-subtitle {
@@ -463,17 +519,17 @@ h2,
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
-	gap: 0.75rem;
+	gap: var(--space-xs);
 	font-family: aesthet-nova, serif;
-	font-size: 1.625rem;
+	font-size: var(--font-size-xl);
 	font-weight: 500;
 	line-height: 1.2;
 	color: var(--colour-ui-accent);
-	margin: 0 0 1.5rem;
+	margin: 0 0 var(--space-lg);
 }
 
 :is(h2, [data-style-as="h2"])+.heading-subtitle>.icon {
-	margin-top: 0.25rem;
+	margin-top: var(--space-3xs);
 }
 
 [data-mode="assessment"] h2 {
@@ -483,24 +539,24 @@ h2,
 h3,
 [data-style-as="h3"] {
 	font-family: "Public Sans", sans-serif;
-	font-size: 1.5rem;
+	font-size: var(--font-size-lg);
 	font-weight: 700;
 	line-height: 1.2;
-	margin: 1rem 0 1.5rem;
+	margin: var(--space-sm) 0 var(--space-lg);
 }
 
 h4 {
-	font-size: 1.25rem;
+	font-size: var(--font-size-base);
 	font-weight: 700;
 	line-height: 1.2;
 }
 
 p {
-	margin: 0 0 1rem;
+	margin: 0 0 var(--space-sm);
 }
 
 :where(p, li, a) {
-	font-size: 1.25rem;
+	font-size: var(--font-size-base);
 	font-weight: 500;
 	line-height: 1.6;
 }
@@ -512,12 +568,6 @@ p {
 :is(ul, ol)> :last-child {
 	margin-bottom: 0 !important;
 }
-
-
-@container body (max-width: 963px) {}
-
-
-@container body (max-width: 529px) {}
 
 
 
@@ -534,7 +584,7 @@ p {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
-	gap: var(--group-gap, 1rem);
+	gap: var(--group-gap, var(--space-sm));
 	height: 100%;
 }
 
@@ -544,7 +594,7 @@ p {
 }
 
 .button-group[data-fit="compact"] {
-	--group-gap: 0.5rem;
+	--group-gap: var(--space-2xs);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"]) {
@@ -553,12 +603,12 @@ p {
 	justify-content: center;
 	cursor: pointer;
 	user-select: none;
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	line-height: 1;
 	color: var(--button-ui-colour, var(--colour-ui-neutral));
 	height: 2.25rem;
-	padding: 0 0.5rem;
+	padding: 0 var(--space-2xs);
 	background-color: var(--button-background-colour, var(--colour-fill-neutral-subtle));
 	border-radius: var(--button-border-radius, var(--border-radius-small));
 	border: none;
@@ -595,8 +645,8 @@ p {
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="small"] {
 	height: 1.5rem;
-	padding: 0 0.5rem;
-	font-size: 0.875rem;
+	padding: 0 var(--space-2xs);
+	font-size: var(--font-size-2xs);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="large"] {
@@ -605,12 +655,12 @@ p {
 	width: fit-content;
 	min-width: 8rem;
 	max-width: 100%;
-	padding: 0 1.5rem;
-	font-size: 1rem;
+	padding: 0 var(--space-lg);
+	font-size: var(--font-size-xs);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="large"]:has(.icon) {
-	padding: 0 1rem;
+	padding: 0 var(--space-sm);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="solid"] {
@@ -675,7 +725,7 @@ p {
 		color var(--transition-linear-fast);
 }
 
-:is(a, [data-style-as="link"]):hover {
+:is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
 	color: var(--colour-ui-link-hover);
 	text-decoration-color: transparent;
 }
@@ -774,14 +824,14 @@ p {
 /* SECTION LINK LIST */
 
 .list-container {
-	margin: 1.5rem 0;
+	margin: var(--space-lg) 0;
 }
 
 .links-list {
 	display: flex;
 	flex-flow: column;
-	gap: 1rem;
-	margin: 1.5rem 0;
+	gap: var(--space-sm);
+	margin: var(--space-lg) 0;
 	padding: 0;
 	list-style-type: none;
 }
@@ -789,12 +839,12 @@ p {
 /* PAGINATION CONTROLS */
 
 #pagination-controls {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-	align-items: center;
-	margin: 3rem 0;
-	padding: 3rem 0 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: start;
+	gap: var(--space-lg);
+	margin: var(--space-2xl) 0;
+	padding: var(--space-2xl) 0 0;
 	border-top: 1px solid var(--colour-border-neutral-subtle);
 }
 
@@ -808,26 +858,31 @@ p {
 	gap: 0.375rem;
 }
 
+#pagination-controls .next-container {
+	align-items: end;
+}
+
 #pagination-controls .label {
 	--icon-size: 0.875rem;
 	--icon-colour: var(--colour-ui-neutral-subtle);
 	display: flex;
 	flex-flow: row nowrap;
-	align-items: center;
-	gap: 0.5rem;
+	align-items: start;
+	gap: var(--space-2xs);
 	font-weight: 600;
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	color: var(--colour-ui-neutral-subtle);
 }
 
+#pagination-controls .next-container .label {
+	text-align: right;
+}
+
 #pagination-controls a {
-	font-size: 1.125rem;
+	font-size: var(--font-size-sm);
+	line-height: 1.2;
 }
 
-
-#pagination-controls .next-container {
-	align-items: end;
-}
 
 
 
@@ -874,18 +929,30 @@ body {
 ------------------------------*/
 
 main {
+	container: main / inline-size;
+}
+
+main>.wrapper {
 	display: grid;
-	grid-template-columns: 1fr minmax(600px, 900px) 1fr;
+	grid-template-columns: minmax(calc(300px + var(--space-4xl)), 1fr) min(900px, calc(100% - (2*var(--space-2xl)))) minmax(300px, 1fr);
 	grid-template-rows: 1fr;
 	grid-template-areas:
 		"left-aside content right-aside";
 }
 
-main:has(#assessment-controls) {
+main:has(#assessment-controls)>.wrapper {
 	grid-template-rows: auto 1fr;
 	grid-template-areas:
 		"toolbar toolbar toolbar"
 		"left-aside content right-aside";
+}
+
+main>.wrapper>aside.right {
+	grid-area: right-aside;
+}
+
+main>.wrapper>aside.left {
+	grid-area: left-aside;
 }
 
 #assessment-controls {
@@ -893,28 +960,48 @@ main:has(#assessment-controls) {
 }
 
 .section-nav-container {
-	grid-area: left-aside;
-	margin: 0 5rem 0 0;
-	padding: 2rem;
+	margin: 0 var(--space-4xl) 0 0;
+	padding: var(--space-xl);
 	border-right: 1px solid var(--colour-border-neutral-subtle);
 }
 
 .on-page-nav-container {
-	grid-area: right-aside;
-	padding: 3rem;
+	padding: var(--space-2xl);
 }
 
 nav.on-page {
 	position: sticky;
-	top: 3rem;
+	top: var(--space-2xl);
 }
 
 .content {
 	grid-area: content;
-	padding: 5rem 0;
+	padding: var(--space-4xl) 0;
 }
 
+@container main (width < 1584px) {
 
+	main>.wrapper {
+		grid-template-columns: minmax(calc(300px + var(--space-4xl)), 1fr) min(900px, calc(100% - (2*var(--space-2xl)))) 1fr;
+	}
+
+	main>.wrapper>aside.right {
+		display: none;
+	}
+
+}
+
+@container main (width < 1360px) {
+
+	main>.wrapper {
+		grid-template-columns: 1fr min(900px, calc(100% - (2*var(--space-2xl)))) 1fr;
+	}
+
+	main>.wrapper>aside.left {
+		display: none;
+	}
+
+}
 
 
 
@@ -987,10 +1074,10 @@ main:not([data-report="inactive"]) [data-restrict-report="inactive"] {
 
 
 nav.on-page .heading {
-	font-size: 1.5rem;
+	font-size: var(--font-size-lg);
 	border-bottom: 1px solid var(--colour-border-neutral-subtle);
-	padding: 0 0 0.5rem;
-	margin: 0 0 1rem;
+	padding: 0 0 var(--space-2xs);
+	margin: 0 0 var(--space-sm);
 }
 
 nav.on-page li {
@@ -998,7 +1085,7 @@ nav.on-page li {
 }
 
 nav.on-page a {
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 }
 
 nav a {
@@ -1017,7 +1104,7 @@ nav a {
 :is(h2, [data-style-as="h2"]):has(.tag) {
 	display: flex;
 	flex-flow: row nowrap;
-	gap: 1rem;
+	gap: var(--space-sm);
 	align-items: start;
 }
 
@@ -1025,11 +1112,11 @@ nav a {
 	display: flex;
 	align-items: center;
 	height: 1.75rem;
-	padding: 0 0.5rem;
-	margin: 0.25rem 0;
+	padding: 0 var(--space-2xs);
+	margin: var(--space-3xs) 0;
 	background-color: var(--colour-fill-accent-subtle);
 	border-radius: var(--border-radius-small);
-	font-size: 1.25rem;
+	font-size: var(--font-size-base);
 	line-height: 1;
 	color: var(--colour-ui-accent);
 }
@@ -1039,7 +1126,7 @@ nav a {
 	--icon-size: 1.5rem;
 	display: flex;
 	flex-flow: row nowrap;
-	gap: 0.5rem;
+	gap: var(--space-2xs);
 	align-items: center;
 	position: relative;
 }
@@ -1062,11 +1149,11 @@ nav a {
 form {
 	display: flex;
 	flex-flow: column;
-	gap: 1.25rem;
+	gap: var(--space-base);
 }
 
 form[data-fit="compact"] {
-	gap: 0.5rem;
+	gap: var(--space-2xs);
 }
 
 form fieldset {
@@ -1077,13 +1164,13 @@ form fieldset {
 
 form :is(label, [data-style-as="label"], legend, [data-style-as="legend"]) {
 	display: block;
-	font-size: 1.25rem;
+	font-size: var(--font-size-base);
 	font-weight: 600;
-	margin: 0 0 0.5rem;
+	margin: 0 0 var(--space-2xs);
 }
 
 form :is(legend, [data-style-as="legend"])[data-style="small"] {
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 }
 
 form label[data-style-as="button"] {
@@ -1103,8 +1190,8 @@ form .radio-group {
 	display: flex;
 	flex-flow: row;
 	align-items: center;
-	gap: 0.5rem;
-	margin: 0.5rem 0;
+	gap: var(--space-2xs);
+	margin: var(--space-2xs) 0;
 }
 
 /* Refine radio styles, not sure about the very bold always outline, kind of wish I could use gray-muted-400 */
@@ -1139,12 +1226,12 @@ form .radio-container:not(:has(input:checked)):is(:hover, :focus-visible) {
 form .radio-container label {
 	display: inline-flex;
 	align-items: center;
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	font-weight: 400;
 	line-height: 1;
 	height: 100%;
 	margin: 0;
-	padding: 0 0.75rem 0 0;
+	padding: 0 var(--space-xs) 0 0;
 	cursor: pointer;
 }
 
@@ -1193,10 +1280,10 @@ form label:has(input[type="checkbox"]) {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
-	gap: 0.75rem;
+	gap: var(--space-xs);
 	margin: 0;
 	padding: 0;
-	font-size: 0.875rem;
+	font-size: var(--font-size-2xs);
 	font-weight: 400;
 	cursor: pointer;
 	user-select: none;
@@ -1250,7 +1337,7 @@ form label:has(input[type="checkbox"]) .text-container {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
-	gap: 0.5rem;
+	gap: var(--space-2xs);
 }
 
 form label:has(input[type="checkbox"]) .text-container .tag {
@@ -1258,12 +1345,12 @@ form label:has(input[type="checkbox"]) .text-container .tag {
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
-	padding: 0 0.25rem;
+	padding: 0 var(--space-3xs);
 	height: 1.125rem;
 	min-width: 1.125rem;
 	border-radius: var(--border-radius-small);
 	background-color: var(--colour-fill-accent-subtle);
-	font-size: 0.75rem;
+	font-size: var(--font-size-3xs);
 	font-weight: 600;
 	color: var(--colour-ui-accent);
 	line-height: 1;
@@ -1317,10 +1404,10 @@ select,
 	height: 100%;
 	min-width: 0;
 	/* Fixed text-overflow inside flex item */
-	padding: 0 1rem;
+	padding: 0 var(--space-sm);
 	margin: 0;
 	flex-grow: 1;
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	line-height: 1.2;
 }
 
@@ -1346,7 +1433,7 @@ input[type="text"]::placeholder {
 
 :is(.input-container, .code-container) button {
 	--icon-size: 1rem;
-	margin-right: 0.25rem;
+	margin-right: var(--space-3xs);
 }
 
 :is(.input-container, .code-container) button:is(:hover, :focus-visible) {
@@ -1356,11 +1443,11 @@ input[type="text"]::placeholder {
 
 .input-container>.icon {
 	--icon-size: 1.25rem;
-	margin-right: 1rem;
+	margin-right: var(--space-sm);
 }
 
 form> :is(.button-group, button):last-of-type {
-	margin: 0.5rem 0 0;
+	margin: var(--space-2xs) 0 0;
 }
 
 
@@ -1386,24 +1473,24 @@ label.file-input-container input[type="file"] {
 ul.field-values-list {
 	display: flex;
 	flex-flow: row wrap;
-	column-gap: 0.5rem;
-	row-gap: 0.75rem;
+	column-gap: var(--space-2xs);
+	row-gap: var(--space-xs);
 	list-style-type: none;
 	padding: 0;
-	margin: 1rem 0;
+	margin: var(--space-sm) 0;
 }
 
 ul.field-values-list li {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
-	gap: 0.5rem;
-	font-size: 0.875rem;
+	gap: var(--space-2xs);
+	font-size: var(--font-size-2xs);
 	line-height: 1.2;
 	height: 2rem;
 	border-radius: var(--border-radius-normal);
 	background-color: var(--colour-fill-neutral-subtle);
-	padding: 0 0 0 0.75rem;
+	padding: 0 0 0 var(--space-xs);
 	transition: background-color var(--transition-linear-fast);
 }
 
@@ -1412,7 +1499,7 @@ ul.field-values-list li:has(button.clear:is(:hover, :focus-visible)) {
 }
 
 ul.field-values-list li .group {
-	padding-right: 0.5rem;
+	padding-right: var(--space-2xs);
 	border-right: 1px solid var(--colour-border-neutral-subtle);
 	font-weight: 700;
 }
@@ -1451,9 +1538,9 @@ ul.field-values-list li button.clear:is(:hover, :focus-visible) {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
-	gap: 0.5rem;
-	margin: 0.5rem 0 0;
-	font-size: 0.875rem;
+	gap: var(--space-2xs);
+	margin: var(--space-2xs) 0 0;
+	font-size: var(--font-size-2xs);
 	line-height: 1.2;
 	color: var(--colour-ui-error);
 }
@@ -1463,15 +1550,36 @@ ul.field-values-list li button.clear:is(:hover, :focus-visible) {
 ** DIALOGS
 ------------------------------*/
 
+body:has(dialog[open]) {
+	overflow: hidden;
+}
+
 dialog {
 	background-color: var(--colour-background);
 	border-radius: var(--border-radius-normal);
 	border: none;
-	padding: 3rem;
+	padding: var(--space-2xl);
 	width: min(100%, 636px);
 	max-height: calc(100% - 4rem);
 	max-width: calc(100% - 2rem);
 	z-index: 1000;
+}
+
+dialog[data-intensity="bold"] {
+	--dialog-ui-colour: var(--colour-ui-reverse);
+	background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
+	color: var(--dialog-ui-colour);
+}
+
+@container body (width < 720px) {
+	dialog {
+		border-radius: 0;
+		max-width: 100%;
+		max-height: 100%;
+		width: 100%;
+		height: 100%;
+		margin: 0 !important;
+	}
 }
 
 dialog.media {
@@ -1492,8 +1600,9 @@ dialog::backdrop {
 dialog button.close-dialog:has(.icon:only-child) {
 	--button-background-colour: transparent;
 	--icon-size: 1.25rem;
+	--icon-colour: var(--dialog-ui-colour, inherit);
 	float: right;
-	margin: 0 0 1rem 1.5rem;
+	margin: 0 0 var(--space-sm) var(--space-lg);
 	min-width: 2.25rem;
 }
 
@@ -1501,31 +1610,37 @@ dialog button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
 	--button-background-colour: var(--colour-fill-neutral-subtle);
 }
 
+dialog[data-intensity="bold"] button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
+	--button-background-colour: var(--colour-background);
+	--icon-colour: var(--colour-ui-neutral);
+}
+
 dialog section {
-	margin: 1.5rem 0;
+	margin: var(--space-lg) 0;
 }
 
 dialog>.heading {
-	margin: 0 0 1.5rem;
-	padding: 0 0 1rem;
-	border-bottom: 2px solid var(--colour-border-neutral-subtle);
+	margin: 0 0 var(--space-lg);
+	padding: 0 0 var(--space-sm);
+	border-bottom: 2px solid var(--dialog-ui-colour, var(--colour-border-neutral-subtle));
+	color: var(--dialog-ui-colour, inherit);
 }
 
 dialog section>h3 {
-	font-size: 1.375rem;
-	font-weight: 600;
-	margin: 1rem 0;
+	font-weight: 500;
+	margin: var(--space-sm) 0;
+	/* TODO: Make consistent with report headings? */
 }
 
 dialog .instructions {
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	line-height: 1.4;
-	margin: 0 0 0.75rem;
+	margin: 0 0 var(--space-xs);
 	color: var(--colour-ui-neutral-subtle);
 }
 
 dialog .callout {
-	--callout-margin: 1.5rem 0;
+	--callout-margin: var(--space-lg) 0;
 }
 
 dialog section:has(.elem-group:empty) {
@@ -1533,15 +1648,15 @@ dialog section:has(.elem-group:empty) {
 }
 
 dialog .button-group {
-	margin: 1.5rem 0;
+	margin: var(--space-lg) 0;
 }
 
 dialog hr.group {
-	margin: 2rem 0;
+	margin: var(--space-xl) 0;
 }
 
 dialog form hr.group {
-	margin: 0.75rem 0;
+	margin: var(--space-xs) 0;
 }
 
 
@@ -1552,47 +1667,62 @@ dialog form hr.group {
 
 .elem-group {
 	container: elem-group / inline-size;
-	display: grid;
-	grid-template-columns: repeat(var(--group-columns), 1fr);
-	gap: var(--group-gap, 1.5rem);
-	list-style-type: none;
-	padding: 0;
-	margin: var(--group-margin, 4rem 0);
+	margin: var(--group-margin, var(--space-2xl) 0);
 }
 
-.elem-group[data-columns="2"] {
+.elem-group>.wrapper {
+	display: grid;
+	grid-template-columns: repeat(var(--group-columns), 1fr);
+	gap: var(--group-gap, var(--space-lg));
+	padding: 0;
+	list-style-type: none;
+}
+
+.elem-group[data-columns="2"]>.wrapper {
 	--group-columns: 2;
 }
 
-.elem-group[data-columns="3"] {
+.elem-group[data-columns="3"]>.wrapper {
 	--group-columns: 3;
 }
 
-.elem-group>* {
+.elem-group[data-fit="compact"] {
+	--group-margin: var(--space-sm) 0;
+}
+
+.elem-group[data-fit="compact"]>.wrapper {
+	--group-gap: var(--space-sm);
+}
+
+.elem-group>.wrapper>* {
 	margin: 0 !important;
 }
 
-.elem-group[data-columns="2"]:has(> *:not(template):only-of-type)>* {
+.elem-group[data-columns]>.wrapper:has(> *:not(template):only-of-type)>* {
+	grid-column: span var(--group-columns);
+}
+
+.elem-group[data-columns="2"]>.wrapper:has(> *:not(template):nth-last-child(n + 3))>* {
 	grid-column: span 2;
 }
 
-.elem-group[data-columns="3"]:has(> *:not(template):only-of-type)>* {
+.elem-group[data-columns="3"]>.wrapper:has(> *:not(template):nth-last-child(n + 4))>* {
 	grid-column: span 3;
 }
 
-.elem-group[data-columns="2"]:has(> *:not(template):nth-last-child(n + 3))>* {
-	grid-column: span 2;
+@container elem-group (width < 700px) {
+	.elem-group[data-columns="2"]>.wrapper {
+		--group-columns: 1;
+	}
 }
 
-.elem-group[data-columns="3"]:has(> *:not(template):nth-last-child(n + 4))>* {
-	grid-column: span 3;
+@container elem-group (width < 800px) {
+	.elem-group[data-columns="3"]>.wrapper {
+		--group-columns: 1;
+	}
 }
 
-.elem-group [data-fit="compact"] {
-	--group-gap: 1rem;
-	--group-margin: 1rem 0;
-}
-
+/* TODO [Fix]: Images on homepage are exceededing rounded borders */
 
 
 /*
@@ -1600,60 +1730,40 @@ dialog form hr.group {
 ------------------------------*/
 
 .callout {
+	container: callout / inline-size;
+	margin: var(--callout-margin, var(--space-2xl) 0);
+}
+
+.callout>.wrapper {
+	--callout-padding: var(--space-xl);
+	padding: var(--callout-padding);
+	width: fit-content;
 	background-color: var(--callout-background-colour, var(--colour-fill-neutral-subtle));
 	border-radius: var(--border-radius-normal);
-	padding: var(--callout-padding, 2rem);
-	margin: var(--callout-margin, 2.5rem 0);
-	width: fit-content;
 }
+
+/* 
+// Callout: Space Options
+*/
 
 .callout[data-spacing="large"] {
-	--callout-margin: 4rem 0;
+	--callout-margin: var(--space-4xl) 0;
 }
 
-.callout[data-fit="compact"] {
-	--callout-padding: 1.25rem;
-}
-
-.callout[data-fit="compact"][data-style="solid"]:has(.icon-container) {
-	column-gap: 1.25rem;
+.callout[data-fit="compact"]>.wrapper {
+	--callout-padding: var(--space-lg);
 }
 
 .callout[data-fit="compact"] :where(p, li, a) {
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	line-height: 1.4;
 }
 
-.callout[data-style="solid"] {
-	--callout-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
-}
-
-.callout[data-style="solid"][data-intensity="bold"] {
-	--callout-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
-	--callout-ui-colour: var(--colour-ui-reverse);
-}
-
-.callout[data-style="solid"]:has(.icon-container) {
-	--icon-size: 1.5rem;
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	column-gap: 1.5rem;
-}
-
-.callout[data-style="outline"] {
-	--callout-background-colour: transparent;
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: center;
-	padding: 2rem 3rem;
-	border: 2px solid var(--colour-border-neutral-subtle);
-	position: relative;
-}
+/* 
+// Callout: Heading
+*/
 
 .callout .heading {
-	font-size: var(--callout-heading-size, 1.625rem);
-	font-weight: 700;
 	color: var(--callout-ui-colour, inherit);
 }
 
@@ -1662,50 +1772,111 @@ dialog form hr.group {
 	--icon-size: 1.5rem;
 	display: flex;
 	align-items: center;
-	gap: 0.75rem;
+	gap: var(--space-xs);
+}
+
+/* 
+// Callout: Solid
+*/
+
+/* Subtle Background */
+
+.callout[data-style="solid"] {
+	--callout-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+}
+
+/* Bold Background */
+
+.callout[data-style="solid"][data-intensity="bold"] {
+	--callout-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
+	--callout-ui-colour: var(--colour-ui-reverse);
 }
 
 .callout[data-style="solid"][data-intensity="bold"] :is(button:not([data-style-as="link"]), [data-style-as="button"]) {
-	--icon-size: 1.25rem;
-	--container-gap: 0.75rem;
-	--label-size: 1rem;
 	--button-background-colour: var(--colour-background);
+	--container-gap: var(--space-xs);
+	--icon-size: 1.25rem;
+	--label-size: var(--font-size-xs);
 }
 
 .callout[data-style="solid"][data-intensity="bold"] :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:hover, :focus-visible) {
 	--button-background-colour: transparent;
 	--button-outline-colour: var(--colour-background);
-	--label-colour: var(--colour-ui-reverse);
 	--icon-colour: var(--colour-ui-reverse);
+	--label-colour: var(--colour-ui-reverse);
+}
+
+/* Prominent Icon */
+
+.callout[data-style="solid"]:has(.icon-container)>.wrapper {
+	--icon-size: 1.5rem;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	column-gap: var(--callout-padding);
+}
+
+/* 
+// Callout: Outline
+*/
+
+.callout[data-style="outline"]>.wrapper {
+	--callout-background-colour: transparent;
+	--callout-padding: var(--space-xl);
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	border: 2px solid var(--colour-border-neutral-subtle);
+	position: relative;
+}
+
+/* Heading On Outline */
+
+.callout[data-style="outline"][data-elem-on-path="heading"]>.wrapper {
+	--callout-padding: var(--space-xl) var(--space-2xl);
 }
 
 .callout[data-style="outline"][data-elem-on-path="heading"] .heading {
 	position: absolute;
 	top: -0.5rem;
-	left: 1.5rem;
-	padding: 0 1.5rem;
+	left: calc(var(--space-2xl) * 0.5);
+	padding: 0 calc(var(--space-2xl) * 0.5);
 	background-color: var(--colour-background);
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	text-transform: uppercase;
 	line-height: 1;
 	color: var(--colour-ui-accent);
 }
+
+/* Icon On Outline */
 
 .callout[data-style="outline"][data-elem-on-path="icon"] .icon-container {
 	--icon-size: 2.5rem;
 	--icon-colour: var(--colour-ui-accent-subtle);
 	position: absolute;
 	top: -1.25rem;
-	padding: 0 1.5rem;
+	padding: 0 var(--space-lg);
 	background-color: var(--colour-background);
 }
 
-.callout[data-style="image"] {
+.callout[data-style="outline"][data-elem-on-path="icon"] .icon-container+* {
+	margin-top: calc(var(--callout-padding) * 0.125);
+}
+
+
+
+/* 
+// Callout: Image
+*/
+
+.callout[data-style="image"]>.wrapper {
 	--callout-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
 	display: grid;
 	grid-template-columns: auto;
 	grid-template-rows: 1fr auto;
 	padding: 0;
+	width: auto;
+	overflow: hidden;
 }
 
 .callout[data-style="image"] img {
@@ -1723,7 +1894,7 @@ dialog form hr.group {
 	grid-column: 1 / 2;
 	grid-row: 2 / 3;
 	z-index: 2;
-	padding: 2rem;
+	padding: var(--callout-padding);
 	position: relative;
 	z-index: 2;
 }
@@ -1745,12 +1916,19 @@ dialog form hr.group {
 }
 
 .callout[data-style="image"] .text-container p {
-	font-size: 1.25rem;
+	font-size: var(--font-size-base);
 	font-weight: 700;
 	line-height: 1.2;
 	color: var(--colour-ui-reverse);
 	position: relative;
 	z-index: 4;
+}
+
+@container callout (width > 400px) {
+	.callout[data-style="image"] img {
+		max-height: 200px;
+		object-position: 0 calc(1cqi * -9);
+	}
 }
 
 
@@ -1773,10 +1951,10 @@ dialog form hr.group {
 }
 
 .card .banner {
-	padding: 0 1.25rem;
+	padding: 0 var(--space-base);
 	display: flex;
 	align-items: center;
-	font-size: 0.875rem;
+	font-size: var(--font-size-2xs);
 	font-weight: 600;
 	color: var(--colour-ui-accent-subtle);
 	background-color: var(--colour-fill-accent-subtle);
@@ -1788,9 +1966,9 @@ dialog form hr.group {
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto 1fr;
-	column-gap: 1.25rem;
-	row-gap: 1.25rem;
-	padding: 1.25rem;
+	column-gap: var(--space-base);
+	row-gap: var(--space-base);
+	padding: var(--space-base);
 	flex-grow: 1;
 }
 
@@ -1801,15 +1979,15 @@ dialog form hr.group {
 .card .wrapper>.heading {
 	/* .icon-and-label-container styles */
 	--icon-size: 1.25rem;
-	--label-size: 1.125rem;
+	--label-size: var(--font-size-sm);
 	--label-weight: 600;
 	align-items: start;
-	gap: 0.75rem;
+	gap: var(--space-xs);
 
-	font-size: 1.25rem;
+	font-size: var(--font-size-base);
 	font-weight: 600;
 	margin: 0;
-	padding: 0 0 0.5rem;
+	padding: 0 0 var(--space-2xs);
 	border-bottom: 1px solid var(--colour-border-neutral-subtle);
 }
 
@@ -1821,7 +1999,7 @@ dialog form hr.group {
 }
 
 .card .wrapper>.heading .subtitle {
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 	font-weight: 500;
 	color: var(--colour-ui-neutral-subtle);
 }
@@ -1848,7 +2026,7 @@ dialog form hr.group {
 	.card .wrapper {
 		grid-template-columns: 1fr auto;
 		grid-template-rows: auto auto;
-		row-gap: 0.75rem;
+		row-gap: var(--space-xs);
 	}
 
 	.card .heading {
@@ -1869,30 +2047,30 @@ dialog form hr.group {
 dl {
 	display: flex;
 	flex-flow: column;
-	gap: 0.75rem;
-	margin: 1.75rem 0;
+	gap: var(--space-xs);
+	margin: var(--space-xl) 0;
 	line-height: 1.2;
 }
 
 dl :is(dt, dd) {
-	font-size: 1rem;
+	font-size: var(--font-size-xs);
 }
 
 dl[data-fit="compact"] {
-	gap: 0.5rem;
-	margin: 0.5rem 0;
+	gap: var(--space-2xs);
+	margin: var(--space-2xs) 0;
 }
 
 dl[data-fit="compact"] :is(dt, dd) {
-	font-size: 0.875rem;
+	font-size: var(--font-size-2xs);
 }
 
 .detail-container {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: start;
-	column-gap: 0.5rem;
-	row-gap: 0.25rem;
+	column-gap: var(--space-2xs);
+	row-gap: var(--space-3xs);
 }
 
 dl dt {
@@ -1918,8 +2096,8 @@ ol.fancy {
 	padding: 0;
 	display: flex;
 	flex-flow: column;
-	gap: 0.75rem;
-	margin: 2rem 0;
+	gap: var(--space-xs);
+	margin: var(--space-xl) 0;
 }
 
 ol.fancy li {
@@ -1927,7 +2105,7 @@ ol.fancy li {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
-	gap: 0.5rem;
+	gap: var(--space-2xs);
 }
 
 ol.fancy li::before {
@@ -1937,8 +2115,8 @@ ol.fancy li::before {
 	justify-content: center;
 	background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
 	border-radius: var(--border-radius-small);
-	padding: 0 0.5rem;
-	font-size: 1.25rem;
+	padding: 0 var(--space-2xs);
+	font-size: var(--font-size-base);
 	font-weight: 600;
 	color: var(--colour-ui-reverse);
 	height: 3rem;
@@ -1948,12 +2126,12 @@ ol.fancy li::before {
 ol.fancy li .text {
 	display: flex;
 	align-items: center;
-	padding: 0.5rem 1rem;
+	padding: var(--space-2xs) var(--space-sm);
 	min-height: 3rem;
 	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
 	border-radius: var(--border-radius-small);
 	flex-grow: 1;
-	font-size: 1.5rem;
+	font-size: var(--font-size-lg);
 	font-weight: 500;
 	line-height: 1.2;
 }
@@ -1965,21 +2143,21 @@ ul.checklist {
 	padding: 0;
 	display: flex;
 	flex-flow: column;
-	gap: 0.75rem;
-	margin: 2rem 0;
+	gap: var(--space-xs);
+	margin: var(--space-xl) 0;
 }
 
 ul.checklist li {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
-	gap: 1.25rem;
+	gap: var(--space-base);
 }
 
 ul.checklist li>.icon.checkmark {
 	--icon-size: 1rem;
 	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-	margin-top: 0.5rem;
+	margin-top: var(--space-2xs);
 }
 
 
@@ -2001,7 +2179,7 @@ summary {
 	/* no list marker */
 	flex-flow: row nowrap;
 	align-items: center;
-	gap: 0.75rem;
+	gap: var(--space-xs);
 	list-style: none;
 	height: 2.5rem;
 	margin: 0;
@@ -2017,7 +2195,7 @@ summary {
 
 summary:is(:hover, :focus-visible) {
 	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
-	padding: 0 1rem;
+	padding: 0 var(--space-sm);
 }
 
 /* hide WebKit marker */
@@ -2052,7 +2230,7 @@ details[open] summary::after {
 }
 
 details .contents {
-	margin: 1rem 0 0;
+	margin: var(--space-sm) 0 0;
 }
 
 
@@ -2065,7 +2243,7 @@ details .contents {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
-	gap: 0.5rem;
+	gap: var(--space-2xs);
 }
 
 .label-container {
@@ -2081,7 +2259,7 @@ details .contents {
 .label-container:is([data-style="solid"], [data-style="outline"], [data-style="solid-outline"]) {
 	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	height: 1.75rem;
-	padding: 0 0.5rem;
+	padding: 0 var(--space-2xs);
 	border-radius: var(--label-border-radius, var(--border-radius-small));
 }
 
@@ -2107,7 +2285,7 @@ details .contents {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	max-width: 14rem;
+	max-width: clamp(6rem, 4rem + 7vi, 14rem);
 }
 
 .label-container[data-restrict-length="short"] .label {
@@ -2129,7 +2307,7 @@ details .contents {
 	flex-flow: row nowrap;
 	align-items: center;
 	flex-shrink: 0;
-	gap: var(--container-gap, 0.5rem);
+	gap: var(--container-gap, var(--space-2xs));
 	background-color: var(--container-background-colour, transparent);
 	border-radius: var(--container-border-radius, 0);
 	padding: var(--container-padding, 0);
@@ -2185,7 +2363,7 @@ details .contents {
 }
 
 .icon-and-label-container[data-collapsible="label"]:is(:hover, :focus-visible) .label-container .label {
-	padding-left: 0.5rem;
+	padding-left: var(--space-2xs);
 }
 
 /* COLLAPSIBLE ICON */
@@ -2278,7 +2456,7 @@ hr {
 }
 
 hr.section {
-	margin: 4rem 0;
+	margin: var(--space-3xl) 0;
 }
 
 /* Use <div role="separator" aria-orientation="vertical"></div> for 'meaningful separators' vertical separators */

@@ -195,7 +195,7 @@ else if (["document", "presentation"].includes(type)) {
 	}
 
 	.links-list[data-style="divided"] > li {
-		padding: 0.5rem 0;
+		padding: var(--space-2xs) 0;
 	}
 
 	.links-list[data-style="divided"] > li:first-child {
@@ -211,9 +211,9 @@ else if (["document", "presentation"].includes(type)) {
 	}
 
 	.links-list[data-style="divided"] :is(a, [data-style-as="link"]) {
-		padding: 0.75rem 1rem 0.75rem 0.75rem;
+		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
 		border-radius: var(--border-radius-normal);
-		gap: 0.75rem;
+		gap: var(--space-xs);
 		text-decoration: none;
 		width: 100%;
 	}
@@ -250,7 +250,7 @@ else if (["document", "presentation"].includes(type)) {
 		.text-container {
 		display: flex;
 		flex-flow: column;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 	}
 
 	/* TITLE */
@@ -262,8 +262,8 @@ else if (["document", "presentation"].includes(type)) {
 		display: flex;
 		flex-flow: row wrap;
 		align-items: start;
-		gap: 0.5rem;
-		font-size: 1rem;
+		gap: var(--space-2xs);
+		font-size: var(--font-size-xs);
 	}
 
 	/* DATE */
@@ -272,7 +272,7 @@ else if (["document", "presentation"].includes(type)) {
 		:is(a, [data-style-as="link"])
 		.text-container
 		.date {
-		font-size: 0.75rem;
+		font-size: var(--font-size-3xs);
 		font-weight: 500;
 		color: var(--colour-ui-neutral-subtle);
 	}
@@ -308,12 +308,12 @@ else if (["document", "presentation"].includes(type)) {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0 0.25rem;
+		padding: 0 var(--space-3xs);
 		height: 1.125rem;
 		min-width: 1.125rem;
 		border-radius: var(--border-radius-small);
 		background-color: var(--colour-fill-accent-subtle);
-		font-size: 0.75rem;
+		font-size: var(--font-size-3xs);
 		color: var(--colour-ui-accent);
 		line-height: 1;
 		transition: all var(--transition-linear-fast);
@@ -334,7 +334,7 @@ else if (["document", "presentation"].includes(type)) {
 		:is(a, [data-style-as="link"])
 		.text-container
 		.description {
-		font-size: 0.875rem;
+		font-size: var(--font-size-2xs);
 		font-weight: 500;
 		color: var(--colour-ui-neutral-subtle);
 		line-height: 1.4;
@@ -348,7 +348,7 @@ else if (["document", "presentation"].includes(type)) {
 	}
 
 	.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
-		--label-size: 0.875rem;
+		--label-size: var(--font-size-2xs);
 		--label-colour: var(
 			--colour-ui-accent-subtle,
 			var(--colour-ui-neutral-subtle)

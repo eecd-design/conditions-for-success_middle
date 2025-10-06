@@ -29,7 +29,7 @@ const { id, message, colour, type } = Astro.props;
 		left: 0;
 		right: 0;
 		z-index: 1001;
-		padding: 0 1rem 1rem;
+		padding: 0 var(--space-sm) var(--space-sm);
 		opacity: 0;
 		transition:
 			opacity var(--transition-linear-fast),
@@ -50,8 +50,8 @@ const { id, message, colour, type } = Astro.props;
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.75rem;
-		padding: 0 1rem;
+		gap: var(--space-xs);
+		padding: 0 var(--space-sm);
 		height: 3rem;
 		background-color: var(
 			--colour-fill-accent-subtle,
@@ -59,7 +59,7 @@ const { id, message, colour, type } = Astro.props;
 		);
 		/* border: 1px solid var(--colour-border-accent-bold); */
 		border-radius: var(--border-radius-normal);
-		font-size: 0.875rem;
+		font-size: var(--font-size-2xs);
 		/* box-shadow: 0 0 3rem 1rem rgba(255, 255, 255, 0.9); */
 		box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
 	}

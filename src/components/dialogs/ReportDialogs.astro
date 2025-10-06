@@ -67,29 +67,33 @@ let indicators = allIndicators.sort((a, b) =>
 			</div>
 
 			<div class="elem-group">
-				{
-					indicators.map((indicator) => (
-						<label>
-							<input
-								type="checkbox"
-								name="reportIncludedIndicators"
-								value={indicator.data.tag}
-								checked
-							/>
-							<IconCheckmark />
-							<span class="text-container">
-								<span
-									class="tag"
-									data-theme={indicator.data.colour}
-									data-vibrancy="vivid"
-								>
-									{indicator.data.tag}
+				<div class="wrapper">
+					{
+						indicators.map((indicator) => (
+							<label>
+								<input
+									type="checkbox"
+									name="reportIncludedIndicators"
+									value={indicator.data.tag}
+									checked
+								/>
+								<IconCheckmark />
+								<span class="text-container">
+									<span
+										class="tag"
+										data-theme={indicator.data.colour}
+										data-vibrancy="vivid"
+									>
+										{indicator.data.tag}
+									</span>
+									<span class="text">
+										{indicator.data.title}
+									</span>
 								</span>
-								<span class="text">{indicator.data.title}</span>
-							</span>
-						</label>
-					))
-				}
+							</label>
+						))
+					}
+				</div>
 			</div>
 		</fieldset>
 
@@ -130,13 +134,13 @@ let indicators = allIndicators.sort((a, b) =>
 
 <style is:global>
 	fieldset.indicators .elem-group {
-		--group-gap: 1rem;
-		--group-margin: 1rem 0;
+		--group-gap: var(--space-sm);
+		--group-margin: var(--space-sm) 0;
 	}
 
 	fieldset.indicators .button-group {
-		--group-gap: 0.5rem;
-		margin-top: 0.5rem;
+		--group-gap: var(--space-2xs);
+		margin-top: var(--space-2xs);
 	}
 </style>
 

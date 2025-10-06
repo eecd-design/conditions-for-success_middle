@@ -38,7 +38,7 @@ for (let indicator of allIndicators) {
 
 	<SectionNav />
 
-	<aside class="on-page-nav-container">
+	<aside class="right on-page-nav-container">
 		<nav class="on-page">
 			<h2 class="heading">On this page</h2>
 			<ul class="links-list">
@@ -422,12 +422,19 @@ for (let indicator of allIndicators) {
 			<p class="heading-subtitle" data-style-as="h2" data-theme="red">
 				<IconArrowRightBig />
 				<span
-					style="display: flex; flex-flow: row; align-items: center; gap: 0.375rem"
-					><PhaseIcons phase={"initiating"} /> Initiating · <PhaseIcons
-						phase={"implementing"}
-					/> Implementing · <PhaseIcons phase={"developing"} /> Developing
-					· <PhaseIcons phase={"sustaining"} /> Sustaining</span
+					style="display: flex; flex-flow: row wrap; align-items: center; gap: 0.375rem"
 				>
+					<span>
+						<PhaseIcons phase={"initiating"} /> Initiating
+					</span> · <span>
+						<PhaseIcons phase={"implementing"} /> Implementing
+					</span> · <span>
+						<PhaseIcons phase={"developing"} /> Developing
+					</span>
+					· <span>
+						<PhaseIcons phase={"sustaining"} /> Sustaining
+					</span>
+				</span>
 			</p>
 			<p>
 				Each of the four phases—Initiating, Implementing, Developing,
@@ -591,14 +598,16 @@ for (let indicator of allIndicators) {
 				data-elem-on-path="icon"
 				data-theme="red"
 			>
-				<div class="icon-container">
-					<IconMegaphone40 />
+				<div class="wrapper">
+					<div class="icon-container">
+						<IconMegaphone40 />
+					</div>
+					<p>
+						Want to learn more about the developmental continuums
+						and self-assessment? Keep an eye out for a video
+						walkthrough coming soon.
+					</p>
 				</div>
-				<p>
-					Want to learn more about the developmental continuums and
-					self-assessment? Keep an eye out for a video walkthrough
-					coming soon.
-				</p>
 			</div>
 		</section>
 

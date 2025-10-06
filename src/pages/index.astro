@@ -43,45 +43,53 @@ import girlScooterImage from "../images/girl-portrait-scooter.jpg";
 				fostering academic growth.
 			</p>
 			<div class="elem-group" data-columns="2">
-				<div
-					class="callout"
-					data-style="outline"
-					data-elem-on-path="icon"
-				>
-					<div class="icon-container">
-						<IconBrain />
+				<div class="wrapper">
+					<div
+						class="callout"
+						data-style="outline"
+						data-elem-on-path="icon"
+					>
+						<div class="wrapper">
+							<div class="icon-container">
+								<IconBrain />
+							</div>
+							<h3 class="heading">
+								Early adolescence is a time for rapid learning
+								and growth.
+							</h3>
+							<p>
+								This stage of life is marked by substantial
+								remodeling of brain structures and
+								reconfiguration of neural systems. These changes
+								not only enhance learning capacity but also
+								highlight the importance of providing the right
+								supports to make the most of this opportunity.
+							</p>
+						</div>
 					</div>
-					<h3 class="heading">
-						Early adolescence is a time for rapid learning and
-						growth.
-					</h3>
-					<p>
-						This stage of life is marked by substantial remodeling
-						of brain structures and reconfiguration of neural
-						systems. These changes not only enhance learning
-						capacity but also highlight the importance of providing
-						the right supports to make the most of this opportunity.
-					</p>
-				</div>
-				<div
-					class="callout"
-					data-style="outline"
-					data-elem-on-path="icon"
-				>
-					<div class="icon-container">
-						<IconHeart />
+					<div
+						class="callout"
+						data-style="outline"
+						data-elem-on-path="icon"
+					>
+						<div class="wrapper">
+							<div class="icon-container">
+								<IconHeart />
+							</div>
+							<h3 class="heading">
+								Early adolescence is a period of vulnerability
+								and potential.
+							</h3>
+							<p>
+								Adolescence brings increased sensation-seeking,
+								stronger motivations for social connections, and
+								heightened sensitivity to social feedback. These
+								developmental traits create a unique
+								environment, priming adolescents for learning
+								and personal development.
+							</p>
+						</div>
 					</div>
-					<h3 class="heading">
-						Early adolescence is a period of vulnerability and
-						potential.
-					</h3>
-					<p>
-						Adolescence brings increased sensation-seeking, stronger
-						motivations for social connections, and heightened
-						sensitivity to social feedback. These developmental
-						traits create a unique environment, priming adolescents
-						for learning and personal development.
-					</p>
 				</div>
 			</div>
 		</section>
@@ -98,32 +106,40 @@ import girlScooterImage from "../images/girl-portrait-scooter.jpg";
 			</p>
 			<p>We know that Middle School Learners:</p>
 			<div class="elem-group" data-columns="3">
-				<div class="callout" data-style="image">
-					<Image src={girlDeskImage} alt="" />
-					<div class="text-container">
-						<p>
-							Have unique identities and opinions, justifications,
-							and beliefs.
-						</p>
+				<div class="wrapper">
+					<div class="callout" data-style="image" data-theme="red">
+						<div class="wrapper">
+							<Image src={girlDeskImage} alt="" />
+							<div class="text-container">
+								<p>
+									Have unique identities and opinions,
+									justifications, and beliefs.
+								</p>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="callout" data-style="image" data-theme="blue">
-					<Image src={boyTennisImage} alt="" />
-					<div class="text-container">
-						<p>
-							Have increasing agency and decision-making power,
-							and that their peer group takes on increasing
-							importance.
-						</p>
+					<div class="callout" data-style="image" data-theme="blue">
+						<div class="wrapper">
+							<Image src={boyTennisImage} alt="" />
+							<div class="text-container">
+								<p>
+									Have increasing agency and decision-making
+									power, and that their peer group takes on
+									increasing importance.
+								</p>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="callout" data-style="image" data-theme="green">
-					<Image src={girlScooterImage} alt="" />
-					<div class="text-container">
-						<p>
-							Want to feel grown-up and have varying
-							responsibilities that they must balance.
-						</p>
+					<div class="callout" data-style="image" data-theme="green">
+						<div class="wrapper">
+							<Image src={girlScooterImage} alt="" />
+							<div class="text-container">
+								<p>
+									Want to feel grown-up and have varying
+									responsibilities that they must balance.
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -211,26 +227,28 @@ import girlScooterImage from "../images/girl-portrait-scooter.jpg";
 			data-intensity="bold"
 			data-spacing="large"
 		>
-			<h2
-				id="want-a-paper-based-version-of-the-conditions-for-success-developmental-continuums"
-				class="heading"
-			>
-				Want a paper-based version of the Conditions for Success
-				Developmental Continuums?
-			</h2>
-			<a
-				href=""
-				data-style-as="button"
-				data-style="solid"
-				data-size="large"
-			>
-				<div class="icon-and-label-container">
-					<IconDownload20 />
-					<span class="label-container">
-						<span class="label">Download the Framework</span>
-					</span>
-				</div>
-			</a>
+			<div class="wrapper">
+				<h2
+					id="want-a-paper-based-version-of-the-conditions-for-success-developmental-continuums"
+					class="heading"
+				>
+					Want a paper-based version of the Conditions for Success
+					Developmental Continuums?
+				</h2>
+				<a
+					href=""
+					data-style-as="button"
+					data-style="solid"
+					data-size="large"
+				>
+					<div class="icon-and-label-container">
+						<IconDownload20 />
+						<span class="label-container">
+							<span class="label">Download the Framework</span>
+						</span>
+					</div>
+				</a>
+			</div>
 		</div>
 	</div>
 </BaseLayout>

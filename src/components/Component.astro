@@ -138,8 +138,10 @@ let phases = [
 	{ question && question.rawContent().trim().length > 0 && (
 	
 		<div class="reflection-question callout" data-style="outline" data-elem-on-path="heading">
-			<h3 class="heading">Reflection Question</h3>
-			<question.Content />
+			<div class="wrapper">
+				<h3 class="heading">Reflection Question</h3>
+				<question.Content />
+			</div>
 		</div>
 	
 	)}
@@ -295,8 +297,10 @@ let phases = [
 
 <style is:global>
 
-	[data-mode="assessment"] .component h2 {
-		scroll-margin-top: 8.5rem;
+	@container main (width > 848px) {
+		[data-mode="assessment"] .component h2 {
+			scroll-margin-top: 8.5rem;
+		}
 	}
 
 	/*
@@ -305,12 +309,20 @@ let phases = [
 
 	.phase-status {
 		line-height: 1.2;
-		margin: 0 0 1rem;
+		margin: 0 0 var(--space-sm);
 		color: var(--colour-ui-accent-subtle)
 	}
 
-	[data-mode="assessment"] .phase-status ~ h2 {
-		margin-top: 0;
+	@container main (width > 848px) {
+		[data-mode="assessment"] .phase-status ~ h2 {
+			margin-top: 0;
+		}
+	}
+
+	@container main (width < 848px) {
+		.phase-status {
+			display: none;
+		}
 	}
 
 
@@ -323,7 +335,7 @@ let phases = [
 	}
 
 	.reflection-question.callout p {
-		font-size: 1.25rem;
+		font-size: var(--font-size-base);
 		font-weight: 600;
 		line-height: 1.5;
 		width: 100%;
@@ -336,9 +348,9 @@ let phases = [
 	.focus-container {
 		display: flex;
 		flex-flow: row nowrap;
-		gap: 1rem;
+		gap: var(--space-sm);
 		align-items: center;
-		padding: 0.75rem 1.25rem;
+		padding: var(--space-xs) var(--space-base);
 		background-color: var(--colour-fill-neutral-subtle);
 		border-bottom: 1px solid var(--colour-border-neutral-subtle);
 	}
@@ -348,19 +360,53 @@ let phases = [
 		--icon-size: 1.25rem;
 		display: flex;
 		flex-flow: row nowrap;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 		align-items: center;
 		margin: 0;
 		padding: 0;
-		font-size: 1rem;
+		font-size: var(--font-size-xs);
 		line-height: 1;
 		height: 100%;
 	}
 
 	.focus-container .statement  {
 		border-left: 1px solid var(--colour-border-neutral-subtle);
-		padding: 0 0 0 1rem;
+		padding: 0 0 0 var(--space-sm);
 	}
+
+	@container accordion (width < 480px) {
+		.focus-container {
+			flex-flow: column;
+			align-items: start;
+		}
+		.focus-container .statement {
+			border-left: none;
+			border-top: 1px solid var(--colour-border-neutral-subtle);
+			padding: var(--space-sm) 0 0;
+		}
+	}
+
+	/* TODO: Switch to column on smaller */
+
+
+
+	/*
+	** PHASE ACCORDIONS
+	------------------------------*/
+
+	.component .accordion .heading button .considerations-status {
+		display: none;
+		--label-colour: var(
+			--colour-ui-accent-subtle,
+			var(--colour-ui-neutral-subtle)
+		);
+	}
+
+	.component .accordion .heading button[aria-expanded="true"] .considerations-status {
+		--label-colour: var(--colour-ui-reverse);
+	}
+
+
 
 
 	/*
@@ -373,7 +419,7 @@ let phases = [
 	}
 
 	.considerations-list > li {
-		padding: 1.25rem;
+		padding: var(--space-base);
 	}
 
 	.considerations-list > li:not(:first-of-type) {
@@ -381,7 +427,7 @@ let phases = [
 	}
 
 	.considerations-list .label-group {
-		margin: 0 0 0.75rem;
+		margin: 0 0 var(--space-xs);
 	}
 
 	.considerations-list .label-group .categories-list {
@@ -395,35 +441,33 @@ let phases = [
 	}
 
 	.considerations details.resources {
-		margin: 0.75rem 0 0;
+		margin: var(--space-xs) 0 0;
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]) {
 		align-items: center;
 		gap: 0;
 		height: 1.5rem;
-		padding: 0 0.5rem 0 0;
+		padding: 0 var(--space-2xs) 0 0;
 		background-color: var(--colour-fill-accent-subtle);
 		border-radius: var(--border-radius-small);
+		pointer-events: none;
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
 		background-color: var(--colour-fill-accent-subtle-highlight);
 	}
 
-	.considerations-list form label:has(input[type="checkbox"]:checked) {
-		background-color: var(--colour-fill-accent-bold);
-	}
-
 	.considerations-list form label:has(input[type="checkbox"]) input, 
 	.considerations-list form label:has(input[type="checkbox"])::before {
+		display: none;
 		height: 1.5rem;
 		width: 1.5rem;
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]) .tag {
 		margin: 0 0 0 0.375rem;
-		font-size: 0.875rem;
+		font-size: var(--font-size-2xs);
 		font-weight: 700;
 		line-height: 1;
 		color: var(--colour-ui-accent);
@@ -433,13 +477,10 @@ let phases = [
 	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
 		color: var(--colour-ui-accent-bold);
 	}
-
-	.considerations-list form label:has(input[type="checkbox"]:checked) .tag {
-		color: var(--colour-ui-reverse);
-	}
 	
 	.considerations-list form label:has(input[type="checkbox"]) .icon.checkmark {
 		--icon-size: 0.75rem;
+		display: none;
 		top: 0.375rem;
 		left: 0.375rem;
 	}
@@ -447,20 +488,36 @@ let phases = [
 	.considerations-list form label:has(input[type="checkbox"]) .icon.compass {
 		--icon-colour: var(--colour-ui-accent);
 		--icon-size: 0.875rem;
-		margin: 0 0 0 0.25rem;
+		margin: 0 0 0 var(--space-3xs);
 	}
+	
+	@container main (width > 848px) {
 
-	.considerations-list form label:has(input[type="checkbox"]:checked) .icon.compass {
-		--icon-colour: var(--colour-ui-reverse);
-	}
+		main[data-mode="assessment"] .component .accordion .considerations-status {
+			display: inline-flex;
+		}
+		
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) {
+			pointer-events: all;
+		}
+		
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) :is(input, .icon.checkmark),
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"])::before {
+			display: initial;
+		}
 
-	main:not([data-mode="assessment"]) .considerations-list form label:has(input[type="checkbox"]) {
-		pointer-events: none;
-	}
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) {
+			background-color: var(--colour-fill-accent-bold);
+		}
 
-	main:not([data-mode="assessment"]) .considerations-list form label:has(input[type="checkbox"]) :is(input, .icon.checkmark),
-	main:not([data-mode="assessment"]) .considerations-list form label:has(input[type="checkbox"])::before {
-		display: none;
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) .icon.compass {
+			--icon-colour: var(--colour-ui-reverse);
+		}
+
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) .tag {
+			color: var(--colour-ui-reverse);
+		}
+
 	}
 
 
@@ -469,7 +526,7 @@ let phases = [
 	------------------------------*/
 
 	.considerations-list .resources {
-		margin: 0.75rem 0 0;
+		margin: var(--space-xs) 0 0;
 	}
 
 	.considerations-list .resources .resources-list .text-container .date  {

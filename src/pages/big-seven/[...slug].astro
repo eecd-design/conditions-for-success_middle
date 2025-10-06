@@ -58,7 +58,7 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 
 	<SectionNav />
 
-	<aside class="on-page-nav-container">
+	<aside class="right on-page-nav-container">
 		<nav class="on-page">
 			<h2 class="heading">On this page</h2>
 			<ul class="links-list">
@@ -102,8 +102,13 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 		</ul>
 
 		<div class="callout" data-style="solid">
-			<p class="heading"><IconCompass/> Be on the lookout for the compass symbol!</p>
-			<p>It flags focus areas on responding to learners who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward learner success.</p>
+			<div class="wrapper">
+				<p class="heading">
+					<IconCompass/>
+					<strong>Be on the lookout for the compass symbol!</strong>
+				</p>
+				<p>It flags focus areas on responding to learners who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward learner success.</p>
+			</div>
 		</div>
 
 		{components.map((component) => (

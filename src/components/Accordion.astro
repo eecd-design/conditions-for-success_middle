@@ -60,11 +60,12 @@ let IconCross = crossIcons[crossIconSize];
 	.accordion-group {
 		display: flex;
 		flex-flow: column;
-		gap: 0.5rem;
-		margin: 2.5rem 0;
+		gap: var(--space-2xs);
+		margin: var(--space-2xl) 0;
 	}
 
 	.accordion {
+		container: accordion / inline-size;
 		scroll-margin-top: 2rem;
 	}
 
@@ -88,10 +89,11 @@ let IconCross = crossIcons[crossIconSize];
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 1rem;
+		gap: var(--space-sm);
 		height: auto;
 		width: 100%;
-		padding: 0.75rem 1.25rem 0.75rem 1rem;
+		padding: var(--space-xs) var(--space-base) var(--space-xs)
+			var(--space-sm);
 		outline-color: transparent;
 		transition:
 			background-color var(--transition-linear-fast),
@@ -125,10 +127,11 @@ let IconCross = crossIcons[crossIconSize];
 	}
 
 	.accordion .heading button .icon-and-label-container {
-		--container-gap: 0.75rem;
-		--label-size: 1.5rem;
+		--container-gap: var(--space-xs);
+		--label-size: var(--font-size-lg);
 		--icon-size: 1.5rem;
-		flex-grow: 1;
+		flex: 1;
+		text-align: left;
 	}
 
 	.accordion .heading button[aria-expanded="true"] .icon-and-label-container {
@@ -145,19 +148,8 @@ let IconCross = crossIcons[crossIconSize];
 		rotate: x 180deg;
 	}
 
-	.accordion .heading button .considerations-status {
-		--label-colour: var(
-			--colour-ui-accent-subtle,
-			var(--colour-ui-neutral-subtle)
-		);
-	}
-
-	.accordion .heading button[aria-expanded="true"] .considerations-status {
-		--label-colour: var(--colour-ui-reverse);
-	}
-
 	.accordion .heading button .tag {
-		font-size: 1.5rem;
+		font-size: var(--font-size-lg);
 		font-weight: 500;
 		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
 		line-height: 1.2;
@@ -177,13 +169,13 @@ let IconCross = crossIcons[crossIconSize];
 	}
 
 	.accordion .panel :where(p, li, a) {
-		font-size: 1rem;
+		font-size: var(--font-size-xs);
 		line-height: 1.2;
 	}
 
 	.accordion .panel > .content {
-		padding: 1.5rem;
-		font-size: 1.25rem;
+		padding: var(--space-lg);
+		font-size: var(--font-size-base);
 	}
 
 	.accordion .panel > .content :where(p, li, a) {

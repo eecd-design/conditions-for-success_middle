@@ -118,15 +118,17 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			data-theme="yellow"
 			data-restrict-context="report"
 		>
-			<div class="icon-container">
-				<IconWarningBig />
-			</div>
-			<div class="text-container">
-				<p>
-					To view a report, the assessment must be <strong
-						>Complete</strong
-					>.
-				</p>
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>
+						To view a report, the assessment must be <strong
+							>Complete</strong
+						>.
+					</p>
+				</div>
 			</div>
 		</div>
 
@@ -140,123 +142,123 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			<IconWarningSmall slot={"icon"} />
 		</Toast>
 
-		<ul
-			class="saved-assessments-list elem-group"
-			data-fit="compact"
-			data-columns="2"
-		>
-			<template>
-				<li class="card" data-theme="red" data-vibrancy="vivid">
-					<div
-						class="banner"
-						data-theme="blue"
-						data-vibrancy="vivid"
-						data-field="banner"
-						hidden
-					>
-					</div>
-					<div class="wrapper">
-						<h4 class="heading icon-and-label-container">
-							<!-- <IconAssessment /> -->
-							<span class="label-container">
-								<span class="title" data-field="school"></span>
-								<span
-									class="subtitle"
-									data-field="reportingYear">2025</span
-								>
-							</span>
-						</h4>
-						<div class="details">
-							<span class="label-group">
-								<div
-									class="edit-status label-container field-container"
-									data-vibrancy="vivid"
-									data-style="solid"
-								>
-									<span class="label" data-field="editStatus"
+		<div class="elem-group" data-fit="compact" data-columns="2">
+			<ul class="saved-assessments-list wrapper">
+				<template>
+					<li class="card" data-theme="red" data-vibrancy="vivid">
+						<div
+							class="banner"
+							data-theme="blue"
+							data-vibrancy="vivid"
+							data-field="banner"
+							hidden
+						>
+						</div>
+						<div class="wrapper">
+							<h4 class="heading icon-and-label-container">
+								<!-- <IconAssessment /> -->
+								<span class="label-container">
+									<span class="title" data-field="school"
 									></span>
-								</div>
-								<div
-									class="export-status label-container field-container"
-									data-theme="red"
-									hidden
-								>
 									<span
-										class="label"
-										data-field="exportStatus"
-										>*Unexported Changes</span
+										class="subtitle"
+										data-field="reportingYear">2025</span
 									>
-								</div>
-							</span>
-							<dl data-fit="compact">
-								<div class="date-created detail-container">
-									<dt>Date Created:</dt>
-									<dd data-field="dateCreated"></dd>
-								</div>
-								<div
-									class="date-completed detail-container"
-									hidden
+								</span>
+							</h4>
+							<div class="details">
+								<span class="label-group">
+									<div
+										class="edit-status label-container field-container"
+										data-vibrancy="vivid"
+										data-style="solid"
+									>
+										<span
+											class="label"
+											data-field="editStatus"></span>
+									</div>
+									<div
+										class="export-status label-container field-container"
+										data-theme="red"
+										hidden
+									>
+										<span
+											class="label"
+											data-field="exportStatus"
+											>*Unexported Changes</span
+										>
+									</div>
+								</span>
+								<dl data-fit="compact">
+									<div class="date-created detail-container">
+										<dt>Date Created:</dt>
+										<dd data-field="dateCreated"></dd>
+									</div>
+									<div
+										class="date-completed detail-container"
+										hidden
+									>
+										<dt>Date Completed:</dt>
+										<dd data-field="dateCompleted"></dd>
+									</div>
+									<div
+										class="date-exported detail-container"
+										hidden
+									>
+										<dt>Date Exported:</dt>
+										<dd data-field="dateExported"></dd>
+									</div>
+									<div
+										class="date-modified detail-container"
+										hidden
+									>
+										<dt>Date Modified:</dt>
+										<dd data-field="dateModified"></dd>
+									</div>
+								</dl>
+							</div>
+							<div class="button-group">
+								<button
+									class="open-assessment"
+									type="button"
+									data-size="large"
+									data-toast-success="open-assessment-dialog_open-toast_success"
+									data-toast-failure="open-assessment-dialog_open-toast_failure"
+									hidden>Open</button
 								>
-									<dt>Date Completed:</dt>
-									<dd data-field="dateCompleted"></dd>
-								</div>
-								<div
-									class="date-exported detail-container"
-									hidden
+								<button
+									class="open-assessment change-status"
+									type="button"
+									data-size="large"
+									data-toast-success="open-assessment-dialog_open-toast_success"
+									data-toast-failure="open-assessment-dialog_open-toast_failure"
+									hidden>Mark Complete and Open</button
 								>
-									<dt>Date Exported:</dt>
-									<dd data-field="dateExported"></dd>
-								</div>
-								<div
-									class="date-modified detail-container"
-									hidden
+								<button
+									class="delete open-dialog"
+									type="button"
+									data-size="large"
+									data-theme="red"
+									data-vibrancy="vivid"
+									aria-label="Delete Assessment"
+									data-dialog="deletion-confirmation-dialog"
+									data-dialog-context=""
+									data-id=""
 								>
-									<dt>Date Modified:</dt>
-									<dd data-field="dateModified"></dd>
-								</div>
-							</dl>
-						</div>
-						<div class="button-group">
-							<button
-								class="open-assessment"
-								type="button"
-								data-size="large"
-								data-toast-success="open-assessment-dialog_open-toast_success"
-								data-toast-failure="open-assessment-dialog_open-toast_failure"
-								hidden>Open</button
-							>
-							<button
-								class="open-assessment change-status"
-								type="button"
-								data-size="large"
-								data-toast-success="open-assessment-dialog_open-toast_success"
-								data-toast-failure="open-assessment-dialog_open-toast_failure"
-								hidden>Mark Complete and Open</button
-							>
-							<button
-								class="delete open-dialog"
-								type="button"
-								data-size="large"
-								data-theme="red"
-								data-vibrancy="vivid"
-								aria-label="Delete Assessment"
-								data-dialog="deletion-confirmation-dialog"
-								data-dialog-context=""
-								data-id=""
-							>
-								<IconTrash />
-								<!-- <div class="icon-and-label-container">
 									<IconTrash />
-									<span class="label-container">
-										<span class="label">Delete</span>
-									</span>
-								</div> -->
-							</button>
+									<!-- <div class="icon-and-label-container">
+										<IconTrash />
+										<span class="label-container">
+											<span class="label">Delete</span>
+										</span>
+									</div> -->
+								</button>
+							</div>
 						</div>
-					</div>
-				</li>
-			</template>
-		</ul>
+					</li>
+				</template>
+			</ul>
+		</div>
 	</section>
 </dialog>
 
@@ -284,20 +286,23 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		data-fit="compact"
 		data-theme="red"
 	>
-		<div class="icon-container">
-			<IconWarningBig />
-		</div>
-		<div class="text-container">
-			<p>
-				The imported assessment conflicts with an assessment already
-				saved in the browser. <strong
-					>Each school can have only one assessment per reporting year</strong
-				>.
-			</p>
-			<p>
-				Review the assessment properties below and choose whether to
-				keep the saved assessment or overwrite it.
-			</p>
+		<div class="wrapper">
+			<div class="icon-container">
+				<IconWarningBig />
+			</div>
+			<div class="text-container">
+				<p>
+					The imported assessment conflicts with an assessment already
+					saved in the browser. <strong
+						>Each school can have only one assessment per reporting
+						year</strong
+					>.
+				</p>
+				<p>
+					Review the assessment properties below and choose whether to
+					keep the saved assessment or overwrite it.
+				</p>
+			</div>
 		</div>
 	</div>
 	<template class="highlight">
@@ -310,65 +315,69 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		</div>
 	</template>
 	<div class="conflicting-assessments elem-group" data-columns="2">
-		<div class="card local">
-			<div class="banner" data-theme="blue" data-vibrancy="vivid">
-				Saved
-			</div>
-			<div class="wrapper">
-				<h4 class="heading icon-and-label-container">
-					<!-- <IconAssessment /> -->
-					<span class="label-container" data-field="school"></span>
-				</h4>
-				<div class="details">
-					<dl data-fit="compact">
-						<div class="detail-container">
-							<dt>Reporting Year:</dt>
-							<dd data-field="reportingYear"></dd>
-						</div>
-						<div class="detail-container">
-							<dt>Status:</dt>
-							<dd data-field="status"></dd>
-						</div>
-						<div class="detail-container">
-							<dt>Date Modified:</dt>
-							<dd data-field="dateModified"></dd>
-						</div>
-						<div class="detail-container">
-							<dt>Last Modified By:</dt>
-							<dd data-field="lastModifiedBy"></dd>
-						</div>
-					</dl>
+		<div class="wrapper">
+			<div class="card local">
+				<div class="banner" data-theme="blue" data-vibrancy="vivid">
+					Saved
+				</div>
+				<div class="wrapper">
+					<h4 class="heading icon-and-label-container">
+						<!-- <IconAssessment /> -->
+						<span class="label-container" data-field="school"
+						></span>
+					</h4>
+					<div class="details">
+						<dl data-fit="compact">
+							<div class="detail-container">
+								<dt>Reporting Year:</dt>
+								<dd data-field="reportingYear"></dd>
+							</div>
+							<div class="detail-container">
+								<dt>Status:</dt>
+								<dd data-field="status"></dd>
+							</div>
+							<div class="detail-container">
+								<dt>Date Modified:</dt>
+								<dd data-field="dateModified"></dd>
+							</div>
+							<div class="detail-container">
+								<dt>Last Modified By:</dt>
+								<dd data-field="lastModifiedBy"></dd>
+							</div>
+						</dl>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="card imported">
-			<div class="banner" data-theme="yellow" data-vibrancy="vivid">
-				Imported
-			</div>
-			<div class="wrapper">
-				<h4 class="heading icon-and-label-container">
-					<!-- <IconAssessment /> -->
-					<span class="label-container" data-field="school"></span>
-				</h4>
-				<div class="details">
-					<dl data-fit="compact">
-						<div class="detail-container">
-							<dt>Reporting Year:</dt>
-							<dd data-field="reportingYear"></dd>
-						</div>
-						<div class="detail-container">
-							<dt>Status:</dt>
-							<dd data-field="status"></dd>
-						</div>
-						<div class="detail-container">
-							<dt>Date Modified:</dt>
-							<dd data-field="dateModified"></dd>
-						</div>
-						<div class="detail-container">
-							<dt>Last Modified By:</dt>
-							<dd data-field="lastModifiedBy"></dd>
-						</div>
-					</dl>
+			<div class="card imported">
+				<div class="banner" data-theme="yellow" data-vibrancy="vivid">
+					Imported
+				</div>
+				<div class="wrapper">
+					<h4 class="heading icon-and-label-container">
+						<!-- <IconAssessment /> -->
+						<span class="label-container" data-field="school"
+						></span>
+					</h4>
+					<div class="details">
+						<dl data-fit="compact">
+							<div class="detail-container">
+								<dt>Reporting Year:</dt>
+								<dd data-field="reportingYear"></dd>
+							</div>
+							<div class="detail-container">
+								<dt>Status:</dt>
+								<dd data-field="status"></dd>
+							</div>
+							<div class="detail-container">
+								<dt>Date Modified:</dt>
+								<dd data-field="dateModified"></dd>
+							</div>
+							<div class="detail-container">
+								<dt>Last Modified By:</dt>
+								<dd data-field="lastModifiedBy"></dd>
+							</div>
+						</dl>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -463,7 +472,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	*/
 
 	#open-assessment-dialog input[type="file"] {
-		font-size: 0.75rem;
+		font-size: var(--font-size-3xs);
 		overflow: visible !important;
 	}
 
@@ -475,7 +484,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 1rem;
+		gap: var(--space-sm);
 	}
 
 	#open-assessment-dialog section.import form fieldset.code {
@@ -483,9 +492,9 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	}
 
 	#open-assessment-dialog section.import form fieldset .heading {
-		font-size: 1rem;
+		font-size: var(--font-size-xs);
 		font-weight: 500;
-		margin: 0 0 0.5rem;
+		margin: 0 0 var(--space-2xs);
 	}
 
 	#open-assessment-dialog section.import form .separator.item {
@@ -511,14 +520,14 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	}
 
 	#open-assessment-dialog .saved-assessments-list .card .button-group {
-		--group-gap: 0.5rem;
+		--group-gap: var(--space-2xs);
 		margin: 0;
 	}
 
 	#open-assessment-dialog .saved-assessments-list .card button {
 		--icon-size: 1.25rem;
-		--label-size: 1rem;
-		padding: 0 0.75rem;
+		--label-size: var(--font-size-xs);
+		padding: 0 var(--space-xs);
 	}
 
 	#open-assessment-dialog .saved-assessments-list .card button.delete {
@@ -584,7 +593,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	}
 
 	.conflicting-assessments {
-		--group-margin: 2rem 0;
+		--group-margin: var(--space-xl) 0;
 	}
 
 	.highlight-container {
@@ -594,7 +603,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: start;
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 
 		color: var(--colour-ui-accent, var(--colour-ui-neutral));
 	}

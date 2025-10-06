@@ -53,7 +53,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 <BaseLayout pageTitle={"Resources"}>
 	<MediaDialog />
 
-	<aside class="filters-container">
+	<aside class="left filters-container">
 		<form
 			id="resources-list-secondary-controls"
 			class="list-secondary-controls"
@@ -379,8 +379,8 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 <style is:global>
 	.filters-container {
 		grid-area: left-aside;
-		margin: 0 5rem 0 0;
-		padding: 2rem 0;
+		margin: 0 var(--space-4xl) 0 0;
+		padding: var(--space-xl) 0;
 		min-width: 300px;
 		border-right: 1px solid var(--colour-border-neutral-subtle);
 	}
@@ -390,13 +390,13 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: 0.5rem;
-		margin: 0 0.5rem;
+		gap: var(--space-2xs);
+		margin: 0 var(--space-2xs);
 	}
 
 	.filters-container .heading-group .heading {
-		font-size: 1.5rem;
-		margin: 0 0 0 0.75rem;
+		font-size: var(--font-size-lg);
+		margin: 0 0 0 var(--space-xs);
 		flex-grow: 1;
 	}
 
@@ -418,11 +418,11 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 	}
 
 	.filters-container form {
-		gap: 0.5rem;
+		gap: var(--space-2xs);
 	}
 
 	.filters-container .accordion .heading {
-		margin: 0 0.5rem;
+		margin: 0 var(--space-2xs);
 	}
 
 	.filters-container .accordion .heading button {
@@ -432,7 +432,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 		/* --icon-colour: var(--colour-ui-accent); */
 		--icon-size: 1rem;
 
-		padding: 0.75rem;
+		padding: var(--space-xs);
 	}
 
 	.filters-container .accordion .heading button:is(:hover, :focus-visible),
@@ -458,7 +458,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 	}
 
 	.filters-container .accordion .heading button .icon-and-label-container {
-		--label-size: 1rem;
+		--label-size: var(--font-size-xs);
 		--label-weight: 600;
 	}
 
@@ -471,25 +471,25 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 	}
 
 	.filters-container .accordion .panel {
-		margin: 0 0.5rem;
-		padding-top: 0.25rem;
+		margin: 0 var(--space-2xs);
+		padding-top: var(--space-3xs);
 		border: none;
 	}
 
 	.filters-container .separator.item {
 		--separator-long-edge-dimension: auto;
-		margin: 0 0.75rem;
+		margin: 0 var(--space-xs);
 	}
 
 	fieldset.filters {
-		padding: 0.75rem 0 0.25rem;
+		padding: var(--space-xs) 0 var(--space-3xs);
 		max-height: min(500px, 50vh);
 		overflow: auto;
 	}
 
 	fieldset.filters label:has(input[type="checkbox"]) {
-		margin: 0 0.75rem;
-		padding: 0.5rem 0.75rem;
+		margin: 0 var(--space-xs);
+		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-small);
 	}
 
@@ -507,7 +507,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: end;
-		gap: 1rem;
+		gap: var(--space-sm);
 	}
 
 	form.list-primary-controls fieldset.search {
@@ -515,18 +515,18 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 	}
 
 	form.list-primary-controls fieldset:is(.sort, .layout) {
-		--group-gap: 0.5rem;
+		--group-gap: var(--space-2xs);
 	}
 
 	form.list-primary-controls fieldset:is(.sort, .layout) legend {
-		font-size: 0.75rem;
+		font-size: var(--font-size-3xs);
 		color: var(--colour-ui-neutral-subtle);
 		margin: 0 0 0.325rem;
 	}
 
 	form.list-primary-controls fieldset:is(.sort, .layout) button {
 		--icon-size: 1.25rem;
-		font-size: 0.875rem;
+		font-size: var(--font-size-2xs);
 		height: 2rem;
 	}
 
@@ -562,7 +562,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 
 	form.list-primary-controls .separator {
 		--separator-long-edge-dimension: 1.5rem;
-		margin-bottom: 0.25rem;
+		margin-bottom: var(--space-3xs);
 	}
 </style>
 
