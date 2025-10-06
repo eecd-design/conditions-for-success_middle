@@ -4,8 +4,7 @@ type: image
 topics: []
 external:
   discriminant: false
-  value:
-    fileType: .png
+  value: {}
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
