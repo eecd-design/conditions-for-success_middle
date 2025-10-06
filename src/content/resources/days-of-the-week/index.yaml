@@ -4,8 +4,7 @@ type: document
 topics: []
 external:
   discriminant: false
-  value:
-    fileType: days-of-the-week
+  value: {}
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
