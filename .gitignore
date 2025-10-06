@@ -28,3 +28,9 @@ public/assets/
 
 # Local Netlify folder
 .netlify
+
+# Local VSCode folder
+.vscode
+
+# Project Management
+/TODOS.md
