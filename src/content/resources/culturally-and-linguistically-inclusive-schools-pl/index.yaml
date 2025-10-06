@@ -6,8 +6,10 @@ external:
   discriminant: true
   value:
     url: >-
-      https://nbed.sharepoint.com/sites/EnglishasanAdditionalLanguageK-12/SitePages/online%20courses%20_linked%20from%20PL.aspx?csf=1&web=1&e=KqIiOv&CID=f57e8b53-7096-49ac-b2db-7c12c5bb67b9
+      https://plhub.nbed.ca/?learning_activity=culturally-and-linguistically-inclusive-schools-online-course
 linkedIndicators: []
-linkedComponents: []
+linkedComponents:
+  - '2.7'
 linkedConsiderations:
   - 2.7.6
+  - 2.7.1
