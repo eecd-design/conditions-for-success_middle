@@ -8,6 +8,8 @@ external:
     url: >-
       https://ies.ed.gov/ncee/WWC/Docs/PracticeGuide/WWC-practice-guide-reading-intervention-full-text.pdf
 linkedIndicators: []
-linkedComponents: []
+linkedComponents:
+  - '6.2'
 linkedConsiderations:
   - 2.8.8
+  - 6.2.15

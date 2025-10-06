@@ -1,0 +1,12 @@
+title: NBjobs.ca
+dateAdded: 2025-10-02
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://hopefultransitions.nbed.ca/educators/nbjobs-ca/
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 7.4.2

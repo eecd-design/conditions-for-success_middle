@@ -1,1 +1,1 @@
-Focuses on strengthening connections that build trust, inclusion, and emotional safety for all, including: school personnel to learner, school personnel to school personnel, learner to learner, and school to community.
+Focuses on strengthening connections that build trust, inclusion, and emotional safety for all, including: school personnel to learner, school personnel to school personnel, learner to learner, and school to community. Components are aligned to the [NB Curriculum](https://curriculum.nbed.ca/) and include:

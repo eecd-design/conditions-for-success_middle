@@ -1,0 +1,12 @@
+title: NBjobs.ca Labour Market Reports
+dateAdded: 2025-10-02
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://www.nbjobs.ca/stats/labourmarket
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 7.4.2

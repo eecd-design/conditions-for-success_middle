@@ -1,12 +1,12 @@
-title: Curriculum Framework
-dateAdded: 2025-09-25
+title: Polypad Virtual Manipulatives
+dateAdded: 2025-10-01
 type: website
 topics: []
 external:
   discriminant: true
   value:
-    url: https://curriculum.nbed.ca/
+    url: https://polypad.amplify.com/
 linkedIndicators: []
 linkedComponents:
-  - '2.5'
+  - '6.3'
 linkedConsiderations: []

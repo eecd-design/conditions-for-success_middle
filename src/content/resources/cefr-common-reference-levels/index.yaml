@@ -1,0 +1,14 @@
+title: CEFR Common Reference Levels
+dateAdded: 2025-10-01
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: >-
+      https://www.coe.int/en/web/common-european-framework-reference-languages/table-1-cefr-3.3-common-reference-levels-global-scale
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 6.4.2
+  - 6.4.7

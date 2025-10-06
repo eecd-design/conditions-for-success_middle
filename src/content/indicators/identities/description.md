@@ -1,1 +1,1 @@
-Focuses on recognizing and integrating diverse identities into school culture through curriculum, policies, events, and professional learning, ensuring inclusion and learner empowerment.
+Focuses on recognizing and integrating diverse identities into school culture through curriculum, policies, events, and professional learning, ensuring inclusion and learner empowerment. Components are aligned to the [NB Curriculum](https://curriculum.nbed.ca/) and include:

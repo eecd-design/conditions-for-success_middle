@@ -1,0 +1,12 @@
+title: 'Behaviour Referrals: Days of the Week'
+dateAdded: 2025-10-02
+type: document
+topics: []
+external:
+  discriminant: false
+  value:
+    fileType: days-of-the-week
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 2.3.14
