@@ -1,6 +1,7 @@
 indicator: access-and-equity
 tag: '2.1'
 title: Well-being at School
+explainerResource: well-being-at-the-heart-of-learning
 initiating:
   considerations:
     - tag: 2.1.1
