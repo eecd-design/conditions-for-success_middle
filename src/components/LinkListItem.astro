@@ -9,7 +9,8 @@ import IconExpand from "./icons/IconExpand_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
-let { itemData } = Astro.props;
+let { itemData, includeItemWrapper = true } = Astro.props;
+console.log(itemData.id);
 
 let {
 	category = null,
@@ -47,9 +48,11 @@ if (category === "resource") {
 		year: "numeric",
 	});
 } else {
-	if (category === "indicator") path = `/big-seven/${slug}`;
-	else
+	if (category === "indicator") {
+		path = `/big-seven/${slug}`;
+	} else {
 		path = `/big-seven/${indicator}#${category}-${tag.replaceAll(".", "-")}`;
+	}
 }
 
 let tags = null;
@@ -66,7 +69,7 @@ if (linkedIndicators || linkedComponents || linkedConsiderations) {
 	});
 }
 
-let ItemWrapper = "li";
+let ItemWrapper = includeItemWrapper ? "li" : null;
 let itemWrapperAttrs =
 	category === "resource"
 		? {
@@ -89,7 +92,7 @@ let itemWrapperAttrs =
 let InteractiveWrapper = ["video", "audio"].includes(type) ? "button" : "a";
 let interactiveWrapperAttrs = ["video", "audio"].includes(type)
 	? {
-			class: "open-dialog",
+			class: "open-dialog detailed-link",
 			type: "button",
 			"data-style-as": "link",
 			"data-dialog": "media-dialog",
@@ -99,6 +102,7 @@ let interactiveWrapperAttrs = ["video", "audio"].includes(type)
 			"data-media-external": external.discriminant,
 		}
 	: {
+			class: "detailed-link",
 			href: path,
 		};
 
@@ -122,34 +126,101 @@ else if (["video", "audio"].includes(type)) {
 else if (["document", "presentation"].includes(type)) {
 	DestinationIcon = IconDownload;
 }
+// Internal Images
+else if (type === "image") {
+	DestinationIcon = IconExternal;
+} else {
+	console.warn("No Icon!");
+}
 ---
 
-<ItemWrapper {...itemWrapperAttrs}>
-	<InteractiveWrapper {...interactiveWrapperAttrs}>
-		<ResourceIcons
-			type={type}
-			classes={["type"]}
-			dataset={[{ key: "restrict-content", value: "resources" }]}
-		/>
-		<div
-			class="separator group"
-			data-orientation="vertical"
-			data-restrict-content="resources"
-			aria-hidden="true"
-		>
-		</div>
-		<span class="text-container">
-			<span class="label" data-restrict-content="mixed">
-				{
-					category !== "resource"
+{
+	ItemWrapper ? (
+		<ItemWrapper {...itemWrapperAttrs}>
+			<InteractiveWrapper {...interactiveWrapperAttrs}>
+				<ResourceIcons
+					type={type}
+					classes={["type"]}
+					dataset={[{ key: "restrict-content", value: "resources" }]}
+				/>
+				<div
+					class="separator group"
+					data-orientation="vertical"
+					data-restrict-content="resources"
+					aria-hidden="true"
+				/>
+				<span class="text-container">
+					<span class="label" data-restrict-content="mixed">
+						{category !== "resource"
+							? `${toTitleCase(category)} ${tag}`
+							: `${toTitleCase(type)} Resource`}
+					</span>
+					<span class="title">
+						{title}
+						{tags && (
+							<ul
+								class="tags-list"
+								data-restrict-content="resources"
+							>
+								{tags.map((tag) => (
+									<li
+										class="tag"
+										data-theme={tag.colour}
+										data-vibrancy="vivid"
+									>
+										{tag.tag}
+									</li>
+								))}
+							</ul>
+						)}
+					</span>
+					{date && (
+						<span
+							class="date"
+							data-theme="red"
+							data-restrict-content="resources"
+						>
+							Date Added: {date}
+						</span>
+					)}
+					{description && (
+						<span
+							class="description"
+							data-restrict-layout="detailed"
+						>
+							{description}
+						</span>
+					)}
+				</span>
+				<span class="icon-container">
+					{DestinationIcon && (
+						<DestinationIcon classes={["destination"]} />
+					)}
+				</span>
+			</InteractiveWrapper>
+		</ItemWrapper>
+	) : (
+		<InteractiveWrapper {...interactiveWrapperAttrs}>
+			<ResourceIcons
+				type={type}
+				classes={["type"]}
+				dataset={[{ key: "restrict-content", value: "resources" }]}
+			/>
+			<div
+				class="separator group"
+				data-orientation="vertical"
+				data-restrict-content="resources"
+				aria-hidden="true"
+			/>
+			<span class="text-container">
+				<span class="label" data-restrict-content="mixed">
+					{category !== "resource"
 						? `${toTitleCase(category)} ${tag}`
-						: `${toTitleCase(type)} Resource`
-				}
-			</span>
-			<span class="title">
-				{title}
-				{
-					tags && (
+						: `${toTitleCase(type)} Resource`}
+				</span>
+				<span class="title">
+					{title}
+					{tags && (
 						<ul class="tags-list" data-restrict-content="resources">
 							{tags.map((tag) => (
 								<li
@@ -161,11 +232,9 @@ else if (["document", "presentation"].includes(type)) {
 								</li>
 							))}
 						</ul>
-					)
-				}
-			</span>
-			{
-				date && (
+					)}
+				</span>
+				{date && (
 					<span
 						class="date"
 						data-theme="red"
@@ -173,23 +242,27 @@ else if (["document", "presentation"].includes(type)) {
 					>
 						Date Added: {date}
 					</span>
-				)
-			}
-			{
-				description && (
+				)}
+				{description && (
 					<span class="description" data-restrict-layout="detailed">
 						{description}
 					</span>
-				)
-			}
-		</span>
-		<span class="icon-container">
-			<DestinationIcon classes={["destination"]} />
-		</span>
-	</InteractiveWrapper>
-</ItemWrapper>
+				)}
+			</span>
+			<span class="icon-container">
+				{DestinationIcon && (
+					<DestinationIcon classes={["destination"]} />
+				)}
+			</span>
+		</InteractiveWrapper>
+	)
+}
 
 <style is:global>
+	/* 
+	// Links List (Divided)
+	*/
+
 	.links-list[data-style="divided"] {
 		gap: 0;
 	}
@@ -210,33 +283,61 @@ else if (["document", "presentation"].includes(type)) {
 		border-bottom: 1px solid var(--colour-border-neutral-subtle);
 	}
 
-	.links-list[data-style="divided"] :is(a, [data-style-as="link"]) {
-		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
-		border-radius: var(--border-radius-normal);
-		gap: var(--space-xs);
-		text-decoration: none;
-		width: 100%;
+	/* 
+	// Link Container (single link)
+	*/
+
+	.link-container {
+		margin: var(--space-xl) 0;
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
+	.link-container:has(+ .reflection-question) {
+		margin: var(--space-lg) 0 var(--space-3xl);
+	}
+
+	.link-container .detailed-link {
+		min-height: 3.5rem;
+	}
+
+	/* 
+	// Detailed Link
+	*/
+
+	:is(a, [data-style-as="link"]).detailed-link {
+		gap: var(--space-xs);
+		width: 100%;
+		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
+		border-radius: var(--border-radius-normal);
+		text-decoration: none;
+	}
+
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
+	.link-container :is(a, [data-style-as="link"]).detailed-link {
 		background-color: var(
 			--colour-fill-accent-subtle,
 			var(--colour-fill-neutral-subtle)
 		);
 	}
 
+	.link-container
+		:is(a, [data-style-as="link"]).detailed-link:is(
+			:hover,
+			:focus-visible
+		) {
+		background-color: transparent;
+		outline: 2px solid var(--colour-border-accent-subtle);
+		outline-offset: -1px;
+	}
+
 	/* SEPARATOR */
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.separator {
+	:is(a, [data-style-as="link"]).detailed-link .separator {
 		align-self: stretch;
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
-		.separator {
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+		.separator,
+	.link-container :is(a, [data-style-as="link"]).detailed-link .separator {
 		background-color: var(
 			--colour-border-accent-mid,
 			var(--colour-border-neutral-mid)
@@ -245,9 +346,7 @@ else if (["document", "presentation"].includes(type)) {
 
 	/* TEXT CONTAINER */
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.text-container {
+	:is(a, [data-style-as="link"]).detailed-link .text-container {
 		display: flex;
 		flex-flow: column;
 		gap: var(--space-2xs);
@@ -255,10 +354,7 @@ else if (["document", "presentation"].includes(type)) {
 
 	/* TITLE */
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.text-container
-		.title {
+	:is(a, [data-style-as="link"]).detailed-link .text-container .title {
 		display: flex;
 		flex-flow: row wrap;
 		align-items: start;
@@ -268,17 +364,13 @@ else if (["document", "presentation"].includes(type)) {
 
 	/* DATE */
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.text-container
-		.date {
+	:is(a, [data-style-as="link"]).detailed-link .text-container .date {
 		font-size: var(--font-size-3xs);
 		font-weight: 500;
 		color: var(--colour-ui-neutral-subtle);
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		.text-container
 		.date {
 		color: var(--colour-ui-neutral);
@@ -286,10 +378,7 @@ else if (["document", "presentation"].includes(type)) {
 
 	/* TAGS */
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.text-container
-		.tags-list {
+	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list {
 		display: flex;
 		flex-flow: row wrap;
 		align-items: start;
@@ -300,11 +389,7 @@ else if (["document", "presentation"].includes(type)) {
 		margin: 0;
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.text-container
-		.tags-list
-		li {
+	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list li {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -319,8 +404,7 @@ else if (["document", "presentation"].includes(type)) {
 		transition: all var(--transition-linear-fast);
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		.text-container
 		.tags-list
 		li {
@@ -330,10 +414,7 @@ else if (["document", "presentation"].includes(type)) {
 
 	/* DESCRIPTION */
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"])
-		.text-container
-		.description {
+	:is(a, [data-style-as="link"]).detailed-link .text-container .description {
 		font-size: var(--font-size-2xs);
 		font-weight: 500;
 		color: var(--colour-ui-neutral-subtle);
@@ -341,13 +422,12 @@ else if (["document", "presentation"].includes(type)) {
 		transition: max-height var(--transition-ease-medium);
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		.description {
 		color: var(--colour-ui-neutral);
 	}
 
-	.links-list[data-style="divided"] :is(a, [data-style-as="link"]) .label {
+	:is(a, [data-style-as="link"]).detailed-link .label {
 		--label-size: var(--font-size-2xs);
 		--label-colour: var(
 			--colour-ui-accent-subtle,
@@ -355,26 +435,23 @@ else if (["document", "presentation"].includes(type)) {
 		);
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
-		.label {
-		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-	}
-
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+		.icon-and-label-container,
+	.link-container
+		:is(a, [data-style-as="link"]).detailed-link
 		.icon-and-label-container {
 		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+		:is(.icon.destination, .icon.type),
+	.link-container
+		:is(a, [data-style-as="link"]).detailed-link
 		:is(.icon.destination, .icon.type) {
 		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	}
 
-	.links-list[data-style="divided"]
-		:is(a, [data-style-as="link"]):is(:hover, :focus-visible)
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		span.highlight {
 		--highlight-background-colour: transparent;
 		--highlight-ui-colour: var(--colour-ui-neutral);

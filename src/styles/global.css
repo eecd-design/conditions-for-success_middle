@@ -1041,14 +1041,17 @@ main:not([data-report="inactive"]) [data-restrict-report="inactive"] {
 	display: none !important;
 }
 
+.link-container:not([data-layout="detailed"]) [data-restrict-layout="detailed"],
 .links-list:not([data-layout="detailed"]) [data-restrict-layout="detailed"] {
 	display: none !important;
 }
 
+.link-container:not([data-content="resources"]) [data-restrict-content="resources"],
 .links-list:not([data-content="resources"]) [data-restrict-content="resources"] {
 	display: none !important;
 }
 
+.link-container:not([data-content="mixed"]) [data-restrict-content="mixed"],
 .links-list:not([data-content="mixed"]) [data-restrict-content="mixed"] {
 	display: none !important;
 }

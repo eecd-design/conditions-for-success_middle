@@ -347,6 +347,9 @@ let getResourcePath = (resource) => {
 			case 'document':
 				subfolder = 'files';
 				break;
+			case 'image':
+				subfolder = 'files';
+				break;
 			case 'presentation':
 				subfolder = 'files';
 				break;
@@ -371,6 +374,9 @@ let getResourcePath = (resource) => {
 					break;
 				case 'document':
 					fileType = 'pdf';
+					break;
+				case 'image':
+					fileType = 'png';
 					break;
 				case 'presentation':
 					fileType = 'pdf';

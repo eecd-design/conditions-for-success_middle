@@ -1,6 +1,7 @@
 ---
 import IconAudio from "../icons/IconAudio_24.astro";
 import IconDocument from "../icons/IconDocument_24.astro";
+import IconImage from "../icons/IconImage_24.astro";
 import IconPresentation from "../icons/IconPresentation_24.astro";
 import IconVideo from "../icons/IconVideo_24.astro";
 import IconWeb from "../icons/IconWeb_24.astro";
@@ -8,18 +9,20 @@ import IconWeb from "../icons/IconWeb_24.astro";
 const resourceIcons = {
 	audio: IconAudio,
 	document: IconDocument,
+	image: IconImage,
 	presentation: IconPresentation,
 	video: IconVideo,
-	website: IconWeb
-}
+	website: IconWeb,
+};
 
 const resourceLabels = {
-	audio: 'Audio',
-	document: 'Document',
-	presentation: 'Presentation',
-	video: 'Video',
-	website: 'Website'
-}
+	audio: "Audio",
+	document: "Document",
+	image: "Image",
+	presentation: "Presentation",
+	video: "Video",
+	website: "Website",
+};
 
 const { type, classes, dataset } = Astro.props;
 
@@ -32,17 +35,19 @@ if (dataset) {
 
 let Icon = resourceIcons[type];
 let label = resourceLabels[type];
-
 ---
 
-{ Icon && label && (
-
-	<div class="icon-and-label-container" data-collapsible="label" {...datasetAttrs}>
-		<Icon classes={classes} />
-		<span class="label-container">
-			<span class="label">{label}</span>
-		</span>
-	</div>
-
-)}
-
+{
+	Icon && label && (
+		<div
+			class="icon-and-label-container"
+			data-collapsible="label"
+			{...datasetAttrs}
+		>
+			<Icon classes={classes} />
+			<span class="label-container">
+				<span class="label">{label}</span>
+			</span>
+		</div>
+	)
+}

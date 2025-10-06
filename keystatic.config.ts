@@ -119,6 +119,10 @@ export default config({
 					description: `This description defines terms used in the component title and appears directly below the component heading.`,
 					extension: 'md',
 				}),
+				explainerResource: fields.relationship({
+					label: 'Explainer Resource',
+					collection: 'resources',
+				}),
 				reflectionQuestion: fields.mdx({
 					label: 'Reflection Question',
 					extension: 'md',
@@ -362,6 +366,7 @@ export default config({
 					options: [
 						{ label: 'Video', value: 'video' },
 						{ label: 'Document', value: 'document' },
+						{ label: 'Image', value: 'image' },
 						{ label: 'Presentation', value: 'presentation' },
 						{ label: 'Audio', value: 'audio' },
 						{ label: 'Website', value: 'website' },
@@ -396,7 +401,7 @@ export default config({
 						false: fields.object({
 							fileType: fields.text({
 								label: 'File Type',
-								description: "Specify only if different from default: video (.mp4), document (.pdf), presentation (.pdf), audio (.mp3).",
+								description: "Specify only if different from default: video (.mp4), document (.pdf), image (.png), presentation (.pdf), audio (.mp3).",
 							}),
 						}),
 					}

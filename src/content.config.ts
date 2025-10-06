@@ -8,7 +8,7 @@ import { glob, file } from 'astro/loaders';
 const indicators = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/indicators" }),
 	schema: z.object({
-        tag: z.string(),
+		tag: z.string(),
 		title: z.string(),
 		colour: z.string(),
 	})
@@ -17,49 +17,50 @@ const indicators = defineCollection({
 const components = defineCollection({
 	loader: glob({ pattern: "**/*.yaml", base: "./src/content/components" }),
 	schema: z.object({
-        indicator: z.string(),
-        tag: z.string(),
+		indicator: z.string(),
+		tag: z.string(),
 		title: z.string(),
-        initiating: z.object({
-            considerations: z.array(
-                z.object({
-                    tag: z.string(),
-                    title: z.string(),
-                    compass: z.boolean(),
+		explainerResource: z.optional(z.string()),
+		initiating: z.object({
+			considerations: z.array(
+				z.object({
+					tag: z.string(),
+					title: z.string(),
+					compass: z.boolean(),
 					categories: z.array(z.string()),
-                })
-            )
-        }),
-        implementing: z.object({
-            considerations: z.array(
-                z.object({
-                    tag: z.string(),
-                    title: z.string(),
-                    compass: z.boolean(),
+				})
+			)
+		}),
+		implementing: z.object({
+			considerations: z.array(
+				z.object({
+					tag: z.string(),
+					title: z.string(),
+					compass: z.boolean(),
 					categories: z.array(z.string()),
-                })
-            )
-        }),
-        developing: z.object({
-            considerations: z.array(
-                z.object({
-                    tag: z.string(),
-                    title: z.string(),
-                    compass: z.boolean(),
+				})
+			)
+		}),
+		developing: z.object({
+			considerations: z.array(
+				z.object({
+					tag: z.string(),
+					title: z.string(),
+					compass: z.boolean(),
 					categories: z.array(z.string()),
-                })
-            )
-        }),
-        sustaining: z.object({
-            considerations: z.array(
-                z.object({
-                    tag: z.string(),
-                    title: z.string(),
-                    compass: z.boolean(),
+				})
+			)
+		}),
+		sustaining: z.object({
+			considerations: z.array(
+				z.object({
+					tag: z.string(),
+					title: z.string(),
+					compass: z.boolean(),
 					categories: z.array(z.string()),
-                })
-            )
-        }),
+				})
+			)
+		}),
 	})
 });
 

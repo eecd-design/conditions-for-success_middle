@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 
 import Accordion from "../components/Accordion.astro";
 import LinkListItem from "./LinkListItem.astro";
@@ -27,6 +27,15 @@ let allDescriptions = Object.values(
 let description:any = allDescriptions.find((match:any) =>
 	match.file.includes(pathToComponent),
 );
+
+// Get the explainer resource (if there is one)
+let explainerResource = null;
+if (entry.data.explainerResource) {
+	let resource = await getEntry('resources', entry.data.explainerResource); 
+	explainerResource = JSON.parse(JSON.stringify(resource.data));
+	explainerResource.category = 'resource';
+	explainerResource.slug = resource.id;
+}
 
 // Get all reflection questions
 let allQuestions = Object.values(
@@ -116,6 +125,8 @@ let phases = [
 	},
 ]
 
+console.log('Preppring Component', entry.data.tag);
+
 ---
 
 <section class="component" data-component-tag={entry.data.tag}>
@@ -133,6 +144,14 @@ let phases = [
 	
 		<description.Content />
 	
+	)}
+
+	{ explainerResource && (
+
+		<div class="explainer-resource link-container" data-content="resources" data-layout="detailed">
+			<LinkListItem itemData={explainerResource} includeItemWrapper={false}/>
+		</div>
+
 	)}
 	
 	{ question && question.rawContent().trim().length > 0 && (
@@ -323,6 +342,18 @@ let phases = [
 		.phase-status {
 			display: none;
 		}
+	}
+
+	/*
+	** Explainer Resource
+	------------------------------*/
+
+	.explainer-resource .detailed-link .text-container .date  {
+		display: none !important;
+	}
+
+	.explainer-resource .detailed-link .text-container .tags-list  {
+		display: none !important;
 	}
 
 
