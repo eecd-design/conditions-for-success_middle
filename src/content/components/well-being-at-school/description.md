@@ -1,1 +1,1 @@
-Want an introduction to well-being at school? Check out the video below, which outlines how creating caring relationships, modeling calming strategies, and designing purposeful learning environments helps learners feel safe, valued, and ready to thrive.
+Want an introduction to well-being at school? Check out the video below.
