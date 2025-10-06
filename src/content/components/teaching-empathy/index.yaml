@@ -1,6 +1,7 @@
 indicator: empathy
 tag: '4.2'
 title: Teaching Empathy
+explainerResource: teaching-empathy-building-stronger-connections
 initiating:
   considerations:
     - tag: 4.2.1
