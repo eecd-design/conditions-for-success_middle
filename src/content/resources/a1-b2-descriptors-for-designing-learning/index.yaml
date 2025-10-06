@@ -3,10 +3,8 @@ dateAdded: 2025-09-25
 type: document
 topics: []
 external:
-  discriminant: true
-  value:
-    url: >-
-      https://nbed.sharepoint.com/:w:/r/sites/MiddleSchoolLearnersLTR/_layouts/15/Doc2.aspx?action=edit&sourcedoc=%7Be2a1b679-e898-4e80-8257-7d4aa6ad2033%7D&wdOrigin=TEAMS-WEB.teamsSdk_ns.rwc&wdExp=TEAMS-TREATMENT&wdhostclicktime=1758635315447&web=1
+  discriminant: false
+  value: {}
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
