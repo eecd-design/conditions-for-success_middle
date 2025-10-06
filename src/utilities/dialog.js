@@ -12,8 +12,11 @@ let dialogControl = (() => {
 		if (activeDialog) activeDialog.close();
 		if (context) targetDialog.setAttribute('data-context', context);
 		let heading = targetDialog.querySelector('h2');
-		headingText = headingText ? headingText.trim() : heading.getAttribute('data-default-text').trim();
-		if (heading && headingText !== heading.textContent) heading.textContent = headingText;
+		if (heading) {
+			let defaultText = heading.getAttribute('data-default-text')?.trim() ?? heading.textContent;
+			headingText = headingText ? headingText.trim() : defaultText;
+			if (headingText !== defaultText) heading.textContent = headingText;
+		}
 		targetDialog.showModal();
 	}
 
