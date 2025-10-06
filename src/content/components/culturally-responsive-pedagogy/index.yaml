@@ -1,6 +1,7 @@
 indicator: access-and-equity
 tag: '2.7'
 title: Culturally Responsive Pedagogy
+explainerResource: every-learner-seen-an-introduction-to-crp
 initiating:
   considerations:
     - tag: 2.7.1
