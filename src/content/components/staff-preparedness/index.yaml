@@ -1,6 +1,7 @@
 indicator: empathy
 tag: '4.1'
 title: Staff Preparedness
+explainerResource: why-empathy-matters-supporting-learners
 initiating:
   considerations:
     - tag: 4.1.1
