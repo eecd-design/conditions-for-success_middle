@@ -1,6 +1,7 @@
 indicator: access-and-equity
 tag: '2.3'
 title: Positive Behavioural Interventions & Supports
+explainerResource: from-reactive-to-proactive-understanding-pbis
 initiating:
   considerations:
     - tag: 2.3.1
