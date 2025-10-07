@@ -848,6 +848,10 @@ p {
 	border-top: 1px solid var(--colour-border-neutral-subtle);
 }
 
+#pagination-controls:has(:only-child) {
+	grid-template-columns: 1fr;
+}
+
 #pagination-controls:has(.next-container:only-child) {
 	justify-content: end;
 }
@@ -1831,6 +1835,7 @@ dialog form hr.group {
 	align-items: center;
 	border: 2px solid var(--colour-border-neutral-subtle);
 	position: relative;
+	width: 100%;
 }
 
 /* Heading On Outline */
