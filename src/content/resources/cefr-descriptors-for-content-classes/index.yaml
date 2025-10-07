@@ -5,7 +5,8 @@ description: A1–B2 Descriptors for Designing Learning in Content Classes
 topics: []
 external:
   discriminant: false
-  value: {}
+  value:
+    fileType: .docx
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
