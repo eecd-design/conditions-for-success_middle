@@ -82,6 +82,13 @@
 	--font-size-5xl: clamp(3.15rem, 1.91vi + 2.51rem, 3.73rem);
 
 
+	/* 
+	// Box Shadow
+	*/
+
+	--box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
+
+
 	/*
     // Base Colours
     */
@@ -702,7 +709,59 @@ p {
 }
 
 
+/* 
+// Media Button
+*/
 
+:is(button:not([data-style-as="link"]), [data-style-as="button"]).media {
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: var(--border-radius-normal);
+	background-color: var(--colour-fill-accent-bold);
+	overflow: hidden;
+}
+
+:is(button:not([data-style-as="link"]), [data-style-as="button"]).media img {
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0.9;
+	z-index: 1;
+	transition: opacity var(--transition-linear-fast), scale var(--transition-ease-medium);
+}
+
+:is(button:not([data-style-as="link"]), [data-style-as="button"]).media:is(:hover, :focus-visible) img {
+	opacity: 0.4;
+	scale: 1.025;
+}
+
+:is(button:not([data-style-as="link"]), [data-style-as="button"]).media .icon-container {
+	--icon-size: 3rem;
+	--icon-colour: var(--colour-ui-accent);
+	--icon-colour: var(--colour-ui-neutral);
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--colour-background);
+	border-radius: 100rem;
+	box-shadow: var(--box-shadow);
+	width: 5.75rem;
+	height: 5.75rem;
+	z-index: 2;
+	transition: scale var(--transition-ease-medium);
+}
+
+:is(button:not([data-style-as="link"]), [data-style-as="button"]).media:is(:hover, :focus-visible) .icon-container {
+	scale: 1.0675;
+}
 
 
 
