@@ -4,8 +4,7 @@ type: document
 topics: []
 external:
   discriminant: false
-  value:
-    fileType: .docx
+  value: {}
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
