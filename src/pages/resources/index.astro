@@ -47,7 +47,17 @@ allComponents.sort((a, b) => {
 	return (a.data.tag || "").localeCompare(b.data.tag || "");
 });
 
-let types = ["Audio", "Document", "Presentation", "Video", "Website"];
+let allTypes = new Set();
+allResources.map((resource) => {
+	allTypes.add(
+		resource.data.type.charAt(0).toUpperCase() +
+			resource.data.type.slice(1),
+	);
+});
+
+let types = [...allTypes].sort((a: string, b: string) => {
+	return a.localeCompare(b);
+}) as Array<string>;
 ---
 
 <BaseLayout pageTitle={"Resources"}>
@@ -431,7 +441,7 @@ let types = ["Audio", "Document", "Presentation", "Video", "Website"];
 		--button-ui-colour: var(--colour-ui-neutral);
 		/* --icon-colour: var(--colour-ui-accent); */
 		--icon-size: 1rem;
-
+		min-height: auto;
 		padding: var(--space-xs);
 	}
 
