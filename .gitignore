@@ -24,7 +24,8 @@ pnpm-debug.log*
 .idea/
 
 # resources assets
-public/assets/
+public/assets/files
+public/assets/media/*.mp4
 
 # Local Netlify folder
 .netlify
