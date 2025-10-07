@@ -18,6 +18,10 @@ import IconHome from "./icons/IconHome_24.astro";
 import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
 import IconArrowRight16 from "./icons/IconArrowRight_16.astro";
 import IconXmark from "src/components/icons/IconXmark_20.astro";
+import IconVideo from "src/components/icons/IconVideo_48.astro";
+
+import { Image } from "astro:assets";
+import welcomeVideoPoster from "src/images/welcome-video-poster.png";
 
 const { url } = Astro;
 let path = url.pathname;
@@ -137,14 +141,26 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			</div>
 		</div>
 		<div class="background" aria-hidden="true"></div>
+
+
+		<!-- 
+		---- Homepage Only
+		-->
+
 		{path === '/' && (
 			<div class="site-title-container">
 				<h1 class="site-title">New Brunswick Middle Schools: A Window of Opportunity</h1>
 				<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
 			</div>
 			<div class="media-container">
-				<button class="open-dialog" data-dialog="media-dialog" data-media-type="video" data-media-src="" data-media-external="false" type="button">
-					Internal Video
+				<button class="media open-dialog" data-dialog="media-dialog" data-dialog-heading="Welcome to the Conditions for Success Website!" data-media-type="video" data-media-src="https://middle.nbed.ca/conditions-for-success/assets/media/welcome.mp4" data-media-external="false" type="button">
+					<Image
+						src={welcomeVideoPoster}
+						alt="A snapshot of the website welcome video."
+					/>
+					<span class="icon-container">
+						<IconVideo/>
+					</span>
 				</button>
 			</div>
 			<MediaDialog/>
@@ -352,7 +368,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: var(--border-radius-normal);
 		padding: var(--space-sm);
-		box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
+		box-shadow: var(--box-shadow);
 		position: absolute;
 		top: calc(3rem + var(--space-xs));
 		z-index: 1000;
@@ -399,7 +415,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 		background-color: var(--colour-fill-accent-bold);
-		box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
+		box-shadow: var(--box-shadow);
 	}
 
 	header nav.global button.subnav-toggle .icon.caret {
@@ -580,7 +596,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	@container header (width < 1440px) {
 		header .media-container {
-			min-height: auto;
+			min-height: 280px;
 			width: min(900px, calc(100% - (2*var(--space-2xl))));
 			margin: 0 0 var(--space-2xl);
 			aspect-ratio: 16 / 9;

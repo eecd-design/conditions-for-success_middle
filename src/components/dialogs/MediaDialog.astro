@@ -17,19 +17,15 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 		Media Resource
 	</h2>
 
-	<video controls poster="" autofocus hidden>
-		<source src="" />
-		<track default kind="captions" src="" srclang="en" />
-	</video>
+	<video controls poster="" hidden></video>
 
-	<audio controls src="" autofocus hidden></audio>
+	<audio controls src="" hidden></audio>
 
 	<iframe
 		src=""
 		frameborder="0"
 		referrerpolicy="strict-origin-when-cross-origin"
 		allowfullscreen
-		autofocus
 		hidden></iframe>
 
 	<div class="transcript accordion-group" hidden>
@@ -111,7 +107,6 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 
 		// Get the media elements
 		let video = mediaDialog.querySelector("video");
-		let captions = video?.querySelector("track");
 		let iframe = mediaDialog.querySelector("iframe");
 		let audio = mediaDialog.querySelector("audio");
 		let transcriptAccordion = mediaDialog.querySelector(".transcript");
@@ -131,15 +126,31 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 
 		if (!mediaType && !mediaSrc) return;
 
-		// Get a path only verison of the src url
+		// Get a path only version of the src url
 		let mediaSrcPathOnly = removeFileExtension(mediaSrc);
+		console.log(mediaSrcPathOnly);
 
 		if (mediaType === "video") {
 			if (!mediaExternal) {
-				video.setAttribute("src", mediaSrc);
 				video.setAttribute("poster", `${mediaSrcPathOnly}.png`);
 				video.removeAttribute("hidden");
-				captions.setAttribute("src", `${mediaSrcPathOnly}.vtt`);
+				video.src = mediaSrc;
+
+				// Remove old tracks
+				video.querySelectorAll("track").forEach((t) => t.remove());
+
+				// Create new track
+				let newTrack = document.createElement("track");
+				// newTrack.src = `${mediaSrcPathOnly}.vtt`;
+				newTrack.src = `/assets/media/${mediaSrcPathOnly.split("/").slice(-1)}.vtt`; // TODO: TEMP TESTING
+				newTrack.kind = "captions";
+				newTrack.srclang = "en";
+				newTrack.label = "English";
+				newTrack.default = true;
+				video.append(newTrack);
+
+				// Force reload
+				video.load();
 			} else {
 				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
 				iframe.removeAttribute("hidden");
