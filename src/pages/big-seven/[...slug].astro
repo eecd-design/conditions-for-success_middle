@@ -9,6 +9,7 @@ import IconArrow from "src/components/icons/IconArrowRight_16.astro";
 import IconCompass from "src/components/icons/IconCompass_24.astro";
 import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowLeftSmall from "src/components/icons/IconArrowLeft_16.astro";
+import MediaDialog from "src/components/dialogs/MediaDialog.astro";
 
 // Get the current indicator
 export async function getStaticPaths() {
@@ -55,6 +56,8 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 	<AssessmentToolbar />
 
 	<AssessmentDialogs />
+
+	<MediaDialog/>
 
 	<SectionNav />
 
