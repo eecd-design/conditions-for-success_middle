@@ -14,6 +14,7 @@ import ReportDialogs from "src/components/dialogs/ReportDialogs.astro";
 import Toast from "src/components/Toast.astro";
 import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
+import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -95,14 +96,28 @@ let allComponents = await getCollection("components");
 	<div class="content report">
 
 		<h1 aria-live="polite">
-			<span class="title" data-field="reportSchool">Report</span>
+			<span class="title" data-restrict-device="small">Report</span>
+			<span class="title" data-restrict-device="large" data-field="reportSchool">Report</span>
 			<span class="subtitle" data-font-type="sans-serif" data-restrict-report="active">
 				<span data-field="reportYear"></span>
 				Report
 			</span>
 		</h1>
 
-		<div class="callout" data-restrict-report="inactive">
+		<div class="callout" data-style="solid" data-fit="compact" data-theme="yellow" data-vibrancy="vivid" data-restrict-device="small">
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>
+						The report feature isn't available on small screens. Please use a tablet or desktop device to access it.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="callout" data-restrict-report="inactive" data-restrict-device="large">
 			<div class="wrapper">
 				<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
 				<div class="button-group">
@@ -202,8 +217,6 @@ let allComponents = await getCollection("components");
 				// Get all current indicator components
 				let components = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
-				console.log(components[0]);
-				
 				return (
 
 					<hr class="section" data-print="false" />
@@ -241,6 +254,10 @@ let allComponents = await getCollection("components");
 		margin: var(--space-2xs) 0 0;
 	}
 
+	.content.report [data-restrict-device="small"] {
+		display: none;
+	}
+
 	.content.report > .callout :is(button, [data-style-as="button"]) {
 		--container-gap: var(--space-xs);
 		--label-size: var(--font-size-xs);
@@ -265,6 +282,17 @@ let allComponents = await getCollection("components");
 		margin: var(--space-sm) 0 0;
 		background-color: var(--colour-fill-neutral-subtle);
 		border-radius: var(--border-radius-normal);
+	}
+
+	@container main (width < 848px) {
+		.content.report [data-restrict-device="small"] {
+			display: initial;
+		}
+
+		.content.report [data-restrict-device="large"],
+		.content.report [data-restrict-report="active"] {
+			display: none !important;
+		}
 	}
 
 	#report-controls :is(button, [data-style-as='button']) {
@@ -477,13 +505,10 @@ import { toastControl } from 'src/utilities/toast';
 		 */
 		let addWrappedText = (doc, text, x, y, maxWidth, lineHeight = doc.getLineHeight()) => {
 
-			console.log('Current Y (Prior to add wrapped text)', y);
-			
 			let lines = doc.splitTextToSize(text, maxWidth);
 			
 			// Account for baseline text placement
 			y += lineHeight;
-			console.log('Current Y (Adjusted for first line)', y);
 			
 			for (let i = 0; i < lines.length; i++) {
 				doc.text(lines[i], x, y);
@@ -493,8 +518,6 @@ import { toastControl } from 'src/utilities/toast';
 					y += lineHeight;
 				}
 			}
-
-			console.log('Current Y (After adding text)', y);
 
 			return y; // return new Y so you can keep adding below
 		};
@@ -693,8 +716,6 @@ import { toastControl } from 'src/utilities/toast';
 		)
 			return;	
 			
-		console.log('Updating Report (page)');
-		
 		let main = document.querySelector('main');
 		let sections = reportContainer?.querySelectorAll(':scope > section');
 		let onPageNav = document.querySelector('aside.on-page-nav-container');
@@ -712,8 +733,6 @@ import { toastControl } from 'src/utilities/toast';
 			let assessment = getActiveReportData();
 			if (!assessment) return;
 
-			console.log('Updating Report (report)');
-			
 			main.setAttribute('data-report', 'active');
 			
 			let onPageNavLinks = onPageNav.querySelectorAll('a');
