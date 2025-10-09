@@ -10,51 +10,78 @@ initiating:
       compass: false
       categories: []
     - tag: 7.3.2
-      title: Reflection on experiential activities is minimal or informal.
+      title: >-
+        Reflection on experiential activities is minimal, unassessed, or
+        informal.
+      compass: false
+      categories: []
+    - tag: 7.3.3
+      title: >-
+        Learning is primarily thought about or applied by the educator, rather
+        than by the learners.
       compass: false
       categories: []
 implementing:
   considerations:
-    - tag: 7.3.3
+    - tag: 7.3.4
       title: >-
-        Learners participate in outdoor activities, like nature walks, local
+        Learners participate in experiential activities, like experiments, local
         field studies, or Land-based learning opportunities connected to
         curriculum goals.
       compass: false
       categories: []
-    - tag: 7.3.4
+    - tag: 7.3.5
       title: >-
-        Educators guide learners in reflecting on outdoor experiences through
-        journals or group discussions.
+        Educators guide students in reflecting on experiential activities
+        through journals or group discussions.
+      compass: false
+      categories: []
+    - tag: 7.3.6
+      title: >-
+        Learners have limited opportunities to apply their learning, and their
+        thinking is primarily guided by the educator.
       compass: false
       categories: []
 developing:
   considerations:
-    - tag: 7.3.5
+    - tag: 7.3.7
       title: >-
         Learners collaborate to design experiential learning activities, such as
         community engagement projects, outdoor investigations, or Land-based
         learning.
       compass: false
       categories: []
-    - tag: 7.3.6
+    - tag: 7.3.8
       title: >-
-        Reflection on experiential learning activities includes sharing learning
-        outcomes with peers or the broader school community.
+        Reflection on experiential activities includes sharing learning outcomes
+        with peers or the broader school community.
+      compass: false
+      categories: []
+    - tag: 7.3.9
+      title: >-
+        Learners begin to think about next steps and how the learning experience
+        can be applied.
       compass: false
       categories: []
 sustaining:
   considerations:
-    - tag: 7.3.7
+    - tag: 7.3.10
       title: >-
         Experiential, outdoor learning, and Land-based learning are fully
-        integrated, with learners routinely engaging in hands-on, real-world
-        problem-solving.
+        integrated, with learners routinely designing and engaging in hands-on,
+        real-world problem-solving.
       compass: false
       categories: []
-    - tag: 7.3.8
+    - tag: 7.3.11
       title: >-
-        Learners present their learning to external audiences, such as parents
-        or community members.
+        Learners present their learning to external audiences, such as
+        caregivers.
+      compass: false
+      categories: []
+    - tag: 7.3.12
+      title: >-
+        Learners are active participants in the full cycle: experience, reflect,
+        think, apply, and experience again. Reflection demonstrates connections
+        to both past experiences and planning next steps.
       compass: false
       categories: []
