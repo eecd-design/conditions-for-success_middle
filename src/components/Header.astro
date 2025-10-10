@@ -420,6 +420,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	header nav.global button.subnav-toggle .icon.caret {
 		--icon-size: 0.875rem;
+		transition: rotate var(--transition-ease-medium);
+		transform-origin: center;
+	}
+
+	header nav.global button.subnav-toggle[aria-expanded="true"] .icon.caret {
+		rotate: x 180deg;
 	}
 
 	header nav.global .subnav-link {
