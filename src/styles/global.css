@@ -1083,6 +1083,10 @@ nav.on-page {
 
 @container main (width < 1584px) {
 	main>.wrapper {
+		grid-template-columns: 1fr min(900px, calc(100% - (2*var(--space-2xl)))) 1fr;
+	}
+
+	main>.wrapper:has(aside.left) {
 		grid-template-columns: minmax(calc(300px + var(--space-4xl)), 1fr) min(900px, calc(100% - (2*var(--space-2xl)))) 1fr;
 	}
 
@@ -1093,7 +1097,8 @@ nav.on-page {
 
 @container main (width < 1360px) {
 
-	main>.wrapper {
+	main>.wrapper,
+	main>.wrapper:has(aside.left) {
 		grid-template-columns: 1fr min(900px, calc(100% - (2*var(--space-2xl)))) 1fr;
 	}
 
