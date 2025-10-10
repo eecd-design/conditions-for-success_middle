@@ -823,7 +823,7 @@ let userDataStore = (() => {
 
 userDataStore.init();
 eventControl.add({
-	selector: "document",
+	elem: document,
 	eventType: "astro:after-swap",
 	fn: userDataStore.init,
 });

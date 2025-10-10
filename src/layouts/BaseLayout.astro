@@ -217,19 +217,19 @@ const { pageTitle, indicatorTag } = Astro.props;
 
 		dialogControl.init();
 		eventControl.add({
-			selector: "document",
+			elem: document,
 			eventType: "astro:after-swap",
 			fn: dialogControl.init,
 		});
 
 		search.init();
 		eventControl.add({
-			selector: "document",
+			elem: document,
 			eventType: "astro:before-swap",
 			fn: search.destroy,
 		});
 		eventControl.add({
-			selector: "document",
+			elem: document,
 			eventType: "astro:after-swap",
 			fn: search.init,
 		});
@@ -258,14 +258,13 @@ const { pageTitle, indicatorTag } = Astro.props;
 			}
 		};
 		eventControl.add({
-			selector: "window",
+			elem: window,
 			eventType: "popstate",
 			fn: onPopstate,
 		});
 
 		let onPageLoad = () => {
 			let currentPagePath = window.location.pathname;
-
 			if (currentPagePath !== "/") {
 				setState({
 					lastVisitedPage: {
@@ -299,9 +298,11 @@ const { pageTitle, indicatorTag } = Astro.props;
 			}
 		};
 		eventControl.add({
-			selector: "document",
+			elem: document,
 			eventType: "astro:page-load",
 			fn: onPageLoad,
 		});
+
+		console.log(eventControl._registry);
 	</script>
 </html>

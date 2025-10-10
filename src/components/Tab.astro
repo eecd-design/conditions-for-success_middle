@@ -388,7 +388,7 @@ if (dataset) {
 
 	tabs.init();
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "astro:after-swap",
 		fn: tabs.init,
 	});

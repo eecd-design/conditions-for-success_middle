@@ -45,7 +45,7 @@ let dialogControl = (() => {
 
 	let init = () => {
 		eventControl.add({
-			selector: 'document',
+			elem: document,
 			eventType: 'click',
 			fn: onClick,
 		})

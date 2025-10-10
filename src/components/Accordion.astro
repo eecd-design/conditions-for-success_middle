@@ -365,7 +365,7 @@ let IconCross = crossIcons[crossIconSize];
 
 	accordion.init();
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "astro:after-swap",
 		fn: accordion.init,
 	});
