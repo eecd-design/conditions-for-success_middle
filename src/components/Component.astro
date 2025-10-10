@@ -2,7 +2,7 @@
 import { getCollection, getEntry } from "astro:content";
 
 import Accordion from "../components/Accordion.astro";
-import LinkListItem from "./LinkListItem.astro";
+import DetailedLink from "./DetailedLink.astro";
 
 import PhaseIcons from "./icons/PhaseIcons.astro";
 import IconFlag from "./icons/IconFlag_24.astro";
@@ -131,7 +131,7 @@ console.log('Preppring Component', entry.data.tag);
 
 <section class="component" data-component-tag={entry.data.tag}>
 
-	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment">Initiating</p>
+	<p class="phase-status" data-field="currentPhase" data-restrict-mode="assessment" data-restrict-device-min="medium">Initiating</p>
 
 	<h2 id={`component-${entry.data.tag.replaceAll('.', '-')}`}>
 		<span class="tag" data-font-type="sans-serif">
@@ -149,7 +149,7 @@ console.log('Preppring Component', entry.data.tag);
 	{ explainerResource && (
 
 		<div class="explainer-resource link-container" data-content="resources" data-layout="detailed">
-			<LinkListItem itemData={explainerResource} includeItemWrapper={false}/>
+			<DetailedLink itemData={explainerResource} includeItemWrapper={false}/>
 		</div>
 
 	)}
@@ -283,7 +283,7 @@ console.log('Preppring Component', entry.data.tag);
 																			let data = JSON.parse(JSON.stringify(resource.data));
 																			data.category = 'resource';
 																			data.slug = resource.id;
-																			return <LinkListItem itemData={data}/> 
+																			return <DetailedLink itemData={data}/> 
 																		})}
 																	</ul>
 																</div>
@@ -315,8 +315,14 @@ console.log('Preppring Component', entry.data.tag);
 </section>
 
 <style is:global>
+	
+	@container main (width < 848px) {
+		section.component [data-restrict-device-min="medium"] {
+			display: none !important;
+		}
+	}
 
-	@container main (width > 848px) {
+	@container main (width >= 848px) {
 		[data-mode="assessment"] .component h2 {
 			scroll-margin-top: 8.5rem;
 		}
@@ -332,15 +338,9 @@ console.log('Preppring Component', entry.data.tag);
 		color: var(--colour-ui-accent-subtle)
 	}
 
-	@container main (width > 848px) {
+	@container main (width >= 848px) {
 		[data-mode="assessment"] .phase-status ~ h2 {
 			margin-top: 0;
-		}
-	}
-
-	@container main (width < 848px) {
-		.phase-status {
-			display: none;
 		}
 	}
 
@@ -416,8 +416,6 @@ console.log('Preppring Component', entry.data.tag);
 			padding: var(--space-sm) 0 0;
 		}
 	}
-
-	/* TODO: Switch to column on smaller */
 
 
 
@@ -704,7 +702,7 @@ console.log('Preppring Component', entry.data.tag);
 
 	filter.init();
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "astro:after-swap",
 		fn: filter.init,
 	});

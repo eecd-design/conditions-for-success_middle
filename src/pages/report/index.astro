@@ -6,7 +6,7 @@ import IconFolder20 from "src/components/icons/IconFolder_20.astro";
 import IconCross20 from "src/components/icons/IconCross_20.astro";
 import IconDownload20 from "src/components/icons/IconDownload_20.astro";
 import IconCog20 from "src/components/icons/IconCog_20.astro";
-import IconXmark16 from "src/components/icons/IconXmark_16.astro";
+import IconXmark20 from "src/components/icons/IconXmark_20.astro";
 import ProgressChart from "src/components/charts/ProgressChart.astro";
 import MatrixChart from "src/components/charts/MatrixChart.astro";
 import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssessmentDialogs.astro";
@@ -96,15 +96,15 @@ let allComponents = await getCollection("components");
 	<div class="content report">
 
 		<h1 aria-live="polite">
-			<span class="title" data-restrict-device="small">Report</span>
-			<span class="title" data-restrict-device="large" data-field="reportSchool">Report</span>
+			<span class="title" data-restrict-device-max="small">Report</span>
+			<span class="title" data-restrict-device-min="medium" data-field="reportSchool">Report</span>
 			<span class="subtitle" data-font-type="sans-serif" data-restrict-report="active">
 				<span data-field="reportYear"></span>
 				Report
 			</span>
 		</h1>
 
-		<div class="callout" data-style="solid" data-fit="compact" data-theme="yellow" data-vibrancy="vivid" data-restrict-device="small">
+		<div class="callout" data-style="solid" data-fit="compact" data-theme="yellow" data-vibrancy="vivid" data-restrict-device-max="small">
 			<div class="wrapper">
 				<div class="icon-container">
 					<IconWarningBig />
@@ -117,7 +117,7 @@ let allComponents = await getCollection("components");
 			</div>
 		</div>
 
-		<div class="callout" data-restrict-report="inactive" data-restrict-device="large">
+		<div class="callout" data-restrict-report="inactive" data-restrict-device-min="medium">
 			<div class="wrapper">
 				<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
 				<div class="button-group">
@@ -182,7 +182,7 @@ let allComponents = await getCollection("components");
 				data-toast-success="report-page_close-toast_success" 
 				data-toast-failure="report-page_close-toast_failure">
 					<div class="icon-and-label-container">
-						<IconXmark16/>
+						<IconXmark20/>
 						<span class="label-container">
 							<span class="label">Close</span>
 						</span>
@@ -245,6 +245,25 @@ let allComponents = await getCollection("components");
 </BaseLayout>
 
 <style is:global>
+	/* 
+	// Device Restrictions
+	------------------------*/
+
+	@container main (width < 848px) {
+		.content.report [data-restrict-report="active"] {
+			display: none !important;
+		}
+
+		.content.report [data-restrict-device-min="medium"] {
+			display: none !important;
+		}
+	}
+
+	@container main (width >= 848px) {
+		.content.report [data-restrict-device-max="small"] {
+			display: none !important;
+		}
+	}
 
 	.content.report h1 .subtitle {
 		display: block;
@@ -253,11 +272,7 @@ let allComponents = await getCollection("components");
 		color: var(--colour-ui-neutral-subtle);
 		margin: var(--space-2xs) 0 0;
 	}
-
-	.content.report [data-restrict-device="small"] {
-		display: none;
-	}
-
+	
 	.content.report > .callout :is(button, [data-style-as="button"]) {
 		--container-gap: var(--space-xs);
 		--label-size: var(--font-size-xs);
@@ -284,17 +299,6 @@ let allComponents = await getCollection("components");
 		border-radius: var(--border-radius-normal);
 	}
 
-	@container main (width < 848px) {
-		.content.report [data-restrict-device="small"] {
-			display: initial;
-		}
-
-		.content.report [data-restrict-device="large"],
-		.content.report [data-restrict-report="active"] {
-			display: none !important;
-		}
-	}
-
 	#report-controls :is(button, [data-style-as='button']) {
 		--icon-size: 1.25rem;
 		--button-background-colour: transparent;
@@ -304,10 +308,6 @@ let allComponents = await getCollection("components");
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 		--button-background-colour: var(--colour-fill-neutral-bold);
-	}
-
-	#report-controls button.close-report {
-		--icon-size: 1rem;
 	}
 
 	#report-controls .separator.item {
@@ -368,7 +368,6 @@ let allComponents = await getCollection("components");
 			display: none !important;
 		}
 	}
-
 </style>
 
 <script>

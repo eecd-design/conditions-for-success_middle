@@ -8,7 +8,7 @@ import IconEditSmall from "./icons/IconEdit_14.astro";
 import IconEditStop from "./icons/IconEditStop_20.astro";
 import IconAssessor from "./icons/IconAssessor_20.astro";
 import IconAssessment from "./icons/IconAssessment_20.astro";
-import IconXmark16 from "./icons/IconXmark_16.astro";
+import IconXmark from "./icons/IconXmark_20.astro";
 import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 import Toast from "./Toast.astro";
@@ -20,7 +20,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 	aria-label="Assessment Controls Toolbar"
 	role="toolbar"
 >
-	<div class="notice" data-theme="yellow" data-vibrancy="vivid">
+	<div
+		class="notice"
+		data-theme="yellow"
+		data-vibrancy="vivid"
+		data-restrict-device-max="small"
+	>
 		<IconWarning16 />
 		<div>
 			<p>
@@ -30,7 +35,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		</div>
 	</div>
 
-	<div class="wrapper">
+	<div class="wrapper" data-restrict-device-min="medium">
 		<div class="info-group button-group" data-restrict-mode="assessment">
 			<!-- Assessment Title -->
 			<div class="field-container icon-and-label-container">
@@ -271,7 +276,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				data-toast-failure="assessment-toolbar_close-toast_failure"
 			>
 				<div class="icon-and-label-container">
-					<IconXmark16 />
+					<IconXmark />
 					<span class="label-container">
 						<span class="label">Close</span>
 					</span>
@@ -297,7 +302,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 
 	#assessment-controls > .notice {
 		--icon-size: 1rem;
-		display: none;
+		display: flex;
 		align-items: center;
 		gap: var(--space-base);
 		height: 100%;
@@ -329,12 +334,14 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 			position: static;
 		}
 
-		#assessment-controls > .notice {
-			display: flex;
+		#assessment-controls [data-restrict-device-min="medium"] {
+			display: none !important;
 		}
+	}
 
-		#assessment-controls > .wrapper {
-			display: none;
+	@container main (width >= 848px) {
+		#assessment-controls [data-restrict-device-max="small"] {
+			display: none !important;
 		}
 	}
 
@@ -362,10 +369,6 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 		--button-background-colour: var(--colour-fill-neutral-bold);
-	}
-
-	#assessment-controls button.close {
-		--icon-size: 1rem !important;
 	}
 
 	@container assessment-controls (width < 1552px) {
