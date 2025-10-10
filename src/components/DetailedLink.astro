@@ -10,7 +10,6 @@ import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
 let { itemData, includeItemWrapper = true } = Astro.props;
-console.log(itemData.id);
 
 let {
 	category = null,
@@ -150,11 +149,14 @@ else if (type === "image") {
 					aria-hidden="true"
 				/>
 				<span class="text-container">
-					<span class="label" data-restrict-content="mixed">
+					<span class="detailed label" data-restrict-content="mixed">
 						{category !== "resource"
 							? `${toTitleCase(category)} ${tag}`
 							: `${toTitleCase(type)} Resource`}
 					</span>
+					{category === "resource" && (
+						<span class="simple label">{toTitleCase(type)}</span>
+					)}
 					<span class="title">
 						{title}
 						{tags && (
@@ -213,11 +215,14 @@ else if (type === "image") {
 				aria-hidden="true"
 			/>
 			<span class="text-container">
-				<span class="label" data-restrict-content="mixed">
+				<span class="detailed label" data-restrict-content="mixed">
 					{category !== "resource"
 						? `${toTitleCase(category)} ${tag}`
 						: `${toTitleCase(type)} Resource`}
 				</span>
+				{category === "resource" && (
+					<span class="simple label">{toTitleCase(type)}</span>
+				)}
 				<span class="title">
 					{title}
 					{tags && (
@@ -260,91 +265,62 @@ else if (type === "image") {
 
 <style is:global>
 	/* 
-	// Links List (Divided)
-	*/
-
-	.links-list[data-style="divided"] {
-		gap: 0;
-	}
-
-	.links-list[data-style="divided"] > li {
-		padding: var(--space-2xs) 0;
-	}
-
-	.links-list[data-style="divided"] > li:first-child {
-		padding-top: 0 !important;
-	}
-
-	.links-list[data-style="divided"] > li:last-child {
-		padding-bottom: 0 !important;
-	}
-
-	.links-list[data-style="divided"] > li:has(+ li:not([hidden])) {
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
-	}
-
-	/* 
-	// Link Container (single link)
-	*/
-
-	.link-container {
-		margin: var(--space-xl) 0;
-	}
-
-	.link-container:has(+ .reflection-question) {
-		margin: var(--space-lg) 0 var(--space-3xl);
-	}
-
-	.link-container .detailed-link {
-		min-height: 3.5rem;
-	}
-
-	/* 
 	// Detailed Link
-	*/
+	// ------------------------*/
 
 	:is(a, [data-style-as="link"]).detailed-link {
+		--link-ui-colour: var(--colour-ui-neutral-subtle);
+		container: detailed-link / inline-size;
 		gap: var(--space-xs);
 		width: 100%;
 		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
+		background-color: var(--link-background-colour, transparent);
 		border-radius: var(--border-radius-normal);
 		text-decoration: none;
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
-	.link-container :is(a, [data-style-as="link"]).detailed-link {
-		background-color: var(
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible) {
+		--link-background-colour: var(
 			--colour-fill-accent-subtle,
 			var(--colour-fill-neutral-subtle)
 		);
-	}
-
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link:is(
-			:hover,
-			:focus-visible
-		) {
-		background-color: transparent;
-		outline: 2px solid var(--colour-border-accent-subtle);
-		outline-offset: -1px;
-	}
-
-	/* SEPARATOR */
-
-	:is(a, [data-style-as="link"]).detailed-link .separator {
-		align-self: stretch;
-	}
-
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.separator,
-	.link-container :is(a, [data-style-as="link"]).detailed-link .separator {
-		background-color: var(
+		--link-border-colour: var(
 			--colour-border-accent-mid,
 			var(--colour-border-neutral-mid)
 		);
+		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	}
 
-	/* TEXT CONTAINER */
+	/*
+	// Type Icon and Label
+	*/
+
+	:is(a, [data-style-as="link"]).detailed-link .icon-and-label-container {
+		--label-colour: var(--link-ui-colour);
+		place-self: stretch;
+	}
+
+	/*
+	// Destination Icon
+	*/
+
+	:is(a, [data-style-as="link"]).detailed-link
+		:is(.icon.destination, .icon.type) {
+		--icon-colour: var(--link-ui-colour);
+	}
+
+	/*
+	// Separator
+	*/
+
+	:is(a, [data-style-as="link"]).detailed-link .separator {
+		--separator-colour: var(--link-border-colour);
+		align-self: stretch;
+	}
+
+	/*
+	// Text Container
+	*/
 
 	:is(a, [data-style-as="link"]).detailed-link .text-container {
 		display: flex;
@@ -352,7 +328,7 @@ else if (type === "image") {
 		gap: var(--space-2xs);
 	}
 
-	/* TITLE */
+	/* Title */
 
 	:is(a, [data-style-as="link"]).detailed-link .text-container .title {
 		display: flex;
@@ -362,7 +338,7 @@ else if (type === "image") {
 		font-size: var(--font-size-xs);
 	}
 
-	/* DATE */
+	/* Date */
 
 	:is(a, [data-style-as="link"]).detailed-link .text-container .date {
 		font-size: var(--font-size-3xs);
@@ -376,7 +352,7 @@ else if (type === "image") {
 		color: var(--colour-ui-neutral);
 	}
 
-	/* TAGS */
+	/* Tags */
 
 	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list {
 		display: flex;
@@ -412,7 +388,7 @@ else if (type === "image") {
 		color: var(--colour-ui-reverse);
 	}
 
-	/* DESCRIPTION */
+	/* Description */
 
 	:is(a, [data-style-as="link"]).detailed-link .text-container .description {
 		font-size: var(--font-size-2xs);
@@ -427,6 +403,8 @@ else if (type === "image") {
 		color: var(--colour-ui-neutral);
 	}
 
+	/* Label */
+
 	:is(a, [data-style-as="link"]).detailed-link .label {
 		--label-size: var(--font-size-2xs);
 		--label-colour: var(
@@ -435,25 +413,90 @@ else if (type === "image") {
 		);
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.icon-and-label-container,
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link
-		.icon-and-label-container {
-		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+	:is(a, [data-style-as="link"]).detailed-link .label.simple {
+		display: none;
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		:is(.icon.destination, .icon.type),
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link
-		:is(.icon.destination, .icon.type) {
-		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+	@container detailed-link (width < 400px) {
+		:is(
+				.links-list[data-content="resources"],
+				.link-container[data-content="resources"]
+			)
+			:is(a, [data-style-as="link"]).detailed-link
+			.icon-and-label-container {
+			display: none !important;
+		}
+
+		:is(
+				.links-list[data-content="resources"],
+				.link-container[data-content="resources"]
+			)
+			:is(a, [data-style-as="link"]).detailed-link
+			.text-container
+			.title {
+			flex-flow: column;
+		}
+
+		:is(
+				.links-list[data-content="resources"],
+				.link-container[data-content="resources"]
+			)
+			:is(a, [data-style-as="link"]).detailed-link
+			.separator {
+			display: none !important;
+		}
+
+		:is(
+				.links-list[data-content="resources"],
+				.link-container[data-content="resources"]
+			)
+			:is(a, [data-style-as="link"]).detailed-link
+			.label.simple {
+			display: initial !important;
+		}
+
+		:is(
+				.links-list[data-content="resources"],
+				.link-container[data-content="resources"]
+			)
+			:is(a, [data-style-as="link"]).detailed-link
+			.label.detailed {
+			display: none !important;
+		}
 	}
+
+	/* Highlight */
 
 	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		span.highlight {
 		--highlight-background-colour: transparent;
 		--highlight-ui-colour: var(--colour-ui-neutral);
+	}
+
+	/* 
+	// Link Container Customization
+	*/
+
+	.link-container .detailed-link {
+		--link-background-colour: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
+		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+		--link-border-colour: var(
+			--colour-border-accent-mid,
+			var(--colour-border-neutral-mid)
+		);
+		min-height: 3.5rem;
+	}
+
+	.link-container
+		:is(a, [data-style-as="link"]).detailed-link:is(
+			:hover,
+			:focus-visible
+		) {
+		background-color: transparent;
+		outline: 2px solid var(--colour-border-accent-subtle);
+		outline-offset: -1px;
 	}
 </style>

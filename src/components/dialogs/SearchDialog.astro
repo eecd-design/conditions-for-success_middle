@@ -6,7 +6,7 @@ import { findObjectByKey } from "src/utilities/helpers";
 import IconXmark from "src/components/icons/IconXmark_20.astro";
 import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconSearch from "src/components/icons/IconSearch_20.astro";
-import LinkListItem from "src/components/LinkListItem.astro";
+import DetailedLink from "src/components/DetailedLink.astro";
 
 let searchList = [];
 
@@ -99,7 +99,7 @@ for (let resource of allResources) {
 			data-content="mixed"
 			hidden
 		>
-			{searchList.map((item) => <LinkListItem itemData={item} />)}
+			{searchList.map((item) => <DetailedLink itemData={item} />)}
 		</ul>
 	</div>
 </dialog>
