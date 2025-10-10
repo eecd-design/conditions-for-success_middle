@@ -1104,6 +1104,35 @@ nav.on-page {
 
 
 
+
+
+/*
+** FOOTER
+------------------------------*/
+
+footer>.wrapper {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	gap: var(--space-base);
+	padding: var(--space-xl) var(--space-2xl);
+	background-color: var(--colour-fill-neutral-mid);
+}
+
+footer>.wrapper small {
+	font-size: var(--font-size-2xs);
+	text-align: center;
+	color: var(--colour-ui-reverse);
+	text-wrap: balance;
+}
+
+footer>.wrapper img {
+	height: auto;
+	width: 10rem;
+}
+
+
+
 /*
 ** RESTRICTIONS
 ------------------------------*/

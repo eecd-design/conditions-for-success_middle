@@ -6,6 +6,9 @@ import Header from "../components/Header.astro";
 import "../styles/normalize.css";
 import "../styles/global.css";
 
+import { Image } from "astro:assets";
+import GNBLogo from "../images/gnb-logo-reverse.png";
+
 const { pageTitle, indicatorTag } = Astro.props;
 ---
 
@@ -39,7 +42,15 @@ const { pageTitle, indicatorTag } = Astro.props;
 				<slot />
 			</div>
 		</main>
-		<footer></footer>
+		<footer>
+			<div class="wrapper">
+				<Image src={GNBLogo} alt="Government of New Brunswick Logo" />
+				<small
+					>Copyright © <span id="copyrightYear">2025</span> Government
+					of New Brunswick. All Rights Reserved.</small
+				>
+			</div>
+		</footer>
 	</body><script>
 		//
 		// Imports
@@ -58,6 +69,13 @@ const { pageTitle, indicatorTag } = Astro.props;
 		//
 		// DOM Updates
 		//
+
+		let updateCopyright = () => {
+			let copyrightYear = document.querySelector("#copyrightYear");
+			if (copyrightYear)
+				copyrightYear.textContent = String(new Date().getFullYear());
+		};
+		updateCopyright();
 
 		let updateTheme = (data: UserData, changes) => {
 			let triggerKeys = ["theme"];
