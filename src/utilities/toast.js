@@ -10,13 +10,11 @@ let toastControl = (() => {
 			toast = document.querySelector(`#${target.getAttribute(`data-toast-${type}`)}`);
 		} else {
 			toast = document.querySelector(`#${selector}`);
-			console.log(selector, toast);
 		}
 		if (!toast) return;
 
 		// Dismiss all other active toasts
 		for (let activeToast of activeToasts) {
-			console.log('target toast is active', toast === activeToast);
 			activeToast.removeAttribute('open');
 			if (toastTimers.has(activeToast)) clearTimeout(toastTimers.get(activeToast));
 		}
@@ -24,7 +22,7 @@ let toastControl = (() => {
 
 		// Show the new toast
 		toast.setAttribute('open', '');
-		console.log('Opening Toast');
+		// console.log('Opening Toast');
 		activeToasts.add(toast);
 
 		let duration = type === 'success' ? 2000 : 4000;
