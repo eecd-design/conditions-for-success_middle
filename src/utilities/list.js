@@ -67,6 +67,7 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 
 			if (filters.components) {
 				let match = filters.components.some((v) =>
+					indicators.some(tag => tag.startsWith(v.charAt(0))) ||
 					components.some(tag => tag.startsWith(v)) ||
 					considerations.some(tag => tag.startsWith(v))
 				);
