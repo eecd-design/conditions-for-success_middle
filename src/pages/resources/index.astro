@@ -4,17 +4,19 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Accordion from "src/components/Accordion.astro";
 import MediaDialog from "src/components/dialogs/MediaDialog.astro";
-import LinkListItem from "src/components/LinkListItem.astro";
+import DetailedLink from "src/components/DetailedLink.astro";
 
 import IconCheckmark from "../../components/icons/IconCheckmark_8.astro";
+import IconFilter from "src/components/icons/IconFilter_20.astro";
 import IconFilterClear from "src/components/icons/IconFilterClear_20.astro";
 import IconWarning from "src/components/icons/IconWarning_16.astro";
 import IconSearch from "src/components/icons/IconSearch_20.astro";
-import IconSortAlpha from "src/components/icons/IconSortAlpha_20.astro";
-import IconSortTime from "src/components/icons/IconSortTime_20.astro";
+import IconSortAlpha from "src/components/icons/IconAlpha_20.astro";
+import IconSortTime from "src/components/icons/IconTime_20.astro";
 import IconCompact from "src/components/icons/IconCompact_20.astro";
 import IconDetailed from "src/components/icons/IconDetailed_20.astro";
 import IconXmarkSmall from "src/components/icons/IconXmark_12.astro";
+import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
 import { findObjectByKey } from "src/utilities/helpers";
 
 let allResources = await getCollection("resources");
@@ -61,178 +63,202 @@ let types = [...allTypes].sort((a: string, b: string) => {
 ---
 
 <BaseLayout pageTitle={"Resources"}>
-	<aside class="left filters-container">
-		<form
-			id="resources-list-secondary-controls"
-			class="list-secondary-controls"
-			data-no-value-behaviour="shown"
-			data-list="resources-list"
-			data-tags-list="active-filters-list"
-			data-sort-control="resources-list-primary-controls"
-		>
-			<div class="heading-group">
-				<h2 class="heading">
-					<!-- <IconFilter /> -->
-					<span>Filters</span>
-				</h2>
-				<div
-					class="separator"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-				<label class="filters-reset" data-style-as="button">
-					<div class="icon-and-label-container">
-						<IconFilterClear />
-						<!-- <span class="label-container">
-							<span class="label">Clear Filters</span>
-						</span> -->
+	<aside id="filters-aside" class="left">
+		<div class="wrapper">
+			<form
+				id="resources-list-secondary-controls"
+				class="list-secondary-controls"
+				data-no-value-behaviour="shown"
+				data-list="resources-list"
+				data-tags-list="active-filters-list"
+				data-sort-control="resources-list-primary-controls"
+			>
+				<div class="heading-group">
+					<h2
+						id="resources-list-secondary-controls_heading"
+						class="heading"
+					>
+						<!-- <IconFilter /> -->
+						<span>Filters</span>
+					</h2>
+					<label class="filters-reset" data-style-as="button">
+						<div class="icon-and-label-container">
+							<IconFilterClear />
+							<!-- <span class="label-container">
+								<span class="label">Clear Filters</span>
+								</span> -->
+						</div>
+						<input type="reset" value="" disabled />
+					</label>
+					<div
+						class="separator"
+						data-orientation="vertical"
+						aria-hidden="true"
+						data-restrict-device-max="medium"
+					>
 					</div>
-					<input type="reset" value="" />
-				</label>
-			</div>
-
-			<div class="separator group" aria-hidden="true"></div>
-
-			<Accordion
-				title={"Type"}
-				id={"filters_type"}
-				crossIconSize={"small"}
-				wrapper={false}
-			>
-				<span
-					class="filter-group-status label-container field-container"
-					slot="button-meta"
-					hidden
-				>
-					<span data-field="filtersTypesStatus">0</span
-					>&nbsp;Selected</span
-				>
-
-				<div class="separator item" aria-hidden="true"></div>
-
-				<fieldset class="filters" aria-labelledby="filters_type">
-					{
-						types.map((type) => (
-							<label>
-								<input
-									type="checkbox"
-									name="types"
-									value={type.toLowerCase()}
-									data-title={type}
-									data-status-field="filtersTypesStatus"
-								/>
-								<IconCheckmark />
-								<span class="text-container">{type}</span>
-							</label>
-						))
-					}
-				</fieldset>
-			</Accordion>
-
-			<div class="separator group" aria-hidden="true"></div>
-
-			<Accordion
-				title={"Indicator"}
-				id={"filters_indicator"}
-				crossIconSize={"small"}
-				wrapper={false}
-			>
-				<span
-					class="filter-group-status label-container field-container"
-					slot="button-meta"
-					hidden
-				>
-					<span data-field="filtersIndicatorsStatus">0</span
-					>&nbsp;Selected</span
-				>
-
-				<div class="separator item" aria-hidden="true"></div>
-
-				<fieldset class="filters" aria-labelledby="filters_indicator">
-					{
-						allIndicators.map((indicator) => (
-							<label>
-								<input
-									type="checkbox"
-									name="indicators"
-									value={indicator.data.tag}
-									data-title={indicator.data.title}
-									data-status-field="filtersIndicatorsStatus"
-								/>
-								<IconCheckmark />
-								<span class="text-container">
-									<span
-										class="tag"
-										data-theme={indicator.data["colour"]}
-										data-vibrancy="vivid"
-									>
-										{indicator.data.tag}
-									</span>
-									<span class="text">
-										{indicator.data.title}
-									</span>
-								</span>
-							</label>
-						))
-					}
-				</fieldset>
-			</Accordion>
-
-			<div class="separator group" aria-hidden="true"></div>
-
-			<Accordion
-				title={"Component"}
-				id={"filters_components"}
-				crossIconSize={"small"}
-				wrapper={false}
-			>
-				<span
-					class="filter-group-status label-container field-container"
-					slot="button-meta"
-					hidden
-				>
-					<span data-field="filtersComponentsStatus">0</span
-					>&nbsp;Selected</span
-				>
-
-				<div class="separator item" aria-hidden="true"></div>
-
-				<fieldset class="filters" aria-labelledby="filters_component">
-					{
-						allComponents.map((component) => (
-							<label>
-								<input
-									type="checkbox"
-									name="components"
-									value={component.data.tag}
-									data-title={component.data.title}
-									data-status-field="filtersComponentsStatus"
-								/>
-								<IconCheckmark />
-								<span class="text-container">
-									<span
-										class="tag"
-										data-theme={component.data["colour"]}
-										data-vibrancy="vivid"
-									>
-										{component.data.tag}
-									</span>
-									<span class="text">
-										{component.data.title}
-									</span>
-								</span>
-							</label>
-						))
-					}
-				</fieldset>
-			</Accordion>
-		</form>
+					<button
+						class="close"
+						type="button"
+						aria-label="Close Filters"
+						data-restrict-device-max="medium"
+					>
+						<IconXmarkBig />
+					</button>
+				</div>
+				<div class="separator group" aria-hidden="true"></div>
+				<div class="accordion-group">
+					<Accordion
+						title={"Type"}
+						id={"filters_type"}
+						crossIconSize={"small"}
+						wrapper={false}
+					>
+						<span
+							class="filter-group-status label-container field-container"
+							slot="button-meta"
+							hidden
+						>
+							<span data-field="filtersTypesStatus">0</span
+							>&nbsp;Selected</span
+						>
+						<div class="separator item" aria-hidden="true"></div>
+						<fieldset
+							class="filters"
+							aria-labelledby="filters_type"
+						>
+							{
+								types.map((type) => (
+									<label>
+										<input
+											type="checkbox"
+											name="types"
+											value={type.toLowerCase()}
+											data-title={type}
+											data-status-field="filtersTypesStatus"
+										/>
+										<IconCheckmark />
+										<span class="text-container">
+											{type}
+										</span>
+									</label>
+								))
+							}
+						</fieldset>
+					</Accordion>
+					<div class="separator group" aria-hidden="true"></div>
+					<Accordion
+						title={"Indicator"}
+						id={"filters_indicator"}
+						crossIconSize={"small"}
+						wrapper={false}
+					>
+						<span
+							class="filter-group-status label-container field-container"
+							slot="button-meta"
+							hidden
+						>
+							<span data-field="filtersIndicatorsStatus">0</span
+							>&nbsp;Selected</span
+						>
+						<div class="separator item" aria-hidden="true"></div>
+						<fieldset
+							class="filters"
+							aria-labelledby="filters_indicator"
+						>
+							{
+								allIndicators.map((indicator) => (
+									<label>
+										<input
+											type="checkbox"
+											name="indicators"
+											value={indicator.data.tag}
+											data-title={indicator.data.title}
+											data-status-field="filtersIndicatorsStatus"
+										/>
+										<IconCheckmark />
+										<span class="text-container">
+											<span
+												class="tag"
+												data-theme={
+													indicator.data["colour"]
+												}
+												data-vibrancy="vivid"
+											>
+												{indicator.data.tag}
+											</span>
+											<span class="text">
+												{indicator.data.title}
+											</span>
+										</span>
+									</label>
+								))
+							}
+						</fieldset>
+					</Accordion>
+					<div class="separator group" aria-hidden="true"></div>
+					<Accordion
+						title={"Component"}
+						id={"filters_components"}
+						crossIconSize={"small"}
+						wrapper={false}
+					>
+						<span
+							class="filter-group-status label-container field-container"
+							slot="button-meta"
+							hidden
+						>
+							<span data-field="filtersComponentsStatus">0</span
+							>&nbsp;Selected</span
+						>
+						<div class="separator item" aria-hidden="true"></div>
+						<fieldset
+							class="filters"
+							aria-labelledby="filters_component"
+						>
+							{
+								allComponents.map((component) => (
+									<label>
+										<input
+											type="checkbox"
+											name="components"
+											value={component.data.tag}
+											data-title={component.data.title}
+											data-status-field="filtersComponentsStatus"
+										/>
+										<IconCheckmark />
+										<span class="text-container">
+											<span
+												class="tag"
+												data-theme={
+													component.data["colour"]
+												}
+												data-vibrancy="vivid"
+											>
+												{component.data.tag}
+											</span>
+											<span class="text">
+												{component.data.title}
+											</span>
+										</span>
+									</label>
+								))
+							}
+						</fieldset>
+					</Accordion>
+				</div>
+			</form>
+		</div>
 	</aside>
+	<dialog
+		id="resources-filters-dialog"
+		aria-labelledby="resources-list-secondary-controls_heading"
+	>
+	</dialog>
 
 	<MediaDialog />
 
-	<div class="content">
+	<div class="content resources">
 		<h1>Resources</h1>
 
 		<ul id="active-filters-list" class="field-values-list">
@@ -258,7 +284,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 			data-no-value-behaviour="shown"
 			data-list="resources-list"
 		>
-			<fieldset class="search">
+			<fieldset class="search" data-restrict-device-min="medium">
 				<div class="input-container">
 					<input
 						id="filters-search-input"
@@ -272,85 +298,137 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					<IconSearch />
 				</div>
 			</fieldset>
-
-			<div
-				class="separator item"
-				data-orientation="vertical"
-				aria-hidden="true"
-			>
-			</div>
-
-			<fieldset class="sort">
-				<legend aria-label="List Sort Options">Sort</legend>
-				<div class="button-group">
-					<button
-						type="button"
-						value="date"
-						aria-label="Sort list by date added"
-						aria-pressed="true"
-					>
-						<span class="icon-and-label-container">
-							<IconSortTime />
-							<span class="label-container">
-								<span class="label">Date</span>
-							</span>
-						</span>
-					</button>
-					<button
-						type="button"
-						value="title"
-						aria-label="Sort list by title"
-						aria-pressed="false"
-					>
-						<span class="icon-and-label-container">
-							<IconSortAlpha />
-							<span class="label-container">
-								<span class="label">Title</span>
-							</span>
-						</span>
-					</button>
+			<div class="fieldset-group">
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+					data-restrict-device-max="medium"
+				>
 				</div>
-			</fieldset>
-
-			<div
-				class="separator item"
-				data-orientation="vertical"
-				aria-hidden="true"
-			>
+				<fieldset class="filter" data-restrict-device-max="medium">
+					<legend aria-label="List Filter Options">Filter</legend>
+					<div class="button-group">
+						<button
+							class="filters-toggle"
+							type="button"
+							aria-label="Open filter options"
+							aria-expanded="false"
+						>
+							<span class="icon-and-label-container">
+								<IconFilter />
+								<span class="label-container">
+									<span class="label">Open</span>
+								</span>
+							</span>
+						</button>
+						<button
+							class="filters-reset"
+							type="button"
+							aria-label="Clear all filters"
+							disabled
+						>
+							<span class="icon-and-label-container">
+								<IconFilterClear />
+								<span class="label-container">
+									<span class="label">Clear</span>
+								</span>
+							</span>
+						</button>
+					</div>
+				</fieldset>
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+				>
+				</div>
+				<fieldset class="sort">
+					<legend aria-label="List Sort Options">Sort</legend>
+					<div class="button-group">
+						<button
+							type="button"
+							value="date"
+							aria-label="Sort list by date added"
+							aria-pressed="true"
+						>
+							<span class="icon-and-label-container">
+								<IconSortTime />
+								<span class="label-container">
+									<span class="label">Date</span>
+								</span>
+							</span>
+						</button>
+						<button
+							type="button"
+							value="title"
+							aria-label="Sort list by title"
+							aria-pressed="false"
+						>
+							<span class="icon-and-label-container">
+								<IconSortAlpha />
+								<span class="label-container">
+									<span class="label">Title</span>
+								</span>
+							</span>
+						</button>
+					</div>
+				</fieldset>
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+				>
+				</div>
+				<fieldset class="layout">
+					<legend aria-label="List Layout Options">Layout</legend>
+					<div class="button-group">
+						<button
+							type="button"
+							value="compact"
+							aria-label="Switch to compact list layout"
+							aria-pressed="true"
+						>
+							<span class="icon-and-label-container">
+								<IconCompact />
+								<span class="label-container">
+									<span class="label">Compact</span>
+									<span data-screen-reader hidden
+										>Compact view unavailable for this
+										filter</span
+									>
+								</span>
+							</span>
+						</button>
+						<button
+							type="button"
+							value="detailed"
+							aria-label="Switch to compact list layout"
+							aria-pressed="false"
+						>
+							<span class="icon-and-label-container">
+								<IconDetailed />
+								<span class="label-container">
+									<span class="label">Detailed</span>
+								</span>
+							</span>
+						</button>
+					</div>
+				</fieldset>
 			</div>
-
-			<fieldset class="layout">
-				<legend aria-label="List Layout Options">Layout</legend>
-				<div class="button-group">
-					<button
-						type="button"
-						value="compact"
-						aria-label="Switch to compact list layout"
-						aria-pressed="true"
-					>
-						<span class="icon-and-label-container">
-							<IconCompact />
-							<span class="label-container">
-								<span class="label">Compact</span>
-								<span data-screen-reader hidden
-									>Compact view unavailable for this filter</span
-								>
-							</span>
-						</span>
-					</button>
-					<button
-						type="button"
-						value="detailed"
-						aria-label="Switch to compact list layout"
-						aria-pressed="false"
-					>
-						<span class="icon-and-label-container">
-							<IconDetailed />
-							<span class="label-container">
-								<span class="label">Detailed</span>
-							</span>
-						</span>
-					</button>
+			<!-- Duplicate search input to ensure tab order matches visual order on smaller devices -->
+			<fieldset class="search" data-restrict-device-max="small">
+				<div class="input-container">
+					<input
+						id="filters-search-input"
+						name="search"
+						type="text"
+						placeholder="Search these resources..."
+						aria-label="Search Resources"
+						aria-describedby="resources-list_error"
+						autofocus
+					/>
+					<IconSearch />
 				</div>
 			</fieldset>
 		</form>
@@ -378,7 +456,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 						let data = JSON.parse(JSON.stringify(resource.data));
 						data.category = "resource";
 						data.slug = resource.id;
-						return <LinkListItem itemData={data} />;
+						return <DetailedLink itemData={data} />;
 					})
 				}
 			</ul>
@@ -387,16 +465,88 @@ let types = [...allTypes].sort((a: string, b: string) => {
 </BaseLayout>
 
 <style is:global>
-	.filters-container {
-		grid-area: left-aside;
-		margin: 0 var(--space-4xl) 0 0;
-		padding: var(--space-xl) 0;
-		min-width: 300px;
-		border-right: 1px solid var(--colour-border-neutral-subtle);
+	/* 
+	// Device Restrictions
+	------------------------*/
+
+	@container main (width < 720px) {
+		:is(#filters-aside, .content.resources)
+			[data-restrict-device-min="medium"] {
+			display: none !important;
+		}
 	}
 
-	.filters-container .heading-group {
-		--icon-size: 1.25rem;
+	@container main (720px <= width < 1360px) {
+		:is(#filters-aside, .content.resources)
+			[data-restrict-device-max="small"] {
+			display: none !important;
+		}
+	}
+
+	@container main (width >= 1360px) {
+		:is(#filters-aside, .content.resources)
+			[data-restrict-device-max="small"],
+		:is(#filters-aside, .content.resources)
+			[data-restrict-device-max="medium"] {
+			display: none !important;
+		}
+	}
+
+	/* 
+	// Filters Aside
+	------------------------*/
+
+	#filters-aside {
+		grid-area: left-aside;
+		margin: 0 var(--space-4xl) 0 0;
+		height: 100vh;
+		position: sticky;
+		top: 0;
+		z-index: 1000;
+	}
+
+	#filters-aside > .wrapper {
+		padding: var(--space-xl) 0;
+		min-width: 300px;
+		height: 100%;
+		border-right: 1px solid var(--colour-border-neutral-subtle);
+		background-color: var(--colour-background);
+	}
+
+	@container main (width < 1360px) {
+		#filters-aside {
+			display: initial;
+			margin: 0;
+			min-width: auto;
+			width: 0;
+		}
+
+		#filters-aside > .wrapper {
+			box-shadow: var(--box-shadow);
+			translate: -300px;
+			transition: translate var(--transition-ease-medium);
+		}
+
+		main:has(button.filters-toggle[aria-expanded="true"])
+			#filters-aside
+			> .wrapper {
+			translate: 0;
+		}
+	}
+
+	/* 
+	// Secondary List Controls
+	------------------------*/
+
+	#resources-list-secondary-controls {
+		gap: var(--space-2xs);
+	}
+
+	/*
+	// Heading
+	*/
+
+	#resources-list-secondary-controls .heading-group {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
@@ -404,75 +554,113 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		margin: 0 var(--space-2xs);
 	}
 
-	.filters-container .heading-group .heading {
+	#resources-list-secondary-controls .heading-group .heading {
 		font-size: var(--font-size-lg);
 		margin: 0 0 0 var(--space-xs);
 		flex-grow: 1;
 	}
 
-	.filters-container .heading-group .separator {
+	#resources-list-secondary-controls .heading-group .separator {
 		--separator-long-edge-dimension: 1.75rem;
 	}
 
-	.filters-container .heading-group [data-style-as="button"] {
+	#resources-list-secondary-controls
+		.heading-group
+		:is(button, [data-style-as="button"]) {
 		--button-background-colour: transparent;
 		--icon-size: 1.25rem;
+		margin: 0;
 	}
 
-	.filters-container
+	#resources-list-secondary-controls
 		.heading-group
-		[data-style-as="button"]:is(:hover, :focus-visible) {
-		/* --icon-colour: var(--colour-ui-reverse); */
-		/* --label-colour: var(--colour-ui-reverse); */
+		:is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 	}
 
-	.filters-container form {
-		gap: var(--space-2xs);
+	/* Dialog Customization */
+
+	dialog #resources-list-secondary-controls .heading-group {
+		margin: 0 0 var(--space-3xs);
 	}
 
-	.filters-container .accordion .heading {
+	dialog #resources-list-secondary-controls .heading-group .heading {
+		font-size: var(--font-size-2xl);
+		margin: 0;
+	}
+
+	dialog
+		#resources-list-secondary-controls
+		.heading-group
+		+ .separator.group {
+		--separator-short-edge-dimension: 2px;
+	}
+
+	/*
+	// Accordion Customization 
+	*/
+
+	#resources-list-secondary-controls .accordion-group {
+		margin: 0;
+	}
+
+	#resources-list-secondary-controls .accordion .heading {
 		margin: 0 var(--space-2xs);
 	}
 
-	.filters-container .accordion .heading button {
+	#resources-list-secondary-controls .accordion .heading button {
 		--button-background-colour: transparent;
 		--button-border-radius: var(--border-radius-small);
 		--button-ui-colour: var(--colour-ui-neutral);
-		/* --icon-colour: var(--colour-ui-accent); */
-		--icon-size: 1rem;
 		min-height: auto;
 		padding: var(--space-xs);
 	}
 
-	.filters-container .accordion .heading button:is(:hover, :focus-visible),
-	.filters-container
+	#resources-list-secondary-controls
+		.accordion
+		.heading
+		button:is(:hover, :focus-visible),
+	#resources-list-secondary-controls
 		.accordion
 		.heading
 		button[aria-expanded="true"]:is(:hover, :focus-visible) {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 	}
 
-	.filters-container
+	#resources-list-secondary-controls
 		.accordion
 		.heading
 		button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
 		outline-color: transparent;
 	}
 
-	.filters-container .accordion .heading button[aria-expanded="true"] {
+	#resources-list-secondary-controls
+		.accordion
+		.heading
+		button[aria-expanded="true"] {
 		--button-background-colour: transparent;
 		--icon-colour: unset;
 		border-radius: var(--button-border-radius);
-		/* border-bottom: 1px solid var(--colour-border-neutral-subtle); */
 	}
 
-	.filters-container .accordion .heading button .icon-and-label-container {
+	#resources-list-secondary-controls
+		.accordion
+		.heading
+		button
+		.icon-and-label-container {
 		--label-size: var(--font-size-xs);
 		--label-weight: 600;
 	}
 
-	.filters-container
+	#resources-list-secondary-controls
+		.accordion
+		.heading
+		button
+		> .icon.caret {
+		--icon-size: 0.875rem;
+	}
+
+	#resources-list-secondary-controls
 		.accordion
 		.heading
 		button[aria-expanded="true"]
@@ -480,75 +668,155 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		--label-colour: unset;
 	}
 
-	.filters-container .accordion .panel {
+	#resources-list-secondary-controls .accordion .panel {
 		margin: 0 var(--space-2xs);
 		padding-top: var(--space-3xs);
 		border: none;
 	}
 
-	.filters-container .separator.item {
+	/* Dialog Customization */
+
+	dialog #resources-list-secondary-controls .accordion .heading {
+		margin: 0;
+	}
+
+	/* 
+	// Separators 
+	*/
+
+	#resources-list-secondary-controls .separator.item {
 		--separator-long-edge-dimension: auto;
 		margin: 0 var(--space-xs);
 	}
 
-	fieldset.filters {
+	/* Dialog Customization */
+
+	#resources-list-secondary-controls .separator.item {
+		margin: 0;
+	}
+
+	/* 
+	// Fieldsets and Inputs 
+	*/
+
+	#resources-list-secondary-controls fieldset.filters {
 		padding: var(--space-xs) 0 var(--space-3xs);
 		max-height: min(500px, 50vh);
 		overflow: auto;
 	}
 
-	fieldset.filters label:has(input[type="checkbox"]) {
+	#resources-list-secondary-controls
+		fieldset.filters
+		label:has(input[type="checkbox"]) {
 		margin: 0 var(--space-xs);
 		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-small);
 	}
 
-	fieldset.filters
+	#resources-list-secondary-controls
+		fieldset.filters
 		label:has(input[type="checkbox"]):is(:hover, :focus-visible) {
 		background-color: var(--colour-fill-neutral-subtle);
 	}
 
-	fieldset.filters label:has(input[type="checkbox"]) .icon.checkmark {
+	#resources-list-secondary-controls
+		fieldset.filters
+		label:has(input[type="checkbox"])
+		.icon.checkmark {
 		top: 0.75rem;
 		left: 1rem;
 	}
 
-	form.list-primary-controls {
+	/* Dialog Customization */
+
+	dialog #resources-list-secondary-controls fieldset.filters {
+		overflow: initial;
+		max-height: none;
+	}
+
+	dialog
+		#resources-list-secondary-controls
+		fieldset.filters
+		label:has(input[type="checkbox"]) {
+		margin: 0;
+	}
+
+	/* 
+	// Primary List Controls
+	------------------------*/
+
+	#resources-list-primary-controls,
+	#resources-list-primary-controls .fieldset-group {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: end;
-		gap: var(--space-sm);
+		column-gap: var(--space-sm);
+		row-gap: var(--space-base);
 	}
 
-	form.list-primary-controls fieldset.search {
+	@container main (width < 720px) {
+		#resources-list-primary-controls {
+			flex-flow: column;
+			align-items: stretch;
+		}
+
+		#resources-list-primary-controls
+			.fieldset-group
+			.separator:first-of-type {
+			display: none;
+		}
+	}
+
+	/* 
+	// Search Input
+	*/
+
+	#resources-list-primary-controls fieldset.search {
 		flex-grow: 1;
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout) {
+	/* 
+	// Fieldsets and Buttons
+	*/
+
+	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) {
 		--group-gap: var(--space-2xs);
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout) legend {
+	/* Legend */
+
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout)
+		legend {
 		font-size: var(--font-size-3xs);
 		color: var(--colour-ui-neutral-subtle);
 		margin: 0 0 0.325rem;
 	}
 
-	form.list-primary-controls fieldset:is(.sort, .layout) button {
+	/* Buttons */
+
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout)
+		button {
 		--icon-size: 1.25rem;
 		font-size: var(--font-size-2xs);
 		height: 2rem;
 	}
 
-	form.list-primary-controls
-		fieldset:is(.sort, .layout)
-		button:is(:hover, :focus-visible, [aria-pressed="true"]) {
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout)
+		button:is(
+			:hover,
+			:focus-visible,
+			[aria-pressed="true"],
+			[aria-expanded="true"]
+		) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	form.list-primary-controls
-		fieldset:is(.sort, .layout):has(
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout):has(
 			button:not([aria-pressed="true"]):is(:hover, :focus-visible)
 		)
 		button[aria-pressed="true"] {
@@ -557,20 +825,22 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		--label-colour: var(--colour-ui-neutral);
 	}
 
-	form.list-primary-controls
-		fieldset:is(.sort, .layout)
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout)
 		button[aria-pressed="true"] {
 		pointer-events: none;
 	}
 
-	form.list-primary-controls
-		fieldset:is(.sort, .layout)
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout)
 		button
 		.label-container {
 		display: none;
 	}
 
-	form.list-primary-controls .separator {
+	/* Separator */
+
+	#resources-list-primary-controls .separator {
 		--separator-long-edge-dimension: 1.5rem;
 		margin-bottom: var(--space-3xs);
 	}
@@ -582,6 +852,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	//
 
 	import { getUserData } from "src/stores/userDataStore";
+	import { dialogControl } from "src/utilities/dialog";
 	import { eventControl } from "src/utilities/event";
 	import { filter, search, sort, layout } from "src/utilities/list";
 
@@ -632,21 +903,21 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	filter.init();
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "astro:after-swap",
 		fn: filter.init,
 	});
 
 	sort.init();
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "astro:after-swap",
 		fn: sort.init,
 	});
 
 	layout.init();
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "astro:after-swap",
 		fn: layout.init,
 	});
@@ -661,8 +932,184 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		toggleForcedLayout(forceLayout);
 	};
 	eventControl.add({
-		selector: "document",
+		elem: document,
 		eventType: "searchMatchFound",
 		fn: onSearchMatchFound,
+	});
+
+	let onControlsClick = (event) => {
+		let target = event.target as any;
+
+		if (target.matches("button.filters-toggle")) {
+			let isExpanded = target.getAttribute("aria-expanded") === "true";
+			let parent = document
+				.querySelector("#resources-list-secondary-controls")
+				.parentElement.matches("dialog")
+				? "dialog"
+				: "aside";
+
+			console.log("Parent Container", parent);
+			// Open the panel
+			if (!isExpanded) {
+				if (parent === "dialog") {
+					dialogControl.open({
+						dialogId: "resources-filters-dialog",
+					});
+				}
+			}
+
+			target.setAttribute("aria-expanded", String(!isExpanded));
+		}
+
+		if (target.matches("button.filters-reset")) {
+			let form = document.querySelector(
+				"#resources-list-secondary-controls",
+			) as HTMLFormElement;
+			if (!form) return;
+			form.reset();
+		}
+	};
+	eventControl.add({
+		selector: ".list-primary-controls",
+		eventType: "click",
+		fn: onControlsClick,
+	});
+
+	let onAsideClick = (event) => {
+		let target = event.target as any;
+
+		if (target.matches("button.close")) {
+			let filtersToggle = document.querySelector(
+				"#resources-list-primary-controls button.filters-toggle",
+			);
+			if (!filtersToggle) return;
+			filtersToggle.setAttribute("aria-expanded", "false");
+		}
+	};
+	eventControl.add({
+		selector: "#filters-aside",
+		eventType: "click",
+		fn: onAsideClick,
+	});
+
+	let onDialogClick = (event) => {
+		let target = event.target as any;
+
+		if (target.matches("button.close")) {
+			dialogControl.close(target);
+			let filtersToggle = document.querySelector(
+				"#resources-list-primary-controls button.filters-toggle",
+			);
+			if (!filtersToggle) return;
+			filtersToggle.setAttribute("aria-expanded", "false");
+		}
+	};
+	eventControl.add({
+		selector: "#resources-filters-dialog",
+		eventType: "click",
+		fn: onDialogClick,
+	});
+
+	let onFilterChange = (event: CustomEvent) => {
+		let detail = event.detail;
+		console.log("Filter Change", detail);
+
+		let resetFiltersBtns = document.querySelectorAll(".filters-reset");
+		console.log(resetFiltersBtns);
+		if (!resetFiltersBtns) return;
+		if (Object.keys(detail.activeFilters).length > 0) {
+			for (let btn of resetFiltersBtns) {
+				let input = btn.querySelector("input");
+				if (input) {
+					input.removeAttribute("disabled");
+				} else {
+					btn.removeAttribute("disabled");
+				}
+			}
+		} else {
+			for (let btn of resetFiltersBtns) {
+				let input = btn.querySelector("input");
+				if (input) {
+					input.setAttribute("disabled", "");
+				} else {
+					btn.setAttribute("disabled", "");
+				}
+			}
+		}
+	};
+	eventControl.add({
+		elem: document,
+		eventType: "filterChange",
+		fn: onFilterChange,
+	});
+
+	let onMediaQueryChange = (event) => {
+		let filtersToggle = document.querySelector(
+			"#resources-list-primary-controls button.filters-toggle",
+		);
+		if (!filtersToggle) return;
+
+		let isExpanded = filtersToggle.getAttribute("aria-expanded") === "true";
+
+		let main = document.querySelector("main");
+		let filtersAside = document.querySelector("#filters-aside>.wrapper");
+		let filtersDialog = document.querySelector("#resources-filters-dialog");
+		let form = document.querySelector("#resources-list-secondary-controls");
+		if (!filtersAside || !filtersDialog || !form) return;
+
+		// Resizing from larger to smaller (<720px)
+		if (event.matches) {
+			main.setAttribute("data-device", "small");
+			// Switch drawer to modal
+			if (form.parentElement === filtersDialog) return;
+			filtersDialog.append(form);
+			filtersAside.parentElement.setAttribute("hidden", "");
+			if (isExpanded) {
+				dialogControl.open({
+					dialogId: "resources-filters-dialog",
+				});
+			}
+		}
+		// Resizing from smaller to larger (>720px)
+		else {
+			main.setAttribute("data-device", "large");
+			// Switch modal to drawer
+			if (form.parentElement === filtersAside) return;
+			filtersAside.append(form);
+			filtersAside.parentElement.removeAttribute("hidden");
+			if (isExpanded) {
+				dialogControl.close(filtersDialog);
+			}
+		}
+	};
+	// Special case event listener, cannot be attached to the document and delegated
+	let mediaQuery = window.matchMedia("(max-width: 720px)");
+	eventControl.add({
+		elem: mediaQuery,
+		eventType: "change",
+		fn: onMediaQueryChange,
+	});
+
+	let onPageLoad = () => {
+		let mediaQuery = window.matchMedia("(max-width: 720px)");
+		if (mediaQuery.matches) {
+			let filtersAside = document.querySelector(
+				"#filters-aside>.wrapper",
+			);
+			let filtersDialog = document.querySelector(
+				"#resources-filters-dialog",
+			);
+			let form = filtersAside.querySelector(
+				"#resources-list-secondary-controls",
+			);
+			if (form.parentElement === filtersDialog) return;
+			filtersDialog.append(form);
+			filtersAside.parentElement.setAttribute("hidden", "");
+		}
+	};
+	eventControl.add({
+		elem: document,
+		eventType: "astro:page-load",
+		fn: onPageLoad,
 	});
 </script>
