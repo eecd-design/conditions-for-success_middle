@@ -44,7 +44,7 @@ developing:
       compass: false
       categories: []
     - tag: 1.5.8
-      title: Uses results of common assessment to inform instructional decisions.
+      title: Uses results of common assessments to inform instructional decisions.
       compass: true
       categories: []
     - tag: 1.5.9
