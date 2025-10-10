@@ -1,44 +1,77 @@
 let eventControl = (() => {
-	let registry = {}
+	let registry = new Map() // eventType → Map(sourceId → { source, handlers: Set<fn> })
 
-	let ensureListener = (eventType) => {
-		if (!registry[eventType]) {
-			registry[eventType] = new Map()
-			document.addEventListener(eventType, (e) => {
-				// console.log(`Event Triggered (${eventType})`)
-				for (let { selector, fn } of registry[eventType].values()) {
-					let target;
-					if (selector === 'document') {
-						target = document
-					} else if (selector === 'window') {
-						target = window
+	let getSourceId = (source, selector) => {
+		if (selector) return `selector:${selector}`
+		if (source === document) return 'document'
+		if (source === window) return 'window'
+		if (source instanceof MediaQueryList) return `mql:${source.media}`
+		if (source instanceof Element) return `elem:${source.tagName.toLowerCase()}#${source.id || 'anon'}`
+		return 'unknown'
+	}
+
+	let attachListener = (eventType, source, sourceId) => {
+		let entry = registry.get(eventType).get(sourceId)
+		if (entry.listenerAttached) return
+
+		if (source instanceof MediaQueryList) {
+			source.addEventListener('change', (e) => {
+				for (let fn of entry.handlers) fn(e, source)
+			})
+		} else {
+			source.addEventListener(eventType, (e) => {
+				for (let fn of entry.handlers) {
+					let target = null
+					if (entry.selector) {
+						target = e.target.closest(entry.selector)
 					} else {
-						target = e.target.closest(selector)
+						target = source
 					}
-					if (target) {
-						// console.log(`Running Function (${fn.name}) in`, selector)
-						fn(e, target)
-
-					}
+					if (target) fn(e, target)
 				}
 			})
 		}
+
+		entry.listenerAttached = true
 	}
 
-	let add = ({ eventType, selector, fn }) => {
-		ensureListener(eventType)
-		let key = `${selector}::${fn.toString()}`
-		if (!registry[eventType].has(key)) {
-			registry[eventType].set(key, { selector, fn })
+	let add = ({ eventType, selector = null, elem = null, fn }) => {
+		let source = elem ?? document
+		let sourceId = getSourceId(source, selector)
+
+		if (!registry.has(eventType)) registry.set(eventType, new Map())
+		let eventMap = registry.get(eventType)
+
+		if (!eventMap.has(sourceId)) {
+			eventMap.set(sourceId, { source, selector, handlers: new Set(), listenerAttached: false })
+		}
+
+		let entry = eventMap.get(sourceId)
+		if (!entry.handlers.has(fn)) {
+			entry.handlers.add(fn)
+			attachListener(eventType, source, sourceId)
 		}
 	}
 
-	let remove = ({ eventType, selector, fn }) => {
-		let key = `${selector}::${fn.toString()}`
-		registry[eventType]?.delete(key)
+	let remove = ({ eventType, selector = null, elem = null, fn }) => {
+		let source = elem ?? document
+		let sourceId = getSourceId(source, selector)
+		let eventMap = registry.get(eventType)
+		if (!eventMap) return
+
+		let entry = eventMap.get(sourceId)
+		if (!entry) return
+
+		entry.handlers.delete(fn)
+
+		// Clean up if no handlers remain
+		if (entry.handlers.size === 0) {
+			eventMap.delete(sourceId)
+			if (eventMap.size === 0) registry.delete(eventType)
+		}
 	}
 
-	return { add, remove }
+	return { add, remove, _registry: registry }
 })()
 
-export { eventControl };
+export { eventControl }
