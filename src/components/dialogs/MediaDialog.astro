@@ -131,7 +131,11 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 		console.log(mediaSrcPathOnly);
 
 		if (mediaType === "video") {
-			if (!mediaExternal) {
+			let iframeSrc = convertURLToEmbedURL(mediaSrc);
+			if (iframeSrc) {
+				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
+				iframe.removeAttribute("hidden");
+			} else {
 				video.setAttribute("poster", `${mediaSrcPathOnly}.png`);
 				video.removeAttribute("hidden");
 				video.src = mediaSrc;
@@ -150,9 +154,6 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 
 				// Force reload
 				video.load();
-			} else {
-				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
-				iframe.removeAttribute("hidden");
 			}
 		} else if (mediaType === "audio") {
 			audio.setAttribute("src", mediaSrc);

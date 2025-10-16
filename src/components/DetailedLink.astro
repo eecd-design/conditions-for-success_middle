@@ -88,8 +88,11 @@ let itemWrapperAttrs =
 				"data-title": title.toLowerCase(),
 			};
 
-let InteractiveWrapper = ["video", "audio"].includes(type) ? "button" : "a";
-let interactiveWrapperAttrs = ["video", "audio"].includes(type)
+// If resource is a video or internal audio, open it in a dialog
+let opensDialog =
+	type === "video" || (type === "audio" && !external.discriminant);
+let InteractiveWrapper = opensDialog ? "button" : "a";
+let interactiveWrapperAttrs = opensDialog
 	? {
 			class: "open-dialog detailed-link",
 			type: "button",
@@ -113,12 +116,12 @@ if (category !== "resource") {
 // External Files and Websites
 else if (
 	external.discriminant === true &&
-	["document", "presentation", "website"].includes(type)
+	["audio", "document", "presentation", "website"].includes(type)
 ) {
 	DestinationIcon = IconExternal;
 }
 // Internal and External Media
-else if (["video", "audio"].includes(type)) {
+else if (opensDialog) {
 	DestinationIcon = IconExpand;
 }
 // Internal Files
