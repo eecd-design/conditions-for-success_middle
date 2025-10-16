@@ -48,11 +48,12 @@ let dialogControl = (() => {
 	}
 
 	let onClick = (event) => {
-		let target = event.target;
-		if (target.matches('button.open-dialog')) {
-			let dialogId = target.getAttribute('data-dialog');
-			let headingText = target.getAttribute('data-dialog-heading');
-			let context = target.getAttribute('data-dialog-context');
+		let target = event.target
+		let openDialogBtn = target.closest('button.open-dialog');
+		if (openDialogBtn) {
+			let dialogId = openDialogBtn.getAttribute('data-dialog');
+			let headingText = openDialogBtn.getAttribute('data-dialog-heading');
+			let context = openDialogBtn.getAttribute('data-dialog-context');
 			open({
 				dialogId,
 				headingText,

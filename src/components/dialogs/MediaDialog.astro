@@ -96,14 +96,12 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 	//
 
 	let onClick = (event) => {
-		let target = event.target as HTMLButtonElement;
+		let target = event.target.closest(
+			`button.open-dialog[data-dialog="media-dialog"]`,
+		) as HTMLButtonElement;
 		let mediaDialog = document.querySelector("#media-dialog");
 
-		if (
-			!mediaDialog ||
-			!target.matches(`button.open-dialog[data-dialog="media-dialog"]`)
-		)
-			return;
+		if (!mediaDialog || !target) return;
 
 		// Get the media elements
 		let video = mediaDialog.querySelector("video");
@@ -128,7 +126,6 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 
 		// Get a path only version of the src url
 		let mediaSrcPathOnly = removeFileExtension(mediaSrc);
-		console.log(mediaSrcPathOnly);
 
 		if (mediaType === "video") {
 			let iframeSrc = convertURLToEmbedURL(mediaSrc);
@@ -174,7 +171,7 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 		}
 	};
 	eventControl.add({
-		selector: "button.open-dialog",
+		selector: `button.open-dialog[data-dialog="media-dialog"]`,
 		eventType: "click",
 		fn: onClick,
 	});
