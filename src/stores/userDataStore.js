@@ -225,7 +225,7 @@ let setState = (update) => {
  * @param {Partial<typeof data.assessments[0]>} update
  */
 let setAssessment = (update) => {
-	// console.log('Setting Assessment', update);
+	console.log('Setting Assessment', update);
 
 	let targetId = update.id ?? data.uiState.activeAssessmentId;
 
@@ -562,7 +562,7 @@ let checkAnnouncementSession = () => {
 //
 
 let deleteAssessment = (id) => {
-	// console.log('Deleting Assessment', id);
+	console.log('Deleting Assessment', id);
 	let changes = {};
 	let index = data.assessments.findIndex(obj => obj.id === id);
 	if (index !== -1) {
@@ -575,7 +575,7 @@ let deleteAssessment = (id) => {
 	let isActiveReport = id === data.uiState.activeReportId;
 
 	if (isActiveAssessment || isActiveReport) {
-		let update;
+		let update = {};
 		if (isActiveAssessment) {
 			update.activeAssessmentId = null;
 			update.mode = "reading";
