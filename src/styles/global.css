@@ -635,6 +635,7 @@ p {
 	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
 	--button-outline-colour: transparent;
+	outline: var(--button-outline-width, 2px) solid var(--button-outline-colour, transparent);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:disabled, :has(:disabled)) {
