@@ -457,7 +457,7 @@ let schoolList = {
 	</section>
 </dialog>
 
-<style>
+<style is:global>
 	#view-assessment-properties-dialog
 		section
 		:is(button, [data-style-as="button"]) {
@@ -483,14 +483,6 @@ let schoolList = {
 
 	#view-assessment-properties-dialog dl :is(dt, dd) {
 		font-size: var(--font-size-2xs);
-	}
-
-	.heading-button-container {
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: space-between;
-		align-items: start;
-		gap: var(--space-sm);
 	}
 
 	#view-assessment-properties-dialog section h3 {
