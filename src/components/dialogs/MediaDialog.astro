@@ -140,8 +140,15 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 				video.removeAttribute("hidden");
 				video.src = mediaSrc;
 
+				// Disable old tracks
+				for (let track of video.textTracks) {
+					track.mode = "disabled";
+				}
+
 				// Remove old tracks
-				video.querySelectorAll("track").forEach((t) => t.remove());
+				for (let track of video.querySelectorAll("track")) {
+					track.remove();
+				}
 
 				// Create new track
 				let newTrack = document.createElement("track");
