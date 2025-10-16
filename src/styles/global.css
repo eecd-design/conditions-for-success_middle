@@ -592,7 +592,6 @@ p {
 	flex-flow: row nowrap;
 	align-items: center;
 	gap: var(--group-gap, var(--space-sm));
-	height: 100%;
 }
 
 .button-group>* {
