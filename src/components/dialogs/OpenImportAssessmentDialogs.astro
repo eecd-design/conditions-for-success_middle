@@ -1061,6 +1061,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				} else if (context === "report") {
 					if (target.matches("button.change-status")) {
 						setAssessment({
+							id: Number(target.getAttribute("data-id")),
 							status: "Complete",
 							dateCompleted: Date.now(),
 							changeLog: updateChangeLog({
