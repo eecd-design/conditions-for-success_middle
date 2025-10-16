@@ -1687,10 +1687,6 @@ ul.field-values-list li button.clear:is(:hover, :focus-visible) {
 ** DIALOGS
 ------------------------------*/
 
-body:has(dialog[open]) {
-	overflow: hidden;
-}
-
 dialog {
 	background-color: var(--colour-background);
 	border-radius: var(--border-radius-normal);

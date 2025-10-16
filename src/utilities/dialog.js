@@ -3,6 +3,8 @@ import { stopVideo } from "./helpers";
 
 let dialogControl = (() => {
 
+	let scrollY = 0;
+
 	let open = ({ dialogId, headingText = null, context = null }) => {
 		let activeDialog = document.querySelector(
 			"dialog[open]");
@@ -17,6 +19,12 @@ let dialogControl = (() => {
 			headingText = headingText ? headingText.trim() : defaultText;
 			if (headingText !== defaultText) heading.textContent = headingText;
 		}
+		// Save scroll position
+		scrollY = window.scrollY;
+		// Lock background scroll
+		document.body.style.position = 'fixed'
+		document.body.style.top = `-${scrollY}px`
+
 		targetDialog.showModal();
 	}
 
@@ -24,7 +32,19 @@ let dialogControl = (() => {
 		let dialog = target.closest('dialog');
 		if (!dialog) return;
 		stopVideo(dialog);
+		// Disable smooth scroll
+		document.documentElement.style.scrollBehavior = 'auto';
+		// Unlock background scroll
+		document.body.style.position = ''
+		document.body.style.top = ''
+		// Close dialog
 		dialog.close();
+		// Restore scroll
+		window.scrollTo(0, scrollY);
+		// Reset scroll behaviour
+		requestAnimationFrame(() => {
+			document.documentElement.style.scrollBehavior = ''
+		})
 	}
 
 	let onClick = (event) => {
