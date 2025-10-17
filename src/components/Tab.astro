@@ -341,10 +341,11 @@ if (dataset) {
 
 		let init = () => {
 			// Get all accordion headings
-			let tabGroups = document.querySelectorAll(".tab-group");
+			let tabGroups = document.querySelectorAll(
+				".tab-group:not([data-initialized])",
+			);
 			for (let i = 0; i < tabGroups.length; i++) {
 				let tabGroup = tabGroups[i];
-				if (tabGroup.getAttribute("data-initialized")) continue;
 				setupDOM({
 					tabGroup,
 					tabGroupIndex: i + 1,
