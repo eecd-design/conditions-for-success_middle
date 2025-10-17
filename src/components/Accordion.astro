@@ -346,7 +346,7 @@ let IconCross = crossIcons[crossIconSize];
 			// Get all accordion headings
 			let headings = document.querySelectorAll(".accordion .heading");
 			for (let heading of headings) {
-				if (heading.getAttribute("data-initalized")) return;
+				if (heading.getAttribute("data-initialized")) continue;
 				setupDOM(heading);
 			}
 			eventControl.add({
