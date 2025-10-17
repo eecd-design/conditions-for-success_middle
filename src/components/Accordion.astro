@@ -344,9 +344,15 @@ let IconCross = crossIcons[crossIconSize];
 
 		let init = () => {
 			// Get all accordion headings
-			let headings = document.querySelectorAll(".accordion .heading");
+			let headings = document.querySelectorAll(
+				".accordion .heading:not([data-initialized])",
+			);
+			console.log("Accordion Count:", headings.length);
 			for (let heading of headings) {
-				if (heading.getAttribute("data-initialized")) continue;
+				console.log("Accordion Not Initialized");
+				console.log("Accordion Heading:", heading);
+				// if (heading.getAttribute("data-initialized")) continue;
+				console.log("Accordion First Child:", heading.firstChild);
 				setupDOM(heading);
 			}
 			eventControl.add({
