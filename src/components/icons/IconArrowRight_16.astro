@@ -1,6 +1,13 @@
 ---
-const {classes} = Astro.props;
+const { classes } = Astro.props;
 ---
-<svg class:list={["icon", "arrow", classes]} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-	<path d="M7.27.82a.996.996 0 0 0 .05 1.41L12.45 7H1c-.55 0-1 .45-1 1s.45 1 1 1h11.45l-5.13 4.77a.988.988 0 0 0-.05 1.41c.38.4 1.01.43 1.41.05l7-6.5c.2-.19.32-.46.32-.73s-.12-.54-.32-.73l-7-6.5a.996.996 0 0 0-1.41.05Z"/>
+
+<svg
+	class:list={["icon", "arrow", "right", classes]}
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 16 16"
+>
+	<path
+		d="M7.27.82a.996.996 0 0 0 .05 1.41L12.45 7H1c-.55 0-1 .45-1 1s.45 1 1 1h11.45l-5.13 4.77a.988.988 0 0 0-.05 1.41c.38.4 1.01.43 1.41.05l7-6.5c.2-.19.32-.46.32-.73s-.12-.54-.32-.73l-7-6.5a.996.996 0 0 0-1.41.05Z"
+	></path>
 </svg>

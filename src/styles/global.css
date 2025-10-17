@@ -772,11 +772,11 @@ p {
 	color: var(--colour-ui-link);
 	font-weight: 600;
 	text-decoration-color: var(--colour-ui-link-underline);
+	/* ↓ Normalize buttons */
 	text-align: unset;
-	/* Normalize buttons */
 	cursor: pointer;
+	/* ↓ Removes blue highlight on mobile */
 	-webkit-tap-highlight-color: transparent;
-	/* Removes blue highlight on mobile */
 	transition:
 		background-color var(--transition-linear-fast),
 		text-decoration-color var(--transition-linear-fast),
@@ -788,12 +788,12 @@ p {
 	text-decoration-color: transparent;
 }
 
-:is(a, [data-style-as="link"]):has(.icon.destination, .icon.type) {
+/* :is(a, [data-style-as="link"]):has(.icon.destination, .icon.type) {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 	line-height: 1.2;
-}
+} */
 
 :is(a, [data-style-as="link"]) .icon.destination {
 	--icon-colour: var(--colour-ui-neutral-subtle);
@@ -805,77 +805,35 @@ p {
 	--icon-size: 1.5rem;
 }
 
-:is(a, [data-style-as="link"]) .text-container {
-	flex-grow: 1;
+
+/* WITH ARROW ICON */
+
+:is(a, [data-style-as="link"]):has(.icon.destination.arrow) {
+	position: relative;
 }
 
-:is(a, [data-style-as="link"]) .text-container:has(.label) {
-	display: flex;
-	flex-flow: column nowrap;
-	gap: 0.375rem;
+:is(a, [data-style-as="link"]):has(.icon.destination.arrow) .icon.destination {
+	position: absolute;
+	left: calc((var(--icon-size) + var(--space-xs)) * -1);
 }
-
-:is(a, [data-style-as="link"]) .text-container .label {
-	color: var(--label-colour, var(--colour-ui-neutral-subtle));
-	font-size: var(--label-size, 1rem);
-	font-weight: var(--label-weight, 500);
-}
-
-
-/* WITH DESTINATION ICON (external, download, expand) */
-
-:is(a, [data-style-as="link"]) .icon.destination:not(.arrow) {
-	opacity: 0;
-	scale: 90%;
-	transition: opacity var(--transition-linear-fast), scale var(--transition-ease-fast);
-	/* TODO [REQUIRED]: Media check for hover, and if not, have icon appear always */
-}
-
-:is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon.destination:not(.arrow) {
-	opacity: 1;
-	scale: 100%;
-	transition: opacity var(--transition-linear-medium) 0.1s, scale var(--transition-ease-medium) 0.1s;
-}
-
-
-
-/* WITH ARROW ICON (AFTER TEXT) */
 
 :is(a, [data-style-as="link"]) .icon.destination.arrow {
 	opacity: 0;
-	translate: -0.25rem;
-	transition: opacity var(--transition-linear-fast), translate var(--transition-ease-fast);
+	transition: opacity var(--transition-linear-fast), translate var(--transition-linear-fast) 0.5s;
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) .icon.destination.arrow {
 	opacity: 1;
-	translate: 0;
+	translate: 0 !important;
 	transition: opacity var(--transition-linear-medium) 0.1s, translate var(--transition-ease-medium) 0.1s;
 }
 
-/* WITH ARROW ICON (BEFORE TEXT) */
-
-:is(a, [data-style-as="link"]):has(.icon.destination.arrow) .icon-container:first-child {
-	width: 0;
-	flex-shrink: 0;
-	transition: width var(--transition-ease-slow);
+:is(a, [data-style-as="link"]) .icon.destination.arrow.right {
+	translate: -0.25rem;
 }
 
-:is(a, [data-style-as="link"]):has(.icon.destination.arrow):is(:hover, :focus-visible) .icon-container:first-child {
-	width: 1.75rem;
-}
-
-:is(a, [data-style-as="link"]):has(.icon-container:first-child) .icon.destionation.arrow {
-	translate: -0.75rem;
-}
-
-:is(a, [data-style-as="link"]):has(.icon-container:first-child):has(.icon.destination.arrow) .text-container {
-	padding-right: 1.75rem;
-	transition: padding var(--transition-ease-slow);
-}
-
-:is(a, [data-style-as="link"]):has(.icon-container:first-child):has(.icon.destination.arrow):is(:hover, :focus-visible) .text-container {
-	padding-right: 0;
+:is(a, [data-style-as="link"]) .icon.destination.arrow.down {
+	translate: 0px -0.25rem;
 }
 
 
@@ -886,12 +844,22 @@ p {
 }
 
 .links-list {
+	--label-size: var(--font-size-base);
+	--container-gap: var(--space-sm);
 	display: flex;
 	flex-flow: column;
 	gap: var(--space-sm);
 	margin: var(--space-lg) 0;
 	padding: 0;
 	list-style-type: none;
+}
+
+.links-list>li {
+	line-height: 1.2 !important;
+}
+
+.links-list :is(a, [data-style-as="link"]) {
+	line-height: 1.2 !important;
 }
 
 /* 
@@ -1222,7 +1190,7 @@ nav.on-page li {
 }
 
 nav.on-page a {
-	font-size: var(--font-size-xs);
+	--label-size: var(--font-size-xs);
 }
 
 nav a {

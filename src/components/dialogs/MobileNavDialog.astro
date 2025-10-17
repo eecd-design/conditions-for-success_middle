@@ -32,12 +32,7 @@ let indicators = allIndicators.sort((a, b) =>
 					aria-current={path.includes("/") ? "page" : null}
 					href="/"
 				>
-					<span class="icon-and-label-container">
-						<span class="label-container">
-							<span class="label"> Home </span>
-						</span>
-						<IconArrowRight16 classes={["destination"]} />
-					</span>
+					Home
 				</a>
 			</li>
 			<li class="subnav-container">
@@ -49,12 +44,7 @@ let indicators = allIndicators.sort((a, b) =>
 							aria-current={path === "/big-seven" ? "page" : null}
 							href="/big-seven"
 						>
-							<span class="icon-and-label-container">
-								<span class="label-container">
-									<span class="label">Introduction</span>
-								</span>
-								<IconArrowRight16 classes={["destination"]} />
-							</span>
+							Introduction
 						</a>
 					</li>
 					{
@@ -71,16 +61,7 @@ let indicators = allIndicators.sort((a, b) =>
 										}
 										href={indicatorPath}
 									>
-										<span class="icon-and-label-container">
-											<span class="label-container">
-												<span class="label">
-													{indicator.data.title}
-												</span>
-											</span>
-											<IconArrowRight16
-												classes={["destination"]}
-											/>
-										</span>
+										{indicator.data.title}
 									</a>
 								</li>
 							);
@@ -94,12 +75,7 @@ let indicators = allIndicators.sort((a, b) =>
 					aria-current={path.includes("/resources") ? "page" : null}
 					href="/resources"
 				>
-					<span class="icon-and-label-container">
-						<span class="label-container">
-							<span class="label"> Resources </span>
-						</span>
-						<IconArrowRight16 classes={["destination"]} />
-					</span>
+					Resources
 				</a>
 			</li>
 			<li>
@@ -108,12 +84,7 @@ let indicators = allIndicators.sort((a, b) =>
 					aria-current={path.includes("/report") ? "page" : null}
 					href="/report"
 				>
-					<span class="icon-and-label-container">
-						<span class="label-container">
-							<span class="label"> Report </span>
-						</span>
-						<IconArrowRight16 classes={["destination"]} />
-					</span>
+					Report
 				</a>
 			</li>
 		</ul>
@@ -154,24 +125,20 @@ let indicators = allIndicators.sort((a, b) =>
 	}
 
 	nav.mobile a {
-		--container-gap: var(--space-sm);
-		--label-size: var(--font-size-base);
-		--label-colour: var(--dialog-ui-colour);
-		--label-weight: 600;
-		--icon-size: 1rem;
-		line-height: 1;
+		font-size: var(--font-size-base);
+		font-weight: 600;
 		color: var(--dialog-ui-colour);
+		line-height: 1;
 		text-decoration-color: var(--dialog-ui-colour);
 		width: 100%;
 	}
 
 	nav.mobile a:is(:hover, :focus-visible) {
-		--label-colour: var(--dialog-ui-colour);
-		--icon-colour: var(--dialog-ui-colour);
+		color: var(--dialog-ui-colour);
 	}
 
 	nav.mobile .subnav-link {
-		--label-weight: 300;
+		font-weight: 300;
 	}
 
 	nav.mobile a .icon.destination {

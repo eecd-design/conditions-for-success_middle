@@ -5,8 +5,8 @@ import SectionNav from "../../components/SectionNav.astro";
 import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
 import AssessmentDialogs from "../../components/dialogs/AssessmentDialogs.astro";
 import Component from "../../components/Component.astro";
-import IconArrow from "src/components/icons/IconArrowRight_16.astro";
 import IconCompass from "src/components/icons/IconCompass_24.astro";
+import IconArrowDownSmall from "src/components/icons/IconArrowDown_16.astro";
 import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowLeftSmall from "src/components/icons/IconArrowLeft_16.astro";
 import MediaDialog from "src/components/dialogs/MediaDialog.astro";
@@ -68,11 +68,11 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 				{components.map((component) => (
 					<li>
 						<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-							<span class="icon-container">
-								<IconArrow classes={['destination']} />
-							</span>
-							<span class="text-container">
-								<span class="text">{component.data.tag} {component.data.title}</span>
+							<span class="icon-and-label-container">
+								<span class="label-container">
+									<span class="label">{component.data.tag} {component.data.title}</span>
+								</span>
+								<IconArrowDownSmall classes={["destination"]} />
 							</span>
 						</a>
 					</li>
@@ -92,11 +92,11 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 
 				<li>
 					<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-						<span class="icon-container">
-							<IconArrow classes={['destination']} />
-						</span>
-						<span class="text-container">
-							<span class="text">{component.data.tag} {component.data.title}</span>
+						<span class="icon-and-label-container">
+							<span class="label-container">
+								<span class="label">{component.data.tag} {component.data.title}</span>
+							</span>
+							<IconArrowDownSmall classes={["destination"]} />
 						</span>
 					</a>
 				</li>

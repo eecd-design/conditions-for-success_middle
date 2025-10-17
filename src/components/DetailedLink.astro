@@ -274,6 +274,10 @@ else if (type === "image") {
 	:is(a, [data-style-as="link"]).detailed-link {
 		--link-ui-colour: var(--colour-ui-neutral-subtle);
 		container: detailed-link / inline-size;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		line-height: 1.2;
 		gap: var(--space-xs);
 		width: 100%;
 		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
@@ -312,6 +316,24 @@ else if (type === "image") {
 		--icon-colour: var(--link-ui-colour);
 	}
 
+	:is(a, [data-style-as="link"]).detailed-link .icon.destination {
+		opacity: 0;
+		scale: 90%;
+		transition:
+			opacity var(--transition-linear-fast),
+			scale var(--transition-ease-fast);
+		/* TODO [REQUIRED]: Media check for hover, and if not, have icon appear always */
+	}
+
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+		.icon.destination {
+		opacity: 1;
+		scale: 100%;
+		transition:
+			opacity var(--transition-linear-medium) 0.1s,
+			scale var(--transition-ease-medium) 0.1s;
+	}
+
 	/*
 	// Separator
 	*/
@@ -329,6 +351,7 @@ else if (type === "image") {
 		display: flex;
 		flex-flow: column;
 		gap: var(--space-2xs);
+		flex-grow: 1;
 	}
 
 	/* Title */
@@ -409,11 +432,9 @@ else if (type === "image") {
 	/* Label */
 
 	:is(a, [data-style-as="link"]).detailed-link .label {
-		--label-size: var(--font-size-2xs);
-		--label-colour: var(
-			--colour-ui-accent-subtle,
-			var(--colour-ui-neutral-subtle)
-		);
+		font-size: var(--font-size-2xs);
+		font-weight: 600;
+		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
 	}
 
 	:is(a, [data-style-as="link"]).detailed-link .label.simple {

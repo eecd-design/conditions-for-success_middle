@@ -71,14 +71,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 								<a class="subnav-link"
 									aria-current={path === "/big-seven" ? "page" : null}
 									href="/big-seven">
-									<span class="icon-and-label-container">
-										<span class="label-container">
-											<span class="label">Introduction</span>
-										</span>
-										<IconArrowRight16 classes={['destination']}/>
-									</span>
-								</a
-								>
+									Introduction
+								</a>
 							</li>
 							{indicators.map((indicator)=> {
 								let indicatorPath = `/big-seven/${indicator.id}`;
@@ -90,12 +84,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 												: null}
 											href={indicatorPath}
 											>
-											<span class="icon-and-label-container">
-												<span class="label-container">
-													<span class="label">{indicator.data.title}</span>
-												</span>
-												<IconArrowRight16 classes={['destination']}/>
-											</span>									
+											{indicator.data.title}								
 										</a>
 									</li>
 								)
@@ -429,23 +418,18 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 
 	header nav.global .subnav-link {
-		--container-gap: var(--space-sm);
-		--icon-size: 1rem;
-		--label-size: var(--font-size-xs);
-		--label-weight: 300; 
+		font-size: var(--font-size-xs);
+		font-weight: 300;
+		line-height: 1.2; 
 		padding: 0;
 		height: auto;
 		text-decoration: underline;
 	}
 
 	header nav.global .subnav-link:is(:hover, :focus-visible) {
-		--label-colour: var(--colour-ui-reverse);
+		color: var(--colour-ui-reverse);
 		background-color: transparent;
 		text-decoration-color: transparent;
-	}
-
-	header nav.global .subnav-link .icon.destination {
-		--icon-colour: var(--colour-ui-reverse);
 	}
 
 	@container header (width < 640px) {
