@@ -961,9 +961,13 @@ p {
 
 html {
 	height: 100%;
-	scroll-behavior: smooth;
+	scroll-behavior: auto;
 	scrollbar-gutter: stable;
 	background-color: var(--colour-background);
+}
+
+html:not([data-loading]) {
+	scroll-behavior: smooth;
 }
 
 @media (prefers-reduced-motion) {

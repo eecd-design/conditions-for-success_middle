@@ -13,7 +13,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-loading>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -314,11 +314,25 @@ const { pageTitle, indicatorTag } = Astro.props;
 					context: "setup",
 				});
 			}
+
+			setTimeout(() => {
+				document.documentElement.removeAttribute("data-loading");
+			}, 1000);
 		};
 		eventControl.add({
 			elem: document,
 			eventType: "astro:page-load",
 			fn: onPageLoad,
+		});
+
+		let onAfterSwap = () => {
+			document.documentElement.setAttribute("data-loading", "");
+			console.log("After Prep", document.documentElement.dataset);
+		};
+		eventControl.add({
+			elem: document,
+			eventType: "astro:after-swap",
+			fn: onAfterSwap,
 		});
 
 		console.log(eventControl._registry);
