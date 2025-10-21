@@ -2,6 +2,8 @@
 import Accordion from "src/components/Accordion.astro";
 import IconXmark from "src/components/icons/IconXmark_20.astro";
 import IconTranscript from "src/components/icons/IconTranscript_24.astro";
+import { Image } from "astro:assets";
+import videoPoster from "src/images/video-poster.png";
 ---
 
 <dialog id="media-dialog" class="media" aria-labelledby="media-dialog_heading">
@@ -17,7 +19,7 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 		Media Resource
 	</h2>
 
-	<video controls poster="" hidden></video>
+	<video controls poster={videoPoster.src} hidden></video>
 
 	<audio controls src="" hidden></audio>
 
@@ -133,7 +135,6 @@ import IconTranscript from "src/components/icons/IconTranscript_24.astro";
 				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
 				iframe.removeAttribute("hidden");
 			} else {
-				video.setAttribute("poster", `${mediaSrcPathOnly}.png`);
 				video.removeAttribute("hidden");
 				video.src = mediaSrc;
 
