@@ -532,7 +532,7 @@ h2,
 	font-weight: 500;
 	line-height: 1.2;
 	color: var(--colour-ui-accent);
-	margin: 0 0 var(--space-lg);
+	margin: 0 0 var(--space-lg) var(--space-2xs);
 }
 
 :is(h2, [data-style-as="h2"])+.heading-subtitle>.icon {
@@ -608,7 +608,6 @@ p {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	user-select: none;
 	font-size: var(--font-size-xs);
 	font-weight: 600;
 	line-height: 1;
@@ -1391,7 +1390,7 @@ form label:has(input[type="checkbox"]) {
 	font-size: var(--font-size-2xs);
 	font-weight: 400;
 	cursor: pointer;
-	user-select: none;
+	/* user-select: none; */
 	position: relative;
 	transition: all var(--transition-linear-fast);
 }
