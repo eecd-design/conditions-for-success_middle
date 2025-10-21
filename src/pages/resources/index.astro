@@ -803,17 +803,22 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	#resources-list-primary-controls
 		fieldset:is(.filter, .sort, .layout)
-		button:is(
+		button:not(:is([aria-pressed="true"], [aria-expanded="true"])):is(
 			:hover,
-			:focus-visible,
-			[aria-pressed="true"],
-			[aria-expanded="true"]
+			:focus-visible
 		) {
+		--button-background-colour: transparent;
+		--button-outline-colour: var(--colour-border-neutral-subtle);
+	}
+
+	#resources-list-primary-controls
+		fieldset:is(.filter, .sort, .layout)
+		button:is([aria-pressed="true"], [aria-expanded="true"]) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 	}
 
-	#resources-list-primary-controls
+	/* #resources-list-primary-controls
 		fieldset:is(.filter, .sort, .layout):has(
 			button:not([aria-pressed="true"]):is(:hover, :focus-visible)
 		)
@@ -821,7 +826,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 		--icon-colour: var(--colour-ui-neutral);
 		--label-colour: var(--colour-ui-neutral);
-	}
+	} */
 
 	#resources-list-primary-controls
 		fieldset:is(.filter, .sort, .layout)
