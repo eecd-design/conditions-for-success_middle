@@ -316,22 +316,23 @@ else if (type === "image") {
 		--icon-colour: var(--link-ui-colour);
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link .icon.destination {
-		opacity: 0;
-		scale: 90%;
-		transition:
-			opacity var(--transition-linear-fast),
-			scale var(--transition-ease-fast);
-		/* TODO [REQUIRED]: Media check for hover, and if not, have icon appear always */
-	}
+	@media (hover: hover) {
+		:is(a, [data-style-as="link"]).detailed-link .icon.destination {
+			opacity: 0;
+			scale: 90%;
+			transition:
+				opacity var(--transition-linear-fast),
+				scale var(--transition-ease-fast);
+		}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.icon.destination {
-		opacity: 1;
-		scale: 100%;
-		transition:
-			opacity var(--transition-linear-medium) 0.1s,
-			scale var(--transition-ease-medium) 0.1s;
+		:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+			.icon.destination {
+			opacity: 1;
+			scale: 100%;
+			transition:
+				opacity var(--transition-linear-medium) 0.1s,
+				scale var(--transition-ease-medium) 0.1s;
+		}
 	}
 
 	/*
@@ -486,6 +487,17 @@ else if (type === "image") {
 			:is(a, [data-style-as="link"]).detailed-link
 			.label.detailed {
 			display: none !important;
+		}
+
+		:is(
+				.links-list[data-content="resources"],
+				.link-container[data-content="resources"]
+			)
+			:is(a, [data-style-as="link"]).detailed-link
+			.icon.destination {
+			opacity: 1;
+			scale: 100%;
+			transition: none;
 		}
 	}
 
