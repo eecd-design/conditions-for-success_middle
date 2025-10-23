@@ -10,38 +10,44 @@ let indicators = allIndicators.sort((a, b) =>
 );
 ---
 
-<aside class="left section-nav-container">
-	<nav class="section">
-		<h2>The Big Seven</h2>
-		<ul>
-			<li>
-				<a
-					aria-current={path === "/big-seven" ? "page" : null}
-					href="/big-seven">Introduction</a
-				>
-			</li>
-			{
-				indicators.map((indicator) => {
-					let indicatorPath = `/big-seven/${indicator.id}`;
-					return (
-						<li>
-							<a
-								aria-current={
-									path === indicatorPath ? "page" : null
-								}
-								href={indicatorPath}
-							>
-								{indicator.data.title}
-							</a>
-						</li>
-					);
-				})
-			}
-		</ul>
-	</nav>
-</aside>
+<nav class="left-aside section" aria-label="The Big Seven Navigation">
+	<h2>The Big Seven</h2>
+	<ul>
+		<li>
+			<a
+				aria-current={path === "/big-seven" ? "page" : null}
+				href="/big-seven">Introduction</a
+			>
+		</li>
+		{
+			indicators.map((indicator) => {
+				let indicatorPath = `/big-seven/${indicator.id}`;
+				return (
+					<li>
+						<a
+							aria-current={
+								path === indicatorPath ? "page" : null
+							}
+							href={indicatorPath}
+						>
+							{indicator.data.title}
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</nav>
 
 <style is:global>
+	nav.section {
+		position: sticky;
+		top: 3.75rem;
+		height: 100vh;
+		padding: var(--space-2xl) var(--space-xl) var(--space-2xl) 0;
+		border-right: 1px solid var(--colour-border-neutral-subtle);
+	}
+
 	nav.section h2 {
 		font-size: var(--font-size-lg);
 		border-bottom: 1px solid var(--colour-border-neutral-subtle);

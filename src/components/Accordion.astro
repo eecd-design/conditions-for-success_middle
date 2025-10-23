@@ -69,7 +69,7 @@ let IconCross = crossIcons[crossIconSize];
 		scroll-margin-top: 2rem;
 	}
 
-	[data-mode="assessment"] .accordion {
+	main.big-seven[data-mode="assessment"] .accordion {
 		scroll-margin-top: 5.75rem;
 	}
 
@@ -347,12 +347,7 @@ let IconCross = crossIcons[crossIconSize];
 			let headings = document.querySelectorAll(
 				".accordion .heading:not([data-initialized])",
 			);
-			console.log("Accordion Count:", headings.length);
 			for (let heading of headings) {
-				console.log("Accordion Not Initialized");
-				console.log("Accordion Heading:", heading);
-				// if (heading.getAttribute("data-initialized")) continue;
-				console.log("Accordion First Child:", heading.firstChild);
 				setupDOM(heading);
 			}
 			eventControl.add({

@@ -314,6 +314,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		gap: var(--space-2xs);
 		min-height: 7rem;
 		width: calc(100% - ((2*var(--space-2xl)) - (2*(var(--space-sm)))));
+		max-width: calc(1920px - (2*var(--space-2xl)));
 	}
 
 	@container header (width < 1088px) {
@@ -575,8 +576,9 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	
 	header .media-container {
 		grid-area: media;
-		min-height: 506px;
-		margin: 0 0 0 var(--space-4xl);
+		justify-self: end;
+		height: 506px;
+		margin: 0;
 		aspect-ratio: 3 / 2;
 		flex-shrink: 0;
 		flex-grow: 1;
@@ -586,6 +588,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	@container header (width < 1440px) {
 		header .media-container {
+			justify-self: center;
 			min-height: 280px;
 			width: min(900px, calc(100% - (2*var(--space-2xl))));
 			margin: 0 0 var(--space-2xl);
@@ -599,12 +602,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	header .launchpad {
 		grid-area: launchpad;
-		justify-self: normal;
-		margin: 0 var(--space-4xl) 0 0;
+		justify-self: start;
+		width: 100%;
+		margin: 0;
 	}
 	
 	header .launchpad > .wrapper {
-		margin: 0 auto;
+		margin-right: auto;
 	}
 
 	header .launchpad h2 {
@@ -625,9 +629,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	@container header (width < 1440px) {
 		header .launchpad {
+			justify-self: center;
 			width: min(900px, calc(100% - (2*var(--space-2xl))));
-			justify-self: auto;
 			margin: 0;
+		}
+		header .launchpad > .wrapper {
+			margin: 0 auto;
 		}
 	}
 

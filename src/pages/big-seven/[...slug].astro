@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SectionNav from "../../components/SectionNav.astro";
+import PageNav from "src/components/PageNav.astro";
 import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
 import AssessmentDialogs from "../../components/dialogs/AssessmentDialogs.astro";
 import Component from "../../components/Component.astro";
@@ -49,9 +50,17 @@ let allIndicators = await getCollection("indicators");
 let prevIndicator = indicator.data.tag === '1' ? null : allIndicators.filter((sibling => Number(sibling.data.tag) == Number(indicator.data.tag) - 1))[0];
 let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((sibling => Number(sibling.data.tag) == Number(indicator.data.tag) + 1))[0];
 
+let sectionLinks = [];
+for (let component of components) {
+	sectionLinks.push({
+		url: `#component-${component.data.tag.replaceAll('.', '-')}`,
+		text: `${component.data.tag} ${component.data.title}`,
+	})
+}
+
 ---
 
-<BaseLayout pageTitle={indicator.data.title} indicatorTag={indicator.data.tag}>
+<BaseLayout pageTitle={indicator.data.title} indicatorTag={indicator.data.tag} pageType={"big-seven"}>
 
 	<AssessmentToolbar />
 
@@ -61,25 +70,7 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 
 	<SectionNav />
 
-	<aside class="right on-page-nav-container">
-		<nav class="on-page">
-			<h2 class="heading">On this page</h2>
-			<ul class="links-list">
-				{components.map((component) => (
-					<li>
-						<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
-							<span class="icon-and-label-container">
-								<span class="label-container">
-									<span class="label">{component.data.tag} {component.data.title}</span>
-								</span>
-								<IconArrowDownSmall classes={["destination"]} />
-							</span>
-						</a>
-					</li>
-				))}
-			</ul>
-		</nav>
-	</aside>
+	<PageNav sectionLinks={sectionLinks}/>
 
 	<div class="content" data-theme={indicator.data.colour}>
 

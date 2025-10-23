@@ -16,6 +16,7 @@ import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 import { findObjectByKey } from "src/utilities/helpers";
+import PageNav from "src/components/PageNav.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -37,38 +38,30 @@ components = components.map((component) => {
 	}
 })
 
----
-<BaseLayout pageTitle={'Report'}>
+let sectionLinks = [];
+sectionLinks.push({
+	url: "#overview",
+	text: "Overview",
+	dataset: [{
+		key: 'tag',
+		value: '0'
+	}]
+})
+for (let indicator of indicators) {
+	sectionLinks.push({
+		url: `#indicator-${indicator.data.tag}`,
+		text: indicator.data.title,
+		dataset: [{
+			key: 'tag',
+			value: indicator.data.tag
+		}]
+	})
+}
 
-	<aside class="right on-page-nav-container" data-restrict-report="active">
-		<nav class="on-page">
-			<h2 class="heading">In this report</h2>
-			<ul class="links-list">
-				<li>
-					<a href={`#overview`} data-tag="0"> 
-						<span class="icon-and-label-container">
-							<span class="label-container">
-								<span class="label">Overview</span>
-							</span>
-							<IconArrowDownSmall classes={["destination"]} />
-						</span>
-					</a>
-				</li>
-				{indicators.map((indicator) => (
-					<li>
-						<a href={`#indicator-${indicator.data.tag}`} data-tag={indicator.data.tag}>
-							<span class="icon-and-label-container">
-								<span class="label-container">
-									<span class="label">{indicator.data.title}</span>
-								</span>
-								<IconArrowDownSmall classes={["destination"]} />
-							</span>
-						</a>
-					</li>
-				))}
-			</ul>
-		</nav>
-	</aside>
+---
+<BaseLayout pageTitle={'Report'} pageType={"report"}>
+
+	<PageNav heading={'In this report'} sectionLinks={sectionLinks} dataset={[{key: 'restrict-report', value: 'active'}]}/>
 
 	<Toast
 		id={"open-assessment-dialog_open-toast_success"}
@@ -266,7 +259,7 @@ components = components.map((component) => {
 	// Device Restrictions
 	------------------------*/
 
-	@container main (width < 848px) {
+	@container main (width < 720px) {
 		.content.report [data-restrict-report="active"] {
 			display: none !important;
 		}
@@ -276,7 +269,7 @@ components = components.map((component) => {
 		}
 	}
 
-	@container main (width >= 848px) {
+	@container main (width >= 720px) {
 		.content.report [data-restrict-device-max="small"] {
 			display: none !important;
 		}
@@ -764,7 +757,7 @@ import { toastControl } from 'src/utilities/toast';
 			
 		let main = document.querySelector('main');
 		let sections = reportContainer?.querySelectorAll(':scope > section');
-		let onPageNav = document.querySelector('aside.on-page-nav-container');
+		let onPageNav = document.querySelector('nav.on-page');
 		let reportHeading = document.querySelector('h1');
 		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
 		let reportHeadingYear = reportHeading?.querySelector('[data-field="reportYear"]');

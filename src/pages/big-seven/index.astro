@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SectionNav from "../../components/SectionNav.astro";
+import PageNav from "src/components/PageNav.astro";
 import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
 import AssessmentDialogs from "../../components/dialogs/AssessmentDialogs.astro";
 import Accordion from "../../components/Accordion.astro";
@@ -30,77 +31,35 @@ for (let indicator of allIndicators) {
 		.filter((component) => component.data.indicator === indicator.id)
 		.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 }
+
+let sectionLinks = [
+	{
+		url: "#what-are-the-big-seven-indicators",
+		text: "What are “The Big Seven” indicators?",
+	},
+	{
+		url: "#what-are-the-four-phases-of-growth-and-success",
+		text: "What are the four phases of growth and success?",
+	},
+	{
+		url: "#when-self-assessing-how-will-schools-know-which-phase-theyre-in",
+		text: "When self-assessing, how will schools know which phase they're in?",
+	},
+	{
+		url: "#how-can-the-framework-help-with-continuous-improvement-planning",
+		text: "How can the framework help with continuous improvement planning?",
+	},
+];
 ---
 
-<BaseLayout pageTitle={"The Big Seven"}>
+<BaseLayout pageTitle={"The Big Seven"} pageType={"big-seven"}>
 	<AssessmentToolbar />
 
 	<AssessmentDialogs />
 
 	<SectionNav />
 
-	<aside class="right on-page-nav-container">
-		<nav class="on-page">
-			<h2 class="heading">On this page</h2>
-			<ul class="links-list">
-				<li>
-					<a href="#what-are-the-big-seven-indicators">
-						<span class="icon-and-label-container">
-							<span class="label-container">
-								<span class="label"
-									>What are “The Big Seven” indicators?</span
-								>
-							</span>
-							<IconArrowDownSmall classes={["destination"]} />
-						</span>
-					</a>
-				</li>
-				<li>
-					<a href="#what-are-the-four-phases-of-growth-and-success">
-						<span class="icon-and-label-container">
-							<span class="label-container">
-								<span class="label"
-									>What are the four phases of growth and
-									success?</span
-								>
-							</span>
-							<IconArrowDownSmall classes={["destination"]} />
-						</span>
-					</a>
-				</li>
-				<li>
-					<a
-						href="#when-self-assessing-how-will-schools-know-which-phase-theyre-in"
-					>
-						<span class="icon-and-label-container">
-							<span class="label-container">
-								<span class="label"
-									>When self-assessing, how will schools know
-									which phase they're in?</span
-								>
-							</span>
-							<IconArrowDownSmall classes={["destination"]} />
-						</span>
-					</a>
-				</li>
-				<li>
-					<a
-						href="#how-can-the-framework-help-with-continuous-improvement-planning"
-					>
-						<span class="icon-and-label-container">
-							<span class="label-container">
-								<span class="label"
-									>How can the framework help with continuous
-									improvement planning?</span
-								>
-							</span>
-							<IconArrowDownSmall classes={["destination"]} />
-						</span>
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</aside>
+	<PageNav sectionLinks={sectionLinks} />
 
 	<div class="content">
 		<h1>The Big Seven</h1>

@@ -535,4 +535,11 @@ else if (type === "image") {
 		outline: 2px solid var(--colour-border-accent-subtle);
 		outline-offset: -1px;
 	}
+
+	.link-container
+		:is(a, [data-style-as="link"]).detailed-link
+		.text-container
+		.description {
+		color: var(--colour-ui-neutral);
+	}
 </style>

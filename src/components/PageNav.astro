@@ -1,0 +1,72 @@
+---
+import IconArrowDown16 from "./icons/IconArrowDown_16.astro";
+
+const { heading, sectionLinks, dataset } = Astro.props;
+
+let datasetAttrs = {};
+if (dataset) {
+	for (let data of dataset) {
+		datasetAttrs[`data-${data.key}`] = data.value;
+	}
+}
+---
+
+<nav
+	class="right-aside on-page"
+	{...datasetAttrs}
+	aria-label="Page Section Navigation"
+>
+	<h2 class="heading">{heading ?? "On this page"}</h2>
+	<ul class="links-list">
+		{
+			sectionLinks.map((link) => {
+				let linkDatasetAttrs = {};
+				if (link.dataset) {
+					for (let data of link.dataset) {
+						linkDatasetAttrs[`data-${data.key}`] = data.value;
+					}
+				}
+				return (
+					<li>
+						<a href={link.url} {...linkDatasetAttrs}>
+							<span class="icon-and-label-container">
+								<span class="label-container">
+									<span class="label">{link.text}</span>
+								</span>
+								<IconArrowDown16 classes={["destination"]} />
+							</span>
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</nav>
+
+<style is:global>
+	nav.on-page {
+		position: sticky;
+		top: var(--space-2xl);
+		height: 100vh;
+		margin: var(--space-2xl) 0 !important;
+	}
+
+	main.big-seven[data-mode="assessment"] nav.on-page {
+		top: calc(3.75rem + var(--space-2xl));
+	}
+
+	nav.on-page .heading {
+		font-size: var(--font-size-lg);
+		border-bottom: 1px solid var(--colour-border-neutral-subtle);
+		padding: 0 0 var(--space-2xs);
+		margin: 0 0 var(--space-sm);
+	}
+
+	nav.on-page li {
+		line-height: 1.2;
+	}
+
+	nav.on-page a {
+		--label-size: var(--font-size-xs);
+	}
+</style>

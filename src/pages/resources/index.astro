@@ -62,8 +62,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 }) as Array<string>;
 ---
 
-<BaseLayout pageTitle={"Resources"}>
-	<aside id="filters-aside" class="left">
+<BaseLayout pageTitle={"Resources"} pageType={"resources"}>
+	<aside id="filters-aside" class="left-aside">
 		<div class="wrapper">
 			<form
 				id="resources-list-secondary-controls"
@@ -474,14 +474,14 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		}
 	}
 
-	@container main (720px <= width < 1360px) {
+	@container main (720px <= width < 992px) {
 		:is(#filters-aside, .content.resources)
 			[data-restrict-device-max="small"] {
 			display: none !important;
 		}
 	}
 
-	@container main (width >= 1360px) {
+	@container main (width >= 992px) {
 		:is(#filters-aside, .content.resources)
 			[data-restrict-device-max="small"],
 		:is(#filters-aside, .content.resources)
@@ -495,8 +495,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	------------------------*/
 
 	#filters-aside {
-		grid-area: left-aside;
-		margin: 0 var(--space-4xl) 0 0;
+		margin: 0;
 		height: 100vh;
 		position: sticky;
 		top: 0;
@@ -511,7 +510,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		background-color: var(--colour-background);
 	}
 
-	@container main (width < 1360px) {
+	@container main (width < 992px) {
 		#filters-aside {
 			display: initial;
 			margin: 0;
@@ -520,6 +519,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		}
 
 		#filters-aside > .wrapper {
+			width: 300px;
 			box-shadow: var(--box-shadow);
 			translate: -300px;
 			transition: translate var(--transition-ease-medium);
@@ -758,6 +758,10 @@ let types = [...allTypes].sort((a: string, b: string) => {
 			align-items: stretch;
 		}
 
+		#resources-list-primary-controls .fieldset-group {
+			flex-wrap: wrap;
+		}
+
 		#resources-list-primary-controls
 			.fieldset-group
 			.separator:first-of-type {
@@ -817,16 +821,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 	}
-
-	/* #resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout):has(
-			button:not([aria-pressed="true"]):is(:hover, :focus-visible)
-		)
-		button[aria-pressed="true"] {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-		--icon-colour: var(--colour-ui-neutral);
-		--label-colour: var(--colour-ui-neutral);
-	} */
 
 	#resources-list-primary-controls
 		fieldset:is(.filter, .sort, .layout)
@@ -1054,7 +1048,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 		let isExpanded = filtersToggle.getAttribute("aria-expanded") === "true";
 
-		let main = document.querySelector("main");
 		let filtersAside = document.querySelector("#filters-aside>.wrapper");
 		let filtersDialog = document.querySelector("#resources-filters-dialog");
 		let form = document.querySelector("#resources-list-secondary-controls");
@@ -1062,7 +1055,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 		// Resizing from larger to smaller (<720px)
 		if (event.matches) {
-			main.setAttribute("data-device", "small");
 			// Switch drawer to modal
 			if (form.parentElement === filtersDialog) return;
 			filtersDialog.append(form);
@@ -1075,7 +1067,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		}
 		// Resizing from smaller to larger (>720px)
 		else {
-			main.setAttribute("data-device", "large");
 			// Switch modal to drawer
 			if (form.parentElement === filtersAside) return;
 			filtersAside.append(form);

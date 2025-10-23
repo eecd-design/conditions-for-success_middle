@@ -9,7 +9,7 @@ import "../styles/global.css";
 import { Image } from "astro:assets";
 import GNBLogo from "../images/gnb-logo-reverse.png";
 
-const { pageTitle, indicatorTag } = Astro.props;
+const { pageTitle, indicatorTag, pageType } = Astro.props;
 ---
 
 <!doctype html>
@@ -35,6 +35,7 @@ const { pageTitle, indicatorTag } = Astro.props;
 	<body>
 		<Header />
 		<main
+			class:list={[pageType]}
 			data-mode="reading"
 			data-indicator-tag={indicatorTag ? indicatorTag : null}
 		>
