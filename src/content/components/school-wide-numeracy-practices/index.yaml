@@ -5,22 +5,22 @@ initiating:
   considerations:
     - tag: 6.3.1
       title: >-
-        Educators reference the Curriculum Framework to identify concepts and
-        skills in their assigned subject areas.
+        Educators make reference to the Curriculum Framework to identify
+        concepts and skills in their assigned subject areas.
       compass: false
       categories: []
     - tag: 6.3.2
       title: >-
         Educators design tasks that are primarily procedural and may lack
         opportunities for deeper learning. Learners are dependent on educators
-        to complete tasks and have a fixed mindset about their ability in math.
+        to complete tasks and have a fixed mindset.
       compass: false
       categories: []
     - tag: 6.3.3
       title: >-
         Educators lead class discussions through direct questioning and
         demonstrate how to use specific models. Learners answer direct questions
-        and use math tools or models only when guided by the educator.
+        and use tools or models only when guided by the educator.
       compass: false
       categories: []
     - tag: 6.3.4
@@ -37,14 +37,14 @@ implementing:
         The Curriculum Framework is referenced and used collaboratively by
         educators to identify relevant concepts and skills in other subject
         areas. Learners are aware of goals, but they are developing the ability
-        to  connect them to prior learning or other contexts.
+        to connect them to prior learning or other contexts.
       compass: false
       categories: []
     - tag: 6.3.6
       title: >-
-        Educators design tasks that promote mathematical reasoning and problem
-        solving. Learners look for possible entry points to solve problems but
-        are frustrated when they are not solved quickly or mistakes are made.
+        Educators design tasks that promote reasoning and problem solving.
+        Learners look for possible entry points to solve problems but are
+        frustrated when they are not solved quickly, or mistakes are made.
       compass: false
       categories: []
     - tag: 6.3.7
@@ -68,18 +68,17 @@ developing:
   considerations:
     - tag: 6.3.9
       title: >-
-        The Curriculum Framework is referenced and used collaboratively by
-        educators to identify relevant concepts and skills that connect across
-        multiple subject areas. Learners can articulate goals, connect them to
-        prior learning, and apply them to other contexts.
+        The Curriculum Framework is referenced and used collaboratively to
+        identify relevant concepts and skills that connect across multiple
+        subject areas. Learners can articulate goals, connect them to prior
+        learning, and apply them to other contexts.
       compass: false
       categories: []
     - tag: 6.3.10
       title: >-
-        Educators design tasks that promote mathematical reasoning and more
-        complex problem solving and allow for productive struggle. Learners
-        engage with challenging tasks and view mistakes as a valuable part of
-        learning.
+        Educators design tasks that promote reasoning and more complex problem
+        solving and allow for productive struggle. Learners engage with
+        challenging tasks and view mistakes as a valuable part of learning.
       compass: false
       categories: []
     - tag: 6.3.11
@@ -111,10 +110,10 @@ sustaining:
       categories: []
     - tag: 6.3.14
       title: >-
-        Educators design tasks that promote mathematical reasoning, enable more
-        complex problem solving, and allow varied solution strategies. Learners
-        have a growth mindset and use self-reflection and critical thinking
-        skills to complete tasks and value mistakes.
+        Educators design tasks that promote reasoning, enable more complex
+        problem solving, and allow varied solution strategies. Learners have a
+        growth mindset and use self-reflection and critical thinking skills to
+        complete tasks and value mistakes.
       compass: false
       categories: []
     - tag: 6.3.15

@@ -62,7 +62,12 @@ sustaining:
     - tag: 1.4.11
       title: >-
         Meetings are solution-focused, driven by learner-centered data, and
-        aligned with the school’s vision. Continuous evaluation of interventions
-        ensures dynamic and effective support for learners.
+        aligned with the school’s vision.
+      compass: true
+      categories: []
+    - tag: 1.4.12
+      title: >-
+        Continuous evaluation of interventions ensures dynamic and effective
+        support for learners.
       compass: true
       categories: []
