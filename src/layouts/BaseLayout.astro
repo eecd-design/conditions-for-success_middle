@@ -33,11 +33,16 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		<ClientRouter />
 	</head>
 	<body>
+		<div class="skip-link-container" data-theme="red">
+			<a href="#main-content" class="skip-link">Skip to main content</a>
+		</div>
 		<Header />
 		<main
+			id="main-content"
 			class:list={[pageType]}
 			data-mode="reading"
 			data-indicator-tag={indicatorTag ? indicatorTag : null}
+			tabindex="-1"
 		>
 			<div class="wrapper">
 				<slot />

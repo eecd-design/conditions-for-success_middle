@@ -232,6 +232,9 @@
 	--colour-highlight-fill: var(--red-muted-100);
 	--colour-highlight-ui: var(--red-muted-800);
 
+	--colour-focus-ring-neutral: var(--gray-muted-800);
+	--colour-focus-ring-reverse: white;
+
 	--colour-fill-neutral-faint: var(--gray-muted-50);
 	--colour-fill-neutral-subtle: var(--gray-muted-75);
 	--colour-fill-neutral-subtle-highlight: var(--gray-muted-100);
@@ -2616,6 +2619,38 @@ span.highlight {
 	border: 0;
 }
 
+.skip-link-container {
+	display: flex;
+	align-items: center;
+	padding: var(--space-xs) var(--space-2xl);
+	background-color: var(--colour-fill-accent-bold);
+}
+
+.skip-link {
+	font-size: var(--font-size-xs);
+	color: var(--colour-ui-reverse);
+	text-decoration: underline;
+	padding: var(--space-3xs) var(--space-2xs);
+	border-radius: var(--border-radius-small);
+	outline-color: var(--colour-focus-ring-reverse) !important;
+}
+
+.skip-link:is(:focus-visible) {
+	color: var(--colour-ui-reverse);
+}
+
+.skip-link-container:not(:has(:focus-visible)) {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
 
 /*
 ** STATES
@@ -2627,6 +2662,6 @@ span.highlight {
 }
 
 :focus-visible {
-	outline: var(--theme-outlineColour) solid 2px;
+	outline: var(--colour-focus-ring-neutral) solid 2px;
 	outline-offset: 2px;
 }
