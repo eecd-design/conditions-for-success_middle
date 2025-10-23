@@ -1,5 +1,5 @@
 import { setPreferences } from "src/stores/userDataStore";
-import { emitEvent, htmlToElement, toTitleCase } from "./helpers";
+import { emitEvent, htmlToElement, scrollIntoView, toTitleCase } from "./helpers";
 import { eventControl } from "./event";
 
 //
@@ -102,6 +102,12 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 
 	if (matches > 0) {
 
+		let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
+
+		if (filterMessage) {
+			filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
+		}
+
 		sortList({
 			list: list,
 			items: results,
@@ -142,7 +148,7 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
  */
 let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortType }) => {
 
-	let value = input.value.trim();
+	let value = input.value.toLowerCase().trim();
 
 	let results = [];
 	let matches = 0;
@@ -167,9 +173,9 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 
 		let result = {
 			elem: item,
-			title: title ?? null,
+			title: title ? title.toLowerCase().trim() : null,
 			tag: tag ?? null,
-			description: description ?? null,
+			description: description ? description.toLowerCase().trim() : null,
 			match: false,
 			relevance: 0,
 		}
@@ -196,8 +202,10 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			presortType = 'tag';
 			matchTypes.add('tag');
 
-			// 2. Check for title match
-		} else if (title) {
+		}
+
+		// 2. Check for title match
+		else if (title) {
 
 			// Full phrase match
 			if (value.includes(' ')) {
@@ -210,8 +218,10 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 					matchTypes.add('title');
 				}
 
-				// Single word match
-			} else {
+			}
+
+			// Single word match
+			else {
 
 				let words = title.split(' ');
 				for (let i = 0; i < words.length; i++) {
@@ -290,6 +300,12 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 	}
 
 	if (matches > 0) {
+
+		let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
+
+		if (filterMessage) {
+			filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
+		}
 
 		emitEvent({
 			target: document,
@@ -384,9 +400,14 @@ let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
 	});
 
 	// Reorder elements in the DOM
+	let index = 1;
 	for (let item of items) {
 		if (item.elem instanceof HTMLElement && !item.elem.hasAttribute('hidden')) {
 			list.append(item.elem);
+			item.elem.setAttribute('data-pos', `${index}`);
+			index += 1;
+		} else {
+			item.elem.removeAttribute('data-pos');
 		}
 	}
 
@@ -731,12 +752,16 @@ let search = (() => {
 		if (!form || !list) return;
 		let sortType = getSortType(form);
 		let options = formOptions.get(form) ?? {};
+		let selectedItem = list.querySelector('[aria-selected]');
+		if (selectedItem) selectedItem.removeAttribute('[aria-selected]');
 		if (target.value.trim().length > 0) {
 			list.removeAttribute('hidden');
+			target.setAttribute('aria-expanded', 'true');
 			debouncedFilter({ input: target, list, sortType });
 		} else {
 			if (options.noValueBehaviour === 'hidden') {
 				list.setAttribute('hidden', '');
+				target.setAttribute('aria-expanded', 'false');
 			} else {
 				debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
 			}
@@ -744,7 +769,80 @@ let search = (() => {
 	};
 
 	let onKeydown = (event) => {
-		if (event.key === 'Enter') event.preventDefault();
+		let target = event.target;
+		let form = target.closest('form');
+		let list = getList(form);
+		if (!form || !list) return;
+		let sortType = getSortType(form);
+		let options = formOptions.get(form) ?? {};
+
+		if (target.matches('button.submit')) {
+			if (event.key === 'Enter') {
+				// Prevent default submit
+				event.preventDefault();
+			}
+		}
+
+		if (target.matches('fieldset.search input')) {
+
+			if (event.key === 'Enter') {
+				event.preventDefault();
+				let currentItemId = target.getAttribute("aria-activedescendant");
+				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
+				if (currentItem) {
+					currentItem.firstElementChild.click();
+				}
+			}
+
+			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+				event.preventDefault();
+				let results = list.querySelectorAll('[data-pos]');
+				if (results.length === 0) return;
+				let currentItemId = target.getAttribute("aria-activedescendant");
+				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
+				let currentPos = Number(currentItem?.getAttribute('data-pos'));
+				let nextPos = null;
+				if (!currentItem) {
+					nextPos = event.key === "ArrowDown"
+						? 1
+						: results.length;
+				} else {
+					nextPos = event.key === "ArrowUp"
+						? currentPos - 1
+						: currentPos + 1;
+				}
+				if (nextPos > results.length || nextPos < 1) return;
+				let nextItem = list.querySelector(`[data-pos="${nextPos}"]`);
+				if (!nextItem) return;
+				// Update input with active descendant
+				target.setAttribute('aria-activedescendant', nextItem.id);
+				// Add visual highlight to item
+				if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
+				nextItem.firstElementChild.setAttribute('aria-selected', 'true');
+				scrollIntoView(nextItem, {
+					block: "nearest",
+				});
+			}
+
+			if (event.key === 'Escape') {
+				let currentItemId = target.getAttribute("aria-activedescendant");
+				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
+				if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
+				target.value = '';
+				target.setAttribute('aria-activedescendant', '');
+				scrollIntoView(target, {
+					block: "center",
+				});
+				if (options.noValueBehaviour === 'hidden') {
+					// Hide the list
+					list.setAttribute('hidden', '');
+					target.setAttribute('aria-expanded', 'false');
+				} else {
+					// Filter and sort list
+					debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
+				}
+			}
+		}
 	}
 
 	/**

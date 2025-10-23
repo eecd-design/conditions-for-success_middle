@@ -289,9 +289,15 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					<input
 						name="search"
 						type="text"
+						role="combobox"
+						autocomplete="off"
+						aria-autocomplete="list"
+						aria-expanded="true"
+						aria-controls="resources-list"
+						aria-activedescendant=""
 						placeholder="Search these resources..."
-						aria-label="Search Resources"
-						aria-describedby="resources-list_error"
+						aria-label="Search and filter resources"
+						aria-describedby="resources-list_error-status, resources-list_filter-status"
 						autofocus
 					/>
 					<IconSearch />
@@ -421,9 +427,15 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					<input
 						name="search"
 						type="text"
+						role="combobox"
+						autocomplete="off"
+						aria-autocomplete="list"
+						aria-expanded="true"
+						aria-controls="resources-list"
+						aria-activedescendant=""
 						placeholder="Search these resources..."
-						aria-label="Search Resources"
-						aria-describedby="resources-list_error"
+						aria-label="Search and filter resources"
+						aria-describedby="resources-list_error-status, resources-list_filter-status"
 						autofocus
 					/>
 					<IconSearch />
@@ -433,13 +445,21 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 		<div class="list-container">
 			<p
-				id="resources-list_error"
+				id="resources-list_error-status"
 				class="error-status"
 				role="status"
 				hidden
 			>
 				<IconWarning aria-hidden="true" />
 				<span>There are no results that match the search term.</span>
+			</p>
+			<p
+				id="resources-list_filter-status"
+				class="filter-status"
+				role="status"
+				aria-live="polite"
+				data-screen-reader
+			>
 			</p>
 
 			<ul
@@ -448,13 +468,20 @@ let types = [...allTypes].sort((a: string, b: string) => {
 				data-style="divided"
 				data-layout="compact"
 				data-content="resources"
+				role="listbox"
 			>
 				{
-					allResources.map((resource) => {
+					allResources.map((resource, index) => {
 						let data = JSON.parse(JSON.stringify(resource.data));
 						data.category = "resource";
 						data.slug = resource.id;
-						return <DetailedLink itemData={data} />;
+						return (
+							<DetailedLink
+								itemData={data}
+								index={index}
+								listName={"resources-list"}
+							/>
+						);
 					})
 				}
 			</ul>

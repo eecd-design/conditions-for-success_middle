@@ -1,5 +1,5 @@
 ---
-import { getResourcePath } from "src/utilities/helpers";
+import { getResourcePath, toKebabCase } from "src/utilities/helpers";
 
 import { toTitleCase } from "src/utilities/helpers";
 
@@ -9,7 +9,7 @@ import IconExpand from "./icons/IconExpand_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
-let { itemData, includeItemWrapper = true } = Astro.props;
+let { itemData, includeItemWrapper = true, index, listName } = Astro.props;
 
 let {
 	category = null,
@@ -72,6 +72,8 @@ let ItemWrapper = includeItemWrapper ? "li" : null;
 let itemWrapperAttrs =
 	category === "resource"
 		? {
+				id: `${listName}_item-${index + 1}`,
+				"data-pos": index + 1,
 				"data-category": category,
 				"data-date-added": dateAdded,
 				"data-description": description,
@@ -82,6 +84,8 @@ let itemWrapperAttrs =
 				"data-considerations": JSON.stringify(linkedConsiderations),
 			}
 		: {
+				id: `${listName}_item-${index + 1}`,
+				"data-pos": index + 1,
 				"data-category": category,
 				"data-tag": tag,
 				"data-theme": colour,
@@ -96,6 +100,7 @@ let interactiveWrapperAttrs = opensDialog
 	? {
 			class: "open-dialog detailed-link",
 			type: "button",
+			role: includeItemWrapper ? "option" : null,
 			"data-style-as": "link",
 			"data-dialog": "media-dialog",
 			"data-dialog-heading": title,
@@ -106,6 +111,7 @@ let interactiveWrapperAttrs = opensDialog
 	: {
 			class: "detailed-link",
 			href: path,
+			role: includeItemWrapper ? "option" : null,
 		};
 
 let DestinationIcon = null;
@@ -286,7 +292,11 @@ else if (type === "image") {
 		text-decoration: none;
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible) {
+	:is(a, [data-style-as="link"]).detailed-link:is(
+			:hover,
+			:focus-visible,
+			[aria-selected="true"]
+		) {
 		--link-background-colour: var(
 			--colour-fill-accent-subtle,
 			var(--colour-fill-neutral-subtle)

@@ -60,7 +60,11 @@ for (let resource of allResources) {
 		Search
 	</h2>
 
-	<form data-no-value-behaviour="hidden" data-list="site-contents-list">
+	<form
+		data-no-value-behaviour="hidden"
+		data-list="site-contents-list"
+		role="search"
+	>
 		<fieldset class="search">
 			<p id="search-dialog_search-input_help" class="instructions">
 				Search for an Indicator, Component, Consideration, or Resource
@@ -71,9 +75,15 @@ for (let resource of allResources) {
 					id="search-dialog_search-input"
 					name="search"
 					type="text"
+					role="combobox"
+					autocomplete="off"
+					aria-autocomplete="list"
+					aria-expanded="false"
+					aria-controls="site-contents-list"
+					aria-activedescendant=""
 					placeholder="Enter search term..."
 					aria-labelledby="search-dialog_heading"
-					aria-describedby="search-dialog_search-input_help, site-contents-list_error"
+					aria-describedby="search-dialog_search-input_help, site-contents-list_error-status, site-contents-list_filter-status"
 					autofocus
 				/>
 				<IconSearch />
@@ -83,7 +93,7 @@ for (let resource of allResources) {
 
 	<div class="list-container">
 		<p
-			id="site-contents-list_error"
+			id="site-contents-list_error-status"
 			class="error-status"
 			role="status"
 			hidden
@@ -91,15 +101,32 @@ for (let resource of allResources) {
 			<IconWarningSmall />
 			<span>There are no results that match the search term.</span>
 		</p>
+		<p
+			id="site-contents-list_filter-status"
+			class="filter-status"
+			role="status"
+			aria-live="polite"
+			data-screen-reader
+		>
+		</p>
 
 		<ul
 			id="site-contents-list"
 			class="links-list"
 			data-style="divided"
 			data-content="mixed"
+			role="listbox"
 			hidden
 		>
-			{searchList.map((item) => <DetailedLink itemData={item} />)}
+			{
+				searchList.map((item, index) => (
+					<DetailedLink
+						itemData={item}
+						index={index}
+						listName={"site-content-list"}
+					/>
+				))
+			}
 		</ul>
 	</div>
 </dialog>
