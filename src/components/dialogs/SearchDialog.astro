@@ -46,6 +46,7 @@ let allResources = await getCollection("resources");
 
 for (let resource of allResources) {
 	let data = JSON.parse(JSON.stringify(resource.data));
+	data.slug = resource.id;
 	data.category = "resource";
 	searchList.push(data);
 }
