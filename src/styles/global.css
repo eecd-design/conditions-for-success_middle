@@ -1796,7 +1796,7 @@ dialog form hr.group {
 	--group-gap: var(--space-sm);
 }
 
-.elem-group>.wrapper>* {
+.elem-group[data-content="small"] .elem-group>.wrapper>* {
 	margin: 0 !important;
 }
 
@@ -1812,8 +1812,14 @@ dialog form hr.group {
 	grid-column: span 3;
 }
 
+@container elem-group (width < 500px) {
+	.elem-group[data-columns="2"][data-fit="compact"]>.wrapper {
+		--group-columns: 1;
+	}
+}
+
 @container elem-group (width < 700px) {
-	.elem-group[data-columns="2"]>.wrapper {
+	.elem-group[data-columns="2"]:not([data-fit="compact"])>.wrapper {
 		--group-columns: 1;
 	}
 }

@@ -314,7 +314,11 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			</span>
 		</div>
 	</template>
-	<div class="conflicting-assessments elem-group" data-columns="2">
+	<div
+		class="conflicting-assessments elem-group"
+		data-columns="2"
+		data-fit="compact"
+	>
 		<div class="wrapper">
 			<div class="card local">
 				<div class="banner" data-theme="blue" data-vibrancy="vivid">
@@ -512,7 +516,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	#open-assessment-dialog
 		.saved-assessments-list
 		.card:has(button.delete:is(:hover, :focus-visible)) {
-		outline-color: var(--colour-border-accent-bold);
+		--card-boxshadow-colour: var(--colour-border-accent-bold);
 	}
 
 	#open-assessment-dialog .saved-assessments-list .card .heading {
@@ -574,7 +578,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 	#import-conflict-dialog:has(button.overwrite:is(:hover, :focus-visible))
 		.card.imported {
-		outline-color: var(--colour-border-neutral-bold);
+		--card-boxshadow-colour: var(--colour-border-neutral-bold);
+		--card-boxshadow-width: 3px;
 	}
 
 	#import-conflict-dialog:has(button.overwrite:is(:hover, :focus-visible))
@@ -584,7 +589,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible))
 		.card.local {
-		outline-color: var(--colour-border-neutral-bold);
+		--card-boxshadow-colour: var(--colour-border-neutral-bold);
+		--card-boxshadow-width: 3px;
 	}
 
 	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible))
@@ -764,7 +770,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 		// If there's a school/year conflict, open import conflict dialog
 		if (schoolYearConflict) {
-			console.log("School/Year Conflict Detected");
+			// console.log("School/Year Conflict Detected");
 
 			setImportConflictData({
 				importedAssessment,
@@ -785,7 +791,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 		// If there's an id conflict (but no school/year conflict), assign assessment a new id
 		if (idConflict) {
-			console.log("ID Conflict Detected");
+			// console.log("ID Conflict Detected");
 			let ids = localAssessments.map((a) => a.id).filter(Boolean);
 			let newId = ids.length ? Math.max(...ids) + 1 : 1;
 			importedAssessment.id = newId;
