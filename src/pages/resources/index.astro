@@ -81,7 +81,10 @@ let types = [...allTypes].sort((a: string, b: string) => {
 						<!-- <IconFilter /> -->
 						<span>Filters</span>
 					</h2>
-					<label class="filters-reset" data-style-as="button">
+					<label
+						class="reset-input-container filters-reset"
+						data-style-as="button"
+					>
 						<div class="icon-and-label-container">
 							<IconFilterClear />
 							<!-- <span class="label-container">
@@ -259,7 +262,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	<MediaDialog />
 
 	<div class="content resources">
-		<h1>Resources</h1>
+		<h1 id="main-heading" tabindex="-1">Resources</h1>
 
 		<ul id="active-filters-list" class="field-values-list">
 			<template>
@@ -492,7 +495,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 <style is:global>
 	/* 
 	// Device Restrictions
-	------------------------*/
+	*/
 
 	@container main (width < 720px) {
 		:is(#filters-aside, .content.resources)
@@ -519,7 +522,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	/* 
 	// Filters Aside
-	------------------------*/
+	*/
 
 	#filters-aside {
 		margin: 0;
@@ -561,7 +564,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	/* 
 	// Secondary List Controls
-	------------------------*/
+	*/
 
 	#resources-list-secondary-controls {
 		gap: var(--space-2xs);
@@ -589,6 +592,10 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		--separator-long-edge-dimension: 1.75rem;
 	}
 
+	/* 
+	// Reset and Close Buttons
+	*/
+
 	#resources-list-secondary-controls
 		.heading-group
 		:is(button, [data-style-as="button"]) {
@@ -599,8 +606,20 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	#resources-list-secondary-controls
 		.heading-group
-		:is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
+		:is(button, [data-style-as="button"]):is(:hover, :focus-visible),
+	#resources-list-secondary-controls
+		.heading-group
+		:is(button, [data-style-as="button"]):has(input:focus-visible) {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
+	}
+
+	#resources-list-secondary-controls
+		.heading-group
+		:is(button, [data-style-as="button"]):has(
+			input[type="reset"]:focus-visible
+		) {
+		outline: var(--colour-focus-ring) solid 2px;
+		outline-offset: 3px;
 	}
 
 	/* Dialog Customization */
@@ -656,7 +675,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		.accordion
 		.heading
 		button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
-		outline-color: transparent;
+		--button-boxshadow-colour: transparent;
 	}
 
 	#resources-list-secondary-controls
@@ -725,7 +744,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	*/
 
 	#resources-list-secondary-controls fieldset.filters {
-		padding: var(--space-xs) 0 var(--space-3xs);
+		padding: var(--space-xs) 0 var(--space-2xs);
 		max-height: min(500px, 50vh);
 		overflow: auto;
 	}
@@ -740,8 +759,15 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	#resources-list-secondary-controls
 		fieldset.filters
-		label:has(input[type="checkbox"]):is(:hover, :focus-visible) {
+		label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
 		background-color: var(--colour-fill-neutral-subtle);
+	}
+
+	#resources-list-secondary-controls
+		fieldset.filters
+		label:has(input[type="checkbox"]:focus-visible) {
+		outline: var(--colour-focus-ring) solid 2px;
+		outline-offset: 3px;
 	}
 
 	#resources-list-secondary-controls
@@ -839,7 +865,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 			:focus-visible
 		) {
 		--button-background-colour: transparent;
-		--button-outline-colour: var(--colour-border-neutral-subtle);
+		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
 	}
 
 	#resources-list-primary-controls
@@ -972,7 +998,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 				? "dialog"
 				: "aside";
 
-			console.log("Parent Container", parent);
 			// Open the panel
 			if (!isExpanded) {
 				if (parent === "dialog") {
@@ -1036,10 +1061,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	let onFilterChange = (event: CustomEvent) => {
 		let detail = event.detail;
-		console.log("Filter Change", detail);
 
 		let resetFiltersBtns = document.querySelectorAll(".filters-reset");
-		console.log(resetFiltersBtns);
 		if (!resetFiltersBtns) return;
 		if (Object.keys(detail.activeFilters).length > 0) {
 			for (let btn of resetFiltersBtns) {

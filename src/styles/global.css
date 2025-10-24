@@ -234,6 +234,7 @@
 
 	--colour-focus-ring-neutral: var(--gray-muted-800);
 	--colour-focus-ring-reverse: white;
+	--colour-focus-ring: var(--colour-focus-ring-neutral);
 
 	--colour-fill-neutral-faint: var(--gray-muted-50);
 	--colour-fill-neutral-subtle: var(--gray-muted-75);
@@ -583,12 +584,10 @@ p {
 
 
 /*
-** BUTTONS
-------------------------------*/
+** Buttons
+*/
 
-:is(button, a) * {
-	pointer-events: none;
-}
+/* Button Group */
 
 .button-group {
 	display: flex;
@@ -606,7 +605,16 @@ p {
 	--group-gap: var(--space-2xs);
 }
 
+/* Button Content */
+
+:is(button, a) * {
+	pointer-events: none;
+}
+
+/* Default Styles */
+
 :is(button:not([data-style-as="link"]), [data-style-as="button"]) {
+	--button-background-colour: var(--colour-fill-neutral-subtle);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -617,27 +625,26 @@ p {
 	color: var(--button-ui-colour, var(--colour-ui-neutral));
 	height: 2.25rem;
 	padding: 0 var(--space-2xs);
-	background-color: var(--button-background-colour, var(--colour-fill-neutral-subtle));
+	background-color: var(--button-background-colour);
 	border-radius: var(--button-border-radius, var(--border-radius-small));
-	border: none;
-	outline: var(--button-outline-width, 2px) solid var(--button-outline-colour, transparent);
-	outline-offset: -1px;
+	border-width: var(--button-border-width, 0px);
+	border-style: solid;
+	border-color: var(--button-border-colour, transparent);
+	box-shadow: inset 0 0 0 var(--button-boxshadow-width, 2px) var(--button-boxshadow-colour);
 	text-decoration: none;
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
-	/* Removes blue highlight on mobile */
+	/* ↓ Removes blue highlight on mobile */
 	transition:
 		background-color var(--transition-linear-fast),
 		color var(--transition-linear-fast),
-		outline-color var(--transition-linear-fast),
-		border-color var(--transition-linear-fast);
+		border-color var(--transition-linear-fast),
+		box-shadow var(--transition-linear-fast);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:hover, :focus-visible) {
 	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
-	--button-outline-colour: transparent;
-	outline: var(--button-outline-width, 2px) solid var(--button-outline-colour, transparent);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:disabled, :has(:disabled)) {
@@ -648,12 +655,13 @@ p {
 :is(button:not([data-style-as="link"]), [data-style-as="button"]):is([aria-pressed="true"], [aria-expanded="true"], :has(input:checked)) {
 	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
-	--button-outline-colour: transparent;
 }
 
+/* Button Sizes */
+
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="small"] {
-	height: 1.5rem;
-	padding: 0 var(--space-2xs);
+	height: 2rem;
+	padding: 0 var(--space-xs);
 	font-size: var(--font-size-2xs);
 }
 
@@ -671,34 +679,38 @@ p {
 	padding: 0 var(--space-sm);
 }
 
+/* Button Style: Solid */
+
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="solid"] {
+	--button-background-colour: var(--colour-fill-neutral-subtle);
+}
+
+:is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="solid"]:is(:hover, :focus-visible) {
 	--button-background-colour: var(--colour-fill-neutral-mid);
 	--button-ui-colour: var(--colour-ui-reverse);
 }
 
-:is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="solid"]:is(:hover, :focus-visible) {
-	--button-background-colour: transparent;
-	--button-ui-colour: var(--colour-ui-neutral);
-	--button-outline-colour: var(--colour-border-neutral-bold);
-}
+/* Button Style: Outline */
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="outline"] {
 	--button-background-colour: transparent;
 	--button-ui-colour: var(--colour-ui-neutral-subtle);
-	--button-outline-colour: var(--colour-border-neutral-subtle);
+	--button-boxshadow-colour: var(--colour-border-neutral-subtle);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="outline"]:is(:hover, :focus-visible) {
-	--button-background-colour: transparent;
-	--button-ui-colour: var(--colour-ui-neutral);
-	--button-outline-colour: var(--colour-border-neutral-bold);
+	--button-background-colour: var(--colour-fill-neutral-mid);
+	--button-ui-colour: var(--colour-ui-reverse);
+	--button-boxshadow-colour: transparent;
 }
+
+/* Button Style: Solid + Outline */
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-style="solid-outline"] {
 	--button-background-colour: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
 	;
-	--button-outline-colour: var(--colour-border-accent-bold, var(--colour-border-neutral-bold));
-	--button-outline-width: 1px;
+	--button-border-colour: var(--colour-border-accent-bold, var(--colour-border-neutral-bold));
+	--button-border-width: 1px;
 	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 }
@@ -774,28 +786,23 @@ p {
 	color: var(--colour-ui-link);
 	font-weight: 600;
 	text-decoration-color: var(--colour-ui-link-underline);
-	/* ↓ Normalize buttons */
-	text-align: unset;
 	cursor: pointer;
+	border-radius: var(--border-radius-small);
 	/* ↓ Removes blue highlight on mobile */
 	-webkit-tap-highlight-color: transparent;
 	transition:
 		background-color var(--transition-linear-fast),
+		border-color var(--transition-linear-fast),
 		text-decoration-color var(--transition-linear-fast),
 		color var(--transition-linear-fast);
+	/* ↓ Normalize buttons styled as links */
+	text-align: unset;
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
 	color: var(--colour-ui-link-hover);
 	text-decoration-color: transparent;
 }
-
-/* :is(a, [data-style-as="link"]):has(.icon.destination, .icon.type) {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	line-height: 1.2;
-} */
 
 :is(a, [data-style-as="link"]) .icon.destination {
 	--icon-colour: var(--colour-ui-neutral-subtle);
@@ -861,6 +868,7 @@ p {
 }
 
 .links-list :is(a, [data-style-as="link"]) {
+	display: inline-block;
 	line-height: 1.2 !important;
 }
 
@@ -926,6 +934,11 @@ p {
 	display: flex;
 	flex-flow: column;
 	gap: 0.375rem;
+}
+
+#pagination-controls .prev-container {
+	align-items: start;
+	text-align: left;
 }
 
 #pagination-controls .next-container {
@@ -1329,96 +1342,6 @@ form [data-style-as="button"] input:is([type="radio"], [type="checkbox"]) {
 	opacity: 0;
 }
 
-/* RADIO INPUTS */
-
-form .radio-group {
-	display: flex;
-	flex-flow: row;
-	align-items: center;
-	gap: var(--space-2xs);
-	margin: var(--space-2xs) 0;
-}
-
-/* Refine radio styles, not sure about the very bold always outline, kind of wish I could use gray-muted-400 */
-
-form .radio-container {
-	display: inline-grid;
-	grid-auto-flow: column;
-	align-items: center;
-	height: 2.5rem;
-	padding: 0;
-	outline: 2px solid var(--container-outline-colour, transparent);
-	outline-offset: -1px;
-	border-radius: var(--border-radius-normal);
-	background-color: var(--container-background-colour, transparent);
-	position: relative;
-}
-
-form .radio-container[data-theme]:has(input:checked) {
-	outline: 2px solid var(--container-outline-colour, var(--colour-border-accent-bold));
-	background-color: var(--container-background-colour, var(--colour-fill-accent-subtle));
-}
-
-form .radio-container:has(input:checked) {
-	outline-color: var(--container-outline-colour, var(--colour-border-neutral-bold));
-}
-
-/* Selects the none checked input for hover state */
-form .radio-container:not(:has(input:checked)):is(:hover, :focus-visible) {
-	background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
-}
-
-form .radio-container label {
-	display: inline-flex;
-	align-items: center;
-	font-size: var(--font-size-xs);
-	font-weight: 400;
-	line-height: 1;
-	height: 100%;
-	margin: 0;
-	padding: 0 var(--space-xs) 0 0;
-	cursor: pointer;
-}
-
-form .radio-container input[type="radio"] {
-	appearance: none;
-	height: 2.5rem;
-	width: 2.25rem;
-	opacity: 0;
-	z-index: 0;
-	cursor: pointer;
-}
-
-form .radio-container::before {
-	content: "";
-	position: absolute;
-	left: 0.625rem;
-	height: 1rem;
-	width: 1rem;
-	background-color: var(--colour-background);
-	border: 2px solid var(--colour-border-neutral-bold);
-	border-radius: 100rem;
-	pointer-events: none;
-	z-index: 1;
-	transition: border-color var(--transition-linear-fast);
-}
-
-form .radio-container:is(:hover, :focus-visible, :has(input:checked))::before {
-	border-color: var(--colour-border-accent-bold, var(--colour-border-neutral-bold));
-}
-
-form .radio-container:has(input:checked)::after {
-	content: "";
-	position: absolute;
-	left: 0.875rem;
-	height: 0.5rem;
-	width: 0.5rem;
-	background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
-	border-radius: 100rem;
-	pointer-events: none;
-	z-index: 2;
-}
-
 /* CHECKBOX INPUTS */
 
 form label:has(input[type="checkbox"]) {
@@ -1431,9 +1354,12 @@ form label:has(input[type="checkbox"]) {
 	font-size: var(--font-size-2xs);
 	font-weight: 400;
 	cursor: pointer;
-	/* user-select: none; */
+	user-select: none;
 	position: relative;
-	transition: all var(--transition-linear-fast);
+	transition:
+		border-color var(--transition-linear-fast),
+		background-color var(--transition-linear-fast),
+		color var(--transition-linear-fast);
 }
 
 form label:has(input[type="checkbox"]) input {
@@ -1502,7 +1428,8 @@ form label:has(input[type="checkbox"]) .text-container .tag {
 	transition: all var(--transition-linear-fast);
 }
 
-form label:has(input[type="checkbox"]):is(:hover, :focus-visible) .text-container .tag {
+form label:has(input[type="checkbox"]):is(:hover, :focus-visible) .text-container .tag,
+form label:has(input[type="checkbox"]:focus-visible) .text-container .tag {
 	background-color: var(--colour-fill-neutral-mid);
 	color: var(--colour-ui-reverse);
 }
@@ -1514,12 +1441,14 @@ form label:has(input[type="checkbox"]):is(:hover, :focus-visible) .text-containe
 .input-container,
 .select-container,
 [data-style-as="input-container"] {
+	--container-boxshadow-colour: var(--colour-border-neutral-subtle);
+	--container-boxshadow-width: 2px;
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 	position: relative;
 	border-radius: var(--border-radius-normal);
-	border: 2px solid var(--colour-border-neutral-subtle);
+	box-shadow: inset 0 0 0 var(--container-boxshadow-width) var(--container-boxshadow-colour);
 	width: 100%;
 	height: 3rem;
 	padding: 0;
@@ -1529,13 +1458,14 @@ form label:has(input[type="checkbox"]):is(:hover, :focus-visible) .text-containe
 :is(.input-container,
 	.select-container,
 	[data-style-as="input-container"]):has(:is(input, select)[aria-invalid="true"]) {
-	border-color: var(--colour-ui-error);
+	--container-boxshadow-colour: var(--colour-ui-error) !important;
 }
 
 :is(.input-container,
 	.select-container,
 	[data-style-as="input-container"]):has(:is(input, select):focus-visible) {
-	border-color: var(--colour-border-neutral-bold);
+	--container-boxshadow-colour: var(--colour-border-neutral-bold);
+	--container-boxshadow-width: 3px;
 }
 
 input[type="text"],
@@ -1554,6 +1484,12 @@ select,
 	flex-grow: 1;
 	font-size: var(--font-size-xs);
 	line-height: 1.2;
+}
+
+:is(input[type="text"],
+	select,
+	[data-style-as="input"]):focus-visible {
+	outline: none;
 }
 
 input[type="text"]::placeholder {
@@ -1602,7 +1538,30 @@ label.file-input-container {
 	position: relative;
 }
 
+label.file-input-container:has(:focus-visible)>span {
+	--button-background-colour: var(--colour-fill-neutral-mid);
+	--button-ui-colour: var(--colour-ui-reverse);
+	outline: var(--colour-focus-ring) solid 2px;
+	outline-offset: 3px;
+}
+
 label.file-input-container input[type="file"] {
+	position: absolute;
+	width: 0;
+	height: 0;
+	padding: 0;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+/* FORM RESET */
+
+label.reset-input-container {
+	position: relative;
+}
+
+label.reset-input-container input[type="reset"] {
 	position: absolute;
 	width: 0;
 	height: 0;
@@ -1749,7 +1708,8 @@ dialog button.close-dialog:has(.icon:only-child) {
 }
 
 dialog button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
-	--button-background-colour: var(--colour-fill-neutral-subtle);
+	--button-background-colour: var(--colour-fill-neutral-mid);
+	--icon-colour: var(--colour-ui-reverse);
 }
 
 dialog[data-intensity="bold"] button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
@@ -1891,7 +1851,7 @@ dialog form hr.group {
 }
 
 .callout[data-fit="compact"]>.wrapper {
-	--callout-padding: var(--space-lg);
+	--callout-padding: var(--space-base);
 }
 
 .callout[data-fit="compact"] :where(p, li, a) {
@@ -1941,7 +1901,7 @@ dialog form hr.group {
 
 .callout[data-style="solid"][data-intensity="bold"] :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:hover, :focus-visible) {
 	--button-background-colour: transparent;
-	--button-outline-colour: var(--colour-background);
+	--button-boxshadow-colour: var(--colour-background);
 	--icon-colour: var(--colour-ui-reverse);
 	--label-colour: var(--colour-ui-reverse);
 }
@@ -2079,16 +2039,19 @@ dialog form hr.group {
 ------------------------------*/
 
 .card {
+	--card-boxshadow-colour: var(--colour-border-neutral-subtle);
+	--card-boxshadow-width: 2px;
 	container: card / inline-size;
 	display: flex;
 	flex-flow: column;
-	outline: 2px solid var(--colour-border-neutral-subtle);
+	box-shadow: 0 0 0 var(--card-boxshadow-width) var(--card-boxshadow-colour);
 	border-radius: var(--border-radius-normal);
-	transition: outline var(--transition-linear-fast), opacity var(--transition-linear-medium);
+	transition: box-shadow var(--transition-linear-fast), opacity var(--transition-linear-medium);
 }
 
 .card:has(button:is(:hover, :focus-visible)) {
-	outline-color: var(--colour-border-neutral-bold);
+	--card-boxshadow-colour: var(--colour-border-neutral-bold);
+	--card-boxshadow-width: 3px;
 }
 
 .card .banner {
@@ -2632,7 +2595,6 @@ span.highlight {
 	text-decoration: underline;
 	padding: var(--space-3xs) var(--space-2xs);
 	border-radius: var(--border-radius-small);
-	outline-color: var(--colour-focus-ring-reverse) !important;
 }
 
 .skip-link:is(:focus-visible) {
@@ -2662,6 +2624,10 @@ span.highlight {
 }
 
 :focus-visible {
-	outline: var(--colour-focus-ring-neutral) solid 2px;
-	outline-offset: 2px;
+	outline: var(--colour-focus-ring) solid 2px;
+	outline-offset: 3px;
+}
+
+[data-background="dark"] :focus-visible {
+	--colour-focus-ring: var(--colour-focus-ring-reverse);
 }

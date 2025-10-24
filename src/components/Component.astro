@@ -125,8 +125,6 @@ let phases = [
 	},
 ]
 
-console.log('Preppring Component', entry.data.tag);
-
 ---
 
 <section class="component" data-component-tag={entry.data.tag}>
@@ -439,8 +437,8 @@ console.log('Preppring Component', entry.data.tag);
 
 
 	/*
-	** CONSIDERATIONS
-	------------------------------*/
+	** Consideration List
+	*/
 
 	.considerations-list {
 		padding: 0;
@@ -455,9 +453,25 @@ console.log('Preppring Component', entry.data.tag);
 		border-top: 1px solid var(--colour-border-neutral-subtle);
 	}
 
+	/*
+	** Resources
+	*/	
+	
+	.considerations details.resources {
+		margin: var(--space-xs) 0 0;
+	}
+
+	/*
+	** Consideration Label
+	*/
+	
+	/* Label Group */
+
 	.considerations-list .label-group {
 		margin: 0 0 var(--space-xs);
 	}
+
+	/* Categories */
 
 	.considerations-list .label-group .categories-list {
 		list-style-type: none;
@@ -469,9 +483,30 @@ console.log('Preppring Component', entry.data.tag);
 		height: 1.5rem;
 	}
 
-	.considerations details.resources {
-		margin: var(--space-xs) 0 0;
+	/* Compass Icon */
+	
+	.considerations-list form label:has(input[type="checkbox"]) .icon.compass {
+		--icon-colour: var(--colour-ui-accent);
+		--icon-size: 0.875rem;
+		margin: 0 0 0 var(--space-3xs);
 	}
+
+	/* Number Tag */
+
+	.considerations-list form label:has(input[type="checkbox"]) .tag {
+		margin: 0 0 0 0.375rem;
+		font-size: var(--font-size-2xs);
+		font-weight: 700;
+		line-height: 1;
+		color: var(--colour-ui-accent);
+		transition: color var(--transition-linear-fast);
+	}
+
+	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
+		color: var(--colour-ui-accent-bold);
+	}
+	
+	/* Checkbox */
 
 	.considerations-list form label:has(input[type="checkbox"]) {
 		align-items: center;
@@ -487,24 +522,16 @@ console.log('Preppring Component', entry.data.tag);
 		background-color: var(--colour-fill-accent-subtle-highlight);
 	}
 
+	.considerations-list form label:has(input[type="checkbox"]:focus-visible) {
+		outline: var(--colour-focus-ring) solid 2px;
+		outline-offset: 3px;
+	}
+
 	.considerations-list form label:has(input[type="checkbox"]) input, 
 	.considerations-list form label:has(input[type="checkbox"])::before {
 		display: none;
 		height: 1.5rem;
 		width: 1.5rem;
-	}
-
-	.considerations-list form label:has(input[type="checkbox"]) .tag {
-		margin: 0 0 0 0.375rem;
-		font-size: var(--font-size-2xs);
-		font-weight: 700;
-		line-height: 1;
-		color: var(--colour-ui-accent);
-		transition: color var(--transition-linear-fast);
-	}
-
-	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
-		color: var(--colour-ui-accent-bold);
 	}
 	
 	.considerations-list form label:has(input[type="checkbox"]) .icon.checkmark {
@@ -513,13 +540,7 @@ console.log('Preppring Component', entry.data.tag);
 		top: 0.375rem;
 		left: 0.375rem;
 	}
-	
-	.considerations-list form label:has(input[type="checkbox"]) .icon.compass {
-		--icon-colour: var(--colour-ui-accent);
-		--icon-size: 0.875rem;
-		margin: 0 0 0 var(--space-3xs);
-	}
-	
+
 	@container main (width > 848px) {
 
 		main[data-mode="assessment"] .component .accordion .considerations-status {

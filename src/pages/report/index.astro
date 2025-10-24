@@ -101,7 +101,7 @@ for (let indicator of indicators) {
 
 	<div class="content report">
 
-		<h1 aria-live="polite">
+		<h1 id="main-heading" tabindex="-1" aria-live="polite">
 			<span class="title" data-restrict-device-max="small">Report</span>
 			<span class="title" data-restrict-device-min="medium" data-field="reportSchool">Report</span>
 			<span class="subtitle" data-font-type="sans-serif" data-restrict-report="active">
@@ -123,7 +123,7 @@ for (let indicator of indicators) {
 			</div>
 		</div>
 
-		<div class="callout" data-restrict-report="inactive" data-restrict-device-min="medium">
+		<div class="welcome-container" data-restrict-report="inactive" data-restrict-device-min="medium">
 			<div class="wrapper">
 				<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
 				<div class="button-group">
@@ -257,7 +257,7 @@ for (let indicator of indicators) {
 <style is:global>
 	/* 
 	// Device Restrictions
-	------------------------*/
+	*/
 
 	@container main (width < 720px) {
 		.content.report [data-restrict-report="active"] {
@@ -275,6 +275,10 @@ for (let indicator of indicators) {
 		}
 	}
 
+	/* 
+	// Page Heading
+	*/
+
 	.content.report h1 .subtitle {
 		display: block;
 		font-weight: 400;
@@ -282,18 +286,24 @@ for (let indicator of indicators) {
 		color: var(--colour-ui-neutral-subtle);
 		margin: var(--space-2xs) 0 0;
 	}
+
+	/* 
+	// Welcome Container Buttons
+	*/
 	
-	.content.report > .callout :is(button, [data-style-as="button"]) {
+	main.report .welcome-container :is(button, [data-style-as="button"]) {
 		--container-gap: var(--space-xs);
 		--label-size: var(--font-size-xs);
-		--label-colour: var(--colour-ui-reverse);
 		--icon-size: 1.25rem;
+	}
+
+	main.report .welcome-container :is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
+		--label-colour: var(--colour-ui-reverse);
 		--icon-colour: var(--colour-ui-reverse); 
 	}
 
-	.content.report > .callout :is(button, [data-style-as="button"]):is(:hover, :focus-visible) {
-		--label-colour: var(--colour-ui-neutral);
-		--icon-colour: var(--colour-ui-neutral); 
+	main.report .welcome-container .button-group {
+		margin: var(--space-lg) 0 0;
 	}
 
 	#report-controls {

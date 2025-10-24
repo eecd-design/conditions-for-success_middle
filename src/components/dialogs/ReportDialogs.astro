@@ -56,7 +56,8 @@ let indicators = allIndicators.sort((a, b) =>
 					class="select"
 					type="button"
 					value="all"
-					data-size="small">Select All</button
+					data-size="small"
+					autofocus>Select All</button
 				>
 				<button
 					class="select"
@@ -116,8 +117,7 @@ let indicators = allIndicators.sort((a, b) =>
 				class="close-dialog"
 				type="button"
 				data-size="large"
-				data-style="outline"
-				autofocus>Cancel</button
+				data-style="outline">Cancel</button
 			>
 			<button
 				class="save"
@@ -134,13 +134,34 @@ let indicators = allIndicators.sort((a, b) =>
 
 <style is:global>
 	fieldset.indicators .elem-group {
-		--group-gap: var(--space-sm);
-		--group-margin: var(--space-sm) 0;
+		--group-gap: 0;
+		--group-margin: 0;
 	}
 
 	fieldset.indicators .button-group {
 		--group-gap: var(--space-2xs);
-		margin-top: var(--space-2xs);
+		margin: var(--space-xs) 0;
+	}
+
+	fieldset.indicators label:has(input[type="checkbox"]) {
+		padding: var(--space-2xs) var(--space-xs);
+		border-radius: var(--border-radius-small);
+		width: fit-content;
+	}
+
+	fieldset.indicators
+		label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
+		background-color: var(--colour-fill-neutral-subtle);
+	}
+
+	fieldset.indicators label:has(input[type="checkbox"]:focus-visible) {
+		outline: var(--colour-focus-ring) solid 2px;
+		outline-offset: 3px;
+	}
+
+	fieldset.indicators label:has(input[type="checkbox"]) .icon.checkmark {
+		top: 0.75rem;
+		left: 1rem;
 	}
 </style>
 

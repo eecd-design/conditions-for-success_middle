@@ -31,7 +31,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 ---
 
-<header data-theme="red">
+<header data-theme="red" data-background="dark">
 
 	<div class="wrapper">
 
@@ -91,8 +91,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							})}
 						</ul>
 					</li>
-					<li><a class="nav-link" aria-current={path.includes('/resources') ? 'page' : null} href="/resources">Resources</a></li>
-					<li><a class="nav-link" aria-current={path.includes('/report') ? 'page' : null} href="/report">Report</a></li>
+					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/resources') ? 'page' : null} href="/resources">Resources</a></li>
+					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/report') ? 'page' : null} href="/report">Report</a></li>
 				</ul>
 			</nav>
 			<MobileNavDialog/>
@@ -138,7 +138,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		{path === '/' && (
 			<div class="site-title-container">
-				<h1 class="site-title">New Brunswick Middle Schools: A Window of Opportunity</h1>
+				<h1 id="main-heading" class="site-title" tabindex="-1">New Brunswick Middle Schools: A Window of Opportunity</h1>
 				<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
 			</div>
 			<div class="media-container">
@@ -347,14 +347,14 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: var(--space-2xs);
+		gap: var(--space-xs);
 		position: relative;
 	}
 
 	header nav.global .subnav-links-list {
 		display: none;
 		flex-flow: column nowrap;
-		gap: var(--space-sm);
+		gap: var(--space-xs);
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: var(--border-radius-normal);
 		padding: var(--space-sm);
@@ -372,32 +372,32 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	header :is(nav.global, .global-controls) :is(a, button) {
 		--button-background-colour: transparent;
+		--button-border-radius: var(--border-radius-normal);
 		--icon-size: 1.5rem;
 		--icon-colour: var(--colour-ui-reverse);
 		--label-size: var(--font-size-sm);
 		--label-colour: var(--colour-ui-reverse);
+
 		display: flex;
 		align-items: center;
 		height: 3rem;
 		padding: 0 var(--space-sm);
-		border-radius: var(--border-radius-normal);
-		text-decoration: none;
+		
 		font-size: var(--font-size-sm);
 		color: var(--colour-ui-reverse);
 	}
 
 	header :is(nav.global, .global-controls) :is(a, button):is(:hover, :focus-visible) {
+		--button-background-colour: var(--colour-fill-neutral-subtle);
 		--icon-colour: var(--colour-ui-neutral);
 		--label-colour: var(--colour-ui-neutral);
-		background-color: var(--colour-fill-neutral-subtle);
 		color: var(--colour-ui-neutral);
 	}
 	
 	header nav.global .nav-link[aria-current="page"],
 	header nav.global .nav-link[aria-current="page"]:is(:hover, :focus-visible) {
-		background-color: transparent;
-		outline: 2px solid var(--colour-border-neutral-subtle);
-		outline-offset: -1px;
+		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
+		--button-background-colour: transparent;
 		color: var(--colour-ui-reverse);
 	}
 
@@ -422,7 +422,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		font-size: var(--font-size-xs);
 		font-weight: 300;
 		line-height: 1.2; 
-		padding: 0;
+		padding: var(--space-3xs);
 		height: auto;
 		text-decoration: underline;
 	}
@@ -443,14 +443,14 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	header nav.global .home-name {
 		flex-grow: 1;
-		margin-left: var(--space-sm);
 	}
 	
 	header nav.global .home-name a {
-		display: inline;
-		height: auto;
+		display: inline-flex;
 		width: auto;
-		padding: 0;
+		height: 3rem;
+		padding: 0 var(--space-sm);
+		border-radius: var(--border-radius-normal);
 		font-size: var(--font-size-base);
 		text-decoration: none;
 		color: var(--colour-ui-reverse);

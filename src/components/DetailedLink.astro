@@ -280,7 +280,7 @@ else if (type === "image") {
 	:is(a, [data-style-as="link"]).detailed-link {
 		--link-ui-colour: var(--colour-ui-neutral-subtle);
 		container: detailed-link / inline-size;
-		display: flex;
+		display: flex !important;
 		flex-flow: row nowrap;
 		align-items: center;
 		line-height: 1.2;
@@ -324,6 +324,7 @@ else if (type === "image") {
 	:is(a, [data-style-as="link"]).detailed-link
 		:is(.icon.destination, .icon.type) {
 		--icon-colour: var(--link-ui-colour);
+		position: unset !important;
 	}
 
 	@media (hover: hover) {
@@ -542,8 +543,7 @@ else if (type === "image") {
 			:focus-visible
 		) {
 		background-color: transparent;
-		outline: 2px solid var(--colour-border-accent-subtle);
-		outline-offset: -1px;
+		box-shadow: inset 0 0 0 2px var(--colour-border-accent-subtle);
 	}
 
 	.link-container

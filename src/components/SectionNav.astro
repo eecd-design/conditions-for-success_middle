@@ -16,7 +16,8 @@ let indicators = allIndicators.sort((a, b) =>
 		<li>
 			<a
 				aria-current={path === "/big-seven" ? "page" : null}
-				href="/big-seven">Introduction</a
+				href="/big-seven"
+				data-style-as="button">Introduction</a
 			>
 		</li>
 		{
@@ -29,6 +30,7 @@ let indicators = allIndicators.sort((a, b) =>
 								path === indicatorPath ? "page" : null
 							}
 							href={indicatorPath}
+							data-style-as="button"
 						>
 							{indicator.data.title}
 						</a>
@@ -76,24 +78,26 @@ let indicators = allIndicators.sort((a, b) =>
 	}
 
 	nav.section a {
+		--button-background-colour: transparent;
+		--button-border-radius: var(--border-radius-normal);
 		display: flex;
 		align-items: center;
 		text-decoration: none;
+		height: auto;
 		padding: var(--space-xs) var(--space-sm);
 		font-size: var(--font-size-xs);
 		line-height: 1.2;
 		border-radius: var(--border-radius-normal);
+		justify-content: unset;
 	}
 
 	nav.section a:is(:hover, :focus-visible) {
-		background-color: var(--colour-fill-neutral-subtle);
-		color: var(--colour-ui-neutral);
+		--button-background-colour: var(--colour-fill-neutral-subtle);
 	}
 
 	nav.section [aria-current="page"],
 	nav.section [aria-current="page"]:is(:hover, :focus-visible) {
-		outline: 2px solid var(--colour-border-neutral-subtle);
-		outline-offset: -1px;
-		background-color: transparent;
+		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
+		--button-background-colour: transparent;
 	}
 </style>
