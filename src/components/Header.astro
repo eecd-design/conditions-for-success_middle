@@ -188,8 +188,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							</a>
 						</li>
 					</ul>
-					<h2>Last time, I was working on...</h2>
-					<ul class="shortcuts-list recent">
+					<h2 hidden>Last time, I was working on...</h2>
+					<ul class="shortcuts-list recent" hidden>
 						<template>
 							<li>
 								<a href="" data-style-as="button" data-style="solid" data-size="large">
@@ -716,8 +716,11 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		// Update the recent page button
 
 		let recentShortcutsList = launchpad.querySelector('.shortcuts-list.recent');
+		let recentShortcutsHeading = recentShortcutsList.previousElementSibling;
 
 		if (lastVisitedPage && lastVisitedPage.path !== '/') {
+
+			console.log(lastVisitedPage);
 
 			let link = createLaunchpadLink({
 				list: recentShortcutsList,
@@ -730,7 +733,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 				shortcut.remove();
 			}
 			recentShortcutsList.append(link);
+			recentShortcutsList.removeAttribute('hidden');
+			recentShortcutsHeading.removeAttribute('hidden');
 
+		} else {
+			recentShortcutsList.setAttribute('hidden', '');
+			recentShortcutsHeading.setAttribute('hidden', '');
 		}
 
 	}
