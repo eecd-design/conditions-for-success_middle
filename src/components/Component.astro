@@ -314,15 +314,9 @@ let phases = [
 
 <style is:global>
 	
-	@container main (width < 848px) {
+	@container main (width < 880px) {
 		section.component [data-restrict-device-min="medium"] {
 			display: none !important;
-		}
-	}
-
-	@container main (width >= 848px) {
-		[data-mode="assessment"] .component h2 {
-			scroll-margin-top: 8.5rem;
 		}
 	}
 
@@ -336,7 +330,7 @@ let phases = [
 		color: var(--colour-ui-accent-subtle)
 	}
 
-	@container main (width >= 848px) {
+	@container main (width >= 880px) {
 		[data-mode="assessment"] .phase-status ~ h2 {
 			margin-top: 0;
 		}
@@ -541,7 +535,7 @@ let phases = [
 		left: 0.375rem;
 	}
 
-	@container main (width > 848px) {
+	@container main (width > 880px) {
 
 		main[data-mode="assessment"] .component .accordion .considerations-status {
 			display: inline-flex;

@@ -69,8 +69,10 @@ let IconCross = crossIcons[crossIconSize];
 		scroll-margin-top: 2rem;
 	}
 
-	main.big-seven[data-mode="assessment"] .accordion {
-		scroll-margin-top: 5.75rem;
+	@container main (width >=880px) {
+		main.big-seven[data-mode="assessment"] .accordion {
+			scroll-margin-top: 6.5rem;
+		}
 	}
 
 	.accordion .heading {
