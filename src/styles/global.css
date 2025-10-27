@@ -2484,6 +2484,11 @@ details .contents {
 	padding-left: var(--space-2xs);
 }
 
+.icon-and-label-container .label-container .label small {
+	font-size: var(--font-size-2xs);
+	color: var(--colour-ui-neutral-subtle);
+}
+
 /* COLLAPSIBLE ICON */
 
 .icon-and-label-container[data-collapsible="icon"] .icon-container {

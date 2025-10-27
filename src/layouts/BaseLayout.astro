@@ -103,10 +103,11 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			let continuumVersion = data.uiState.currentContinuumVersion;
 
-			let field = document.querySelector(
-				`footer [data-field="continuumVersion"]`,
+			// 1. Site footer
+			let fields = document.querySelectorAll(
+				`[data-field="continuumVersion"]`,
 			);
-			if (field) {
+			for (let field of fields) {
 				field.textContent = continuumVersion;
 			}
 		};
