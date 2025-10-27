@@ -24,14 +24,17 @@ import { eventControl } from "src/utilities/event";
 let key = 'user';
 
 let currentContinuumVersion = '1.0';
+let currentPreferencesSchemaVersion = '1.0';
+let currentStateSchemaVersion = '1.0';
+let currentAssessmentSchemaVersion = '1.0';
 
-let data = {
+let userSchema = {
 	uiPreferences: {
 		resourcePageSort: 'date',
 		resourcePageLayout: 'compact',
 		reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
 		theme: 'light',
-		schemaVersion: '1.0',
+		schemaVersion: currentPreferencesSchemaVersion,
 	},
 	uiState: {
 		activeAssessmentId: null,
@@ -49,31 +52,17 @@ let data = {
 		},
 		mode: 'reading',
 		onboardingCompleted: false,
-		schemaVersion: '1.0',
+		schemaVersion: currentStateSchemaVersion,
 	},
 	assessments: [],
 };
+
+let data = structuredClone(userSchema);
 
 let subscribers = [];
 
 let importConflictData = null;
 
-
-
-//
-// Init (Local Storage)
-//
-
-/**
- * Load from localStorage
- */
-try {
-	let raw = localStorage.getItem(key);
-	if (raw) data = JSON.parse(raw);
-} catch (err) {
-	console.warn('Failed to load user data:', err);
-	localStorage.removeItem(key);
-}
 
 
 
@@ -362,6 +351,30 @@ let generateContinuumCompletion = async (assessment) => {
 //
 // Methods (Updaters)
 //
+
+let updateSchema = (oldData, schema) => {
+	// Create a new object based on the schema
+	let updated = { ...schema };
+
+	for (let key in schema) {
+		if (oldData && Object.hasOwn(oldData, key)) {
+			if (
+				typeof schema[key] === 'object' &&
+				!Array.isArray(schema[key]) &&
+				schema[key] !== null
+			) {
+				// Recursively update nested objects
+				updated[key] = updateSchema(oldData[key], schema[key]);
+			} else {
+				// Use existing value when it matches type
+				let sameType = typeof oldData[key] === typeof schema[key];
+				updated[key] = sameType ? oldData[key] : schema[key];
+			}
+		}
+	}
+
+	return updated;
+};
 
 let updateChangeLog = ({ assessment = getActiveAssessmentData(), assessor = getActiveAssessor(), message }) => {
 
@@ -805,6 +818,34 @@ let subscribe = (fn) => {
 //
 // Inits
 //
+
+/**
+ * Load from localStorage
+ */
+try {
+	let raw = localStorage.getItem(key);
+	if (raw) data = JSON.parse(raw);
+
+	console.log('User data before schema check', structuredClone(data));
+
+	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
+		console.warn('User preferences schema is out of date.');
+		data.uiPreferences = updateSchema(data.uiPreferences, userSchema.uiPreferences);
+		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
+	}
+
+	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
+		console.warn('User state schema is out of date.');
+		data.uiState = updateSchema(data.uiState, userSchema.uiState);
+		data.uiState.schemaVersion = currentStateSchemaVersion;
+	}
+
+	console.log('User data after schema check', data);
+
+} catch (err) {
+	console.warn('Failed to load user data:', err);
+	localStorage.removeItem(key);
+}
 
 let userDataStore = (() => {
 
