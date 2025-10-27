@@ -488,6 +488,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			) as HTMLButtonElement;
 
 			if (target.matches(`input.assessor`)) {
+				event.preventDefault();
 				addAssessorToList(target, dialog);
 				let values = getFormValues(form);
 				let activeAssessor = getActiveAssessor();
@@ -498,8 +499,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				});
 				saveBtn.removeAttribute("disabled");
 			}
-
-			event.preventDefault();
 		}
 	};
 	eventControl.add({

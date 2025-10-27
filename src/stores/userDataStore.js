@@ -225,7 +225,7 @@ let setState = (update) => {
  * @param {Partial<typeof data.assessments[0]>} update
  */
 let setAssessment = (update) => {
-	console.log('Setting Assessment', update);
+	// console.log('Setting Assessment', update);
 
 	let targetId = update.id ?? data.uiState.activeAssessmentId;
 
@@ -562,7 +562,7 @@ let checkAnnouncementSession = () => {
 //
 
 let deleteAssessment = (id) => {
-	console.log('Deleting Assessment', id);
+	// console.log('Deleting Assessment', id);
 	let changes = {};
 	let index = data.assessments.findIndex(obj => obj.id === id);
 	if (index !== -1) {
@@ -744,11 +744,19 @@ let findAssessmentConflicts = ({ importedAssessment, localAssessments }) => {
 //
 
 let compressData = (data) => {
-	return LZString.compressToBase64(JSON.stringify(data));
+	try {
+		return LZString.compressToBase64(JSON.stringify(data));
+	} catch (err) {
+		throw new Error("Unable to compress JSON", { cause: 'JSON' })
+	}
 }
 
 let decompressData = (data) => {
-	return JSON.parse(LZString.decompressFromBase64(data));
+	try {
+		return JSON.parse(LZString.decompressFromBase64(data));
+	} catch (err) {
+		throw new Error("Unable to parse JSON", { cause: 'JSON' })
+	}
 }
 
 

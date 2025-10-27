@@ -54,6 +54,7 @@ let dialogControl = (() => {
 
 	let onClick = (event) => {
 		let target = event.target
+
 		let openDialogBtn = target.closest('button.open-dialog');
 		if (openDialogBtn) {
 			let dialogId = openDialogBtn.getAttribute('data-dialog');
@@ -66,9 +67,15 @@ let dialogControl = (() => {
 			});
 		} else if (target.matches('dialog button.close-dialog')) {
 			close(target);
-		} else if (!target.closest('dialog')) {
+		} else {
 			let openDialog = document.querySelector('dialog[open]');
-			close(openDialog);
+			let clickPath = event.composedPath();
+			let clickedOutsideDialog = openDialog && !clickPath.some(el => el.tagName === 'DIALOG');
+			console.log(clickPath, clickedOutsideDialog);
+			if (clickedOutsideDialog) {
+				let openDialog = document.querySelector('dialog[open]');
+				close(openDialog);
+			}
 		}
 	}
 

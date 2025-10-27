@@ -1,4 +1,4 @@
-import { findAssessmentConflicts, getUserData } from "src/stores/userDataStore";
+import { getUserData } from "src/stores/userDataStore";
 import { toCamelCase } from "./helpers";
 
 let getFormValues = (form) => {
@@ -55,7 +55,7 @@ let resetForm = ({ form, resetType = 'soft' }) => {
 	// Soft reset: Restore fields to original value state
 	if (resetType === 'soft') {
 		form.reset();
-	} 
+	}
 	// Hard reset: Set all fields to blank
 	else if (resetType === 'hard') {
 		for (let field of form.querySelectorAll('input, select')) {
@@ -89,7 +89,7 @@ let resetForm = ({ form, resetType = 'soft' }) => {
 	}
 };
 
-let validateField = ({ field, form, touchedFormFields}) => {
+let validateField = ({ field, form, touchedFormFields }) => {
 	// Clear previous custom validity
 	field.setCustomValidity('');
 
@@ -109,16 +109,16 @@ let validateField = ({ field, form, touchedFormFields}) => {
 	if (field.name === 'reportingYear') {
 
 		let schoolField = form.querySelector('select[name="school"]');
-		
-        // If school is empty, skip conflict check
-        if (!schoolField.value) {
-            // Reset error if no school is selected
-            field.setCustomValidity('');
-            error.querySelector('span').textContent = '';
-            error.setAttribute('hidden', '');
-            field.removeAttribute('aria-invalid');
-            return;
-        }
+
+		// If school is empty, skip conflict check
+		if (!schoolField.value) {
+			// Reset error if no school is selected
+			field.setCustomValidity('');
+			error.querySelector('span').textContent = '';
+			error.setAttribute('hidden', '');
+			field.removeAttribute('aria-invalid');
+			return;
+		}
 
 		let userData = getUserData();
 		let schoolYearConflict = userData.assessments.some(a =>
@@ -145,18 +145,18 @@ let validateField = ({ field, form, touchedFormFields}) => {
 	}
 
 	// If school field changes, reset reportingYear error
-    if (field.name === 'school') {
+	if (field.name === 'school') {
 
-        let reportingYearField = form.querySelector('input[name="reportingYear"]');
+		let reportingYearField = form.querySelector('input[name="reportingYear"]');
 
-        if (reportingYearField.value) {
-            let reportingYearError = document.getElementById(`${reportingYearField.id}_error`);
-            reportingYearField.setCustomValidity('');
+		if (reportingYearField.value) {
+			let reportingYearError = document.getElementById(`${reportingYearField.id}_error`);
+			reportingYearField.setCustomValidity('');
 			reportingYearError.querySelector('span').textContent = '';
 			reportingYearError.setAttribute('hidden', '');
-            reportingYearField.removeAttribute('aria-invalid');
-        }
-    }
+			reportingYearField.removeAttribute('aria-invalid');
+		}
+	}
 
 };
 

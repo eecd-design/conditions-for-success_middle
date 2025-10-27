@@ -63,6 +63,31 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			<IconWarningSmall slot={"icon"} />
 		</Toast>
 
+		<Toast
+			id={"open-assessment-dialog_import-code-toast_success"}
+			message={`Assessment imported into 'Saved Assessments'.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-code-toast_failure"}
+			message={`Unable to import assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-code-toast_failure-JSON"}
+			message={`Unable to import assessment. Import code is not valid.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+
 		<form>
 			<fieldset class="file">
 				<!-- <h4 class="heading">File</h4> -->
@@ -1126,7 +1151,15 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 					toastControl.show({ target, type: "success" });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				if (error.cause === "JSON") {
+					toastControl.show({
+						target,
+						type: "failure",
+						selector: `${target.getAttribute(`data-toast-failure`)}-${error.cause}`,
+					});
+				} else {
+					toastControl.show({ target, type: "failure" });
+				}
 			}
 		}
 
@@ -1205,7 +1238,13 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		let target = event.target as HTMLInputElement;
 
 		if (target.matches(`input[type="text"]`)) {
-			if (event.key === "Enter") event.preventDefault();
+			if (event.key === "Enter") {
+				event.preventDefault();
+				let importBtn = target
+					.closest("fieldset")
+					.querySelector("button.import-code") as HTMLButtonElement;
+				if (importBtn) importBtn.click();
+			}
 		}
 	};
 	eventControl.add({
