@@ -292,11 +292,9 @@ else if (type === "image") {
 		text-decoration: none;
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(
-			:hover,
-			:focus-visible,
-			[aria-selected="true"]
-		) {
+	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
+	:is(dialog, .content):has(fieldset.search input:focus-visible)
+		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"] {
 		--link-background-colour: var(
 			--colour-fill-accent-subtle,
 			var(--colour-fill-neutral-subtle)
