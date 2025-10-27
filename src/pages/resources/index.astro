@@ -261,7 +261,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	<MediaDialog />
 
-	<div class="content resources">
+	<div class="content">
 		<h1 id="main-heading" tabindex="-1">Resources</h1>
 
 		<ul id="active-filters-list" class="field-values-list">
@@ -498,23 +498,23 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	*/
 
 	@container main (width < 720px) {
-		:is(#filters-aside, .content.resources)
+		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-min="medium"] {
 			display: none !important;
 		}
 	}
 
 	@container main (720px <= width < 992px) {
-		:is(#filters-aside, .content.resources)
+		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-max="small"] {
 			display: none !important;
 		}
 	}
 
 	@container main (width >= 992px) {
-		:is(#filters-aside, .content.resources)
+		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-max="small"],
-		:is(#filters-aside, .content.resources)
+		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-max="medium"] {
 			display: none !important;
 		}
@@ -904,6 +904,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	import { getUserData } from "src/stores/userDataStore";
 	import { dialogControl } from "src/utilities/dialog";
 	import { eventControl } from "src/utilities/event";
+	import { resetForm } from "src/utilities/form";
 	import { filter, search, sort, layout } from "src/utilities/list";
 
 	//
@@ -1135,17 +1136,19 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	});
 
 	let onPageLoad = () => {
+		let main = document.querySelector("main");
+		if (!main.matches(".resources")) return;
+
+		let filtersAside = document.querySelector("#filters-aside>.wrapper");
+		let filtersDialog = document.querySelector("#resources-filters-dialog");
+		let form = filtersAside.querySelector(
+			"#resources-list-secondary-controls",
+		);
+
+		resetForm({ form });
+
 		let mediaQuery = window.matchMedia("(max-width: 720px)");
 		if (mediaQuery.matches) {
-			let filtersAside = document.querySelector(
-				"#filters-aside>.wrapper",
-			);
-			let filtersDialog = document.querySelector(
-				"#resources-filters-dialog",
-			);
-			let form = filtersAside.querySelector(
-				"#resources-list-secondary-controls",
-			);
 			if (form.parentElement === filtersDialog) return;
 			filtersDialog.append(form);
 			filtersAside.parentElement.setAttribute("hidden", "");
