@@ -274,7 +274,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let activeDialog = document.querySelector(
 				"dialog:open",
 			) as HTMLDialogElement;
-			if (activeDialog) activeDialog.close();
+			if (activeDialog) dialogControl.close(activeDialog);
 
 			if (hash.includes("consideration")) {
 				let tag = hash

@@ -1,4 +1,5 @@
 import { eventControl } from "./event";
+import { resetForm } from "./form";
 import { stopVideo } from "./helpers";
 
 let dialogControl = (() => {
@@ -11,7 +12,7 @@ let dialogControl = (() => {
 		let targetDialog = document.querySelector(
 			`#${dialogId}`);
 		if (!targetDialog) return;
-		if (activeDialog) activeDialog.close();
+		if (activeDialog) close(activeDialog);
 		if (context) targetDialog.setAttribute('data-context', context);
 		let heading = targetDialog.querySelector('h2');
 		if (heading) {
@@ -45,6 +46,10 @@ let dialogControl = (() => {
 		requestAnimationFrame(() => {
 			document.documentElement.style.scrollBehavior = ''
 		})
+		let forms = dialog.querySelectorAll('form');
+		for (let form of forms) {
+			resetForm({ form });
+		}
 	}
 
 	let onClick = (event) => {

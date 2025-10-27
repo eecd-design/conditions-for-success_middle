@@ -172,13 +172,12 @@ let indicators = allIndicators.sort((a, b) =>
 
 	import {
 		checkForChanges,
-		getActiveAssessmentData,
 		getActiveReportData,
 		getUserData,
 		setPreferences,
 		subscribe,
 	} from "src/stores/userDataStore";
-	import { getFormValues, resetForm } from "src/utilities/form";
+	import { getFormValues } from "src/utilities/form";
 	import { dialogControl } from "src/utilities/dialog";
 	import { toastControl } from "src/utilities/toast";
 	import { eventControl } from "src/utilities/event";
@@ -265,8 +264,6 @@ let indicators = allIndicators.sort((a, b) =>
 
 		if (target.matches("button.close-dialog")) {
 			saveBtn.setAttribute("disabled", "");
-			let form = dialog.querySelector("form");
-			resetForm({ form });
 		}
 
 		if (target.matches("button.save")) {

@@ -280,14 +280,14 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	}) => {
 		if (!assessors || !dialog) return;
 
-		let fieldset = dialog?.querySelector("fieldset.active-assessor");
+		let fieldset = dialog.querySelector("fieldset.active-assessor");
 
 		if (assessors.length === 0) {
 			fieldset.setAttribute("hidden", "");
 			return;
 		}
 
-		let select = dialog?.querySelector("fieldset.active-assessor select");
+		let select = dialog.querySelector("fieldset.active-assessor select");
 		if (!select) return;
 
 		// Reset select options
@@ -302,7 +302,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 			// If there is an active assessor, set it to checked
 			if (activeAssessor && assessor === activeAssessor) {
-				option.selected = true;
+				option.setAttribute("selected", "");
 			}
 		}
 

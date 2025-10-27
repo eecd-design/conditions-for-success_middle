@@ -283,7 +283,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 								selector:
 									"edit-status-dialog_change-status-and-close-toast_success",
 							});
-							dialog.close();
+							dialogControl.close(dialog);
 						} catch (error) {
 							console.error(error);
 							toastControl.show({ target, type: "failure" });
@@ -291,7 +291,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					}
 				} else {
 					toastControl.show({ target, type: "success" });
-					dialog.close();
+					dialogControl.close(dialog);
 				}
 			} catch (error) {
 				console.error(error);
@@ -320,7 +320,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 						type: "success",
 						selector: "edit-status-dialog_close-toast_success",
 					});
-					dialog.close();
+					dialogControl.close(dialog);
 				}
 			}
 		}

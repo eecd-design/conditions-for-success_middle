@@ -513,7 +513,6 @@ let schoolList = {
 		setAssessment,
 		subscribe,
 		getUserData,
-		findAssessmentConflicts,
 	} from "src/stores/userDataStore";
 	import {
 		getFormValues,
@@ -521,11 +520,7 @@ let schoolList = {
 		validateForm,
 		validateField,
 	} from "src/utilities/form";
-	import {
-		formatDateAsString,
-		joinWithAnd,
-		toTitleCase,
-	} from "src/utilities/helpers.js";
+	import { joinWithAnd, toTitleCase } from "src/utilities/helpers.js";
 	import { dialogControl } from "src/utilities/dialog";
 	import { toastControl } from "src/utilities/toast";
 	import { eventControl } from "src/utilities/event";
@@ -801,14 +796,8 @@ let schoolList = {
 		let target = event.target as HTMLButtonElement;
 		let dialog = target.closest("dialog") as HTMLDialogElement;
 
-		// Clear out all form fields on dialog close
 		if (target.matches("button.clear")) {
-			let forms = dialog.querySelectorAll("form");
-			for (let form of forms) {
-				resetForm({ form });
-				// Reset touched fields
-				touchedFormFields.clear();
-			}
+			touchedFormFields.clear();
 		}
 
 		if (target.matches("button.create")) {
@@ -835,12 +824,6 @@ let schoolList = {
 					dialogId: "assessor-dialog",
 					context: "setup",
 				});
-
-				// Reset forms
-				let forms = dialog.querySelectorAll("form");
-				for (let form of forms) {
-					resetForm({ form });
-				}
 
 				// Reset touched fields
 				touchedFormFields.clear();
@@ -894,13 +877,7 @@ let schoolList = {
 				toastControl.show({ target, type: "success" });
 
 				// Close the dialog
-				dialog.close();
-
-				// Reset forms
-				let forms = dialog.querySelectorAll("form");
-				for (let form of forms) {
-					resetForm({ form });
-				}
+				dialogControl.close(dialog);
 
 				// Reset touched fields
 				touchedFormFields.clear();

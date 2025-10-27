@@ -752,8 +752,9 @@ let search = (() => {
 		if (!form || !list) return;
 		let sortType = getSortType(form);
 		let options = formOptions.get(form) ?? {};
+		target.setAttribute('aria-activedescendant', '');
 		let selectedItem = list.querySelector('[aria-selected]');
-		if (selectedItem) selectedItem.removeAttribute('[aria-selected]');
+		if (selectedItem) selectedItem.removeAttribute('aria-selected');
 		if (target.value.trim().length > 0) {
 			list.removeAttribute('hidden');
 			target.setAttribute('aria-expanded', 'true');
@@ -845,6 +846,25 @@ let search = (() => {
 		}
 	}
 
+	let onReset = (event) => {
+		let target = event.target;
+		if (!target.matches('form:has(fieldset.search)')) return;
+		let form = target.closest('form');
+		let list = getList(form);
+		if (!form || !list) return;
+		let options = formOptions.get(form) ?? {};
+		let input = document.querySelector(`fieldset.search input[aria-controls="${list.id}"]`);
+		if (input) input.setAttribute('aria-activedescendant', '');
+		let selectedItem = list.querySelector('[aria-selected]');
+		if (selectedItem) selectedItem.removeAttribute('aria-selected');
+		if (options.noValueBehaviour === 'hidden') {
+			list.setAttribute('hidden', '');
+			target.setAttribute('aria-expanded', 'false');
+		} else {
+			debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
+		}
+	}
+
 	/**
 	 * Initializes search forms
 	 */
@@ -863,6 +883,11 @@ let search = (() => {
 			selector: 'form:has(fieldset.search)',
 			eventType: 'keydown',
 			fn: onKeydown,
+		})
+		eventControl.add({
+			selector: 'form:has(fieldset.search)',
+			eventType: 'reset',
+			fn: onReset,
 		})
 	};
 
