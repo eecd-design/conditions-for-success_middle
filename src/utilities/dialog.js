@@ -17,7 +17,7 @@ let dialogControl = (() => {
 		if (heading) {
 			let defaultText = heading.getAttribute('data-default-text')?.trim() ?? heading.textContent;
 			headingText = headingText ? headingText.trim() : defaultText;
-			if (headingText !== defaultText) heading.textContent = headingText;
+			if (headingText !== heading.textContent) heading.textContent = headingText;
 		}
 		// Save scroll position
 		scrollY = window.scrollY;
@@ -61,6 +61,9 @@ let dialogControl = (() => {
 			});
 		} else if (target.matches('dialog button.close-dialog')) {
 			close(target);
+		} else if (!target.closest('dialog')) {
+			let openDialog = document.querySelector('dialog[open]');
+			close(openDialog);
 		}
 	}
 
