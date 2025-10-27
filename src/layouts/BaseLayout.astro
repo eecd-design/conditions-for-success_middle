@@ -57,6 +57,10 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 					>Copyright © <span id="copyrightYear">2025</span> Government
 					of New Brunswick. All Rights Reserved.</small
 				>
+				<small
+					>Continuum Version <span data-field="continuumVersion"
+					></span></small
+				>
 			</div>
 		</footer>
 	</body><script>
@@ -79,11 +83,33 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		//
 
 		let updateCopyright = () => {
-			let copyrightYear = document.querySelector("#copyrightYear");
-			if (copyrightYear)
-				copyrightYear.textContent = String(new Date().getFullYear());
+			let field = document.querySelector("#copyrightYear");
+			if (field) field.textContent = String(new Date().getFullYear());
 		};
 		updateCopyright();
+
+		let updateContinuumVersion = (data: UserData, changes) => {
+			let triggerKeys = ["currentContinuumVersion"];
+			if (
+				!changes.initiating &&
+				!(
+					changes.uiState &&
+					triggerKeys.some((val) => changes.uiState.includes(val))
+				)
+			)
+				return;
+
+			console.log("Updating Continuum Version (footer)");
+
+			let continuumVersion = data.uiState.currentContinuumVersion;
+
+			let field = document.querySelector(
+				`footer [data-field="continuumVersion"]`,
+			);
+			if (field) {
+				field.textContent = continuumVersion;
+			}
+		};
 
 		let updateTheme = (data: UserData, changes) => {
 			let triggerKeys = ["theme"];
@@ -236,6 +262,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		// Inits
 		//
 
+		subscribe(updateContinuumVersion);
 		subscribe(updateTheme);
 		subscribe(updateMode);
 		subscribe(updateStatus);

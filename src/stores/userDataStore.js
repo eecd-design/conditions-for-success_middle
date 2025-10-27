@@ -23,17 +23,20 @@ import { eventControl } from "src/utilities/event";
 
 let key = 'user';
 
+let currentContinuumVersion = '1.0';
+
 let data = {
 	uiPreferences: {
 		resourcePageSort: 'date',
 		resourcePageLayout: 'compact',
 		reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
 		theme: 'light',
-		schemaVersion: '0.2',
+		schemaVersion: '1.0',
 	},
 	uiState: {
 		activeAssessmentId: null,
 		activeReportId: null,
+		currentContinuumVersion,
 		lastModifiedPage: null,
 		lastVisitedPage: typeof window !== 'undefined' ? {
 			title: document.querySelector('h1')?.textContent,
@@ -46,7 +49,7 @@ let data = {
 		},
 		mode: 'reading',
 		onboardingCompleted: false,
-		schemaVersion: '0.5',
+		schemaVersion: '1.0',
 	},
 	assessments: [],
 };
@@ -55,7 +58,6 @@ let subscribers = [];
 
 let importConflictData = null;
 
-let currentContinuumVersion = '1.2';
 
 
 //
@@ -297,7 +299,7 @@ let createAssessment = (values) => {
 		reportingYear,
 		school,
 		status: 'In Progress',
-		schemaVersion: '0.2',
+		schemaVersion: '1.0',
 		unexportedChanges: true,
 	};
 

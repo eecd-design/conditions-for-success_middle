@@ -18,12 +18,13 @@ declare global {
 		schemaVersion: string,
 		activeAssessmentId: number;
 		activeReportId: number;
+		currentContinuumVersion: string,
 		lastModifiedPage: Page;
 		lastVisitedPage: Page;
 		mode: string;
 		onboardingCompleted: boolean;
 	};
-	
+
 	type Assessment = {
 		schemaVersion: string,
 		activeAssessor: string;
@@ -58,4 +59,4 @@ declare global {
 
 }
 
-export {};
+export { };
