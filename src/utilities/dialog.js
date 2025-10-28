@@ -39,6 +39,7 @@ let dialogControl = (() => {
 		document.body.style.position = ''
 		document.body.style.top = ''
 		// Close dialog
+		dialog.scrollTo(0, 0);
 		dialog.close();
 		// Restore scroll
 		window.scrollTo(0, scrollY);
