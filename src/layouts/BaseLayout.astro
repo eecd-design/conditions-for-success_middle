@@ -52,15 +52,35 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		</main>
 		<footer>
 			<div class="wrapper">
-				<Image src={GNBLogo} alt="Government of New Brunswick Logo" />
-				<small
-					>Copyright © <span id="copyrightYear">2025</span> Government
-					of New Brunswick. All Rights Reserved.</small
-				>
-				<small
-					>Continuum Version <span data-field="continuumVersion"
-					></span></small
-				>
+				<div class="content-container">
+					<div class="contact-container">
+						<h2 data-font-type="sans-serif">Contact</h2>
+						<small>Beth Henderson</small>
+						<small>Middle Level Learning Project Lead</small>
+						<small
+							><a href="mailto:beth.henderson@gnb.ca"
+								>beth.henderson@gnb.ca</a
+							></small
+						>
+					</div>
+					<div class="separator"></div>
+					<small
+						>NB Middle School Developmental Continuums v<span
+							data-field="continuumVersion"></span></small
+					>
+				</div>
+				<div class="content-container">
+					<div class="copyright-container">
+						<Image
+							src={GNBLogo}
+							alt="Government of New Brunswick Logo"
+						/>
+						<small class="copyright"
+							>Copyright © <span id="copyrightYear">2025</span> Government
+							of New Brunswick. All Rights Reserved.</small
+						>
+					</div>
+				</div>
 			</div>
 		</footer>
 	</body><script>
