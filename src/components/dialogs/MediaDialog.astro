@@ -25,6 +25,7 @@ import videoPoster from "src/images/video-poster.png";
 
 	<iframe
 		src=""
+		title=""
 		frameborder="0"
 		referrerpolicy="strict-origin-when-cross-origin"
 		allowfullscreen
@@ -123,6 +124,7 @@ import videoPoster from "src/images/video-poster.png";
 			? stringToBoolean(target.getAttribute("data-media-external"))
 			: false;
 		let mediaSrc = target.getAttribute("data-media-src");
+		let mediaTitle = target.getAttribute("data-dialog-heading");
 
 		if (!mediaType && !mediaSrc) return;
 
@@ -133,6 +135,7 @@ import videoPoster from "src/images/video-poster.png";
 			let iframeSrc = convertURLToEmbedURL(mediaSrc);
 			if (iframeSrc) {
 				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
+				iframe.setAttribute("title", mediaTitle);
 				iframe.removeAttribute("hidden");
 			} else {
 				video.removeAttribute("hidden");
