@@ -721,8 +721,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		if (lastVisitedPage && lastVisitedPage.path !== '/') {
 
-			console.log(lastVisitedPage);
-
 			let link = createLaunchpadLink({
 				list: recentShortcutsList,
 				title: lastVisitedPage.title,

@@ -826,7 +826,7 @@ try {
 	let raw = localStorage.getItem(key);
 	if (raw) data = JSON.parse(raw);
 
-	console.log('User data before schema check', structuredClone(data));
+	// console.log('User data before schema check', structuredClone(data));
 
 	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
 		console.warn('User preferences schema is out of date.');
@@ -840,7 +840,7 @@ try {
 		data.uiState.schemaVersion = currentStateSchemaVersion;
 	}
 
-	console.log('User data after schema check', data);
+	// console.log('User data after schema check', data);
 
 } catch (err) {
 	console.warn('Failed to load user data:', err);

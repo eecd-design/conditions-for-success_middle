@@ -622,24 +622,6 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		) as HTMLElement;
 		if (!toolbar) return;
 
-		if (target.matches("button.stop-editing")) {
-			let activeAssessment = getActiveAssessmentData();
-
-			if (activeAssessment.unexportedChanges) {
-				dialogControl.open({
-					dialogId: "export-warning-dialog",
-				});
-			} else {
-				setAssessment({
-					activeAssessor: null,
-				});
-				setState({
-					mode: "reading",
-					activeAssessmentId: null,
-				});
-			}
-		}
-
 		if (target.matches("button.close")) {
 			let activeAssessment = getActiveAssessmentData();
 
@@ -651,6 +633,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				});
 			} else {
 				if (activeAssessment.unexportedChanges) {
+					console.log("Unexported Changes");
 					dialogControl.open({
 						dialogId: "export-warning-dialog",
 					});
