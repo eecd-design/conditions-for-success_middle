@@ -646,6 +646,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							mode: "reading",
 							activeAssessmentId: null,
 						});
+						// Reset consideration checkboxes
+						for (let input of document.querySelectorAll(
+							'input[name="considerationsEstablished"]',
+						) as NodeListOf<HTMLInputElement>) {
+							input.checked = false;
+						}
 						toastControl.show({ target, type: "success" });
 					} catch (error) {
 						console.error(error);

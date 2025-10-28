@@ -816,6 +816,12 @@ let schoolList = {
 				// Get the form values and create the assessment
 				let values = getFormValues(form);
 				createAssessment(values);
+				// Reset consideration checkboxes
+				for (let input of document.querySelectorAll(
+					'input[name="considerationsEstablished"]',
+				) as NodeListOf<HTMLInputElement>) {
+					input.checked = false;
+				}
 
 				toastControl.show({ target, type: "success" });
 

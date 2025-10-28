@@ -1074,6 +1074,13 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 						});
 					}
 
+					// Reset consideration checkboxes
+					for (let input of document.querySelectorAll(
+						'input[name="considerationsEstablished"]',
+					) as NodeListOf<HTMLInputElement>) {
+						input.checked = false;
+					}
+
 					setState({
 						mode: "assessment",
 						activeAssessmentId: Number(
