@@ -1789,6 +1789,10 @@ dialog form hr.group {
 	list-style-type: none;
 }
 
+.elem-group[data-fit="compact"] {
+	--group-margin: var(--space-sm) 0;
+}
+
 .elem-group[data-columns="2"]>.wrapper {
 	--group-columns: 2;
 }
@@ -1797,15 +1801,11 @@ dialog form hr.group {
 	--group-columns: 3;
 }
 
-.elem-group[data-fit="compact"] {
-	--group-margin: var(--space-sm) 0;
-}
-
 .elem-group[data-fit="compact"]>.wrapper {
 	--group-gap: var(--space-sm);
 }
 
-.elem-group[data-content="small"] .elem-group>.wrapper>* {
+.elem-group>.wrapper>* {
 	margin: 0 !important;
 }
 
@@ -1919,6 +1919,10 @@ dialog form hr.group {
 	--button-boxshadow-colour: var(--colour-background);
 	--icon-colour: var(--colour-ui-reverse);
 	--label-colour: var(--colour-ui-reverse);
+}
+
+.callout[data-style="solid"][data-intensity="bold"] :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:hover, :focus-visible) small {
+	color: var(--label-colour);
 }
 
 /* Prominent Icon */
@@ -2487,6 +2491,7 @@ details .contents {
 .icon-and-label-container .label-container .label small {
 	font-size: var(--font-size-2xs);
 	color: var(--colour-ui-neutral-subtle);
+	transition: all var(--transition-linear-fast);
 }
 
 /* COLLAPSIBLE ICON */
