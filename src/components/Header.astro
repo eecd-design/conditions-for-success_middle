@@ -48,7 +48,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 						</a>
 					</li>
 					<li class="home-icon">
-						<a href="/" aria-label="Home">
+						<a href="/" aria-label="Home" data-style-as="button" >
 							<span class="icon-and-label-container">
 								<IconHome />
 								<span class="label-container" hidden>
@@ -380,8 +380,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		display: flex;
 		align-items: center;
-		height: 3rem;
-		padding: 0 var(--space-sm);
+		min-height: 3rem;
+		padding: var(--space-2xs) var(--space-sm);
 		
 		font-size: var(--font-size-sm);
 		color: var(--colour-ui-reverse);
@@ -423,7 +423,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		font-weight: 300;
 		line-height: 1.2; 
 		padding: var(--space-3xs);
-		height: auto;
+		min-height: 0;
 		text-decoration: underline;
 	}
 
@@ -448,8 +448,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	header nav.global .home-name a {
 		display: inline-flex;
 		width: auto;
-		height: 3rem;
-		padding: 0 var(--space-sm);
+		min-height: 3rem;
+		padding: var(--space-2xs) var(--space-sm);
 		border-radius: var(--border-radius-normal);
 		font-size: var(--font-size-base);
 		text-decoration: none;
@@ -469,7 +469,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 
 	header nav.global .home-icon a {
-		padding: 0 var(--space-xs);
+		padding: var(--space-2xs) var(--space-xs);
 	}
 
 	@container header (width < 1088px) {
@@ -494,7 +494,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 
 	header .global-controls button {
-		padding: 0 var(--space-sm);
+		padding: var(--space-2xs) var(--space-sm);
 		min-width: 3rem;
 	}
 	
@@ -503,7 +503,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 
 	header .global-controls button.theme {
-		padding: 0 var(--space-xs);
+		padding: var(--space-2xs) var(--space-xs);
 	}
 
 	header .global-controls button.menu {
@@ -522,7 +522,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			display: none;
 		}
 		header .global-controls button.search {
-			padding: 0 var(--space-xs);
+			padding: var(--space-2xs) var(--space-xs);
 		}
 	}
 

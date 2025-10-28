@@ -631,8 +631,8 @@ p {
 	font-weight: 600;
 	line-height: 1;
 	color: var(--button-ui-colour, var(--colour-ui-neutral));
-	height: 2.25rem;
-	padding: 0 var(--space-2xs);
+	min-height: 2.25rem;
+	padding: var(--space-3xs) var(--space-2xs);
 	background-color: var(--button-background-colour);
 	border-radius: var(--button-border-radius, var(--border-radius-small));
 	border-width: var(--button-border-width, 0px);
@@ -668,23 +668,23 @@ p {
 /* Button Sizes */
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="small"] {
-	height: 2rem;
-	padding: 0 var(--space-xs);
+	min-height: 2rem;
+	padding: var(--space-3xs) var(--space-xs);
 	font-size: var(--font-size-2xs);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="large"] {
 	--button-border-radius: var(--border-radius-normal);
-	height: 3rem;
+	min-height: 3rem;
 	width: fit-content;
 	min-width: 8rem;
 	max-width: 100%;
-	padding: 0 var(--space-lg);
+	padding: var(--space-2xs) var(--space-lg);
 	font-size: var(--font-size-xs);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"])[data-size="large"]:has(.icon) {
-	padding: 0 var(--space-sm);
+	padding: var(--space-2xs) var(--space-sm);
 }
 
 /* Button Style: Solid */
@@ -1539,8 +1539,8 @@ form label:has(input[type="checkbox"]:focus-visible) .text-container .tag {
 	border-radius: var(--border-radius-normal);
 	box-shadow: inset 0 0 0 var(--container-boxshadow-width) var(--container-boxshadow-colour);
 	width: 100%;
-	height: 3rem;
-	padding: 0;
+	min-height: 3rem;
+	padding: var(--space-2xs) 0;
 	margin: 0;
 }
 
@@ -1603,7 +1603,8 @@ input[type="text"]::placeholder {
 
 :is(.input-container, .code-container) button {
 	--icon-size: 1rem;
-	margin-right: var(--space-3xs);
+	margin-right: var(--space-2xs);
+	flex-shrink: 0;
 }
 
 :is(.input-container, .code-container) button:is(:hover, :focus-visible) {
@@ -1680,10 +1681,10 @@ ul.field-values-list li {
 	gap: var(--space-2xs);
 	font-size: var(--font-size-2xs);
 	line-height: 1.2;
-	height: 2rem;
-	border-radius: var(--border-radius-normal);
+	min-height: 2rem;
+	border-radius: var(--border-radius-small);
 	background-color: var(--colour-fill-neutral-subtle);
-	padding: 0 0 0 var(--space-xs);
+	padding: 0 0 0 var(--space-2xs);
 	transition: background-color var(--transition-linear-fast);
 }
 
@@ -1710,10 +1711,10 @@ ul.field-values-list li button.clear {
 	--icon-size: 1rem;
 	--icon-colour: var(--colour-ui-neutral-subtle);
 	display: inline-flex;
-	height: 2rem;
+	min-height: 2rem;
 	min-width: 2rem;
 	padding-left: calc(var(--space-2xs) - 1px);
-	border-radius: 0 var(--border-radius-normal) var(--border-radius-normal) 0;
+	border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
 	border-left: 1px solid var(--colour-border-neutral-subtle);
 }
 
@@ -2385,7 +2386,7 @@ summary {
 	align-items: center;
 	gap: var(--space-xs);
 	list-style: none;
-	height: 2.5rem;
+	min-height: 2.5rem;
 	margin: 0;
 	padding: 0;
 	background-color: transparent;
@@ -2462,8 +2463,8 @@ details .contents {
 
 .label-container:is([data-style="solid"], [data-style="outline"], [data-style="solid-outline"]) {
 	--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-	height: 1.75rem;
-	padding: 0 var(--space-2xs);
+	min-height: 1.75rem;
+	padding: var(--space-3xs) var(--space-2xs);
 	border-radius: var(--label-border-radius, var(--border-radius-small));
 }
 
@@ -2508,9 +2509,8 @@ details .contents {
 
 .icon-and-label-container {
 	display: flex;
-	flex-flow: row nowrap;
+	flex-flow: row wrap;
 	align-items: center;
-	flex-shrink: 0;
 	gap: var(--container-gap, var(--space-2xs));
 	background-color: var(--container-background-colour, transparent);
 	border-radius: var(--container-border-radius, 0);

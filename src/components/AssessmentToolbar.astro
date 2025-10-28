@@ -62,12 +62,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					data-vibrancy="vivid"
 					data-collapsible="icon"
 				>
-					<div class="label-container">
+					<span class="label-container">
 						<span class="label" data-field="status"></span>
-					</div>
-					<div class="icon-container">
+					</span>
+					<span class="icon-container">
 						<IconEditSmall />
-					</div>
+					</span>
 				</button>
 				<div
 					class="separator item"
@@ -82,12 +82,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					type="button"
 					aria-label="View Assessment Properties"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconInfo />
 						<span class="label-container">
 							<span class="label">Properties</span>
 						</span>
-					</div>
+					</span>
 				</button>
 			</div>
 			<div
@@ -106,12 +106,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					aria-label="Create New Assessment"
 					type="button"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconCross />
 						<span class="label-container">
 							<span class="label">New</span>
 						</span>
-					</div>
+					</span>
 				</button>
 				<div
 					class="separator item"
@@ -127,12 +127,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					aria-label="Open or Import Assessment"
 					type="button"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconFolder />
 						<span class="label-container">
 							<span class="label">Open</span>
 						</span>
-					</div>
+					</span>
 				</button>
 			</div>
 			<div
@@ -153,12 +153,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					type="button"
 					aria-label="Export Assessment"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconSave />
 						<span class="label-container">
 							<span class="label">Export</span>
 						</span>
-					</div>
+					</span>
 				</button>
 				<div
 					class="separator item"
@@ -197,12 +197,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					type="button"
 					aria-label="Manage Assessors"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconAssessor />
 						<span class="label-container">
 							<span class="label">Assessors</span>
 						</span>
-					</div>
+					</span>
 				</button>
 				<div
 					class="separator item"
@@ -223,12 +223,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					data-theme="purple"
 					data-restrict-assessor="true"
 				>
-					<div class="label-container" data-restrict-length="short">
+					<span class="label-container" data-restrict-length="short">
 						<span class="label" data-field="activeAssessor"></span>
-					</div>
-					<div class="icon-container">
+					</span>
+					<span class="icon-container">
 						<IconEditSmall />
-					</div>
+					</span>
 				</button>
 			</div>
 			<div
@@ -250,12 +250,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					type="button"
 					data-restrict-status="complete"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconEdit />
 						<span class="label-container">
 							<span class="label">Edit</span>
 						</span>
-					</div>
+					</span>
 				</button>
 				<div
 					class="separator item"
@@ -288,12 +288,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					data-toast-success="assessment-toolbar_close-toast_success"
 					data-toast-failure="assessment-toolbar_close-toast_failure"
 				>
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconXmark />
 						<span class="label-container">
 							<span class="label">Close</span>
 						</span>
-					</div>
+					</span>
 				</button>
 			</div>
 		</div>
@@ -436,7 +436,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		) {
 		--container-padding: var(--space-2xs);
 		--icon-size: 0.875rem;
-		height: 1.75rem;
+		min-height: 1.75rem;
 		margin: 0 var(--space-2xs) !important;
 	}
 

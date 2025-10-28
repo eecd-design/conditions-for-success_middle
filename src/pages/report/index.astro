@@ -128,20 +128,20 @@ for (let indicator of indicators) {
 				<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
 				<div class="button-group">
 					<a href="/big-seven?dialog=create-assessment" aria-label="Create Assessment" data-style-as="button" data-style="solid" data-size="large">
-						<div class="icon-and-label-container">
+						<span class="icon-and-label-container">
 							<IconCross20/>
 							<span class="label-container">
 								<span class="label">Create</span>
 							</span>
-						</div>
+						</span>
 					</a>
 					<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-context="report" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button" data-style="solid" data-size="large">
-						<div class="icon-and-label-container">
+						<span class="icon-and-label-container">
 							<IconFolder20/>
 							<span class="label-container">
 								<span class="label">Open</span>
 							</span>
-						</div>
+						</span>
 					</button>
 				</div>
 			</div>
@@ -150,34 +150,34 @@ for (let indicator of indicators) {
 		<div id="report-controls" data-print="false" data-restrict-report="active">
 			<div class="button-group">
 				<button class="open-dialog" data-dialog="open-assessment-dialog" data-dialog-context="report" data-dialog-heading="Open Assessment Report" aria-label="Open or Import Assessment" type="button">
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconFolder20/>
 						<span class="label-container">
 							<span class="label">Open</span>
 						</span>
-					</div>
+					</span>
 				</button>
 
 				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
 
 				<button class="open-dialog" data-dialog="report-settings-dialog" aria-label="Modify Report Settings" type="button" >
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconCog20/>
 						<span class="label-container">
 							<span class="label">Settings</span>
 						</span>
-					</div>
+					</span>
 				</button>
 				
 				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
 
 				<button class="download-report" aria-label="Download Assessment Report" type="button" >
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconDownload20/>
 						<span class="label-container">
 							<span class="label">Download</span>
 						</span>
-					</div>
+					</span>
 				</button>
 				
 				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
@@ -187,12 +187,12 @@ for (let indicator of indicators) {
 				type="button" 
 				data-toast-success="report-page_close-toast_success" 
 				data-toast-failure="report-page_close-toast_failure">
-					<div class="icon-and-label-container">
+					<span class="icon-and-label-container">
 						<IconXmark20/>
 						<span class="label-container">
 							<span class="label">Close</span>
 						</span>
-					</div>
+					</span>
 				</button>
 			</div>
 		</div>
@@ -309,11 +309,11 @@ for (let indicator of indicators) {
 	#report-controls {
 		--group-gap: var(--space-2xs);
 		display: inline-flex;
-		flex-flow: row nowrap;
+		flex-flow: row wrap;
 		align-items: center;
 		gap: var(--space-2xs);
-		height: 3.25rem;
-		padding: 0 var(--space-2xs);
+		min-height: 3.25rem;
+		padding: var(--space-2xs);
 		margin: var(--space-sm) 0 0;
 		background-color: var(--colour-fill-neutral-subtle);
 		border-radius: var(--border-radius-normal);
