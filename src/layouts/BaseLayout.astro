@@ -342,7 +342,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			if (currentPagePath !== "/") {
 				setState({
 					lastVisitedPage: {
-						title: document.querySelector("h1").textContent,
+						title: document.title,
 						path: window.location.pathname,
 					},
 				});
