@@ -8,6 +8,19 @@ import { Image } from "astro:assets";
 import girlDeskImage from "../images/girl-portrait-desk.jpg";
 import boyTennisImage from "../images/boy-portrait-tennis.jpg";
 import girlScooterImage from "../images/girl-portrait-scooter.jpg";
+import { getEntry } from "astro:content";
+import { getResourcePath } from "src/utilities/helpers";
+
+let continuumsResource = await getEntry(
+	"resources",
+	"nb-middle-school-developmental-continuums",
+);
+let continuumsResourceData = JSON.parse(
+	JSON.stringify(continuumsResource.data),
+);
+continuumsResourceData.slug = continuumsResource.id;
+continuumsResourceData.category = "resource";
+let continuumsResourcePath = getResourcePath(continuumsResourceData);
 ---
 
 <BaseLayout
@@ -240,7 +253,7 @@ import girlScooterImage from "../images/girl-portrait-scooter.jpg";
 					Developmental Continuums?
 				</h2>
 				<a
-					href=""
+					href={continuumsResourcePath}
 					data-style-as="button"
 					data-style="solid"
 					data-size="large"
