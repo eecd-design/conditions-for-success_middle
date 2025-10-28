@@ -1181,7 +1181,7 @@ footer {
 		". content .";
 	justify-content: center;
 	padding: var(--space-xl) 0;
-	background-color: var(--colour-fill-neutral-mid);
+	background-color: var(--colour-fill-neutral-bold);
 }
 
 footer>.wrapper {
