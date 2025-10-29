@@ -538,15 +538,28 @@ let schoolList = {
 		// If the district select has a value, enable school select and show paired option group
 		if (districtSelect.value !== "") {
 			schoolSelect.removeAttribute("disabled");
-			schoolSelect
-				.querySelector(`.${districtSelect.value.toLowerCase()}-schools`)
-				.removeAttribute("hidden");
-			// Otherwise, disabled school select and hide all options groups
-		} else {
+			let targetGroup = schoolSelect.querySelector(
+				`.${districtSelect.value.toLowerCase()}-schools`,
+			) as HTMLOptGroupElement;
+			targetGroup.removeAttribute("hidden");
+			// Hide nested options for Safari
+			let nestedOptions = targetGroup.querySelectorAll("option");
+			for (let option of nestedOptions) {
+				option.removeAttribute("hidden");
+			}
+		}
+
+		// Otherwise, disable school select and hide all options groups
+		else {
 			schoolSelect.value = "";
 			schoolSelect.setAttribute("disabled", "");
 			for (let group of schoolOptionGroups) {
 				group.setAttribute("hidden", "");
+				// Hide nested options for Safari
+				let options = group.querySelectorAll("option");
+				for (let option of options) {
+					option.setAttribute("hidden", "");
+				}
 			}
 		}
 	};
