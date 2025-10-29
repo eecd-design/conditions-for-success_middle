@@ -11,7 +11,6 @@ let dialogControl = (() => {
 			"dialog[open]");
 		let targetDialog = document.querySelector(
 			`#${dialogId}`);
-		console.log('Target Dialog', targetDialog);
 		if (!targetDialog) return;
 		if (activeDialog) close(activeDialog);
 		if (context) targetDialog.setAttribute('data-context', context);

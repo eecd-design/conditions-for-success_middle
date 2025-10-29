@@ -31,6 +31,7 @@ let indicators = allIndicators.sort((a, b) =>
 		Report Settings
 	</h2>
 
+	<!-- Save Toast located in Report page -->
 	<Toast
 		id={"report-settings-dialog_save-toast_failure"}
 		message={`Unable to save report settings. Please reload the page to try again.`}
@@ -101,16 +102,6 @@ let indicators = allIndicators.sort((a, b) =>
 		<p class="instructions">
 			*Assessed indicators have at least one consideration estalished.
 		</p>
-
-		<!-- Save Toast located in Assessment Dialogs -->
-		<Toast
-			id={"report-settings-dialog_save-toast_failure"}
-			message={`Unable to save. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
 
 		<div class="button-group">
 			<button
