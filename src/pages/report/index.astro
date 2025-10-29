@@ -560,6 +560,8 @@ import { toastControl } from 'src/utilities/toast';
 			format: 'letter',
 		});
 
+		console.log('jsPDF Created', pdf);
+
 		let margin = 72;
 		let pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
 		let pageHeight = pdf.internal.pageSize.getHeight();
@@ -579,6 +581,8 @@ import { toastControl } from 'src/utilities/toast';
 		pdf.addFont('PublicSans-Regular.ttf', 'Public Sans', 'normal');
 		pdf.addFileToVFS('PublicSans-Bold.ttf', publicSansBoldBase64);
 		pdf.addFont('PublicSans-Bold.ttf', 'Public Sans', 'bold');
+
+		console.log('Added Fonts', pdf);
 
 		let gnbLogoBase64 = await fetchPngBase64('images/gnb-logo-colour.png');
 
@@ -648,6 +652,9 @@ import { toastControl } from 'src/utilities/toast';
 			let isSummary = section.matches('.summary');
 			
 			pdf.addPage();
+
+			console.log('New Page', pdf);
+
 			currentYPosition = margin - 16; // Account for section heading line height padding
 
 			// Convert on screen charts to images
@@ -663,6 +670,8 @@ import { toastControl } from 'src/utilities/toast';
 				progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
 				progressChartImgHeight = (progressChartImgProps.height * pageWidth) / progressChartImgProps.width;
 			} 
+
+			console.log('Converted Progress Chart', progressChartCanvas);
 
 			let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
 			let matrixChartCanvas = null;
@@ -685,6 +694,8 @@ import { toastControl } from 'src/utilities/toast';
 					section.style.left = '';
 				}
 			}
+
+			console.log('Converted Matrix Chart', matrixChartCanvas);
 			
 			// Create page layout 
 
