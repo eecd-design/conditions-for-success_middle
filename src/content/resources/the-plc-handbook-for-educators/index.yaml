@@ -1,4 +1,5 @@
 title: 'The PLC Handbook for Educators: Unlocking Professional Learning Communities'
+published: true
 dateAdded: 2025-09-24
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.powerschool.com/blog/plc-handbook/
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '1.5'

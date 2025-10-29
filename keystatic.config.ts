@@ -355,6 +355,11 @@ export default config({
 						},
 					}
 				}),
+				published: fields.checkbox({
+					label: 'Published',
+					defaultValue: true,
+					description: 'When checked, the resource is visible on the site. Unchecking it hides the resource from public view.',
+				}),
 				dateAdded: fields.date({
 					label: 'Date Added',
 					description: 'Defaults to today’s date.',
@@ -362,7 +367,7 @@ export default config({
 				}),
 				type: fields.select({
 					label: 'Resource Type',
-					description: 'Determines the icon shown in links and allows filtering on the resource page.',
+					description: 'Determines icon shown in links and filtering options on the resource page.',
 					options: [
 						{ label: 'Video', value: 'video' },
 						{ label: 'Document', value: 'document' },
@@ -406,6 +411,15 @@ export default config({
 						}),
 					}
 				),
+				linkAction: fields.select({
+					label: 'Resource Link Action',
+					description: 'Select the resource link action. "Open in dialog" displays the resource in a pop-up window on the same page, while "Open in a new page" navigates to the resource URL.',
+					options: [
+						{ label: 'Open in dialog', value: 'dialog' },
+						{ label: 'Open in a new page', value: 'link' },
+					],
+					defaultValue: 'dialog',
+				}),
 				linkedIndicators: fields.array(
 					fields.text({
 						label: 'Indicator Tag',

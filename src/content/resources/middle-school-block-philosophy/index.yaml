@@ -1,4 +1,5 @@
 title: Middle School (Block) Philosophy
+published: true
 dateAdded: 2025-09-16
 type: document
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: false
   value:
     fileType: .docx
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

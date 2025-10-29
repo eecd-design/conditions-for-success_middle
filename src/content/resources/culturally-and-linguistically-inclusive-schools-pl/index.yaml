@@ -1,4 +1,5 @@
 title: Culturally and Linguistically Inclusive Schools PL
+published: true
 dateAdded: 2025-09-25
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://plhub.nbed.ca/?learning_activity=culturally-and-linguistically-inclusive-schools-online-course
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '2.7'

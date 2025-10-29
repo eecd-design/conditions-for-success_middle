@@ -1,4 +1,5 @@
 title: Design for Each and Every Learner
+published: true
 dateAdded: 2025-09-25
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://publications.ici.umn.edu/ties/universal-design-for-learning-modules/design-for-each-and-every-learner
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

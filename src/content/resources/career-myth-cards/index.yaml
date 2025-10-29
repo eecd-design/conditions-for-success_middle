@@ -1,4 +1,5 @@
 title: Career Myth Cards
+published: true
 dateAdded: 2025-10-06
 type: website
 description: The website houses a resource available for purchase.
@@ -7,6 +8,7 @@ external:
   discriminant: true
   value:
     url: https://mysparkpath.com/products/career-myth-cards
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

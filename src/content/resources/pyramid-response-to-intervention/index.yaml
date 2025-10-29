@@ -1,4 +1,5 @@
 title: Pyramid Response to Intervention
+published: true
 dateAdded: 2025-10-06
 type: website
 description: The website houses a resource available for purchase.
@@ -7,6 +8,7 @@ external:
   discriminant: true
   value:
     url: https://www.solutiontree.com/ca/pyramid-response-to-intervention.html
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '2.2'

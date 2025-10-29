@@ -1,4 +1,5 @@
 title: Peer Feedback
+published: true
 dateAdded: 2025-09-26
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.edutopia.org/article/teaching-students-give-peer-feedback
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

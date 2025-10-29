@@ -1,4 +1,5 @@
 title: UDL and Academic Integrity
+published: true
 dateAdded: 2025-09-25
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://taylorinstitute.ucalgary.ca/resources/module/UDL-lesson-6
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

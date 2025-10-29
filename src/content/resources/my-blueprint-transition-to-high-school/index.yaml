@@ -1,4 +1,5 @@
 title: 'myBlueprint: Transition to High School Student Guide'
+published: true
 dateAdded: 2025-10-06
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://hopefultransitions.nbed.ca/educators/transition-to-high-school-student-guide/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

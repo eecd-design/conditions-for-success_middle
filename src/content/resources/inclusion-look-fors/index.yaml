@@ -1,4 +1,5 @@
 title: Inclusion Look-fors
+published: true
 dateAdded: 2025-09-16
 type: document
 description: 'Note: To access this resource you must be logged into NBED SharePoint.'
@@ -11,6 +12,7 @@ external:
       Documents/Forms/AllItems.aspx?id=%2Fsites%2FToolkit%2FShared
       Documents%2FInclusion Look-fors%2Epdf&parent=%2Fsites%2FToolkit%2FShared
       Documents
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '1.2'

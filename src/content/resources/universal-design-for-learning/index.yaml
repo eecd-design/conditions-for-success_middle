@@ -1,4 +1,5 @@
 title: Universal Design for Learning
+published: true
 dateAdded: 2025-09-25
 type: document
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://udl.nbed.ca/documents/UDL_Reference.pdf
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

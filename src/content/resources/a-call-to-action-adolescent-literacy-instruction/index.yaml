@@ -1,4 +1,5 @@
 title: 'A Call to Action: What We Know About Adolescent Literacy Instruction'
+published: true
 dateAdded: 2025-10-01
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://ncte.org/statement/adolescentliteracy/
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '6.2'

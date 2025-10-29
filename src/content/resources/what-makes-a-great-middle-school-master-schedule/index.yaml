@@ -1,4 +1,5 @@
 title: What Makes a Great Middle School Master Schedule?
+published: true
 dateAdded: 2025-09-24
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.amle.org/what-makes-a-great-middle-school-master-schedule/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

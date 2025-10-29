@@ -1,4 +1,5 @@
 title: 'The Mind Up Curriculum: Grades 6-8'
+published: true
 dateAdded: 2025-10-06
 type: website
 description: The website houses a resource available for purchase.
@@ -8,6 +9,7 @@ external:
   value:
     url: >-
       https://shop.scholastic.com/teachers-ecommerce/teacher/books/the-mindup-curriculum-grades-6-8-9780545267144.html#
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

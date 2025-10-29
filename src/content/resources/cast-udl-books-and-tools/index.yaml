@@ -1,4 +1,5 @@
 title: 'CAST: UDL Books and Tools'
+published: true
 dateAdded: 2025-10-06
 type: website
 description: The website houses resources available for purchase.
@@ -7,6 +8,7 @@ external:
   discriminant: true
   value:
     url: https://publishing.cast.org/catalog/books-products
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

@@ -1,4 +1,5 @@
 title: Using Discussions to Inspire Active Participation in Learning
+published: true
 dateAdded: 2025-10-01
 type: video
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.youtube.com/watch?v=2W2B3HuB7Hg
+linkAction: dialog
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

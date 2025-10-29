@@ -19,7 +19,9 @@ import IconXmarkSmall from "src/components/icons/IconXmark_12.astro";
 import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
 import { findObjectByKey } from "src/utilities/helpers";
 
-let allResources = await getCollection("resources");
+let allResources = await getCollection("resources", ({ data }) => {
+	return data.published === true;
+});
 
 allResources.sort((a, b) => {
 	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));

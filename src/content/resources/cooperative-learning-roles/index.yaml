@@ -1,4 +1,5 @@
 title: '60 Second-Strategy: Cooperative Learning Roles'
+published: true
 dateAdded: 2025-10-01
 type: video
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.youtube.com/watch?v=zR6rTKPkjgQ
+linkAction: dialog
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

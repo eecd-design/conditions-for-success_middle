@@ -1,4 +1,5 @@
 title: A Brain-Based Solution to Student Note-Taking
+published: true
 dateAdded: 2025-10-01
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://www.middleweb.com/49512/a-brain-based-solution-to-student-note-taking/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

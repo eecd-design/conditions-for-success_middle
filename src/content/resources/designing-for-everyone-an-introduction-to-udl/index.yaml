@@ -1,4 +1,5 @@
 title: 'Designing for Everyone: An Introduction to Universal Design for Learning'
+published: true
 dateAdded: 2025-10-02
 type: video
 description: >-
@@ -9,6 +10,7 @@ topics: []
 external:
   discriminant: false
   value: {}
+linkAction: dialog
 linkedIndicators: []
 linkedComponents:
   - '2.6'

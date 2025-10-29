@@ -1,4 +1,5 @@
 title: What is response to intervention?
+published: true
 dateAdded: 2025-09-25
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://www.understood.org/en/articles/understanding-response-to-intervention
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '2.2'

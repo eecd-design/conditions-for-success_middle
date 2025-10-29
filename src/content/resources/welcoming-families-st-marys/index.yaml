@@ -1,4 +1,5 @@
 title: Welcoming Families to St. Mary's Academy
+published: true
 dateAdded: 2025-09-25
 type: image
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: false
   value:
     fileType: .jpg
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

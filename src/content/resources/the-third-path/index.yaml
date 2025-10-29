@@ -1,6 +1,7 @@
 title: >-
   The Third Path: A Relationship-based Approach to Student Well-being and
   Achievement
+published: true
 dateAdded: 2025-09-24
 type: website
 topics: []
@@ -8,6 +9,7 @@ external:
   discriminant: true
   value:
     url: https://www.thirdpath.ca/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

@@ -1,4 +1,5 @@
 title: Agriculture in the Classroom
+published: true
 dateAdded: 2025-10-02
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.aitc-aec-nb.ca/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

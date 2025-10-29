@@ -1,4 +1,5 @@
 title: Wheel of Privilege and Power
+published: true
 dateAdded: 2025-09-24
 type: document
 description: 'Note: To access this resource you must be logged into NBED SharePoint.'
@@ -8,6 +9,7 @@ external:
   value:
     url: >-
       https://nbed.sharepoint.com/sites/Toolkit/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FToolkit%2FShared%20Documents%2Fwheel%2Dprivilege%2Dpower%2Epdf&parent=%2Fsites%2FToolkit%2FShared%20Documents
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '1.2'

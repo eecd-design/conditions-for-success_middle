@@ -1,4 +1,5 @@
 title: Polypad Virtual Manipulatives
+published: true
 dateAdded: 2025-10-01
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://polypad.amplify.com/
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '6.3'

@@ -1,6 +1,7 @@
 title: >-
   Teaching English as an Additional Language in New Brunswick: A Guide for
   Educators and School Teams
+published: true
 dateAdded: 2025-10-06
 type: document
 topics: []
@@ -9,6 +10,7 @@ external:
   value:
     url: >-
       https://www2.gnb.ca/content/dam/gnb/Departments/ed/pdf/K12/curric/English-AdditionalLanguage/TEALinNB-Guide.pdf
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '2.7'

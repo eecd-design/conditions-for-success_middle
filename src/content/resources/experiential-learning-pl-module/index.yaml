@@ -1,4 +1,5 @@
 title: Experiential Learning, PL Module
+published: true
 dateAdded: 2025-10-02
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://pedex.nbed.nb.ca/frl/M03/story_html5.html
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

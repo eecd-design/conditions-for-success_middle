@@ -1,4 +1,5 @@
 title: Differentiated Writing Task
+published: true
 dateAdded: 2025-09-25
 type: document
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: false
   value:
     fileType: .docx
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

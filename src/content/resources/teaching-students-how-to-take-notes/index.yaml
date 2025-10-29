@@ -1,4 +1,5 @@
 title: Teaching Students How to Take Notes
+published: true
 dateAdded: 2025-10-01
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.amle.org/teaching-students-how-to-take-notes/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

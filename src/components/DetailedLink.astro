@@ -22,6 +22,7 @@ let {
 	external = null,
 	indicator = null,
 	slug = null,
+	linkAction = null,
 	linkedIndicators = null,
 	linkedComponents = null,
 	linkedConsiderations = null,
@@ -93,8 +94,7 @@ let itemWrapperAttrs =
 			};
 
 // If resource is a video or internal audio, open it in a dialog
-let opensDialog =
-	type === "video" || (type === "audio" && !external.discriminant);
+let opensDialog = linkAction === "dialog";
 let InteractiveWrapper = opensDialog ? "button" : "a";
 let interactiveWrapperAttrs = opensDialog
 	? {
@@ -119,26 +119,20 @@ let DestinationIcon = null;
 if (category !== "resource") {
 	DestinationIcon = IconArrowRight;
 }
-// External Files and Websites
-else if (
-	external.discriminant === true &&
-	["audio", "document", "presentation", "website"].includes(type)
-) {
-	DestinationIcon = IconExternal;
-}
-// Internal and External Media
+// Embedded Media
 else if (opensDialog) {
 	DestinationIcon = IconExpand;
 }
 // Internal Files
-else if (["document", "presentation"].includes(type)) {
+else if (
+	external.discriminant === false &&
+	["document", "presentation"].includes(type)
+) {
 	DestinationIcon = IconDownload;
 }
-// Internal Images
-else if (type === "image") {
+// Everything else
+else {
 	DestinationIcon = IconExternal;
-} else {
-	console.warn("No Icon!");
 }
 ---
 

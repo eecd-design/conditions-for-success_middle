@@ -1,6 +1,7 @@
 title: >-
   "I'd Still Prefer to Read the Hard Copy": Adolescents' Print and Digital
   Reading Habits
+published: true
 dateAdded: 2025-09-25
 type: website
 topics: []
@@ -8,6 +9,7 @@ external:
   discriminant: true
   value:
     url: https://ila.onlinelibrary.wiley.com/doi/abs/10.1002/jaal.904
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

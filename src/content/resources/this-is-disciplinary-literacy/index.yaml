@@ -1,4 +1,5 @@
 title: This Is Disciplinary Literacy
+published: true
 dateAdded: 2025-09-25
 type: website
 description: The website houses a resource available for purchase.
@@ -8,6 +9,7 @@ external:
   value:
     url: >-
       https://www.corwin.com/books/this-is-disciplinary-literacy-246182?srsltid=AfmBOoo0sMV2_SBfhbw42Dfm5hDWn4WBsanAsxF9B1WnLcnKp3P1-xba
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

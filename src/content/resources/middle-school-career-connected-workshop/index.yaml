@@ -1,4 +1,5 @@
 title: Middle School Career Connected Workshop
+published: true
 dateAdded: 2025-10-02
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://hopefultransitions.nbed.ca/educators/middle-school-career-connected-workshop/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

@@ -1,4 +1,5 @@
 title: Solution-focused Meetings
+published: true
 dateAdded: 2025-09-26
 type: document
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.learnalberta.ca/content/inspb1/html/pdf/tool2.pdf
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

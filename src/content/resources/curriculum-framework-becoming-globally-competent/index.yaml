@@ -1,4 +1,5 @@
 title: 'Curriculum Framework: Being and Becoming Globally Competent'
+published: true
 dateAdded: 2025-09-24
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://curriculum.nbed.ca/curriculum-framework/what-we-teach-being-and-becoming-globally-competent/
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '1.1'

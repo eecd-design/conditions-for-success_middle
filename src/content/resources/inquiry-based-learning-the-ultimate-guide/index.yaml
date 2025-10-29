@@ -1,4 +1,5 @@
 title: 'Inquiry-Based Learning: The Ultimate Guide'
+published: true
 dateAdded: 2025-10-01
 type: video
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.youtube.com/watch?v=QlwkerwaV2E
+linkAction: dialog
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

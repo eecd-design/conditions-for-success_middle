@@ -1,4 +1,5 @@
 title: Effective Instruction for Adolescent Struggling Readers
+published: true
 dateAdded: 2025-10-01
 type: document
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://files.eric.ed.gov/fulltext/ED521836.pdf
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

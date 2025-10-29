@@ -46,7 +46,9 @@ for (let component of allComponents) {
 }
 
 // Get all resources
-let allResources = await getCollection("resources");
+let allResources = await getCollection("resources", ({ data }) => {
+	return data.published === true;
+});
 
 for (let resource of allResources) {
 	let data = JSON.parse(JSON.stringify(resource.data));

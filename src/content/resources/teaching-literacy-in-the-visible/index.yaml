@@ -1,4 +1,5 @@
 title: Teaching Literacy in the Visible Learning Classroom, Grades 6–12
+published: true
 dateAdded: 2025-10-06
 type: website
 description: The website houses a resource available for purchase.
@@ -7,6 +8,7 @@ external:
   discriminant: true
   value:
     url: https://resources.corwin.com/vl-literacy6-12
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

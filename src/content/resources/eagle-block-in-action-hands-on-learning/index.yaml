@@ -1,4 +1,5 @@
 title: 'Eagle Block in Action: Hands-on Learning Beyond the Textbook'
+published: true
 dateAdded: 2025-10-02
 type: video
 description: >-
@@ -9,6 +10,7 @@ topics: []
 external:
   discriminant: false
   value: {}
+linkAction: dialog
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

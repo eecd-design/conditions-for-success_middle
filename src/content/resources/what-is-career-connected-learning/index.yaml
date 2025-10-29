@@ -1,4 +1,5 @@
 title: What is Career Connected Learning?
+published: true
 dateAdded: 2025-10-02
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://www2.gnb.ca/content/gnb/en/departments/education/k12/content/career-connected-learning.html
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '7.4'

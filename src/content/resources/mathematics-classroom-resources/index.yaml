@@ -1,4 +1,5 @@
 title: 'National Council of Teachers of Mathematics: Classroom Resources'
+published: true
 dateAdded: 2025-10-01
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://www.nctm.org/classroomresources/
+linkAction: link
 linkedIndicators: []
 linkedComponents:
   - '6.3'

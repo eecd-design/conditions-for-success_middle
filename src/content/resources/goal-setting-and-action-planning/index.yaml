@@ -1,4 +1,5 @@
 title: 'Hopeful Transitions Benchmarks: Goal Setting and Action Planning'
+published: true
 dateAdded: 2025-10-02
 type: website
 topics: []
@@ -6,6 +7,7 @@ external:
   discriminant: true
   value:
     url: https://hopefultransitions.nbed.ca/hopeful-transitions-benchmark/
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

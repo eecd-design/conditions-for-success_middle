@@ -78,7 +78,9 @@ let focuses = Object.fromEntries(allFocuses
 }));
 
 // Get all resources
-let allResources = await getCollection("resources");
+let allResources = await getCollection("resources", ({data}) => {
+	return data.published === true;
+});
 
 let filterResourcesByPhase = (resources, phase) => {
 	

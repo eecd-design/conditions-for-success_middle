@@ -1,4 +1,5 @@
 title: Hi-Lo Books
+published: true
 dateAdded: 2025-09-25
 type: website
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://www.sdlback.com/solutions-for-tweens-grades-4-8/hi-lo-books#:~:text=Hi%2DLo%20books%2C%20short%20for,love%20for%20literature%20in%20tweens.
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

@@ -1,4 +1,5 @@
 title: Reciprocal Teaching
+published: true
 dateAdded: 2025-10-01
 type: document
 topics: []
@@ -7,6 +8,7 @@ external:
   value:
     url: >-
       https://ies.ed.gov/ncee/wwc/Docs/InterventionReports/wwc_rec_teach_091410.pdf
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

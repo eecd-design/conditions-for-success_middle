@@ -1,4 +1,5 @@
 title: 'The Doing What Works Library: Vocabulary Instruction'
+published: true
 dateAdded: 2025-10-01
 type: website
 description: A collection of resources on vocabulary instruction.
@@ -7,6 +8,7 @@ external:
   discriminant: true
   value:
     url: https://dwwlibrary.wested.org/resources?t_id=20
+linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:

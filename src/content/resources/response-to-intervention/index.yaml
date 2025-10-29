@@ -1,4 +1,5 @@
 title: Response to Intervention
+published: true
 dateAdded: 2025-09-25
 type: video
 description: >-
@@ -9,6 +10,7 @@ external:
   discriminant: true
   value:
     url: https://www.youtube.com/watch?v=lBfMpX9ilWQ
+linkAction: dialog
 linkedIndicators: []
 linkedComponents:
   - '2.2'

@@ -1,6 +1,7 @@
 title: >-
   How does PBIS improve school climate, learner behaviour, and learner
   achievement?
+published: true
 dateAdded: 2025-09-25
 type: video
 topics: []
@@ -9,6 +10,7 @@ external:
   value:
     url: >-
       https://pedex.nbed.nb.ca/DesignTeam/PBIS%20Flipbook%20Videos/PBIS%20-%203%20-%20Improve%20Climate,%20Behavior,%20Achievement.mp4
+linkAction: dialog
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
