@@ -32,12 +32,16 @@ for (let component of allComponents) {
 	componentData.colour = colour;
 	searchList.push(componentData);
 
-	for (let consideration of component.data["initiating"].considerations) {
-		let considerationData = JSON.parse(JSON.stringify(consideration));
-		considerationData.category = "consideration";
-		considerationData.indicator = component.data.indicator;
-		considerationData.colour = colour;
-		searchList.push(considerationData);
+	let phases = ["initiating", "implementing", "developing", "sustaining"];
+
+	for (let phase of phases) {
+		for (let consideration of component.data[phase].considerations) {
+			let considerationData = JSON.parse(JSON.stringify(consideration));
+			considerationData.category = "consideration";
+			considerationData.indicator = component.data.indicator;
+			considerationData.colour = colour;
+			searchList.push(considerationData);
+		}
 	}
 }
 
