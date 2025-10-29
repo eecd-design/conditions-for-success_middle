@@ -260,7 +260,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 		let scrollToConsideration = (tag) => {
 			let consideration = document.querySelector(`[value="${tag}"]`);
-
 			if (!consideration) return;
 
 			let accordion = consideration.closest(".accordion");
@@ -270,9 +269,8 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			if (!accordion || !accordionBtn) return;
 
-			if (accordionBtn.getAttribute("aria-expanded") === "true") return;
-
-			accordionBtn.click();
+			if (accordionBtn.getAttribute("aria-expanded") !== "true")
+				accordionBtn.click();
 
 			setTimeout(() => {
 				scrollIntoView(accordion, { behavior: "smooth" });
@@ -320,7 +318,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			// If link was within a dialog, close it
 			let activeDialog = document.querySelector(
-				"dialog:open",
+				"dialog[open]",
 			) as HTMLDialogElement;
 			if (activeDialog) dialogControl.close(activeDialog);
 
