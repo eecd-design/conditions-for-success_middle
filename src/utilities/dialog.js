@@ -27,6 +27,8 @@ let dialogControl = (() => {
 		document.body.style.top = `-${scrollY}px`
 
 		targetDialog.showModal();
+		let focusStart = targetDialog.querySelector('[data-focus-start]')
+		if (focusStart) focusStart.focus();
 	}
 
 	let close = (target) => {

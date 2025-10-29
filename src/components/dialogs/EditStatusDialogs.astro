@@ -53,17 +53,11 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			type="button"
 			data-size="large"
 			data-style="outline"
-			data-restrict-context="configure"
-			autofocus>Cancel</button
+			data-focus-start
 		>
-		<button
-			class="close-dialog"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-restrict-context="close"
-			autofocus>Skip</button
-		>
+			<span data-restrict-context="configure">Cancel</span>
+			<span data-restrict-context="close">Skip</span>
+		</button>
 		<button
 			class="change-status"
 			type="button"
@@ -133,7 +127,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			type="button"
 			data-size="large"
 			data-style="outline"
-			autofocus>Cancel</button
+			data-focus-start>Cancel</button
 		>
 		<button
 			class="change-status"
