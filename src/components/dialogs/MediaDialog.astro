@@ -19,9 +19,9 @@ import videoPoster from "src/images/video-poster.png";
 		Media Resource
 	</h2>
 
-	<video controls poster={videoPoster.src} hidden></video>
+	<video controls poster={videoPoster.src} tabindex="0" hidden></video>
 
-	<audio controls src="" hidden></audio>
+	<audio controls src="" tabindex="0" hidden></audio>
 
 	<iframe
 		src=""
@@ -29,6 +29,7 @@ import videoPoster from "src/images/video-poster.png";
 		frameborder="0"
 		referrerpolicy="strict-origin-when-cross-origin"
 		allowfullscreen
+		tabindex="0"
 		hidden></iframe>
 
 	<div class="transcript accordion-group" hidden>
