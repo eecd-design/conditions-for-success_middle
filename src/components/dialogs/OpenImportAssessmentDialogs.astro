@@ -1008,6 +1008,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 						) as HTMLElement;
 					highlightContainer.querySelector(".value").innerHTML =
 						value;
+					field.innerHTML = "";
 					field.append(highlightContainer);
 				} else {
 					field.innerHTML = value;
