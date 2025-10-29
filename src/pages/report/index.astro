@@ -646,6 +646,11 @@ import { toastControl } from 'src/utilities/toast';
 		
 		margin = 54;
 		pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+
+		let lazyElements = document.querySelectorAll('[loading="lazy"]');
+		for (let elem of lazyElements) {
+			elem.setAttribute('loading', 'eager');
+		}
 		
 		for (let [index, section] of sections.entries()) {
 
@@ -666,6 +671,8 @@ import { toastControl } from 'src/utilities/toast';
 			if (progressChartElem) {
 				progressChartCanvas = await html2canvas(progressChartElem, {
 					scale: 3,
+					useCORS: true,
+					logging: true,
 				}) as HTMLCanvasElement;
 				progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
 				progressChartImgHeight = (progressChartImgProps.height * pageWidth) / progressChartImgProps.width;
@@ -685,6 +692,7 @@ import { toastControl } from 'src/utilities/toast';
 				}
 				matrixChartCanvas = await html2canvas(matrixChartElem, {
 					scale: 3,
+					useCORS: true,
 				}) as HTMLCanvasElement;
 				matrixChartImgProps = pdf.getImageProperties(matrixChartCanvas);
 				matrixChartImgHeight = (matrixChartImgProps.height * pageWidth) / matrixChartImgProps.width;
