@@ -224,9 +224,7 @@
 	--colour-ui-neutral-subtle: var(--gray-muted-500);
 	--colour-ui-reverse: white;
 	--colour-ui-reverse-subtle: var(--gray-muted-100);
-	--colour-ui-link: var(--colour-ui-neutral);
-	--colour-ui-link-hover: var(--colour-ui-neutral);
-	--colour-ui-link-underline: var(--colour-ui-neutral-subtle);
+
 	--colour-ui-error: var(--red-vivid-400);
 
 	--colour-highlight-fill: var(--red-muted-100);
@@ -791,9 +789,8 @@ p {
 ------------------------------*/
 
 :is(a, [data-style-as="link"]) {
-	color: var(--colour-ui-link);
+	color: var(--colour-ui-neutral);
 	font-weight: 600;
-	text-decoration-color: var(--colour-ui-link-underline);
 	cursor: pointer;
 	border-radius: var(--border-radius-small);
 	/* ↓ Removes blue highlight on mobile */
@@ -808,7 +805,7 @@ p {
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
-	color: var(--colour-ui-link-hover);
+	color: var(--colour-ui-neutral);
 	text-decoration-color: transparent;
 }
 

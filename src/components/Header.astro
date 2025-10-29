@@ -295,7 +295,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		color: inherit;
 		font-size: inherit;
 		font-weight: inherit;
-		text-decoration-color: inherit;
 	}
 
 	header .site-announcement-container a:is(:hover, :focus-visible) {
@@ -424,13 +423,11 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		line-height: 1.2; 
 		padding: var(--space-3xs);
 		min-height: 0;
-		text-decoration: underline;
 	}
 
 	header nav.global .subnav-link:is(:hover, :focus-visible) {
 		color: var(--colour-ui-reverse);
 		background-color: transparent;
-		text-decoration-color: transparent;
 	}
 
 	@container header (width < 640px) {
