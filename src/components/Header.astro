@@ -690,12 +690,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		)
 			return;
 
-		// console.log('Updating Launchpad');
+		console.log('Updating Launchpad', changes);
 
 		let { mode, lastVisitedPage, lastModifiedPage } = data.uiState;
 		
 		// Update the assessment button
-		let assessmentShortcutField = launchpad.querySelector('.quick-links-container [data-field="assessmentShortcut"]');
+		let assessmentShortcutField = launchpad.querySelector('.shortcuts-list.favourite [data-field="assessmentShortcut"]');
 
 		if (assessmentShortcutField) {
 
