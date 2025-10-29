@@ -112,7 +112,7 @@ let filterListByFilterBtns = ({ filters, list, sortType }) => {
 			list: list,
 			items: results,
 			sortType: sortType ?? 'relevance',
-			presortType: sortType ? null : 'title',
+			tieBreakerType: sortType ? null : 'title',
 		});
 
 	}
@@ -152,12 +152,12 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 
 	let results = [];
 	let matches = 0;
-	let presortType = null;
+	let tieBreakerType = null;
 	let matchTypes = new Set;
 
 	if (!sortType) {
 		sortType = value.length === 0 ? 'title' : 'relevance';
-		presortType = value.length === 0 ? null : 'title';
+		tieBreakerType = value.length === 0 ? null : 'title';
 	}
 
 	let items = list.querySelectorAll(':scope > li');
@@ -199,7 +199,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 		// 1. Check for tag match
 		if (tag && tag.startsWith(value)) {
 			markMatch(100);
-			presortType = 'tag';
+			tieBreakerType = 'tag';
 			matchTypes.add('tag');
 
 		}
@@ -271,51 +271,57 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 		}
 
 		results.push(result);
-		item.toggleAttribute('hidden', !result.match);
+		// item.toggleAttribute('hidden', !result.match);
 
 	}
 
-	sortList({
-		sortType: sortType,
-		presortType: presortType,
-		list: list,
-		items: results,
-	});
+	requestAnimationFrame(() => {
 
-	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
-
-	if (errorMessage) {
-
-		// If there are no positive results, reveal the error message
-		if (matches === 0 && value.length > 0) {
-			errorMessage.removeAttribute('hidden');
-			list.setAttribute('hidden', '');
-
-			// Otherwise, hide the error message
-		} else {
-			errorMessage.setAttribute('hidden', '');
-			list.removeAttribute('hidden');
+		for (let result of results) {
+			result.elem.toggleAttribute('hidden', !result.match);
 		}
 
-	}
+		sortList({
+			sortType: sortType,
+			tieBreakerType: tieBreakerType,
+			list: list,
+			items: results,
+		});
 
-	if (matches > 0) {
+		let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
 
-		let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
+		if (errorMessage) {
 
-		if (filterMessage) {
-			filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
-		}
+			// If there are no positive results, reveal the error message
+			if (matches === 0 && value.length > 0) {
+				errorMessage.removeAttribute('hidden');
+				list.setAttribute('hidden', '');
 
-		emitEvent({
-			target: document,
-			name: 'searchMatchFound',
-			detail: {
-				matchTypes,
+				// Otherwise, hide the error message
+			} else {
+				errorMessage.setAttribute('hidden', '');
+				list.removeAttribute('hidden');
 			}
-		})
 
-	}
+		}
+
+		if (matches > 0) {
+
+			let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
+
+			if (filterMessage) {
+				filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
+			}
+
+			emitEvent({
+				target: document,
+				name: 'searchMatchFound',
+				detail: {
+					matchTypes,
+				}
+			})
+		}
+	});
 
 }
 
@@ -350,17 +356,24 @@ let clearTextHighlights = function (elem) {
 };
 
 /**
- * Sorts and reorders list items based on a given type and optional presort.
+ * Sorts and reorders list items based on a given type and optional tie breaker.
  *
  * @param {Object} options
  * @param {string} [options.sortType='title'] - Primary sort: 'title', 'date', or 'relevance'.
- * @param {string|null} [options.presortType=null] - Optional presort: 'tag' or 'title'.
+ * @param {string|null} [options.tieBreakerType=null] - Optional tie breaker: 'tag' or 'title'.
  * @param {HTMLElement} options.list - Container holding the list items.
  * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
  */
-let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
+let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
 
 	if (!list || !items || !Array.isArray(items)) return;
+
+	// Precompute for date sorting
+	if (sortType === 'date') {
+		for (let item of items) {
+			item._timestamp = item.date ? new Date(item.date).getTime() : 0;
+		}
+	}
 
 	// Ensure all items have a numeric relevance score
 	if (sortType === 'relevance') {
@@ -371,45 +384,39 @@ let sortList = ({ sortType = 'title', presortType = null, list, items }) => {
 		}
 	}
 
-	// Optional presort (by tag or title)
-	if (presortType === 'tag') {
-		items.sort((a, b) => {
-			return (a.tag || '').localeCompare(b.tag || '');
-		});
-	} else if (presortType === 'title') {
-		items.sort((a, b) => {
-			return (a.title || '').localeCompare(b.title || '');
-		});
-	}
-
-	// Primary sort
 	items.sort((a, b) => {
-		if (sortType === 'title') {
+		let primary = 0;
+
+		if (sortType === 'title') primary = (a.title || '').localeCompare(b.title || '');
+		else if (sortType === 'date') primary = (b._timestamp || 0) - (a._timestamp || 0);
+		else if (sortType === 'relevance') primary = (b.relevance || 0) - (a.relevance || 0);
+
+		if (primary !== 0) return primary;
+
+		// Tie-breaker
+		if (tieBreakerType === 'tag') {
+			return (a.tag || '').localeCompare(b.tag || '');
+		} else if (tieBreakerType === 'title') {
 			return (a.title || '').localeCompare(b.title || '');
-		}
-
-		if (sortType === 'date') {
-			return new Date(b.date) - new Date(a.date);
-		}
-
-		if (sortType === 'relevance') {
-			return b.relevance - a.relevance;
 		}
 
 		return 0;
 	});
 
-	// Reorder elements in the DOM
+	// Batch DOM reordering using DocumentFragment
+	let fragment = document.createDocumentFragment();
 	let index = 1;
 	for (let item of items) {
 		if (item.elem instanceof HTMLElement && !item.elem.hasAttribute('hidden')) {
-			list.append(item.elem);
+			fragment.append(item.elem);
 			item.elem.setAttribute('data-pos', `${index}`);
 			index += 1;
 		} else {
 			item.elem.removeAttribute('data-pos');
 		}
 	}
+
+	list.append(fragment);
 
 }
 
@@ -452,17 +459,20 @@ let getSortType = (form) => {
 	}
 }
 
-let debounce = (fn, delay = 200) => {
+let debounce = (fn, delay = 250) => {
 	let timeout;
 	return (...args) => {
 		clearTimeout(timeout);
-		timeout = setTimeout(() => fn(...args), delay);
+		let savedArgs = args;
+		timeout = setTimeout(() => {
+			requestAnimationFrame(() => fn.apply(null, savedArgs));
+		}, delay);
 	};
 };
 
 let debouncedFilter = debounce(({ input, list, noValueBehaviour, sortType }) => {
 	filterListByTextInput({ input, list, noValueBehaviour, sortType });
-}, 200);
+}, 250);
 
 let updateToggles = (target) => {
 	let active = target.parentElement.querySelector('[aria-pressed="true"]');
