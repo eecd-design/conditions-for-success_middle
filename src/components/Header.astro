@@ -759,7 +759,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	}
 	eventControl.add({
-		elem: window,
+		elem: document,
 		eventType: "astro:page-load",
 		fn: onPageLoad,
 	})
