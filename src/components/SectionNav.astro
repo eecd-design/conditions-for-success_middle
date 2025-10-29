@@ -44,10 +44,14 @@ let indicators = allIndicators.sort((a, b) =>
 <style is:global>
 	nav.section {
 		position: sticky;
-		top: 3.75rem;
+		top: 0;
 		height: 100vh;
 		padding: var(--space-2xl) var(--space-xl) var(--space-2xl) 0;
 		border-right: 1px solid var(--colour-border-neutral-subtle);
+	}
+
+	main.big-seven[data-mode="assessment"] nav.section {
+		top: 3.75rem;
 	}
 
 	nav.section h2 {
