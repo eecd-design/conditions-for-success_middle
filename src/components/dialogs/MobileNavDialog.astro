@@ -125,15 +125,12 @@ let indicators = allIndicators.sort((a, b) =>
 	}
 
 	nav.mobile a {
+		--link-colour: var(--dialog-ui-colour);
+		--link-underline-size: 1px;
 		font-size: var(--font-size-base);
 		font-weight: 600;
-		color: var(--dialog-ui-colour);
 		line-height: 1;
 		width: 100%;
-	}
-
-	nav.mobile a:is(:hover, :focus-visible) {
-		color: var(--dialog-ui-colour);
 	}
 
 	nav.mobile .subnav-link {

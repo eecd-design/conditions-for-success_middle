@@ -84,6 +84,7 @@ let indicators = allIndicators.sort((a, b) =>
 	nav.section a {
 		--button-background-colour: transparent;
 		--button-border-radius: var(--border-radius-normal);
+		--button-ui-colour: var(--colour-ui-neutral);
 		display: flex;
 		align-items: center;
 		text-decoration: none;
@@ -97,6 +98,7 @@ let indicators = allIndicators.sort((a, b) =>
 
 	nav.section a:is(:hover, :focus-visible) {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
+		--button-ui-colour: var(--colour-ui-neutral);
 	}
 
 	nav.section [aria-current="page"],

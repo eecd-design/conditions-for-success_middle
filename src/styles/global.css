@@ -789,7 +789,10 @@ p {
 ------------------------------*/
 
 :is(a, [data-style-as="link"]) {
-	color: var(--colour-ui-neutral);
+	--link-colour: var(--colour-ui-neutral);
+	--link-underline-size: 2px;
+	--link-underline-colour: var(--link-colour);
+	color: var(--link-colour);
 	font-weight: 600;
 	cursor: pointer;
 	border-radius: var(--border-radius-small);
@@ -802,11 +805,26 @@ p {
 		color var(--transition-linear-fast);
 	/* ↓ Normalize buttons styled as links */
 	text-align: unset;
+	text-decoration: none;
+	position: relative;
+}
+
+:is(a, [data-style-as="link"]):not([data-style-as="button"])::after {
+	content: "";
+	display: block;
+	height: var(--link-underline-size);
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	background-color: var(--link-underline-colour);
+	transition: background-color var(--transition-linear-fast);
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
-	color: var(--colour-ui-neutral);
-	text-decoration-color: transparent;
+	--link-underline-colour: transparent;
+	/* color: var(--colour-ui-neutral);
+	text-decoration-color: transparent; */
 }
 
 :is(a, [data-style-as="link"]) .icon.destination {
@@ -1205,15 +1223,11 @@ footer small {
 }
 
 footer small :is(a, [data-style-as="link"]) {
+	--link-colour: var(--colour-ui-reverse);
+	--link-underline-size: 1px;
 	font-size: var(--font-size-2xs);
 	font-weight: 400;
-	text-decoration: underline;
-	color: var(--colour-ui-reverse);
 	line-height: 1.2;
-}
-
-footer small :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
-	color: var(--colour-ui-reverse);
 }
 
 footer img {
@@ -2693,9 +2707,10 @@ span.highlight {
 }
 
 .skip-link {
+	--link-colour: var(--colour-ui-reverse);
+	--link-underline-colour: transparent;
+	--link-underline-size: 1px;
 	font-size: var(--font-size-xs);
-	color: var(--colour-ui-reverse);
-	text-decoration: underline;
 	padding: var(--space-3xs) var(--space-2xs);
 	border-radius: var(--border-radius-small);
 }
