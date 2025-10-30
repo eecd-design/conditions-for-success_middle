@@ -591,21 +591,27 @@ let schoolList = {
 							radio.removeAttribute("checked");
 						}
 					}
-					// 1.2 Update checkboxes
-				} else if (formField.type === "checkbox") {
+				}
+
+				// 1.2 Update checkboxes
+				else if (formField.type === "checkbox") {
 					formField.checked = !!value;
 					formField.setAttribute("checked", !!value);
-					// 1.3 Update text inputs
-				} else if (formField.type === "text") {
+				}
+
+				// 1.3 Update text inputs
+				else if (formField.type === "text") {
 					formField.value = String(value ?? "");
 					formField.setAttribute("value", String(value ?? ""));
-					// 1.4 Update selects
-				} else if (formField.type === "select-one") {
+				}
+
+				// 1.4 Update selects
+				else if (formField.type === "select-one") {
 					formField.value = String(value ?? "");
 					let option = formField.querySelector(
 						`option[value="${String(value ?? "")}"]`,
 					);
-					option.setAttribute("selected", "");
+					if (option) option.setAttribute("selected", "");
 				}
 			}
 
@@ -767,13 +773,15 @@ let schoolList = {
 				resetForm({ form, resetType: "hard" });
 			}
 		} else if (context === "configure" || !context) {
+			let districtSelect = dialog.querySelector(
+				'select[name="district"]',
+			);
+			revealSchoolOptionGroup(districtSelect);
 			updateFieldsFromAssessmentData({
 				assessment: assessment,
 				dialog: dialog,
 			});
 		}
-		let districtSelect = dialog.querySelector('select[name="district"]');
-		revealSchoolOptionGroup(districtSelect);
 	};
 
 	//
