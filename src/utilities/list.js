@@ -162,6 +162,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 
 	let items = list.querySelectorAll(':scope > li');
 
+	console.log('Filter By Text: Checking Items Start')
 	for (const item of items) {
 
 		clearTextHighlights(item);
@@ -192,7 +193,8 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 				markMatch(0);
 			}
 			results.push(result);
-			item.toggleAttribute('hidden', !result.match);
+			continue;
+			// item.toggleAttribute('hidden', !result.match);
 
 		}
 
@@ -247,8 +249,10 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 					matchTypes.add('description');
 				}
 
-				// Single word match
-			} else {
+			}
+
+			// Single word match
+			else {
 
 				let words = description.split(' ');
 				for (let i = 0; i < words.length; i++) {
@@ -260,7 +264,6 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 
 			}
 
-
 			if (matches > 0) {
 
 				let descriptionElem = item.querySelector('.text-container .description');
@@ -271,15 +274,19 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 		}
 
 		results.push(result);
-		// item.toggleAttribute('hidden', !result.match);
 
 	}
 
 	requestAnimationFrame(() => {
 
+		console.log('Filter By Text: Batch Updating DOM Start');
+		console.log('Filter By Text: Setting Item Visibility');
+
 		for (let result of results) {
 			result.elem.toggleAttribute('hidden', !result.match);
 		}
+
+		console.log('Filter By Text: Sorting Items Start');
 
 		sortList({
 			sortType: sortType,
@@ -287,6 +294,8 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			list: list,
 			items: results,
 		});
+
+		console.log('Filter By Text: Updating Statuses');
 
 		let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
 
@@ -312,6 +321,8 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 			if (filterMessage) {
 				filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
 			}
+
+			console.log('Filter By Text: Emitting Match Found Event');
 
 			emitEvent({
 				target: document,
@@ -369,6 +380,8 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
 
 	if (!list || !items || !Array.isArray(items)) return;
 
+	console.log('Sorting Items: Precompute Attributes');
+
 	// Precompute for date sorting
 	if (sortType === 'date') {
 		for (let item of items) {
@@ -384,16 +397,19 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
 			}
 		}
 	}
+	console.log('Sorting Items: Sorting Start');
 
 	items.sort((a, b) => {
 		let primary = 0;
 
+		console.log('Sorting Items: Primary Sort');
 		if (sortType === 'title') primary = (a.title || '').localeCompare(b.title || '');
 		else if (sortType === 'date') primary = (b._timestamp || 0) - (a._timestamp || 0);
 		else if (sortType === 'relevance') primary = (b.relevance || 0) - (a.relevance || 0);
 
 		if (primary !== 0) return primary;
 
+		console.log('Sorting Items: Tiebreaker Sort');
 		// Tie-breaker
 		if (tieBreakerType === 'tag') {
 			return (a.tag || '').localeCompare(b.tag || '');
@@ -404,6 +420,7 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
 		return 0;
 	});
 
+	console.log('Sorting Items: Batch Updating DOM');
 	// Batch DOM reordering using DocumentFragment
 	let fragment = document.createDocumentFragment();
 	let index = 1;
