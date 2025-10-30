@@ -43,7 +43,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			<nav class="global" aria-label="Main navigation">
 				<ul class="nav-links-list">
 					<li class="home-name">
-						<a href="/" data-font-type="serif" aria-label="Home">
+						<a href="/" data-font-type="serif" aria-label="Home" data-style-as="button">
 							NB Middle School Conditions for Success
 						</a>
 					</li>
@@ -353,10 +353,11 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	header nav.global .subnav-links-list {
 		display: none;
 		flex-flow: column nowrap;
-		gap: var(--space-xs);
+		align-items: start;
+		gap: var(--space-base);
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: var(--border-radius-normal);
-		padding: var(--space-sm);
+		padding: var(--space-sm) var(--space-sm) var(--space-base);
 		box-shadow: var(--box-shadow);
 		position: absolute;
 		top: calc(3rem + var(--space-xs));
@@ -372,10 +373,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	header :is(nav.global, .global-controls) :is(a, button) {
 		--button-background-colour: transparent;
 		--button-border-radius: var(--border-radius-normal);
+		--button-ui-colour: var(--colour-ui-reverse);
 		--icon-size: 1.5rem;
 		--icon-colour: var(--colour-ui-reverse);
 		--label-size: var(--font-size-sm);
 		--label-colour: var(--colour-ui-reverse);
+		--link-colour: var(--colour-ui-reverse);
 
 		display: flex;
 		align-items: center;
@@ -383,21 +386,20 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		padding: var(--space-2xs) var(--space-sm);
 		
 		font-size: var(--font-size-sm);
-		color: var(--colour-ui-reverse);
 	}
 
 	header :is(nav.global, .global-controls) :is(a, button):is(:hover, :focus-visible) {
 		--button-background-colour: var(--colour-fill-neutral-subtle);
 		--icon-colour: var(--colour-ui-neutral);
 		--label-colour: var(--colour-ui-neutral);
-		color: var(--colour-ui-neutral);
+		--button-ui-colour: var(--colour-ui-neutral);
 	}
 	
 	header nav.global .nav-link[aria-current="page"],
 	header nav.global .nav-link[aria-current="page"]:is(:hover, :focus-visible) {
 		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
 		--button-background-colour: transparent;
-		color: var(--colour-ui-reverse);
+		--button-ui-colour: var(--colour-ui-reverse);
 	}
 
 	header nav.global button.subnav-toggle[aria-expanded="true"] {
@@ -418,16 +420,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 
 	header nav.global .subnav-link {
+		--link-colour: var(--colour-ui-reverse);
+		--link-underline-size: 1px;
 		font-size: var(--font-size-xs);
 		font-weight: 300;
 		line-height: 1.2; 
-		padding: var(--space-3xs);
+		padding: 0;
 		min-height: 0;
-	}
-
-	header nav.global .subnav-link:is(:hover, :focus-visible) {
-		color: var(--colour-ui-reverse);
-		background-color: transparent;
 	}
 
 	@container header (width < 640px) {
