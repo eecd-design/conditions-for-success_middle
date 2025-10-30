@@ -163,15 +163,11 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				<div
 					class="separator item"
 					data-orientation="vertical"
-					data-restrict-status="in-progress"
 					aria-hidden="true"
 				>
 				</div>
 				<!-- Export Status -->
-				<div
-					class="field-container label-container"
-					data-restrict-status="in-progress"
-				>
+				<div class="field-container label-container">
 					<span class="label" data-field="exportStatus"></span>
 				</div>
 			</div>
@@ -179,14 +175,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				class="separator group"
 				data-orientation="vertical"
 				data-restrict-mode="assessment"
-				data-restrict-status="in-progress"
 				aria-hidden="true"
 			>
 			</div>
 			<div
 				class="user-group button-group"
 				data-restrict-mode="assessment"
-				data-restrict-status="in-progress"
 			>
 				<!-- Edit Assessors Button -->
 				<button
@@ -401,7 +395,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		--button-background-colour: var(--colour-fill-neutral-bold);
 	}
 
-	@container assessment-controls (width < 1552px) {
+	@container assessment-controls (width < 1648px) {
 		main[data-mode="assessment"]
 			#assessment-controls
 			:is(button, [data-style-as="button"]):not(.field-container)
@@ -410,7 +404,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		}
 	}
 
-	@container assessment-controls (width < 1232px) {
+	@container assessment-controls (width < 1296px) {
 		.separator:has(+ .field-container [data-field="exportStatus"]),
 		.field-container:has([data-field="exportStatus"]) {
 			display: none;
@@ -560,10 +554,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 
 		// 3. Update the export status
 		if (exportField) {
-			if (
-				assessment.unexportedChanges === undefined ||
-				assessment.status === "Complete"
-			) {
+			if (assessment.unexportedChanges === undefined) {
 				exportField.setAttribute("hidden", "");
 			} else {
 				exportField.removeAttribute("hidden");
