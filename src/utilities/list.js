@@ -317,6 +317,7 @@ let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortTyp
 				target: document,
 				name: 'searchMatchFound',
 				detail: {
+					listId: 'resources-list',
 					matchTypes,
 				}
 			})

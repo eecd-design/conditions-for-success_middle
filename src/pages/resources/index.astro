@@ -978,7 +978,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	//
 
 	let onSearchMatchFound = (event: CustomEvent) => {
-		let matchTypes = event.detail.matchTypes;
+		let { listId, matchTypes } = event.detail;
+		if (listId !== "resources-list") return;
 		let forceLayout = matchTypes.has("description");
 		toggleForcedLayout(forceLayout);
 	};
