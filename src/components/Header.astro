@@ -688,8 +688,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		)
 			return;
 
-		console.log('Updating Launchpad', changes);
-
 		let { mode, lastVisitedPage, lastModifiedPage } = data.uiState;
 		
 		// Update the assessment button
@@ -741,18 +739,19 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	// Inits
 	//
 
-	if (window.location.pathname === '/') subscribe(updateLaunchpad);
-
-
+	
+	
 	let onPageLoad = (event) => {
 		let path = window.location.pathname;
+		
+		if (path === '/') {
+			subscribe(updateLaunchpad);
+		}
 
 		if (path.includes('/big-seven')) {
-
 			let showAnnouncement = checkAnnouncementSession();
 			let announcementContainer = document.querySelector('.site-announcement-container');
 			announcementContainer.toggleAttribute('hidden', !showAnnouncement);
-
 		}
 
 	}
