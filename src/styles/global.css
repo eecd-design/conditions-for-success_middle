@@ -543,7 +543,7 @@ h2,
 	margin-top: var(--space-3xs);
 }
 
-@container main (width >=880px) {
+@container main (width >=904px) {
 	main.big-seven[data-mode="assessment"] h1 {
 		scroll-margin-top: 6.25rem;
 	}
@@ -1133,7 +1133,7 @@ main>.wrapper>.content {
 	}
 }
 
-@container main (width < 1088px) {
+@container main (width < 1112px) {
 
 	main.home>.wrapper {
 		--content-width: min(900px, calc(100% - (2*var(--space-2xl))));
@@ -1160,7 +1160,7 @@ main>.wrapper>.content {
 	}
 }
 
-@container main (width < 992px) {
+@container main (width < 1016px) {
 	main.resources>.wrapper {
 		--content-width: min(900px, calc(100% - (2*var(--space-2xl))));
 		--aside-width: var(--wrapper-margin);
@@ -1254,7 +1254,7 @@ footer .contact-container {
 	gap: var(--space-3xs);
 }
 
-@container footer (width < 560px) {
+@container footer (width < 584px) {
 	footer>.wrapper {
 		grid-template-columns: 1fr;
 		grid-template-rows: 1fr auto;
@@ -1767,7 +1767,7 @@ dialog[data-intensity="bold"] {
 	color: var(--dialog-ui-colour);
 }
 
-@container body (width < 720px) {
+@container body (width < 744px) {
 	dialog {
 		border-radius: 0;
 		max-width: 100%;

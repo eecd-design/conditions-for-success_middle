@@ -234,7 +234,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		column-gap: var(--space-2xl);
 	}
 
-	@container header (width < 1440px) {
+	@container header (width < 1464px) {
 		header >.wrapper {
 			grid-template-areas: 
 			"announcement announcement"
@@ -262,7 +262,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		z-index: -1;
 	}
 
-	@container header (width < 1440px) {
+	@container header (width < 1464px) {
 		header .background {
 			grid-row: 1 / span 5;
 		}
@@ -316,13 +316,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		max-width: calc(1920px - (2*var(--space-2xl)));
 	}
 
-	@container header (width < 1088px) {
+	@container header (width < 1112px) {
 		header .site-masthead {
 			min-height: 6rem;
 		}
 	}
 
-	@container header (width < 640px) {
+	@container header (width < 664px) {
 		header .site-masthead {
 			min-height: 5rem;
 		}
@@ -428,7 +428,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		min-height: 0;
 	}
 
-	@container header (width < 640px) {
+	@container header (width < 664px) {
 		header nav.global li:not(.home-icon) {
 			display: none;
 		}
@@ -467,7 +467,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		padding: var(--space-2xs) var(--space-xs);
 	}
 
-	@container header (width < 1088px) {
+	@container header (width < 1112px) {
 		header nav.global .home-icon {
 			display: block;
 		}
@@ -506,13 +506,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		display: none;
 	}
 
-	@container header (width < 640px) {
+	@container header (width < 664px) {
 		header .global-controls button.menu {
 			display: inline;
 		}
 	}
 
-	@container header (width < 1088px) {
+	@container header (width < 1112px) {
 		header .global-controls button.search .label-container {
 			display: none;
 		}
@@ -553,7 +553,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		padding: var(--space-sm) var(--space-lg);
 	}
 
-	@container header (width < 1088px) {
+	@container header (width < 1112px) {
 		header .site-title-container {
 			max-width: min(704px, calc(100% - (2*var(--space-2xl))));
 		}
@@ -582,7 +582,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		border-radius: var(--border-radius-normal);
 	}
 
-	@container header (width < 1440px) {
+	@container header (width < 1464px) {
 		header .media-container {
 			justify-self: center;
 			min-height: 280px;
@@ -623,7 +623,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		gap: var(--space-sm);
 	}
 
-	@container header (width < 1440px) {
+	@container header (width < 1464px) {
 		header .launchpad {
 			justify-self: center;
 			width: min(900px, calc(100% - (2*var(--space-2xl))));

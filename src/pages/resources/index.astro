@@ -497,21 +497,21 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	// Device Restrictions
 	*/
 
-	@container main (width < 720px) {
+	@container main (width < 744px) {
 		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-min="medium"] {
 			display: none !important;
 		}
 	}
 
-	@container main (720px <= width < 992px) {
+	@container main (744px <= width < 1016px) {
 		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-max="small"] {
 			display: none !important;
 		}
 	}
 
-	@container main (width >= 992px) {
+	@container main (width >= 1016px) {
 		:is(#filters-aside, main.resources .content)
 			[data-restrict-device-max="small"],
 		:is(#filters-aside, main.resources .content)
@@ -540,7 +540,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		background-color: var(--colour-background);
 	}
 
-	@container main (width < 992px) {
+	@container main (width < 1016px) {
 		#filters-aside {
 			display: initial;
 			margin: 0;
@@ -805,7 +805,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		row-gap: var(--space-base);
 	}
 
-	@container main (width < 720px) {
+	@container main (width < 744px) {
 		#resources-list-primary-controls {
 			flex-flow: column;
 			align-items: stretch;
@@ -1105,7 +1105,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		let form = document.querySelector("#resources-list-secondary-controls");
 		if (!filtersAside || !filtersDialog || !form) return;
 
-		// Resizing from larger to smaller (<720px)
+		// Resizing from larger to smaller (<744px)
 		if (event.matches) {
 			// Switch drawer to modal
 			if (form.parentElement === filtersDialog) return;
@@ -1117,7 +1117,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 				});
 			}
 		}
-		// Resizing from smaller to larger (>720px)
+		// Resizing from smaller to larger (>744px)
 		else {
 			// Switch modal to drawer
 			if (form.parentElement === filtersAside) return;
@@ -1129,7 +1129,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		}
 	};
 	// Special case event listener, cannot be attached to the document and delegated
-	let mediaQuery = window.matchMedia("(max-width: 720px)");
+	let mediaQuery = window.matchMedia("(max-width: 744px)");
 	eventControl.add({
 		elem: mediaQuery,
 		eventType: "change",
@@ -1148,7 +1148,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 		resetForm({ form });
 
-		let mediaQuery = window.matchMedia("(max-width: 720px)");
+		let mediaQuery = window.matchMedia("(max-width: 744px)");
 		if (mediaQuery.matches) {
 			if (form.parentElement === filtersDialog) return;
 			filtersDialog.append(form);
