@@ -1106,7 +1106,7 @@ main>.wrapper>.content {
 @container main (width < 1920px) {
 	main.resources>.wrapper {
 		--wrapper-left-margin: 0;
-		--content-min-width: 600px;
+		--content-min-width: 540px;
 		--aside-max-width: 400px;
 		--aside-right-width: 0;
 		--aside-gap-right: 0;
