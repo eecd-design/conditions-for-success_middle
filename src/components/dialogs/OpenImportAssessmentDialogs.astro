@@ -601,14 +601,12 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	// Import Conflict Dialog
 	*/
 
-	#import-conflict-dialog:has(button.overwrite:is(:hover, :focus-visible))
-		.card.imported {
+	#import-conflict-dialog:has(button.overwrite:hover) .card.imported {
 		--card-boxshadow-colour: var(--colour-border-neutral-bold);
 		--card-boxshadow-width: 3px;
 	}
 
-	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible))
-		.card.local {
+	#import-conflict-dialog:has(button.keep:hover) .card.local {
 		--card-boxshadow-colour: var(--colour-border-neutral-bold);
 		--card-boxshadow-width: 3px;
 	}
