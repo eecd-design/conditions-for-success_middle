@@ -189,52 +189,44 @@ let schoolList = {
 					disabled
 				>
 					<option value="">Select a school...</option>
-					<optgroup
-						label="ASD-W Schools"
-						class="asd-w-schools"
-						hidden
-					>
-						{
-							schoolList.west.map((school) => (
-								<option value={school}>{school}</option>
-							))
-						}
-					</optgroup>
-					<optgroup
-						label="ASD-N Schools"
-						class="asd-n-schools"
-						hidden
-					>
-						{
-							schoolList.north.map((school) => (
-								<option value={school}>{school}</option>
-							))
-						}
-					</optgroup>
-					<optgroup
-						label="ASD-E Schools"
-						class="asd-e-schools"
-						hidden
-					>
-						{
-							schoolList.east.map((school) => (
-								<option value={school}>{school}</option>
-							))
-						}
-					</optgroup>
-					<optgroup
-						label="ASD-S Schools"
-						class="asd-s-schools"
-						hidden
-					>
-						{
-							schoolList.south.map((school) => (
-								<option value={school}>{school}</option>
-							))
-						}
-					</optgroup>
 				</select>
 				<IconCaretDown />
+				<template
+					id="edit-assessment-properties-dialog_school-select_asd-w-options"
+				>
+					{
+						schoolList.west.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
+				</template>
+				<template
+					id="edit-assessment-properties-dialog_school-select_asd-n-options"
+				>
+					{
+						schoolList.north.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
+				</template>
+				<template
+					id="edit-assessment-properties-dialog_school-select_asd-e-options"
+				>
+					{
+						schoolList.east.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
+				</template>
+				<template
+					id="edit-assessment-properties-dialog_school-select_asd-s-options"
+				>
+					{
+						schoolList.south.map((school) => (
+							<option value={school}>{school}</option>
+						))
+					}
+				</template>
 			</div>
 			<p
 				id="edit-assessment-properties-dialog_school-select_error"
@@ -533,34 +525,27 @@ let schoolList = {
 		let schoolSelect = districtSelect
 			.closest("form")
 			.querySelector(`select[name="school"]`) as HTMLSelectElement;
-		let schoolOptionGroups = schoolSelect?.querySelectorAll("optgroup");
 
 		// If the district select has a value, enable school select and show paired option group
 		if (districtSelect.value !== "") {
 			schoolSelect.removeAttribute("disabled");
-			let targetGroup = schoolSelect.querySelector(
-				`.${districtSelect.value.toLowerCase()}-schools`,
-			) as HTMLOptGroupElement;
-			targetGroup.removeAttribute("hidden");
-			// Hide nested options for Safari
-			let nestedOptions = targetGroup.querySelectorAll("option");
-			for (let option of nestedOptions) {
-				option.removeAttribute("hidden");
-			}
+			// Clear out previous options
+			let items = schoolSelect.querySelectorAll(
+				':scope > option:not([value=""])',
+			);
+			for (let item of items) item.remove();
+			// Add new options
+			let template = document.querySelector(
+				`#edit-assessment-properties-dialog_school-select_${districtSelect.value.toLowerCase()}-options`,
+			) as HTMLTemplateElement;
+			let options = template.content.cloneNode(true) as HTMLElement;
+			schoolSelect.append(options);
 		}
 
-		// Otherwise, disable school select and hide all options groups
+		// Otherwise, disable school select
 		else {
 			schoolSelect.value = "";
 			schoolSelect.setAttribute("disabled", "");
-			for (let group of schoolOptionGroups) {
-				group.setAttribute("hidden", "");
-				// Hide nested options for Safari
-				let options = group.querySelectorAll("option");
-				for (let option of options) {
-					option.setAttribute("hidden", "");
-				}
-			}
 		}
 	};
 
