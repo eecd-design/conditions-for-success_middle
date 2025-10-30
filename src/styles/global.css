@@ -804,6 +804,16 @@ p {
 	text-align: unset;
 }
 
+/* Safari Fallback: broken text-decoration transitions*/
+@supports (-webkit-touch-callout: none) {
+	:is(a, [data-style-as="link"]) {
+		transition:
+			background-color var(--transition-linear-fast),
+			border-color var(--transition-linear-fast),
+			color var(--transition-linear-fast);
+	}
+}
+
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
 	color: var(--colour-ui-neutral);
 	text-decoration-color: transparent;
