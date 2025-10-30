@@ -2632,6 +2632,7 @@ video {
 	aspect-ratio: 16 / 9;
 	width: 100%;
 	background-color: var(--colour-fill-neutral-subtle);
+	cursor: pointer;
 }
 
 audio {
