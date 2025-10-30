@@ -607,20 +607,10 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		--card-boxshadow-width: 3px;
 	}
 
-	#import-conflict-dialog:has(button.overwrite:is(:hover, :focus-visible))
-		.card.local {
-		opacity: 0.5;
-	}
-
 	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible))
 		.card.local {
 		--card-boxshadow-colour: var(--colour-border-neutral-bold);
 		--card-boxshadow-width: 3px;
-	}
-
-	#import-conflict-dialog:has(button.keep:is(:hover, :focus-visible))
-		.card.imported {
-		opacity: 0.5;
 	}
 
 	.conflicting-assessments {
