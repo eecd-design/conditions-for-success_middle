@@ -353,6 +353,12 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		margin: 0 auto;
 	}
 
+	@container main (width < 720px) {
+		#assessment-controls > .notice > .wrapper {
+			padding: var(--space-base) var(--space-xl);
+		}
+	}
+
 	@container main (width < 904px) {
 		[data-mode="assessment"] #assessment-controls {
 			position: static;

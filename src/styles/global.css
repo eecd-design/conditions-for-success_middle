@@ -1056,7 +1056,7 @@ main>.wrapper {
 	--content-width: minmax(var(--content-min-width), var(--content-max-width));
 
 	--aside-min-width: 280px;
-	--aside-max-width: calc((1920px - var(--content-max-width) - var(--space-4xl) - var(--space-3xl) - (var(--space-2xl)*2)) / 2);
+	--aside-max-width: calc((1920px - var(--content-max-width) - var(--aside-gap-left) - var(--aside-gap-right) - (var(--wrapper-margin)*2)) / 2);
 	--aside-width: minmax(var(--aside-min-width), var(--aside-max-width));
 	--aside-left-width: var(--aside-width);
 	--aside-right-width: var(--aside-width);
@@ -1143,11 +1143,13 @@ main>.wrapper>.content {
 @container main (width < 1112px) {
 
 	main.home>.wrapper {
-		--content-width: min(900px, calc(100% - (2*var(--space-2xl))));
+		--wrapper-margin: var(--space-2xl);
+		--content-width: min(900px, calc(100% - (2*var(--wrapper-margin))));
 	}
 
 	main.big-seven>.wrapper {
-		--content-width: min(900px, calc(100% - (2*var(--space-2xl))));
+		--wrapper-margin: var(--space-2xl);
+		--content-width: min(900px, calc(100% - (2*var(--wrapper-margin))));
 		--aside-width: 0;
 		--aside-gap: 0;
 	}
@@ -1157,7 +1159,8 @@ main>.wrapper>.content {
 	}
 
 	main.report>.wrapper {
-		--content-width: min(900px, calc(100% - (2*var(--space-2xl))));
+		--wrapper-margin: var(--space-2xl);
+		--content-width: min(900px, calc(100% - (2*var(--wrapper-margin))));
 		--aside-width: 0;
 		--aside-gap: 0;
 	}
@@ -1169,9 +1172,16 @@ main>.wrapper>.content {
 
 @container main (width < 1016px) {
 	main.resources>.wrapper {
-		--content-width: min(900px, calc(100% - (2*var(--space-2xl))));
+		--wrapper-margin: var(--space-2xl);
+		--content-width: min(900px, calc(100% - (2*var(--wrapper-margin))));
 		--aside-width: var(--wrapper-margin);
 		--aside-gap: 0;
+	}
+}
+
+@container main (width < 720px) {
+	main>.wrapper {
+		--wrapper-margin: var(--space-xl) !important;
 	}
 }
 
@@ -1199,6 +1209,12 @@ footer {
 	justify-content: center;
 	padding: var(--space-xl) 0;
 	background-color: var(--colour-fill-neutral-bold);
+}
+
+@container body (width < 720px) {
+	footer {
+		--wrapper-margin: var(--space-xl);
+	}
 }
 
 footer>.wrapper {
@@ -1787,6 +1803,7 @@ dialog[data-intensity="bold"] {
 		border-radius: 0;
 		max-width: 100%;
 		max-height: 100%;
+		padding: var(--space-xl);
 		width: 100%;
 		height: 100%;
 		margin: 0 !important;
@@ -2714,6 +2731,12 @@ span.highlight {
 	align-items: center;
 	padding: var(--space-xs) var(--space-2xl);
 	background-color: var(--colour-fill-accent-bold);
+}
+
+@container body (width < 720px) {
+	.skip-link-container {
+		padding: var(--space-xs) var(--space-xl);
+	}
 }
 
 .skip-link {

@@ -220,6 +220,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 	
 	header > .wrapper {
+		--wrapper-margin: var(--space-2xl);
+
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-template-rows: auto auto auto auto auto;
@@ -243,6 +245,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			"media media"
 			"launchpad launchpad"
 			"launchpad launchpad";
+		}
+	}
+
+	@container header (width < 720px) {
+		header > .wrapper {
+			--wrapper-margin: var(--space-xl) !important;
 		}
 	}
 
@@ -281,7 +289,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		justify-content: center;
 		gap: var(--space-xs);
 		place-self: start;
-		margin: 0 var(--space-2xl);
+		margin: 0 var(--wrapper-margin);
 		padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
@@ -312,8 +320,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		align-items: center;
 		gap: var(--space-2xs);
 		min-height: 7rem;
-		width: calc(100% - ((2*var(--space-2xl)) - (2*(var(--space-sm)))));
-		max-width: calc(1920px - (2*var(--space-2xl)));
+		width: calc(100% - ((2*var(--wrapper-margin)) - (2*(var(--space-sm)))));
+		max-width: calc(1920px - (2*var(--wrapper-margin)));
 	}
 
 	@container header (width < 1112px) {
@@ -555,7 +563,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	@container header (width < 1112px) {
 		header .site-title-container {
-			max-width: min(704px, calc(100% - (2*var(--space-2xl))));
+			max-width: min(704px, calc(100% - (2*var(--wrapper-margin))));
 		}
 		header .site-title-container .site-title {
 			margin: 0 0 var(--space-lg);
@@ -574,7 +582,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		justify-self: end;
 		height: 506px;
 		margin: 0;
-		margin-left: var(--space-2xl);
+		margin-left: var(--wrapper-margin);
 		aspect-ratio: 3 / 2;
 		flex-shrink: 0;
 		flex-grow: 1;
@@ -586,7 +594,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		header .media-container {
 			justify-self: center;
 			min-height: 280px;
-			width: min(900px, calc(100% - (2*var(--space-2xl))));
+			width: min(900px, calc(100% - (2*var(--wrapper-margin))));
 			margin: 0 0 var(--space-2xl);
 			aspect-ratio: 16 / 9;
 		}
@@ -604,7 +612,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 	
 	header .launchpad > .wrapper {
-		margin-right: var(--space-2xl);
+		margin-right: var(--wrapper-margin);
 	}
 
 	header .launchpad h2 {
@@ -626,7 +634,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	@container header (width < 1464px) {
 		header .launchpad {
 			justify-self: center;
-			width: min(900px, calc(100% - (2*var(--space-2xl))));
+			width: min(900px, calc(100% - (2*var(--wrapper-margin))));
 			margin: 0;
 		}
 		header .launchpad > .wrapper {
