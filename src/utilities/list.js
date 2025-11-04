@@ -220,59 +220,112 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 		console.log('Sort type: ', sortType);
 		console.log('Tiebreaker type: ', tieBreakerType);
 		console.log('Sorted results array: ', sortedResults);
+		console.log('~ Updating DOM ~');
 	}
 
 	let matchesFound = numOfMatches > 0;
 
-	let fragment = document.createDocumentFragment();
+	let visibleFragment = document.createDocumentFragment();
 
-	// Hide or show corresponding DOM elements
+	// Phase 1: Show matches up to max
 	for (let [index, result] of sortedResults.entries()) {
+        index = index + 1;
+        result.match = result.match || showAll;
+
+        if (index > maxResults) break;
+
 		let elem = list.querySelector(`[data-searchid="${result.id}"]`);
-
-		result.match = result.match || showAll;
-
-		if (elem) {
-			clearTextHighlights(elem);
-			fragment.append(elem);
-			if (result.match && (index + 1) <= maxResults) {
-				elem.removeAttribute('data-result-group');
-				if (elem.hasAttribute('hidden')) elem.removeAttribute('hidden');
-			} else if (result.match && (index + 1) > maxResults) {
-				let groupNum = Math.ceil((index + 1) / maxResults);
-				elem.setAttribute('data-result-group', groupNum);
-				if (!elem.hasAttribute('hidden')) elem.setAttribute('hidden', '');
-			} else {
-				elem.removeAttribute('data-result-group');
-				if (!elem.hasAttribute('hidden')) elem.setAttribute('hidden', '');
-			}
-			elem.setAttribute('data-pos', `${result.position}`);
-		}
-
+        if (!elem) continue;
+        
+        elem.removeAttribute('data-result-group');
+        elem.dataset.pos = result.position;
+        elem.hidden = !result.match;
+        
 		// Show description highlights
 		if (result.matchTypes && result.matchTypes.has('description')) {
-			let descElem = elem.querySelector('.text-container .description');
-			highlightText(descElem, values.search);
+            let descElem = elem.querySelector('.text-container .description');
+            if (descElem) {
+                queueMicrotask(() => {
+                    clearTextHighlights(elem);
+                    highlightText(descElem, values.search);
+                })
+            }
 		}
 
-	}
+        visibleFragment.append(elem);
+    }
+
+    list.append(visibleFragment);
+
+    let processRemainingResults = () => {
+        let hiddenFragment = document.createDocumentFragment();
+
+        console.log('~ Remaining Processing Start ~');
+
+        // Cache all list item
+        let elemsById = new Map();
+        for (let item of list.children) {
+            let id = item.dataset.searchId;
+            if (id) elemsById.set(id, item);
+        }
+        
+        for (let [index, result] of sortedResults.entries()) {
+            index = index + 1;
+            result.match = result.match || showAll;
+            
+            if (index <= maxResults) continue;
+            
+            let elem = elemsById.get(result.id);
+            if (!elem) continue;
+            
+            if (result.match) {
+                let groupNum = Math.ceil((index + 1) / maxResults);
+				elem.dataset.resultGroup = groupNum;
+            }
+            
+            elem.dataset.pos = result.position;
+            if (!elem.hidden) elem.hidden = true;
+            
+            // Show description highlights
+            if (result.matchTypes && result.matchTypes.has('description')) {
+                let descElem = elem.querySelector('.text-container .description');
+                if (descElem) {
+                    queueMicrotask(() => {
+                        clearTextHighlights(elem);
+                        highlightText(descElem, values.search);
+                    })
+                }
+            }
+            
+            hiddenFragment.append(elem);
+            
+        }
+
+        list.append(hiddenFragment);
+        console.log('~ Remaining Processing End ~');
+
+    }
+
+    // Use requestIdleCallback when available, otherwise a small delay
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(processRemainingResults);
+    } else {
+        setTimeout(processRemainingResults, 0);
+    }    
 
 	if ((!emptyValues || showAll) && matchesFound && numOfMatches > maxResults) {
-		list.setAttribute('data-result-group-shown', 1);
-		list.setAttribute('data-result-group-max', Math.ceil(numOfMatches / maxResults))
+        list.dataset.resultGroupShown = 1;
+		list.dataset.resultGroupMax = Math.ceil(numOfMatches / maxResults);
 	} else {
-		list.removeAttribute('data-result-group-shown');
-		list.removeAttribute('data-result-group-max');
+        delete list.dataset.resultGroupShown;
+		delete list.dataset.resultGroupMax;
 	}
-
-	list.append(fragment);
-
-	if (matchesFound || showAll) {
-		list.removeAttribute('hidden');
-	} else {
-		list.setAttribute('hidden', '');
-	}
-
+    
+    list.hidden = !(matchesFound || showAll);
+    
+    if (debug) {
+        console.log('List Updated');
+    }
 
 	// Display messages
 	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
@@ -295,6 +348,10 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 		}
 	}
 
+        if (debug) {
+        console.log('Messages Updated');
+    }
+
 	// Show More Button
 	let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
 
@@ -305,6 +362,10 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 			showMoreBtn.setAttribute('hidden', '');
 		}
 	}
+
+        if (debug) {
+        console.log('Show More Button Updated');
+    }
 
 	// Custom event for other UI updates
 	emitEvent({
@@ -454,9 +515,10 @@ let ensureListControls = (list) => {
 	return list._controls;
 };
 
-let debounce = (fn, delay = 250) => {
-	let timeout;
+let debounce = (fn, delay = 200) => {
+    let timeout;
 	return (...args) => {
+        console.log('Debouncing: ', fn.name);
 		clearTimeout(timeout);
 		let savedArgs = args;
 		timeout = setTimeout(() => {
@@ -475,7 +537,7 @@ let debouncedUpdateList = debounce(({ searchIndex, listItemCategories, values, l
 		sortType,
 		tieBreakerType
 	});
-}, 250);
+}, 200);
 
 let updateToggles = (target) => {
 	let active = target.parentElement.querySelector('[aria-pressed="true"]');
@@ -543,9 +605,9 @@ let filter = (() => {
 		let field = target.getAttribute('data-status-field');
 		if (!group || !title || !value) return;
 
-		li.setAttribute('data-group', group);
-		li.setAttribute('data-value', value);
-		li.setAttribute('data-status-field', field ?? null);
+		li.dataset.group = group;
+		li.dataset.value = value;
+		li.dataset.statusField = field ?? null;
 
 		let tagText = title;
 
@@ -825,6 +887,8 @@ let search = (() => {
 	let onInput = async (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.search input')) return;
+
+        console.log('<<< Input Event >>>');
 
 		let form = target.closest('form');
 		let list = getList(form);
@@ -1106,7 +1170,7 @@ let layout = (() => {
 		if (!form || !list) return;
 		let layoutType = target.value;
 		if (layoutType !== 'compact' && layoutType !== 'detailed') return;
-		list.setAttribute('data-layout', layoutType);
+		list.dataset.layout = layoutType;
 		updateToggles(target);
 		setPreferences({
 			resourcePageLayout: layoutType,
@@ -1140,7 +1204,7 @@ let results = (() => {
 				item.removeAttribute('hidden');
 			}
 		})
-		list.setAttribute('data-result-group-shown', nextGroup);
+		list.dataset.resultGroupShown = nextGroup;
 		let maxGroup = Number(list.getAttribute('data-result-group-max'));
 		if (nextGroup === maxGroup) {
 			target.setAttribute('hidden', '');
