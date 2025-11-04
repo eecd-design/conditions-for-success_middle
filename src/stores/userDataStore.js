@@ -853,12 +853,14 @@ let userDataStore = (() => {
 
 	let init = () => {
 		// console.log('Initiating User Data Store');
-		considerationCountPromise = fetch('/consideration-count.json')
-			.then(res => res.json())
-			.catch(err => {
-				console.error('Failed to fetch consideration count:', err);
-				return null;
-			});
+		if (!considerationCountPromise) {
+			considerationCountPromise = fetch('/consideration-count.json')
+				.then(res => res.json())
+				.catch(err => {
+					console.error('Failed to fetch consideration count:', err);
+					return null;
+				});
+		}
 		save();
 		let changes = {
 			initiating: true,
