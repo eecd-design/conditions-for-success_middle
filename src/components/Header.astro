@@ -767,24 +767,43 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		fn: onPageLoad,
 	})
 
-	let onClick = (event) => {
+	let onSubnavToggleClick = (event) => {
 		let target = event.target as any;
 
 		if (target.matches('button.subnav-toggle')) {
 			let expanded = target.getAttribute('aria-expanded') === 'true';
 			target.setAttribute('aria-expanded', String(!expanded));
+            return;
 		}
-
+        
 	}
 	eventControl.add({
 		selector: 'header .site-masthead',
 		eventType: "click",
-		fn: onClick,
+		fn: onSubnavToggleClick,
+	})
+
+	let onDocumentClick = (event) => {
+		let target = event.target as any;
+
+        console.log(target);
+        let subnavContainer = document.querySelector('nav.global .subnav-container');	
+        if (!subnavContainer.contains(target)) {
+            let btn = subnavContainer.querySelector('button.subnav-toggle');
+            btn.setAttribute('aria-expanded', 'false'); 
+        }
+
+	}
+	eventControl.add({
+		elem: document,
+		eventType: "click",
+		fn: onDocumentClick,
 	})
 
 	let onFocusout = (event) => {
 		let target = event.target as any;
 		let next = event.relatedTarget as any;
+        console.log(target, next);
 
 		if (target.matches('button.subnav-toggle, .subnav-link')) {
 			let subnavContainer = target.closest('.subnav-container');			
