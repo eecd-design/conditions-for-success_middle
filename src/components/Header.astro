@@ -368,6 +368,11 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		display: flex;
 	}
 
+    header nav.global .subnav-links-list > li {
+        font-size: var(--font-size-xs);
+        line-height: 1.2;
+    }
+
 	/* Text Links and Buttons */
 
 	header :is(nav.global, .global-controls) :is(a, button) {
@@ -420,6 +425,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	}
 
 	header nav.global .subnav-link {
+        display: inline-block;
 		--link-colour: var(--colour-ui-reverse);
 		font-size: var(--font-size-xs);
 		font-weight: 300;
