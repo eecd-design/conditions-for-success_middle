@@ -1,337 +1,319 @@
 import { setPreferences } from "src/stores/userDataStore";
-import { emitEvent, htmlToElement, scrollIntoView, toTitleCase } from "./helpers";
+import { emitEvent, scrollIntoView, toTitleCase } from "./helpers";
 import { eventControl } from "./event";
 
 //
 // Shared Methods
 //
 
-/**
- * Filters a list of <li> items based on a filter button value and hides non-matching items.
- * 
- * @param {Object} options
- * @param {Object} options.filters - An object of filter values by category used to filter the list.
- * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
- *   data attributes like `data-title`, `data-indicators`, `data-components`, `data-considerations`, and `data-type`.
- * @param {String} options.sortType - The user selected sort type
- */
-let filterListByFilterBtns = ({ filters, list, sortType }) => {
+let findMatches = ({ searchIndex, values, defaultItemVisibility }) => {
+	if (!searchIndex || !values) return;
 
 	let results = [];
-	let matches = 0;
+	let listMatchTypes = new Set();
 
-	let items = list.querySelectorAll(':scope > li');
+	// Loop through search index to find matches
+	for (let entry of searchIndex) {
 
-	for (const item of items) {
+		let {
+			id,
+			category,
+			title,
+			titleWords,
+			tag,
+			description,
+			descWords,
+			type,
+			indicators,
+			components,
+			considerations,
+		} = entry;
 
-		// Get the item data
-		let title = item.getAttribute('data-title');
-		let type = item.getAttribute('data-type');
-		let indicators = JSON.parse(item.getAttribute('data-indicators'));
-		let components = JSON.parse(item.getAttribute('data-components'));
-		let considerations = JSON.parse(item.getAttribute('data-considerations'));
+		let match = false;
+		let matchedAll = true;
+		let entryMatchTypes = new Set;
+		let relevance = 0;
 
-		let result = {
-			elem: item,
-			title: title ?? null,
-			match: false,
-			relevance: 0,
-		}
+		let markMatch = (score = 1, matchType = null) => {
+			match = true;
+			relevance += score;
+			if (matchType) {
+				entryMatchTypes.add(matchType);
+				listMatchTypes.add(matchType);
+			}
+		};
 
-		if (!filters || Object.keys(filters).length === 0) {
+		if (values.search) {
 
-			result.match = true;
-			matches += 1;
-			sortType = sortType ?? 'title';
+			let searchValue = values.search.trim().length > 0 ? values.search.toLowerCase().trim() : false;
 
-		} else {
-
-			let relevance = 0;
-			let matchedAll = true;
-
-			if (filters.types) {
-				let match = filters.types.includes(type);
-				if (!match) matchedAll = false;
-				else relevance++;
+			// If value is empty, entry is a match
+			if (!searchValue) {
+				if (defaultItemVisibility === 'shown') markMatch(0);
 			}
 
-			if (filters.indicators) {
-				let match = filters.indicators.some((v) =>
+			// Otherwise, check for match
+			else {
+
+				// 1. Check for tag match
+				if (tag && tag.startsWith(searchValue)) {
+					markMatch(100, 'tag');
+					listMatchTypes.add('tag');
+				}
+
+				// 2. Check for title match
+				if (title) {
+
+					// Full phrase match
+					if (searchValue.includes(' ')) {
+						if (title.startsWith(searchValue)) markMatch(100, 'title');
+						else if (title.includes(searchValue)) markMatch(10, 'title');
+					}
+
+					// Single word match
+					else {
+						for (let i = 0; i < titleWords.length; i++) {
+							// Give higher relevance to first word matches
+							if (titleWords[i].startsWith(searchValue)) markMatch(i === 0 ? 100 : 10, 'title');
+						}
+					}
+
+				}
+
+				// 3. Check for description match
+				if (description && searchValue.length > 2) {
+
+					// Full phrase match
+					if (searchValue.includes(' ')) {
+						if (description.includes(searchValue)) markMatch(10, 'description');
+					}
+
+					// Single word match
+					else {
+						for (let word of descWords) {
+							if (word.startsWith(searchValue)) {
+								markMatch(1, 'description');
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			matchedAll = matchedAll && match;
+
+		}
+
+		if (matchedAll && values.filters && Object.keys(values.filters).length) {
+
+			let { filters } = values;
+
+			if (filters.types) {
+				if (filters.types.includes(type)) markMatch(10, 'type');
+				else matchedAll = false;
+			}
+
+			if (matchedAll && filters.indicators) {
+				if (filters.indicators.some((v) =>
 					indicators.some(tag => tag.startsWith(v)) ||
 					components.some(tag => tag.startsWith(v)) ||
 					considerations.some(tag => tag.startsWith(v))
-				);
-				if (!match) matchedAll = false;
-				else relevance++;
+				)) markMatch(10, 'indicator');
+				else matchedAll = false;
 			}
 
-			if (filters.components) {
-				let match = filters.components.some((v) =>
+			if (matchedAll && filters.components) {
+				if (filters.components.some((v) =>
 					indicators.some(tag => tag.startsWith(v.charAt(0))) ||
 					components.some(tag => tag.startsWith(v)) ||
 					considerations.some(tag => tag.startsWith(v))
-				);
-				if (!match) matchedAll = false;
-				else relevance++;
+				)) markMatch(10, 'component');
+				else matchedAll = false;
 			}
 
-			if (filters.considerations) {
-				let match = filters.considerations.some((v) => considerations.includes(v));
-				if (!match) matchedAll = false;
-				else relevance++;
-			}
-
-			if (matchedAll) {
-				result.match = true;
-				result.relevance = relevance;
-				matches += 1;
+			if (matchedAll && filters.considerations) {
+				if (filters.considerations.some((v) => considerations.includes(v))) markMatch(10, 'consideration');
+				else matchedAll = false;
 			}
 
 		}
 
-		results.push(result);
+		// Only global matches proceed
+		match = matchedAll;
+		if (!match) relevance = 0;
 
-		// If there's a match, show it, otherwise, hide it
-		if (result.match) {
-			item.removeAttribute('hidden');
-		} else {
-			item.setAttribute('hidden', '');
-		}
-
+		results.push({ ...entry, match, matchTypes: entryMatchTypes, relevance });
 	}
 
-	if (matches > 0) {
-
-		let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
-
-		if (filterMessage) {
-			filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
-		}
-
-		sortList({
-			list: list,
-			items: results,
-			sortType: sortType ?? 'relevance',
-			tieBreakerType: sortType ? null : 'title',
-		});
-
-	}
-
-	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
-
-	if (errorMessage) {
-
-		// If there are no positive results, reveal the error message
-		if (matches === 0) {
-			errorMessage.removeAttribute('hidden');
-			list.setAttribute('hidden', '');
-
-			// Otherwise, hide the error message
-		} else {
-			errorMessage.setAttribute('hidden', '');
-			list.removeAttribute('hidden');
-		}
-	}
+	return {
+		listMatchTypes,
+		results,
+		numOfMatches: results.filter((r) => r.match).length,
+	};
 
 }
+
 
 /**
  * Filters a list of <li> items based on text input value, calculates relevance scores,
  * hides non-matching items, and optionally sorts matching items by relevance.
  * 
  * @param {Object} options
- * @param {HTMLInputElement} options.input - The input element whose value is used to filter the list.
+ * @param {HTMLInputElement} options.value - The input element whose value is used to filter the list.
  * @param {HTMLElement} options.list - The container element containing <li> items to filter. Items must include
  *   data attributes like `data-title`, `data-type`, and optionally `data-tag`, `data-date`.
- * @param {String} options.noValueBehaviour - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
+ * @param {String} options.defaultItemVisibility - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
  * @param {String} options.sortType - The user selected sort type
  */
-let filterListByTextInput = ({ input, list, noValueBehaviour = 'hidden', sortType }) => {
+let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultItemVisibility = 'hidden', maxResults = 10, sortType = 'relevance', tieBreakerType = null }) => {
 
-	let value = input.value.toLowerCase().trim();
+	let debug = false;
 
-	let results = [];
-	let matches = 0;
-	let tieBreakerType = null;
-	let matchTypes = new Set;
+	let emptyValues = !values || (!values.search?.length && !Object.keys(values.filters || {}).length);
 
-	if (!sortType) {
-		sortType = value.length === 0 ? 'title' : 'relevance';
-		tieBreakerType = value.length === 0 ? null : 'title';
+	let showAll = emptyValues && defaultItemVisibility === 'shown';
+
+	if (debug) {
+		console.log('~~~ Updating List ~~~');
+		console.log('Empty values: ', emptyValues);
+		console.log('Show all if empty: ', showAll);
+		console.log('Search index: ', searchIndex);
 	}
 
-	let items = list.querySelectorAll(':scope > li');
+	let filteredSearchIndex = searchIndex.filter((entry) => {
+		return listItemCategories.includes(entry.category);
+	}).map(entry => structuredClone(entry));
 
-	console.log('Filter By Text: Checking Items Start')
-	for (const item of items) {
+	let matches = !emptyValues ? findMatches({
+		searchIndex: filteredSearchIndex,
+		values,
+		defaultItemVisibility,
+	}) : {
+		results: filteredSearchIndex,
+		listMatchTypes: new Set,
+		numOfMatches: showAll ? filteredSearchIndex.length : 0,
+	};
 
-		clearTextHighlights(item);
-
-		// Get the item data
-		let title = item.getAttribute('data-title');
-		let tag = item.getAttribute('data-tag');
-		let description = item.getAttribute('data-description');
-
-		let result = {
-			elem: item,
-			title: title ? title.toLowerCase().trim() : null,
-			tag: tag ?? null,
-			description: description ? description.toLowerCase().trim() : null,
-			match: false,
-			relevance: 0,
-		}
-
-		let markMatch = (score = 1) => {
-			result.match = true;
-			result.relevance += score;
-			matches += 1;
-		};
-
-		if (value.length === 0) {
-
-			if (noValueBehaviour === 'shown') {
-				markMatch(0);
-			}
-			results.push(result);
-			continue;
-			// item.toggleAttribute('hidden', !result.match);
-
-		}
-
-		// 1. Check for tag match
-		if (tag && tag.startsWith(value)) {
-			markMatch(100);
-			tieBreakerType = 'tag';
-			matchTypes.add('tag');
-
-		}
-
-		// 2. Check for title match
-		else if (title) {
-
-			// Full phrase match
-			if (value.includes(' ')) {
-
-				if (title.startsWith(value)) {
-					markMatch(100);
-					matchTypes.add('title');
-				} else if (title.includes(value)) {
-					markMatch(10);
-					matchTypes.add('title');
-				}
-
-			}
-
-			// Single word match
-			else {
-
-				let words = title.split(' ');
-				for (let i = 0; i < words.length; i++) {
-					if (words[i].startsWith(value)) {
-						// Give higher relevance to first word matches
-						markMatch(i === 0 ? 100 : 10)
-						matchTypes.add('title');
-					}
-				}
-
-			}
-
-		}
-
-		// 3. Check for description match
-		if (description && value.length > 2) {
-
-			// Full phrase match
-			if (value.includes(' ')) {
-
-				if (description.includes(value)) {
-					markMatch(10);
-					matchTypes.add('description');
-				}
-
-			}
-
-			// Single word match
-			else {
-
-				let words = description.split(' ');
-				for (let i = 0; i < words.length; i++) {
-					if (words[i].startsWith(value)) {
-						markMatch(1);
-						matchTypes.add('description');
-					}
-				}
-
-			}
-
-			if (matches > 0) {
-
-				let descriptionElem = item.querySelector('.text-container .description');
-				highlightText(descriptionElem, value);
-
-			}
-
-		}
-
-		results.push(result);
-
+	if (debug) {
+		console.log('~ Finding Matches ~');
+		console.log('Filtered search index: ', filteredSearchIndex);
+		console.log('Matches array: ', matches);
 	}
 
-	requestAnimationFrame(() => {
+	let { results, listMatchTypes, numOfMatches } = matches;
 
-		console.log('Filter By Text: Batch Updating DOM Start');
-		console.log('Filter By Text: Setting Item Visibility');
+	if (listMatchTypes.has('tag')) {
+		tieBreakerType = 'tag';
+	}
 
-		for (let result of results) {
-			result.elem.toggleAttribute('hidden', !result.match);
-		}
 
-		console.log('Filter By Text: Sorting Items Start');
+	// Sort results
+	let sortedResults = sortList({
+		sortType,
+		tieBreakerType,
+		list,
+		items: results
+	});
 
-		sortList({
-			sortType: sortType,
-			tieBreakerType: tieBreakerType,
-			list: list,
-			items: results,
-		});
+	if (debug) {
+		console.log('~ Sorting List ~');
+		console.log('Sort type: ', sortType);
+		console.log('Tiebreaker type: ', tieBreakerType);
+		console.log('Sorted results array: ', sortedResults);
+	}
 
-		console.log('Filter By Text: Updating Statuses');
+	let matchesFound = numOfMatches > 0;
 
-		let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
+	let fragment = document.createDocumentFragment();
 
-		if (errorMessage) {
+	// Hide or show corresponding DOM elements
+	for (let [index, result] of sortedResults.entries()) {
+		let elem = list.querySelector(`[data-searchid="${result.id}"]`);
 
-			// If there are no positive results, reveal the error message
-			if (matches === 0 && value.length > 0) {
-				errorMessage.removeAttribute('hidden');
-				list.setAttribute('hidden', '');
+		result.match = result.match || showAll;
 
-				// Otherwise, hide the error message
+		if (elem) {
+			clearTextHighlights(elem);
+			fragment.append(elem);
+			if (result.match && (index + 1) <= maxResults) {
+				elem.removeAttribute('data-result-group');
+				if (elem.hasAttribute('hidden')) elem.removeAttribute('hidden');
+			} else if (result.match && (index + 1) > maxResults) {
+				let groupNum = Math.ceil((index + 1) / maxResults);
+				elem.setAttribute('data-result-group', groupNum);
+				if (!elem.hasAttribute('hidden')) elem.setAttribute('hidden', '');
 			} else {
-				errorMessage.setAttribute('hidden', '');
-				list.removeAttribute('hidden');
+				elem.removeAttribute('data-result-group');
+				if (!elem.hasAttribute('hidden')) elem.setAttribute('hidden', '');
 			}
-
+			elem.setAttribute('data-pos', `${result.position}`);
 		}
 
-		if (matches > 0) {
+		// Show description highlights
+		if (result.matchTypes && result.matchTypes.has('description')) {
+			let descElem = elem.querySelector('.text-container .description');
+			highlightText(descElem, values.search);
+		}
 
-			let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
+	}
 
-			if (filterMessage) {
-				filterMessage.textContent = `${matches} result${matches > 1 ? 's' : ''} found.`;
-			}
+	if ((!emptyValues || showAll) && matchesFound && numOfMatches > maxResults) {
+		list.setAttribute('data-result-group-shown', 1);
+		list.setAttribute('data-result-group-max', Math.ceil(numOfMatches / maxResults))
+	} else {
+		list.removeAttribute('data-result-group-shown');
+		list.removeAttribute('data-result-group-max');
+	}
 
-			console.log('Filter By Text: Emitting Match Found Event');
+	list.append(fragment);
 
-			emitEvent({
-				target: document,
-				name: 'searchMatchFound',
-				detail: {
-					listId: 'resources-list',
-					matchTypes,
-				}
-			})
+	if (matchesFound || showAll) {
+		list.removeAttribute('hidden');
+	} else {
+		list.setAttribute('hidden', '');
+	}
+
+
+	// Display messages
+	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
+	let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
+
+	if (errorMessage) {
+		if (!emptyValues && !matchesFound) {
+			errorMessage.removeAttribute('hidden');
+		} else {
+			errorMessage.setAttribute('hidden', '');
+		}
+	}
+
+	if (filterMessage) {
+		if (!emptyValues && matchesFound) {
+			filterMessage.removeAttribute('hidden');
+			filterMessage.textContent = `${numOfMatches} result${numOfMatches > 1 ? 's' : ''} found.`;
+		} else {
+			filterMessage.setAttribute('hidden', '');
+		}
+	}
+
+	// Show More Button
+	let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
+
+	if (showMoreBtn) {
+		if ((showAll && numOfMatches > maxResults) || (matchesFound && numOfMatches > maxResults)) {
+			showMoreBtn.removeAttribute('hidden');
+		} else {
+			showMoreBtn.setAttribute('hidden', '');
+		}
+	}
+
+	// Custom event for other UI updates
+	emitEvent({
+		target: document,
+		name: 'searchMatchFound',
+		detail: {
+			listId: 'resources-list',
+			listMatchTypes,
+			numOfMatches,
 		}
 	});
 
@@ -380,15 +362,6 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
 
 	if (!list || !items || !Array.isArray(items)) return;
 
-	console.log('Sorting Items: Precompute Attributes');
-
-	// Precompute for date sorting
-	if (sortType === 'date') {
-		for (let item of items) {
-			item._timestamp = item.date ? new Date(item.date).getTime() : 0;
-		}
-	}
-
 	// Ensure all items have a numeric relevance score
 	if (sortType === 'relevance') {
 		for (let item of items) {
@@ -397,44 +370,35 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
 			}
 		}
 	}
-	console.log('Sorting Items: Sorting Start');
 
 	items.sort((a, b) => {
 		let primary = 0;
 
-		console.log('Sorting Items: Primary Sort');
 		if (sortType === 'title') primary = (a.title || '').localeCompare(b.title || '');
-		else if (sortType === 'date') primary = (b._timestamp || 0) - (a._timestamp || 0);
+		else if (sortType === 'date') primary = (b.date || 0) - (a.date || 0);
 		else if (sortType === 'relevance') primary = (b.relevance || 0) - (a.relevance || 0);
 
 		if (primary !== 0) return primary;
 
-		console.log('Sorting Items: Tiebreaker Sort');
 		// Tie-breaker
 		if (tieBreakerType === 'tag') {
-			return (a.tag || '').localeCompare(b.tag || '');
+			return (a.tag || '').localeCompare(b.tag || '', undefined, { numeric: true, sensitivity: 'base' });
 		} else if (tieBreakerType === 'title') {
 			return (a.title || '').localeCompare(b.title || '');
+		} else if (tieBreakerType === 'date') {
+			return (b.date || 0) - (a.date || 0);
 		}
 
 		return 0;
 	});
 
-	console.log('Sorting Items: Batch Updating DOM');
-	// Batch DOM reordering using DocumentFragment
-	let fragment = document.createDocumentFragment();
 	let index = 1;
 	for (let item of items) {
-		if (item.elem instanceof HTMLElement && !item.elem.hasAttribute('hidden')) {
-			fragment.append(item.elem);
-			item.elem.setAttribute('data-pos', `${index}`);
-			index += 1;
-		} else {
-			item.elem.removeAttribute('data-pos');
-		}
+		item.position = index;
+		index += 1;
 	}
 
-	list.append(fragment);
+	return items;
 
 }
 
@@ -444,6 +408,8 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
  * @returns {Object} Filter values keyed by name
  */
 let getFilters = (form) => {
+	if (!form) return {};
+
 	let data = new FormData(form);
 	let result = {};
 
@@ -457,25 +423,36 @@ let getFilters = (form) => {
 	return result;
 }
 
+
 let getList = (form) => {
 	let listId = form.getAttribute('data-list');
 	let list = document.querySelector(`#${listId}`);
 	return list ?? null;
 }
 
-let getSortType = (form) => {
-	let sortControl = form.querySelector('fieldset.sort');
-	if (sortControl) {
-		let activeSort = sortControl.querySelector('button[aria-pressed="true"]');
-		return activeSort.value;
+let ensureListOptions = (list) => {
+	if (!list._options) {
+		list._options = {
+			defaultItemVisibility: list.dataset.defaultItemVisibility ?? 'hidden',
+			listItemCategories: JSON.parse(list.dataset.listItemCategories || '["indicator", "component", "consideration", "resource"]'),
+			listMaxResults: Number(list.dataset.listMaxResults || 50),
+		};
 	}
-	if (form.hasAttribute('data-sort-control')) {
-		sortControl = document.querySelector(`#${form.getAttribute('data-sort-control')} fieldset.sort`);
-		if (!sortControl) return;
-		let activeSort = sortControl.querySelector('button[aria-pressed="true"]');
-		return activeSort.value;
+	return list._options;
+};
+
+let ensureListControls = (list) => {
+	if (!list._controls) {
+		list._controls = {
+			// TODO: Will need to add an attribute so we can target the proper input
+			search: document.querySelector(`#${list.dataset.searchControl} fieldset.search input`) ?? null,
+			filter: document.querySelector(`#${list.dataset.filterControl}`) ?? null,
+			filterTagList: document.querySelector(`#${list.dataset.filterTagList}`) ?? null,
+			sort: document.querySelector(`#${list.dataset.sortControl} fieldset.sort button[aria-pressed="true"]`) ?? null,
+		};
 	}
-}
+	return list._controls;
+};
 
 let debounce = (fn, delay = 250) => {
 	let timeout;
@@ -488,16 +465,60 @@ let debounce = (fn, delay = 250) => {
 	};
 };
 
-let debouncedFilter = debounce(({ input, list, noValueBehaviour, sortType }) => {
-	filterListByTextInput({ input, list, noValueBehaviour, sortType });
+let debouncedUpdateList = debounce(({ searchIndex, listItemCategories, values, list, defaultItemVisibility, sortType, tieBreakerType }) => {
+	updateList({
+		searchIndex,
+		values,
+		list,
+		listItemCategories,
+		defaultItemVisibility,
+		sortType,
+		tieBreakerType
+	});
 }, 250);
 
 let updateToggles = (target) => {
 	let active = target.parentElement.querySelector('[aria-pressed="true"]');
-	active.removeAttribute('aria-pressed');
+	if (active) active.setAttribute('aria-pressed', 'false');
 	target.setAttribute('aria-pressed', 'true');
 }
 
+//
+// Search Index
+//
+
+let searchIndexModule = (() => {
+
+	let searchIndexPromise = null;
+
+	let init = () => {
+		if (!searchIndexPromise) {
+			searchIndexPromise = fetch("/search-index.json")
+				.then((res) => res.json())
+				.catch((err) => {
+					console.error("Failed to fetch search index:", err);
+					return null;
+				});
+		}
+	}
+
+	let getSearchIndex = () => searchIndexPromise;
+
+	return { init, getSearchIndex }
+
+})();
+
+searchIndexModule.init();
+eventControl.add({
+	elem: document,
+	eventType: "astro:after-swap",
+	fn: searchIndexModule.init,
+});
+
+
+//
+// Filter Control
+//
 
 let filter = (() => {
 
@@ -624,29 +645,42 @@ let filter = (() => {
 	 * Handles input inside filter form
 	 * @param {Event} event
 	 */
-	let onInput = (event) => {
+	let onInput = async (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.filters input')) return;
 		let form = getForm(target);
 		let list = getList(form);
 		if (!form || !list) return;
+
 		let filters = getFilters(form);
-		let sortType = getSortType(form);
-		filterListByFilterBtns({ filters, list, sortType });
+
+		updateList({
+			searchIndex: await searchIndexModule.getSearchIndex(),
+			listItemCategories: list._options.listItemCategories,
+			values: {
+				search: list._controls.search?.value.toLowerCase().trim() ?? '',
+				filters,
+			},
+			list,
+			defaultItemVisibility: list._options.defaultItemVisibility,
+			sortType: 'relevance',
+			tieBreakerType: list._controls.sort?.value,
+		});
+
 		let statusOperation;
 		if (target.checked) {
 			statusOperation = 'add';
-			let tagListId = form.getAttribute('data-tags-list');
-			let tagList = document.querySelector(`#${tagListId}`);
+			let tagList = list._controls.filterTagList;
 			if (tagList) {
 				let tag = createTag(target, tagList);
-				tagList.append(tag);
+				if (tag) tagList.append(tag);
 			}
 		} else {
 			statusOperation = 'subtract';
 			let tag = getTag(target);
 			removeTag(tag);
 		}
+
 		let statusField = getStatusField(target);
 		if (statusField) {
 			updateStatus({
@@ -654,6 +688,7 @@ let filter = (() => {
 				operation: statusOperation,
 			});
 		}
+
 		emitEvent({
 			target: document,
 			name: 'filterChange',
@@ -667,15 +702,26 @@ let filter = (() => {
 	 * Handles filter form reset
 	 * @param {Event} event
 	 */
-	let onReset = (event) => {
+	let onReset = async (event) => {
 		let target = event.target;
 		if (!target.matches('form:has(fieldset.filters)')) return;
 		let form = getForm(target);
 		let list = getList(form);
 		if (!form || !list) return;
-		let filters = {};
-		let sortType = getSortType(form);
-		filterListByFilterBtns({ filters, list, sortType });
+
+		updateList({
+			searchIndex: await searchIndexModule.getSearchIndex(),
+			listItemCategories: list._options.listItemCategories,
+			values: {
+				search: list._controls.search?.value.toLowerCase().trim() ?? '',
+				filters: {},
+			},
+			list,
+			defaultItemVisibility: list._options.defaultItemVisibility,
+			sortType: 'relevance',
+			tieBreakerType: list._controls.sort?.value,
+		});
+
 		let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
 		for (let field of statusFields) {
 			updateStatus({
@@ -683,8 +729,7 @@ let filter = (() => {
 				operation: 'reset',
 			})
 		}
-		let tagListId = form.getAttribute('data-tags-list');
-		let tagList = document.querySelector(`#${tagListId}`);
+		let tagList = list._controls.filterTagList;
 		if (tagList) {
 			let items = tagList.querySelectorAll(':scope > li');
 			for (let item of items) item.remove();
@@ -693,7 +738,7 @@ let filter = (() => {
 			target: document,
 			name: 'filterChange',
 			detail: {
-				activeFilters: filters,
+				activeFilters: {},
 			}
 		})
 	}
@@ -702,7 +747,7 @@ let filter = (() => {
 	 * Handles filter tag button clicks
 	 * @param {Event} event
 	 */
-	let onClick = (event) => {
+	let onClick = async (event) => {
 		let target = event.target;
 		if (!target.matches('.filter-tag button.clear')) return;
 		let tag = getTag(target);
@@ -715,8 +760,20 @@ let filter = (() => {
 		let list = getList(form);
 		if (!form || !list) return;
 		let filters = getFilters(form);
-		let sortType = getSortType(form);
-		filterListByFilterBtns({ filters, list, sortType });
+
+		updateList({
+			searchIndex: await searchIndexModule.getSearchIndex(),
+			listItemCategories: list._options.listItemCategories,
+			values: {
+				search: list._controls.search?.value.toLowerCase().trim() ?? '',
+				filters,
+			},
+			list,
+			defaultItemVisibility: list._options.defaultItemVisibility,
+			sortType: 'relevance',
+			tieBreakerType: list._controls.sort?.value,
+		});
+
 		let statusField = getStatusField(tag);
 		if (statusField) {
 			updateStatus({
@@ -759,51 +816,74 @@ let filter = (() => {
 
 })();
 
-
 let search = (() => {
-
-	/** 
-	 * Stores options per form
-	 * @type {Map<HTMLFormElement, {noValueBehaviour: string|null}>}
-	 */
-	let formOptions = new Map();
 
 	/**
 	 * Handles input inside search forms
 	 * @param {Event} event
 	 */
-	let onInput = (event) => {
+	let onInput = async (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.search input')) return;
+
 		let form = target.closest('form');
 		let list = getList(form);
-		if (!form || !list) return;
-		let sortType = getSortType(form);
-		let options = formOptions.get(form) ?? {};
-		target.setAttribute('aria-activedescendant', '');
+		if (!form && !list) return;
+
+		let values = {
+			search: target.value.toLowerCase().trim(),
+			filters: getFilters(list._controls.filter),
+		}
+
+		let sortType = 'relevance';
+		let tieBreakerType = list._controls.sort?.value;
+
+		target.removeAttribute('aria-activedescendant');
 		let selectedItem = list.querySelector('[aria-selected]');
 		if (selectedItem) selectedItem.removeAttribute('aria-selected');
+
+		let searchIndex = await searchIndexModule.getSearchIndex();
+
 		if (target.value.trim().length > 0) {
-			list.removeAttribute('hidden');
 			target.setAttribute('aria-expanded', 'true');
-			debouncedFilter({ input: target, list, sortType });
+			debouncedUpdateList({
+				searchIndex,
+				listItemCategories: list._options.listItemCategories,
+				values,
+				list,
+				defaultItemVisibility: list._options.defaultItemVisibility,
+				sortType,
+				tieBreakerType
+			});
+
+			// Disable sort controls
+			list._controls.sort?.closest('fieldset').setAttribute('disabled', '');
+
 		} else {
-			if (options.noValueBehaviour === 'hidden') {
-				list.setAttribute('hidden', '');
+			debouncedUpdateList({
+				searchIndex,
+				listItemCategories: list._options.listItemCategories,
+				values,
+				list,
+				defaultItemVisibility: list._options.defaultItemVisibility,
+				sortType,
+				tieBreakerType
+			});
+
+			if (list._options.defaultItemVisibility === 'hidden') {
 				target.setAttribute('aria-expanded', 'false');
-			} else {
-				debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
 			}
+
+			// Enable sort controls
+			list._controls.sort?.closest('fieldset').removeAttribute('disabled');
 		}
 	};
 
-	let onKeydown = (event) => {
+	let onKeydown = async (event) => {
 		let target = event.target;
 		let form = target.closest('form');
 		let list = getList(form);
 		if (!form || !list) return;
-		let sortType = getSortType(form);
-		let options = formOptions.get(form) ?? {};
 
 		if (target.matches('button.submit')) {
 			if (event.key === 'Enter') {
@@ -827,30 +907,46 @@ let search = (() => {
 				event.preventDefault();
 				let results = list.querySelectorAll('[data-pos]');
 				if (results.length === 0) return;
+
 				let currentItemId = target.getAttribute("aria-activedescendant");
 				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
 				let currentPos = Number(currentItem?.getAttribute('data-pos'));
 				let nextPos = null;
+
 				if (!currentItem) {
 					nextPos = event.key === "ArrowDown"
 						? 1
-						: results.length;
+						: 0;
 				} else {
-					nextPos = event.key === "ArrowUp"
-						? currentPos - 1
-						: currentPos + 1;
+					nextPos = event.key === "ArrowDown"
+						? currentPos + 1
+						: currentPos - 1;
 				}
+
 				if (nextPos > results.length || nextPos < 1) return;
+
 				let nextItem = list.querySelector(`[data-pos="${nextPos}"]`);
 				if (!nextItem) return;
+
+				if (nextItem.hasAttribute('hidden')) {
+					let groupNum = nextItem.getAttribute('data-result-group');
+					if (groupNum) {
+						let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
+						if (showMoreBtn) showMoreBtn.click();
+					}
+				}
+
 				// Update input with active descendant
 				target.setAttribute('aria-activedescendant', nextItem.id);
 				// Add visual highlight to item
 				if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
 				nextItem.firstElementChild.setAttribute('aria-selected', 'true');
-				scrollIntoView(nextItem, {
-					block: "nearest",
-				});
+				// Delayed scroll to account for switch from hidden to shown
+				setTimeout(() => {
+					scrollIntoView(nextItem, {
+						block: "nearest",
+					});
+				}, 50)
 			}
 
 			if (event.key === 'Escape') {
@@ -862,46 +958,71 @@ let search = (() => {
 				scrollIntoView(target, {
 					block: "center",
 				});
-				if (options.noValueBehaviour === 'hidden') {
+
+				if (list._options.defaultItemVisibility === 'hidden') {
 					// Hide the list
 					list.setAttribute('hidden', '');
 					target.setAttribute('aria-expanded', 'false');
-				} else {
-					// Filter and sort list
-					debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
 				}
+
+				// Filter and sort list
+				debouncedUpdateList({
+					searchIndex: await searchIndexModule.getSearchIndex(),
+					listItemCategories: list._options.listItemCategories,
+					values: {
+						search: target.value,
+						filters: getFilters(list._controls.filter),
+					},
+					list,
+					defaultItemVisibility: list._options.defaultItemVisibility,
+					sortType: 'relevance',
+					tieBreakerType: list._controls.sort?.value,
+				});
+
+				// Enable sort controls
+				list._controls.sort?.closest('fieldset').removeAttribute('disabled');
 			}
 		}
 	}
 
-	let onReset = (event) => {
+	let onReset = async (event) => {
+		console.log('Form Reset Detected');
 		let target = event.target;
 		if (!target.matches('form:has(fieldset.search)')) return;
 		let form = target.closest('form');
 		let list = getList(form);
 		if (!form || !list) return;
-		let options = formOptions.get(form) ?? {};
 		let input = document.querySelector(`fieldset.search input[aria-controls="${list.id}"]`);
 		if (input) input.setAttribute('aria-activedescendant', '');
 		let selectedItem = list.querySelector('[aria-selected]');
 		if (selectedItem) selectedItem.removeAttribute('aria-selected');
-		if (options.noValueBehaviour === 'hidden') {
+
+		if (list._options.defaultItemVisibility === 'hidden') {
 			list.setAttribute('hidden', '');
 			target.setAttribute('aria-expanded', 'false');
-		} else {
-			debouncedFilter({ input: target, list, noValueBehaviour: options.noValueBehaviour, sortType });
 		}
+
+		debouncedUpdateList({
+			searchIndex: await searchIndexModule.getSearchIndex(),
+			listItemCategories: list._options.listItemCategories,
+			values: {
+				search: target.value,
+				filters: getFilters(list._controls.filter),
+			},
+			list,
+			defaultItemVisibility: list._options.defaultItemVisibility,
+			sortType: 'relevance',
+			tieBreakerType: list._controls.sort?.value,
+		});
+
+		// Enable sort controls
+		list._controls.sort?.closest('fieldset').removeAttribute('disabled');
 	}
 
 	/**
 	 * Initializes search forms
 	 */
 	let init = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.search)');
-		for (let form of forms) {
-			let noValueBehaviour = form.getAttribute('data-no-value-behaviour') ?? null;
-			formOptions.set(form, { noValueBehaviour });
-		}
 		eventControl.add({
 			selector: 'form:has(fieldset.search)',
 			eventType: 'input',
@@ -919,27 +1040,20 @@ let search = (() => {
 		})
 	};
 
-	let destroy = () => {
-		let forms = document.querySelectorAll('form:has(fieldset.search)');
-		for (let form of forms) {
-			formOptions.delete(form);
-		}
-	};
-
-	return { init, destroy };
+	return { init };
 
 })();
 
 let sort = (() => {
 
-	let onClick = (event) => {
+	let onClick = async (event) => {
 		let target = event.target;
 		if (!target.matches('fieldset.sort button')) return;
 		let form = target.closest('form') ?? null;
 		let list = getList(form);
 		if (!form || !list) return;
-		let sortType = target.value;
-		if (sortType !== 'date' && sortType !== 'title') return;
+		let tieBreakerType = target.value;
+		if (tieBreakerType !== 'date' && tieBreakerType !== 'title') return;
 		let items = [];
 		for (const item of list.querySelectorAll(':scope > li')) {
 			let title = item.getAttribute('data-title');
@@ -950,10 +1064,23 @@ let sort = (() => {
 				date: date ?? null,
 			})
 		}
-		sortList({ sortType, list, items });
+		updateList({
+			searchIndex: await searchIndexModule.getSearchIndex(),
+			listItemCategories: list._options.listItemCategories,
+			values: {
+				search: list._controls.search?.value.toLowerCase().trim() ?? '',
+				filters: getFilters(list._controls.filter),
+			},
+			list,
+			defaultItemVisibility: list._options.defaultItemVisibility,
+			sortType: 'relevance',
+			tieBreakerType,
+		})
+
 		updateToggles(target);
+
 		setPreferences({
-			resourcePageSort: sortType,
+			resourcePageSort: tieBreakerType,
 		})
 	}
 
@@ -998,4 +1125,62 @@ let layout = (() => {
 
 })();
 
-export { filter, search, sort, layout };
+let results = (() => {
+
+	let onClick = (event) => {
+		let target = event.target;
+		if (!target.matches('button.show-more')) return;
+		let list = document.querySelector(`#${target.getAttribute('data-list')}`);
+		if (!list) return;
+		let currentGroup = Number(list.getAttribute('data-result-group-shown'));
+		let nextGroup = currentGroup + 1;
+		let nextItems = list.querySelectorAll(`[data-result-group="${nextGroup}"]`);
+		requestAnimationFrame(() => {
+			for (let item of nextItems) {
+				item.removeAttribute('hidden');
+			}
+		})
+		list.setAttribute('data-result-group-shown', nextGroup);
+		let maxGroup = Number(list.getAttribute('data-result-group-max'));
+		if (nextGroup === maxGroup) {
+			target.setAttribute('hidden', '');
+		}
+	}
+
+	let init = () => {
+		eventControl.add({
+			selector: '.list-container',
+			eventType: 'click',
+			fn: onClick,
+		})
+	};
+
+	return { init };
+
+})();
+
+let listModule = (() => {
+
+	let init = () => {
+
+		let lists = document.querySelectorAll('ul:is([data-search-control], [data-filter-control], [data-sort-control])');
+		for (let list of lists) {
+			ensureListOptions(list);
+			ensureListControls(list);
+		}
+
+	}
+
+	return { init }
+
+})();
+
+listModule.init();
+eventControl.add({
+	elem: document,
+	eventType: "astro:after-swap",
+	fn: listModule.init,
+});
+
+
+export { filter, search, sort, layout, results };

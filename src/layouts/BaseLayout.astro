@@ -96,7 +96,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		import { scrollIntoView } from "src/utilities/helpers";
 		import { dialogControl } from "src/utilities/dialog";
 		import { eventControl } from "src/utilities/event";
-		import { search } from "src/utilities/list";
+		import { results, search } from "src/utilities/list";
 
 		//
 		// DOM Updates
@@ -304,6 +304,13 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			elem: document,
 			eventType: "astro:after-swap",
 			fn: search.init,
+		});
+
+		results.init();
+		eventControl.add({
+			elem: document,
+			eventType: "astro:after-swap",
+			fn: results.init,
 		});
 
 		//

@@ -9,7 +9,14 @@ import IconExpand from "./icons/IconExpand_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
-let { itemData, includeItemWrapper = true, index, listName } = Astro.props;
+let {
+	itemData,
+	includeItemWrapper = true,
+	index,
+	listName,
+	listGroupSize = 0,
+	itemHiddenByDefault = true,
+} = Astro.props;
 
 let {
 	category = null,
@@ -26,6 +33,7 @@ let {
 	linkedIndicators = null,
 	linkedComponents = null,
 	linkedConsiderations = null,
+	searchId = null,
 } = itemData;
 
 let colourMap = {
@@ -70,28 +78,13 @@ if (linkedIndicators || linkedComponents || linkedConsiderations) {
 }
 
 let ItemWrapper = includeItemWrapper ? "li" : null;
-let itemWrapperAttrs =
-	category === "resource"
-		? {
-				id: `${listName}_item-${index + 1}`,
-				"data-pos": index + 1,
-				"data-category": category,
-				"data-date-added": dateAdded,
-				"data-description": description,
-				"data-title": title.toLowerCase(),
-				"data-type": type,
-				"data-indicators": JSON.stringify(linkedIndicators),
-				"data-components": JSON.stringify(linkedComponents),
-				"data-considerations": JSON.stringify(linkedConsiderations),
-			}
-		: {
-				id: `${listName}_item-${index + 1}`,
-				"data-pos": index + 1,
-				"data-category": category,
-				"data-tag": tag,
-				"data-theme": colour,
-				"data-title": title.toLowerCase(),
-			};
+let itemWrapperAttrs = {
+	id: `${listName}_item-${index + 1}`,
+	"data-pos": index + 1,
+	"data-searchId": searchId,
+	"data-theme": colour ?? null,
+	hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
+};
 
 // If resource is a video or internal audio, open it in a dialog
 let opensDialog = linkAction === "dialog";
@@ -331,6 +324,9 @@ else {
 		}
 
 		:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+			.icon.destination,
+		:is(dialog, .content):has(fieldset.search input:focus-visible)
+			:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
 			.icon.destination {
 			opacity: 1;
 			scale: 100%;
@@ -380,6 +376,10 @@ else {
 
 	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		.text-container
+		.date,
+	:is(dialog, .content):has(fieldset.search input:focus-visible)
+		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+		.text-container
 		.date {
 		color: var(--colour-ui-neutral);
 	}
@@ -415,6 +415,11 @@ else {
 	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
 		.text-container
 		.tags-list
+		li,
+	:is(dialog, .content):has(fieldset.search input:focus-visible)
+		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+		.text-container
+		.tags-list
 		li {
 		background-color: var(--colour-fill-neutral-mid);
 		color: var(--colour-ui-reverse);
@@ -431,6 +436,9 @@ else {
 	}
 
 	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+		.description,
+	:is(dialog, .content):has(fieldset.search input:focus-visible)
+		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
 		.description {
 		color: var(--colour-ui-neutral);
 	}
@@ -509,6 +517,9 @@ else {
 	/* Highlight */
 
 	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+		span.highlight,
+	:is(dialog, .content):has(fieldset.search input:focus-visible)
+		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
 		span.highlight {
 		--highlight-background-colour: transparent;
 		--highlight-ui-colour: var(--colour-ui-neutral);

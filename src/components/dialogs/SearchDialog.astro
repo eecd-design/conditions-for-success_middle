@@ -9,15 +9,16 @@ import IconSearch from "src/components/icons/IconSearch_20.astro";
 import DetailedLink from "src/components/DetailedLink.astro";
 
 let searchList = [];
+let itemIndex = 1;
 
 // Get all indicator
 let allIndicators = await getCollection("indicators");
-
 for (let indicator of allIndicators) {
 	let data = JSON.parse(JSON.stringify(indicator.data));
-	data.category = "indicator";
+	((data.searchId = `loc-${itemIndex}`), (data.category = "indicator"));
 	data.slug = indicator.id;
 	searchList.push(data);
+	itemIndex += 1;
 }
 
 // Get all indicator components
@@ -28,22 +29,27 @@ for (let component of allComponents) {
 		?.data.colour;
 
 	let componentData = JSON.parse(JSON.stringify(component.data));
-	componentData.category = "component";
+	((componentData.searchId = `loc-${itemIndex}`),
+		(componentData.category = "component"));
 	componentData.colour = colour;
 	searchList.push(componentData);
+	itemIndex += 1;
 
 	let phases = ["initiating", "implementing", "developing", "sustaining"];
-
 	for (let phase of phases) {
 		for (let consideration of component.data[phase].considerations) {
 			let considerationData = JSON.parse(JSON.stringify(consideration));
-			considerationData.category = "consideration";
+			((considerationData.searchId = `loc-${itemIndex}`),
+				(considerationData.category = "consideration"));
 			considerationData.indicator = component.data.indicator;
 			considerationData.colour = colour;
 			searchList.push(considerationData);
+			itemIndex += 1;
 		}
 	}
 }
+
+itemIndex = 1;
 
 // Get all resources
 let allResources = await getCollection("resources", ({ data }) => {
@@ -52,13 +58,18 @@ let allResources = await getCollection("resources", ({ data }) => {
 
 for (let resource of allResources) {
 	let data = JSON.parse(JSON.stringify(resource.data));
-	data.slug = resource.id;
+	((data.searchId = `res-${itemIndex}`), (data.slug = resource.id));
 	data.category = "resource";
 	searchList.push(data);
+	itemIndex += 1;
 }
 ---
 
-<dialog id="search-dialog" aria-labelledby="search-dialog_heading">
+<dialog
+	id="search-dialog"
+	aria-labelledby="search-dialog_heading"
+	data-reset-forms="true"
+>
 	<button class="close-dialog" type="button" aria-label="Close Search Dialog"
 		><IconXmark /></button
 	>
@@ -68,7 +79,7 @@ for (let resource of allResources) {
 	</h2>
 
 	<form
-		data-no-value-behaviour="hidden"
+		id="site-contents-list_primary-controls"
 		data-list="site-contents-list"
 		role="search"
 	>
@@ -113,7 +124,7 @@ for (let resource of allResources) {
 			class="filter-status"
 			role="status"
 			aria-live="polite"
-			data-screen-reader
+			hidden
 		>
 		</p>
 
@@ -123,6 +134,9 @@ for (let resource of allResources) {
 			data-style="divided"
 			data-content="mixed"
 			role="listbox"
+			data-search-control="site-contents-list_primary-controls"
+			data-default-item-visibility="hidden"
+			data-list-item-categories='["indicator", "component", "consideration", "resource"]'
 			hidden
 		>
 			{
@@ -135,6 +149,17 @@ for (let resource of allResources) {
 				))
 			}
 		</ul>
+
+		<button
+			class="show-more"
+			type="button"
+			data-list="site-contents-list"
+			data-style="solid"
+			data-size="large"
+			hidden
+		>
+			Show More Results
+		</button>
 	</div>
 </dialog>
 

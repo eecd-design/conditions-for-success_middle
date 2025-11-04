@@ -645,7 +645,8 @@ p {
 		background-color var(--transition-linear-fast),
 		color var(--transition-linear-fast),
 		border-color var(--transition-linear-fast),
-		box-shadow var(--transition-linear-fast);
+		box-shadow var(--transition-linear-fast),
+		opacity var(--transition-linear-fast);
 }
 
 :is(button:not([data-style-as="link"]), [data-style-as="button"]):is(:hover, :focus-visible) {
@@ -805,7 +806,6 @@ p {
 	/* ↓ Normalize buttons styled as links */
 	text-align: unset;
 	text-decoration-color: var(--link-underline-colour);
-	position: relative;
 }
 
 /* Safari Fallback: broken text-decoration transitions*/
@@ -867,7 +867,14 @@ p {
 /* SECTION LINK LIST */
 
 .list-container {
-	margin: var(--space-lg) 0;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: var(--space-base);
+	margin: var(--space-sm) 0;
+}
+
+.list-container>* {
+	margin: 0 !important;
 }
 
 .links-list {
@@ -1732,9 +1739,8 @@ ul.field-values-list li button.clear:is(:hover, :focus-visible) {
 
 /* STATUS */
 
-.error-status {
+:is(.error-status, .filter-status) {
 	--icon-size: 1rem;
-	--icon-colour: var(--colour-ui-error);
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: start;
@@ -1742,7 +1748,16 @@ ul.field-values-list li button.clear:is(:hover, :focus-visible) {
 	margin: var(--space-2xs) 0 0;
 	font-size: var(--font-size-2xs);
 	line-height: 1.2;
+	color: var(--colour-ui-neutral-subtle);
+}
+
+.error-status {
+	--icon-colour: var(--colour-ui-error);
 	color: var(--colour-ui-error);
+}
+
+.filter-status {
+	color: var(--colour-ui-neutral-subtle);
 }
 
 

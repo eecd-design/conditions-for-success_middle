@@ -19,15 +19,25 @@ import IconXmarkSmall from "src/components/icons/IconXmark_12.astro";
 import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
 import { findObjectByKey } from "src/utilities/helpers";
 
+let searchList = [];
+let itemIndex = 1;
+
 let allResources = await getCollection("resources", ({ data }) => {
 	return data.published === true;
 });
 
-allResources.sort((a, b) => {
+for (let resource of allResources) {
+	let data = JSON.parse(JSON.stringify(resource.data));
+	((data.searchId = `res-${itemIndex}`), (data.slug = resource.id));
+	data.category = "resource";
+	data.slug = resource.id;
+	searchList.push(data);
+	itemIndex += 1;
+}
+
+searchList.sort((a, b) => {
 	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
-	return (
-		toDate(b.data.dateAdded).getTime() - toDate(a.data.dateAdded).getTime()
-	);
+	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
 });
 
 let allIndicators = await getCollection("indicators");
@@ -70,10 +80,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 			<form
 				id="resources-list-secondary-controls"
 				class="list-secondary-controls"
-				data-no-value-behaviour="shown"
 				data-list="resources-list"
-				data-tags-list="active-filters-list"
-				data-sort-control="resources-list-primary-controls"
 			>
 				<div class="heading-group">
 					<h2
@@ -286,7 +293,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		<form
 			id="resources-list-primary-controls"
 			class="list-primary-controls"
-			data-no-value-behaviour="shown"
 			data-list="resources-list"
 		>
 			<fieldset class="search" data-restrict-device-min="medium">
@@ -461,33 +467,46 @@ let types = [...allTypes].sort((a: string, b: string) => {
 				class="filter-status"
 				role="status"
 				aria-live="polite"
-				data-screen-reader
+				hidden
 			>
 			</p>
 
 			<ul
 				id="resources-list"
 				class="links-list"
+				role="listbox"
 				data-style="divided"
 				data-layout="compact"
 				data-content="resources"
-				role="listbox"
+				data-sort-control="resources-list-primary-controls"
+				data-filter-control="resources-list-secondary-controls"
+				data-search-control="resources-list-primary-controls"
+				data-filter-tag-list="active-filters-list"
+				data-default-item-visibility="shown"
+				data-list-item-categories='["resource"]'
 			>
 				{
-					allResources.map((resource, index) => {
-						let data = JSON.parse(JSON.stringify(resource.data));
-						data.category = "resource";
-						data.slug = resource.id;
-						return (
-							<DetailedLink
-								itemData={data}
-								index={index}
-								listName={"resources-list"}
-							/>
-						);
-					})
+					searchList.map((item, index) => (
+						<DetailedLink
+							itemData={item}
+							index={index}
+							listName={"resources-list"}
+							listGroupSize={10}
+						/>
+					))
 				}
 			</ul>
+
+			<button
+				class="show-more"
+				type="button"
+				data-list="resources-list"
+				data-style="solid"
+				data-size="large"
+				hidden
+			>
+				Show More Results
+			</button>
 		</div>
 	</div>
 </BaseLayout>
@@ -803,6 +822,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		align-items: end;
 		column-gap: var(--space-sm);
 		row-gap: var(--space-base);
+		user-select: none;
 	}
 
 	@container main (width < 744px) {
@@ -873,6 +893,19 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		button:is([aria-pressed="true"], [aria-expanded="true"]) {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
+	}
+
+	#resources-list-primary-controls
+		fieldset:disabled
+		button:is(
+			[aria-pressed="true"],
+			[aria-expanded="true"],
+			:has(input:checked)
+		) {
+		--button-background-colour: var(--colour-fill-neutral-subtle);
+		--button-ui-colour: var(--colour-ui-neutral);
+		--icon-colour: var(--colour-ui-neutral);
+		--label-colour: var(--colour-ui-neutral);
 	}
 
 	#resources-list-primary-controls
@@ -978,9 +1011,9 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	//
 
 	let onSearchMatchFound = (event: CustomEvent) => {
-		let { listId, matchTypes } = event.detail;
+		let { listId, listMatchTypes } = event.detail;
 		if (listId !== "resources-list") return;
-		let forceLayout = matchTypes.has("description");
+		let forceLayout = listMatchTypes.has("description");
 		toggleForcedLayout(forceLayout);
 	};
 	eventControl.add({
