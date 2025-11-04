@@ -49,9 +49,12 @@ let dialogControl = (() => {
 		requestAnimationFrame(() => {
 			document.documentElement.style.scrollBehavior = ''
 		})
-		let forms = dialog.querySelectorAll('form');
-		for (let form of forms) {
-			resetForm({ form });
+		let resetForms = dialog.getAttribute('data-reset-forms') === 'true' ?? false;
+		if (resetForms) {
+			let forms = dialog.querySelectorAll('form');
+			for (let form of forms) {
+				resetForm({ form });
+			}
 		}
 	}
 
