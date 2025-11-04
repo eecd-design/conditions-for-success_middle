@@ -906,7 +906,7 @@ let schoolList = {
 		fn: onClick,
 	});
 
-	let onToggle = (event) => {
+	let onDialogOpen = (event) => {
 		let dialog = event.target as HTMLDialogElement;
 
 		// On open, update dialog form with current assessment data
@@ -919,8 +919,8 @@ let schoolList = {
 	};
 	eventControl.add({
 		elem: document.querySelector("#edit-assessment-properties-dialog"),
-		eventType: "toggle",
-		fn: onToggle,
+		eventType: "dialogOpen",
+		fn: onDialogOpen,
 	});
 
 	let onFocusout = (event) => {

@@ -806,16 +806,8 @@ p {
 	/* ↓ Normalize buttons styled as links */
 	text-align: unset;
 	text-decoration-color: var(--link-underline-colour);
-}
-
-/* Safari Fallback: broken text-decoration transitions*/
-@supports (-webkit-touch-callout: none) {
-	:is(a, [data-style-as="link"]) {
-		transition:
-			background-color var(--transition-linear-fast),
-			border-color var(--transition-linear-fast),
-			color var(--transition-linear-fast);
-	}
+    /* ↓ Forces Safari to render proper underline transition */
+    translate: 0 0 0;
 }
 
 :is(a, [data-style-as="link"]):is(:hover, :focus-visible) {
