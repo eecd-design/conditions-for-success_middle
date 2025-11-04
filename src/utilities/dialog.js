@@ -1,6 +1,6 @@
 import { eventControl } from "./event";
 import { resetForm } from "./form";
-import { stopVideo } from "./helpers";
+import { emitEvent, stopVideo } from "./helpers";
 
 let dialogControl = (() => {
 
@@ -29,6 +29,13 @@ let dialogControl = (() => {
 		targetDialog.showModal();
 		let focusStart = targetDialog.querySelector('[data-focus-start]')
 		if (focusStart) focusStart.focus();
+        emitEvent({
+            target: targetDialog,
+            name: 'dialogOpen',
+            detail: {
+                context
+            }
+        })
 	}
 
 	let close = (target) => {
