@@ -1586,6 +1586,7 @@ select,
 	flex-grow: 1;
 	font-size: var(--font-size-xs);
 	line-height: 1.2;
+    color: var(--colour-ui-neutral);
 }
 
 :is(input[type="text"],
