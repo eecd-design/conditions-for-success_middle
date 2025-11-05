@@ -1,1 +1,3 @@
 Ensure that all learners have access to appropriately challenging and engaging learning experiences. Educators adapt content, process, and products to meet varied readiness levels, interests, and learning profiles.
+
+**Note:** Differentiation and Universal Design for Learning are different, yet they complement one another. **Universal Design for Learning** is about designing lessons that work for *everyone* from the start. **Differentiation** is about adjusting learning for *specific learners or groups* once you see what they need. Educators often blend both: lessons are built with **UDL** so all learners can access the learning, and then educators **differentiate** based on student data or readiness to give extra support or challenge.
