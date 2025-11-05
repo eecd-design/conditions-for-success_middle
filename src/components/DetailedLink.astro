@@ -33,7 +33,7 @@ let {
 	linkedIndicators = null,
 	linkedComponents = null,
 	linkedConsiderations = null,
-	searchId = null,
+	itemId = null,
 } = itemData;
 
 let colourMap = {
@@ -81,7 +81,7 @@ let ItemWrapper = includeItemWrapper ? "li" : null;
 let itemWrapperAttrs = {
 	id: `${listName}_item-${index + 1}`,
 	"data-pos": index + 1,
-	"data-searchId": searchId,
+	"data-item-id": itemId,
 	"data-theme": colour ?? null,
 	hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
 };

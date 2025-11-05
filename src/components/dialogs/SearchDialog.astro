@@ -15,7 +15,7 @@ let itemIndex = 1;
 let allIndicators = await getCollection("indicators");
 for (let indicator of allIndicators) {
 	let data = JSON.parse(JSON.stringify(indicator.data));
-	((data.searchId = `loc-${itemIndex}`), (data.category = "indicator"));
+	((data.itemId = `loc-${itemIndex}`), (data.category = "indicator"));
 	data.slug = indicator.id;
 	searchList.push(data);
 	itemIndex += 1;
@@ -29,7 +29,7 @@ for (let component of allComponents) {
 		?.data.colour;
 
 	let componentData = JSON.parse(JSON.stringify(component.data));
-	((componentData.searchId = `loc-${itemIndex}`),
+	((componentData.itemId = `loc-${itemIndex}`),
 		(componentData.category = "component"));
 	componentData.colour = colour;
 	searchList.push(componentData);
@@ -39,7 +39,7 @@ for (let component of allComponents) {
 	for (let phase of phases) {
 		for (let consideration of component.data[phase].considerations) {
 			let considerationData = JSON.parse(JSON.stringify(consideration));
-			((considerationData.searchId = `loc-${itemIndex}`),
+			((considerationData.itemId = `loc-${itemIndex}`),
 				(considerationData.category = "consideration"));
 			considerationData.indicator = component.data.indicator;
 			considerationData.colour = colour;
@@ -58,7 +58,7 @@ let allResources = await getCollection("resources", ({ data }) => {
 
 for (let resource of allResources) {
 	let data = JSON.parse(JSON.stringify(resource.data));
-	((data.searchId = `res-${itemIndex}`), (data.slug = resource.id));
+	((data.itemId = `res-${itemIndex}`), (data.slug = resource.id));
 	data.category = "resource";
 	searchList.push(data);
 	itemIndex += 1;

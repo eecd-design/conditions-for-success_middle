@@ -229,103 +229,102 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 
 	// Phase 1: Show matches up to max
 	for (let [index, result] of sortedResults.entries()) {
-        index = index + 1;
-        result.match = result.match || showAll;
+		result.match = result.match || showAll;
 
-        if (index > maxResults) break;
+		if (index >= maxResults) break;
 
-		let elem = list.querySelector(`[data-searchid="${result.id}"]`);
-        if (!elem) continue;
-        
-        elem.removeAttribute('data-result-group');
-        elem.dataset.pos = result.position;
-        elem.hidden = !result.match;
-        
+		let elem = list.querySelector(`[data-item-id="${result.id}"]`);
+		if (!elem) continue;
+
+		elem.removeAttribute('data-result-group');
+		elem.dataset.pos = result.position;
+		elem.hidden = !result.match;
+
 		// Show description highlights
 		if (result.matchTypes && result.matchTypes.has('description')) {
-            let descElem = elem.querySelector('.text-container .description');
-            if (descElem) {
-                queueMicrotask(() => {
-                    clearTextHighlights(elem);
-                    highlightText(descElem, values.search);
-                })
-            }
+			let descElem = elem.querySelector('.text-container .description');
+			if (descElem) {
+				queueMicrotask(() => {
+					clearTextHighlights(elem);
+					highlightText(descElem, values.search);
+				})
+			}
 		}
 
-        visibleFragment.append(elem);
-    }
+		visibleFragment.append(elem);
+	}
 
-    list.append(visibleFragment);
+	list.append(visibleFragment);
 
-    let processRemainingResults = () => {
-        let hiddenFragment = document.createDocumentFragment();
+	let processRemainingResults = () => {
+		let hiddenFragment = document.createDocumentFragment();
 
-        console.log('~ Remaining Processing Start ~');
+		console.log('~ Remaining Processing Start ~');
 
-        // Cache all list item
-        let elemsById = new Map();
-        for (let item of list.children) {
-            let id = item.dataset.searchId;
-            if (id) elemsById.set(id, item);
-        }
-        
-        for (let [index, result] of sortedResults.entries()) {
-            index = index + 1;
-            result.match = result.match || showAll;
-            
-            if (index <= maxResults) continue;
-            
-            let elem = elemsById.get(result.id);
-            if (!elem) continue;
-            
-            if (result.match) {
-                let groupNum = Math.ceil((index + 1) / maxResults);
+		// Cache all list item
+		let elemsById = new Map();
+		for (let item of list.children) {
+			let id = item.dataset.itemId;
+			if (id) elemsById.set(id, item);
+		}
+
+		for (let [index, result] of sortedResults.entries()) {
+
+			result.match = result.match || showAll;
+
+			if (index <= maxResults) continue;
+
+			let elem = elemsById.get(result.id);
+			if (!elem) continue;
+
+			if (result.match) {
+				let groupNum = Math.ceil((index + 1) / maxResults);
 				elem.dataset.resultGroup = groupNum;
-            }
-            
-            elem.dataset.pos = result.position;
-            if (!elem.hidden) elem.hidden = true;
-            
-            // Show description highlights
-            if (result.matchTypes && result.matchTypes.has('description')) {
-                let descElem = elem.querySelector('.text-container .description');
-                if (descElem) {
-                    queueMicrotask(() => {
-                        clearTextHighlights(elem);
-                        highlightText(descElem, values.search);
-                    })
-                }
-            }
-            
-            hiddenFragment.append(elem);
-            
-        }
+			}
 
-        list.append(hiddenFragment);
-        console.log('~ Remaining Processing End ~');
+			elem.dataset.pos = result.position;
+			if (!elem.hidden) elem.hidden = true;
 
-    }
+			// Show description highlights
+			if (result.matchTypes && result.matchTypes.has('description')) {
+				let descElem = elem.querySelector('.text-container .description');
+				if (descElem) {
+					queueMicrotask(() => {
+						clearTextHighlights(elem);
+						highlightText(descElem, values.search);
+					})
+				}
+			}
 
-    // Use requestIdleCallback when available, otherwise a small delay
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(processRemainingResults);
-    } else {
-        setTimeout(processRemainingResults, 0);
-    }    
+			hiddenFragment.append(elem);
+
+		}
+
+		list.append(hiddenFragment);
+		console.log('~ Remaining Processing End ~');
+
+	}
+
+	// Use requestIdleCallback when available, otherwise a small delay
+	if ('requestIdleCallback' in window) {
+		requestIdleCallback(processRemainingResults);
+	} else {
+		setTimeout(processRemainingResults, 0);
+	}
 
 	if ((!emptyValues || showAll) && matchesFound && numOfMatches > maxResults) {
-        list.dataset.resultGroupShown = 1;
+		list.dataset.resultGroupShown = 1;
 		list.dataset.resultGroupMax = Math.ceil(numOfMatches / maxResults);
 	} else {
-        delete list.dataset.resultGroupShown;
+		delete list.dataset.resultGroupShown;
 		delete list.dataset.resultGroupMax;
 	}
-    
-    list.hidden = !(matchesFound || showAll);
-    
-    if (debug) {
-        console.log('List Updated');
-    }
+
+	list.hidden = !(matchesFound || showAll);
+
+	if (debug) {
+		console.log('List Updated');
+	}
 
 	// Display messages
 	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
@@ -348,9 +347,9 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 		}
 	}
 
-        if (debug) {
-        console.log('Messages Updated');
-    }
+	if (debug) {
+		console.log('Messages Updated');
+	}
 
 	// Show More Button
 	let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
@@ -363,9 +362,9 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 		}
 	}
 
-        if (debug) {
-        console.log('Show More Button Updated');
-    }
+	if (debug) {
+		console.log('Show More Button Updated');
+	}
 
 	// Custom event for other UI updates
 	emitEvent({
@@ -509,16 +508,15 @@ let ensureListControls = (list) => {
 			search: document.querySelector(`#${list.dataset.searchControl} fieldset.search input`) ?? null,
 			filter: document.querySelector(`#${list.dataset.filterControl}`) ?? null,
 			filterTagList: document.querySelector(`#${list.dataset.filterTagList}`) ?? null,
-			sort: document.querySelector(`#${list.dataset.sortControl} fieldset.sort button[aria-pressed="true"]`) ?? null,
+			sort: document.querySelector(`#${list.dataset.sortControl} fieldset.sort`) ?? null,
 		};
 	}
 	return list._controls;
 };
 
 let debounce = (fn, delay = 200) => {
-    let timeout;
+	let timeout;
 	return (...args) => {
-        console.log('Debouncing: ', fn.name);
 		clearTimeout(timeout);
 		let savedArgs = args;
 		timeout = setTimeout(() => {
@@ -540,9 +538,11 @@ let debouncedUpdateList = debounce(({ searchIndex, listItemCategories, values, l
 }, 200);
 
 let updateToggles = (target) => {
-	let active = target.parentElement.querySelector('[aria-pressed="true"]');
+	let fieldset = target.closest('fieldset');
+	let active = fieldset.querySelector('[aria-pressed="true"]');
 	if (active) active.setAttribute('aria-pressed', 'false');
 	target.setAttribute('aria-pressed', 'true');
+	fieldset.dataset.value = target.value;
 }
 
 //
@@ -726,7 +726,7 @@ let filter = (() => {
 			list,
 			defaultItemVisibility: list._options.defaultItemVisibility,
 			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.value,
+			tieBreakerType: list._controls.sort?.dataset.value,
 		});
 
 		let statusOperation;
@@ -781,7 +781,7 @@ let filter = (() => {
 			list,
 			defaultItemVisibility: list._options.defaultItemVisibility,
 			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.value,
+			tieBreakerType: list._controls.sort?.dataset.value,
 		});
 
 		let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
@@ -833,7 +833,7 @@ let filter = (() => {
 			list,
 			defaultItemVisibility: list._options.defaultItemVisibility,
 			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.value,
+			tieBreakerType: list._controls.sort?.dataset.value,
 		});
 
 		let statusField = getStatusField(tag);
@@ -888,8 +888,6 @@ let search = (() => {
 		let target = event.target;
 		if (!target.matches('fieldset.search input')) return;
 
-        console.log('<<< Input Event >>>');
-
 		let form = target.closest('form');
 		let list = getList(form);
 		if (!form && !list) return;
@@ -900,7 +898,7 @@ let search = (() => {
 		}
 
 		let sortType = 'relevance';
-		let tieBreakerType = list._controls.sort?.value;
+		let tieBreakerType = list._controls.sort?.dataset.value;
 
 		target.removeAttribute('aria-activedescendant');
 		let selectedItem = list.querySelector('[aria-selected]');
@@ -910,6 +908,10 @@ let search = (() => {
 
 		if (target.value.trim().length > 0) {
 			target.setAttribute('aria-expanded', 'true');
+
+			// Disable sort controls
+			list._controls.sort?.setAttribute('disabled', '');
+
 			debouncedUpdateList({
 				searchIndex,
 				listItemCategories: list._options.listItemCategories,
@@ -920,10 +922,13 @@ let search = (() => {
 				tieBreakerType
 			});
 
-			// Disable sort controls
-			list._controls.sort?.closest('fieldset').setAttribute('disabled', '');
+
 
 		} else {
+
+			// Enable sort controls
+			list._controls.sort?.removeAttribute('disabled');
+
 			debouncedUpdateList({
 				searchIndex,
 				listItemCategories: list._options.listItemCategories,
@@ -938,8 +943,7 @@ let search = (() => {
 				target.setAttribute('aria-expanded', 'false');
 			}
 
-			// Enable sort controls
-			list._controls.sort?.closest('fieldset').removeAttribute('disabled');
+
 		}
 	};
 
@@ -1040,17 +1044,16 @@ let search = (() => {
 					list,
 					defaultItemVisibility: list._options.defaultItemVisibility,
 					sortType: 'relevance',
-					tieBreakerType: list._controls.sort?.value,
+					tieBreakerType: list._controls.sort?.dataset.value,
 				});
 
 				// Enable sort controls
-				list._controls.sort?.closest('fieldset').removeAttribute('disabled');
+				list._controls.sort?.removeAttribute('disabled');
 			}
 		}
 	}
 
 	let onReset = async (event) => {
-		console.log('Form Reset Detected');
 		let target = event.target;
 		if (!target.matches('form:has(fieldset.search)')) return;
 		let form = target.closest('form');
@@ -1076,11 +1079,11 @@ let search = (() => {
 			list,
 			defaultItemVisibility: list._options.defaultItemVisibility,
 			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.value,
+			tieBreakerType: list._controls.sort?.dataset.value,
 		});
 
 		// Enable sort controls
-		list._controls.sort?.closest('fieldset').removeAttribute('disabled');
+		list._controls.sort?.removeAttribute('disabled');
 	}
 
 	/**
@@ -1118,16 +1121,7 @@ let sort = (() => {
 		if (!form || !list) return;
 		let tieBreakerType = target.value;
 		if (tieBreakerType !== 'date' && tieBreakerType !== 'title') return;
-		let items = [];
-		for (const item of list.querySelectorAll(':scope > li')) {
-			let title = item.getAttribute('data-title');
-			let date = item.getAttribute('data-date-added');
-			items.push({
-				elem: item,
-				title: title ?? null,
-				date: date ?? null,
-			})
-		}
+
 		updateList({
 			searchIndex: await searchIndexModule.getSearchIndex(),
 			listItemCategories: list._options.listItemCategories,

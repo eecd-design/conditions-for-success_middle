@@ -28,7 +28,7 @@ let allResources = await getCollection("resources", ({ data }) => {
 
 for (let resource of allResources) {
 	let data = JSON.parse(JSON.stringify(resource.data));
-	((data.searchId = `res-${itemIndex}`), (data.slug = resource.id));
+	((data.itemId = `res-${itemIndex}`), (data.slug = resource.id));
 	data.category = "resource";
 	data.slug = resource.id;
 	searchList.push(data);
