@@ -1,0 +1,3 @@
+**Note:** Accessing resources refers to how educators and schools identify, request, and obtain the supports and materials needed to help learners and educators achieve success. This includes both learner-focused supports (academic, linguistic, social-emotional, and behavioural) and classroom resources or consumables that enable effective teaching and learning.
+
+At its core, accessing resources is about having a systemic, equitable, and efficient process for ensuring that both learners and educators have timely access to what they need to support success for all learners, whether that be instructional materials, professional support, or essential classroom supplies.
