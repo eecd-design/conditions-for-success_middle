@@ -218,7 +218,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	header {
 		container: header / inline-size;
         position: relative;
-        z-index: 1;
+        z-index: 100;
 	}
 	
 	header > .wrapper {
@@ -367,7 +367,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		box-shadow: var(--box-shadow);
 		position: absolute;
 		top: calc(3rem + var(--space-xs));
-		z-index: 1001;
+		z-index: 100;
 	}
 
 	header nav.global button.subnav-toggle[aria-expanded="true"] + .subnav-links-list {
