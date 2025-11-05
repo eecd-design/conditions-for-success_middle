@@ -4,9 +4,11 @@ import IconArrowDown16 from "src/components/icons/IconArrowDown_16.astro";
 import IconSeed24 from "src/components/icons/IconSeed_24.astro";
 import IconSapling24 from "src/components/icons/IconSapling_24.astro";
 import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
+
+let { colour } = Astro.props;
 ---
 
-<div class="chart-container progress" aria-hidden="true">
+<div class="chart-container progress" aria-hidden="true" data-theme={colour ?? null}>
 	<div class="segment-container" data-phase="initiating">
 		<div class="title-container">
 			<div class="active-container">

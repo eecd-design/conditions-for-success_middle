@@ -4,10 +4,10 @@ import IconSeed24 from "src/components/icons/IconSeed_24.astro";
 import IconSapling24 from "src/components/icons/IconSapling_24.astro";
 import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
 
-let { entries, fit = "normal" } = Astro.props;
+let { entries, fit = "normal", colour } = Astro.props;
 ---
 
-<table class="chart-container matrix" aria-hidden="true" data-fit={fit}>
+<table class="chart-container matrix" aria-hidden="true" data-fit={fit} data-theme={colour ?? null}>
 	<colgroup>
 		<col style={fit === "compact" ? "width: 12%" : "width: 25%"} />
 		<col style={fit === "compact" ? "width: 22%" : "width: 18.75%"} />
