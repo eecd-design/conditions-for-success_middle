@@ -153,6 +153,7 @@ let findMatches = ({ searchIndex, values, defaultItemVisibility }) => {
 
 }
 
+let cancelRequested = false;
 
 /**
  * Filters a list of <li> items based on text input value, calculates relevance scores,
@@ -165,9 +166,12 @@ let findMatches = ({ searchIndex, values, defaultItemVisibility }) => {
  * @param {String} options.defaultItemVisibility - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
  * @param {String} options.sortType - The user selected sort type
  */
-let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultItemVisibility = 'hidden', maxResults = 10, sortType = 'relevance', tieBreakerType = null }) => {
+let updateList = async ({ searchIndex = [], listItemCategories, values, list, defaultItemVisibility = 'hidden', maxResults = 10, sortType = 'relevance', tieBreakerType = null }) => {
 
 	let debug = false;
+
+    cancelRequested = false;
+    console.log('Cancel Requested: ', cancelRequested);
 
 	let emptyValues = !values || (!values.search?.length && !Object.keys(values.filters || {}).length);
 
@@ -183,6 +187,8 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 	let filteredSearchIndex = searchIndex.filter((entry) => {
 		return listItemCategories.includes(entry.category);
 	}).map(entry => structuredClone(entry));
+
+    if (cancelRequested) return;
 
 	let matches = !emptyValues ? findMatches({
 		searchIndex: filteredSearchIndex,
@@ -206,6 +212,7 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 		tieBreakerType = 'tag';
 	}
 
+    if (cancelRequested) return;
 
 	// Sort results
 	let sortedResults = sortList({
@@ -229,6 +236,9 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 
 	// Phase 1: Show matches up to max
 	for (let [index, result] of sortedResults.entries()) {
+
+        if (cancelRequested) return;
+
 		result.match = result.match || showAll;
 
 		if (index >= maxResults) break;
@@ -256,7 +266,7 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 
 	list.append(visibleFragment);
 
-	let processRemainingResults = () => {
+	let processRemainingResults = async () => {
 		let hiddenFragment = document.createDocumentFragment();
 
 		console.log('~ Remaining Processing Start ~');
@@ -268,7 +278,11 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 			if (id) elemsById.set(id, item);
 		}
 
+        let batchSize = 50;
+
 		for (let [index, result] of sortedResults.entries()) {
+
+            if (cancelRequested) return;
 
 			result.match = result.match || showAll;
 
@@ -298,6 +312,10 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 
 			hiddenFragment.append(elem);
 
+            if (index % batchSize === 0) {
+                await new Promise(r => requestAnimationFrame(r));
+            }
+
 		}
 
 		list.append(hiddenFragment);
@@ -305,12 +323,9 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
 
 	}
 
-	// Use requestIdleCallback when available, otherwise a small delay
-	if ('requestIdleCallback' in window) {
-		requestIdleCallback(processRemainingResults);
-	} else {
-		setTimeout(processRemainingResults, 0);
-	}
+	processRemainingResults;
+
+    if (cancelRequested) return;
 
 	if ((!emptyValues || showAll) && matchesFound && numOfMatches > maxResults) {
 		list.dataset.resultGroupShown = 1;
@@ -514,12 +529,14 @@ let ensureListControls = (list) => {
 	return list._controls;
 };
 
-let debounce = (fn, delay = 200) => {
+let debounce = (fn, delay = 300) => {
 	let timeout;
 	return (...args) => {
+        console.log('Clearing Timeout');
 		clearTimeout(timeout);
 		let savedArgs = args;
 		timeout = setTimeout(() => {
+            console.log('Setting Timeout');
 			requestAnimationFrame(() => fn.apply(null, savedArgs));
 		}, delay);
 	};
@@ -535,7 +552,7 @@ let debouncedUpdateList = debounce(({ searchIndex, listItemCategories, values, l
 		sortType,
 		tieBreakerType
 	});
-}, 200);
+});
 
 let updateToggles = (target) => {
 	let fieldset = target.closest('fieldset');
@@ -891,6 +908,8 @@ let search = (() => {
 		let form = target.closest('form');
 		let list = getList(form);
 		if (!form && !list) return;
+
+        cancelRequested = true;
 
 		let values = {
 			search: target.value.toLowerCase().trim(),
