@@ -1,0 +1,74 @@
+---
+import Toast from "src/components/Toast.astro";
+import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
+import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
+---
+
+<Fragment slot="toast-group">
+    
+    <Toast
+        id={"edit-assessment-properties-dialog_save-toast_success"}
+        message={`Save successful!`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"assessor-dialog_save-toast_success"}
+        message={`Save successful!`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"edit-status-dialog_change-status-toast_success"}
+        message={`Save successful!`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"edit-status-dialog_change-status-and-close-toast_success"}
+        message={`Status change saved and assessment closed.`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"edit-status-dialog_close-toast_success"}
+        message={`Assessment closed.`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"export-warning-dialog_close-toast_success"}
+        message={`Assessment closed.`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"assessment-toolbar_close-toast_success"}
+        message={`Assessment closed.`}
+        colour={"green"}
+        type={"success"}
+    >
+        <IconCheckmark slot={"icon"} />
+    </Toast>
+    <Toast
+        id={"assessment-toolbar_close-toast_failure"}
+        message={`Unable to close assessment. Please reload the page to try again.`}
+        colour={"red"}
+        type={"failure"}
+    >
+        <IconWarningSmall slot={"icon"} />
+    </Toast>
+
+</Fragment>

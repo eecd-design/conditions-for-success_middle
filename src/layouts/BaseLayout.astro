@@ -47,6 +47,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			data-indicator-tag={indicatorTag ? indicatorTag : null}
 		>
 			<div class="wrapper">
+                <div class="toast-group">
+                    <slot name="toast-group"/>
+                </div>
 				<slot />
 			</div>
 		</main>

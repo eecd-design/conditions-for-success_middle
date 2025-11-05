@@ -259,22 +259,6 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					aria-hidden="true"
 				>
 				</div>
-				<Toast
-					id={"assessment-toolbar_close-toast_success"}
-					message={`Assessment closed.`}
-					colour={"green"}
-					type={"success"}
-				>
-					<IconCheckmark slot={"icon"} />
-				</Toast>
-				<Toast
-					id={"assessment-toolbar_close-toast_failure"}
-					message={`Unable to close assessment. Please reload the page to try again.`}
-					colour={"red"}
-					type={"failure"}
-				>
-					<IconWarningSmall slot={"icon"} />
-				</Toast>
 				<!-- Close Button -->
 				<button
 					class="close"
@@ -304,6 +288,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		top: 0;
 		z-index: 100;
 		user-select: none;
+		-webkit-user-select: none;
 	}
 
 	[data-mode="assessment"] #assessment-controls {
@@ -421,6 +406,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		--icon-size: 1.25rem;
 		--label-size: var(--font-size-2xs);
 		user-select: none;
+        -webkit-user-select: none;
 	}
 
 	#assessment-controls

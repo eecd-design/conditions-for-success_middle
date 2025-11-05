@@ -1,0 +1,42 @@
+---
+import Toast from "src/components/Toast.astro";
+import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
+import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
+---
+
+<Fragment slot="toast-group">
+    
+	<Toast
+		id={"open-assessment-dialog_open-toast_success"}
+		message={`Report opened!`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"report-settings-dialog_save-toast_success"}
+		message={`Report settings saved!`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"report-page_close-toast_success"}
+		message={`Report closed.`}
+		colour={"green"}
+		type={"success"}
+	>
+		<IconCheckmark slot={"icon"} />
+	</Toast>
+	<Toast
+		id={"report-page_close-toast_failure"}
+		message={`Unable to close report. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	>
+		<IconWarningSmall slot={"icon"} />
+	</Toast>
+
+</Fragment>

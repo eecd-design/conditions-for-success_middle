@@ -5,6 +5,7 @@ import SectionNav from "../../components/SectionNav.astro";
 import PageNav from "src/components/PageNav.astro";
 import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
 import AssessmentDialogs from "../../components/dialogs/AssessmentDialogs.astro";
+import AssessmentToasts from "../../components/AssessmentToasts.astro";
 import Accordion from "../../components/Accordion.astro";
 import Tab from "../../components/Tab.astro";
 import PhaseIcons from "../../components/icons/PhaseIcons.astro";
@@ -56,6 +57,8 @@ let sectionLinks = [
 	<AssessmentToolbar />
 
 	<AssessmentDialogs />
+
+    <AssessmentToasts slot="toast-group"/>
 
 	<SectionNav />
 

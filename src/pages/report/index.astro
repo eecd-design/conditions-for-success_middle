@@ -17,6 +17,7 @@ import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 import { findObjectByKey } from "src/utilities/helpers";
 import PageNav from "src/components/PageNav.astro";
+import ReportToasts from "src/components/ReportToasts.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -63,38 +64,7 @@ for (let indicator of indicators) {
 
 	<PageNav heading={'In this report'} sectionLinks={sectionLinks} dataset={[{key: 'restrict-report', value: 'active'}]}/>
 
-	<Toast
-		id={"open-assessment-dialog_open-toast_success"}
-		message={`Report opened!`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"report-settings-dialog_save-toast_success"}
-		message={`Report settings saved!`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"report-page_close-toast_success"}
-		message={`Report closed.`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"report-page_close-toast_failure"}
-		message={`Unable to close report. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
+    <ReportToasts slot="toast-group" />
 
 	<OpenImportAssessmentDialogs/>
 	<ReportDialogs/>
