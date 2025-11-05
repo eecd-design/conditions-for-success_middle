@@ -283,6 +283,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	header .site-announcement-container {
 		--icon-size: 1.25rem;
 		--icon-colour: var(--colour-ui-reverse);
+		
 		grid-area: announcement;
 		display: flex;
 		align-items: center;
@@ -294,19 +295,14 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		background-color: var(--colour-fill-accent-bold);
 		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
 		min-height: 3rem;
-		color: var(--colour-ui-reverse);
 		font-size: var(--font-size-2xs);
 		font-weight: 500;
 	}
 
 	header .site-announcement-container a {
-		color: inherit;
+		--link-colour: var(--colour-ui-reverse);
 		font-size: inherit;
 		font-weight: inherit;
-	}
-
-	header .site-announcement-container a:is(:hover, :focus-visible) {
-		color: inherit;
 	}
 
 	/* 
