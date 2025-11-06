@@ -32,16 +32,6 @@ let indicators = allIndicators.sort((a, b) =>
 		Report Settings
 	</h2>
 
-	<!-- Save Toast located in Report page -->
-	<Toast
-		id={"report-settings-dialog_save-toast_failure"}
-		message={`Unable to save report settings. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
-
 	<form>
 		<fieldset
 			class="indicators"
@@ -122,6 +112,16 @@ let indicators = allIndicators.sort((a, b) =>
 			>
 		</div>
 	</form>
+
+	<!-- Save Toast located in Report page -->
+	<Toast
+		id={"report-settings-dialog_save-toast_failure"}
+		message={`Unable to save report settings. Please reload the page to try again.`}
+		colour={"red"}
+		type={"failure"}
+	>
+		<IconWarningSmall slot={"icon"} />
+	</Toast>
 </dialog>
 
 <style is:global>

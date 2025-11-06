@@ -37,16 +37,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		> to unlock editing.
 	</p>
 
-	<!-- Success Toast located in Assessment Dialogs -->
-	<Toast
-		id={"edit-status-dialog_change-status-toast_failure"}
-		message={`Unable to save. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
-
 	<div class="button-group">
 		<button
 			class="close-dialog"
@@ -68,6 +58,18 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			aria-describedby="edit-status-dialog_in-progress-instructions"
 			>Mark as Complete</button
 		>
+	</div>
+
+	<div class="toast-group">
+		<!-- Success Toast located in Assessment Dialogs -->
+		<Toast
+			id={"edit-status-dialog_change-status-toast_failure"}
+			message={`Unable to save. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
 	</div>
 </dialog>
 
@@ -111,16 +113,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 	<p class="instructions">Do you want to continue?</p>
 
-	<!-- Success Toast located in Assessor Dialogs -->
-	<Toast
-		id={"status-warning-dialog_change-status-toast_failure"}
-		message={`Unable to change status. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
-
 	<div class="button-group">
 		<button
 			class="close-dialog"
@@ -138,6 +130,18 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			data-toast-failure="status-warning-dialog_change-status-toast_failure"
 			>Edit Assessment</button
 		>
+	</div>
+
+	<div class="toast-group">
+		<!-- Success Toast located in Assessor Dialogs -->
+		<Toast
+			id={"status-warning-dialog_change-status-toast_failure"}
+			message={`Unable to change status. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
 	</div>
 </dialog>
 

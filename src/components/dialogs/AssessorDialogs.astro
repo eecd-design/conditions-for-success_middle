@@ -112,41 +112,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			</div>
 		</fieldset>
 
-		<Toast
-			id={"edit-assessment-properties-dialog_create-toast_success"}
-			message={`Assessment created!`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"open-assessment-dialog_open-toast_success"}
-			message={`Assessment opened!`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"status-warning-dialog_change-status-toast_success"}
-			message={`Status updated to 'In Progress'.`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-
-		<!-- Save Toast located in Assessment Dialogs -->
-		<Toast
-			id={"assessor-dialog_save-toast_failure"}
-			message={`Unable to save. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
 		<div class="button-group">
 			<button
 				class="close-dialog"
@@ -173,6 +138,42 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			>
 		</div>
 	</form>
+
+	<div class="toast-group">
+		<Toast
+			id={"edit-assessment-properties-dialog_create-toast_success"}
+			message={`Assessment created!`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_open-toast_success"}
+			message={`Assessment opened!`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"status-warning-dialog_change-status-toast_success"}
+			message={`Status updated to 'In Progress'.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<!-- Save Toast located in Assessment Dialogs -->
+		<Toast
+			id={"assessor-dialog_save-toast_failure"}
+			message={`Unable to save. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+	</div>
 </dialog>
 
 <script>

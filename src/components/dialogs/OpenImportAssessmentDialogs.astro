@@ -19,23 +19,6 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		aria-label="Close Open Assessment Dialog"><IconXmark /></button
 	>
 
-	<Toast
-		id={"import-conflict-dialog_overwrite-toast_success"}
-		message={`Assessment overwritten.`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"deletion-confirmation-dialog_delete-toast_success"}
-		message={`Assessment deleted.`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-
 	<h2
 		id="open-assessment-dialog_heading"
 		class="heading"
@@ -46,48 +29,6 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 	<section class="import">
 		<h3>Import Assessment</h3>
-
-		<Toast
-			id={"open-assessment-dialog_import-file-toast_success"}
-			message={`Assessment imported into 'Saved Assessments'.`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"open-assessment-dialog_import-file-toast_failure"}
-			message={`Unable to import assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
-		<Toast
-			id={"open-assessment-dialog_import-code-toast_success"}
-			message={`Assessment imported into 'Saved Assessments'.`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"open-assessment-dialog_import-code-toast_failure"}
-			message={`Unable to import assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"open-assessment-dialog_import-code-toast_failure-JSON"}
-			message={`Unable to import assessment. Import code is not valid.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
 
 		<form>
 			<fieldset class="file">
@@ -157,16 +98,6 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				</div>
 			</div>
 		</div>
-
-		<!-- Success Toast located in Assessors Dialogs -->
-		<Toast
-			id={"open-assessment-dialog_open-toast_failure"}
-			message={`Unable to open assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
 
 		<div class="elem-group" data-fit="compact" data-columns="2">
 			<ul class="saved-assessments-list wrapper">
@@ -286,6 +217,74 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			</ul>
 		</div>
 	</section>
+
+	<div class="toast-group">
+		<Toast
+			id={"import-conflict-dialog_overwrite-toast_success"}
+			message={`Assessment overwritten.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"deletion-confirmation-dialog_delete-toast_success"}
+			message={`Assessment deleted.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-file-toast_success"}
+			message={`Assessment imported into 'Saved Assessments'.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-file-toast_failure"}
+			message={`Unable to import assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-code-toast_success"}
+			message={`Assessment imported into 'Saved Assessments'.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-code-toast_failure"}
+			message={`Unable to import assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"open-assessment-dialog_import-code-toast_failure-JSON"}
+			message={`Unable to import assessment. Import code is not valid.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+		<!-- Success Toast located in Assessors Dialogs -->
+		<Toast
+			id={"open-assessment-dialog_open-toast_failure"}
+			message={`Unable to open assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+	</div>
 </dialog>
 
 <dialog
@@ -413,16 +412,6 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		</div>
 	</div>
 
-	<!-- Success Toast in Open Assessment Dialog -->
-	<Toast
-		id={"import-conflict-dialog_overwrite-toast_failure"}
-		message={`Unable to overwrite assessment. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
-
 	<div class="button-group">
 		<button
 			class="keep close-dialog"
@@ -440,6 +429,18 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			data-toast-failure="import-conflict-dialog_overwrite-toast_failure"
 			>Overwrite</button
 		>
+	</div>
+
+	<div class="toast-group">
+		<!-- Success Toast in Open Assessment Dialog -->
+		<Toast
+			id={"import-conflict-dialog_overwrite-toast_failure"}
+			message={`Unable to overwrite assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
 	</div>
 </dialog>
 
@@ -469,13 +470,6 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		>? This action cannot be undone.
 	</p>
 
-	<Toast
-		id={"deletion-confirmation-dialog_delete-toast_failure"}
-		message={`Unable to delete assessment. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	/>
-
 	<div class="button-group">
 		<button
 			class="cancel open-dialog"
@@ -493,6 +487,15 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			data-toast-failure="deletion-confirmation-dialog_delete-toast_failure"
 			>Delete</button
 		>
+	</div>
+
+	<div class="toast-group">
+		<Toast
+			id={"deletion-confirmation-dialog_delete-toast_failure"}
+			message={`Unable to delete assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		/>
 	</div>
 </dialog>
 

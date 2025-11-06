@@ -44,23 +44,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			> before exporting?
 		</p>
 
-		<Toast
-			id={"export-assessment-dialog_change-status-toast_success"}
-			message={`Status change saved.`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"export-assessment-dialog_change-status-toast_failure"}
-			message={`Unable to change status. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
 		<div class="button-group">
 			<button
 				class="change-status"
@@ -105,23 +88,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			</div>
 		</div>
 
-		<Toast
-			id={"export-assessment-dialog_export-file-toast_success"}
-			message={`File exported!`}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"export-assessment-dialog_export-file-toast_failure"}
-			message={`Unable to export file. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
 		<div class="button-group">
 			<button
 				class="export-assessment download-file"
@@ -145,23 +111,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			device, or to share it with another assessor.
 		</p>
 
-		<Toast
-			id={"export-assessment-dialog_copy-code-toast_success"}
-			message={"Export code copied to the clipboard."}
-			colour={"green"}
-			type={"success"}
-		>
-			<IconCheckmark slot={"icon"} />
-		</Toast>
-		<Toast
-			id={"export-assessment-dialog_copy-code-toast_failure"}
-			message={`Unable to copy export code. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
 		<div class="code-container" data-style-as="input-container">
 			<div class="url" data-style-as="input">
 				<span data-field="exportCode"></span>
@@ -182,6 +131,58 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			</button>
 		</div>
 	</section>
+
+	<div class="toast-group">
+		<Toast
+			id={"export-assessment-dialog_change-status-toast_success"}
+			message={`Status change saved.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"export-assessment-dialog_change-status-toast_failure"}
+			message={`Unable to change status. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+
+		<Toast
+			id={"export-assessment-dialog_export-file-toast_success"}
+			message={`File exported!`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"export-assessment-dialog_export-file-toast_failure"}
+			message={`Unable to export file. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"export-assessment-dialog_copy-code-toast_success"}
+			message={"Export code copied to the clipboard."}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<Toast
+			id={"export-assessment-dialog_copy-code-toast_failure"}
+			message={`Unable to copy export code. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+	</div>
 </dialog>
 
 <dialog
@@ -196,15 +197,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		data-toast-failure="export-warning-dialog_close-toast_failure"
 		><IconXmark /></button
 	>
-
-	<Toast
-		id={"edit-status-dialog_change-status-and-warn-toast_success"}
-		message={`Status change saved.`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
 
 	<h2
 		id="export-warning-dialog_heading"
@@ -227,16 +219,6 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		Would you like to export a backup before you stop editing?
 	</p>
 
-	<!-- Success toast in Assessment Dialogs -->
-	<Toast
-		id={"export-warning-dialog_close-toast_failure"}
-		message={`Unable to close assessment. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
-
 	<div class="button-group">
 		<button
 			class="close-dialog"
@@ -254,6 +236,26 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			data-size="large"
 			data-style="solid">Export Changes</button
 		>
+	</div>
+
+	<div class="toast-group">
+		<Toast
+			id={"edit-status-dialog_change-status-and-warn-toast_success"}
+			message={`Status change saved.`}
+			colour={"green"}
+			type={"success"}
+		>
+			<IconCheckmark slot={"icon"} />
+		</Toast>
+		<!-- Success toast in Assessment Dialogs -->
+		<Toast
+			id={"export-warning-dialog_close-toast_failure"}
+			message={`Unable to close assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
 	</div>
 </dialog>
 

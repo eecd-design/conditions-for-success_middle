@@ -272,25 +272,6 @@ let schoolList = {
 			</p>
 		</fieldset>
 
-		<!-- Creation Success Toast in Assessors Dialog -->
-		<Toast
-			id={"edit-assessment-properties-dialog_create-toast_failure"}
-			message={`Unable to create assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-		<!-- Save Success Toast in Assessment Dialogs -->
-		<Toast
-			id={"edit-assessment-properties-dialog_save-toast_failure"}
-			message={`Unable to save. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
-		>
-			<IconWarningSmall slot={"icon"} />
-		</Toast>
-
 		<div class="button-group">
 			<button
 				class="close-dialog clear"
@@ -320,6 +301,27 @@ let schoolList = {
 			>
 		</div>
 	</form>
+
+	<div class="toast-group">
+		<!-- Creation Success Toast in Assessors Dialog -->
+		<Toast
+			id={"edit-assessment-properties-dialog_create-toast_failure"}
+			message={`Unable to create assessment. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+		<!-- Save Success Toast in Assessment Dialogs -->
+		<Toast
+			id={"edit-assessment-properties-dialog_save-toast_failure"}
+			message={`Unable to save. Please reload the page to try again.`}
+			colour={"red"}
+			type={"failure"}
+		>
+			<IconWarningSmall slot={"icon"} />
+		</Toast>
+	</div>
 </dialog>
 
 <dialog

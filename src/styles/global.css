@@ -639,7 +639,7 @@ p {
 	box-shadow: inset 0 0 0 var(--button-boxshadow-width, 2px) var(--button-boxshadow-colour);
 	text-decoration: none;
 	user-select: none;
-    -webkit-user-select: none;
+	-webkit-user-select: none;
 	-webkit-tap-highlight-color: transparent;
 	/* ↓ Removes blue highlight on mobile */
 	transition:
@@ -1064,7 +1064,7 @@ main>.wrapper {
 		var(--wrapper-left-margin) var(--aside-left-width) var(--aside-gap-left) var(--content-width) var(--aside-gap-right) var(--aside-right-width) var(--wrapper-right-margin);
 	grid-template-rows: 0px 1fr;
 	grid-template-areas:
-        ". toasts toasts toasts toasts toasts ."
+		". toasts toasts toasts toasts toasts ."
 		". left-aside . content . right-aside .";
 	justify-content: center;
 	position: relative;
@@ -1080,7 +1080,7 @@ main.big-seven>.wrapper {
 	grid-template-rows: auto 0px 1fr;
 	grid-template-areas:
 		"toolbar toolbar toolbar toolbar toolbar toolbar toolbar"
-        ". toasts toasts toasts toasts toasts ."
+		". toasts toasts toasts toasts toasts ."
 		". left-aside . content . right-aside .";
 }
 
@@ -1357,7 +1357,7 @@ main:not([data-report="inactive"]) [data-restrict-report="inactive"] {
 
 nav a {
 	user-select: none;
-    -webkit-user-select: none;
+	-webkit-user-select: none;
 }
 
 
@@ -1461,7 +1461,7 @@ form label:has(input[type="checkbox"]) {
 	font-weight: 400;
 	cursor: pointer;
 	user-select: none;
-    -webkit-user-select: none;
+	-webkit-user-select: none;
 	position: relative;
 	transition:
 		border-color var(--transition-linear-fast),
@@ -1591,7 +1591,7 @@ select,
 	flex-grow: 1;
 	font-size: var(--font-size-xs);
 	line-height: 1.2;
-    color: var(--colour-ui-neutral);
+	color: var(--colour-ui-neutral);
 }
 
 :is(input[type="text"],
@@ -1878,6 +1878,10 @@ dialog hr.group {
 
 dialog form hr.group {
 	margin: var(--space-xs) 0;
+}
+
+dialog :has(+ .toast-group) {
+	margin-bottom: 0 !important;
 }
 
 
@@ -2422,7 +2426,7 @@ summary {
 	position: relative;
 	cursor: pointer;
 	user-select: none;
-    -webkit-user-select: none;
+	-webkit-user-select: none;
 	font-weight: 700;
 	transition: background-color var(--transition-linear-fast), padding var(--transition-ease-medium);
 }

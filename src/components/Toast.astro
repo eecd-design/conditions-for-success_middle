@@ -20,41 +20,51 @@ const { id, message, colour, type } = Astro.props;
 </div>
 
 <style is:global>
-    .toast-group {
-        grid-area: toasts;
-        height: 0;
-        padding-top: var(--space-xl);
-        position: sticky;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 12;
-        pointer-events: none;
-    }
+	.toast-group {
+		grid-area: toasts;
+		height: 0;
+		padding-top: var(--space-xl);
+		position: sticky;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 12;
+		pointer-events: none;
+	}
 
-    main.big-seven[data-mode="assessment"] .toast-group {
-        padding-top: var(--space-base);
-        top: 3.75rem;
-    }
+	main.big-seven[data-mode="assessment"] .toast-group {
+		padding-top: var(--space-base);
+		top: 3.75rem;
+	}
+
+	dialog .toast-group {
+		top: unset !important;
+		bottom: var(--space-xl);
+		padding: 0 !important;
+	}
 
 	.toast-container {
 		display: flex;
 		flex-flow: column;
 		align-items: center;
-        position: absolute;
-        right: 0;
-        left: 0;
+		position: absolute;
+		right: 0;
+		left: 0;
 		opacity: 0;
-        pointer-events: none;
-        translate: 0px -0.25rem;
+		pointer-events: none;
+		translate: 0px -0.25rem;
 		transition:
 			opacity var(--transition-linear-fast),
 			translate var(--transition-ease-fast);
 	}
 
+	dialog .toast-container {
+		translate: 0px 0.25rem;
+	}
+
 	.toast-container[open] {
 		opacity: 1;
-        translate: 0px 0px !important;
+		translate: 0px 0px !important;
 		transition:
 			opacity var(--transition-linear-medium),
 			translate var(--transition-ease-slow);
