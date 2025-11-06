@@ -692,28 +692,30 @@ let importAssessment = (file) => {
 
 			let mainRow = mainResult.data[0]; // Only one row expected
 			let assessment = {
-				id: mainRow['Id'] || '',
-				school: mainRow['School'] || '',
-				district: mainRow['District'] || '',
-				reportingYear: mainRow['Reporting Year'] || '',
-				status: mainRow['Status'] || '',
+				activeAssessor: null,
+				assessors: mainRow['Assessors'] ? mainRow['Assessors'].split(',').map(s => s.trim()) : [],
+				changeLog: [],
+				considerationsEstablished: mainRow['Considerations Established'] ? mainRow['Considerations Established'].split(',').map(s => s.trim()) : [],
 				continuumVersion: mainRow['Continuum Version'] || '',
 				dateCompleted: mainRow['Date Completed'] ? normalizeImportedDate(mainRow['Date Completed']) : null,
 				dateCreated: mainRow['Date Created'] ? normalizeImportedDate(mainRow['Date Created']) : null,
-				dateModified: mainRow['Date Modified'] ? normalizeImportedDate(mainRow['Date Modified']) : null,
 				dateExported: mainRow['Date Exported'] ? normalizeImportedDate(mainRow['Date Exported']) : null,
-				lastModifiedBy: mainRow['Last Modified By'] || '',
-				assessors: mainRow['Assessors'] ? mainRow['Assessors'].split(',').map(s => s.trim()) : [],
-				considerationsEstablished: mainRow['Considerations Established'] ? mainRow['Considerations Established'].split(',').map(s => s.trim()) : [],
+				dateModified: mainRow['Date Modified'] ? normalizeImportedDate(mainRow['Date Modified']) : null,
+				district: mainRow['District'] || '',
+				id: Number(mainRow['Id']) || 1,
+				lastModifiedBy: mainRow['Last Modified By'] || null,
+				reportingYear: mainRow['Reporting Year'] || '',
+				school: mainRow['School'] || '',
+				status: mainRow['Status'] || 'In Progress',
 				schemaVersion: mainRow['Schema Version'] || '',
-				changeLog: []
+				unexportedChanges: false,
 			};
 
 			// Parse change log rows
 			if (logResult.data && logResult.data.length) {
 				assessment.changeLog = logResult.data.map(log => ({
 					date: log['Date'] ? normalizeImportedDate(log['Date']) : null,
-					assessor: log['Assessor'] || '',
+					assessor: log['Assessor'] || null,
 					message: log['Message'] || log['Note'] || ''
 				}));
 			}
