@@ -2487,6 +2487,7 @@ details .contents {
 .label-container {
 	display: inline-flex;
 	align-items: center;
+	flex-shrink: 1;
 	font-size: var(--label-size, 0.875rem);
 	font-weight: var(--label-weight, 600);
 	color: var(--label-colour, var(--colour-ui-neutral));
@@ -2542,7 +2543,7 @@ details .contents {
 
 .icon-and-label-container {
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: row nowrap;
 	align-items: center;
 	gap: var(--container-gap, var(--space-2xs));
 	background-color: var(--container-background-colour, transparent);
