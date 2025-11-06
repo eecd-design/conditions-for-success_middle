@@ -505,8 +505,8 @@ let ensureListState = (list) => {
             layout: list._controls.layout?.dataset.value ?? null,
             matches: {
                 list: [],
-                lastShownIndex: -1,
-                hiddenMatches: false,
+                lastShownIndex: list._options.defaultItemVisibility === 'shown' ? list._options.listGroupSize - 1 : -1,
+                hiddenMatches: list._options.defaultItemVisibility === 'shown' ? true : false,
             }
         };
     }
@@ -1043,7 +1043,7 @@ let sort = (() => {
         updateToggles(target);
 
         setPreferences({
-            resourcePageSort: tieBreakerType,
+            resourcePageSort: target.value,
         })
     }
 
@@ -1069,12 +1069,12 @@ let layout = (() => {
         if (!form || !list) return;
 
         list._state.layout = target.value;
-        list.dataset.layout = layoutType;
+        list.dataset.layout = target.value;
 
         updateToggles(target);
 
         setPreferences({
-            resourcePageLayout: layoutType,
+            resourcePageLayout: target.value,
         })
     }
 
@@ -1132,7 +1132,27 @@ let listModule = (() => {
             let filteredListIndex = listIndex.filter((entry) => {
                 return list._options.listItemCategories.includes(entry.category);
             }).map(entry => structuredClone(entry));
-            list._listIndex = filteredListIndex;
+            let sortedListIndex = sortList({
+                sortTypes: {
+                    primary: list._state.sort.primary,
+                    tieBreaker: list._state.sort.tieBreaker,
+                },
+                items: filteredListIndex,
+            })
+            list._listIndex = sortedListIndex;
+
+            // Update matches list if default item visibility is shown
+            list._state.matches.list = list._options.defaultItemVisibility === 'shown' ? list._listIndex : [];
+
+            // Ensure shown list items are sent to the bottom of the list
+            if (list._options.defaultItemVisibility === 'shown') {
+                let shownItems = list.querySelectorAll(':scope>li:not([hidden])');
+                let fragment = document.createDocumentFragment();
+                for (let item of shownItems) {
+                    fragment.append(item);
+                }
+                list.append(fragment);
+            }
         }
 
     }

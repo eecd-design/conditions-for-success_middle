@@ -80,7 +80,7 @@ if (linkedIndicators || linkedComponents || linkedConsiderations) {
 let ItemWrapper = includeItemWrapper ? "li" : null;
 let itemWrapperAttrs = {
     id: `${listName}_item-${index + 1}`,
-    "data-pos": index + 1 < listGroupSize ? index + 1 : null,
+    "data-pos": index < listGroupSize ? index + 1 : null,
     "data-item-id": itemId,
     "data-theme": colour ?? null,
     hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
