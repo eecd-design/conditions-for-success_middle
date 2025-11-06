@@ -6,28 +6,36 @@ initiating:
     - tag: 6.3.1
       title: >-
         Educators make reference to the Curriculum Framework to identify
-        concepts and skills in their assigned subject areas.
+        concepts and skills in their assigned subject areas. For example,
+        learners read graphs or maps that include numbers but focus on content
+        rather than numeracy connections.
       compass: false
       categories: []
     - tag: 6.3.2
       title: >-
         Educators design tasks that are primarily procedural and may lack
         opportunities for deeper learning. Learners are dependent on educators
-        to complete tasks and have a fixed mindset.
+        to complete tasks and have a fixed mindset. For example, learners follow
+        step-by-step lab instructions with little room for inquiry or
+        estimation.
       compass: false
       categories: []
     - tag: 6.3.3
       title: >-
         Educators lead class discussions through direct questioning and
         demonstrate how to use specific models. Learners answer direct questions
-        and use tools or models only when guided by the educator.
+        and use tools or models only when guided by the educator. For example,
+        learners answer educator-led comprehension questions about data in a
+        French text but do not generate their own.
       compass: false
       categories: []
     - tag: 6.3.4
       title: >-
         Educators are aware of formative assessment strategies but primarily use
         summative tasks to gather evidence. Feedback is generally focused on
-        errors. Learners rely on educators to monitor their progress.
+        errors. Learners rely on educators to monitor their progress. For
+        example, quizzes and tests are the main form of assessment; feedback
+        centers on correct/incorrect answers.
       compass: false
       categories: []
 implementing:
@@ -37,14 +45,18 @@ implementing:
         The Curriculum Framework is referenced and used collaboratively by
         educators to identify relevant concepts and skills in other subject
         areas. Learners are aware of goals, but they are developing the ability
-        to connect them to prior learning or other contexts.
+        to connect them to prior learning or other contexts. For example,
+        educators connect graphing skills in math to representing data from a
+        simple experiment.
       compass: false
       categories: []
     - tag: 6.3.6
       title: >-
         Educators design tasks that promote reasoning and problem solving.
         Learners look for possible entry points to solve problems but are
-        frustrated when they are not solved quickly, or mistakes are made.
+        frustrated when they are not solved quickly, or mistakes are made. For
+        example, learners predict plant growth and compare their estimates to
+        real data, learning that approximation is part of scientific reasoning.
       compass: false
       categories: []
     - tag: 6.3.7
@@ -53,7 +65,8 @@ implementing:
         understanding. Learners show their thinking in different ways (for
         example, with hands-on materials, pictures, or symbols) when solving
         problems. They actively participate in discussions and choose the method
-        that works best for them.
+        that works best for them. For example, learners discuss survey results
+        from their class, sharing how they tallied and presented data in French.
       compass: false
       categories: []
     - tag: 6.3.8
@@ -61,7 +74,10 @@ implementing:
         Educators use a mixture of formative and summative assessments to gather
         evidence but rely mostly on products. Feedback offers guidance and is
         also provided by peers. Learners use peer assessment to monitor progress
-        but may not independently reflect on their learning.
+        but may not independently reflect on their learning. For example,
+        learners submit a chart comparing trade routes, with educator feedback
+        on accuracy but limited discussion of how the math supported
+        understanding.
       compass: false
       categories: []
 developing:
@@ -71,14 +87,18 @@ developing:
         The Curriculum Framework is referenced and used collaboratively to
         identify relevant concepts and skills that connect across multiple
         subject areas. Learners can articulate goals, connect them to prior
-        learning, and apply them to other contexts.
+        learning, and apply them to other contexts. For example, learners read
+        an infographic about recycling rates in French and discuss percentages
+        using math vocabulary.
       compass: false
       categories: []
     - tag: 6.3.10
       title: >-
         Educators design tasks that promote reasoning and more complex problem
         solving and allow for productive struggle. Learners engage with
-        challenging tasks and view mistakes as a valuable part of learning.
+        challenging tasks and view mistakes as a valuable part of learning. For
+        example, learners design a sustainable community, budgeting costs and
+        using reasoning to justify decisions.
       compass: false
       categories: []
     - tag: 6.3.11
@@ -86,7 +106,8 @@ developing:
         Educators facilitate various learner-led discussions and have them
         explain to others their process and reasoning. Learners generate their
         own questions and independently use a variety of mathematical
-        representations.
+        representations. For example, learners examine data sets about climate
+        or migration and generate their own “What does this tell us?” questions.
       compass: false
       categories: []
     - tag: 6.3.12
@@ -95,7 +116,10 @@ developing:
         (observations, conversations, products) to plan and adjust instruction.
         Feedback is clear and specific and offers guidance during the
         instructional process. Learners use self- and peer-assessment to
-        independently reflect on and monitor their own progress.
+        independently reflect on and monitor their own progress. For example,
+        learners review opinion texts that use statistics to support ideas. The
+        educator gives feedback on how data strengthens arguments, and learners
+        revise their writing using self-assessment checklists.
       compass: true
       categories: []
 sustaining:
@@ -105,7 +129,8 @@ sustaining:
         Educators consistently collaborate to connect concepts and skills across
         subject areas and regularly check for readiness with learners. Learners
         can articulate and set their own goals and connect them to a variety of
-        contexts.
+        contexts. For example, learners identify math goals while designing a
+        travel brochure in French (distance, budget, time).
       compass: false
       categories: []
     - tag: 6.3.14
@@ -113,7 +138,10 @@ sustaining:
         Educators design tasks that promote reasoning, enable more complex
         problem solving, and allow varied solution strategies. Learners have a
         growth mindset and use self-reflection and critical thinking skills to
-        complete tasks and value mistakes.
+        complete tasks and value mistakes. For example, learners compare news
+        articles with conflicting statistics, evaluate credibility, and discuss
+        how numbers influence readers. They justify conclusions with evidence
+        and refine their analysis through peer feedback.
       compass: false
       categories: []
     - tag: 6.3.15
@@ -121,7 +149,9 @@ sustaining:
         Learner-led discussions are monitored, with learners explaining or
         challenging the processes and reasoning used. Learners independently
         generate probing analytical questions and use a variety of mathematical
-        representations to defend their reasoning.
+        representations to defend their reasoning. For example, learners debate
+        which experimental setup gives the most reliable data, using charts and
+        trendlines to defend their position.
       compass: false
       categories: []
     - tag: 6.3.16
@@ -130,6 +160,8 @@ sustaining:
         instruction to adjust pace and tasks. Feedback is timely, descriptive,
         and specific and encourages reflection. Learners independently set goals
         and use metacognitive strategies to reflect on and monitor their
-        progress.
+        progress. For example, after presenting data visualizations, learners
+        reflect on how effectively their graph communicated a message and set
+        goals for clarity for next time.
       compass: false
       categories: []
