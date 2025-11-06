@@ -23,1174 +23,1174 @@ let searchList = [];
 let itemIndex = 1;
 
 let allResources = await getCollection("resources", ({ data }) => {
-	return data.published === true;
+    return data.published === true;
 });
 
 for (let resource of allResources) {
-	let data = JSON.parse(JSON.stringify(resource.data));
-	((data.itemId = `res-${itemIndex}`), (data.slug = resource.id));
-	data.category = "resource";
-	data.slug = resource.id;
-	searchList.push(data);
-	itemIndex += 1;
+    let data = JSON.parse(JSON.stringify(resource.data));
+    (data.itemId = `res-${itemIndex}`), (data.slug = resource.id);
+    data.category = "resource";
+    data.slug = resource.id;
+    searchList.push(data);
+    itemIndex += 1;
 }
 
 searchList.sort((a, b) => {
-	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
-	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
+    let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
+    return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
 });
 
 let allIndicators = await getCollection("indicators");
 
 allIndicators.sort((a, b) => {
-	return (a.data.tag || "").localeCompare(b.data.tag || "");
+    return (a.data.tag || "").localeCompare(b.data.tag || "");
 });
 
 let allComponents = await getCollection("components");
 
 allComponents.map((component) => {
-	let indicator = findObjectByKey(
-		allIndicators,
-		"id",
-		component.data.indicator,
-	);
-	component.data["colour"] = indicator.data.colour;
+    let indicator = findObjectByKey(
+        allIndicators,
+        "id",
+        component.data.indicator,
+    );
+    component.data["colour"] = indicator.data.colour;
 });
 
 allComponents.sort((a, b) => {
-	return (a.data.tag || "").localeCompare(b.data.tag || "");
+    return (a.data.tag || "").localeCompare(b.data.tag || "");
 });
 
 let allTypes = new Set();
 allResources.map((resource) => {
-	allTypes.add(
-		resource.data.type.charAt(0).toUpperCase() +
-			resource.data.type.slice(1),
-	);
+    allTypes.add(
+        resource.data.type.charAt(0).toUpperCase() +
+            resource.data.type.slice(1),
+    );
 });
 
 let types = [...allTypes].sort((a: string, b: string) => {
-	return a.localeCompare(b);
+    return a.localeCompare(b);
 }) as Array<string>;
 ---
 
 <BaseLayout pageTitle={"Resources"} pageType={"resources"}>
-	<aside id="filters-aside" class="left-aside">
-		<div class="wrapper">
-			<form
-				id="resources-list-secondary-controls"
-				class="list-secondary-controls"
-				data-list="resources-list"
-			>
-				<div class="heading-group">
-					<h2
-						id="resources-list-secondary-controls_heading"
-						class="heading"
-					>
-						<!-- <IconFilter /> -->
-						<span>Filters</span>
-					</h2>
-					<label
-						class="reset-input-container filters-reset"
-						data-style-as="button"
-					>
-						<span class="icon-and-label-container">
-							<IconFilterClear />
-							<!-- <span class="label-container">
+    <aside id="filters-aside" class="left-aside">
+        <div class="wrapper">
+            <form
+                id="resources-list-secondary-controls"
+                class="list-secondary-controls"
+                data-list="resources-list"
+            >
+                <div class="heading-group">
+                    <h2
+                        id="resources-list-secondary-controls_heading"
+                        class="heading"
+                    >
+                        <!-- <IconFilter /> -->
+                        <span>Filters</span>
+                    </h2>
+                    <label
+                        class="reset-input-container filters-reset"
+                        data-style-as="button"
+                    >
+                        <span class="icon-and-label-container">
+                            <IconFilterClear />
+                            <!-- <span class="label-container">
 								<span class="label">Clear Filters</span>
 								</span> -->
-						</span>
-						<input type="reset" value="" disabled />
-					</label>
-					<div
-						class="separator"
-						data-orientation="vertical"
-						aria-hidden="true"
-						data-restrict-device-max="medium"
-					>
-					</div>
-					<button
-						class="close"
-						type="button"
-						aria-label="Close Filters"
-						data-restrict-device-max="medium"
-					>
-						<IconXmarkBig />
-					</button>
-				</div>
-				<div class="separator group" aria-hidden="true"></div>
-				<div class="accordion-group">
-					<Accordion
-						title={"Type"}
-						id={"filters_type"}
-						crossIconSize={"small"}
-						wrapper={false}
-					>
-						<span
-							class="filter-group-status label-container field-container"
-							slot="button-meta"
-							hidden
-						>
-							<span data-field="filtersTypesStatus">0</span
-							>&nbsp;Selected</span
-						>
-						<div class="separator item" aria-hidden="true"></div>
-						<fieldset
-							class="filters"
-							aria-labelledby="filters_type"
-						>
-							{
-								types.map((type) => (
-									<label>
-										<input
-											type="checkbox"
-											name="types"
-											value={type.toLowerCase()}
-											data-title={type}
-											data-status-field="filtersTypesStatus"
-										/>
-										<IconCheckmark />
-										<span class="text-container">
-											{type}
-										</span>
-									</label>
-								))
-							}
-						</fieldset>
-					</Accordion>
-					<div class="separator group" aria-hidden="true"></div>
-					<Accordion
-						title={"Indicator"}
-						id={"filters_indicator"}
-						crossIconSize={"small"}
-						wrapper={false}
-					>
-						<span
-							class="filter-group-status label-container field-container"
-							slot="button-meta"
-							hidden
-						>
-							<span data-field="filtersIndicatorsStatus">0</span
-							>&nbsp;Selected</span
-						>
-						<div class="separator item" aria-hidden="true"></div>
-						<fieldset
-							class="filters"
-							aria-labelledby="filters_indicator"
-						>
-							{
-								allIndicators.map((indicator) => (
-									<label>
-										<input
-											type="checkbox"
-											name="indicators"
-											value={indicator.data.tag}
-											data-title={indicator.data.title}
-											data-status-field="filtersIndicatorsStatus"
-										/>
-										<IconCheckmark />
-										<span class="text-container">
-											<span
-												class="tag"
-												data-theme={
-													indicator.data["colour"]
-												}
-												data-vibrancy="vivid"
-											>
-												{indicator.data.tag}
-											</span>
-											<span class="text">
-												{indicator.data.title}
-											</span>
-										</span>
-									</label>
-								))
-							}
-						</fieldset>
-					</Accordion>
-					<div class="separator group" aria-hidden="true"></div>
-					<Accordion
-						title={"Component"}
-						id={"filters_components"}
-						crossIconSize={"small"}
-						wrapper={false}
-					>
-						<span
-							class="filter-group-status label-container field-container"
-							slot="button-meta"
-							hidden
-						>
-							<span data-field="filtersComponentsStatus">0</span
-							>&nbsp;Selected</span
-						>
-						<div class="separator item" aria-hidden="true"></div>
-						<fieldset
-							class="filters"
-							aria-labelledby="filters_component"
-						>
-							{
-								allComponents.map((component) => (
-									<label>
-										<input
-											type="checkbox"
-											name="components"
-											value={component.data.tag}
-											data-title={component.data.title}
-											data-status-field="filtersComponentsStatus"
-										/>
-										<IconCheckmark />
-										<span class="text-container">
-											<span
-												class="tag"
-												data-theme={
-													component.data["colour"]
-												}
-												data-vibrancy="vivid"
-											>
-												{component.data.tag}
-											</span>
-											<span class="text">
-												{component.data.title}
-											</span>
-										</span>
-									</label>
-								))
-							}
-						</fieldset>
-					</Accordion>
-				</div>
-			</form>
-		</div>
-	</aside>
-	<dialog
-		id="resources-filters-dialog"
-		aria-labelledby="resources-list-secondary-controls_heading"
-	>
-	</dialog>
+                        </span>
+                        <input type="reset" value="" disabled />
+                    </label>
+                    <div
+                        class="separator"
+                        data-orientation="vertical"
+                        aria-hidden="true"
+                        data-restrict-device-max="medium"
+                    >
+                    </div>
+                    <button
+                        class="close"
+                        type="button"
+                        aria-label="Close Filters"
+                        data-restrict-device-max="medium"
+                    >
+                        <IconXmarkBig />
+                    </button>
+                </div>
+                <div class="separator group" aria-hidden="true"></div>
+                <div class="accordion-group">
+                    <Accordion
+                        title={"Type"}
+                        id={"filters_type"}
+                        crossIconSize={"small"}
+                        wrapper={false}
+                    >
+                        <span
+                            class="filter-group-status label-container field-container"
+                            slot="button-meta"
+                            hidden
+                        >
+                            <span data-field="filtersTypesStatus">0</span
+                            >&nbsp;Selected</span
+                        >
+                        <div class="separator item" aria-hidden="true"></div>
+                        <fieldset
+                            class="filters"
+                            aria-labelledby="filters_type"
+                        >
+                            {
+                                types.map((type) => (
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="types"
+                                            value={type.toLowerCase()}
+                                            data-title={type}
+                                            data-status-field="filtersTypesStatus"
+                                        />
+                                        <IconCheckmark />
+                                        <span class="text-container">
+                                            {type}
+                                        </span>
+                                    </label>
+                                ))
+                            }
+                        </fieldset>
+                    </Accordion>
+                    <div class="separator group" aria-hidden="true"></div>
+                    <Accordion
+                        title={"Indicator"}
+                        id={"filters_indicator"}
+                        crossIconSize={"small"}
+                        wrapper={false}
+                    >
+                        <span
+                            class="filter-group-status label-container field-container"
+                            slot="button-meta"
+                            hidden
+                        >
+                            <span data-field="filtersIndicatorsStatus">0</span
+                            >&nbsp;Selected</span
+                        >
+                        <div class="separator item" aria-hidden="true"></div>
+                        <fieldset
+                            class="filters"
+                            aria-labelledby="filters_indicator"
+                        >
+                            {
+                                allIndicators.map((indicator) => (
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="indicators"
+                                            value={indicator.data.tag}
+                                            data-title={indicator.data.title}
+                                            data-status-field="filtersIndicatorsStatus"
+                                        />
+                                        <IconCheckmark />
+                                        <span class="text-container">
+                                            <span
+                                                class="tag"
+                                                data-theme={
+                                                    indicator.data["colour"]
+                                                }
+                                                data-vibrancy="vivid"
+                                            >
+                                                {indicator.data.tag}
+                                            </span>
+                                            <span class="text">
+                                                {indicator.data.title}
+                                            </span>
+                                        </span>
+                                    </label>
+                                ))
+                            }
+                        </fieldset>
+                    </Accordion>
+                    <div class="separator group" aria-hidden="true"></div>
+                    <Accordion
+                        title={"Component"}
+                        id={"filters_components"}
+                        crossIconSize={"small"}
+                        wrapper={false}
+                    >
+                        <span
+                            class="filter-group-status label-container field-container"
+                            slot="button-meta"
+                            hidden
+                        >
+                            <span data-field="filtersComponentsStatus">0</span
+                            >&nbsp;Selected</span
+                        >
+                        <div class="separator item" aria-hidden="true"></div>
+                        <fieldset
+                            class="filters"
+                            aria-labelledby="filters_component"
+                        >
+                            {
+                                allComponents.map((component) => (
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="components"
+                                            value={component.data.tag}
+                                            data-title={component.data.title}
+                                            data-status-field="filtersComponentsStatus"
+                                        />
+                                        <IconCheckmark />
+                                        <span class="text-container">
+                                            <span
+                                                class="tag"
+                                                data-theme={
+                                                    component.data["colour"]
+                                                }
+                                                data-vibrancy="vivid"
+                                            >
+                                                {component.data.tag}
+                                            </span>
+                                            <span class="text">
+                                                {component.data.title}
+                                            </span>
+                                        </span>
+                                    </label>
+                                ))
+                            }
+                        </fieldset>
+                    </Accordion>
+                </div>
+            </form>
+        </div>
+    </aside>
+    <dialog
+        id="resources-filters-dialog"
+        aria-labelledby="resources-list-secondary-controls_heading"
+    >
+    </dialog>
 
-	<MediaDialog />
+    <MediaDialog />
 
-	<div class="content">
-		<h1 id="main-heading" tabindex="-1">Resources</h1>
+    <div class="content">
+        <h1 id="main-heading" tabindex="-1">Resources</h1>
 
-		<ul id="active-filters-list" class="field-values-list">
-			<template>
-				<li
-					class="filter-tag"
-					data-group=""
-					data-value=""
-					data-status-field=""
-				>
-					<span class="group"></span>
-					<span class="title" title=""></span>
-					<button class="clear" type="button" aria-label="">
-						<IconXmarkSmall />
-					</button>
-				</li>
-			</template>
-		</ul>
+        <ul id="active-filters-list" class="field-values-list">
+            <template>
+                <li
+                    class="filter-tag"
+                    data-group=""
+                    data-value=""
+                    data-status-field=""
+                >
+                    <span class="group"></span>
+                    <span class="title" title=""></span>
+                    <button class="clear" type="button" aria-label="">
+                        <IconXmarkSmall />
+                    </button>
+                </li>
+            </template>
+        </ul>
 
-		<form
-			id="resources-list-primary-controls"
-			class="list-primary-controls"
-			data-list="resources-list"
-		>
-			<fieldset class="search" data-restrict-device-min="medium">
-				<div class="input-container">
-					<input
-						name="search"
-						type="text"
-						role="combobox"
-						autocomplete="off"
-						aria-autocomplete="list"
-						aria-expanded="true"
-						aria-controls="resources-list"
-						aria-activedescendant=""
-						placeholder="Search these resources..."
-						aria-label="Search and filter resources"
-						aria-describedby="resources-list_error-status, resources-list_filter-status"
-					/>
-					<IconSearch />
-				</div>
-			</fieldset>
-			<div class="fieldset-group">
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-					data-restrict-device-max="medium"
-				>
-				</div>
-				<fieldset class="filter" data-restrict-device-max="medium">
-					<legend aria-label="List Filter Options">Filter</legend>
-					<div class="button-group">
-						<button
-							class="filters-toggle"
-							type="button"
-							aria-label="Open filter options"
-							aria-expanded="false"
-						>
-							<span class="icon-and-label-container">
-								<IconFilter />
-								<span class="label-container">
-									<span class="label">Open</span>
-								</span>
-							</span>
-						</button>
-						<button
-							class="filters-reset"
-							type="button"
-							aria-label="Clear all filters"
-							disabled
-						>
-							<span class="icon-and-label-container">
-								<IconFilterClear />
-								<span class="label-container">
-									<span class="label">Clear</span>
-								</span>
-							</span>
-						</button>
-					</div>
-				</fieldset>
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-				<fieldset class="sort">
-					<legend aria-label="List Sort Options">Sort</legend>
-					<div class="button-group">
-						<button
-							type="button"
-							value="date"
-							aria-label="Sort list by date added"
-							aria-pressed="true"
-						>
-							<span class="icon-and-label-container">
-								<IconSortTime />
-								<span class="label-container">
-									<span class="label">Date</span>
-								</span>
-							</span>
-						</button>
-						<button
-							type="button"
-							value="title"
-							aria-label="Sort list by title"
-							aria-pressed="false"
-						>
-							<span class="icon-and-label-container">
-								<IconSortAlpha />
-								<span class="label-container">
-									<span class="label">Title</span>
-								</span>
-							</span>
-						</button>
-					</div>
-				</fieldset>
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-				<fieldset class="layout">
-					<legend aria-label="List Layout Options">Layout</legend>
-					<div class="button-group">
-						<button
-							type="button"
-							value="compact"
-							aria-label="Switch to compact list layout"
-							aria-pressed="true"
-						>
-							<span class="icon-and-label-container">
-								<IconCompact />
-								<span class="label-container">
-									<span class="label">Compact</span>
-									<span data-screen-reader hidden
-										>Compact view unavailable for this
-										filter</span
-									>
-								</span>
-							</span>
-						</button>
-						<button
-							type="button"
-							value="detailed"
-							aria-label="Switch to compact list layout"
-							aria-pressed="false"
-						>
-							<span class="icon-and-label-container">
-								<IconDetailed />
-								<span class="label-container">
-									<span class="label">Detailed</span>
-								</span>
-							</span>
-						</button>
-					</div>
-				</fieldset>
-			</div>
-			<!-- Duplicate search input to ensure tab order matches visual order on smaller devices -->
-			<fieldset class="search" data-restrict-device-max="small">
-				<div class="input-container">
-					<input
-						name="search"
-						type="text"
-						role="combobox"
-						autocomplete="off"
-						aria-autocomplete="list"
-						aria-expanded="true"
-						aria-controls="resources-list"
-						aria-activedescendant=""
-						placeholder="Search these resources..."
-						aria-label="Search and filter resources"
-						aria-describedby="resources-list_error-status, resources-list_filter-status"
-					/>
-					<IconSearch />
-				</div>
-			</fieldset>
-		</form>
+        <form
+            id="resources-list-primary-controls"
+            class="list-primary-controls"
+            data-list="resources-list"
+        >
+            <fieldset class="search" data-restrict-device-min="medium">
+                <div class="input-container">
+                    <input
+                        name="search"
+                        type="text"
+                        role="combobox"
+                        autocomplete="off"
+                        aria-autocomplete="list"
+                        aria-expanded="true"
+                        aria-controls="resources-list"
+                        aria-activedescendant=""
+                        placeholder="Search these resources..."
+                        aria-label="Search and filter resources"
+                        aria-describedby="resources-list_error-status, resources-list_filter-status"
+                    />
+                    <IconSearch />
+                </div>
+            </fieldset>
+            <div class="fieldset-group">
+                <div
+                    class="separator item"
+                    data-orientation="vertical"
+                    aria-hidden="true"
+                    data-restrict-device-max="medium"
+                >
+                </div>
+                <fieldset class="filter" data-restrict-device-max="medium">
+                    <legend aria-label="List Filter Options">Filter</legend>
+                    <div class="button-group">
+                        <button
+                            class="filters-toggle"
+                            type="button"
+                            aria-label="Open filter options"
+                            aria-expanded="false"
+                        >
+                            <span class="icon-and-label-container">
+                                <IconFilter />
+                                <span class="label-container">
+                                    <span class="label">Open</span>
+                                </span>
+                            </span>
+                        </button>
+                        <button
+                            class="filters-reset"
+                            type="button"
+                            aria-label="Clear all filters"
+                            disabled
+                        >
+                            <span class="icon-and-label-container">
+                                <IconFilterClear />
+                                <span class="label-container">
+                                    <span class="label">Clear</span>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                </fieldset>
+                <div
+                    class="separator item"
+                    data-orientation="vertical"
+                    aria-hidden="true"
+                >
+                </div>
+                <fieldset class="sort" data-value="date">
+                    <legend aria-label="List Sort Options">Sort</legend>
+                    <div class="button-group">
+                        <button
+                            type="button"
+                            value="date"
+                            aria-label="Sort list by date added"
+                            aria-pressed="true"
+                        >
+                            <span class="icon-and-label-container">
+                                <IconSortTime />
+                                <span class="label-container">
+                                    <span class="label">Date</span>
+                                </span>
+                            </span>
+                        </button>
+                        <button
+                            type="button"
+                            value="title"
+                            aria-label="Sort list by title"
+                            aria-pressed="false"
+                        >
+                            <span class="icon-and-label-container">
+                                <IconSortAlpha />
+                                <span class="label-container">
+                                    <span class="label">Title</span>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                </fieldset>
+                <div
+                    class="separator item"
+                    data-orientation="vertical"
+                    aria-hidden="true"
+                >
+                </div>
+                <fieldset class="layout" data-value="compact">
+                    <legend aria-label="List Layout Options">Layout</legend>
+                    <div class="button-group">
+                        <button
+                            type="button"
+                            value="compact"
+                            aria-label="Switch to compact list layout"
+                            aria-pressed="true"
+                        >
+                            <span class="icon-and-label-container">
+                                <IconCompact />
+                                <span class="label-container">
+                                    <span class="label">Compact</span>
+                                    <span data-screen-reader hidden
+                                        >Compact view unavailable for this
+                                        filter</span
+                                    >
+                                </span>
+                            </span>
+                        </button>
+                        <button
+                            type="button"
+                            value="detailed"
+                            aria-label="Switch to compact list layout"
+                            aria-pressed="false"
+                        >
+                            <span class="icon-and-label-container">
+                                <IconDetailed />
+                                <span class="label-container">
+                                    <span class="label">Detailed</span>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
+            <!-- Duplicate search input to ensure tab order matches visual order on smaller devices -->
+            <fieldset class="search" data-restrict-device-max="small">
+                <div class="input-container">
+                    <input
+                        name="search"
+                        type="text"
+                        role="combobox"
+                        autocomplete="off"
+                        aria-autocomplete="list"
+                        aria-expanded="true"
+                        aria-controls="resources-list"
+                        aria-activedescendant=""
+                        placeholder="Search these resources..."
+                        aria-label="Search and filter resources"
+                        aria-describedby="resources-list_error-status, resources-list_filter-status"
+                    />
+                    <IconSearch />
+                </div>
+            </fieldset>
+        </form>
 
-		<div class="list-container">
-			<p
-				id="resources-list_error-status"
-				class="error-status"
-				role="status"
-				hidden
-			>
-				<IconWarning aria-hidden="true" />
-				<span>There are no results that match the search term.</span>
-			</p>
-			<p
-				id="resources-list_filter-status"
-				class="filter-status"
-				role="status"
-				aria-live="polite"
-				hidden
-			>
-			</p>
+        <div class="list-container">
+            <p
+                id="resources-list_error-status"
+                class="error-status"
+                role="status"
+                hidden
+            >
+                <IconWarning aria-hidden="true" />
+                <span>There are no results that match the search term.</span>
+            </p>
+            <p
+                id="resources-list_filter-status"
+                class="filter-status"
+                role="status"
+                aria-live="polite"
+                hidden
+            >
+            </p>
 
-			<ul
-				id="resources-list"
-				class="links-list"
-				role="listbox"
-				data-style="divided"
-				data-layout="compact"
-				data-content="resources"
-				data-sort-control="resources-list-primary-controls"
-				data-filter-control="resources-list-secondary-controls"
-				data-search-control="resources-list-primary-controls"
-				data-filter-tag-list="active-filters-list"
-				data-default-item-visibility="shown"
-				data-list-item-categories='["resource"]'
-			>
-				{
-					searchList.map((item, index) => (
-						<DetailedLink
-							itemData={item}
-							index={index}
-							listName={"resources-list"}
-							listGroupSize={10}
-						/>
-					))
-				}
-			</ul>
+            <ul
+                id="resources-list"
+                class="links-list"
+                role="listbox"
+                data-style="divided"
+                data-layout="compact"
+                data-content="resources"
+                data-sort-control="resources-list-primary-controls"
+                data-filter-control="resources-list-secondary-controls"
+                data-search-control="resources-list-primary-controls"
+                data-filter-tag-list="active-filters-list"
+                data-default-item-visibility="shown"
+                data-list-item-categories='["resource"]'
+            >
+                {
+                    searchList.map((item, index) => (
+                        <DetailedLink
+                            itemData={item}
+                            index={index}
+                            listName={"resources-list"}
+                            listGroupSize={10}
+                        />
+                    ))
+                }
+            </ul>
 
-			<button
-				class="show-more"
-				type="button"
-				data-list="resources-list"
-				data-style="solid"
-				data-size="large"
-				hidden
-			>
-				Show More Results
-			</button>
-		</div>
-	</div>
+            <button
+                class="show-more"
+                type="button"
+                data-list="resources-list"
+                data-style="solid"
+                data-size="large"
+            >
+                Show More Results
+            </button>
+        </div>
+    </div>
 </BaseLayout>
 
 <style is:global>
-	/* 
+    /* 
 	// Device Restrictions
 	*/
 
-	@container main (width < 744px) {
-		:is(#filters-aside, main.resources .content)
-			[data-restrict-device-min="medium"] {
-			display: none !important;
-		}
-	}
+    @container main (width < 744px) {
+        :is(#filters-aside, main.resources .content)
+            [data-restrict-device-min="medium"] {
+            display: none !important;
+        }
+    }
 
-	@container main (744px <= width < 1016px) {
-		:is(#filters-aside, main.resources .content)
-			[data-restrict-device-max="small"] {
-			display: none !important;
-		}
-	}
+    @container main (744px <= width < 1016px) {
+        :is(#filters-aside, main.resources .content)
+            [data-restrict-device-max="small"] {
+            display: none !important;
+        }
+    }
 
-	@container main (width >= 1016px) {
-		:is(#filters-aside, main.resources .content)
-			[data-restrict-device-max="small"],
-		:is(#filters-aside, main.resources .content)
-			[data-restrict-device-max="medium"] {
-			display: none !important;
-		}
-	}
+    @container main (width >= 1016px) {
+        :is(#filters-aside, main.resources .content)
+            [data-restrict-device-max="small"],
+        :is(#filters-aside, main.resources .content)
+            [data-restrict-device-max="medium"] {
+            display: none !important;
+        }
+    }
 
-	/* 
+    /* 
 	// Filters Aside
 	*/
 
-	#filters-aside {
-		margin: 0;
-		height: 100vh;
-		position: sticky;
-		top: 0;
-		z-index: 100;
-	}
+    #filters-aside {
+        margin: 0;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
 
-	#filters-aside > .wrapper {
-		padding: var(--space-xl) 0;
-		min-width: 300px;
-		height: 100%;
-		border-right: 1px solid var(--colour-border-neutral-subtle);
-		background-color: var(--colour-background);
-	}
+    #filters-aside > .wrapper {
+        padding: var(--space-xl) 0;
+        min-width: 300px;
+        height: 100%;
+        border-right: 1px solid var(--colour-border-neutral-subtle);
+        background-color: var(--colour-background);
+    }
 
-	@container main (width < 1016px) {
-		#filters-aside {
-			display: initial;
-			margin: 0;
-			min-width: auto;
-			width: 0;
-		}
+    @container main (width < 1016px) {
+        #filters-aside {
+            display: initial;
+            margin: 0;
+            min-width: auto;
+            width: 0;
+        }
 
-		#filters-aside > .wrapper {
-			width: 300px;
-			box-shadow: var(--box-shadow);
-			translate: -300px;
-			transition: translate var(--transition-ease-medium);
-		}
+        #filters-aside > .wrapper {
+            width: 300px;
+            box-shadow: var(--box-shadow);
+            translate: -300px;
+            transition: translate var(--transition-ease-medium);
+        }
 
-		main:has(button.filters-toggle[aria-expanded="true"])
-			#filters-aside
-			> .wrapper {
-			translate: 0;
-		}
-	}
+        main:has(button.filters-toggle[aria-expanded="true"])
+            #filters-aside
+            > .wrapper {
+            translate: 0;
+        }
+    }
 
-	/* 
+    /* 
 	// Secondary List Controls
 	*/
 
-	#resources-list-secondary-controls {
-		gap: var(--space-2xs);
-	}
+    #resources-list-secondary-controls {
+        gap: var(--space-2xs);
+    }
 
-	/*
+    /*
 	// Heading
 	*/
 
-	#resources-list-secondary-controls .heading-group {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: var(--space-2xs);
-		margin: 0 var(--space-2xs);
-	}
+    #resources-list-secondary-controls .heading-group {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        gap: var(--space-2xs);
+        margin: 0 var(--space-2xs);
+    }
 
-	#resources-list-secondary-controls .heading-group .heading {
-		font-size: var(--font-size-lg);
-		margin: 0 0 0 var(--space-xs);
-		flex-grow: 1;
-	}
+    #resources-list-secondary-controls .heading-group .heading {
+        font-size: var(--font-size-lg);
+        margin: 0 0 0 var(--space-xs);
+        flex-grow: 1;
+    }
 
-	#resources-list-secondary-controls .heading-group .separator {
-		--separator-long-edge-dimension: 1.75rem;
-	}
+    #resources-list-secondary-controls .heading-group .separator {
+        --separator-long-edge-dimension: 1.75rem;
+    }
 
-	/* 
+    /* 
 	// Reset and Close Buttons
 	*/
 
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as="button"]) {
-		--button-background-colour: transparent;
-		--icon-size: 1.25rem;
-		margin: 0;
-	}
+    #resources-list-secondary-controls
+        .heading-group
+        :is(button, [data-style-as="button"]) {
+        --button-background-colour: transparent;
+        --icon-size: 1.25rem;
+        margin: 0;
+    }
 
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as="button"]):is(:hover, :focus-visible),
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as="button"]):has(input:focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-	}
+    #resources-list-secondary-controls
+        .heading-group
+        :is(button, [data-style-as="button"]):is(:hover, :focus-visible),
+    #resources-list-secondary-controls
+        .heading-group
+        :is(button, [data-style-as="button"]):has(input:focus-visible) {
+        --button-background-colour: var(--colour-fill-neutral-subtle);
+    }
 
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as="button"]):has(
-			input[type="reset"]:focus-visible
-		) {
-		outline: var(--colour-focus-ring) solid 2px;
-		outline-offset: 3px;
-	}
+    #resources-list-secondary-controls
+        .heading-group
+        :is(button, [data-style-as="button"]):has(
+            input[type="reset"]:focus-visible
+        ) {
+        outline: var(--colour-focus-ring) solid 2px;
+        outline-offset: 3px;
+    }
 
-	/* Dialog Customization */
+    /* Dialog Customization */
 
-	dialog #resources-list-secondary-controls .heading-group {
-		margin: 0 0 var(--space-3xs);
-	}
+    dialog #resources-list-secondary-controls .heading-group {
+        margin: 0 0 var(--space-3xs);
+    }
 
-	dialog #resources-list-secondary-controls .heading-group .heading {
-		font-size: var(--font-size-2xl);
-		margin: 0;
-	}
+    dialog #resources-list-secondary-controls .heading-group .heading {
+        font-size: var(--font-size-2xl);
+        margin: 0;
+    }
 
-	dialog
-		#resources-list-secondary-controls
-		.heading-group
-		+ .separator.group {
-		--separator-short-edge-dimension: 2px;
-	}
+    dialog
+        #resources-list-secondary-controls
+        .heading-group
+        + .separator.group {
+        --separator-short-edge-dimension: 2px;
+    }
 
-	/*
+    /*
 	// Accordion Customization 
 	*/
 
-	#resources-list-secondary-controls .accordion-group {
-		margin: 0;
-	}
+    #resources-list-secondary-controls .accordion-group {
+        margin: 0;
+    }
 
-	#resources-list-secondary-controls .accordion .heading {
-		margin: 0 var(--space-2xs);
-	}
+    #resources-list-secondary-controls .accordion .heading {
+        margin: 0 var(--space-2xs);
+    }
 
-	#resources-list-secondary-controls .accordion .heading button {
-		--button-background-colour: transparent;
-		--button-border-radius: var(--border-radius-small);
-		--button-ui-colour: var(--colour-ui-neutral);
-		min-height: auto;
-		padding: var(--space-xs);
-	}
+    #resources-list-secondary-controls .accordion .heading button {
+        --button-background-colour: transparent;
+        --button-border-radius: var(--border-radius-small);
+        --button-ui-colour: var(--colour-ui-neutral);
+        min-height: auto;
+        padding: var(--space-xs);
+    }
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button:is(:hover, :focus-visible),
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button[aria-expanded="true"]:is(:hover, :focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-	}
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button:is(:hover, :focus-visible),
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button[aria-expanded="true"]:is(:hover, :focus-visible) {
+        --button-background-colour: var(--colour-fill-neutral-subtle);
+    }
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
-		--button-boxshadow-colour: transparent;
-	}
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+        --button-boxshadow-colour: transparent;
+    }
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button[aria-expanded="true"] {
-		--button-background-colour: transparent;
-		--icon-colour: unset;
-		border-radius: var(--button-border-radius);
-	}
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button[aria-expanded="true"] {
+        --button-background-colour: transparent;
+        --icon-colour: unset;
+        border-radius: var(--button-border-radius);
+    }
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button
-		.icon-and-label-container {
-		--label-size: var(--font-size-xs);
-		--label-weight: 600;
-	}
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button
+        .icon-and-label-container {
+        --label-size: var(--font-size-xs);
+        --label-weight: 600;
+    }
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button
-		> .icon.caret {
-		--icon-size: 0.875rem;
-	}
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button
+        > .icon.caret {
+        --icon-size: 0.875rem;
+    }
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button[aria-expanded="true"]
-		.icon-and-label-container {
-		--label-colour: unset;
-	}
+    #resources-list-secondary-controls
+        .accordion
+        .heading
+        button[aria-expanded="true"]
+        .icon-and-label-container {
+        --label-colour: unset;
+    }
 
-	#resources-list-secondary-controls .accordion .panel {
-		margin: 0 var(--space-2xs);
-		padding-top: var(--space-3xs);
-		border: none;
-	}
+    #resources-list-secondary-controls .accordion .panel {
+        margin: 0 var(--space-2xs);
+        padding-top: var(--space-3xs);
+        border: none;
+    }
 
-	/* Dialog Customization */
+    /* Dialog Customization */
 
-	dialog #resources-list-secondary-controls .accordion .heading {
-		margin: 0;
-	}
+    dialog #resources-list-secondary-controls .accordion .heading {
+        margin: 0;
+    }
 
-	/* 
+    /* 
 	// Separators 
 	*/
 
-	#resources-list-secondary-controls .separator.item {
-		--separator-long-edge-dimension: auto;
-		margin: 0 var(--space-xs);
-	}
+    #resources-list-secondary-controls .separator.item {
+        --separator-long-edge-dimension: auto;
+        margin: 0 var(--space-xs);
+    }
 
-	/* Dialog Customization */
+    /* Dialog Customization */
 
-	#resources-list-secondary-controls .separator.item {
-		margin: 0;
-	}
+    #resources-list-secondary-controls .separator.item {
+        margin: 0;
+    }
 
-	/* 
+    /* 
 	// Fieldsets and Inputs 
 	*/
 
-	#resources-list-secondary-controls fieldset.filters {
-		padding: var(--space-xs) 0 var(--space-2xs);
-		max-height: min(500px, 50vh);
-		overflow: auto;
-	}
+    #resources-list-secondary-controls fieldset.filters {
+        padding: var(--space-xs) 0 var(--space-2xs);
+        max-height: min(500px, 50vh);
+        overflow: auto;
+    }
 
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type="checkbox"]) {
-		margin: 0 var(--space-xs);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-small);
-	}
+    #resources-list-secondary-controls
+        fieldset.filters
+        label:has(input[type="checkbox"]) {
+        margin: 0 var(--space-xs);
+        padding: var(--space-2xs) var(--space-xs);
+        border-radius: var(--border-radius-small);
+    }
 
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
-		background-color: var(--colour-fill-neutral-subtle);
-	}
+    #resources-list-secondary-controls
+        fieldset.filters
+        label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
+        background-color: var(--colour-fill-neutral-subtle);
+    }
 
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type="checkbox"]:focus-visible) {
-		outline: var(--colour-focus-ring) solid 2px;
-		outline-offset: 3px;
-	}
+    #resources-list-secondary-controls
+        fieldset.filters
+        label:has(input[type="checkbox"]:focus-visible) {
+        outline: var(--colour-focus-ring) solid 2px;
+        outline-offset: 3px;
+    }
 
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type="checkbox"])
-		.icon.checkmark {
-		top: 0.75rem;
-		left: 1rem;
-	}
+    #resources-list-secondary-controls
+        fieldset.filters
+        label:has(input[type="checkbox"])
+        .icon.checkmark {
+        top: 0.75rem;
+        left: 1rem;
+    }
 
-	/* Dialog Customization */
+    /* Dialog Customization */
 
-	dialog #resources-list-secondary-controls fieldset.filters {
-		overflow: initial;
-		max-height: none;
-	}
+    dialog #resources-list-secondary-controls fieldset.filters {
+        overflow: initial;
+        max-height: none;
+    }
 
-	dialog
-		#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type="checkbox"]) {
-		margin: 0;
-	}
+    dialog
+        #resources-list-secondary-controls
+        fieldset.filters
+        label:has(input[type="checkbox"]) {
+        margin: 0;
+    }
 
-	/* 
+    /* 
 	// Primary List Controls
 	------------------------*/
 
-	#resources-list-primary-controls,
-	#resources-list-primary-controls .fieldset-group {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: end;
-		column-gap: var(--space-sm);
-		row-gap: var(--space-base);
-		user-select: none;
-	}
+    #resources-list-primary-controls,
+    #resources-list-primary-controls .fieldset-group {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: end;
+        column-gap: var(--space-sm);
+        row-gap: var(--space-base);
+        user-select: none;
+        -webkit-user-select: none;
+    }
 
-	@container main (width < 744px) {
-		#resources-list-primary-controls {
-			flex-flow: column;
-			align-items: stretch;
-		}
+    @container main (width < 744px) {
+        #resources-list-primary-controls {
+            flex-flow: column;
+            align-items: stretch;
+        }
 
-		#resources-list-primary-controls .fieldset-group {
-			flex-wrap: wrap;
-		}
+        #resources-list-primary-controls .fieldset-group {
+            flex-wrap: wrap;
+        }
 
-		#resources-list-primary-controls
-			.fieldset-group
-			.separator:first-of-type {
-			display: none;
-		}
-	}
+        #resources-list-primary-controls
+            .fieldset-group
+            .separator:first-of-type {
+            display: none;
+        }
+    }
 
-	/* 
+    /* 
 	// Search Input
 	*/
 
-	#resources-list-primary-controls fieldset.search {
-		flex-grow: 1;
-	}
+    #resources-list-primary-controls fieldset.search {
+        flex-grow: 1;
+    }
 
-	/* 
+    /* 
 	// Fieldsets and Buttons
 	*/
 
-	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) {
-		--group-gap: var(--space-2xs);
-	}
+    #resources-list-primary-controls fieldset:is(.filter, .sort, .layout) {
+        --group-gap: var(--space-2xs);
+    }
 
-	/* Legend */
+    /* Legend */
 
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		legend {
-		font-size: var(--font-size-3xs);
-		color: var(--colour-ui-neutral-subtle);
-		margin: 0 0 0.325rem;
-	}
+    #resources-list-primary-controls
+        fieldset:is(.filter, .sort, .layout)
+        legend {
+        font-size: var(--font-size-3xs);
+        color: var(--colour-ui-neutral-subtle);
+        margin: 0 0 0.325rem;
+    }
 
-	/* Buttons */
+    /* Buttons */
 
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button {
-		--icon-size: 1.25rem;
-		font-size: var(--font-size-2xs);
-		height: 2rem;
-	}
+    #resources-list-primary-controls
+        fieldset:is(.filter, .sort, .layout)
+        button {
+        --icon-size: 1.25rem;
+        font-size: var(--font-size-2xs);
+        height: 2rem;
+    }
 
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button:not(:is([aria-pressed="true"], [aria-expanded="true"])):is(
-			:hover,
-			:focus-visible
-		) {
-		--button-background-colour: transparent;
-		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
-	}
+    #resources-list-primary-controls
+        fieldset:is(.filter, .sort, .layout)
+        button:not(:is([aria-pressed="true"], [aria-expanded="true"])):is(
+            :hover,
+            :focus-visible
+        ) {
+        --button-background-colour: transparent;
+        --button-boxshadow-colour: var(--colour-border-neutral-subtle);
+    }
 
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button:is([aria-pressed="true"], [aria-expanded="true"]) {
-		--icon-colour: var(--colour-ui-reverse);
-		--label-colour: var(--colour-ui-reverse);
-	}
+    #resources-list-primary-controls
+        fieldset:is(.filter, .sort, .layout)
+        button:is([aria-pressed="true"], [aria-expanded="true"]) {
+        --icon-colour: var(--colour-ui-reverse);
+        --label-colour: var(--colour-ui-reverse);
+    }
 
-	#resources-list-primary-controls
-		fieldset:disabled
-		button:is(
-			[aria-pressed="true"],
-			[aria-expanded="true"],
-			:has(input:checked)
-		) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-		--button-ui-colour: var(--colour-ui-neutral);
-		--icon-colour: var(--colour-ui-neutral);
-		--label-colour: var(--colour-ui-neutral);
-	}
+    #resources-list-primary-controls
+        fieldset:disabled
+        button:is(
+            [aria-pressed="true"],
+            [aria-expanded="true"],
+            :has(input:checked)
+        ) {
+        --button-background-colour: var(--colour-fill-neutral-subtle);
+        --button-ui-colour: var(--colour-ui-neutral);
+        --icon-colour: var(--colour-ui-neutral);
+        --label-colour: var(--colour-ui-neutral);
+    }
 
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button[aria-pressed="true"] {
-		pointer-events: none;
-	}
+    #resources-list-primary-controls
+        fieldset:is(.filter, .sort, .layout)
+        button[aria-pressed="true"] {
+        pointer-events: none;
+    }
 
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button
-		.label-container {
-		display: none;
-	}
+    #resources-list-primary-controls
+        fieldset:is(.filter, .sort, .layout)
+        button
+        .label-container {
+        display: none;
+    }
 
-	/* Separator */
+    /* Separator */
 
-	#resources-list-primary-controls .separator {
-		--separator-long-edge-dimension: 1.5rem;
-		margin-bottom: var(--space-3xs);
-	}
+    #resources-list-primary-controls .separator {
+        --separator-long-edge-dimension: 1.5rem;
+        margin-bottom: var(--space-3xs);
+    }
 </style>
 
 <script>
-	//
-	// Imports
-	//
+    //
+    // Imports
+    //
 
-	import { getUserData } from "src/stores/userDataStore";
-	import { dialogControl } from "src/utilities/dialog";
-	import { eventControl } from "src/utilities/event";
-	import { resetForm } from "src/utilities/form";
-	import { filter, search, sort, layout } from "src/utilities/list";
+    import { getUserData } from "src/stores/userDataStore";
+    import { dialogControl } from "src/utilities/dialog";
+    import { eventControl } from "src/utilities/event";
+    import { resetForm } from "src/utilities/form";
+    import { filter, search, sort, layout } from "src/utilities/list";
 
-	//
-	// Methods
-	//
+    //
+    // Methods
+    //
 
-	let toggleForcedLayout = (forceLayout: Boolean) => {
-		let resourcesList = document.querySelector("#resources-list");
-		let layoutDetailedBtn = document.querySelector(
-			'fieldset.layout button[value="detailed"]',
-		);
-		let layoutCompactBtn = document.querySelector(
-			'fieldset.layout button[value="compact"]',
-		);
-		let screenReaderContext = layoutCompactBtn.querySelector(
-			"[data-screen-reader]",
-		);
+    let toggleForcedLayout = (forceLayout: Boolean) => {
+        let resourcesList = document.querySelector("#resources-list");
+        let layoutDetailedBtn = document.querySelector(
+            'fieldset.layout button[value="detailed"]',
+        );
+        let layoutCompactBtn = document.querySelector(
+            'fieldset.layout button[value="compact"]',
+        );
+        let screenReaderContext = layoutCompactBtn.querySelector(
+            "[data-screen-reader]",
+        );
 
-		if (forceLayout) {
-			resourcesList.setAttribute("data-layout", "detailed");
-			layoutCompactBtn.setAttribute("disabled", "");
-			layoutCompactBtn.setAttribute("aria-pressed", "false");
-			screenReaderContext.removeAttribute("hidden");
-			layoutDetailedBtn.setAttribute("aria-pressed", "true");
-		} else {
-			let userLayoutPreference =
-				getUserData().uiPreferences.resourcePageLayout;
+        if (forceLayout) {
+            resourcesList.setAttribute("data-layout", "detailed");
+            layoutCompactBtn.setAttribute("disabled", "");
+            layoutCompactBtn.setAttribute("aria-pressed", "false");
+            screenReaderContext.removeAttribute("hidden");
+            layoutDetailedBtn.setAttribute("aria-pressed", "true");
+        } else {
+            let userLayoutPreference =
+                getUserData().uiPreferences.resourcePageLayout;
 
-			if (userLayoutPreference === "compact") {
-				resourcesList.setAttribute("data-layout", "compact");
-				layoutCompactBtn.setAttribute("aria-pressed", "true");
-				layoutDetailedBtn.setAttribute("aria-pressed", "false");
-			} else {
-				resourcesList.setAttribute("data-layout", "detailed");
-				layoutCompactBtn.setAttribute("aria-pressed", "false");
-				layoutDetailedBtn.setAttribute("aria-pressed", "true");
-			}
+            if (userLayoutPreference === "compact") {
+                resourcesList.setAttribute("data-layout", "compact");
+                layoutCompactBtn.setAttribute("aria-pressed", "true");
+                layoutDetailedBtn.setAttribute("aria-pressed", "false");
+            } else {
+                resourcesList.setAttribute("data-layout", "detailed");
+                layoutCompactBtn.setAttribute("aria-pressed", "false");
+                layoutDetailedBtn.setAttribute("aria-pressed", "true");
+            }
 
-			layoutCompactBtn.removeAttribute("disabled");
-			screenReaderContext.setAttribute("hidden", "");
-		}
-	};
+            layoutCompactBtn.removeAttribute("disabled");
+            screenReaderContext.setAttribute("hidden", "");
+        }
+    };
 
-	//
-	// Inits
-	//
+    //
+    // Inits
+    //
 
-	filter.init();
-	eventControl.add({
-		elem: document,
-		eventType: "astro:after-swap",
-		fn: filter.init,
-	});
+    filter.init();
+    eventControl.add({
+        elem: document,
+        eventType: "astro:after-swap",
+        fn: filter.init,
+    });
 
-	sort.init();
-	eventControl.add({
-		elem: document,
-		eventType: "astro:after-swap",
-		fn: sort.init,
-	});
+    sort.init();
+    eventControl.add({
+        elem: document,
+        eventType: "astro:after-swap",
+        fn: sort.init,
+    });
 
-	layout.init();
-	eventControl.add({
-		elem: document,
-		eventType: "astro:after-swap",
-		fn: layout.init,
-	});
+    layout.init();
+    eventControl.add({
+        elem: document,
+        eventType: "astro:after-swap",
+        fn: layout.init,
+    });
 
-	//
-	// Event Listeners
-	//
+    //
+    // Event Listeners
+    //
 
-	let onSearchMatchFound = (event: CustomEvent) => {
-		let { listId, listMatchTypes } = event.detail;
-		if (listId !== "resources-list") return;
-		let forceLayout = listMatchTypes.has("description");
-		toggleForcedLayout(forceLayout);
-	};
-	eventControl.add({
-		elem: document,
-		eventType: "searchMatchFound",
-		fn: onSearchMatchFound,
-	});
+    let onSearchMatchFound = (event: CustomEvent) => {
+        let { listId, listMatchTypes } = event.detail;
+        if (listId !== "resources-list") return;
+        let forceLayout = listMatchTypes.has("description");
+        toggleForcedLayout(forceLayout);
+    };
+    eventControl.add({
+        elem: document,
+        eventType: "searchMatchFound",
+        fn: onSearchMatchFound,
+    });
 
-	let onControlsClick = (event) => {
-		let target = event.target as any;
+    let onControlsClick = (event) => {
+        let target = event.target as any;
 
-		if (target.matches("button.filters-toggle")) {
-			let isExpanded = target.getAttribute("aria-expanded") === "true";
-			let parent = document
-				.querySelector("#resources-list-secondary-controls")
-				.parentElement.matches("dialog")
-				? "dialog"
-				: "aside";
+        if (target.matches("button.filters-toggle")) {
+            let isExpanded = target.getAttribute("aria-expanded") === "true";
+            let parent = document
+                .querySelector("#resources-list-secondary-controls")
+                .parentElement.matches("dialog")
+                ? "dialog"
+                : "aside";
 
-			// Open the panel
-			if (!isExpanded) {
-				if (parent === "dialog") {
-					dialogControl.open({
-						dialogId: "resources-filters-dialog",
-					});
-				}
-			}
+            // Open the panel
+            if (!isExpanded) {
+                if (parent === "dialog") {
+                    dialogControl.open({
+                        dialogId: "resources-filters-dialog",
+                    });
+                }
+            }
 
-			target.setAttribute("aria-expanded", String(!isExpanded));
-		}
+            target.setAttribute("aria-expanded", String(!isExpanded));
+        }
 
-		if (target.matches("button.filters-reset")) {
-			let form = document.querySelector(
-				"#resources-list-secondary-controls",
-			) as HTMLFormElement;
-			if (!form) return;
-			form.reset();
-		}
-	};
-	eventControl.add({
-		selector: ".list-primary-controls",
-		eventType: "click",
-		fn: onControlsClick,
-	});
+        if (target.matches("button.filters-reset")) {
+            let form = document.querySelector(
+                "#resources-list-secondary-controls",
+            ) as HTMLFormElement;
+            if (!form) return;
+            form.reset();
+        }
+    };
+    eventControl.add({
+        selector: ".list-primary-controls",
+        eventType: "click",
+        fn: onControlsClick,
+    });
 
-	let onAsideClick = (event) => {
-		let target = event.target as any;
+    let onAsideClick = (event) => {
+        let target = event.target as any;
 
-		if (target.matches("button.close")) {
-			let filtersToggle = document.querySelector(
-				"#resources-list-primary-controls button.filters-toggle",
-			);
-			if (!filtersToggle) return;
-			filtersToggle.setAttribute("aria-expanded", "false");
-		}
-	};
-	eventControl.add({
-		selector: "#filters-aside",
-		eventType: "click",
-		fn: onAsideClick,
-	});
+        if (target.matches("button.close")) {
+            let filtersToggle = document.querySelector(
+                "#resources-list-primary-controls button.filters-toggle",
+            );
+            if (!filtersToggle) return;
+            filtersToggle.setAttribute("aria-expanded", "false");
+        }
+    };
+    eventControl.add({
+        selector: "#filters-aside",
+        eventType: "click",
+        fn: onAsideClick,
+    });
 
-	let onDialogClick = (event) => {
-		let target = event.target as any;
+    let onDialogClick = (event) => {
+        let target = event.target as any;
 
-		if (target.matches("button.close")) {
-			dialogControl.close(target);
-			let filtersToggle = document.querySelector(
-				"#resources-list-primary-controls button.filters-toggle",
-			);
-			if (!filtersToggle) return;
-			filtersToggle.setAttribute("aria-expanded", "false");
-		}
-	};
-	eventControl.add({
-		selector: "#resources-filters-dialog",
-		eventType: "click",
-		fn: onDialogClick,
-	});
+        if (target.matches("button.close")) {
+            dialogControl.close(target);
+            let filtersToggle = document.querySelector(
+                "#resources-list-primary-controls button.filters-toggle",
+            );
+            if (!filtersToggle) return;
+            filtersToggle.setAttribute("aria-expanded", "false");
+        }
+    };
+    eventControl.add({
+        selector: "#resources-filters-dialog",
+        eventType: "click",
+        fn: onDialogClick,
+    });
 
-	let onFilterChange = (event: CustomEvent) => {
-		let detail = event.detail;
+    let onFilterChange = (event: CustomEvent) => {
+        let detail = event.detail;
 
-		let resetFiltersBtns = document.querySelectorAll(".filters-reset");
-		if (!resetFiltersBtns) return;
-		if (Object.keys(detail.activeFilters).length > 0) {
-			for (let btn of resetFiltersBtns) {
-				let input = btn.querySelector("input");
-				if (input) {
-					input.removeAttribute("disabled");
-				} else {
-					btn.removeAttribute("disabled");
-				}
-			}
-		} else {
-			for (let btn of resetFiltersBtns) {
-				let input = btn.querySelector("input");
-				if (input) {
-					input.setAttribute("disabled", "");
-				} else {
-					btn.setAttribute("disabled", "");
-				}
-			}
-		}
-	};
-	eventControl.add({
-		elem: document,
-		eventType: "filterChange",
-		fn: onFilterChange,
-	});
+        let resetFiltersBtns = document.querySelectorAll(".filters-reset");
+        if (!resetFiltersBtns) return;
+        if (Object.keys(detail.activeFilters).length > 0) {
+            for (let btn of resetFiltersBtns) {
+                let input = btn.querySelector("input");
+                if (input) {
+                    input.removeAttribute("disabled");
+                } else {
+                    btn.removeAttribute("disabled");
+                }
+            }
+        } else {
+            for (let btn of resetFiltersBtns) {
+                let input = btn.querySelector("input");
+                if (input) {
+                    input.setAttribute("disabled", "");
+                } else {
+                    btn.setAttribute("disabled", "");
+                }
+            }
+        }
+    };
+    eventControl.add({
+        elem: document,
+        eventType: "filterChange",
+        fn: onFilterChange,
+    });
 
-	let onMediaQueryChange = (event) => {
-		let filtersToggle = document.querySelector(
-			"#resources-list-primary-controls button.filters-toggle",
-		);
-		if (!filtersToggle) return;
+    let onMediaQueryChange = (event) => {
+        let filtersToggle = document.querySelector(
+            "#resources-list-primary-controls button.filters-toggle",
+        );
+        if (!filtersToggle) return;
 
-		let isExpanded = filtersToggle.getAttribute("aria-expanded") === "true";
+        let isExpanded = filtersToggle.getAttribute("aria-expanded") === "true";
 
-		let filtersAside = document.querySelector("#filters-aside>.wrapper");
-		let filtersDialog = document.querySelector("#resources-filters-dialog");
-		let form = document.querySelector("#resources-list-secondary-controls");
-		if (!filtersAside || !filtersDialog || !form) return;
+        let filtersAside = document.querySelector("#filters-aside>.wrapper");
+        let filtersDialog = document.querySelector("#resources-filters-dialog");
+        let form = document.querySelector("#resources-list-secondary-controls");
+        if (!filtersAside || !filtersDialog || !form) return;
 
-		// Resizing from larger to smaller (<744px)
-		if (event.matches) {
-			// Switch drawer to modal
-			if (form.parentElement === filtersDialog) return;
-			filtersDialog.append(form);
-			filtersAside.parentElement.setAttribute("hidden", "");
-			if (isExpanded) {
-				dialogControl.open({
-					dialogId: "resources-filters-dialog",
-				});
-			}
-		}
-		// Resizing from smaller to larger (>744px)
-		else {
-			// Switch modal to drawer
-			if (form.parentElement === filtersAside) return;
-			filtersAside.append(form);
-			filtersAside.parentElement.removeAttribute("hidden");
-			if (isExpanded) {
-				dialogControl.close(filtersDialog);
-			}
-		}
-	};
-	// Special case event listener, cannot be attached to the document and delegated
-	let mediaQuery = window.matchMedia("(max-width: 744px)");
-	eventControl.add({
-		elem: mediaQuery,
-		eventType: "change",
-		fn: onMediaQueryChange,
-	});
+        // Resizing from larger to smaller (<744px)
+        if (event.matches) {
+            // Switch drawer to modal
+            if (form.parentElement === filtersDialog) return;
+            filtersDialog.append(form);
+            filtersAside.parentElement.setAttribute("hidden", "");
+            if (isExpanded) {
+                dialogControl.open({
+                    dialogId: "resources-filters-dialog",
+                });
+            }
+        }
+        // Resizing from smaller to larger (>744px)
+        else {
+            // Switch modal to drawer
+            if (form.parentElement === filtersAside) return;
+            filtersAside.append(form);
+            filtersAside.parentElement.removeAttribute("hidden");
+            if (isExpanded) {
+                dialogControl.close(filtersDialog);
+            }
+        }
+    };
+    // Special case event listener, cannot be attached to the document and delegated
+    let mediaQuery = window.matchMedia("(max-width: 744px)");
+    eventControl.add({
+        elem: mediaQuery,
+        eventType: "change",
+        fn: onMediaQueryChange,
+    });
 
-	let onPageLoad = () => {
-		let main = document.querySelector("main");
-		if (!main.matches(".resources")) return;
+    let onPageLoad = () => {
+        let main = document.querySelector("main");
+        if (!main.matches(".resources")) return;
 
-		let filtersAside = document.querySelector("#filters-aside>.wrapper");
-		let filtersDialog = document.querySelector("#resources-filters-dialog");
-		let form = filtersAside.querySelector(
-			"#resources-list-secondary-controls",
-		);
+        let filtersAside = document.querySelector("#filters-aside>.wrapper");
+        let filtersDialog = document.querySelector("#resources-filters-dialog");
+        let form = filtersAside.querySelector(
+            "#resources-list-secondary-controls",
+        );
 
-		resetForm({ form });
+        resetForm({ form, resetType: "hard" });
 
-		let mediaQuery = window.matchMedia("(max-width: 744px)");
-		if (mediaQuery.matches) {
-			if (form.parentElement === filtersDialog) return;
-			filtersDialog.append(form);
-			filtersAside.parentElement.setAttribute("hidden", "");
-		}
-	};
-	eventControl.add({
-		elem: document,
-		eventType: "astro:page-load",
-		fn: onPageLoad,
-	});
+        let mediaQuery = window.matchMedia("(max-width: 744px)");
+        if (mediaQuery.matches) {
+            if (form.parentElement === filtersDialog) return;
+            filtersDialog.append(form);
+            filtersAside.parentElement.setAttribute("hidden", "");
+        }
+    };
+    eventControl.add({
+        elem: document,
+        eventType: "astro:page-load",
+        fn: onPageLoad,
+    });
 </script>

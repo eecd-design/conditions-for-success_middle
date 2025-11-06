@@ -4,9 +4,6 @@ import AssessorDialogs from "src/components/dialogs/AssessorDialogs.astro";
 import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssessmentDialogs.astro";
 import ExportAssessmentDialogs from "src/components/dialogs/ExportAssessmentDialogs.astro";
 import EditStatusDialogs from "src/components/dialogs/EditStatusDialogs.astro";
-import Toast from "src/components/Toast.astro";
-import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
-import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 ---
 
 <CreateEditAssessmentDialogs />
@@ -14,55 +11,6 @@ import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
 <OpenImportAssessmentDialogs />
 <ExportAssessmentDialogs />
 <EditStatusDialogs />
-
-<Toast
-	id={"edit-assessment-properties-dialog_save-toast_success"}
-	message={`Save successful!`}
-	colour={"green"}
-	type={"success"}
->
-	<IconCheckmark slot={"icon"} />
-</Toast>
-<Toast
-	id={"assessor-dialog_save-toast_success"}
-	message={`Save successful!`}
-	colour={"green"}
-	type={"success"}
->
-	<IconCheckmark slot={"icon"} />
-</Toast>
-<Toast
-	id={"edit-status-dialog_change-status-toast_success"}
-	message={`Save successful!`}
-	colour={"green"}
-	type={"success"}
->
-	<IconCheckmark slot={"icon"} />
-</Toast>
-<Toast
-	id={"edit-status-dialog_change-status-and-close-toast_success"}
-	message={`Status change saved and assessment closed.`}
-	colour={"green"}
-	type={"success"}
->
-	<IconCheckmark slot={"icon"} />
-</Toast>
-<Toast
-	id={"edit-status-dialog_close-toast_success"}
-	message={`Assessment closed.`}
-	colour={"green"}
-	type={"success"}
->
-	<IconCheckmark slot={"icon"} />
-</Toast>
-<Toast
-	id={"export-warning-dialog_close-toast_success"}
-	message={`Assessment closed.`}
-	colour={"green"}
-	type={"success"}
->
-	<IconCheckmark slot={"icon"} />
-</Toast>
 
 <style is:global>
 	dialog:not([data-context="setup"]) [data-restrict-context="setup"] {

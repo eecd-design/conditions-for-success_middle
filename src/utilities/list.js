@@ -7,152 +7,208 @@ import { eventControl } from "./event";
 //
 
 let findMatches = ({ searchIndex, values, defaultItemVisibility }) => {
-	if (!searchIndex || !values) return;
+    if (!searchIndex || !values) return;
 
-	let results = [];
-	let listMatchTypes = new Set();
+    let results = [];
+    let listMatchTypes = new Set();
 
-	// Loop through search index to find matches
-	for (let entry of searchIndex) {
+    // Loop through search index to find matches
+    for (let entry of searchIndex) {
 
-		let {
-			id,
-			category,
-			title,
-			titleWords,
-			tag,
-			description,
-			descWords,
-			type,
-			indicators,
-			components,
-			considerations,
-		} = entry;
+        let {
+            id,
+            category,
+            title,
+            titleWords,
+            tag,
+            description,
+            descWords,
+            type,
+            indicators,
+            components,
+            considerations,
+        } = entry;
 
-		let match = false;
-		let matchedAll = true;
-		let entryMatchTypes = new Set;
-		let relevance = 0;
+        let match = false;
+        let matchedAll = true;
+        let entryMatchTypes = new Set();
+        let relevance = 0;
 
-		let markMatch = (score = 1, matchType = null) => {
-			match = true;
-			relevance += score;
-			if (matchType) {
-				entryMatchTypes.add(matchType);
-				listMatchTypes.add(matchType);
-			}
-		};
+        let markMatch = (score = 1, matchType = null) => {
+            match = true;
+            relevance += score;
+            if (matchType) {
+                entryMatchTypes.add(matchType);
+                listMatchTypes.add(matchType);
+            }
+        };
 
-		if (values.search) {
+        if (values.search) {
 
-			let searchValue = values.search.trim().length > 0 ? values.search.toLowerCase().trim() : false;
+            let searchValue = typeof values.search === 'string' && values.search.length > 0 ? values.search : false;
 
-			// If value is empty, entry is a match
-			if (!searchValue) {
-				if (defaultItemVisibility === 'shown') markMatch(0);
-			}
+            // If value is empty, entry is a match
+            if (!searchValue) {
+                if (defaultItemVisibility === 'shown') markMatch(0);
+            }
 
-			// Otherwise, check for match
-			else {
+            // Otherwise, check for match
+            else {
 
-				// 1. Check for tag match
-				if (tag && tag.startsWith(searchValue)) {
-					markMatch(100, 'tag');
-					listMatchTypes.add('tag');
-				}
+                // 1. Check for tag match
+                if (tag && tag.startsWith(searchValue)) {
+                    markMatch(100, 'tag');
+                    listMatchTypes.add('tag');
+                }
 
-				// 2. Check for title match
-				if (title) {
+                // 2. Check for title match
+                if (title) {
 
-					// Full phrase match
-					if (searchValue.includes(' ')) {
-						if (title.startsWith(searchValue)) markMatch(100, 'title');
-						else if (title.includes(searchValue)) markMatch(10, 'title');
-					}
+                    // Full phrase match
+                    if (searchValue.includes(' ')) {
+                        if (title.startsWith(searchValue)) markMatch(100, 'title');
+                        else if (title.includes(searchValue)) markMatch(10, 'title');
+                    }
 
-					// Single word match
-					else {
-						for (let i = 0; i < titleWords.length; i++) {
-							// Give higher relevance to first word matches
-							if (titleWords[i].startsWith(searchValue)) markMatch(i === 0 ? 100 : 10, 'title');
-						}
-					}
+                    // Single word match
+                    else {
+                        for (let i = 0; i < titleWords.length; i++) {
+                            // Give higher relevance to first word matches
+                            if (titleWords[i].startsWith(searchValue)) markMatch(i === 0 ? 100 : 10, 'title');
+                        }
+                    }
 
-				}
+                }
 
-				// 3. Check for description match
-				if (description && searchValue.length > 2) {
+                // 3. Check for description match
+                if (description && searchValue.length > 2) {
 
-					// Full phrase match
-					if (searchValue.includes(' ')) {
-						if (description.includes(searchValue)) markMatch(10, 'description');
-					}
+                    // Full phrase match
+                    if (searchValue.includes(' ')) {
+                        if (description.includes(searchValue)) markMatch(10, 'description');
+                    }
 
-					// Single word match
-					else {
-						for (let word of descWords) {
-							if (word.startsWith(searchValue)) {
-								markMatch(1, 'description');
-								break;
-							}
-						}
-					}
-				}
-			}
+                    // Single word match
+                    else {
+                        for (let word of descWords) {
+                            if (word.startsWith(searchValue)) {
+                                markMatch(1, 'description');
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
-			matchedAll = matchedAll && match;
+            if (!match) matchedAll = false;
 
-		}
+        }
 
-		if (matchedAll && values.filters && Object.keys(values.filters).length) {
+        if (matchedAll && values.filters && Object.keys(values.filters).length) {
 
-			let { filters } = values;
+            let { filters } = values;
 
-			if (filters.types) {
-				if (filters.types.includes(type)) markMatch(10, 'type');
-				else matchedAll = false;
-			}
+            if (filters.types) {
+                if (filters.types.includes(type)) markMatch(10, 'type');
+                else matchedAll = false;
+            }
 
-			if (matchedAll && filters.indicators) {
-				if (filters.indicators.some((v) =>
-					indicators.some(tag => tag.startsWith(v)) ||
-					components.some(tag => tag.startsWith(v)) ||
-					considerations.some(tag => tag.startsWith(v))
-				)) markMatch(10, 'indicator');
-				else matchedAll = false;
-			}
+            if (matchedAll && filters.indicators) {
+                if (filters.indicators.some((v) =>
+                    indicators.some(tag => tag.startsWith(v)) ||
+                    components.some(tag => tag.startsWith(v)) ||
+                    considerations.some(tag => tag.startsWith(v))
+                )) markMatch(10, 'indicator');
+                else matchedAll = false;
+            }
 
-			if (matchedAll && filters.components) {
-				if (filters.components.some((v) =>
-					indicators.some(tag => tag.startsWith(v.charAt(0))) ||
-					components.some(tag => tag.startsWith(v)) ||
-					considerations.some(tag => tag.startsWith(v))
-				)) markMatch(10, 'component');
-				else matchedAll = false;
-			}
+            if (matchedAll && filters.components) {
+                if (filters.components.some((v) =>
+                    indicators.some(tag => tag.startsWith(v.charAt(0))) ||
+                    components.some(tag => tag.startsWith(v)) ||
+                    considerations.some(tag => tag.startsWith(v))
+                )) markMatch(10, 'component');
+                else matchedAll = false;
+            }
 
-			if (matchedAll && filters.considerations) {
-				if (filters.considerations.some((v) => considerations.includes(v))) markMatch(10, 'consideration');
-				else matchedAll = false;
-			}
+            if (matchedAll && filters.considerations) {
+                if (filters.considerations.some((v) => considerations.includes(v))) markMatch(10, 'consideration');
+                else matchedAll = false;
+            }
 
-		}
+        }
 
-		// Only global matches proceed
-		match = matchedAll;
-		if (!match) relevance = 0;
+        // Only global matches proceed
+        match = matchedAll;
+        if (!match) relevance = 0;
 
-		results.push({ ...entry, match, matchTypes: entryMatchTypes, relevance });
-	}
+        results.push({ ...entry, match, matchTypes: entryMatchTypes, relevance });
+    }
 
-	return {
-		listMatchTypes,
-		results,
-		numOfMatches: results.filter((r) => r.match).length,
-	};
+    results = results.filter((r) => r.match);
+
+    return {
+        listMatchTypes,
+        results,
+        numOfMatches: results.length,
+    };
 
 }
 
+let showListGroup = (list) => {
+
+    console.log('Showing List Group');
+
+    let groupSize = list._options.listGroupSize;
+    let lastShownIndex = Number(list._state.matches.lastShownIndex ?? -1);
+    console.log('Last Shown Index: ', lastShownIndex);
+
+    let fragment = document.createDocumentFragment();
+
+    let startIndex = lastShownIndex + 1;
+    let endIndex = startIndex + groupSize;
+    let fullList = list._state.matches.list || [];
+    let group = fullList.slice(startIndex, endIndex);
+    console.log('Group: ', group);
+
+    for (let item of group) {
+
+        // result.match = result.match || showAll;
+
+        let elem = list.querySelector(`[data-item-id="${item.id}"]`);
+        if (!elem) continue;
+
+        console.log('Updating Item ', item.position);
+
+        elem.dataset.pos = item.position;
+        elem.hidden = false;
+
+        // Show description highlights
+        if (item.matchTypes && item.matchTypes.has('description')) {
+            let descElem = elem.querySelector('.text-container .description');
+            if (descElem) {
+                queueMicrotask(() => {
+                    clearTextHighlights(elem);
+                    highlightText(descElem, list._state.search);
+                })
+            }
+        }
+
+        fragment.append(elem);
+    }
+
+    // set lastShownIndex to the index of the *last shown item*
+    let lastIndexShown = startIndex + group.length - 1;
+    // if nothing was shown, keep previous value
+    if (group.length > 0) {
+        list._state.matches.lastShownIndex = lastIndexShown;
+    }
+
+    list._state.matches.hiddenMatches = lastIndexShown < fullList.length;
+
+    list.append(fragment);
+
+}
 
 /**
  * Filters a list of <li> items based on text input value, calculates relevance scores,
@@ -165,217 +221,138 @@ let findMatches = ({ searchIndex, values, defaultItemVisibility }) => {
  * @param {String} options.defaultItemVisibility - Behaviour on how empty value searches are handled, either 'hidden' or 'shown'
  * @param {String} options.sortType - The user selected sort type
  */
-let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultItemVisibility = 'hidden', maxResults = 10, sortType = 'relevance', tieBreakerType = null }) => {
+let updateList = async (list) => {
 
-	let debug = false;
+    let debug = true;
 
-	let emptyValues = !values || (!values.search?.length && !Object.keys(values.filters || {}).length);
+    let searchIndex = list._listIndex;
+    let values = {
+        search: list._state.search,
+        filters: list._state.filters,
+    }
+    let defaultItemVisibility = list._options.defaultItemVisibility;
+    let sortTypes = {
+        primary: list._state.sort.primary,
+        tieBreaker: list._state.sort.tieBreaker,
+    }
+    let groupSize = list._options.listGroupSize;
 
-	let showAll = emptyValues && defaultItemVisibility === 'shown';
+    let emptyValues = !values || (!values.search?.length && !Object.keys(values.filters || {}).length);
 
-	if (debug) {
-		console.log('~~~ Updating List ~~~');
-		console.log('Empty values: ', emptyValues);
-		console.log('Show all if empty: ', showAll);
-		console.log('Search index: ', searchIndex);
-	}
+    let showAll = emptyValues && defaultItemVisibility === 'shown';
 
-	let filteredSearchIndex = searchIndex.filter((entry) => {
-		return listItemCategories.includes(entry.category);
-	}).map(entry => structuredClone(entry));
+    list.hidden = true;
 
-	let matches = !emptyValues ? findMatches({
-		searchIndex: filteredSearchIndex,
-		values,
-		defaultItemVisibility,
-	}) : {
-		results: filteredSearchIndex,
-		listMatchTypes: new Set,
-		numOfMatches: showAll ? filteredSearchIndex.length : 0,
-	};
+    if (debug) {
+        console.log('~~~ Updating List ~~~');
+        console.log('Empty values: ', emptyValues);
+        console.log('Show all if empty: ', showAll);
+        console.log('Search index: ', searchIndex);
+    }
 
-	if (debug) {
-		console.log('~ Finding Matches ~');
-		console.log('Filtered search index: ', filteredSearchIndex);
-		console.log('Matches array: ', matches);
-	}
+    let matches = !emptyValues ? findMatches({
+        searchIndex,
+        values,
+        defaultItemVisibility,
+    }) : {
+        results: searchIndex,
+        listMatchTypes: new Set,
+        numOfMatches: showAll ? searchIndex.length : 0,
+    };
 
-	let { results, listMatchTypes, numOfMatches } = matches;
+    if (debug) {
+        console.log('~ Finding Matches ~');
+        console.log('Num of matches: ', matches.numOfMatches);
+    }
 
-	if (listMatchTypes.has('tag')) {
-		tieBreakerType = 'tag';
-	}
+    let { results, listMatchTypes, numOfMatches } = matches;
 
+    if (listMatchTypes.has('tag')) {
+        sortTypes.tieBreaker = 'tag';
+    }
 
-	// Sort results
-	let sortedResults = sortList({
-		sortType,
-		tieBreakerType,
-		list,
-		items: results
-	});
+    // Sort results
+    let sortedResults = sortList({
+        sortTypes,
+        items: results
+    });
 
-	if (debug) {
-		console.log('~ Sorting List ~');
-		console.log('Sort type: ', sortType);
-		console.log('Tiebreaker type: ', tieBreakerType);
-		console.log('Sorted results array: ', sortedResults);
-		console.log('~ Updating DOM ~');
-	}
+    if (debug) {
+        console.log('~ Sorting List ~');
+        console.log('Sort types: ', sortTypes);
+        console.log('Sorted results array: ', sortedResults);
+        console.log('~ Updating DOM ~');
+    }
 
-	let matchesFound = numOfMatches > 0;
+    let matchesFound = numOfMatches > 0;
 
-	let visibleFragment = document.createDocumentFragment();
+    let shownItems = list.querySelectorAll(':scope > li:not([hidden])');
+    for (let item of shownItems) {
+        item.hidden = true;
+        delete item.dataset.pos;
+    }
 
-	// Phase 1: Show matches up to max
-	for (let [index, result] of sortedResults.entries()) {
-		result.match = result.match || showAll;
+    list._state.matches.list = sortedResults;
+    list._state.matches.lastShownIndex = -1;
 
-		if (index >= maxResults) break;
+    showListGroup(list);
 
-		let elem = list.querySelector(`[data-item-id="${result.id}"]`);
-		if (!elem) continue;
+    list.hidden = !(matchesFound || showAll);
 
-		elem.removeAttribute('data-result-group');
-		elem.dataset.pos = result.position;
-		elem.hidden = !result.match;
+    if (debug) {
+        console.log('List Updated');
+    }
 
-		// Show description highlights
-		if (result.matchTypes && result.matchTypes.has('description')) {
-			let descElem = elem.querySelector('.text-container .description');
-			if (descElem) {
-				queueMicrotask(() => {
-					clearTextHighlights(elem);
-					highlightText(descElem, values.search);
-				})
-			}
-		}
+    // Display messages
+    let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
+    let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
 
-		visibleFragment.append(elem);
-	}
+    if (errorMessage) {
+        if (!emptyValues && !matchesFound) {
+            errorMessage.removeAttribute('hidden');
+        } else {
+            errorMessage.setAttribute('hidden', '');
+        }
+    }
 
-	list.append(visibleFragment);
+    if (filterMessage) {
+        if (!emptyValues && matchesFound) {
+            filterMessage.removeAttribute('hidden');
+            filterMessage.textContent = `${numOfMatches} result${numOfMatches > 1 ? 's' : ''} found.`;
+        } else {
+            filterMessage.setAttribute('hidden', '');
+        }
+    }
 
-	let processRemainingResults = () => {
-		let hiddenFragment = document.createDocumentFragment();
+    if (debug) {
+        console.log('Messages Updated');
+    }
 
-		console.log('~ Remaining Processing Start ~');
+    // Show More Button
+    let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
 
-		// Cache all list item
-		let elemsById = new Map();
-		for (let item of list.children) {
-			let id = item.dataset.itemId;
-			if (id) elemsById.set(id, item);
-		}
+    if (showMoreBtn) {
+        if ((showAll && numOfMatches > groupSize) || (matchesFound && numOfMatches > groupSize)) {
+            showMoreBtn.removeAttribute('hidden');
+        } else {
+            showMoreBtn.setAttribute('hidden', '');
+        }
+    }
 
-		for (let [index, result] of sortedResults.entries()) {
+    if (debug) {
+        console.log('Show More Button Updated');
+    }
 
-			result.match = result.match || showAll;
-
-			if (index <= maxResults) continue;
-
-			let elem = elemsById.get(result.id);
-			if (!elem) continue;
-
-			if (result.match) {
-				let groupNum = Math.ceil((index + 1) / maxResults);
-				elem.dataset.resultGroup = groupNum;
-			}
-
-			elem.dataset.pos = result.position;
-			if (!elem.hidden) elem.hidden = true;
-
-			// Show description highlights
-			if (result.matchTypes && result.matchTypes.has('description')) {
-				let descElem = elem.querySelector('.text-container .description');
-				if (descElem) {
-					queueMicrotask(() => {
-						clearTextHighlights(elem);
-						highlightText(descElem, values.search);
-					})
-				}
-			}
-
-			hiddenFragment.append(elem);
-
-		}
-
-		list.append(hiddenFragment);
-		console.log('~ Remaining Processing End ~');
-
-	}
-
-	// Use requestIdleCallback when available, otherwise a small delay
-	if ('requestIdleCallback' in window) {
-		requestIdleCallback(processRemainingResults);
-	} else {
-		setTimeout(processRemainingResults, 0);
-	}
-
-	if ((!emptyValues || showAll) && matchesFound && numOfMatches > maxResults) {
-		list.dataset.resultGroupShown = 1;
-		list.dataset.resultGroupMax = Math.ceil(numOfMatches / maxResults);
-	} else {
-		delete list.dataset.resultGroupShown;
-		delete list.dataset.resultGroupMax;
-	}
-
-	list.hidden = !(matchesFound || showAll);
-
-	if (debug) {
-		console.log('List Updated');
-	}
-
-	// Display messages
-	let errorMessage = list.closest('.list-container')?.querySelector('.error-status');
-	let filterMessage = list.closest('.list-container')?.querySelector('.filter-status');
-
-	if (errorMessage) {
-		if (!emptyValues && !matchesFound) {
-			errorMessage.removeAttribute('hidden');
-		} else {
-			errorMessage.setAttribute('hidden', '');
-		}
-	}
-
-	if (filterMessage) {
-		if (!emptyValues && matchesFound) {
-			filterMessage.removeAttribute('hidden');
-			filterMessage.textContent = `${numOfMatches} result${numOfMatches > 1 ? 's' : ''} found.`;
-		} else {
-			filterMessage.setAttribute('hidden', '');
-		}
-	}
-
-	if (debug) {
-		console.log('Messages Updated');
-	}
-
-	// Show More Button
-	let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
-
-	if (showMoreBtn) {
-		if ((showAll && numOfMatches > maxResults) || (matchesFound && numOfMatches > maxResults)) {
-			showMoreBtn.removeAttribute('hidden');
-		} else {
-			showMoreBtn.setAttribute('hidden', '');
-		}
-	}
-
-	if (debug) {
-		console.log('Show More Button Updated');
-	}
-
-	// Custom event for other UI updates
-	emitEvent({
-		target: document,
-		name: 'searchMatchFound',
-		detail: {
-			listId: 'resources-list',
-			listMatchTypes,
-			numOfMatches,
-		}
-	});
+    // Custom event for other UI updates
+    emitEvent({
+        target: document,
+        name: 'searchMatchFound',
+        detail: {
+            listId: 'resources-list',
+            listMatchTypes,
+            numOfMatches,
+        }
+    });
 
 }
 
@@ -385,18 +362,18 @@ let updateList = ({ searchIndex = [], listItemCategories, values, list, defaultI
  * @param {string} searchValue - The substring to highlight.
  */
 let highlightText = function (elem, searchValue) {
-	if (!elem || !searchValue) return;
+    if (!elem || !searchValue) return;
 
-	// Escape special regex characters
-	let escapedValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-	let regex = new RegExp(`(${escapedValue})`, 'gi');
+    // Escape special regex characters
+    let escapedValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let regex = new RegExp(`(${escapedValue})`, 'gi');
 
-	// Work with plain text, then insert highlight spans
-	let content = elem.textContent;
-	let highlighted = content.replace(regex, '<span class="highlight">$1</span>');
+    // Work with plain text, then insert highlight spans
+    let content = elem.textContent;
+    let highlighted = content.replace(regex, '<span class="highlight">$1</span>');
 
-	// Apply result as HTML to preserve highlight spans
-	elem.innerHTML = highlighted;
+    // Apply result as HTML to preserve highlight spans
+    elem.innerHTML = highlighted;
 };
 
 /**
@@ -404,9 +381,9 @@ let highlightText = function (elem, searchValue) {
  * @param {HTMLElement} elem - The element to modify.
  */
 let clearTextHighlights = function (elem) {
-	if (!elem) return;
-	// Replace all <span class="highlight">...</span> with just the inner text
-	elem.innerHTML = elem.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
+    if (!elem) return;
+    // Replace all <span class="highlight">...</span> with just the inner text
+    elem.innerHTML = elem.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
 };
 
 /**
@@ -418,47 +395,47 @@ let clearTextHighlights = function (elem) {
  * @param {HTMLElement} options.list - Container holding the list items.
  * @param {Array<Object>} options.items - Items to sort, each with `{ elem, title?, tag?, relevance? }`.
  */
-let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
+let sortList = ({ sortTypes = { primary: 'title', tieBreakerType: null }, items }) => {
 
-	if (!list || !items || !Array.isArray(items)) return;
+    if (!items || !Array.isArray(items)) return;
 
-	// Ensure all items have a numeric relevance score
-	if (sortType === 'relevance') {
-		for (let item of items) {
-			if (item.relevance === undefined || isNaN(item.relevance)) {
-				item.relevance = 0;
-			}
-		}
-	}
+    // Ensure all items have a numeric relevance score
+    if (sortTypes.primary === 'relevance') {
+        for (let item of items) {
+            if (item.relevance === undefined || isNaN(item.relevance)) {
+                item.relevance = 0;
+            }
+        }
+    }
 
-	items.sort((a, b) => {
-		let primary = 0;
+    items.sort((a, b) => {
+        let primary = 0;
 
-		if (sortType === 'title') primary = (a.title || '').localeCompare(b.title || '');
-		else if (sortType === 'date') primary = (b.date || 0) - (a.date || 0);
-		else if (sortType === 'relevance') primary = (b.relevance || 0) - (a.relevance || 0);
+        if (sortTypes.primary === 'title') primary = (a.title || '').localeCompare(b.title || '');
+        else if (sortTypes.primary === 'date') primary = (b.date || 0) - (a.date || 0);
+        else if (sortTypes.primary === 'relevance') primary = (b.relevance || 0) - (a.relevance || 0);
 
-		if (primary !== 0) return primary;
+        if (primary !== 0) return primary;
 
-		// Tie-breaker
-		if (tieBreakerType === 'tag') {
-			return (a.tag || '').localeCompare(b.tag || '', undefined, { numeric: true, sensitivity: 'base' });
-		} else if (tieBreakerType === 'title') {
-			return (a.title || '').localeCompare(b.title || '');
-		} else if (tieBreakerType === 'date') {
-			return (b.date || 0) - (a.date || 0);
-		}
+        // Tie-breaker
+        if (sortTypes.tieBreaker === 'tag') {
+            return (a.tag || '').localeCompare(b.tag || '', undefined, { numeric: true, sensitivity: 'base' });
+        } else if (sortTypes.tieBreaker === 'title') {
+            return (a.title || '').localeCompare(b.title || '');
+        } else if (sortTypes.tieBreaker === 'date') {
+            return (b.date || 0) - (a.date || 0);
+        }
 
-		return 0;
-	});
+        return 0;
+    });
 
-	let index = 1;
-	for (let item of items) {
-		item.position = index;
-		index += 1;
-	}
+    let index = 1;
+    for (let item of items) {
+        item.position = index;
+        index += 1;
+    }
 
-	return items;
+    return items;
 
 }
 
@@ -468,81 +445,95 @@ let sortList = ({ sortType = 'title', tieBreakerType = null, list, items }) => {
  * @returns {Object} Filter values keyed by name
  */
 let getFilters = (form) => {
-	if (!form) return {};
+    if (!form) return {};
 
-	let data = new FormData(form);
-	let result = {};
+    let data = new FormData(form);
+    let result = {};
 
-	for (let [key, value] of data.entries()) {
-		if (!result[key]) {
-			result[key] = [];
-		}
-		result[key].push(value);
-	}
+    for (let [key, value] of data.entries()) {
+        if (!result[key]) {
+            result[key] = [];
+        }
+        result[key].push(value);
+    }
 
-	return result;
+    return result;
 }
 
 
 let getList = (form) => {
-	let listId = form.getAttribute('data-list');
-	let list = document.querySelector(`#${listId}`);
-	return list ?? null;
+    let listId = form.getAttribute('data-list');
+    let list = document.querySelector(`#${listId}`);
+    return list ?? null;
 }
 
 let ensureListOptions = (list) => {
-	if (!list._options) {
-		list._options = {
-			defaultItemVisibility: list.dataset.defaultItemVisibility ?? 'hidden',
-			listItemCategories: JSON.parse(list.dataset.listItemCategories || '["indicator", "component", "consideration", "resource"]'),
-			listMaxResults: Number(list.dataset.listMaxResults || 50),
-		};
-	}
-	return list._options;
+    if (!list._options) {
+        list._options = {
+            defaultItemVisibility: list.dataset.defaultItemVisibility ?? 'hidden',
+            listItemCategories: JSON.parse(list.dataset.listItemCategories || '["indicator", "component", "consideration", "resource"]'),
+            listGroupSize: Number(list.dataset.listGroupSize || 10),
+        };
+    }
+    return list._options;
 };
 
 let ensureListControls = (list) => {
-	if (!list._controls) {
-		list._controls = {
-			// TODO: Will need to add an attribute so we can target the proper input
-			search: document.querySelector(`#${list.dataset.searchControl} fieldset.search input`) ?? null,
-			filter: document.querySelector(`#${list.dataset.filterControl}`) ?? null,
-			filterTagList: document.querySelector(`#${list.dataset.filterTagList}`) ?? null,
-			sort: document.querySelector(`#${list.dataset.sortControl} fieldset.sort`) ?? null,
-		};
-	}
-	return list._controls;
+    if (!list._controls) {
+        list._controls = {
+            // TODO: Will need to add an attribute so we can target the proper input
+            search: document.querySelector(`#${list.dataset.searchControl} fieldset.search input`) ?? null,
+            filter: document.querySelector(`#${list.dataset.filterControl}`) ?? null,
+            filterTagList: document.querySelector(`#${list.dataset.filterTagList}`) ?? null,
+            sort: document.querySelector(`#${list.dataset.sortControl} fieldset.sort`) ?? null,
+            layout: document.querySelector(`#${list.dataset.layoutControl} fieldset.layout`) ?? null,
+            showMore: list.closest('.list-container').querySelector('button.show-more') ?? null,
+        };
+    }
+    return list._controls;
 };
 
-let debounce = (fn, delay = 200) => {
-	let timeout;
-	return (...args) => {
-		clearTimeout(timeout);
-		let savedArgs = args;
-		timeout = setTimeout(() => {
-			requestAnimationFrame(() => fn.apply(null, savedArgs));
-		}, delay);
-	};
+let ensureListState = (list) => {
+    if (!list._state) {
+        list._state = {
+            search: null,
+            filter: null,
+            sort: {
+                primary: 'relevance',
+                tieBreaker: list._controls.sort?.dataset.value ?? null,
+            },
+            layout: list._controls.layout?.dataset.value ?? null,
+            matches: {
+                list: [],
+                lastShownIndex: list._options.defaultItemVisibility === 'shown' ? list._options.listGroupSize - 1 : -1,
+                hiddenMatches: list._options.defaultItemVisibility === 'shown' ? true : false,
+            }
+        };
+    }
+    return list._controls;
 };
 
-let debouncedUpdateList = debounce(({ searchIndex, listItemCategories, values, list, defaultItemVisibility, sortType, tieBreakerType }) => {
-	updateList({
-		searchIndex,
-		values,
-		list,
-		listItemCategories,
-		defaultItemVisibility,
-		sortType,
-		tieBreakerType
-	});
-}, 200);
+let debounce = (fn, delay = 300) => {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        let savedArgs = args;
+        timeout = setTimeout(() => {
+            requestAnimationFrame(() => fn.apply(null, savedArgs));
+        }, delay);
+    };
+};
+
+let debouncedUpdateList = debounce((list) => {
+    updateList(list);
+});
 
 let updateToggles = (target) => {
-	let fieldset = target.closest('fieldset');
-	let active = fieldset.querySelector('[aria-pressed="true"]');
-	if (active) active.setAttribute('aria-pressed', 'false');
-	target.setAttribute('aria-pressed', 'true');
-	fieldset.dataset.value = target.value;
+    let fieldset = target.closest('fieldset');
+    let active = fieldset.querySelector('[aria-pressed="true"]');
+    if (active) active.setAttribute('aria-pressed', 'false');
+    target.setAttribute('aria-pressed', 'true');
+    fieldset.dataset.value = target.value;
 }
 
 //
@@ -551,30 +542,30 @@ let updateToggles = (target) => {
 
 let searchIndexModule = (() => {
 
-	let searchIndexPromise = null;
+    let searchIndexPromise = null;
 
-	let init = () => {
-		if (!searchIndexPromise) {
-			searchIndexPromise = fetch("/search-index.json")
-				.then((res) => res.json())
-				.catch((err) => {
-					console.error("Failed to fetch search index:", err);
-					return null;
-				});
-		}
-	}
+    let init = () => {
+        if (!searchIndexPromise) {
+            searchIndexPromise = fetch("/search-index.json")
+                .then((res) => res.json())
+                .catch((err) => {
+                    console.error("Failed to fetch search index:", err);
+                    return null;
+                });
+        }
+    }
 
-	let getSearchIndex = () => searchIndexPromise;
+    let getSearchIndex = () => searchIndexPromise;
 
-	return { init, getSearchIndex }
+    return { init, getSearchIndex }
 
 })();
 
 searchIndexModule.init();
 eventControl.add({
-	elem: document,
-	eventType: "astro:after-swap",
-	fn: searchIndexModule.init,
+    elem: document,
+    eventType: "astro:after-swap",
+    fn: searchIndexModule.init,
 });
 
 
@@ -584,660 +575,597 @@ eventControl.add({
 
 let filter = (() => {
 
-	//
-	// Tags
-	//
+    //
+    // Tags
+    //
 
-	let createTag = (target, tagList) => {
+    let createTag = (target, tagList) => {
 
-		let template = tagList.querySelector('template');
-		if (!template) return;
+        let template = tagList.querySelector('template');
+        if (!template) return;
 
-		// Clone the template
-		let tag = template.content.cloneNode(true);
+        // Clone the template
+        let tag = template.content.cloneNode(true);
 
-		let li = tag.querySelector('li');
-		if (!li) return;
+        let li = tag.querySelector('li');
+        if (!li) return;
 
-		let group = target.getAttribute('name');
-		let title = target.getAttribute('data-title');
-		let value = target.getAttribute('value');
-		let field = target.getAttribute('data-status-field');
-		if (!group || !title || !value) return;
+        let group = target.getAttribute('name');
+        let title = target.getAttribute('data-title');
+        let value = target.getAttribute('value');
+        let field = target.getAttribute('data-status-field');
+        if (!group || !title || !value) return;
 
-		li.dataset.group = group;
-		li.dataset.value = value;
-		li.dataset.statusField = field ?? null;
+        li.dataset.group = group;
+        li.dataset.value = value;
+        li.dataset.statusField = field ?? null;
 
-		let tagText = title;
+        let tagText = title;
 
-		if (group === 'indicators' || group === 'components') {
-			tagText = `${value} – ${title}`;
-		}
+        if (group === 'indicators' || group === 'components') {
+            tagText = `${value} – ${title}`;
+        }
 
-		let groupField = tag.querySelector('.group');
-		let titleField = tag.querySelector('.title');
-		let clearBtn = tag.querySelector('button.clear');
-		if (!groupField || !titleField || !clearBtn) return;
+        let groupField = tag.querySelector('.group');
+        let titleField = tag.querySelector('.title');
+        let clearBtn = tag.querySelector('button.clear');
+        if (!groupField || !titleField || !clearBtn) return;
 
-		groupField.textContent = toTitleCase(group);
-		titleField.textContent = tagText;
-		titleField.setAttribute('title', tagText);
-		clearBtn.setAttribute('aria-label', `Clear ${title} Filter`);
+        groupField.textContent = toTitleCase(group);
+        titleField.textContent = tagText;
+        titleField.setAttribute('title', tagText);
+        clearBtn.setAttribute('aria-label', `Clear ${title} Filter`);
 
-		return tag;
+        return tag;
 
-	}
+    }
 
-	let getTag = (target) => {
-		let tag;
-		if (target.matches('input')) {
-			if (!target.value) return null;
-			tag = document.querySelector(`.filter-tag[data-value="${target.value}"]`);
-			return tag ?? null;
-		} else if (target.matches('button')) {
-			tag = target.closest('.filter-tag');
-			return tag ?? null
-		} else {
-			return null;
-		}
-	}
+    let getTag = (target) => {
+        let tag;
+        if (target.matches('input')) {
+            if (!target.value) return null;
+            tag = document.querySelector(`.filter-tag[data-value="${target.value}"]`);
+            return tag ?? null;
+        } else if (target.matches('button')) {
+            tag = target.closest('.filter-tag');
+            return tag ?? null
+        } else {
+            return null;
+        }
+    }
 
-	let removeTag = (tag) => {
-		if (tag) tag.remove();
-	}
+    let removeTag = (tag) => {
+        if (tag) tag.remove();
+    }
 
-	//
-	// Status Fields
-	//
+    //
+    // Status Fields
+    //
 
-	let getStatusField = (target) => {
-		let fieldId = target.getAttribute('data-status-field');
-		if (!fieldId) return null;
-		let field = document.querySelector(`[data-field="${fieldId}"]`);
-		return field ?? null;
-	}
+    let getStatusField = (target) => {
+        let fieldId = target.getAttribute('data-status-field');
+        if (!fieldId) return null;
+        let field = document.querySelector(`[data-field="${fieldId}"]`);
+        return field ?? null;
+    }
 
-	let updateStatus = ({ field, operation }) => {
-		let currentStatus = Number(field.textContent);
-		if (operation === 'add') currentStatus++;
-		if (operation === 'subtract') currentStatus--;
-		if (operation === 'reset') currentStatus = 0;
-		field.textContent = currentStatus;
-		let fieldContainer = field.closest('.field-container');
-		if (!fieldContainer) return;
-		if (currentStatus > 0) {
-			fieldContainer.removeAttribute('hidden');
-		} else {
-			fieldContainer.setAttribute('hidden', '');
-		}
-	}
+    let updateStatus = ({ field, operation }) => {
+        let currentStatus = Number(field.textContent);
+        if (operation === 'add') currentStatus++;
+        if (operation === 'subtract') currentStatus--;
+        if (operation === 'reset') currentStatus = 0;
+        field.textContent = currentStatus;
+        let fieldContainer = field.closest('.field-container');
+        if (!fieldContainer) return;
+        if (currentStatus > 0) {
+            fieldContainer.removeAttribute('hidden');
+        } else {
+            fieldContainer.setAttribute('hidden', '');
+        }
+    }
 
-	//
-	// Form
-	//
+    //
+    // Form
+    //
 
-	let getForm = (input) => {
-		let form = input.closest('form');
-		return form ?? null;
-	}
+    let getForm = (input) => {
+        let form = input.closest('form');
+        return form ?? null;
+    }
 
 
-	//
-	// Inputs
-	//
+    //
+    // Inputs
+    //
 
-	let getInput = (tag) => {
-		let group = tag.getAttribute('data-group');
-		let value = tag.getAttribute('data-value');
-		if (!group || !value) return null;
-		let input = document.querySelector(`input[name="${group}"][value="${value}"]`);
-		return input ?? null;
-	}
+    let getInput = (tag) => {
+        let group = tag.getAttribute('data-group');
+        let value = tag.getAttribute('data-value');
+        if (!group || !value) return null;
+        let input = document.querySelector(`input[name="${group}"][value="${value}"]`);
+        return input ?? null;
+    }
 
-	let updateInput = (input) => {
-		input.checked = !input.checked;
-	}
+    let updateInput = (input) => {
+        input.checked = !input.checked;
+    }
 
-	//
-	// Event Handlers
-	//
+    //
+    // Event Handlers
+    //
 
-	/**
-	 * Handles input inside filter form
-	 * @param {Event} event
-	 */
-	let onInput = async (event) => {
-		let target = event.target;
-		if (!target.matches('fieldset.filters input')) return;
-		let form = getForm(target);
-		let list = getList(form);
-		if (!form || !list) return;
+    /**
+     * Handles input inside filter form
+     * @param {Event} event
+     */
+    let onInput = async (event) => {
+        let target = event.target;
+        if (!target.matches('fieldset.filters input')) return;
+        let form = getForm(target);
+        let list = getList(form);
+        if (!form || !list) return;
 
-		let filters = getFilters(form);
+        list._state.filters = getFilters(form);
 
-		updateList({
-			searchIndex: await searchIndexModule.getSearchIndex(),
-			listItemCategories: list._options.listItemCategories,
-			values: {
-				search: list._controls.search?.value.toLowerCase().trim() ?? '',
-				filters,
-			},
-			list,
-			defaultItemVisibility: list._options.defaultItemVisibility,
-			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.dataset.value,
-		});
+        updateList(list);
 
-		let statusOperation;
-		if (target.checked) {
-			statusOperation = 'add';
-			let tagList = list._controls.filterTagList;
-			if (tagList) {
-				let tag = createTag(target, tagList);
-				if (tag) tagList.append(tag);
-			}
-		} else {
-			statusOperation = 'subtract';
-			let tag = getTag(target);
-			removeTag(tag);
-		}
+        let statusOperation;
+        if (target.checked) {
+            statusOperation = 'add';
+            let tagList = list._controls.filterTagList;
+            if (tagList) {
+                let tag = createTag(target, tagList);
+                if (tag) tagList.append(tag);
+            }
+        } else {
+            statusOperation = 'subtract';
+            let tag = getTag(target);
+            removeTag(tag);
+        }
 
-		let statusField = getStatusField(target);
-		if (statusField) {
-			updateStatus({
-				field: statusField,
-				operation: statusOperation,
-			});
-		}
+        let statusField = getStatusField(target);
+        if (statusField) {
+            updateStatus({
+                field: statusField,
+                operation: statusOperation,
+            });
+        }
 
-		emitEvent({
-			target: document,
-			name: 'filterChange',
-			detail: {
-				activeFilters: filters,
-			}
-		})
-	}
+        emitEvent({
+            target: document,
+            name: 'filterChange',
+            detail: {
+                activeFilters: list._state.filters,
+            }
+        })
+    }
 
-	/**
-	 * Handles filter form reset
-	 * @param {Event} event
-	 */
-	let onReset = async (event) => {
-		let target = event.target;
-		if (!target.matches('form:has(fieldset.filters)')) return;
-		let form = getForm(target);
-		let list = getList(form);
-		if (!form || !list) return;
+    /**
+     * Handles filter form reset
+     * @param {Event} event
+     */
+    let onReset = async (event) => {
+        let target = event.target;
+        if (!target.matches('form:has(fieldset.filters)')) return;
+        let form = getForm(target);
+        let list = getList(form);
+        if (!form || !list) return;
 
-		updateList({
-			searchIndex: await searchIndexModule.getSearchIndex(),
-			listItemCategories: list._options.listItemCategories,
-			values: {
-				search: list._controls.search?.value.toLowerCase().trim() ?? '',
-				filters: {},
-			},
-			list,
-			defaultItemVisibility: list._options.defaultItemVisibility,
-			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.dataset.value,
-		});
+        if (list._state?.filters) list._state.filters = null;
 
-		let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
-		for (let field of statusFields) {
-			updateStatus({
-				field,
-				operation: 'reset',
-			})
-		}
-		let tagList = list._controls.filterTagList;
-		if (tagList) {
-			let items = tagList.querySelectorAll(':scope > li');
-			for (let item of items) item.remove();
-		}
-		emitEvent({
-			target: document,
-			name: 'filterChange',
-			detail: {
-				activeFilters: {},
-			}
-		})
-	}
+        updateList(list);
 
-	/**
-	 * Handles filter tag button clicks
-	 * @param {Event} event
-	 */
-	let onClick = async (event) => {
-		let target = event.target;
-		if (!target.matches('.filter-tag button.clear')) return;
-		let tag = getTag(target);
-		if (!tag) return;
-		let input = getInput(tag);
-		if (input) {
-			updateInput(input);
-		}
-		let form = getForm(input);
-		let list = getList(form);
-		if (!form || !list) return;
-		let filters = getFilters(form);
+        let statusFields = form.querySelectorAll('.filter-group-status [data-field]');
+        for (let field of statusFields) {
+            updateStatus({
+                field,
+                operation: 'reset',
+            })
+        }
+        let tagList = list._controls.filterTagList;
+        if (tagList) {
+            let items = tagList.querySelectorAll(':scope > li');
+            for (let item of items) item.remove();
+        }
+        emitEvent({
+            target: document,
+            name: 'filterChange',
+            detail: {
+                activeFilters: {},
+            }
+        })
+    }
 
-		updateList({
-			searchIndex: await searchIndexModule.getSearchIndex(),
-			listItemCategories: list._options.listItemCategories,
-			values: {
-				search: list._controls.search?.value.toLowerCase().trim() ?? '',
-				filters,
-			},
-			list,
-			defaultItemVisibility: list._options.defaultItemVisibility,
-			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.dataset.value,
-		});
+    /**
+     * Handles filter tag button clicks
+     * @param {Event} event
+     */
+    let onClick = async (event) => {
+        let target = event.target;
+        if (!target.matches('.filter-tag button.clear')) return;
+        let tag = getTag(target);
+        if (!tag) return;
+        let input = getInput(tag);
+        if (input) {
+            updateInput(input);
+        }
+        let form = getForm(input);
+        let list = getList(form);
+        if (!form || !list) return;
 
-		let statusField = getStatusField(tag);
-		if (statusField) {
-			updateStatus({
-				field: statusField,
-				operation: 'subtract',
-			});
-		}
-		removeTag(tag);
-		emitEvent({
-			target: document,
-			name: 'filterChange',
-			detail: {
-				activeFilters: filters,
-			}
-		})
-	}
+        list._state.filters = getFilters(form);
 
-	/**
-	 * Initializes filter forms
-	 */
-	let init = () => {
-		eventControl.add({
-			selector: '#active-filters-list',
-			eventType: 'click',
-			fn: onClick,
-		})
-		eventControl.add({
-			selector: 'form:has(fieldset.filters)',
-			eventType: 'input',
-			fn: onInput,
-		})
-		eventControl.add({
-			selector: 'form:has(fieldset.filters)',
-			eventType: 'reset',
-			fn: onReset,
-		})
-	}
+        updateList(list);
 
-	return { init };
+        let statusField = getStatusField(tag);
+        if (statusField) {
+            updateStatus({
+                field: statusField,
+                operation: 'subtract',
+            });
+        }
+        removeTag(tag);
+        emitEvent({
+            target: document,
+            name: 'filterChange',
+            detail: {
+                activeFilters: list._state.filters,
+            }
+        })
+    }
+
+    /**
+     * Initializes filter forms
+     */
+    let init = () => {
+        eventControl.add({
+            selector: '#active-filters-list',
+            eventType: 'click',
+            fn: onClick,
+        })
+        eventControl.add({
+            selector: 'form:has(fieldset.filters)',
+            eventType: 'input',
+            fn: onInput,
+        })
+        eventControl.add({
+            selector: 'form:has(fieldset.filters)',
+            eventType: 'reset',
+            fn: onReset,
+        })
+    }
+
+    return { init };
 
 })();
 
 let search = (() => {
 
-	/**
-	 * Handles input inside search forms
-	 * @param {Event} event
-	 */
-	let onInput = async (event) => {
-		let target = event.target;
-		if (!target.matches('fieldset.search input')) return;
+    /**
+     * Handles input inside search forms
+     * @param {Event} event
+     */
+    let onInput = async (event) => {
+        let target = event.target;
+        if (!target.matches('fieldset.search input')) return;
 
-		let form = target.closest('form');
-		let list = getList(form);
-		if (!form && !list) return;
+        let form = target.closest('form');
+        let list = getList(form);
+        if (!form && !list) return;
 
-		let values = {
-			search: target.value.toLowerCase().trim(),
-			filters: getFilters(list._controls.filter),
-		}
+        list._state.search = target.value.toLowerCase().trim();
 
-		let sortType = 'relevance';
-		let tieBreakerType = list._controls.sort?.dataset.value;
+        target.removeAttribute('aria-activedescendant');
+        let selectedItem = list.querySelector('[aria-selected]');
+        if (selectedItem) selectedItem.removeAttribute('aria-selected');
 
-		target.removeAttribute('aria-activedescendant');
-		let selectedItem = list.querySelector('[aria-selected]');
-		if (selectedItem) selectedItem.removeAttribute('aria-selected');
+        let searchIndex = await searchIndexModule.getSearchIndex();
 
-		let searchIndex = await searchIndexModule.getSearchIndex();
+        if (target.value.trim().length > 0) {
+            target.setAttribute('aria-expanded', 'true');
 
-		if (target.value.trim().length > 0) {
-			target.setAttribute('aria-expanded', 'true');
+            // Disable sort controls
+            list._controls.sort?.setAttribute('disabled', '');
 
-			// Disable sort controls
-			list._controls.sort?.setAttribute('disabled', '');
+            debouncedUpdateList(list);
 
-			debouncedUpdateList({
-				searchIndex,
-				listItemCategories: list._options.listItemCategories,
-				values,
-				list,
-				defaultItemVisibility: list._options.defaultItemVisibility,
-				sortType,
-				tieBreakerType
-			});
+        } else {
+
+            // Enable sort controls
+            list._controls.sort?.removeAttribute('disabled');
+
+            debouncedUpdateList(list);
+
+            if (list._options.defaultItemVisibility === 'hidden') {
+                target.setAttribute('aria-expanded', 'false');
+            }
 
 
+        }
+    };
 
-		} else {
+    let onKeydown = async (event) => {
+        let target = event.target;
+        let form = target.closest('form');
+        let list = getList(form);
+        if (!form || !list) return;
 
-			// Enable sort controls
-			list._controls.sort?.removeAttribute('disabled');
+        if (target.matches('button.submit')) {
+            if (event.key === 'Enter') {
+                // Prevent default submit
+                event.preventDefault();
+            }
+        }
 
-			debouncedUpdateList({
-				searchIndex,
-				listItemCategories: list._options.listItemCategories,
-				values,
-				list,
-				defaultItemVisibility: list._options.defaultItemVisibility,
-				sortType,
-				tieBreakerType
-			});
+        if (target.matches('fieldset.search input')) {
 
-			if (list._options.defaultItemVisibility === 'hidden') {
-				target.setAttribute('aria-expanded', 'false');
-			}
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                let currentItemId = target.getAttribute("aria-activedescendant");
+                let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
+                if (currentItem) {
+                    currentItem.firstElementChild.click();
+                }
+            }
 
+            if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                event.preventDefault();
+                let numOfMatches = list._state.matches.length;
+                if (numOfMatches === 0) return;
 
-		}
-	};
+                let currentItemId = target.getAttribute("aria-activedescendant");
+                let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
+                let currentPos = Number(currentItem?.getAttribute('data-pos'));
+                let nextPos = null;
 
-	let onKeydown = async (event) => {
-		let target = event.target;
-		let form = target.closest('form');
-		let list = getList(form);
-		if (!form || !list) return;
+                if (!currentItem) {
+                    nextPos = event.key === "ArrowDown"
+                        ? 1
+                        : 0;
+                } else {
+                    nextPos = event.key === "ArrowDown"
+                        ? currentPos + 1
+                        : currentPos - 1;
+                }
 
-		if (target.matches('button.submit')) {
-			if (event.key === 'Enter') {
-				// Prevent default submit
-				event.preventDefault();
-			}
-		}
+                if (nextPos > numOfMatches || nextPos < 1) return;
 
-		if (target.matches('fieldset.search input')) {
+                let nextItem = list.querySelector(`[data-pos="${nextPos}"]`);
+                if (!nextItem && list._state.matches.hiddenMatches) {
+                    if (list._controls.showMore) list._controls.showMore.click();
+                    nextItem = list.querySelector(`[data-pos="${nextPos}"]`);
+                    if (!nextItem) return;
+                }
 
-			if (event.key === 'Enter') {
-				event.preventDefault();
-				let currentItemId = target.getAttribute("aria-activedescendant");
-				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
-				if (currentItem) {
-					currentItem.firstElementChild.click();
-				}
-			}
+                // Update input with active descendant
+                target.setAttribute('aria-activedescendant', nextItem.id);
+                // Add visual highlight to item
+                if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
+                nextItem.firstElementChild.setAttribute('aria-selected', 'true');
+                // Delayed scroll to account for switch from hidden to shown
+                setTimeout(() => {
+                    scrollIntoView(nextItem, {
+                        block: "nearest",
+                    });
+                }, 50)
+            }
 
-			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-				event.preventDefault();
-				let results = list.querySelectorAll('[data-pos]');
-				if (results.length === 0) return;
+            if (event.key === 'Escape') {
+                let currentItemId = target.getAttribute("aria-activedescendant");
+                let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
+                if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
 
-				let currentItemId = target.getAttribute("aria-activedescendant");
-				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
-				let currentPos = Number(currentItem?.getAttribute('data-pos'));
-				let nextPos = null;
+                target.value = '';
+                list._state.search = null;
 
-				if (!currentItem) {
-					nextPos = event.key === "ArrowDown"
-						? 1
-						: 0;
-				} else {
-					nextPos = event.key === "ArrowDown"
-						? currentPos + 1
-						: currentPos - 1;
-				}
+                target.setAttribute('aria-activedescendant', '');
+                scrollIntoView(target, {
+                    block: "center",
+                });
 
-				if (nextPos > results.length || nextPos < 1) return;
+                if (list._options.defaultItemVisibility === 'hidden') {
+                    // Hide the list
+                    list.setAttribute('hidden', '');
+                    target.setAttribute('aria-expanded', 'false');
+                }
 
-				let nextItem = list.querySelector(`[data-pos="${nextPos}"]`);
-				if (!nextItem) return;
+                // Filter and sort list
+                debouncedUpdateList(list);
 
-				if (nextItem.hasAttribute('hidden')) {
-					let groupNum = nextItem.getAttribute('data-result-group');
-					if (groupNum) {
-						let showMoreBtn = list.closest('.list-container')?.querySelector('button.show-more');
-						if (showMoreBtn) showMoreBtn.click();
-					}
-				}
+                // Enable sort controls
+                list._controls.sort?.removeAttribute('disabled');
+            }
+        }
+    }
 
-				// Update input with active descendant
-				target.setAttribute('aria-activedescendant', nextItem.id);
-				// Add visual highlight to item
-				if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
-				nextItem.firstElementChild.setAttribute('aria-selected', 'true');
-				// Delayed scroll to account for switch from hidden to shown
-				setTimeout(() => {
-					scrollIntoView(nextItem, {
-						block: "nearest",
-					});
-				}, 50)
-			}
+    let onReset = async (event) => {
+        let target = event.target;
+        if (!target.matches('form:has(fieldset.search)')) return;
+        let form = target.closest('form');
+        let list = getList(form);
+        if (!form || !list) return;
+        let input = document.querySelector(`fieldset.search input[aria-controls="${list.id}"]`);
+        if (input) input.setAttribute('aria-activedescendant', '');
+        let selectedItem = list.querySelector('[aria-selected]');
+        if (selectedItem) selectedItem.removeAttribute('aria-selected');
 
-			if (event.key === 'Escape') {
-				let currentItemId = target.getAttribute("aria-activedescendant");
-				let currentItem = currentItemId ? document.getElementById(currentItemId) : null;
-				if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
-				target.value = '';
-				target.setAttribute('aria-activedescendant', '');
-				scrollIntoView(target, {
-					block: "center",
-				});
+        list._state.search = null;
 
-				if (list._options.defaultItemVisibility === 'hidden') {
-					// Hide the list
-					list.setAttribute('hidden', '');
-					target.setAttribute('aria-expanded', 'false');
-				}
+        if (list._options.defaultItemVisibility === 'hidden') {
+            list.setAttribute('hidden', '');
+            target.setAttribute('aria-expanded', 'false');
+        }
 
-				// Filter and sort list
-				debouncedUpdateList({
-					searchIndex: await searchIndexModule.getSearchIndex(),
-					listItemCategories: list._options.listItemCategories,
-					values: {
-						search: target.value,
-						filters: getFilters(list._controls.filter),
-					},
-					list,
-					defaultItemVisibility: list._options.defaultItemVisibility,
-					sortType: 'relevance',
-					tieBreakerType: list._controls.sort?.dataset.value,
-				});
+        debouncedUpdateList(list);
 
-				// Enable sort controls
-				list._controls.sort?.removeAttribute('disabled');
-			}
-		}
-	}
+        // Enable sort controls
+        list._controls.sort?.removeAttribute('disabled');
+    }
 
-	let onReset = async (event) => {
-		let target = event.target;
-		if (!target.matches('form:has(fieldset.search)')) return;
-		let form = target.closest('form');
-		let list = getList(form);
-		if (!form || !list) return;
-		let input = document.querySelector(`fieldset.search input[aria-controls="${list.id}"]`);
-		if (input) input.setAttribute('aria-activedescendant', '');
-		let selectedItem = list.querySelector('[aria-selected]');
-		if (selectedItem) selectedItem.removeAttribute('aria-selected');
+    /**
+     * Initializes search forms
+     */
+    let init = () => {
+        eventControl.add({
+            selector: 'form:has(fieldset.search)',
+            eventType: 'input',
+            fn: onInput,
+        })
+        eventControl.add({
+            selector: 'form:has(fieldset.search)',
+            eventType: 'keydown',
+            fn: onKeydown,
+        })
+        eventControl.add({
+            selector: 'form:has(fieldset.search)',
+            eventType: 'reset',
+            fn: onReset,
+        })
+    };
 
-		if (list._options.defaultItemVisibility === 'hidden') {
-			list.setAttribute('hidden', '');
-			target.setAttribute('aria-expanded', 'false');
-		}
-
-		debouncedUpdateList({
-			searchIndex: await searchIndexModule.getSearchIndex(),
-			listItemCategories: list._options.listItemCategories,
-			values: {
-				search: target.value,
-				filters: getFilters(list._controls.filter),
-			},
-			list,
-			defaultItemVisibility: list._options.defaultItemVisibility,
-			sortType: 'relevance',
-			tieBreakerType: list._controls.sort?.dataset.value,
-		});
-
-		// Enable sort controls
-		list._controls.sort?.removeAttribute('disabled');
-	}
-
-	/**
-	 * Initializes search forms
-	 */
-	let init = () => {
-		eventControl.add({
-			selector: 'form:has(fieldset.search)',
-			eventType: 'input',
-			fn: onInput,
-		})
-		eventControl.add({
-			selector: 'form:has(fieldset.search)',
-			eventType: 'keydown',
-			fn: onKeydown,
-		})
-		eventControl.add({
-			selector: 'form:has(fieldset.search)',
-			eventType: 'reset',
-			fn: onReset,
-		})
-	};
-
-	return { init };
+    return { init };
 
 })();
 
 let sort = (() => {
 
-	let onClick = async (event) => {
-		let target = event.target;
-		if (!target.matches('fieldset.sort button')) return;
-		let form = target.closest('form') ?? null;
-		let list = getList(form);
-		if (!form || !list) return;
-		let tieBreakerType = target.value;
-		if (tieBreakerType !== 'date' && tieBreakerType !== 'title') return;
+    let onClick = async (event) => {
+        let target = event.target;
+        if (!target.matches('fieldset.sort button')) return;
+        let form = target.closest('form') ?? null;
+        let list = getList(form);
+        if (!form || !list) return;
 
-		updateList({
-			searchIndex: await searchIndexModule.getSearchIndex(),
-			listItemCategories: list._options.listItemCategories,
-			values: {
-				search: list._controls.search?.value.toLowerCase().trim() ?? '',
-				filters: getFilters(list._controls.filter),
-			},
-			list,
-			defaultItemVisibility: list._options.defaultItemVisibility,
-			sortType: 'relevance',
-			tieBreakerType,
-		})
+        list._state.sort.tieBreaker = target.value;
 
-		updateToggles(target);
+        updateList(list)
 
-		setPreferences({
-			resourcePageSort: tieBreakerType,
-		})
-	}
+        updateToggles(target);
 
-	let init = () => {
-		eventControl.add({
-			selector: 'form:has(fieldset.sort)',
-			eventType: 'click',
-			fn: onClick,
-		})
-	};
+        setPreferences({
+            resourcePageSort: target.value,
+        })
+    }
 
-	return { init };
+    let init = () => {
+        eventControl.add({
+            selector: 'form:has(fieldset.sort)',
+            eventType: 'click',
+            fn: onClick,
+        })
+    };
+
+    return { init };
 
 })();
 
 let layout = (() => {
 
-	let onClick = (event) => {
-		let target = event.target;
-		if (!target.matches('fieldset.layout button')) return;
-		let form = target.closest('form') ?? null;
-		let list = getList(form);
-		if (!form || !list) return;
-		let layoutType = target.value;
-		if (layoutType !== 'compact' && layoutType !== 'detailed') return;
-		list.dataset.layout = layoutType;
-		updateToggles(target);
-		setPreferences({
-			resourcePageLayout: layoutType,
-		})
-	}
+    let onClick = (event) => {
+        let target = event.target;
+        if (!target.matches('fieldset.layout button')) return;
+        let form = target.closest('form') ?? null;
+        let list = getList(form);
+        if (!form || !list) return;
 
-	let init = () => {
-		eventControl.add({
-			selector: 'form:has(fieldset.layout)',
-			eventType: 'click',
-			fn: onClick,
-		})
-	};
+        list._state.layout = target.value;
+        list.dataset.layout = target.value;
 
-	return { init };
+        updateToggles(target);
+
+        setPreferences({
+            resourcePageLayout: target.value,
+        })
+    }
+
+    let init = () => {
+        eventControl.add({
+            selector: 'form:has(fieldset.layout)',
+            eventType: 'click',
+            fn: onClick,
+        })
+    };
+
+    return { init };
 
 })();
 
 let results = (() => {
 
-	let onClick = (event) => {
-		let target = event.target;
-		if (!target.matches('button.show-more')) return;
-		let list = document.querySelector(`#${target.getAttribute('data-list')}`);
-		if (!list) return;
-		let currentGroup = Number(list.getAttribute('data-result-group-shown'));
-		let nextGroup = currentGroup + 1;
-		let nextItems = list.querySelectorAll(`[data-result-group="${nextGroup}"]`);
-		requestAnimationFrame(() => {
-			for (let item of nextItems) {
-				item.removeAttribute('hidden');
-			}
-		})
-		list.dataset.resultGroupShown = nextGroup;
-		let maxGroup = Number(list.getAttribute('data-result-group-max'));
-		if (nextGroup === maxGroup) {
-			target.setAttribute('hidden', '');
-		}
-	}
+    let onClick = (event) => {
+        let target = event.target;
+        if (!target.matches('button.show-more')) return;
+        let list = document.querySelector(`#${target.getAttribute('data-list')}`);
+        if (!list) return;
 
-	let init = () => {
-		eventControl.add({
-			selector: '.list-container',
-			eventType: 'click',
-			fn: onClick,
-		})
-	};
+        showListGroup(list);
 
-	return { init };
+        let last = Number(list._state.matches.lastShownIndex ?? -1);
+        let total = (list._state.matches.list || []).length;
+        if ((last + 1) >= total) {
+            target.setAttribute('hidden', '');
+        }
+    }
+
+    let init = () => {
+        eventControl.add({
+            selector: '.list-container',
+            eventType: 'click',
+            fn: onClick,
+        })
+    };
+
+    return { init };
 
 })();
 
 let listModule = (() => {
 
-	let init = () => {
+    let init = async () => {
 
-		let lists = document.querySelectorAll('ul:is([data-search-control], [data-filter-control], [data-sort-control])');
-		for (let list of lists) {
-			ensureListOptions(list);
-			ensureListControls(list);
-		}
+        let lists = document.querySelectorAll('ul:is([data-search-control], [data-filter-control], [data-sort-control])');
+        for (let list of lists) {
+            ensureListOptions(list);
+            ensureListControls(list);
+            ensureListState(list);
+            let listIndex = await searchIndexModule.getSearchIndex();
+            let filteredListIndex = listIndex.filter((entry) => {
+                return list._options.listItemCategories.includes(entry.category);
+            }).map(entry => structuredClone(entry));
+            let sortedListIndex = sortList({
+                sortTypes: {
+                    primary: list._state.sort.primary,
+                    tieBreaker: list._state.sort.tieBreaker,
+                },
+                items: filteredListIndex,
+            })
+            list._listIndex = sortedListIndex;
 
-	}
+            // Update matches list if default item visibility is shown
+            list._state.matches.list = list._options.defaultItemVisibility === 'shown' ? list._listIndex : [];
 
-	return { init }
+            // Ensure shown list items are sent to the bottom of the list
+            if (list._options.defaultItemVisibility === 'shown') {
+                let shownItems = list.querySelectorAll(':scope>li:not([hidden])');
+                let fragment = document.createDocumentFragment();
+                for (let item of shownItems) {
+                    fragment.append(item);
+                }
+                list.append(fragment);
+            }
+        }
+
+    }
+
+    return { init }
 
 })();
 
 listModule.init();
 eventControl.add({
-	elem: document,
-	eventType: "astro:after-swap",
-	fn: listModule.init,
+    elem: document,
+    eventType: "astro:after-swap",
+    fn: listModule.init,
 });
 
 

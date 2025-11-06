@@ -20,28 +20,44 @@ const { id, message, colour, type } = Astro.props;
 </div>
 
 <style is:global>
+    .toast-group {
+        grid-area: toasts;
+        height: 0;
+        padding-top: var(--space-xl);
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
+        pointer-events: none;
+    }
+
+    main.big-seven[data-mode="assessment"] .toast-group {
+        padding-top: var(--space-base);
+        top: 3.75rem;
+    }
+
 	.toast-container {
 		display: flex;
 		flex-flow: column;
 		align-items: center;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		z-index: 1001;
-		padding: 0 var(--space-sm) var(--space-sm);
+        position: absolute;
+        right: 0;
+        left: 0;
 		opacity: 0;
+        pointer-events: none;
+        translate: 0px -0.25rem;
 		transition:
 			opacity var(--transition-linear-fast),
-			bottom var(--transition-ease-fast);
+			translate var(--transition-ease-fast);
 	}
 
 	.toast-container[open] {
 		opacity: 1;
-		bottom: 1rem;
+        translate: 0px 0px !important;
 		transition:
 			opacity var(--transition-linear-medium),
-			bottom var(--transition-ease-slow);
+			translate var(--transition-ease-slow);
 	}
 
 	.toast {

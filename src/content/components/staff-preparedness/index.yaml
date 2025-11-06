@@ -37,8 +37,14 @@ implementing:
       categories: []
     - tag: 4.1.7
       title: >-
-        All staff are trauma-informed and know how to provide positive childhood
-        experiences to support any potential adverse childhood experiences.
+        All staff are trauma-informed* and know how to provide positive
+        childhood experiences to support any potential adverse childhood
+        experiences.
+
+
+        *Being trauma aware and responding with supportive strategies. For
+        example, an educator notices a learner in distress and offers supports
+        such as sensory tools and choice.
       compass: false
       categories: []
 developing:
@@ -55,9 +61,16 @@ developing:
       categories: []
     - tag: 4.1.10
       title: >-
-        All staff are trauma-assumed. Staff understand that many learners may be
-        affected by adverse childhood experiences and provide positive childhood
-        experiences for all learners.
+        All staff are trauma-assumed*. Staff understand that many learners may
+        be affected by adverse childhood experiences and provide positive
+        childhood experiences for all learners.
+
+
+        *A mindset in which we proactively assume that the people we interact
+        with may have experienced trauma and thus we design our environments and
+        practices accordingly (UDL). For example, an educator sets up the
+        learning environment with a variety of spaces, choice, and calming
+        activities.
       compass: false
       categories: []
 sustaining:
@@ -76,7 +89,13 @@ sustaining:
       categories: []
     - tag: 4.1.13
       title: >-
-        All staff are trauma-invested and consistently evaluate their practices
+        All staff are trauma-invested* and consistently evaluate their practices
         to create positive childhood experiences for all learners.
+
+
+        *Staff act collectively on their understanding of trauma to ensure
+        safety, consistency, and care for all learners. For example,
+        whole-school approaches like PBIS that address the needs of the whole
+        child.
       compass: false
       categories: []

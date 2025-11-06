@@ -17,6 +17,7 @@ import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 import { findObjectByKey } from "src/utilities/helpers";
 import PageNav from "src/components/PageNav.astro";
+import ReportToasts from "src/components/ReportToasts.astro";
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -63,38 +64,7 @@ for (let indicator of indicators) {
 
 	<PageNav heading={'In this report'} sectionLinks={sectionLinks} dataset={[{key: 'restrict-report', value: 'active'}]}/>
 
-	<Toast
-		id={"open-assessment-dialog_open-toast_success"}
-		message={`Report opened!`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"report-settings-dialog_save-toast_success"}
-		message={`Report settings saved!`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"report-page_close-toast_success"}
-		message={`Report closed.`}
-		colour={"green"}
-		type={"success"}
-	>
-		<IconCheckmark slot={"icon"} />
-	</Toast>
-	<Toast
-		id={"report-page_close-toast_failure"}
-		message={`Unable to close report. Please reload the page to try again.`}
-		colour={"red"}
-		type={"failure"}
-	>
-		<IconWarningSmall slot={"icon"} />
-	</Toast>
+    <ReportToasts slot="toast-group" />
 
 	<OpenImportAssessmentDialogs/>
 	<ReportDialogs/>
@@ -232,9 +202,9 @@ for (let indicator of indicators) {
 							<span class="title">{indicator.data?.title}</span>
 						</h2>
 						<h3>Overall Progress</h3>
-						<ProgressChart/>
+						<ProgressChart colour={indicator.data.colour}/>
 						<h3>Component Progress</h3>
-						<MatrixChart entries={components} scope={'Components'} />
+						<MatrixChart entries={components} scope={'Components'} colour={indicator.data.colour} />
 					</section>
 
 				)
@@ -259,7 +229,7 @@ for (let indicator of indicators) {
 	// Device Restrictions
 	*/
 
-	@container main (width < 744px) {
+	@container main (width < 904px) {
 		.content.report [data-restrict-report="active"] {
 			display: none !important;
 		}
@@ -269,7 +239,7 @@ for (let indicator of indicators) {
 		}
 	}
 
-	@container main (width >= 744px) {
+	@container main (width >= 904px) {
 		.content.report [data-restrict-device-max="small"] {
 			display: none !important;
 		}
@@ -341,6 +311,10 @@ for (let indicator of indicators) {
 	#report-container > section {
 		width: 100%;
 	}
+
+    #report-container > section.summary {
+        width: 900px !important;
+    }
 	
 	#report-container h3 {
 		font-weight: 500;
@@ -379,6 +353,9 @@ for (let indicator of indicators) {
 		height: 100%;
 		background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-bold));
 	}
+
+
+
 
 	@media print {
 		header,
@@ -514,6 +491,8 @@ import { toastControl } from 'src/utilities/toast';
 
 	let packageReport = async () => {
 
+        let debug = true;
+
 		/**
 		 * Add wrapped text to jsPDF
 		 * @param {object} doc - jsPDF instance
@@ -560,7 +539,7 @@ import { toastControl } from 'src/utilities/toast';
 			format: 'letter',
 		});
 
-		console.log('jsPDF Created', pdf);
+		if (debug) console.log('jsPDF Created', pdf);
 
 		let margin = 72;
 		let pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
@@ -582,7 +561,7 @@ import { toastControl } from 'src/utilities/toast';
 		pdf.addFileToVFS('PublicSans-Bold.ttf', publicSansBoldBase64);
 		pdf.addFont('PublicSans-Bold.ttf', 'Public Sans', 'bold');
 
-		console.log('Added Fonts', pdf);
+		if (debug) console.log('Added Fonts', pdf);
 
 		let gnbLogoBase64 = await fetchPngBase64('images/gnb-logo-colour.png');
 
@@ -646,6 +625,9 @@ import { toastControl } from 'src/utilities/toast';
 		
 		margin = 54;
 		pageWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+        let imgWidth = pageWidth - (margin/2);
+        
+        if (debug) console.log('Page Width: ', pageWidth);
 
 		// Safari Fix:
 		let lazyElements = document.querySelectorAll('[loading="lazy"]');
@@ -659,7 +641,7 @@ import { toastControl } from 'src/utilities/toast';
 			
 			pdf.addPage();
 
-			console.log('New Page', pdf);
+			if (debug) console.log('Creating New Page', pdf);
 
 			currentYPosition = margin - 16; // Account for section heading line height padding
 
@@ -670,40 +652,55 @@ import { toastControl } from 'src/utilities/toast';
 			let progressChartImgProps;
 			let progressChartImgHeight;
 			if (progressChartElem) {
-				progressChartCanvas = await html2canvas(progressChartElem, {
-					scale: 3,
+                let clone = progressChartElem.cloneNode(true) as HTMLElement;
+                clone.style.width = '900px';
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                document.body.append(clone);
+
+				progressChartCanvas = await html2canvas(clone, {
+                    scale: 2,
 					useCORS: true,
 				}) as HTMLCanvasElement;
 				progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
-				progressChartImgHeight = (progressChartImgProps.height * pageWidth) / progressChartImgProps.width;
+				progressChartImgHeight = (progressChartImgProps.height * imgWidth) / progressChartImgProps.width;
+
+                clone.remove();
 			} 
 
-			console.log('Converted Progress Chart', progressChartCanvas);
+			if (debug) console.log('Converted Progress Chart', progressChartCanvas);
 
 			let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
 			let matrixChartCanvas = null;
 			let matrixChartImgProps;
 			let matrixChartImgHeight
 			if (matrixChartElem) {
-				if (isSummary){
-					section.removeAttribute('hidden');
-					section.style.position = 'absolute';
-					section.style.left = '-9999px';
-				}
-				matrixChartCanvas = await html2canvas(matrixChartElem, {
-					scale: 3,
+                let clone = matrixChartElem.cloneNode(true) as HTMLElement;
+                clone.style.width = '900px';
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                document.body.append(clone);
+				// if (isSummary){
+				// 	section.removeAttribute('hidden');
+				// 	section.style.position = 'absolute';
+				// 	section.style.left = '-9999px';
+				// }
+				matrixChartCanvas = await html2canvas(clone, {
+                    scale: 2,
 					useCORS: true,
 				}) as HTMLCanvasElement;
 				matrixChartImgProps = pdf.getImageProperties(matrixChartCanvas);
-				matrixChartImgHeight = (matrixChartImgProps.height * pageWidth) / matrixChartImgProps.width;
-				if (isSummary) {
-					section.setAttribute('hidden', '');
-					section.style.position = '';
-					section.style.left = '';
-				}
+				matrixChartImgHeight = (matrixChartImgProps.height * imgWidth) / matrixChartImgProps.width;
+
+                clone.remove();
+				// if (isSummary) {
+				// 	section.setAttribute('hidden', '');
+				// 	section.style.position = '';
+				// 	section.style.left = '';
+				// }
 			}
 
-			console.log('Converted Matrix Chart', matrixChartCanvas);
+			if (debug) console.log('Converted Matrix Chart', matrixChartCanvas);
 			
 			// Create page layout 
 
@@ -722,7 +719,7 @@ import { toastControl } from 'src/utilities/toast';
 	
 				currentYPosition += 24;
 	
-				pdf.addImage(progressChartCanvas, margin, currentYPosition, pageWidth, progressChartImgHeight);
+				pdf.addImage(progressChartCanvas, margin, currentYPosition, imgWidth, progressChartImgHeight);
 				currentYPosition += progressChartImgHeight;
 	
 				currentYPosition += 12;
@@ -737,7 +734,7 @@ import { toastControl } from 'src/utilities/toast';
 					currentYPosition += 24;
 				}
 	
-				pdf.addImage(matrixChartCanvas, margin, currentYPosition, pageWidth, matrixChartImgHeight);
+				pdf.addImage(matrixChartCanvas, margin, currentYPosition, imgWidth, matrixChartImgHeight);
 	
 				progressTracker.update(index + 2, totalPages);
 			}
