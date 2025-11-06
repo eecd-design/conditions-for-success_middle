@@ -10,551 +10,551 @@ import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
 let {
-	itemData,
-	includeItemWrapper = true,
-	index,
-	listName,
-	listGroupSize = 0,
-	itemHiddenByDefault = false,
+    itemData,
+    includeItemWrapper = true,
+    index,
+    listName,
+    listGroupSize = 0,
+    itemHiddenByDefault = false,
 } = Astro.props;
 
 let {
-	category = null,
-	colour = null,
-	title = null,
-	tag = null,
-	type = null,
-	dateAdded = null,
-	description = null,
-	external = null,
-	indicator = null,
-	slug = null,
-	linkAction = null,
-	linkedIndicators = null,
-	linkedComponents = null,
-	linkedConsiderations = null,
-	itemId = null,
+    category = null,
+    colour = null,
+    title = null,
+    tag = null,
+    type = null,
+    dateAdded = null,
+    description = null,
+    external = null,
+    indicator = null,
+    slug = null,
+    linkAction = null,
+    linkedIndicators = null,
+    linkedComponents = null,
+    linkedConsiderations = null,
+    itemId = null,
 } = itemData;
 
 let colourMap = {
-	"1": "red",
-	"2": "orange",
-	"3": "yellow",
-	"4": "green",
-	"5": "teal",
-	"6": "blue",
-	"7": "purple",
+    "1": "red",
+    "2": "orange",
+    "3": "yellow",
+    "4": "green",
+    "5": "teal",
+    "6": "blue",
+    "7": "purple",
 };
 
 let path;
 let date = null;
 if (category === "resource") {
-	path = getResourcePath(itemData);
-	date = new Date(dateAdded).toLocaleDateString("en-US", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-	});
+    path = getResourcePath(itemData);
+    date = new Date(dateAdded).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
 } else {
-	if (category === "indicator") {
-		path = `/big-seven/${slug}`;
-	} else {
-		path = `/big-seven/${indicator}#${category}-${tag.replaceAll(".", "-")}`;
-	}
+    if (category === "indicator") {
+        path = `/big-seven/${slug}`;
+    } else {
+        path = `/big-seven/${indicator}#${category}-${tag.replaceAll(".", "-")}`;
+    }
 }
 
 let tags = null;
 if (linkedIndicators || linkedComponents || linkedConsiderations) {
-	tags = linkedIndicators.concat(linkedComponents, linkedConsiderations);
-	tags = tags.map((tag) => {
-		return {
-			colour: colourMap[tag.charAt(0)],
-			tag,
-		};
-	});
-	tags.sort((a, b) => {
-		return (a.tag || "").localeCompare(b.tag || "");
-	});
+    tags = linkedIndicators.concat(linkedComponents, linkedConsiderations);
+    tags = tags.map((tag) => {
+        return {
+            colour: colourMap[tag.charAt(0)],
+            tag,
+        };
+    });
+    tags.sort((a, b) => {
+        return (a.tag || "").localeCompare(b.tag || "");
+    });
 }
 
 let ItemWrapper = includeItemWrapper ? "li" : null;
 let itemWrapperAttrs = {
-	id: `${listName}_item-${index + 1}`,
-	"data-pos": index + 1,
-	"data-item-id": itemId,
-	"data-theme": colour ?? null,
-	hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
+    id: `${listName}_item-${index + 1}`,
+    "data-pos": index + 1 < listGroupSize ? index + 1 : null,
+    "data-item-id": itemId,
+    "data-theme": colour ?? null,
+    hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
 };
 
 // If resource is a video or internal audio, open it in a dialog
 let opensDialog = linkAction === "dialog";
 let InteractiveWrapper = opensDialog ? "button" : "a";
 let interactiveWrapperAttrs = opensDialog
-	? {
-			class: "open-dialog detailed-link",
-			type: "button",
-			role: includeItemWrapper ? "option" : null,
-			"data-style-as": "link",
-			"data-dialog": "media-dialog",
-			"data-dialog-heading": title,
-			"data-media-type": type,
-			"data-media-src": path,
-			"data-media-external": external.discriminant,
-		}
-	: {
-			class: "detailed-link",
-			href: path,
-			role: includeItemWrapper ? "option" : null,
-		};
+    ? {
+          class: "open-dialog detailed-link",
+          type: "button",
+          role: includeItemWrapper ? "option" : null,
+          "data-style-as": "link",
+          "data-dialog": "media-dialog",
+          "data-dialog-heading": title,
+          "data-media-type": type,
+          "data-media-src": path,
+          "data-media-external": external.discriminant,
+      }
+    : {
+          class: "detailed-link",
+          href: path,
+          role: includeItemWrapper ? "option" : null,
+      };
 
 let DestinationIcon = null;
 // Pages and Locations
 if (category !== "resource") {
-	DestinationIcon = IconArrowRight;
+    DestinationIcon = IconArrowRight;
 }
 // Embedded Media
 else if (opensDialog) {
-	DestinationIcon = IconExpand;
+    DestinationIcon = IconExpand;
 }
 // Internal Files
 else if (
-	external.discriminant === false &&
-	["document", "presentation"].includes(type)
+    external.discriminant === false &&
+    ["document", "presentation"].includes(type)
 ) {
-	DestinationIcon = IconDownload;
+    DestinationIcon = IconDownload;
 }
 // Everything else
 else {
-	DestinationIcon = IconExternal;
+    DestinationIcon = IconExternal;
 }
 ---
 
 {
-	ItemWrapper ? (
-		<ItemWrapper {...itemWrapperAttrs}>
-			<InteractiveWrapper {...interactiveWrapperAttrs}>
-				<ResourceIcons
-					type={type}
-					classes={["type"]}
-					dataset={[{ key: "restrict-content", value: "resources" }]}
-				/>
-				<div
-					class="separator group"
-					data-orientation="vertical"
-					data-restrict-content="resources"
-					aria-hidden="true"
-				/>
-				<span class="text-container">
-					<span class="detailed label" data-restrict-content="mixed">
-						{category !== "resource"
-							? `${toTitleCase(category)} ${tag}`
-							: `${toTitleCase(type)} Resource`}
-					</span>
-					{category === "resource" && (
-						<span class="simple label">{toTitleCase(type)}</span>
-					)}
-					<span class="title">
-						{title}
-						{tags && (
-							<ul
-								class="tags-list"
-								data-restrict-content="resources"
-							>
-								{tags.map((tag) => (
-									<li
-										class="tag"
-										data-theme={tag.colour}
-										data-vibrancy="vivid"
-									>
-										{tag.tag}
-									</li>
-								))}
-							</ul>
-						)}
-					</span>
-					{date && (
-						<span
-							class="date"
-							data-theme="red"
-							data-restrict-content="resources"
-						>
-							Date Added: {date}
-						</span>
-					)}
-					{description && (
-						<span
-							class="description"
-							data-restrict-layout="detailed"
-						>
-							{description}
-						</span>
-					)}
-				</span>
-				<span class="icon-container">
-					{DestinationIcon && (
-						<DestinationIcon classes={["destination"]} />
-					)}
-				</span>
-			</InteractiveWrapper>
-		</ItemWrapper>
-	) : (
-		<InteractiveWrapper {...interactiveWrapperAttrs}>
-			<ResourceIcons
-				type={type}
-				classes={["type"]}
-				dataset={[{ key: "restrict-content", value: "resources" }]}
-			/>
-			<div
-				class="separator group"
-				data-orientation="vertical"
-				data-restrict-content="resources"
-				aria-hidden="true"
-			/>
-			<span class="text-container">
-				<span class="detailed label" data-restrict-content="mixed">
-					{category !== "resource"
-						? `${toTitleCase(category)} ${tag}`
-						: `${toTitleCase(type)} Resource`}
-				</span>
-				{category === "resource" && (
-					<span class="simple label">{toTitleCase(type)}</span>
-				)}
-				<span class="title">
-					{title}
-					{tags && (
-						<ul class="tags-list" data-restrict-content="resources">
-							{tags.map((tag) => (
-								<li
-									class="tag"
-									data-theme={tag.colour}
-									data-vibrancy="vivid"
-								>
-									{tag.tag}
-								</li>
-							))}
-						</ul>
-					)}
-				</span>
-				{date && (
-					<span
-						class="date"
-						data-theme="red"
-						data-restrict-content="resources"
-					>
-						Date Added: {date}
-					</span>
-				)}
-				{description && (
-					<span class="description" data-restrict-layout="detailed">
-						{description}
-					</span>
-				)}
-			</span>
-			<span class="icon-container">
-				{DestinationIcon && (
-					<DestinationIcon classes={["destination"]} />
-				)}
-			</span>
-		</InteractiveWrapper>
-	)
+    ItemWrapper ? (
+        <ItemWrapper {...itemWrapperAttrs}>
+            <InteractiveWrapper {...interactiveWrapperAttrs}>
+                <ResourceIcons
+                    type={type}
+                    classes={["type"]}
+                    dataset={[{ key: "restrict-content", value: "resources" }]}
+                />
+                <div
+                    class="separator group"
+                    data-orientation="vertical"
+                    data-restrict-content="resources"
+                    aria-hidden="true"
+                />
+                <span class="text-container">
+                    <span class="detailed label" data-restrict-content="mixed">
+                        {category !== "resource"
+                            ? `${toTitleCase(category)} ${tag}`
+                            : `${toTitleCase(type)} Resource`}
+                    </span>
+                    {category === "resource" && (
+                        <span class="simple label">{toTitleCase(type)}</span>
+                    )}
+                    <span class="title">
+                        {title}
+                        {tags && (
+                            <ul
+                                class="tags-list"
+                                data-restrict-content="resources"
+                            >
+                                {tags.map((tag) => (
+                                    <li
+                                        class="tag"
+                                        data-theme={tag.colour}
+                                        data-vibrancy="vivid"
+                                    >
+                                        {tag.tag}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </span>
+                    {date && (
+                        <span
+                            class="date"
+                            data-theme="red"
+                            data-restrict-content="resources"
+                        >
+                            Date Added: {date}
+                        </span>
+                    )}
+                    {description && (
+                        <span
+                            class="description"
+                            data-restrict-layout="detailed"
+                        >
+                            {description}
+                        </span>
+                    )}
+                </span>
+                <span class="icon-container">
+                    {DestinationIcon && (
+                        <DestinationIcon classes={["destination"]} />
+                    )}
+                </span>
+            </InteractiveWrapper>
+        </ItemWrapper>
+    ) : (
+        <InteractiveWrapper {...interactiveWrapperAttrs}>
+            <ResourceIcons
+                type={type}
+                classes={["type"]}
+                dataset={[{ key: "restrict-content", value: "resources" }]}
+            />
+            <div
+                class="separator group"
+                data-orientation="vertical"
+                data-restrict-content="resources"
+                aria-hidden="true"
+            />
+            <span class="text-container">
+                <span class="detailed label" data-restrict-content="mixed">
+                    {category !== "resource"
+                        ? `${toTitleCase(category)} ${tag}`
+                        : `${toTitleCase(type)} Resource`}
+                </span>
+                {category === "resource" && (
+                    <span class="simple label">{toTitleCase(type)}</span>
+                )}
+                <span class="title">
+                    {title}
+                    {tags && (
+                        <ul class="tags-list" data-restrict-content="resources">
+                            {tags.map((tag) => (
+                                <li
+                                    class="tag"
+                                    data-theme={tag.colour}
+                                    data-vibrancy="vivid"
+                                >
+                                    {tag.tag}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </span>
+                {date && (
+                    <span
+                        class="date"
+                        data-theme="red"
+                        data-restrict-content="resources"
+                    >
+                        Date Added: {date}
+                    </span>
+                )}
+                {description && (
+                    <span class="description" data-restrict-layout="detailed">
+                        {description}
+                    </span>
+                )}
+            </span>
+            <span class="icon-container">
+                {DestinationIcon && (
+                    <DestinationIcon classes={["destination"]} />
+                )}
+            </span>
+        </InteractiveWrapper>
+    )
 }
 
 <style is:global>
-	/* 
+    /* 
 	// Detailed Link
 	// ------------------------*/
 
-	:is(a, [data-style-as="link"]).detailed-link {
-		--link-ui-colour: var(--colour-ui-neutral-subtle);
-		container: detailed-link / inline-size;
-		display: flex !important;
-		flex-flow: row nowrap;
-		align-items: center;
-		line-height: 1.2;
-		gap: var(--space-xs);
-		width: 100%;
-		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
-		background-color: var(--link-background-colour, transparent);
-		border-radius: var(--border-radius-normal);
-		text-decoration: none;
-	}
+    :is(a, [data-style-as="link"]).detailed-link {
+        --link-ui-colour: var(--colour-ui-neutral-subtle);
+        container: detailed-link / inline-size;
+        display: flex !important;
+        flex-flow: row nowrap;
+        align-items: center;
+        line-height: 1.2;
+        gap: var(--space-xs);
+        width: 100%;
+        padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
+        background-color: var(--link-background-colour, transparent);
+        border-radius: var(--border-radius-normal);
+        text-decoration: none;
+    }
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"] {
-		--link-background-colour: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-		--link-border-colour: var(
-			--colour-border-accent-mid,
-			var(--colour-border-neutral-mid)
-		);
-		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-	}
+    :is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
+    :is(dialog, .content):has(fieldset.search input:focus-visible)
+        :is(a, [data-style-as="link"]).detailed-link[aria-selected="true"] {
+        --link-background-colour: var(
+            --colour-fill-accent-subtle,
+            var(--colour-fill-neutral-subtle)
+        );
+        --link-border-colour: var(
+            --colour-border-accent-mid,
+            var(--colour-border-neutral-mid)
+        );
+        --link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+    }
 
-	/*
+    /*
 	// Type Icon and Label
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link .icon-and-label-container {
-		--label-colour: var(--link-ui-colour);
-		place-self: stretch;
-		flex-wrap: nowrap;
-		flex-shrink: 0;
-	}
+    :is(a, [data-style-as="link"]).detailed-link .icon-and-label-container {
+        --label-colour: var(--link-ui-colour);
+        place-self: stretch;
+        flex-wrap: nowrap;
+        flex-shrink: 0;
+    }
 
-	/*
+    /*
 	// Destination Icon
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link
-		:is(.icon.destination, .icon.type) {
-		--icon-colour: var(--link-ui-colour);
-		position: unset !important;
-	}
+    :is(a, [data-style-as="link"]).detailed-link
+        :is(.icon.destination, .icon.type) {
+        --icon-colour: var(--link-ui-colour);
+        position: unset !important;
+    }
 
-	@media (hover: hover) {
-		:is(a, [data-style-as="link"]).detailed-link .icon.destination {
-			opacity: 0;
-			scale: 90%;
-			transition:
-				opacity var(--transition-linear-fast),
-				scale var(--transition-ease-fast);
-		}
+    @media (hover: hover) {
+        :is(a, [data-style-as="link"]).detailed-link .icon.destination {
+            opacity: 0;
+            scale: 90%;
+            transition:
+                opacity var(--transition-linear-fast),
+                scale var(--transition-ease-fast);
+        }
 
-		:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-			.icon.destination,
-		:is(dialog, .content):has(fieldset.search input:focus-visible)
-			:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-			.icon.destination {
-			opacity: 1;
-			scale: 100%;
-			transition:
-				opacity var(--transition-linear-medium) 0.1s,
-				scale var(--transition-ease-medium) 0.1s;
-		}
-	}
+        :is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+            .icon.destination,
+        :is(dialog, .content):has(fieldset.search input:focus-visible)
+            :is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+            .icon.destination {
+            opacity: 1;
+            scale: 100%;
+            transition:
+                opacity var(--transition-linear-medium) 0.1s,
+                scale var(--transition-ease-medium) 0.1s;
+        }
+    }
 
-	/*
+    /*
 	// Separator
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link .separator {
-		--separator-colour: var(--link-border-colour);
-		align-self: stretch;
-	}
+    :is(a, [data-style-as="link"]).detailed-link .separator {
+        --separator-colour: var(--link-border-colour);
+        align-self: stretch;
+    }
 
-	/*
+    /*
 	// Text Container
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container {
-		display: flex;
-		flex-flow: column;
-		gap: var(--space-2xs);
-		flex-grow: 1;
-	}
+    :is(a, [data-style-as="link"]).detailed-link .text-container {
+        display: flex;
+        flex-flow: column;
+        gap: var(--space-2xs);
+        flex-grow: 1;
+    }
 
-	/* Title */
+    /* Title */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .title {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: start;
-		gap: var(--space-2xs);
-		font-size: var(--font-size-xs);
-	}
+    :is(a, [data-style-as="link"]).detailed-link .text-container .title {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: start;
+        gap: var(--space-2xs);
+        font-size: var(--font-size-xs);
+    }
 
-	/* Date */
+    /* Date */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .date {
-		font-size: var(--font-size-3xs);
-		font-weight: 500;
-		color: var(--colour-ui-neutral-subtle);
-	}
+    :is(a, [data-style-as="link"]).detailed-link .text-container .date {
+        font-size: var(--font-size-3xs);
+        font-weight: 500;
+        color: var(--colour-ui-neutral-subtle);
+    }
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.text-container
-		.date,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		.text-container
-		.date {
-		color: var(--colour-ui-neutral);
-	}
+    :is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+        .text-container
+        .date,
+    :is(dialog, .content):has(fieldset.search input:focus-visible)
+        :is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+        .text-container
+        .date {
+        color: var(--colour-ui-neutral);
+    }
 
-	/* Tags */
+    /* Tags */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: start;
-		column-gap: 0.375rem;
-		row-gap: 0.375rem;
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
+    :is(a, [data-style-as="link"]).detailed-link .text-container .tags-list {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: start;
+        column-gap: 0.375rem;
+        row-gap: 0.375rem;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list li {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0 var(--space-3xs);
-		height: 1.125rem;
-		min-width: 1.125rem;
-		border-radius: var(--border-radius-small);
-		background-color: var(--colour-fill-accent-subtle);
-		font-size: var(--font-size-3xs);
-		color: var(--colour-ui-accent);
-		line-height: 1;
-		transition: all var(--transition-linear-fast);
-	}
+    :is(a, [data-style-as="link"]).detailed-link .text-container .tags-list li {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 var(--space-3xs);
+        height: 1.125rem;
+        min-width: 1.125rem;
+        border-radius: var(--border-radius-small);
+        background-color: var(--colour-fill-accent-subtle);
+        font-size: var(--font-size-3xs);
+        color: var(--colour-ui-accent);
+        line-height: 1;
+        transition: all var(--transition-linear-fast);
+    }
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.text-container
-		.tags-list
-		li,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		.text-container
-		.tags-list
-		li {
-		background-color: var(--colour-fill-neutral-mid);
-		color: var(--colour-ui-reverse);
-	}
+    :is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+        .text-container
+        .tags-list
+        li,
+    :is(dialog, .content):has(fieldset.search input:focus-visible)
+        :is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+        .text-container
+        .tags-list
+        li {
+        background-color: var(--colour-fill-neutral-mid);
+        color: var(--colour-ui-reverse);
+    }
 
-	/* Description */
+    /* Description */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .description {
-		font-size: var(--font-size-2xs);
-		font-weight: 500;
-		color: var(--colour-ui-neutral-subtle);
-		line-height: 1.4;
-		transition: max-height var(--transition-ease-medium);
-	}
+    :is(a, [data-style-as="link"]).detailed-link .text-container .description {
+        font-size: var(--font-size-2xs);
+        font-weight: 500;
+        color: var(--colour-ui-neutral-subtle);
+        line-height: 1.4;
+        transition: max-height var(--transition-ease-medium);
+    }
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.description,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		.description {
-		color: var(--colour-ui-neutral);
-	}
+    :is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+        .description,
+    :is(dialog, .content):has(fieldset.search input:focus-visible)
+        :is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+        .description {
+        color: var(--colour-ui-neutral);
+    }
 
-	/* Label */
+    /* Label */
 
-	:is(a, [data-style-as="link"]).detailed-link .label {
-		font-size: var(--font-size-2xs);
-		font-weight: 600;
-		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-	}
+    :is(a, [data-style-as="link"]).detailed-link .label {
+        font-size: var(--font-size-2xs);
+        font-weight: 600;
+        color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+    }
 
-	:is(a, [data-style-as="link"]).detailed-link .label.simple {
-		display: none;
-	}
+    :is(a, [data-style-as="link"]).detailed-link .label.simple {
+        display: none;
+    }
 
-	@container detailed-link (width < 400px) {
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.icon-and-label-container {
-			display: none !important;
-		}
+    @container detailed-link (width < 400px) {
+        :is(
+                .links-list[data-content="resources"],
+                .link-container[data-content="resources"]
+            )
+            :is(a, [data-style-as="link"]).detailed-link
+            .icon-and-label-container {
+            display: none !important;
+        }
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.text-container
-			.title {
-			flex-flow: column;
-		}
+        :is(
+                .links-list[data-content="resources"],
+                .link-container[data-content="resources"]
+            )
+            :is(a, [data-style-as="link"]).detailed-link
+            .text-container
+            .title {
+            flex-flow: column;
+        }
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.separator {
-			display: none !important;
-		}
+        :is(
+                .links-list[data-content="resources"],
+                .link-container[data-content="resources"]
+            )
+            :is(a, [data-style-as="link"]).detailed-link
+            .separator {
+            display: none !important;
+        }
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.label.simple {
-			display: initial !important;
-		}
+        :is(
+                .links-list[data-content="resources"],
+                .link-container[data-content="resources"]
+            )
+            :is(a, [data-style-as="link"]).detailed-link
+            .label.simple {
+            display: initial !important;
+        }
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.label.detailed {
-			display: none !important;
-		}
+        :is(
+                .links-list[data-content="resources"],
+                .link-container[data-content="resources"]
+            )
+            :is(a, [data-style-as="link"]).detailed-link
+            .label.detailed {
+            display: none !important;
+        }
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.icon.destination {
-			opacity: 1;
-			scale: 100%;
-			transition: none;
-		}
-	}
+        :is(
+                .links-list[data-content="resources"],
+                .link-container[data-content="resources"]
+            )
+            :is(a, [data-style-as="link"]).detailed-link
+            .icon.destination {
+            opacity: 1;
+            scale: 100%;
+            transition: none;
+        }
+    }
 
-	/* Highlight */
+    /* Highlight */
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		span.highlight,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		span.highlight {
-		--highlight-background-colour: transparent;
-		--highlight-ui-colour: var(--colour-ui-neutral);
-	}
+    :is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+        span.highlight,
+    :is(dialog, .content):has(fieldset.search input:focus-visible)
+        :is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+        span.highlight {
+        --highlight-background-colour: transparent;
+        --highlight-ui-colour: var(--colour-ui-neutral);
+    }
 
-	/* 
+    /* 
 	// Link Container Customization
 	*/
 
-	.link-container .detailed-link {
-		--link-background-colour: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-		--link-border-colour: var(
-			--colour-border-accent-mid,
-			var(--colour-border-neutral-mid)
-		);
-		min-height: 3.5rem;
-	}
+    .link-container .detailed-link {
+        --link-background-colour: var(
+            --colour-fill-accent-subtle,
+            var(--colour-fill-neutral-subtle)
+        );
+        --link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+        --link-border-colour: var(
+            --colour-border-accent-mid,
+            var(--colour-border-neutral-mid)
+        );
+        min-height: 3.5rem;
+    }
 
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link:is(
-			:hover,
-			:focus-visible
-		) {
-		background-color: transparent;
-		box-shadow: inset 0 0 0 2px var(--colour-border-accent-subtle);
-	}
+    .link-container
+        :is(a, [data-style-as="link"]).detailed-link:is(
+            :hover,
+            :focus-visible
+        ) {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 2px var(--colour-border-accent-subtle);
+    }
 
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link
-		.text-container
-		.description {
-		color: var(--colour-ui-neutral);
-	}
+    .link-container
+        :is(a, [data-style-as="link"]).detailed-link
+        .text-container
+        .description {
+        color: var(--colour-ui-neutral);
+    }
 </style>
