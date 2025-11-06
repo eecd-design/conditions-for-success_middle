@@ -110,7 +110,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 						</span>
 					</span>
 				</button>
-				<button class="theme" type="button" aria-label="Toggle Theme">
+				<!-- <button class="theme" type="button" aria-label="Toggle Theme">
 					<span class="icon-and-label-container">
 						<IconLight />
 						<IconDark hidden={true}/>
@@ -118,7 +118,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							<span class="label">Change Theme</span>
 						</span>
 					</span>
-				</button>
+				</button> -->
 				<button class="menu open-dialog" data-dialog="mobile-nav-dialog" type="button" aria-label="Open Menu">
 					<span class="icon-and-label-container">
 						<IconMenu />
@@ -167,7 +167,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 								</span>
 							</a>
 						</li>
-						<li>
+						<li data-restrict-device-min="medium">
 							<a href="/big-seven?dialog=create-assessment" data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconEdit20/>
@@ -644,6 +644,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		}
 		header .launchpad > .wrapper {
 			margin: 0 auto;
+		}
+	}
+
+	@container header (width < 904px) {
+		header [data-restrict-device-min="medium"] {
+			display: none !important;
 		}
 	}
 
