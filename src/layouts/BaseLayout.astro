@@ -403,16 +403,34 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			fn: onPageLoad,
 		});
 
-		let onAfterSwap = () => {
-			let html = document.documentElement;
-			html.dataset.js = "";
-			html.dataset.loading = "";
+		let onBeforeSwap = (event) => {
+			let newDocument = event.newDocument.documentElement;
+			console.log(newDocument);
+			newDocument.dataset.js = "";
+			newDocument.dataset.loading = "";
+			if ("scrollRestoration" in history) {
+				let prev = history.scrollRestoration;
+				history.scrollRestoration = "manual";
+				window.scrollTo(0, 0);
+				history.scrollRestoration = prev;
+			}
 		};
 		eventControl.add({
 			elem: document,
-			eventType: "astro:after-swap",
-			fn: onAfterSwap,
+			eventType: "astro:before-swap",
+			fn: onBeforeSwap,
 		});
+
+		// let onAfterSwap = () => {
+		// 	let html = document.documentElement;
+		// 	html.dataset.js = "";
+		// 	html.dataset.loading = "";
+		// };
+		// eventControl.add({
+		// 	elem: document,
+		// 	eventType: "astro:after-swap",
+		// 	fn: onAfterSwap,
+		// });
 
 		console.log(eventControl._registry);
 	</script>
