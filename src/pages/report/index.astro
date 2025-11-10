@@ -374,7 +374,7 @@ for (let indicator of indicators) {
 	// Imports
 	//
 
-	import { formatDateAsString } from 'src/utilities/helpers';
+	import { formatDateAsString, toKebabCase } from 'src/utilities/helpers';
 	import { userDataStore, setState, subscribe, setPreferences } from 'src/stores/userDataStore';
 	import {
 		getActiveReportData,
@@ -680,11 +680,6 @@ import { toastControl } from 'src/utilities/toast';
                 clone.style.position = 'absolute';
                 clone.style.left = '-9999px';
                 document.body.append(clone);
-				// if (isSummary){
-				// 	section.removeAttribute('hidden');
-				// 	section.style.position = 'absolute';
-				// 	section.style.left = '-9999px';
-				// }
 				matrixChartCanvas = await html2canvas(clone, {
                     scale: 2,
 					useCORS: true,
@@ -693,11 +688,6 @@ import { toastControl } from 'src/utilities/toast';
 				matrixChartImgHeight = (matrixChartImgProps.height * imgWidth) / matrixChartImgProps.width;
 
                 clone.remove();
-				// if (isSummary) {
-				// 	section.setAttribute('hidden', '');
-				// 	section.style.position = '';
-				// 	section.style.left = '';
-				// }
 			}
 
 			if (debug) console.log('Converted Matrix Chart', matrixChartCanvas);
@@ -745,8 +735,11 @@ import { toastControl } from 'src/utilities/toast';
 
 			addWrappedText(pdf, pageFooter, margin, (pageHeight - margin + 16), pageWidth);
 		}
+
+		let fileDate = formatDateAsString(new Date(), false);
+		let filename = `assessment_${toKebabCase(assessment.school)}_${assessment.reportingYear}_report-${fileDate}.pdf`;
 		
-		pdf.save('report.pdf');
+		pdf.save(filename);
 		progressTracker.finish();
 
 	}
