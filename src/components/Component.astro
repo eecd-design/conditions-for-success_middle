@@ -418,7 +418,7 @@ let phases = [
 	------------------------------*/
 
 	.component .accordion .heading button .considerations-status {
-		display: none;
+		display: inline-flex;
 		--label-colour: var(
 			--colour-ui-accent-subtle,
 			var(--colour-ui-neutral-subtle)
@@ -488,6 +488,10 @@ let phases = [
 		margin: 0 0 0 var(--space-3xs);
 	}
 
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) .icon.compass {
+		--icon-colour: var(--colour-ui-reverse);
+	}
+
 	/* Number Tag */
 
 	.considerations-list form label:has(input[type="checkbox"]) .tag {
@@ -499,8 +503,12 @@ let phases = [
 		transition: color var(--transition-linear-fast);
 	}
 
-	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) .tag {
 		color: var(--colour-ui-accent-bold);
+	}
+
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) .tag {
+		color: var(--colour-ui-reverse);
 	}
 	
 	/* Checkbox */
@@ -512,60 +520,70 @@ let phases = [
 		padding: 0 var(--space-2xs) 0 0;
 		background-color: var(--colour-fill-accent-subtle);
 		border-radius: var(--border-radius-small);
-		pointer-events: none;
+		cursor: default;
 	}
 
-	.considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) {
+		cursor: pointer;
+	}
+
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:is(:hover, :focus-visible)) {
 		background-color: var(--colour-fill-accent-subtle-highlight);
 	}
 
-	.considerations-list form label:has(input[type="checkbox"]:focus-visible) {
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:focus-visible) {
 		outline: var(--colour-focus-ring) solid 2px;
 		outline-offset: 3px;
+	}
+	
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) {
+		background-color: var(--colour-fill-accent-bold);
 	}
 
 	.considerations-list form label:has(input[type="checkbox"]) input, 
 	.considerations-list form label:has(input[type="checkbox"])::before {
+		display: none;
 		height: 1.5rem;
 		width: 1.5rem;
 	}
-	
-	.considerations-list form label:has(input[type="checkbox"]) .icon.checkmark {
+
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) input, 
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"])::before {
+		display: inline-block;
+	}
+
+	main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) .icon.checkmark {
 		--icon-size: 0.75rem;
-		display: none;
 		top: 0.375rem;
 		left: 0.375rem;
 	}
 
 	@container main (width <= 904px) {
-		.considerations-list form label:has(input[type="checkbox"]) input, 
-		.considerations-list form label:has(input[type="checkbox"])::before {
-			display: none;
-		}
-	}
-
-	@container main (width > 904px) {
 
 		main[data-mode="assessment"] .component .accordion .considerations-status {
-			display: inline-flex;
-		}
-		
-		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) {
-			pointer-events: all;
+			display: none;
 		}
 
 		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) {
-			background-color: var(--colour-fill-accent-bold);
-		}
-
-		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) .icon.compass {
-			--icon-colour: var(--colour-ui-reverse);
+			background-color: var(--colour-fill-accent-subtle);
 		}
 
 		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]:checked) .tag {
-			color: var(--colour-ui-reverse);
+			color: var(--colour-ui-accent);
 		}
 
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) input, 
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"])::before {
+			display: none;
+		}
+
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) {
+			pointer-events: none;
+		}
+
+		main[data-mode="assessment"] .considerations-list form label:has(input[type="checkbox"]) .icon.checkmark {
+			display: none;
+		}
 	}
 
 
