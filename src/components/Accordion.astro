@@ -31,19 +31,21 @@ let IconCross = crossIcons[crossIconSize];
 
 <div class="accordion" {...datasetAttrs}>
 	<h3 id={id ? id : toKebabCase(title)} class="heading">
-		<span class="icon-and-label-container">
-			<slot name="button-icon" />
-			<span class="label-container">
-				<span class="label">{title}</span>
+		<button type="button">
+			<span class="icon-and-label-container">
+				<slot name="button-icon" />
+				<span class="label-container">
+					<span class="label">{title}</span>
+				</span>
 			</span>
-		</span>
 
-		<slot name="button-meta" />
+			<slot name="button-meta" />
 
-		<IconCross />
+			<IconCross />
+		</button>
 	</h3>
 
-	<div class="panel">
+	<div class="panel" data-js-visibility="hidden">
 		{
 			wrapper ? (
 				<div class="content">
@@ -162,10 +164,19 @@ let IconCross = crossIcons[crossIconSize];
 	}
 
 	.accordion .panel {
+		display: block;
 		border: 1px solid
 			var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
 		border-radius: 0 0 var(--border-radius-normal)
 			var(--border-radius-normal);
+	}
+
+	[data-js] .accordion .panel {
+		display: none;
+	}
+
+	[data-js] .accordion:has(> .heading > button[aria-expanded="true"]) .panel {
+		display: block;
 	}
 
 	.accordion .panel :where(p, li, a) {
@@ -205,30 +216,9 @@ let IconCross = crossIcons[crossIconSize];
 		// DOM Setup
 		//
 
-		let setupDOM = (heading) => {
-			// Create a button
-			let btn = document.createElement("button");
-
-			// Add heading nodes to the button
-			while (heading.firstChild) {
-				btn.append(heading.firstChild);
-			}
-
-			// Remove duplicate heading content and replace it with the button
-			heading.innerHTML = "";
-			heading.append(btn);
-
-			// Hide the content
-			heading.nextElementSibling.setAttribute("hidden", "");
-
-			// Change button type
-			btn.setAttribute("type", "button");
-
-			// Add ARIA
+		let setupDOM = (accordion) => {
+			let btn = accordion.querySelector(":scope>.heading>button");
 			btn.setAttribute("aria-expanded", "false");
-
-			// Flag heading as initialized
-			heading.setAttribute("data-initialized", "");
 		};
 
 		//
@@ -342,13 +332,14 @@ let IconCross = crossIcons[crossIconSize];
 		//
 
 		let init = () => {
-			// Get all accordion headings
-			let headings = document.querySelectorAll(
-				".accordion .heading:not([data-initialized])",
-			);
-			for (let heading of headings) {
-				setupDOM(heading);
+			let accordions = document.querySelectorAll(
+				".accordion",
+			) as NodeListOf<HTMLElement>;
+
+			for (let accordion of accordions) {
+				setupDOM(accordion);
 			}
+
 			eventControl.add({
 				selector: ".accordion",
 				eventType: "click",

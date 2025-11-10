@@ -21,6 +21,13 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<!-- <meta name="color-scheme" content="dark light" /> -->
 		<title>{pageTitle}</title>
+
+		<!-- Progressive Enhancement Handlers (not for view transition) -->
+		<script is:inline>
+			let html = document.documentElement;
+			html.dataset.js = "";
+		</script>
+
 		<!-- Public Sans Font ~ Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,6 +37,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		/>
 		<!-- Aesthet Nova Font ~ Adobe Fonts -->
 		<link rel="stylesheet" href="https://use.typekit.net/omy5wmz.css" />
+
 		<ClientRouter />
 	</head>
 	<body>
@@ -47,9 +55,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			data-indicator-tag={indicatorTag ? indicatorTag : null}
 		>
 			<div class="wrapper">
-                <div class="toast-group">
-                    <slot name="toast-group"/>
-                </div>
+				<div class="toast-group">
+					<slot name="toast-group" />
+				</div>
 				<slot />
 			</div>
 		</main>
@@ -341,6 +349,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		});
 
 		let onPageLoad = () => {
+			// Store last visited page
 			let currentPagePath = window.location.pathname;
 			if (currentPagePath !== "/") {
 				setState({
@@ -351,17 +360,26 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 				});
 			}
 
-			// Handles hash changes on a new page
-
+			// Handle hash scroll on a new page
 			let hash = window.location.hash;
-
 			if (hash.includes("consideration")) {
 				let tag = hash
 					.replace(/^#consideration-/, "")
 					.replace(/-/g, ".");
 				scrollToConsideration(tag);
+			} else if (hash) {
+				let target = document.querySelector(hash);
+				console.log(
+					"Hash Target Elem: ",
+					target,
+					target.getBoundingClientRect().top,
+				);
+				if (target) {
+					scrollIntoView(target);
+				}
 			}
 
+			// Handle search queries
 			let query = new URLSearchParams(window.location.search);
 			let dialog = query.get("dialog");
 			if (dialog) {
@@ -374,6 +392,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 				});
 			}
 
+			// After delay, clear loading state
 			setTimeout(() => {
 				document.documentElement.removeAttribute("data-loading");
 			}, 1000);
@@ -385,7 +404,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		});
 
 		let onAfterSwap = () => {
-			document.documentElement.setAttribute("data-loading", "");
+			let html = document.documentElement;
+			html.dataset.js = "";
+			html.dataset.loading = "";
 		};
 		eventControl.add({
 			elem: document,
