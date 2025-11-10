@@ -910,6 +910,7 @@ let schoolList = {
 
 	let onDialogOpen = (event) => {
 		let dialog = event.target as HTMLDialogElement;
+		console.log("Opening Edit Assessment Dialog", dialog);
 
 		// On open, update dialog form with current assessment data
 		if (dialog.open) {
@@ -920,7 +921,7 @@ let schoolList = {
 		}
 	};
 	eventControl.add({
-		elem: document.querySelector("#edit-assessment-properties-dialog"),
+		selector: "#edit-assessment-properties-dialog",
 		eventType: "dialogOpen",
 		fn: onDialogOpen,
 	});
