@@ -406,7 +406,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		--icon-size: 1.25rem;
 		--label-size: var(--font-size-2xs);
 		user-select: none;
-        -webkit-user-select: none;
+		-webkit-user-select: none;
 	}
 
 	#assessment-controls
@@ -458,6 +458,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 	} from "src/stores/userDataStore";
 	import { dialogControl } from "src/utilities/dialog";
 	import { eventControl } from "src/utilities/event";
+	import { resetForm } from "src/utilities/form";
 	import { toastControl } from "src/utilities/toast";
 
 	//
@@ -630,12 +631,25 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							mode: "reading",
 							activeAssessmentId: null,
 						});
+
 						// Reset consideration checkboxes
 						for (let input of document.querySelectorAll(
 							'input[name="considerationsEstablished"]',
 						) as NodeListOf<HTMLInputElement>) {
 							input.checked = false;
 						}
+
+						// Reset create assessment dialog
+						let createDialog = document.querySelector(
+							"#edit-assessment-properties-dialog",
+						);
+						if (createDialog) {
+							resetForm({
+								form: createDialog.querySelector("form"),
+								resetType: "hard",
+							});
+						}
+
 						toastControl.show({ target, type: "success" });
 					} catch (error) {
 						console.error(error);

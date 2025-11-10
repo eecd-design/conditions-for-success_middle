@@ -668,6 +668,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		deleteImportConflictData,
 	} from "src/stores/userDataStore";
 	import { eventControl } from "src/utilities/event";
+	import { resetForm } from "src/utilities/form";
 
 	//
 	// Methods
@@ -1316,6 +1317,24 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				let assessmentId = Number(dialog.getAttribute("data-context"));
 
 				deleteAssessment(assessmentId);
+
+				// Reset consideration checkboxes
+				for (let input of document.querySelectorAll(
+					'input[name="considerationsEstablished"]',
+				) as NodeListOf<HTMLInputElement>) {
+					input.checked = false;
+				}
+
+				// Reset create assessment dialog
+				let createDialog = document.querySelector(
+					"#edit-assessment-properties-dialog",
+				);
+				if (createDialog) {
+					resetForm({
+						form: createDialog.querySelector("form"),
+						resetType: "hard",
+					});
+				}
 
 				toastControl.show({ target, type: "success" });
 

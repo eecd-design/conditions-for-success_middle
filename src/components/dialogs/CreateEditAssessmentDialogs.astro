@@ -524,13 +524,13 @@ let schoolList = {
 	// Methods
 	//
 
-	let revealSchoolOptionGroup = (districtSelect) => {
+	let revealSchoolOptionGroup = (districtSelect, value) => {
 		let schoolSelect = districtSelect
 			.closest("form")
 			.querySelector(`select[name="school"]`) as HTMLSelectElement;
 
 		// If the district select has a value, enable school select and show paired option group
-		if (districtSelect.value !== "") {
+		if (value !== "") {
 			schoolSelect.removeAttribute("disabled");
 			// Clear out previous options
 			let items = schoolSelect.querySelectorAll(
@@ -539,7 +539,7 @@ let schoolList = {
 			for (let item of items) item.remove();
 			// Add new options
 			let template = document.querySelector(
-				`#edit-assessment-properties-dialog_school-select_${districtSelect.value.toLowerCase()}-options`,
+				`#edit-assessment-properties-dialog_school-select_${value.toLowerCase()}-options`,
 			) as HTMLTemplateElement;
 			let options = template.content.cloneNode(true) as HTMLElement;
 			schoolSelect.append(options);
@@ -764,26 +764,31 @@ let schoolList = {
 			return;
 
 		let assessment = getActiveAssessmentData();
-		if (!assessment) return;
+		if (assessment) {
+			// console.log("Updating Dialog (edit properties)");
 
-		// console.log("Updating Dialog (edit properties)");
+			let context = dialog.getAttribute("data-context");
 
-		let context = dialog.getAttribute("data-context");
-
-		if (context === "setup") {
+			if (context === "setup") {
+				let forms = dialog.querySelectorAll("form");
+				for (let form of forms) {
+					resetForm({ form, resetType: "hard" });
+				}
+			} else if (context === "configure" || !context) {
+				let districtSelect = dialog.querySelector(
+					'select[name="district"]',
+				);
+				revealSchoolOptionGroup(districtSelect, assessment.district);
+				updateFieldsFromAssessmentData({
+					assessment: assessment,
+					dialog: dialog,
+				});
+			}
+		} else {
 			let forms = dialog.querySelectorAll("form");
 			for (let form of forms) {
 				resetForm({ form, resetType: "hard" });
 			}
-		} else if (context === "configure" || !context) {
-			let districtSelect = dialog.querySelector(
-				'select[name="district"]',
-			);
-			revealSchoolOptionGroup(districtSelect);
-			updateFieldsFromAssessmentData({
-				assessment: assessment,
-				dialog: dialog,
-			});
 		}
 	};
 
@@ -910,7 +915,7 @@ let schoolList = {
 
 	let onDialogOpen = (event) => {
 		let dialog = event.target as HTMLDialogElement;
-		console.log("Opening Edit Assessment Dialog", dialog);
+		// console.log("Opening Edit Assessment Dialog", dialog);
 
 		// On open, update dialog form with current assessment data
 		if (dialog.open) {
@@ -990,7 +995,7 @@ let schoolList = {
 		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
 
 		if (target.matches(`select[name="district"]`)) {
-			revealSchoolOptionGroup(target);
+			revealSchoolOptionGroup(target, target.value);
 		}
 
 		if (target.matches("select")) {
