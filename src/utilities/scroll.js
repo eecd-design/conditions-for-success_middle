@@ -12,24 +12,31 @@ let scrollControl = (() => {
 
 		if (!target) return;
 
-		let defaultOffset = target.dataset.defaultOffset ?? 48;
+		let defaultOffset = target.dataset.defaultOffset ? Number(target.dataset.defaultOffset) : 48;
 
 		let stickyToolbar = document.querySelector(`#assessment-controls`);
 		let stickyOffset = 0;
 		if (stickyToolbar) {
 			let styles = getComputedStyle(stickyToolbar);
-			let isSticky = styles.position.includes('sticky') || styles.position === 'fixed';
+			let isSticky = styles.position === 'sticky' || styles.position === 'fixed';
 			let isVisible = stickyToolbar.offsetParent !== null;
 			if (isSticky && isVisible) stickyOffset = stickyToolbar.offsetHeight;
 		}
 
 		let targetRect = target.getBoundingClientRect();
+
+		console.log(targetRect.top, defaultOffset, stickyOffset);
+
 		let absoluteY = window.scrollY + targetRect.top - defaultOffset - stickyOffset;
+
+		console.log('Scrolling To: ', absoluteY);
 
 		window.scrollTo({
 			top: absoluteY,
 			behavior: smooth ? 'smooth' : 'instant',
 		})
+
+		console.log('Scroll Position: ', window.scrollY);
 
 	}
 
@@ -56,15 +63,12 @@ let scrollControl = (() => {
 			let accordionBtn = accordion?.querySelector(".heading button");
 			if (!accordion || !accordionBtn) return;
 
-			let openTargetAccordion = () => {
-				if (accordionBtn.getAttribute("aria-expanded") !== "true") accordionBtn.click();
-				document.removeEventListener('accordionSetupComplete', openTargetAccordion);
-			}
-
 			if (accordionBtn.hasAttribute('aria-expanded')) {
-				openTargetAccordion();
+				if (accordionBtn.getAttribute("aria-expanded") !== "true") accordionBtn.click();
 			} else {
-				document.addEventListener('accordionSetupComplete', openTargetAccordion);
+				document.addEventListener('accordionSetupComplete', () => {
+					if (accordionBtn.getAttribute("aria-expanded") !== "true") accordionBtn.click();
+				}, { once: true });
 			}
 
 			target = accordion;
@@ -75,10 +79,15 @@ let scrollControl = (() => {
 
 		}
 
-		if (!target) null;
+		if (!target) return;
 
 		// Wait for browser's native jump and reflow to finish
-		requestAnimationFrame(() => requestAnimationFrame(() => adjustScroll(target, smooth)));
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				if (target?.isConnected) adjustScroll(target, smooth);
+			});
+		});
+
 
 	};
 
@@ -87,6 +96,7 @@ let scrollControl = (() => {
 	}
 
 	let onPopstate = (event) => {
+
 		// If link was within a dialog, close it
 		let activeDialog = document.querySelector(
 			"dialog[open]",
@@ -104,7 +114,7 @@ let scrollControl = (() => {
 		handleHash(false);
 
 		eventControl.add({
-			elem: window,
+			elem: document,
 			eventType: 'astro:page-load',
 			fn: onPageLoad,
 		})
