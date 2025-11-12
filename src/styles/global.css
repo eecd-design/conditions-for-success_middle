@@ -507,7 +507,6 @@ h1 {
 	font-weight: 700;
 	line-height: 1;
 	margin: 0 0 var(--space-xl);
-	scroll-margin-top: 3rem;
 }
 
 h2,
@@ -517,7 +516,6 @@ h2,
 	font-weight: 700;
 	line-height: 1.2;
 	margin: var(--space-lg) 0 var(--space-lg);
-	scroll-margin-top: 2.5rem;
 }
 
 :is(h2, [data-style-as="h2"]):has(+ .heading-subtitle) {
@@ -541,16 +539,6 @@ h2,
 
 :is(h2, [data-style-as="h2"])+.heading-subtitle>.icon {
 	margin-top: var(--space-3xs);
-}
-
-@container main (width >=904px) {
-	main.big-seven[data-mode="assessment"] h1 {
-		scroll-margin-top: 6.25rem;
-	}
-
-	main.big-seven[data-mode="assessment"] h2 {
-		scroll-margin-top: 5.75rem;
-	}
 }
 
 h3,

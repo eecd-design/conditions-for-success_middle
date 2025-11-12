@@ -1141,10 +1141,10 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				}
 
 				let importedAssessment = decompressData(importedCode);
-				console.log(
-					"Imported Assessment (Code)",
-					JSON.parse(JSON.stringify(importedAssessment)),
-				);
+				// console.log(
+				// 	"Imported Assessment (Code)",
+				// 	JSON.parse(JSON.stringify(importedAssessment)),
+				// );
 
 				let importResult = handleAssessmentImport(importedAssessment);
 
@@ -1187,10 +1187,10 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 			try {
 				let importedAssessment = await importAssessment(file);
-				console.log(
-					"Imported Assessment (File)",
-					JSON.parse(JSON.stringify(importedAssessment)),
-				);
+				// console.log(
+				// 	"Imported Assessment (File)",
+				// 	JSON.parse(JSON.stringify(importedAssessment)),
+				// );
 
 				let importResult = handleAssessmentImport(importedAssessment);
 

@@ -68,13 +68,6 @@ let IconCross = crossIcons[crossIconSize];
 
 	.accordion {
 		container: accordion / inline-size;
-		scroll-margin-top: 2rem;
-	}
-
-	@container main (width >=904px) {
-		main.big-seven[data-mode="assessment"] .accordion {
-			scroll-margin-top: 6.5rem;
-		}
 	}
 
 	.accordion .heading {
@@ -202,6 +195,7 @@ let IconCross = crossIcons[crossIconSize];
 
 	import { eventControl } from "src/utilities/event";
 	import {
+		emitEvent,
 		isInViewport,
 		scrollIntoView,
 		stopVideo,
@@ -323,6 +317,7 @@ let IconCross = crossIcons[crossIconSize];
 
 		let onClick = (event) => {
 			if (!event.target.matches(".accordion .heading button")) return;
+			console.log("Accordion Click");
 			let targetAccordion = event.target.closest(".accordion");
 			toggleAccordion(targetAccordion);
 		};
@@ -339,6 +334,11 @@ let IconCross = crossIcons[crossIconSize];
 			for (let accordion of accordions) {
 				setupDOM(accordion);
 			}
+
+			emitEvent({
+				target: document,
+				name: "accordionSetupComplete",
+			});
 
 			eventControl.add({
 				selector: ".accordion",

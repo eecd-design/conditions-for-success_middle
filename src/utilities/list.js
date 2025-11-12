@@ -157,11 +157,13 @@ let findMatches = ({ searchIndex, values, defaultItemVisibility }) => {
 
 let showListGroup = (list) => {
 
-	console.log('Showing List Group');
+	let debug = false;
+
+	if (debug) console.log('Showing List Group');
 
 	let groupSize = list._options.listGroupSize;
 	let lastShownIndex = Number(list._state.matches.lastShownIndex ?? -1);
-	console.log('Last Shown Index: ', lastShownIndex);
+	if (debug) console.log('Last Shown Index: ', lastShownIndex);
 
 	let fragment = document.createDocumentFragment();
 
@@ -169,7 +171,7 @@ let showListGroup = (list) => {
 	let endIndex = startIndex + groupSize;
 	let fullList = list._state.matches.list || [];
 	let group = fullList.slice(startIndex, endIndex);
-	console.log('Group: ', group);
+	if (debug) console.log('Group: ', group);
 
 	for (let item of group) {
 
@@ -178,7 +180,7 @@ let showListGroup = (list) => {
 		let elem = list.querySelector(`[data-item-id="${item.id}"]`);
 		if (!elem) continue;
 
-		console.log('Updating Item ', item.position);
+		if (debug) console.log('Updating Item ', item.position);
 
 		elem.dataset.pos = item.position;
 		elem.hidden = false;
@@ -223,7 +225,7 @@ let showListGroup = (list) => {
  */
 let updateList = async (list) => {
 
-	let debug = true;
+	let debug = false;
 
 	let searchIndex = list._listIndex;
 	let values = {
