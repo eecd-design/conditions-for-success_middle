@@ -348,7 +348,7 @@ let updateList = async (list) => {
 		target: document,
 		name: 'searchMatchFound',
 		detail: {
-			listId: 'resources-list',
+			listId: list.id,
 			listMatchTypes,
 			numOfMatches,
 		}
