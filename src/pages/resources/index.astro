@@ -295,7 +295,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 			class="list-primary-controls"
 			data-list="resources-list"
 		>
-			<fieldset class="search" data-restrict-device-min="medium">
+			<fieldset class="search">
 				<div class="input-container">
 					<input
 						name="search"
@@ -431,25 +431,6 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					</div>
 				</fieldset>
 			</div>
-			<!-- Duplicate search input to ensure tab order matches visual order on smaller devices -->
-			<fieldset class="search" data-restrict-device-max="small">
-				<div class="input-container">
-					<input
-						name="search"
-						type="text"
-						role="combobox"
-						autocomplete="off"
-						aria-autocomplete="list"
-						aria-expanded="true"
-						aria-controls="resources-list"
-						aria-activedescendant=""
-						placeholder="Search these resources..."
-						aria-label="Search and filter resources"
-						aria-describedby="resources-list_error-status, resources-list_filter-status"
-					/>
-					<IconSearch />
-				</div>
-			</fieldset>
 		</form>
 
 		<div class="list-container">
@@ -1125,24 +1106,30 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		fn: onFilterChange,
 	});
 
-	let onMediaQueryChange = (event) => {
-		let filtersToggle = document.querySelector(
-			"#resources-list-primary-controls button.filters-toggle",
+	let toggleFiltersContainer = (event, init = false) => {
+		let primaryControls = document.querySelector(
+			"#resources-list-primary-controls",
+		);
+		if (!primaryControls) return;
+
+		let filtersToggle = primaryControls.querySelector(
+			"button.filters-toggle",
 		);
 		if (!filtersToggle) return;
-
 		let isExpanded = filtersToggle.getAttribute("aria-expanded") === "true";
 
 		let filtersAside = document.querySelector("#filters-aside>.wrapper");
 		let filtersDialog = document.querySelector("#resources-filters-dialog");
-		let form = document.querySelector("#resources-list-secondary-controls");
-		if (!filtersAside || !filtersDialog || !form) return;
+		let secondaryControls = document.querySelector(
+			"#resources-list-secondary-controls",
+		);
+		if (!filtersAside || !filtersDialog || !secondaryControls) return;
 
 		// Resizing from larger to smaller (<744px)
 		if (event.matches) {
 			// Switch drawer to modal
-			if (form.parentElement === filtersDialog) return;
-			filtersDialog.append(form);
+			if (secondaryControls.parentElement === filtersDialog) return;
+			filtersDialog.append(secondaryControls);
 			filtersAside.parentElement.setAttribute("hidden", "");
 			if (isExpanded) {
 				dialogControl.open({
@@ -1151,15 +1138,41 @@ let types = [...allTypes].sort((a: string, b: string) => {
 			}
 		}
 		// Resizing from smaller to larger (>744px)
-		else {
+		else if (!event.matches && !init) {
 			// Switch modal to drawer
-			if (form.parentElement === filtersAside) return;
-			filtersAside.append(form);
+			if (secondaryControls.parentElement === filtersAside) return;
+			filtersAside.append(secondaryControls);
 			filtersAside.parentElement.removeAttribute("hidden");
 			if (isExpanded) {
 				dialogControl.close(filtersDialog);
 			}
 		}
+	};
+
+	let toggleSearchPosition = (event, init = false) => {
+		let primaryControls = document.querySelector(
+			"#resources-list-primary-controls",
+		);
+		if (!primaryControls) return;
+
+		let searchFieldset = primaryControls.querySelector("fieldset.search");
+		if (!searchFieldset) return;
+
+		// Resizing from larger to smaller (<744px)
+		if (event.matches) {
+			// Move fieldset below buttons
+			primaryControls.append(searchFieldset);
+		}
+		// Resizing from smaller to larger (>744px)
+		else if (!event.matches && !init) {
+			// Move fieldset above buttons
+			primaryControls.prepend(searchFieldset);
+		}
+	};
+
+	let onMediaQueryChange = (event) => {
+		toggleFiltersContainer(event);
+		toggleSearchPosition(event);
 	};
 	// Special case event listener, cannot be attached to the document and delegated
 	let mediaQuery = window.matchMedia("(max-width: 744px)");
@@ -1174,23 +1187,18 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		if (!main.matches(".resources")) return;
 
 		let filtersAside = document.querySelector("#filters-aside>.wrapper");
-		let filtersDialog = document.querySelector("#resources-filters-dialog");
-		let form = filtersAside.querySelector(
+		let secondaryControls = filtersAside.querySelector(
 			"#resources-list-secondary-controls",
 		);
-
-		resetForm({ form, resetType: "hard" });
+		resetForm({ form: secondaryControls, resetType: "hard" });
 
 		let mediaQuery = window.matchMedia("(max-width: 744px)");
-		if (mediaQuery.matches) {
-			if (form.parentElement === filtersDialog) return;
-			filtersDialog.append(form);
-			filtersAside.parentElement.setAttribute("hidden", "");
-		}
+		toggleFiltersContainer(mediaQuery, true);
+		toggleSearchPosition(mediaQuery, true);
 	};
 	eventControl.add({
 		elem: document,
-		eventType: "astro:page-load",
+		eventType: "DOMContentLoaded",
 		fn: onPageLoad,
 	});
 </script>
