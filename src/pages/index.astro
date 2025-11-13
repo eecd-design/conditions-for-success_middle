@@ -11,6 +11,8 @@ import girlScooterImage from "../images/girl-portrait-scooter.jpg";
 import { getEntry } from "astro:content";
 import { getResourcePath } from "src/utilities/helpers";
 
+let base = import.meta.env.BASE_URL;
+
 let continuumsResource = await getEntry(
 	"resources",
 	"nb-middle-school-developmental-continuums",
@@ -232,8 +234,9 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 			<p>
 				This website houses key framework details and resources. It can
 				help schools to self-assess, plan improvements, and celebrate
-				progress. Check out <a href="/big-seven">The Big Seven</a> page to
-				learn more.
+				progress. Check out <a href={`${base}/big-seven`}
+					>The Big Seven</a
+				> page to learn more.
 			</p>
 		</section>
 
@@ -253,7 +256,7 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 					Developmental Continuums?
 				</h2>
 				<a
-					href={continuumsResourcePath}
+					href={`${base}${continuumsResourcePath}`}
 					data-style-as="button"
 					data-style="solid"
 					data-size="large"

@@ -483,7 +483,6 @@ let ensureListOptions = (list) => {
 let ensureListControls = (list) => {
 	if (!list._controls) {
 		list._controls = {
-			// TODO: Will need to add an attribute so we can target the proper input
 			search: document.querySelector(`#${list.dataset.searchControl} fieldset.search input`) ?? null,
 			filter: document.querySelector(`#${list.dataset.filterControl}`) ?? null,
 			filterTagList: document.querySelector(`#${list.dataset.filterTagList}`) ?? null,

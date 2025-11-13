@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import IconArrowDownSmall from "src/components/icons/IconArrowDown_16.astro";
 import IconFolder20 from "src/components/icons/IconFolder_20.astro";
 import IconCross20 from "src/components/icons/IconCross_20.astro";
 import IconDownload20 from "src/components/icons/IconDownload_20.astro";
@@ -11,13 +10,12 @@ import ProgressChart from "src/components/charts/ProgressChart.astro";
 import MatrixChart from "src/components/charts/MatrixChart.astro";
 import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssessmentDialogs.astro";
 import ReportDialogs from "src/components/dialogs/ReportDialogs.astro";
-import Toast from "src/components/Toast.astro";
-import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
-import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
 import IconWarningBig from "src/components/icons/IconWarning_24.astro";
 import { findObjectByKey } from "src/utilities/helpers";
 import PageNav from "src/components/PageNav.astro";
 import ReportToasts from "src/components/ReportToasts.astro";
+
+let base = import.meta.env.BASE_URL;
 
 // Get all indicators
 let allIndicators = await getCollection("indicators");
@@ -97,7 +95,7 @@ for (let indicator of indicators) {
 			<div class="wrapper">
 				<p class="instructions">To view a report, create and complete an assessment or open a completed assessment.</p>
 				<div class="button-group">
-					<a href="/big-seven?dialog=create-assessment" aria-label="Create Assessment" data-style-as="button" data-style="solid" data-size="large">
+					<a href={`${base}/big-seven?dialog=create-assessment`} aria-label="Create Assessment" data-style-as="button" data-style="solid" data-size="large">
 						<span class="icon-and-label-container">
 							<IconCross20/>
 							<span class="label-container">
@@ -547,10 +545,10 @@ import { toastControl } from 'src/utilities/toast';
 		let currentYPosition = margin;
 		pdf.setLineHeightFactor(1.1);
 
-		let aesthetNovaMediumBase64 = await fetchFontBase64('fonts/AesthetNova-Medium.ttf');
-		let aesthetNovaBoldBase64 = await fetchFontBase64('fonts/AesthetNova-Bold.ttf');
-		let publicSansRegularBase64 = await fetchFontBase64('fonts/PublicSans-Regular.ttf');
-		let publicSansBoldBase64 = await fetchFontBase64('fonts/PublicSans-Bold.ttf');
+		let aesthetNovaMediumBase64 = await fetchFontBase64('/conditions-for-success/fonts/AesthetNova-Medium.ttf');
+		let aesthetNovaBoldBase64 = await fetchFontBase64('/conditions-for-success/fonts/AesthetNova-Bold.ttf');
+		let publicSansRegularBase64 = await fetchFontBase64('/conditions-for-success/fonts/PublicSans-Regular.ttf');
+		let publicSansBoldBase64 = await fetchFontBase64('/conditions-for-success/fonts/PublicSans-Bold.ttf');
 
 		pdf.addFileToVFS('AesthetNova-Medium.ttf', aesthetNovaMediumBase64);
 		pdf.addFont('AesthetNova-Medium.ttf', 'Aesthet Nova', 'normal')
@@ -563,7 +561,7 @@ import { toastControl } from 'src/utilities/toast';
 
 		if (debug) console.log('Added Fonts', pdf);
 
-		let gnbLogoBase64 = await fetchPngBase64('images/gnb-logo-colour.png');
+		let gnbLogoBase64 = await fetchPngBase64('/conditions-for-success/images/gnb-logo-colour.png');
 
 		// 1. Create the report cover page
 

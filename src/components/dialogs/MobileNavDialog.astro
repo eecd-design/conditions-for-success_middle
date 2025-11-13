@@ -7,6 +7,7 @@ import IconArrowRight16 from "src/components/icons/IconArrowRight_16.astro";
 
 const { url } = Astro;
 let path = url.pathname;
+let base = import.meta.env.BASE_URL;
 
 let allIndicators = await getCollection("indicators");
 let indicators = allIndicators.sort((a, b) =>
@@ -30,7 +31,7 @@ let indicators = allIndicators.sort((a, b) =>
 				<a
 					class="nav-link"
 					aria-current={path.includes("/") ? "page" : null}
-					href="/"
+					href={base}
 				>
 					Home
 				</a>
@@ -42,7 +43,7 @@ let indicators = allIndicators.sort((a, b) =>
 						<a
 							class="subnav-link"
 							aria-current={path === "/big-seven" ? "page" : null}
-							href="/big-seven"
+							href={`${base}/big-seven`}
 						>
 							Introduction
 						</a>
@@ -59,7 +60,7 @@ let indicators = allIndicators.sort((a, b) =>
 												? "page"
 												: null
 										}
-										href={indicatorPath}
+										href={`${base}${indicatorPath}`}
 									>
 										{indicator.data.title}
 									</a>
@@ -73,7 +74,7 @@ let indicators = allIndicators.sort((a, b) =>
 				<a
 					class="nav-link"
 					aria-current={path.includes("/resources") ? "page" : null}
-					href="/resources"
+					href={`${base}/resources`}
 				>
 					Resources
 				</a>
@@ -82,7 +83,7 @@ let indicators = allIndicators.sort((a, b) =>
 				<a
 					class="nav-link"
 					aria-current={path.includes("/report") ? "page" : null}
-					href="/report"
+					href={`${base}/report`}
 				>
 					Report
 				</a>

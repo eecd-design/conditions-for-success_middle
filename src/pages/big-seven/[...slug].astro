@@ -13,6 +13,8 @@ import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowLeftSmall from "src/components/icons/IconArrowLeft_16.astro";
 import MediaDialog from "src/components/dialogs/MediaDialog.astro";
 
+let base = import.meta.env.BASE_URL;
+
 // Get the current indicator
 export async function getStaticPaths() {
 	const indicators = await getCollection("indicators");
@@ -124,7 +126,7 @@ for (let component of components) {
 						<IconArrowLeftSmall />
 						Previous Indicator
 					</span>
-					<a href={`/big-seven/${prevIndicator.id}`}>
+					<a href={`${base}/big-seven/${prevIndicator.id}`}>
 						{prevIndicator.data.title}
 					</a>
 				</div>
@@ -136,7 +138,7 @@ for (let component of components) {
 						Next Indicator
 						<IconArrowRightSmall />
 					</span>
-					<a href={`/big-seven/${nextIndicator.id}`}>
+					<a href={`${base}/big-seven/${nextIndicator.id}`}>
 						{nextIndicator.data.title}
 					</a>
 				</div>

@@ -25,6 +25,7 @@ import welcomeVideoPoster from "src/images/welcome-video-poster.png";
 
 const { url } = Astro;
 let path = url.pathname;
+let base = import.meta.env.BASE_URL;
 
 let allIndicators = await getCollection("indicators");
 let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
@@ -37,18 +38,18 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden>
 			<IconMegaphone/>
-			<span>New resources are added regularly. <a href="/resources">Explore what's new.</a></span>
+			<span>New resources are added regularly. <a href={`${base}/resources`}>Explore what's new.</a></span>
 		</div>
 		<div class="site-masthead">
 			<nav class="global" aria-label="Main navigation">
 				<ul class="nav-links-list">
 					<li class="home-name">
-						<a href="/" data-font-type="serif" aria-label="Home" data-style-as="button">
+						<a href={base} data-font-type="serif" aria-label="Home" data-style-as="button">
 							NB Middle School Conditions for Success
 						</a>
 					</li>
 					<li class="home-icon">
-						<a href="/" aria-label="Home" data-style-as="button" >
+						<a href={base} aria-label="Home" data-style-as="button" >
 							<span class="icon-and-label-container">
 								<IconHome />
 								<span class="label-container" hidden>
@@ -70,7 +71,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							<li>
 								<a class="subnav-link"
 									aria-current={path === "/big-seven" ? "page" : null}
-									href="/big-seven">
+									href={`${base}/big-seven`}>
 									Introduction
 								</a>
 							</li>
@@ -82,7 +83,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 											aria-current={path === indicatorPath
 												? "page"
 												: null}
-											href={indicatorPath}
+											href={`${base}${indicatorPath}`}
 											>
 											{indicator.data.title}								
 										</a>
@@ -91,8 +92,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							})}
 						</ul>
 					</li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/resources') ? 'page' : null} href="/resources">Resources</a></li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/report') ? 'page' : null} href="/report">Report</a></li>
+					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/resources') ? 'page' : null} href={`${base}/resources`}>Resources</a></li>
+					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/report') ? 'page' : null} href={`${base}/report`}>Report</a></li>
 				</ul>
 			</nav>
 			<MobileNavDialog/>
@@ -142,7 +143,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 				<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
 			</div>
 			<div class="media-container">
-				<button class="media open-dialog" data-dialog="media-dialog" data-dialog-heading="Welcome to the Conditions for Success Website!" data-media-type="video" data-media-src="https://middle.nbed.ca/conditions-for-success/assets/media/welcome.mp4" data-media-external="false" type="button">
+				<button class="media open-dialog" data-dialog="media-dialog" data-dialog-heading="Welcome to the Conditions for Success Website!" data-media-type="video" data-media-src={`${base}/assets/media/welcome.mp4`} data-media-external="false" type="button">
 					<Image
 						src={welcomeVideoPoster}
 						alt="A snapshot of the website welcome video."
@@ -158,7 +159,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 					<h2>I want to...</h2>
 					<ul class="shortcuts-list favourite">
 						<li>
-							<a href="/big-seven" data-style-as="button" data-style="solid" data-size="large">
+							<a href={`${base}/big-seven`} data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconInfo20/>
 									<span class="label-container">
@@ -168,7 +169,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							</a>
 						</li>
 						<li data-restrict-device-min="medium">
-							<a href="/big-seven?dialog=create-assessment" data-style-as="button" data-style="solid" data-size="large">
+							<a href={`${base}/big-seven?dialog=create-assessment`} data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconEdit20/>
 									<span class="label-container">
@@ -178,7 +179,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							</a>
 						</li>
 						<li>
-							<a href="/resources" data-style-as="button" data-style="solid" data-size="large">
+							<a href={`${base}/resources`} data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconSearch20/>
 									<span class="label-container">
@@ -266,7 +267,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		width: 100%;
 		height: 100%;
 		background: 
-			url('/patterns/pattern.svg') repeat,
+			url('/conditions-for-success/patterns/pattern.svg') repeat,
 			var(--colour-fill-neutral-bold);
 		background-blend-mode: screen;
 		z-index: -1;

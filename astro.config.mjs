@@ -9,7 +9,9 @@ import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), markdoc(), keystatic()],
-  adapter: netlify(),
-  trailingSlash: 'never',
+	integrations: [react(), markdoc(), keystatic()],
+	adapter: netlify(),
+	trailingSlash: 'never',
+	site: 'https://middle.nbed.ca/',
+	base: '/conditions-for-success'
 });

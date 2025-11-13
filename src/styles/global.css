@@ -1838,7 +1838,6 @@ dialog>.heading {
 dialog section>h3 {
 	font-weight: 500;
 	margin: var(--space-sm) 0;
-	/* TODO: Make consistent with report headings? */
 }
 
 dialog .instructions {

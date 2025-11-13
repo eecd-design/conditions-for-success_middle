@@ -9,13 +9,11 @@ import AssessmentToasts from "../../components/AssessmentToasts.astro";
 import Accordion from "../../components/Accordion.astro";
 import Tab from "../../components/Tab.astro";
 import PhaseIcons from "../../components/icons/PhaseIcons.astro";
-import IconArrowDownSmall from "src/components/icons/IconArrowDown_16.astro";
 import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowDownRight from "src/components/icons/IconArrowDownRight_20.astro";
 import IconCheckmark from "src/components/icons/IconCheckmark_16.astro";
 import IconMegaphone40 from "src/components/icons/IconMegaphone_40.astro";
 
-import { Image } from "astro:assets";
 import phaseScreenshotLarge from "../../images/phase-highlight-screenshot_large.png";
 import phaseScreenshotMedium from "../../images/phase-highlight-screenshot_medium.png";
 import phaseScreenshotSmall from "../../images/phase-highlight-screenshot_small.png";
@@ -25,6 +23,8 @@ import resourcesScreenshotLarge from "../../images/consideration-resources-highl
 import focusScreenshotSmall from "../../images/focus-highlight-screenshot_small.png";
 import considerationScreenshotSmall from "../../images/consideration-highlight-screenshot_small.png";
 import resourcesScreenshotSmall from "../../images/consideration-resources-highlight-screenshot_small.png";
+
+let base = import.meta.env.BASE_URL;
 
 let allIndicators = await getCollection("indicators");
 
@@ -106,7 +106,7 @@ let sectionLinks = [
 								(component) => (
 									<li>
 										<a
-											href={`/big-seven/leadership-and-teaming#component-${component.data.tag.replaceAll(".", "-")}`}
+											href={`${base}/big-seven/leadership-and-teaming#component-${component.data.tag.replaceAll(".", "-")}`}
 										>
 											{component.data.tag}{" "}
 											{component.data.title}
@@ -141,7 +141,7 @@ let sectionLinks = [
 							components["access-and-equity"].map((component) => (
 								<li>
 									<a
-										href={`/big-seven/access-and-equity#component-${component.data.tag.replaceAll(".", "-")}`}
+										href={`${base}/big-seven/access-and-equity#component-${component.data.tag.replaceAll(".", "-")}`}
 									>
 										{component.data.tag}{" "}
 										{component.data.title}
@@ -172,7 +172,7 @@ let sectionLinks = [
 							components["relationships"].map((component) => (
 								<li>
 									<a
-										href={`/big-seven/relationships#component-${component.data.tag.replaceAll(".", "-")}`}
+										href={`${base}/big-seven/relationships#component-${component.data.tag.replaceAll(".", "-")}`}
 									>
 										{component.data.tag}{" "}
 										{component.data.title}
@@ -203,7 +203,7 @@ let sectionLinks = [
 							components["empathy"].map((component) => (
 								<li>
 									<a
-										href={`/big-seven/empathy#component-${component.data.tag.replaceAll(".", "-")}`}
+										href={`${base}/big-seven/empathy#component-${component.data.tag.replaceAll(".", "-")}`}
 									>
 										{component.data.tag}{" "}
 										{component.data.title}
@@ -234,7 +234,7 @@ let sectionLinks = [
 							components["identities"].map((component) => (
 								<li>
 									<a
-										href={`/big-seven/identities#component-${component.data.tag.replaceAll(".", "-")}`}
+										href={`${base}/big-seven/identities#component-${component.data.tag.replaceAll(".", "-")}`}
 									>
 										{component.data.tag}{" "}
 										{component.data.title}
@@ -267,7 +267,7 @@ let sectionLinks = [
 							].map((component) => (
 								<li>
 									<a
-										href={`/big-seven/high-yield-instructional-practices#component-${component.data.tag.replaceAll(".", "-")}`}
+										href={`${base}/big-seven/high-yield-instructional-practices#component-${component.data.tag.replaceAll(".", "-")}`}
 									>
 										{component.data.tag}{" "}
 										{component.data.title}
@@ -299,7 +299,7 @@ let sectionLinks = [
 								(component) => (
 									<li>
 										<a
-											href={`/big-seven/meaningful-learning-experiences#component-${component.data.tag.replaceAll(".", "-")}`}
+											href={`${base}/big-seven/meaningful-learning-experiences#component-${component.data.tag.replaceAll(".", "-")}`}
 										>
 											{component.data.tag}{" "}
 											{component.data.title}
@@ -384,19 +384,19 @@ let sectionLinks = [
 				<Tab title={"Focus"}>
 					<picture slot="media">
 						<source
-							srcset="/images/focus-highlight-screenshot_small.png"
+							srcset={`${base}/images/focus-highlight-screenshot_small.png`}
 							media="(max-width: 600px)"
 						/>
 						<source
-							srcset="/images/focus-highlight-screenshot_medium.png"
+							srcset={`${base}/images/focus-highlight-screenshot_medium.png`}
 							media="(max-width: 900px)"
 						/>
 						<source
-							srcset="/images/focus-highlight-screenshot_large.png"
+							srcset={`${base}/images/focus-highlight-screenshot_large.png`}
 							media="(min-width: 901px)"
 						/>
 						<img
-							src="/images/focus-highlight-screenshot_large.png"
+							src={`${base}/images/focus-highlight-screenshot_large.png`}
 							alt="A screenshot of the Focus Statement for the Initiating Phase of Continuum 1.1: “Inclusive, learner-centered middle level education is a core value, with continuous reflection ensuring all learners thrive.”"
 						/>
 					</picture>
@@ -418,19 +418,19 @@ let sectionLinks = [
 				<Tab title={"Considerations"}>
 					<picture slot="media">
 						<source
-							srcset="/images/consideration-highlight-screenshot_small.png"
+							srcset={`${base}/images/consideration-highlight-screenshot_small.png`}
 							media="(max-width: 600px)"
 						/>
 						<source
-							srcset="/images/consideration-highlight-screenshot_medium.png"
+							srcset={`${base}/images/consideration-highlight-screenshot_medium.png`}
 							media="(max-width: 900px)"
 						/>
 						<source
-							srcset="/images/consideration-highlight-screenshot_large.png"
+							srcset={`${base}/images/consideration-highlight-screenshot_large.png`}
 							media="(min-width: 901px)"
 						/>
 						<img
-							src="/images/consideration-highlight-screenshot_large.png"
+							src={`${base}/images/consideration-highlight-screenshot_large.png`}
 							alt='A screenshot of the Initiating Phase for Continuum 1.1, which includes: Consideration 1.1.1, "Leadership introduces the concept of a shared vision and mission," and Consideration 1.1.2, "Leadership introduces the concept of middle block philosophy."'
 						/>
 					</picture>
@@ -459,19 +459,19 @@ let sectionLinks = [
 				<Tab title={"Resources"}>
 					<picture slot="media">
 						<source
-							srcset="/images/consideration-resources-highlight-screenshot_small.png"
+							srcset={`${base}/images/consideration-resources-highlight-screenshot_small.png`}
 							media="(max-width: 600px)"
 						/>
 						<source
-							srcset="/images/consideration-resources-highlight-screenshot_medium.png"
+							srcset={`${base}/images/consideration-resources-highlight-screenshot_medium.png`}
 							media="(max-width: 900px)"
 						/>
 						<source
-							srcset="/images/consideration-resources-highlight-screenshot_large.png"
+							srcset={`${base}/images/consideration-resources-highlight-screenshot_large.png`}
 							media="(min-width: 901px)"
 						/>
 						<img
-							src="/images/consideration-resources-highlight-screenshot_large.png"
+							src={`${base}/images/consideration-resources-highlight-screenshot_large.png`}
 							alt='A screenshot of the relevant resources for Consideration 1.1.2, which includes: the "Middle Level Learner Profile" website and the "Middle School (Block) Philosophy" document.'
 						/>
 					</picture>
@@ -659,7 +659,7 @@ let sectionLinks = [
 					Get Started
 					<IconArrowRightSmall />
 				</span>
-				<a href={`/big-seven/leadership-and-teaming`}>
+				<a href={`${base}/big-seven/leadership-and-teaming`}>
 					Leadership and Teaming
 				</a>
 			</div>
