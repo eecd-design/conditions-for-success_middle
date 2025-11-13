@@ -386,8 +386,7 @@ let getResourcePath = (resource) => {
 
 		}
 
-		// path = `/assets/${subfolder}/${slug}.${fileType}`; 
-		path = `https://middle.nbed.ca/conditions-for-success/assets/${subfolder}/${slug}.${fileType}`; // Temporary Testing Path
+		path = `/assets/${subfolder}/${slug}.${fileType}`;
 		return path;
 
 	} else {

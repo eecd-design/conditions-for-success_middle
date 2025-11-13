@@ -154,8 +154,7 @@ import videoPoster from "src/images/video-poster.png";
 
 				// Create new track
 				let newTrack = document.createElement("track");
-				// newTrack.src = `${mediaSrcPathOnly}.vtt`;
-				newTrack.src = `/assets/media/${mediaSrcPathOnly.split("/").slice(-1)}.vtt`; // TODO: TEMP TESTING
+				newTrack.src = `${mediaSrcPathOnly}.vtt`;
 				newTrack.kind = "captions";
 				newTrack.srclang = "en";
 				newTrack.label = "English";
