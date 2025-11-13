@@ -12,13 +12,19 @@ import PhaseIcons from "../../components/icons/PhaseIcons.astro";
 import IconArrowDownSmall from "src/components/icons/IconArrowDown_16.astro";
 import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowDownRight from "src/components/icons/IconArrowDownRight_20.astro";
-import { Image } from "astro:assets";
-import phaseScreenshot from "../../images/phase-highlight-screenshot.png";
-import focusScreenshot from "../../images/focus-highlight-screenshot.png";
-import considerationScreenshot from "../../images/consideration-highlight-screenshot.png";
-import resourcesScreenshot from "../../images/consideration-resources-highlight-screenshot.png";
 import IconCheckmark from "src/components/icons/IconCheckmark_16.astro";
 import IconMegaphone40 from "src/components/icons/IconMegaphone_40.astro";
+
+import { Image } from "astro:assets";
+import phaseScreenshotLarge from "../../images/phase-highlight-screenshot_large.png";
+import phaseScreenshotMedium from "../../images/phase-highlight-screenshot_medium.png";
+import phaseScreenshotSmall from "../../images/phase-highlight-screenshot_small.png";
+import focusScreenshotLarge from "../../images/focus-highlight-screenshot_large.png";
+import considerationScreenshotLarge from "../../images/consideration-highlight-screenshot_large.png";
+import resourcesScreenshotLarge from "../../images/consideration-resources-highlight-screenshot_large.png";
+import focusScreenshotSmall from "../../images/focus-highlight-screenshot_small.png";
+import considerationScreenshotSmall from "../../images/consideration-highlight-screenshot_small.png";
+import resourcesScreenshotSmall from "../../images/consideration-resources-highlight-screenshot_small.png";
 
 let allIndicators = await getCollection("indicators");
 
@@ -58,7 +64,7 @@ let sectionLinks = [
 
 	<AssessmentDialogs />
 
-    <AssessmentToasts slot="toast-group"/>
+	<AssessmentToasts slot="toast-group" />
 
 	<SectionNav />
 
@@ -347,11 +353,24 @@ let sectionLinks = [
 
 			<div class="tab-group">
 				<Tab title={"Phase"}>
-					<Image
-						src={phaseScreenshot}
-						alt="A screenshot of the four “Phase” accordions: Initiating, Implementing, Developing, and Sustaining."
-						slot="media"
-					/>
+					<picture slot="media">
+						<source
+							srcset={phaseScreenshotSmall.src}
+							media="(max-width: 400px)"
+						/>
+						<source
+							srcset={phaseScreenshotMedium.src}
+							media="(max-width: 600px)"
+						/>
+						<source
+							srcset={phaseScreenshotLarge.src}
+							media="(min-width: 801px)"
+						/>
+						<img
+							src={phaseScreenshotLarge.src}
+							alt="A screenshot of the four “Phase” accordions: Initiating, Implementing, Developing, and Sustaining."
+						/>
+					</picture>
 
 					<p>
 						Each continuum spans four <strong>phases</strong> of growth
@@ -363,11 +382,24 @@ let sectionLinks = [
 				</Tab>
 
 				<Tab title={"Focus"}>
-					<Image
-						src={focusScreenshot}
-						alt="A screenshot of the Focus Statement for the Initiating Phase of Continuum 1.1: “Inclusive, learner-centered middle level education is a core value, with continuous reflection ensuring all learners thrive.”"
-						slot="media"
-					/>
+					<picture slot="media">
+						<source
+							srcset="/images/focus-highlight-screenshot_small.png"
+							media="(max-width: 600px)"
+						/>
+						<source
+							srcset="/images/focus-highlight-screenshot_medium.png"
+							media="(max-width: 900px)"
+						/>
+						<source
+							srcset="/images/focus-highlight-screenshot_large.png"
+							media="(min-width: 901px)"
+						/>
+						<img
+							src="/images/focus-highlight-screenshot_large.png"
+							alt="A screenshot of the Focus Statement for the Initiating Phase of Continuum 1.1: “Inclusive, learner-centered middle level education is a core value, with continuous reflection ensuring all learners thrive.”"
+						/>
+					</picture>
 
 					<p>
 						Each phase includes a <strong>focus</strong> statement, which
@@ -384,11 +416,24 @@ let sectionLinks = [
 				</Tab>
 
 				<Tab title={"Considerations"}>
-					<Image
-						src={considerationScreenshot}
-						alt="A screenshot of the Initiating Phase for Continuum 1.1, which includes: Consideration 1.1.1, “Leadership introduces the concept of a shared vision and mission,” and Consideration 1.1.2, “Leadership introduces the concept of middle block philosophy.”"
-						slot="media"
-					/>
+					<picture slot="media">
+						<source
+							srcset="/images/consideration-highlight-screenshot_small.png"
+							media="(max-width: 600px)"
+						/>
+						<source
+							srcset="/images/consideration-highlight-screenshot_medium.png"
+							media="(max-width: 900px)"
+						/>
+						<source
+							srcset="/images/consideration-highlight-screenshot_large.png"
+							media="(min-width: 901px)"
+						/>
+						<img
+							src="/images/consideration-highlight-screenshot_large.png"
+							alt='A screenshot of the Initiating Phase for Continuum 1.1, which includes: Consideration 1.1.1, "Leadership introduces the concept of a shared vision and mission," and Consideration 1.1.2, "Leadership introduces the concept of middle block philosophy."'
+						/>
+					</picture>
 
 					<p>
 						Each phase includes one or several <strong
@@ -412,11 +457,24 @@ let sectionLinks = [
 				</Tab>
 
 				<Tab title={"Resources"}>
-					<Image
-						src={resourcesScreenshot}
-						alt="A screenshot of the relevant resources for Consideration 1.1.2, which includes: the “Middle Level Learner Profile” website and the “Middle School (Block) Philosophy” document."
-						slot="media"
-					/>
+					<picture slot="media">
+						<source
+							srcset="/images/consideration-resources-highlight-screenshot_small.png"
+							media="(max-width: 600px)"
+						/>
+						<source
+							srcset="/images/consideration-resources-highlight-screenshot_medium.png"
+							media="(max-width: 900px)"
+						/>
+						<source
+							srcset="/images/consideration-resources-highlight-screenshot_large.png"
+							media="(min-width: 901px)"
+						/>
+						<img
+							src="/images/consideration-resources-highlight-screenshot_large.png"
+							alt='A screenshot of the relevant resources for Consideration 1.1.2, which includes: the "Middle Level Learner Profile" website and the "Middle School (Block) Philosophy" document.'
+						/>
+					</picture>
 
 					<p>
 						When there are relevant <strong>resources</strong> for a
