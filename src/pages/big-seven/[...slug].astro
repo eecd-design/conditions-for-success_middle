@@ -13,7 +13,7 @@ import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
 import IconArrowLeftSmall from "src/components/icons/IconArrowLeft_16.astro";
 import MediaDialog from "src/components/dialogs/MediaDialog.astro";
 
-let base = import.meta.env.BASE_URL;
+let path = Astro.url.pathname;
 
 // Get the current indicator
 export async function getStaticPaths() {
@@ -56,7 +56,7 @@ let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((si
 let sectionLinks = [];
 for (let component of components) {
 	sectionLinks.push({
-		url: `#component-${component.data.tag.replaceAll('.', '-')}`,
+		url: `${path}#component-${component.data.tag.replaceAll('.', '-')}`,
 		text: `${component.data.tag} ${component.data.title}`,
 	})
 }
@@ -87,7 +87,7 @@ for (let component of components) {
 			{components.map((component) => (
 
 				<li>
-					<a href={`#component-${component.data.tag.replaceAll('.', '-')}`}>
+					<a href={`${path}#component-${component.data.tag.replaceAll('.', '-')}`}>
 						<span class="icon-and-label-container">
 							<span class="label-container">
 								<span class="label">{component.data.tag} {component.data.title}</span>
@@ -126,7 +126,7 @@ for (let component of components) {
 						<IconArrowLeftSmall />
 						Previous Indicator
 					</span>
-					<a href={`${base}/big-seven/${prevIndicator.id}`}>
+					<a href={`./big-seven/${prevIndicator.id}/`}>
 						{prevIndicator.data.title}
 					</a>
 				</div>
@@ -138,7 +138,7 @@ for (let component of components) {
 						Next Indicator
 						<IconArrowRightSmall />
 					</span>
-					<a href={`${base}/big-seven/${nextIndicator.id}`}>
+					<a href={`./big-seven/${nextIndicator.id}/`}>
 						{nextIndicator.data.title}
 					</a>
 				</div>

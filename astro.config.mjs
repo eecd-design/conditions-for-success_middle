@@ -10,8 +10,16 @@ import netlify from '@astrojs/netlify';
 // https://astro.build/config
 export default defineConfig({
 	integrations: [react(), markdoc(), keystatic()],
-	adapter: netlify(),
-	trailingSlash: 'never',
-	site: 'https://middle.nbed.ca/',
-	base: '/conditions-for-success'
+	trailingSlash: 'always',
+	site: 'https://middle.nbed.ca',
+	base: '/conditions-for-success/',
+
+	// Enable these for build
+	output: 'static',
+
+	// Disable these for build
+	adapter: netlify({
+		imageCDN: false,
+	}),
+
 });

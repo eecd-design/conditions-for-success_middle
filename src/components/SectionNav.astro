@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 
 const { url } = Astro;
 let path = url.pathname;
-let base = import.meta.env.BASE_URL;
 
 let allIndicators = await getCollection("indicators");
 let indicators = allIndicators.sort((a, b) =>
@@ -16,21 +15,23 @@ let indicators = allIndicators.sort((a, b) =>
 	<ul>
 		<li>
 			<a
-				aria-current={path === "/big-seven" ? "page" : null}
-				href={`${base}/big-seven`}
+				aria-current={path.endsWith("/big-seven/") ? "page" : null}
+				href={`./big-seven/`}
 				data-style-as="button">Introduction</a
 			>
 		</li>
 		{
 			indicators.map((indicator) => {
-				let indicatorPath = `/big-seven/${indicator.id}`;
+				let indicatorPath = `./big-seven/${indicator.id}/`;
 				return (
 					<li>
 						<a
 							aria-current={
-								path === indicatorPath ? "page" : null
+								path.endsWith(`/${indicator.id}/`)
+									? "page"
+									: null
 							}
-							href={`${base}${indicatorPath}`}
+							href={indicatorPath}
 							data-style-as="button"
 						>
 							{indicator.data.title}

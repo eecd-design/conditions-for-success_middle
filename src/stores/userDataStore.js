@@ -42,7 +42,7 @@ let userSchema = {
 		currentContinuumVersion,
 		lastModifiedPage: null,
 		lastVisitedPage: typeof window !== 'undefined' ? {
-			title: document.querySelector('h1')?.textContent,
+			title: document.title,
 			path: window.location.pathname
 		} : null,
 		announcementSession: {
@@ -230,17 +230,20 @@ let setAssessment = (update) => {
 	// Otherwise, update the assessment
 	else {
 
-		// Update last modified page
-		let pageTitle = document.querySelector('h1')?.textContent;
-		if (pageTitle) {
+		let path = window.location.pathname;
+		if (path.includes('/big-seven/')) {
+
+			// Update last modified page
 			data.uiState.lastModifiedPage = typeof window !== 'undefined' ? {
-				title: document.querySelector('h1')?.textContent,
-				path: window.location.pathname,
+				title: document.title,
+				path,
 			} : null;
+
+			update.lastModifiedBy = update.activeAssessor ?? data.assessments[index].activeAssessor;
+			Object.assign(data.assessments[index], update);
+
 		}
 
-		update.lastModifiedBy = update.activeAssessor ?? data.assessments[index].activeAssessor;
-		Object.assign(data.assessments[index], update);
 	}
 	let changes = {
 		assessments: Object.keys(update),
@@ -856,7 +859,7 @@ let userDataStore = (() => {
 	let init = () => {
 		// console.log('Initiating User Data Store');
 		if (!considerationCountPromise) {
-			considerationCountPromise = fetch('/consideration-count.json')
+			considerationCountPromise = fetch('./data/consideration-count.json')
 				.then(res => res.json())
 				.catch(err => {
 					console.error('Failed to fetch consideration count:', err);

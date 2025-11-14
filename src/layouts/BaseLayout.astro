@@ -9,12 +9,17 @@ import "../styles/global.css";
 import { Image } from "astro:assets";
 import GNBLogo from "../images/gnb-logo-reverse.png";
 
+let path = Astro.url.pathname;
+
 const { pageTitle, indicatorTag, pageType } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en" data-loading>
 	<head>
+		<!-- Set relative path root to '/conditions-for-success/' -->
+		<base href={Astro.url.origin + import.meta.env.BASE_URL} />
+
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -46,7 +51,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			data-theme="red"
 			data-background="dark"
 		>
-			<a href="#main-heading" class="skip-link">Skip to main content</a>
+			<a href={`${path}#main-heading`} class="skip-link"
+				>Skip to main content</a
+			>
 		</div>
 		<Header />
 		<main
@@ -309,27 +316,32 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 		let onPageLoad = () => {
 			// Store last visited page
-			let currentPagePath = window.location.pathname;
-			if (currentPagePath !== "/") {
+			let path = window.location.pathname;
+			let base = "/conditions-for-success/";
+
+			if (!path.endsWith(base)) {
 				setState({
 					lastVisitedPage: {
 						title: document.title,
-						path: window.location.pathname,
+						path,
 					},
 				});
 			}
 
 			// Handle search queries
 			let query = new URLSearchParams(window.location.search);
+			console.log("Query: ", query);
 			let dialog = query.get("dialog");
 			if (dialog) {
 				let dialogId;
 				if (dialog === "create-assessment")
 					dialogId = "edit-assessment-properties-dialog";
+				if (!dialogId) return;
 				dialogControl.open({
 					dialogId,
 					context: "setup",
 				});
+				history.replaceState({}, "", window.location.pathname);
 			}
 
 			// After delay, clear loading state

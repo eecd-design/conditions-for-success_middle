@@ -2,8 +2,6 @@
 import { getCollection } from "astro:content";
 
 import IconXmark from "src/components/icons/IconXmark_20.astro";
-import IconHome from "src/components/icons/IconHome_24.astro";
-import IconArrowRight16 from "src/components/icons/IconArrowRight_16.astro";
 
 const { url } = Astro;
 let path = url.pathname;
@@ -30,8 +28,8 @@ let indicators = allIndicators.sort((a, b) =>
 			<li class="home-icon">
 				<a
 					class="nav-link"
-					aria-current={path.includes("/") ? "page" : null}
-					href={base}
+					aria-current={path.endsWith(base) ? "page" : null}
+					href="./"
 				>
 					Home
 				</a>
@@ -42,25 +40,27 @@ let indicators = allIndicators.sort((a, b) =>
 					<li>
 						<a
 							class="subnav-link"
-							aria-current={path === "/big-seven" ? "page" : null}
-							href={`${base}/big-seven`}
+							aria-current={path.endsWith("/big-seven/")
+								? "page"
+								: null}
+							href={`./big-seven/`}
 						>
 							Introduction
 						</a>
 					</li>
 					{
 						indicators.map((indicator) => {
-							let indicatorPath = `/big-seven/${indicator.id}`;
+							let indicatorPath = `./big-seven/${indicator.id}/`;
 							return (
 								<li>
 									<a
 										class="subnav-link"
 										aria-current={
-											path === indicatorPath
+											path.endsWith(`/${indicator.id}/`)
 												? "page"
 												: null
 										}
-										href={`${base}${indicatorPath}`}
+										href={indicatorPath}
 									>
 										{indicator.data.title}
 									</a>
@@ -73,8 +73,8 @@ let indicators = allIndicators.sort((a, b) =>
 			<li>
 				<a
 					class="nav-link"
-					aria-current={path.includes("/resources") ? "page" : null}
-					href={`${base}/resources`}
+					aria-current={path.includes("/resources/") ? "page" : null}
+					href={`./resources/`}
 				>
 					Resources
 				</a>
@@ -82,8 +82,8 @@ let indicators = allIndicators.sort((a, b) =>
 			<li>
 				<a
 					class="nav-link"
-					aria-current={path.includes("/report") ? "page" : null}
-					href={`${base}/report`}
+					aria-current={path.includes("/report/") ? "page" : null}
+					href={`./report/`}
 				>
 					Report
 				</a>

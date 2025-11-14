@@ -9,8 +9,6 @@ import IconExpand from "./icons/IconExpand_16.astro";
 import IconExternal from "./icons/IconExternal_16.astro";
 import IconDownload from "./icons/IconDownload_16.astro";
 
-let base = import.meta.env.BASE_URL;
-
 let {
 	itemData,
 	includeItemWrapper = true,
@@ -59,9 +57,9 @@ if (category === "resource") {
 	});
 } else {
 	if (category === "indicator") {
-		path = `${base}/big-seven/${slug}`;
+		path = `./big-seven/${slug}/`;
 	} else {
-		path = `${base}/big-seven/${indicator}#${category}-${tag.replaceAll(".", "-")}`;
+		path = `./big-seven/${indicator}/#${category}-${tag.replaceAll(".", "-")}`;
 	}
 }
 

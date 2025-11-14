@@ -38,18 +38,18 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden>
 			<IconMegaphone/>
-			<span>New resources are added regularly. <a href={`${base}/resources`}>Explore what's new.</a></span>
+			<span>New resources are added regularly. <a href={`./resources/`}>Explore what's new.</a></span>
 		</div>
 		<div class="site-masthead">
 			<nav class="global" aria-label="Main navigation">
 				<ul class="nav-links-list">
 					<li class="home-name">
-						<a href={base} data-font-type="serif" aria-label="Home" data-style-as="button">
+						<a href="./" data-font-type="serif" aria-label="Home" data-style-as="button">
 							NB Middle School Conditions for Success
 						</a>
 					</li>
 					<li class="home-icon">
-						<a href={base} aria-label="Home" data-style-as="button" >
+						<a href="./" aria-label="Home" data-style-as="button" >
 							<span class="icon-and-label-container">
 								<IconHome />
 								<span class="label-container" hidden>
@@ -70,20 +70,20 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 						<ul class="subnav-links-list">
 							<li>
 								<a class="subnav-link"
-									aria-current={path === "/big-seven" ? "page" : null}
-									href={`${base}/big-seven`}>
+									aria-current={path.endsWith("/big-seven/") ? "page" : null}
+									href={`./big-seven/`}>
 									Introduction
 								</a>
 							</li>
 							{indicators.map((indicator)=> {
-								let indicatorPath = `/big-seven/${indicator.id}`;
+								let indicatorPath = `./big-seven/${indicator.id}/`;
 								return (
 									<li>
 										<a class="subnav-link"
-											aria-current={path === indicatorPath
+											aria-current={path.endsWith(`/${indicator.id}/`)
 												? "page"
 												: null}
-											href={`${base}${indicatorPath}`}
+											href={indicatorPath}
 											>
 											{indicator.data.title}								
 										</a>
@@ -92,8 +92,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							})}
 						</ul>
 					</li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/resources') ? 'page' : null} href={`${base}/resources`}>Resources</a></li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/report') ? 'page' : null} href={`${base}/report`}>Report</a></li>
+					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/resources/') ? 'page' : null} href={`./resources/`}>Resources</a></li>
+					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/report/') ? 'page' : null} href={`./report/`}>Report</a></li>
 				</ul>
 			</nav>
 			<MobileNavDialog/>
@@ -137,13 +137,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		---- Homepage Only
 		-->
 
-		{path === '/' && (
+		{path === base && (
 			<div class="site-title-container">
 				<h1 id="main-heading" class="site-title" tabindex="-1">New Brunswick Middle Schools: A Window of Opportunity</h1>
 				<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
 			</div>
 			<div class="media-container">
-				<button class="media open-dialog" data-dialog="media-dialog" data-dialog-heading="Welcome to the Conditions for Success Website!" data-media-type="video" data-media-src={`${base}/assets/media/welcome.mp4`} data-media-external="false" type="button">
+				<button class="media open-dialog" data-dialog="media-dialog" data-dialog-heading="Welcome to the Conditions for Success Website!" data-media-type="video" data-media-src={`./assets/media/welcome.mp4`} data-media-external="false" type="button">
 					<Image
 						src={welcomeVideoPoster}
 						alt="A snapshot of the website welcome video."
@@ -159,7 +159,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 					<h2>I want to...</h2>
 					<ul class="shortcuts-list favourite">
 						<li>
-							<a href={`${base}/big-seven`} data-style-as="button" data-style="solid" data-size="large">
+							<a href={`./big-seven/`} data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconInfo20/>
 									<span class="label-container">
@@ -169,7 +169,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							</a>
 						</li>
 						<li data-restrict-device-min="medium">
-							<a href={`${base}/big-seven?dialog=create-assessment`} data-style-as="button" data-style="solid" data-size="large">
+							<a href={`./big-seven/?dialog=create-assessment`} data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconEdit20/>
 									<span class="label-container">
@@ -179,7 +179,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 							</a>
 						</li>
 						<li>
-							<a href={`${base}/resources`} data-style-as="button" data-style="solid" data-size="large">
+							<a href={`./resources/`} data-style-as="button" data-style="solid" data-size="large">
 								<span class="icon-and-label-container">
 									<IconSearch20/>
 									<span class="label-container">
@@ -267,7 +267,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		width: 100%;
 		height: 100%;
 		background: 
-			url('/conditions-for-success/patterns/pattern.svg') repeat,
+			url('https://middle.nbed.ca/conditions-for-success/patterns/pattern.svg') repeat,
 			var(--colour-fill-neutral-bold);
 		background-blend-mode: screen;
 		z-index: -1;
@@ -720,10 +720,10 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 			if (mode === 'assessment' && lastModifiedPage) {
 				assessmentShortcutField.textContent = 'Continue assessment';
-				assessmentShortcutLink.href = lastModifiedPage?.path ?? '/big-seven/leadership-and-teaming';
+				assessmentShortcutLink.href = lastModifiedPage?.path ?? './big-seven/leadership-and-teaming/';
 			} else {
 				assessmentShortcutField.textContent = 'Start an assessment';
-				assessmentShortcutLink.href = '/big-seven';
+				assessmentShortcutLink.href = `./big-seven/?dialog=create-assessment`;
 			}
 
 		}
@@ -764,12 +764,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	
 	let onPageLoad = (event) => {
 		let path = window.location.pathname;
+		let base = '/conditions-for-success/'
 		
-		if (path === '/') {
+		if (path.endsWith(base)) {
 			subscribe(updateLaunchpad);
 		}
 
-		if (path.includes('/big-seven')) {
+		if (path.includes('/big-seven/')) {
 			let showAnnouncement = checkAnnouncementSession();
 			let announcementContainer = document.querySelector('.site-announcement-container');
 			announcementContainer.toggleAttribute('hidden', !showAnnouncement);

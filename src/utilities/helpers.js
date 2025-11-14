@@ -386,7 +386,7 @@ let getResourcePath = (resource) => {
 
 		}
 
-		path = `${import.meta.env.BASE_URL}/assets/${subfolder}/${slug}.${fileType}`;
+		path = `./assets/${subfolder}/${slug}.${fileType}`;
 		return path;
 
 	} else {
