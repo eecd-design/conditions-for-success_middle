@@ -11,8 +11,10 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
 	integrations: [react(), markdoc(), keystatic()],
 	trailingSlash: 'always',
-	site: 'https://middle.nbed.ca',
-	base: '/conditions-for-success/',
+
+	// ↓ Build Only Setting ↓
+	// site: 'https://middle.nbed.ca',
+	// base: '/conditions-for-success/',
 
 	// Enable these for build
 	output: 'static',
