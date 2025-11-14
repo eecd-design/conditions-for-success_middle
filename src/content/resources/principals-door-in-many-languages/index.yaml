@@ -5,8 +5,7 @@ type: image
 topics: []
 external:
   discriminant: false
-  value:
-    fileType: .heic
+  value: {}
 linkAction: link
 linkedIndicators: []
 linkedComponents:
