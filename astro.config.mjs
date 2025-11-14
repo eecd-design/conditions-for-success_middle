@@ -11,17 +11,16 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
 	integrations: [react(), markdoc(), keystatic()],
 	trailingSlash: 'always',
+	adapter: netlify({
+		imageCDN: false,
+	}),
+
+	// ↓ Test Only Setting ↓
+	site: 'https://middle-success.netlify.app/',
 
 	// ↓ Build Only Setting ↓
 	// site: 'https://middle.nbed.ca',
 	// base: '/conditions-for-success/',
-
-	// Enable these for build
-	output: 'static',
-
-	// Disable these for build
-	adapter: netlify({
-		imageCDN: false,
-	}),
+	// output: 'static',
 
 });
