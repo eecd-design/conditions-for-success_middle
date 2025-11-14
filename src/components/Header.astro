@@ -767,7 +767,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	let onPageLoad = (event) => {
 		let path = window.location.pathname;
 		let base = import.meta.env.BASE_URL;
-		console.log('PAGE LOAD: Site Base', base);
 		
 		if (path.endsWith(base)) {
 			subscribe(updateLaunchpad);
