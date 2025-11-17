@@ -334,8 +334,6 @@ let getResourcePath = (resource) => {
 
 	} else if (external.discriminant === false) {
 
-		let path;
-
 		let subfolder;
 		switch (type) {
 			case 'video':
@@ -386,7 +384,14 @@ let getResourcePath = (resource) => {
 
 		}
 
-		path = `./assets/${subfolder}/${slug}.${fileType}`;
+		// Default relative path for the production site
+		let path = `./assets/${subfolder}/${slug}.${fileType}`;
+
+		// Absolute path for development site
+		if (import.meta.env.SITE === 'https://middle-success.netlify.app/') {
+			path = `https://middle.nbed.ca/conditions-for-success/assets/${subfolder}/${slug}.${fileType}`;
+		}
+
 		return path;
 
 	} else {
