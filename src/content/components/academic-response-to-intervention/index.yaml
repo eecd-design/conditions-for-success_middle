@@ -20,8 +20,8 @@ initiating:
         - Tier 2
     - tag: 2.2.3
       title: >-
-        Intensive intervention is limited to special education, often
-        disconnected from general classroom instruction.
+        Intensive intervention operates separately from classroom instruction,
+        with limited alignment and impact.
       compass: false
       categories:
         - Tier 3
