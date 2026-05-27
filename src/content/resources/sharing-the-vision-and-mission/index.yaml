@@ -5,7 +5,8 @@ type: presentation
 topics: []
 external:
   discriminant: false
-  value: {}
+  value:
+    fileType: .pptx
 linkAction: link
 linkedIndicators: []
 linkedComponents: []
