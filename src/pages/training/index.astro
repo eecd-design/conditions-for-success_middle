@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Accordion from 'src/components/Accordion.astro';
+import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
+import DetailedLink from 'src/components/DetailedLink.astro';
+
+import IconCheckmark from '../../components/icons/IconCheckmark_8.astro';
+import IconFilter from 'src/components/icons/IconFilter_20.astro';
+import IconFilterClear from 'src/components/icons/IconFilterClear_20.astro';
+import IconWarning from 'src/components/icons/IconWarning_16.astro';
+import IconSearch from 'src/components/icons/IconSearch_20.astro';
+import IconSortAlpha from 'src/components/icons/IconAlpha_20.astro';
+import IconSortTime from 'src/components/icons/IconTime_20.astro';
+import IconCompact from 'src/components/icons/IconCompact_20.astro';
+import IconDetailed from 'src/components/icons/IconDetailed_20.astro';
+import IconXmarkSmall from 'src/components/icons/IconXmark_12.astro';
+import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
+import { findObjectByKey } from 'src/utilities/helpers';
+
+let searchList = [];
+let itemIndex = 1;
+
+let allTraining = await getCollection('training', ({ data }) => {
+	return data.published === true;
+});
+
+for (let training of allTraining) {
+	let data = JSON.parse(JSON.stringify(training.data));
+	data.itemId = `tra-${itemIndex}`;
+	data.category = 'training';
+	data.slug = training.id;
+	searchList.push(data);
+	itemIndex += 1;
+}
+
+searchList.sort((a, b) => {
+	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
+	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
+});
+---
+
+<BaseLayout
+	pageTitle={'Training'}
+	pageType={'training'}
+>
+	<MediaDialog />
+
+	<div class="content">
+		<h1
+			id="main-heading"
+			tabindex="-1"
+		>
+			Training
+		</h1>
+
+		<div class="list-container">
+			<p
+				id="training-list_error-status"
+				class="error-status"
+				role="status"
+				hidden
+			>
+				<IconWarning aria-hidden="true" />
+				<span>There are no results that match the search term.</span>
+			</p>
+			<p
+				id="training-list_filter-status"
+				class="filter-status"
+				role="status"
+				aria-live="polite"
+				hidden
+			>
+			</p>
+
+			<ul
+				id="training-list"
+				class="links-list"
+				role="listbox"
+				data-style="divided"
+				data-layout="compact"
+				data-content="training"
+				data-sort-control="training-list-primary-controls"
+				data-filter-control="training-list-secondary-controls"
+				data-search-control="training-list-primary-controls"
+				data-filter-tag-list="active-filters-list"
+				data-default-item-visibility="shown"
+				data-list-item-categories='["training"]'
+			>
+				{
+					searchList.map((item, index) => (
+						<DetailedLink
+							itemData={item}
+							index={index}
+							listName={'training-list'}
+							listGroupSize={10}
+						/>
+					))
+				}
+			</ul>
+
+			<button
+				class="show-more"
+				type="button"
+				data-list="training-list"
+				data-style="solid"
+				data-size="large"
+			>
+				Show More Results
+			</button>
+		</div>
+	</div>
+</BaseLayout>
