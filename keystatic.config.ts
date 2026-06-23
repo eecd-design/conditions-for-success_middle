@@ -6,16 +6,15 @@ export default config({
 		kind: 'github',
 		repo: {
 			owner: 'eecd-design',
-			name: 'conditions-for-success_middle'
-		}
+			name: 'conditions-for-success_middle',
+		},
 	},
 	ui: {
 		brand: {
-			name: 'NB Middle School Conditions for Success'
-		}
+			name: 'NB Middle School Conditions for Success',
+		},
 	},
 	collections: {
-
 		indicators: collection({
 			label: 'Indicators',
 			columns: ['tag', 'title'],
@@ -29,12 +28,12 @@ export default config({
 						isRequired: true,
 						pattern: {
 							regex: /^\d$/,
-							message: 'Tag must follow the format: [#]. Example: 1'
+							message: 'Tag must follow the format: [#]. Example: 1',
 						},
 						length: {
 							min: 1,
 							max: 1,
-						}
+						},
 					},
 				}),
 				title: fields.slug({
@@ -48,13 +47,14 @@ export default config({
 						validation: {
 							length: {
 								max: 50,
-							}
+							},
 						},
-					}
+					},
 				}),
 				colour: fields.select({
 					label: 'Indicator Colour',
-					description: 'This selection customizes the colour palette of the indicator page UI elements.',
+					description:
+						'This selection customizes the colour palette of the indicator page UI elements.',
 					options: [
 						{ label: 'Red', value: 'red' },
 						{ label: 'Orange', value: 'orange' },
@@ -69,9 +69,9 @@ export default config({
 				description: fields.mdx({
 					label: 'Description',
 					description: 'This content will appear below the page title.',
-					extension: 'md'
-				})
-			}
+					extension: 'md',
+				}),
+			},
 		}),
 
 		components: collection({
@@ -91,12 +91,12 @@ export default config({
 						isRequired: true,
 						pattern: {
 							regex: /^\d\.\d$/,
-							message: 'Tag must follow the format: [#.#]. Example: 1.1'
+							message: 'Tag must follow the format: [#.#]. Example: 1.1',
 						},
 						length: {
 							min: 3,
 							max: 3,
-						}
+						},
 					},
 				}),
 				title: fields.slug({
@@ -110,9 +110,9 @@ export default config({
 						validation: {
 							length: {
 								max: 50,
-							}
+							},
 						},
-					}
+					},
 				}),
 				description: fields.mdx({
 					label: 'Description',
@@ -131,207 +131,231 @@ export default config({
 					label: 'Goal',
 					extension: 'md',
 				}),
-				initiating: fields.object({
-					focus: fields.mdx({
-						label: 'Focus',
-						extension: 'md',
-					}),
-					considerations: fields.array(
-						fields.object({
-							tag: fields.text({
-								label: 'Consideration Tag',
-								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
-								validation: {
-									isRequired: true,
-									pattern: {
-										regex: /^\d\.\d\.\d{1,2}$/,
-										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
-									},
-									length: {
-										min: 5,
-										max: 6,
-									}
-								}
-							}),
-							title: fields.text({
-								label: 'Description',
-								multiline: true,
-							}),
-							compass: fields.checkbox({
-								label: 'Compass',
-								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
-							}),
-							categories: fields.array(
-								fields.text({
-									label: 'Category',
-
-								}),
-								{
-									label: 'Categories',
-									itemLabel: (props) => props.value,
-									description: 'These categories will appear next to the consideration tag with a similar styling.',
-								})
+				initiating: fields.object(
+					{
+						focus: fields.mdx({
+							label: 'Focus',
+							extension: 'md',
 						}),
-						{
-							label: 'Considerations',
-							itemLabel: (props) => props.fields.tag.value,
-						}
-					),
-				},
+						considerations: fields.array(
+							fields.object({
+								tag: fields.text({
+									label: 'Consideration Tag',
+									description:
+										'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+									validation: {
+										isRequired: true,
+										pattern: {
+											regex: /^\d\.\d\.\d{1,2}$/,
+											message:
+												'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+										},
+										length: {
+											min: 5,
+											max: 6,
+										},
+									},
+								}),
+								title: fields.text({
+									label: 'Description',
+									multiline: true,
+								}),
+								compass: fields.checkbox({
+									label: 'Compass',
+									description:
+										'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.',
+								}),
+								categories: fields.array(
+									fields.text({
+										label: 'Category',
+									}),
+									{
+										label: 'Categories',
+										itemLabel: (props) => props.value,
+										description:
+											'These categories will appear next to the consideration tag with a similar styling.',
+									},
+								),
+							}),
+							{
+								label: 'Considerations',
+								itemLabel: (props) => props.fields.tag.value,
+							},
+						),
+					},
 					{
 						label: 'Phase: Initiating',
-					}),
-				implementing: fields.object({
-					focus: fields.mdx({
-						label: 'Focus',
-						extension: 'md',
-					}),
-					considerations: fields.array(
-						fields.object({
-							tag: fields.text({
-								label: 'Consideration Tag',
-								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
-								validation: {
-									isRequired: true,
-									pattern: {
-										regex: /^\d\.\d\.\d{1,2}$/,
-										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
-									},
-									length: {
-										min: 5,
-										max: 6,
-									}
-								}
-							}),
-							title: fields.text({
-								label: 'Description',
-								multiline: true,
-							}),
-							compass: fields.checkbox({
-								label: 'Compass',
-								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
-							}),
-							categories: fields.array(
-								fields.text({
-									label: 'Category',
-
-								}),
-								{
-									label: 'Categories',
-									itemLabel: (props) => props.value,
-									description: 'These categories will appear next to the consideration tag with a similar styling.',
-								}),
+					},
+				),
+				implementing: fields.object(
+					{
+						focus: fields.mdx({
+							label: 'Focus',
+							extension: 'md',
 						}),
-						{
-							label: 'Considerations',
-							itemLabel: (props) => props.fields.tag.value,
-						}
-					),
-				},
+						considerations: fields.array(
+							fields.object({
+								tag: fields.text({
+									label: 'Consideration Tag',
+									description:
+										'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+									validation: {
+										isRequired: true,
+										pattern: {
+											regex: /^\d\.\d\.\d{1,2}$/,
+											message:
+												'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+										},
+										length: {
+											min: 5,
+											max: 6,
+										},
+									},
+								}),
+								title: fields.text({
+									label: 'Description',
+									multiline: true,
+								}),
+								compass: fields.checkbox({
+									label: 'Compass',
+									description:
+										'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.',
+								}),
+								categories: fields.array(
+									fields.text({
+										label: 'Category',
+									}),
+									{
+										label: 'Categories',
+										itemLabel: (props) => props.value,
+										description:
+											'These categories will appear next to the consideration tag with a similar styling.',
+									},
+								),
+							}),
+							{
+								label: 'Considerations',
+								itemLabel: (props) => props.fields.tag.value,
+							},
+						),
+					},
 					{
 						label: 'Phase: Implementing',
-					}),
-				developing: fields.object({
-					focus: fields.mdx({
-						label: 'Focus',
-						extension: 'md',
-					}),
-					considerations: fields.array(
-						fields.object({
-							tag: fields.text({
-								label: 'Consideration Tag',
-								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
-								validation: {
-									isRequired: true,
-									pattern: {
-										regex: /^\d\.\d\.\d{1,2}$/,
-										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
-									},
-									length: {
-										min: 5,
-										max: 6,
-									}
-								}
-							}),
-							title: fields.text({
-								label: 'Description',
-								multiline: true,
-							}),
-							compass: fields.checkbox({
-								label: 'Compass',
-								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
-							}),
-							categories: fields.array(
-								fields.text({
-									label: 'Category',
-
-								}),
-								{
-									label: 'Categories',
-									itemLabel: (props) => props.value,
-									description: 'These categories will appear next to the consideration tag with a similar styling.',
-								}),
+					},
+				),
+				developing: fields.object(
+					{
+						focus: fields.mdx({
+							label: 'Focus',
+							extension: 'md',
 						}),
-						{
-							label: 'Considerations',
-							itemLabel: (props) => props.fields.tag.value,
-						}
-					),
-				},
+						considerations: fields.array(
+							fields.object({
+								tag: fields.text({
+									label: 'Consideration Tag',
+									description:
+										'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+									validation: {
+										isRequired: true,
+										pattern: {
+											regex: /^\d\.\d\.\d{1,2}$/,
+											message:
+												'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+										},
+										length: {
+											min: 5,
+											max: 6,
+										},
+									},
+								}),
+								title: fields.text({
+									label: 'Description',
+									multiline: true,
+								}),
+								compass: fields.checkbox({
+									label: 'Compass',
+									description:
+										'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.',
+								}),
+								categories: fields.array(
+									fields.text({
+										label: 'Category',
+									}),
+									{
+										label: 'Categories',
+										itemLabel: (props) => props.value,
+										description:
+											'These categories will appear next to the consideration tag with a similar styling.',
+									},
+								),
+							}),
+							{
+								label: 'Considerations',
+								itemLabel: (props) => props.fields.tag.value,
+							},
+						),
+					},
 					{
 						label: 'Phase: Developing',
-					}),
-				sustaining: fields.object({
-					focus: fields.mdx({
-						label: 'Focus',
-						extension: 'md',
-					}),
-					considerations: fields.array(
-						fields.object({
-							tag: fields.text({
-								label: 'Consideration Tag',
-								description: 'Tag must follow the format: [#.#.#]. Example: 1.1.1',
-								validation: {
-									isRequired: true,
-									pattern: {
-										regex: /^\d\.\d\.\d{1,2}$/,
-										message: 'Tag must follow the format: [#.#.#]. Example: 1.1.1'
-									},
-									length: {
-										min: 5,
-										max: 6,
-									}
-								}
-							}),
-							title: fields.text({
-								label: 'Description',
-								multiline: true,
-							}),
-							compass: fields.checkbox({
-								label: 'Compass',
-								description: 'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.'
-							}),
-							categories: fields.array(
-								fields.text({
-									label: 'Category',
-
-								}),
-								{
-									label: 'Categories',
-									itemLabel: (props) => props.value,
-									description: 'These categories will appear next to the consideration tag with a similar styling.',
-								}),
+					},
+				),
+				sustaining: fields.object(
+					{
+						focus: fields.mdx({
+							label: 'Focus',
+							extension: 'md',
 						}),
-						{
-							label: 'Considerations',
-							itemLabel: (props) => props.fields.tag.value,
-						}
-					),
-				},
+						considerations: fields.array(
+							fields.object({
+								tag: fields.text({
+									label: 'Consideration Tag',
+									description:
+										'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+									validation: {
+										isRequired: true,
+										pattern: {
+											regex: /^\d\.\d\.\d{1,2}$/,
+											message:
+												'Tag must follow the format: [#.#.#]. Example: 1.1.1',
+										},
+										length: {
+											min: 5,
+											max: 6,
+										},
+									},
+								}),
+								title: fields.text({
+									label: 'Description',
+									multiline: true,
+								}),
+								compass: fields.checkbox({
+									label: 'Compass',
+									description:
+										'Flag considerations that respond to learners who have not demonstrated literacy and numeracy proficiency.',
+								}),
+								categories: fields.array(
+									fields.text({
+										label: 'Category',
+									}),
+									{
+										label: 'Categories',
+										itemLabel: (props) => props.value,
+										description:
+											'These categories will appear next to the consideration tag with a similar styling.',
+									},
+								),
+							}),
+							{
+								label: 'Considerations',
+								itemLabel: (props) => props.fields.tag.value,
+							},
+						),
+					},
 					{
 						label: 'Phase: Sustaining',
-					})
-			}
+					},
+				),
+			},
 		}),
 
 		resources: collection({
@@ -343,7 +367,8 @@ export default config({
 				title: fields.slug({
 					name: {
 						label: 'Resource Title',
-						description: 'Enter the title as it should appear on the website and in links.',
+						description:
+							'Enter the title as it should appear on the website and in links.',
 					},
 					slug: {
 						label: 'Resource Filename',
@@ -351,23 +376,25 @@ export default config({
 						validation: {
 							length: {
 								max: 50,
-							}
+							},
 						},
-					}
+					},
 				}),
 				published: fields.checkbox({
 					label: 'Published',
 					defaultValue: true,
-					description: 'When checked, the resource is visible on the site. Unchecking it hides the resource from public view.',
+					description:
+						'When checked, the resource is visible on the site. Unchecking it hides the resource from public view.',
 				}),
 				dateAdded: fields.date({
 					label: 'Date Added',
 					description: 'Defaults to today’s date.',
-					defaultValue: { kind: "today" },
+					defaultValue: { kind: 'today' },
 				}),
 				type: fields.select({
 					label: 'Resource Type',
-					description: 'Determines icon shown in links and filtering options on the resource page.',
+					description:
+						'Determines icon shown in links and filtering options on the resource page.',
 					options: [
 						{ label: 'Video', value: 'video' },
 						{ label: 'Document', value: 'document' },
@@ -386,15 +413,13 @@ export default config({
 				topics: fields.multiselect({
 					label: 'Topics',
 					description: 'Select topics to categorize the resource for filtering.',
-					options: [
-						{ label: 'Test', value: 'test' }
-					],
+					options: [{ label: 'Test', value: 'test' }],
 				}),
 				external: fields.conditional(
 					fields.checkbox({
 						label: 'External Resource',
 						description: 'Check if this resource is hosted on an external website.',
-						defaultValue: false
+						defaultValue: false,
 					}),
 					{
 						true: fields.object({
@@ -406,14 +431,16 @@ export default config({
 						false: fields.object({
 							fileType: fields.text({
 								label: 'File Type',
-								description: "Specify only if different from default: video (.mp4), document (.pdf), image (.png), presentation (.pdf), audio (.mp3).",
+								description:
+									'Specify only if different from default: video (.mp4), document (.pdf), image (.png), presentation (.pdf), audio (.mp3).',
 							}),
 						}),
-					}
+					},
 				),
 				linkAction: fields.select({
 					label: 'Resource Link Action',
-					description: 'Select the resource link action. "Open in dialog" displays the resource in a pop-up window on the same page, while "Open in a new page" navigates to the resource URL.',
+					description:
+						'Select the resource link action. "Open in dialog" displays the resource in a pop-up window on the same page, while "Open in a new page" navigates to the resource URL.',
 					options: [
 						{ label: 'Open in dialog', value: 'dialog' },
 						{ label: 'Open in a new page', value: 'link' },
@@ -423,64 +450,268 @@ export default config({
 				linkedIndicators: fields.array(
 					fields.text({
 						label: 'Indicator Tag',
-						description: 'Use [#] format (e.g., 1). This adds the resource to all components and considerations of the indicator.',
+						description:
+							'Use [#] format (e.g., 1). This adds the resource to all components and considerations of the indicator.',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d$/,
-								message: 'Must match [#] format (e.g., 1)'
+								message: 'Must match [#] format (e.g., 1)',
 							},
 							length: {
 								min: 1,
 								max: 1,
-							}
-						}
-					}), {
-					label: 'Linked Indicators',
-					itemLabel: props => props.value ?? 'Add indicator tag',
-				}
+							},
+						},
+					}),
+					{
+						label: 'Linked Indicators',
+						itemLabel: (props) => props.value ?? 'Add indicator tag',
+					},
 				),
 				linkedComponents: fields.array(
 					fields.text({
 						label: 'Component Tag',
-						description: 'Use [#.#] format (e.g., 1.1). This adds the resource to all considerations of the component.',
+						description:
+							'Use [#.#] format (e.g., 1.1). This adds the resource to all considerations of the component.',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d\.\d$/,
-								message: 'Must match [#.#] format (e.g., 1.1)'
+								message: 'Must match [#.#] format (e.g., 1.1)',
 							},
 							length: {
 								min: 3,
 								max: 3,
-							}
-						}
-					}), {
-					label: 'Linked Components',
-					itemLabel: props => props.value ?? 'Add component tag',
-				}
+							},
+						},
+					}),
+					{
+						label: 'Linked Components',
+						itemLabel: (props) => props.value ?? 'Add component tag',
+					},
 				),
 				linkedConsiderations: fields.array(
 					fields.text({
 						label: 'Consideration Tag',
-						description: 'Use [#.#.#] format (e.g., 1.1.1). This adds the resource to the consideration.',
+						description:
+							'Use [#.#.#] format (e.g., 1.1.1). This adds the resource to the consideration.',
 						validation: {
 							isRequired: true,
 							pattern: {
 								regex: /^\d\.\d\.\d{1,2}$/,
-								message: 'Must match [#.#.#] format (e.g., 1.1.1)'
+								message: 'Must match [#.#.#] format (e.g., 1.1.1)',
 							},
 							length: {
 								min: 5,
 								max: 6,
-							}
-						}
-					}), {
-					label: 'Linked Considerations',
-					itemLabel: props => props.value ?? 'Add consideration tag',
-				}
+							},
+						},
+					}),
+					{
+						label: 'Linked Considerations',
+						itemLabel: (props) => props.value ?? 'Add consideration tag',
+					},
 				),
-			}
-		})
+			},
+		}),
+
+		training: collection({
+			label: 'Training',
+			columns: ['type', 'title'],
+			slugField: 'title',
+			path: 'src/content/training/*/',
+			schema: {
+				title: fields.slug({
+					name: {
+						label: 'Training Title',
+						description:
+							'Enter the title as it should appear on the website and in links.',
+					},
+					slug: {
+						label: 'Training URL',
+					},
+				}),
+				published: fields.checkbox({
+					label: 'Published',
+					defaultValue: true,
+					description:
+						'When checked, the training is visible on the site. Unchecking it hides the training from public view.',
+				}),
+				dateAdded: fields.date({
+					label: 'Date Added',
+					description: 'Defaults to today’s date.',
+					defaultValue: { kind: 'today' },
+				}),
+				dateStart: fields.date({
+					label: 'Training Start Date',
+				}),
+				type: fields.select({
+					label: 'Training Type',
+					description:
+						'Determines icon shown in links and filtering options on the training page.',
+					options: [
+						{ label: 'Video', value: 'video' },
+						{ label: 'Document', value: 'document' },
+						{ label: 'Webinar', value: 'webinar' },
+						{ label: 'Course', value: 'course' },
+						{ label: 'Community', value: 'community' },
+						{ label: 'Website', value: 'website' },
+					],
+					defaultValue: 'course',
+				}),
+				audience: fields.multiselect({
+					label: 'Audience Type',
+					description: 'Enter who the training is designed for.',
+					options: [
+						{ label: 'Facilitators', value: 'facilitators' },
+						{ label: 'Leadership', value: 'leadership' },
+						{ label: 'Administrators', value: 'administrators' },
+						{ label: 'Educators', value: 'educators' },
+						{ label: 'Support Staff', value: 'supportStaff' },
+					],
+				}),
+				provider: fields.multiselect({
+					label: 'Training Provider',
+					description: 'Enter the provider of the training.',
+					options: [
+						{ label: 'EECD', value: 'eecd' },
+						{ label: 'District', value: 'district' },
+						{ label: 'NBTA', value: 'nbta' },
+						{ label: 'Other', value: 'other' },
+					],
+				}),
+				location: fields.select({
+					label: 'Training Location',
+					description: 'Enter whether the training is virtual or in person.',
+					options: [
+						{ label: 'Virtual', value: 'virtual' },
+						{ label: 'In Person', value: 'inPerson' },
+					],
+					defaultValue: 'virtual',
+				}),
+				duration: fields.number({
+					label: 'Training Duration',
+					description: 'Enter how long the training is in hours.',
+					step: 0.25,
+					validation: {
+						min: 0,
+					},
+				}),
+				description: fields.text({
+					label: 'Training Description',
+					description: 'Enter a short summary about the training to appear in links.',
+					multiline: true,
+				}),
+				topics: fields.multiselect({
+					label: 'Topics',
+					description: 'Select topics to categorize the training for filtering.',
+					options: [{ label: 'Test', value: 'test' }],
+				}),
+				pageContent: fields.mdx({
+					label: 'Page Content',
+					description: 'Enter all pertinent details and requirements of the training.',
+					extension: 'md',
+				}),
+				external: fields.conditional(
+					fields.checkbox({
+						label: 'External Training',
+						description: 'Check if this training is hosted on an external website.',
+						defaultValue: false,
+					}),
+					{
+						true: fields.object({
+							url: fields.url({
+								label: 'External URL',
+								description: 'Provide a full, valid URL to the resource.',
+							}),
+						}),
+						false: fields.object({
+							fileType: fields.text({
+								label: 'File Type',
+								description:
+									'Specify only if different from default: video (.mp4), document (.pdf), webinar (.mp4).',
+							}),
+						}),
+					},
+				),
+				linkAction: fields.select({
+					label: 'Resource Link Action',
+					description:
+						'Select the resource link action. "Open in dialog" displays the resource in a pop-up window on the same page, while "Open in a new page" navigates to the resource URL.',
+					options: [
+						{ label: 'Open in dialog', value: 'dialog' },
+						{ label: 'Open in a new page', value: 'link' },
+					],
+					defaultValue: 'dialog',
+				}),
+				linkedIndicators: fields.array(
+					fields.text({
+						label: 'Indicator Tag',
+						description:
+							'Use [#] format (e.g., 1). Links training to indicator in filtering options.',
+						validation: {
+							isRequired: true,
+							pattern: {
+								regex: /^\d$/,
+								message: 'Must match [#] format (e.g., 1)',
+							},
+							length: {
+								min: 1,
+								max: 1,
+							},
+						},
+					}),
+					{
+						label: 'Linked Indicators',
+						itemLabel: (props) => props.value ?? 'Add indicator tag',
+					},
+				),
+				linkedComponents: fields.array(
+					fields.text({
+						label: 'Component Tag',
+						description:
+							'Use [#.#] format (e.g., 1.1). Links training to component in filtering options.',
+						validation: {
+							isRequired: true,
+							pattern: {
+								regex: /^\d\.\d$/,
+								message: 'Must match [#.#] format (e.g., 1.1)',
+							},
+							length: {
+								min: 3,
+								max: 3,
+							},
+						},
+					}),
+					{
+						label: 'Linked Components',
+						itemLabel: (props) => props.value ?? 'Add component tag',
+					},
+				),
+				linkedConsiderations: fields.array(
+					fields.text({
+						label: 'Consideration Tag',
+						description:
+							'Use [#.#.#] format (e.g., 1.1.1). Links training to consideration in filtering options.',
+						validation: {
+							isRequired: true,
+							pattern: {
+								regex: /^\d\.\d\.\d{1,2}$/,
+								message: 'Must match [#.#.#] format (e.g., 1.1.1)',
+							},
+							length: {
+								min: 5,
+								max: 6,
+							},
+						},
+					}),
+					{
+						label: 'Linked Considerations',
+						itemLabel: (props) => props.value ?? 'Add consideration tag',
+					},
+				),
+			},
+		}),
 	},
 });

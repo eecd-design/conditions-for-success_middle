@@ -6,16 +6,16 @@ import { glob, file } from 'astro/loaders';
 
 // 3. Define your collection(s)
 const indicators = defineCollection({
-	loader: glob({ pattern: "**/*.yaml", base: "./src/content/indicators" }),
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/indicators' }),
 	schema: z.object({
 		tag: z.string(),
 		title: z.string(),
 		colour: z.string(),
-	})
+	}),
 });
 
 const components = defineCollection({
-	loader: glob({ pattern: "**/*.yaml", base: "./src/content/components" }),
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/components' }),
 	schema: z.object({
 		indicator: z.string(),
 		tag: z.string(),
@@ -28,8 +28,8 @@ const components = defineCollection({
 					title: z.string(),
 					compass: z.boolean(),
 					categories: z.array(z.string()),
-				})
-			)
+				}),
+			),
 		}),
 		implementing: z.object({
 			considerations: z.array(
@@ -38,8 +38,8 @@ const components = defineCollection({
 					title: z.string(),
 					compass: z.boolean(),
 					categories: z.array(z.string()),
-				})
-			)
+				}),
+			),
 		}),
 		developing: z.object({
 			considerations: z.array(
@@ -48,8 +48,8 @@ const components = defineCollection({
 					title: z.string(),
 					compass: z.boolean(),
 					categories: z.array(z.string()),
-				})
-			)
+				}),
+			),
 		}),
 		sustaining: z.object({
 			considerations: z.array(
@@ -58,14 +58,14 @@ const components = defineCollection({
 					title: z.string(),
 					compass: z.boolean(),
 					categories: z.array(z.string()),
-				})
-			)
+				}),
+			),
 		}),
-	})
+	}),
 });
 
 const resources = defineCollection({
-	loader: glob({ pattern: "**/*.yaml", base: "./src/content/resources" }),
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/resources' }),
 	schema: z.object({
 		title: z.string(),
 		published: z.boolean(),
@@ -75,17 +75,49 @@ const resources = defineCollection({
 		topics: z.array(z.string()),
 		external: z.object({
 			discriminant: z.boolean(),
-			value: z.optional(z.object({
-				url: z.optional(z.string()),
-				fileType: z.optional(z.string()),
-			}))
+			value: z.optional(
+				z.object({
+					url: z.optional(z.string()),
+					fileType: z.optional(z.string()),
+				}),
+			),
 		}),
 		linkAction: z.string(),
 		linkedIndicators: z.array(z.string()),
 		linkedComponents: z.array(z.string()),
 		linkedConsiderations: z.array(z.string()),
-	})
+	}),
+});
+
+const training = defineCollection({
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/training' }),
+	schema: z.object({
+		title: z.string(),
+		published: z.boolean(),
+		dateAdded: z.date(),
+		dateStart: z.optional(z.date()),
+		type: z.string(),
+		audience: z.string(),
+		provider: z.string(),
+		location: z.string(),
+		duration: z.number(),
+		description: z.string(),
+		topics: z.array(z.string()),
+		external: z.object({
+			discriminant: z.boolean(),
+			value: z.optional(
+				z.object({
+					url: z.optional(z.string()),
+					fileType: z.optional(z.string()),
+				}),
+			),
+		}),
+		linkAction: z.string(),
+		linkedIndicators: z.array(z.string()),
+		linkedComponents: z.array(z.string()),
+		linkedConsiderations: z.array(z.string()),
+	}),
 });
 
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { indicators, components, resources };
+export const collections = { indicators, components, resources, training };
