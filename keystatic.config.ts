@@ -516,6 +516,7 @@ export default config({
 			},
 		}),
 
+		// Testing
 		training: collection({
 			label: 'Training',
 			columns: ['type', 'title'],
