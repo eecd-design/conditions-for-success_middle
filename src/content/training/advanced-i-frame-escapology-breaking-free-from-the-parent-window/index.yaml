@@ -1,0 +1,24 @@
+title: 'Advanced iFrame Escapology: Breaking Free from the Parent Window'
+published: true
+dateAdded: 2026-06-26
+type: webinar
+audience:
+  - educators
+  - supportStaff
+provider:
+  - nbta
+  - other
+location: virtual
+duration: 1.25
+description: >-
+  Are your web components trapped inside a rigid layout container? Learn the
+  dark arts of programmatic scrolling and DOM traversal.
+topics: []
+external:
+  discriminant: false
+  value: {}
+linkAction: dialog
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 3.1.4
