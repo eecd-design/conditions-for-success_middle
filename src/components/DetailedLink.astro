@@ -1,13 +1,13 @@
 ---
-import { getResourcePath, toKebabCase } from "src/utilities/helpers";
+import { getResourcePath, toKebabCase } from 'src/utilities/helpers';
 
-import { toTitleCase } from "src/utilities/helpers";
+import { toTitleCase } from 'src/utilities/helpers';
 
-import ResourceIcons from "./icons/ResourceIcons.astro";
-import IconArrowRight from "./icons/IconArrowRight_16.astro";
-import IconExpand from "./icons/IconExpand_16.astro";
-import IconExternal from "./icons/IconExternal_16.astro";
-import IconDownload from "./icons/IconDownload_16.astro";
+import ResourceIcons from './icons/ResourceIcons.astro';
+import IconArrowRight from './icons/IconArrowRight_16.astro';
+import IconExpand from './icons/IconExpand_16.astro';
+import IconExternal from './icons/IconExternal_16.astro';
+import IconDownload from './icons/IconDownload_16.astro';
 
 let {
 	itemData,
@@ -37,30 +37,30 @@ let {
 } = itemData;
 
 let colourMap = {
-	"1": "red",
-	"2": "orange",
-	"3": "yellow",
-	"4": "green",
-	"5": "teal",
-	"6": "blue",
-	"7": "purple",
+	'1': 'red',
+	'2': 'orange',
+	'3': 'yellow',
+	'4': 'green',
+	'5': 'teal',
+	'6': 'blue',
+	'7': 'purple',
 };
 
 let path;
 let date = null;
-if (category === "resource") {
+if (category === 'resource' || category === 'support') {
 	path = getResourcePath(itemData);
-	date = new Date(dateAdded).toLocaleDateString("en-US", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
+	date = new Date(dateAdded).toLocaleDateString('en-US', {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
 	});
-} else {
-	if (category === "indicator") {
-		path = `./big-seven/${slug}/`;
-	} else {
-		path = `./big-seven/${indicator}/#${category}-${tag.replaceAll(".", "-")}`;
-	}
+} else if (category === 'indicator') {
+	path = `./big-seven/${slug}/`;
+} else if (category === 'component') {
+	path = `./big-seven/${indicator}/#${category}-${tag.replaceAll('.', '-')}`;
+} else if (category === 'training') {
+	path = `./training/${slug}/`;
 }
 
 let tags = null;
@@ -73,43 +73,43 @@ if (linkedIndicators || linkedComponents || linkedConsiderations) {
 		};
 	});
 	tags.sort((a, b) => {
-		return (a.tag || "").localeCompare(b.tag || "");
+		return (a.tag || '').localeCompare(b.tag || '');
 	});
 }
 
-let ItemWrapper = includeItemWrapper ? "li" : null;
+let ItemWrapper = includeItemWrapper ? 'li' : null;
 let itemWrapperAttrs = {
 	id: `${listName}_item-${index + 1}`,
-	"data-pos": index < listGroupSize ? index + 1 : null,
-	"data-item-id": itemId,
-	"data-theme": colour ?? null,
+	'data-pos': index < listGroupSize ? index + 1 : null,
+	'data-item-id': itemId,
+	'data-theme': colour ?? null,
 	hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
 };
 
 // If resource is a video or internal audio, open it in a dialog
-let opensDialog = linkAction === "dialog";
-let InteractiveWrapper = opensDialog ? "button" : "a";
+let opensDialog = linkAction === 'dialog' && category === 'resource';
+let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
 	? {
-			class: "open-dialog detailed-link",
-			type: "button",
-			role: includeItemWrapper ? "option" : null,
-			"data-style-as": "link",
-			"data-dialog": "media-dialog",
-			"data-dialog-heading": title,
-			"data-media-type": type,
-			"data-media-src": path,
-			"data-media-external": external.discriminant,
+			class: 'open-dialog detailed-link',
+			type: 'button',
+			role: includeItemWrapper ? 'option' : null,
+			'data-style-as': 'link',
+			'data-dialog': 'media-dialog',
+			'data-dialog-heading': title,
+			'data-media-type': type,
+			'data-media-src': path,
+			'data-media-external': external.discriminant,
 		}
 	: {
-			class: "detailed-link",
+			class: 'detailed-link',
 			href: path,
-			role: includeItemWrapper ? "option" : null,
+			role: includeItemWrapper ? 'option' : null,
 		};
 
 let DestinationIcon = null;
 // Pages and Locations
-if (category !== "resource") {
+if (category !== 'resource' && category !== 'support') {
 	DestinationIcon = IconArrowRight;
 }
 // Embedded Media
@@ -117,10 +117,7 @@ else if (opensDialog) {
 	DestinationIcon = IconExpand;
 }
 // Internal Files
-else if (
-	external.discriminant === false &&
-	["document", "presentation"].includes(type)
-) {
+else if (external.discriminant === false && ['document', 'presentation'].includes(type)) {
 	DestinationIcon = IconDownload;
 }
 // Everything else
@@ -135,8 +132,8 @@ else {
 			<InteractiveWrapper {...interactiveWrapperAttrs}>
 				<ResourceIcons
 					type={type}
-					classes={["type"]}
-					dataset={[{ key: "restrict-content", value: "resources" }]}
+					classes={['type']}
+					dataset={[{ key: 'restrict-content', value: 'resources' }]}
 				/>
 				<div
 					class="separator group"
@@ -145,12 +142,15 @@ else {
 					aria-hidden="true"
 				/>
 				<span class="text-container">
-					<span class="detailed label" data-restrict-content="mixed">
-						{category !== "resource"
+					<span
+						class="detailed label"
+						data-restrict-content="mixed"
+					>
+						{category !== 'resource'
 							? `${toTitleCase(category)} ${tag}`
 							: `${toTitleCase(type)} Resource`}
 					</span>
-					{category === "resource" && (
+					{category === 'resource' && (
 						<span class="simple label">{toTitleCase(type)}</span>
 					)}
 					<span class="title">
@@ -191,9 +191,7 @@ else {
 					)}
 				</span>
 				<span class="icon-container">
-					{DestinationIcon && (
-						<DestinationIcon classes={["destination"]} />
-					)}
+					{DestinationIcon && <DestinationIcon classes={['destination']} />}
 				</span>
 			</InteractiveWrapper>
 		</ItemWrapper>
@@ -201,8 +199,8 @@ else {
 		<InteractiveWrapper {...interactiveWrapperAttrs}>
 			<ResourceIcons
 				type={type}
-				classes={["type"]}
-				dataset={[{ key: "restrict-content", value: "resources" }]}
+				classes={['type']}
+				dataset={[{ key: 'restrict-content', value: 'resources' }]}
 			/>
 			<div
 				class="separator group"
@@ -211,18 +209,22 @@ else {
 				aria-hidden="true"
 			/>
 			<span class="text-container">
-				<span class="detailed label" data-restrict-content="mixed">
-					{category !== "resource"
+				<span
+					class="detailed label"
+					data-restrict-content="mixed"
+				>
+					{category !== 'resource'
 						? `${toTitleCase(category)} ${tag}`
 						: `${toTitleCase(type)} Resource`}
 				</span>
-				{category === "resource" && (
-					<span class="simple label">{toTitleCase(type)}</span>
-				)}
+				{category === 'resource' && <span class="simple label">{toTitleCase(type)}</span>}
 				<span class="title">
 					{title}
 					{tags && (
-						<ul class="tags-list" data-restrict-content="resources">
+						<ul
+							class="tags-list"
+							data-restrict-content="resources"
+						>
 							{tags.map((tag) => (
 								<li
 									class="tag"
@@ -245,15 +247,16 @@ else {
 					</span>
 				)}
 				{description && (
-					<span class="description" data-restrict-layout="detailed">
+					<span
+						class="description"
+						data-restrict-layout="detailed"
+					>
 						{description}
 					</span>
 				)}
 			</span>
 			<span class="icon-container">
-				{DestinationIcon && (
-					<DestinationIcon classes={["destination"]} />
-				)}
+				{DestinationIcon && <DestinationIcon classes={['destination']} />}
 			</span>
 		</InteractiveWrapper>
 	)
@@ -264,7 +267,7 @@ else {
 	// Detailed Link
 	// ------------------------*/
 
-	:is(a, [data-style-as="link"]).detailed-link {
+	:is(a, [data-style-as='link']).detailed-link {
 		--link-ui-colour: var(--colour-ui-neutral-subtle);
 		container: detailed-link / inline-size;
 		display: flex !important;
@@ -279,17 +282,14 @@ else {
 		text-decoration: none;
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
+	:is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible),
 	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"] {
+		:is(a, [data-style-as='link']).detailed-link[aria-selected='true'] {
 		--link-background-colour: var(
 			--colour-fill-accent-subtle,
 			var(--colour-fill-neutral-subtle)
 		);
-		--link-border-colour: var(
-			--colour-border-accent-mid,
-			var(--colour-border-neutral-mid)
-		);
+		--link-border-colour: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 	}
 
@@ -297,7 +297,7 @@ else {
 	// Type Icon and Label
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link .icon-and-label-container {
+	:is(a, [data-style-as='link']).detailed-link .icon-and-label-container {
 		--label-colour: var(--link-ui-colour);
 		place-self: stretch;
 		flex-wrap: nowrap;
@@ -308,14 +308,13 @@ else {
 	// Destination Icon
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link
-		:is(.icon.destination, .icon.type) {
+	:is(a, [data-style-as='link']).detailed-link :is(.icon.destination, .icon.type) {
 		--icon-colour: var(--link-ui-colour);
 		position: unset !important;
 	}
 
 	@media (hover: hover) {
-		:is(a, [data-style-as="link"]).detailed-link .icon.destination {
+		:is(a, [data-style-as='link']).detailed-link .icon.destination {
 			opacity: 0;
 			scale: 90%;
 			transition:
@@ -323,10 +322,9 @@ else {
 				scale var(--transition-ease-fast);
 		}
 
-		:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-			.icon.destination,
+		:is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible) .icon.destination,
 		:is(dialog, .content):has(fieldset.search input:focus-visible)
-			:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+			:is(a, [data-style-as='link']).detailed-link[aria-selected='true']
 			.icon.destination {
 			opacity: 1;
 			scale: 100%;
@@ -340,7 +338,7 @@ else {
 	// Separator
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link .separator {
+	:is(a, [data-style-as='link']).detailed-link .separator {
 		--separator-colour: var(--link-border-colour);
 		align-self: stretch;
 	}
@@ -349,7 +347,7 @@ else {
 	// Text Container
 	*/
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container {
+	:is(a, [data-style-as='link']).detailed-link .text-container {
 		display: flex;
 		flex-flow: column;
 		gap: var(--space-2xs);
@@ -358,7 +356,7 @@ else {
 
 	/* Title */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .title {
+	:is(a, [data-style-as='link']).detailed-link .text-container .title {
 		display: flex;
 		flex-flow: row wrap;
 		align-items: start;
@@ -368,17 +366,15 @@ else {
 
 	/* Date */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .date {
+	:is(a, [data-style-as='link']).detailed-link .text-container .date {
 		font-size: var(--font-size-3xs);
 		font-weight: 500;
 		color: var(--colour-ui-neutral-subtle);
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.text-container
-		.date,
+	:is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible) .text-container .date,
 	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+		:is(a, [data-style-as='link']).detailed-link[aria-selected='true']
 		.text-container
 		.date {
 		color: var(--colour-ui-neutral);
@@ -386,7 +382,7 @@ else {
 
 	/* Tags */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list {
+	:is(a, [data-style-as='link']).detailed-link .text-container .tags-list {
 		display: flex;
 		flex-flow: row wrap;
 		align-items: start;
@@ -397,7 +393,7 @@ else {
 		margin: 0;
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list li {
+	:is(a, [data-style-as='link']).detailed-link .text-container .tags-list li {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -412,12 +408,12 @@ else {
 		transition: all var(--transition-linear-fast);
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
+	:is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible)
 		.text-container
 		.tags-list
 		li,
 	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+		:is(a, [data-style-as='link']).detailed-link[aria-selected='true']
 		.text-container
 		.tags-list
 		li {
@@ -427,7 +423,7 @@ else {
 
 	/* Description */
 
-	:is(a, [data-style-as="link"]).detailed-link .text-container .description {
+	:is(a, [data-style-as='link']).detailed-link .text-container .description {
 		font-size: var(--font-size-2xs);
 		font-weight: 500;
 		color: var(--colour-ui-neutral-subtle);
@@ -435,78 +431,59 @@ else {
 		transition: max-height var(--transition-ease-medium);
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.description,
+	:is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible) .description,
 	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+		:is(a, [data-style-as='link']).detailed-link[aria-selected='true']
 		.description {
 		color: var(--colour-ui-neutral);
 	}
 
 	/* Label */
 
-	:is(a, [data-style-as="link"]).detailed-link .label {
+	:is(a, [data-style-as='link']).detailed-link .label {
 		font-size: var(--font-size-2xs);
 		font-weight: 600;
 		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
 	}
 
-	:is(a, [data-style-as="link"]).detailed-link .label.simple {
+	:is(a, [data-style-as='link']).detailed-link .label.simple {
 		display: none;
 	}
 
 	@container detailed-link (width < 400px) {
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
+		:is(.links-list[data-content='resources'], .link-container[data-content='resources'])
+			:is(a, [data-style-as='link']).detailed-link
 			.icon-and-label-container {
 			display: none !important;
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
+		:is(.links-list[data-content='resources'], .link-container[data-content='resources'])
+			:is(a, [data-style-as='link']).detailed-link
 			.text-container
 			.title {
 			flex-flow: column;
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
+		:is(.links-list[data-content='resources'], .link-container[data-content='resources'])
+			:is(a, [data-style-as='link']).detailed-link
 			.separator {
 			display: none !important;
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
+		:is(.links-list[data-content='resources'], .link-container[data-content='resources'])
+			:is(a, [data-style-as='link']).detailed-link
 			.label.simple {
 			display: initial !important;
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
+		:is(.links-list[data-content='resources'], .link-container[data-content='resources'])
+			:is(a, [data-style-as='link']).detailed-link
 			.label.detailed {
 			display: none !important;
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
+		:is(.links-list[data-content='resources'], .link-container[data-content='resources'])
+			:is(a, [data-style-as='link']).detailed-link
 			.icon.destination {
 			opacity: 1;
 			scale: 100%;
@@ -516,10 +493,9 @@ else {
 
 	/* Highlight */
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		span.highlight,
+	:is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible) span.highlight,
 	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
+		:is(a, [data-style-as='link']).detailed-link[aria-selected='true']
 		span.highlight {
 		--highlight-background-colour: transparent;
 		--highlight-ui-colour: var(--colour-ui-neutral);
@@ -535,26 +511,16 @@ else {
 			var(--colour-fill-neutral-subtle)
 		);
 		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-		--link-border-colour: var(
-			--colour-border-accent-mid,
-			var(--colour-border-neutral-mid)
-		);
+		--link-border-colour: var(--colour-border-accent-mid, var(--colour-border-neutral-mid));
 		min-height: 3.5rem;
 	}
 
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link:is(
-			:hover,
-			:focus-visible
-		) {
+	.link-container :is(a, [data-style-as='link']).detailed-link:is(:hover, :focus-visible) {
 		background-color: transparent;
 		box-shadow: inset 0 0 0 2px var(--colour-border-accent-subtle);
 	}
 
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link
-		.text-container
-		.description {
+	.link-container :is(a, [data-style-as='link']).detailed-link .text-container .description {
 		color: var(--colour-ui-neutral);
 	}
 </style>
