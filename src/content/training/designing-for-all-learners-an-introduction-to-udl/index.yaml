@@ -18,10 +18,9 @@ description: >-
   classroom or course design.
 topics: []
 external:
-  discriminant: true
-  value:
-    url: https://udl.nbed.ca/
-linkAction: link
+  discriminant: false
+  value: {}
+linkAction: dialog
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
