@@ -1127,7 +1127,7 @@ main {
 		}
 	}
 
-	&.home > .wrapper {
+	&:not(:has(.left-aside)):not(:has(.right-aside)) > .wrapper {
 		--aside-width: 0;
 
 		@container main (width < 1112px) {
@@ -1136,7 +1136,43 @@ main {
 		}
 	}
 
-	&.big-seven > .wrapper {
+	&:not(:has(.left-aside)):has(.right-aside) > .wrapper {
+		@container main (width < 1584px) {
+			--content-min-width: 680px;
+			--aside-min-width: 240px;
+			--aside-left-width: 0;
+			--aside-gap-left: 0;
+		}
+
+		@container main (width < 1112px) {
+			--wrapper-min-margin: var(--space-2xl);
+			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
+			--aside-width: 0;
+			--aside-gap: 0;
+		}
+	}
+
+	&:not(:has(.right-aside)):has(.left-aside) > .wrapper {
+		--content-min-width: 800px;
+		--aside-min-width: 320px;
+
+		@container main (width < 1920px) {
+			--wrapper-left-margin: 0;
+			--content-min-width: 540px;
+			--aside-max-width: 400px;
+			--aside-right-width: 0;
+			--aside-gap-right: 0;
+		}
+
+		@container main (width < 1016px) {
+			--wrapper-min-margin: var(--space-2xl);
+			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
+			--aside-width: var(--wrapper-min-margin);
+			--aside-gap: 0;
+		}
+	}
+
+	&:has(.right-aside):has(.left-aside) > .wrapper {
 		--aside-gap-left: var(--space-4xl);
 		grid-template-rows: auto 0px 1fr;
 		grid-template-areas:
@@ -1159,55 +1195,6 @@ main {
 			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
 			--aside-width: 0;
 			--aside-gap: 0;
-		}
-	}
-
-	&.resources > .wrapper {
-		--content-min-width: 800px;
-		--aside-min-width: 320px;
-
-		@container main (width < 1920px) {
-			--wrapper-left-margin: 0;
-			--content-min-width: 540px;
-			--aside-max-width: 400px;
-			--aside-right-width: 0;
-			--aside-gap-right: 0;
-		}
-
-		@container main (width < 1016px) {
-			--wrapper-min-margin: var(--space-2xl);
-			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
-			--aside-width: var(--wrapper-min-margin);
-			--aside-gap: 0;
-		}
-	}
-
-	&.report > .wrapper {
-		@container main (width < 1584px) {
-			--content-min-width: 680px;
-			--aside-min-width: 240px;
-			--aside-left-width: 0;
-			--aside-gap-left: 0;
-		}
-
-		@container main (width < 1112px) {
-			--wrapper-min-margin: var(--space-2xl);
-			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
-			--aside-width: 0;
-			--aside-gap: 0;
-		}
-	}
-
-	&.training > .wrapper {
-		--aside-width: 0;
-
-		@container main (width < 1112px) {
-			--wrapper-min-margin: var(--space-2xl);
-			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
-		}
-
-		h1 {
-			margin-top: var(--space-base);
 		}
 	}
 }
