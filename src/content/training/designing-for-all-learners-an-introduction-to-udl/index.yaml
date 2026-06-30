@@ -1,0 +1,28 @@
+title: 'Designing for All Learners: An Introduction to UDL'
+published: true
+dateAdded: 2026-06-26
+type: webinar
+audience:
+  - educators
+  - supportStaff
+provider:
+  - nbta
+  - other
+location: virtual
+duration: 1.25
+description: >-
+  This webinar introduces Universal Design for Learning (UDL), a framework for
+  designing flexible lessons that meet the needs of all learners from the start.
+  Participants will explore the three core UDL principles — engagement,
+  representation, and action/expression — and how to apply them in real
+  classroom or course design.
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://udl.nbed.ca/
+linkAction: link
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 3.1.4
