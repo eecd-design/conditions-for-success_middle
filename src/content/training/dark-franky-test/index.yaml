@@ -5,7 +5,8 @@ type: website
 audience: []
 provider: []
 location: virtual
-topics: []
+topics:
+  - test
 external:
   discriminant: false
   value: {}
