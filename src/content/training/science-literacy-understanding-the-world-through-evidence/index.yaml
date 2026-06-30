@@ -16,8 +16,9 @@ description: >-
   scientific issues.
 topics: []
 external:
-  discriminant: false
-  value: {}
+  discriminant: true
+  value:
+    url: https://plhub.nbed.ca/
 linkAction: link
 linkedIndicators:
   - '1'
