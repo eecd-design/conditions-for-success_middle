@@ -425,6 +425,33 @@
 	--colour-border-accent-bold: var(--purple-vivid-400);
 }
 
+[data-theme="gray"] {
+	--colour-ui-accent: var(--gray-muted-500);
+	--colour-ui-accent-subtle: var(--gray-muted-400);
+	--colour-ui-accent-bold: var(--gray-muted-600);
+
+	--colour-highlight: #fbf9c9;
+	--colour-fill-highlight: var(--color-highlight);
+	--colour-on-highlight: inherit;
+
+	--colour-fill-accent-subtle: var(--gray-muted-75);
+	--colour-fill-accent-subtle-highlight: var(--gray-muted-100);
+	--colour-fill-accent-bold: var(--gray-muted-500);
+
+	--colour-border-accent-subtle: var(--gray-muted-200);
+	--colour-border-accent-mid: var(--gray-muted-300);
+	--colour-border-accent-bold: var(--gray-muted-500);
+}
+
+[data-theme="gray"][data-vibrancy="vivid"] {
+	--colour-fill-accent-subtle: var(--gray-vivid-75);
+	--colour-fill-accent-subtle-highlight: var(--gray-vivid-100);
+	--colour-fill-accent-bold: var(--gray-vivid-400);
+
+	--colour-border-accent-subtle: var(--gray-vivid-100);
+	--colour-border-accent-bold: var(--gray-vivid-400);
+}
+
 /*
 ** THEMES
 ------------------------------*/
@@ -878,6 +905,47 @@ p {
 	}
 }
 
+.links-list[data-style="grid"] {
+	container: link-list / inline-size;
+	display: grid;
+	grid-template-columns: repeat(var(--group-columns), 1fr);
+	gap: var(--group-gap, var(--space-lg));
+
+	& > * {
+		margin: 0 !important;
+	}
+
+	&[data-columns]:has(> *:not(template):only-of-type) > * {
+		grid-column: span var(--group-columns);
+	}
+
+	&[data-columns="2"] {
+		--group-columns: 2;
+
+		&:has(> *:not(template):nth-last-child(n + 3)) > * {
+			grid-column: span 2;
+		}
+
+		&:not([data-fit="compact"]) {
+			@container link-list (width < 700px) {
+				--group-columns: 1;
+			}
+		}
+	}
+
+	&[data-columns="3"] {
+		--group-columns: 3;
+
+		@container link-list (width < 800px) {
+			--group-columns: 1;
+		}
+
+		&:has(> *:not(template):nth-last-child(n + 4)) > * {
+			grid-column: span 3;
+		}
+	}
+}
+
 /* 
 // Link Container (single link)
 */
@@ -1129,6 +1197,19 @@ main {
 			--aside-gap: 0;
 		}
 	}
+
+	&.training > .wrapper {
+		--aside-width: 0;
+
+		@container main (width < 1112px) {
+			--wrapper-min-margin: var(--space-2xl);
+			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
+		}
+
+		h1 {
+			margin-top: var(--space-base);
+		}
+	}
 }
 
 #assessment-controls {
@@ -1186,7 +1267,7 @@ footer {
 		text-wrap: balance;
 		line-height: 1.2;
 
-		&:is(a, [data-style-as="link"]) {
+		& :is(a, [data-style-as="link"]) {
 			--link-colour: var(--colour-ui-reverse);
 			font-size: var(--font-size-2xs);
 			font-weight: 400;
@@ -1266,21 +1347,6 @@ main:not([data-report="active"]) [data-restrict-report="active"] {
 }
 
 main:not([data-report="inactive"]) [data-restrict-report="inactive"] {
-	display: none !important;
-}
-
-.link-container:not([data-layout="detailed"]) [data-restrict-layout="detailed"],
-.links-list:not([data-layout="detailed"]) [data-restrict-layout="detailed"] {
-	display: none !important;
-}
-
-.link-container:not([data-content="resources"]) [data-restrict-content="resources"],
-.links-list:not([data-content="resources"]) [data-restrict-content="resources"] {
-	display: none !important;
-}
-
-.link-container:not([data-content="mixed"]) [data-restrict-content="mixed"],
-.links-list:not([data-content="mixed"]) [data-restrict-content="mixed"] {
 	display: none !important;
 }
 
@@ -2473,9 +2539,36 @@ details {
 	background-color: var(--container-background-colour, transparent);
 	border-radius: var(--container-border-radius, 0);
 	padding: var(--container-padding, 0);
+	width: fit-content;
 	transition:
 		background-color var(--transition-linear-fast),
 		padding var(--transition-ease-medium);
+
+	/* STYLES */
+
+	&:is([data-style="solid"], [data-style="outline"], [data-style="solid-outline"]) {
+		--container-padding: var(--space-2xs) var(--space-xs);
+		--container-border-radius: var(--label-border-radius, var(--border-radius-small));
+		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+		min-height: 1.75rem;
+	}
+
+	&[data-style="solid"] {
+		--container-background-colour: var(
+			--colour-fill-accent-subtle,
+			var(--colour-fill-neutral-subtle)
+		);
+
+		.callout[data-style="solid"] & {
+			--container-background-colour: var(--colour-background);
+		}
+	}
+
+	&[data-size="big"] {
+		--label-size: var(--font-size-xs);
+		--label-weight: 700;
+	}
 
 	/* COLLAPSIBLE LABEL */
 

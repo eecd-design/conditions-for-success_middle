@@ -1,46 +1,45 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-import { findObjectByKey } from "src/utilities/helpers";
+import { findObjectByKey } from 'src/utilities/helpers';
 
-import IconXmark from "src/components/icons/IconXmark_20.astro";
-import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
-import IconSearch from "src/components/icons/IconSearch_20.astro";
-import DetailedLink from "src/components/DetailedLink.astro";
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
+import IconSearch from 'src/components/icons/IconSearch_20.astro';
+import DetailedLink from 'src/components/DetailedLink.astro';
+import LinksListItem from '../LinksListItem.astro';
 
 let searchList = [];
 let itemIndex = 1;
 
 // Get all indicator
-let allIndicators = await getCollection("indicators");
+let allIndicators = await getCollection('indicators');
 for (let indicator of allIndicators) {
 	let data = JSON.parse(JSON.stringify(indicator.data));
-	((data.itemId = `loc-${itemIndex}`), (data.category = "indicator"));
+	((data.itemId = `loc-${itemIndex}`), (data.category = 'indicator'));
 	data.slug = indicator.id;
 	searchList.push(data);
 	itemIndex += 1;
 }
 
 // Get all indicator components
-let allComponents = await getCollection("components");
+let allComponents = await getCollection('components');
 
 for (let component of allComponents) {
-	let colour = findObjectByKey(allIndicators, "id", component.data.indicator)
-		?.data.colour;
+	let colour = findObjectByKey(allIndicators, 'id', component.data.indicator)?.data.colour;
 
 	let componentData = JSON.parse(JSON.stringify(component.data));
-	((componentData.itemId = `loc-${itemIndex}`),
-		(componentData.category = "component"));
+	((componentData.itemId = `loc-${itemIndex}`), (componentData.category = 'component'));
 	componentData.colour = colour;
 	searchList.push(componentData);
 	itemIndex += 1;
 
-	let phases = ["initiating", "implementing", "developing", "sustaining"];
+	let phases = ['initiating', 'implementing', 'developing', 'sustaining'];
 	for (let phase of phases) {
 		for (let consideration of component.data[phase].considerations) {
 			let considerationData = JSON.parse(JSON.stringify(consideration));
 			((considerationData.itemId = `loc-${itemIndex}`),
-				(considerationData.category = "consideration"));
+				(considerationData.category = 'consideration'));
 			considerationData.indicator = component.data.indicator;
 			considerationData.colour = colour;
 			searchList.push(considerationData);
@@ -52,14 +51,14 @@ for (let component of allComponents) {
 itemIndex = 1;
 
 // Get all resources
-let allResources = await getCollection("resources", ({ data }) => {
+let allResources = await getCollection('resources', ({ data }) => {
 	return data.published === true;
 });
 
 for (let resource of allResources) {
 	let data = JSON.parse(JSON.stringify(resource.data));
 	((data.itemId = `res-${itemIndex}`), (data.slug = resource.id));
-	data.category = "resource";
+	data.category = 'resource';
 	searchList.push(data);
 	itemIndex += 1;
 }
@@ -70,11 +69,18 @@ for (let resource of allResources) {
 	aria-labelledby="search-dialog_heading"
 	data-reset-forms="true"
 >
-	<button class="close-dialog" type="button" aria-label="Close Search Dialog"
+	<button
+		class="close-dialog"
+		type="button"
+		aria-label="Close Search Dialog"
 		><IconXmark /></button
 	>
 
-	<h2 id="search-dialog_heading" class="heading" data-default-text="Search">
+	<h2
+		id="search-dialog_heading"
+		class="heading"
+		data-default-text="Search"
+	>
 		Search
 	</h2>
 
@@ -84,9 +90,12 @@ for (let resource of allResources) {
 		role="search"
 	>
 		<fieldset class="search">
-			<p id="search-dialog_search-input_help" class="instructions">
-				Search for an Indicator, Component, Consideration, or Resource
-				by entering a valid tag (e.g., 1.0, 2.1, 3.1.1) or title.
+			<p
+				id="search-dialog_search-input_help"
+				class="instructions"
+			>
+				Search for an Indicator, Component, Consideration, or Resource by entering a valid
+				tag (e.g., 1.0, 2.1, 3.1.1) or title.
 			</p>
 			<div class="input-container">
 				<input
@@ -141,10 +150,10 @@ for (let resource of allResources) {
 		>
 			{
 				searchList.map((item, index) => (
-					<DetailedLink
+					<LinksListItem
 						itemData={item}
 						index={index}
-						listName={"site-content-list"}
+						listName={'site-content-list'}
 						itemHiddenByDefault={true}
 					/>
 				))

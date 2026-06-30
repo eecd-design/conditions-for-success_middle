@@ -1,0 +1,22 @@
+---
+import DetailedLink from '../components/DetailedLink.astro';
+
+let { itemData, index, listName, listGroupSize = 0, itemHiddenByDefault = false } = Astro.props;
+
+let { colour = null, itemId = null } = itemData;
+
+let itemWrapperAttrs = {
+	id: `${listName}_item-${index + 1}`,
+	'data-pos': index < listGroupSize ? index + 1 : null,
+	'data-item-id': itemId,
+	'data-theme': colour ?? null,
+	hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
+};
+---
+
+<li {...itemWrapperAttrs}>
+	<DetailedLink
+		itemData={itemData}
+		isInListItem={true}
+	/>
+</li>

@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Accordion from 'src/components/Accordion.astro';
 import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import DetailedLink from 'src/components/DetailedLink.astro';
+import LinksListItem from 'src/components/LinksListItem.astro';
 
 import IconCheckmark from '../../components/icons/IconCheckmark_8.astro';
 import IconFilter from 'src/components/icons/IconFilter_20.astro';
@@ -18,6 +19,8 @@ import IconDetailed from 'src/components/icons/IconDetailed_20.astro';
 import IconXmarkSmall from 'src/components/icons/IconXmark_12.astro';
 import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
 import { findObjectByKey } from 'src/utilities/helpers';
+import IconDocument24 from 'src/components/icons/IconDocument_24.astro';
+import IconArrowRight16 from 'src/components/icons/IconArrowRight_16.astro';
 
 let searchList = [];
 let itemIndex = 1;
@@ -39,6 +42,8 @@ searchList.sort((a, b) => {
 	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
 	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
 });
+
+console.log('Search List', searchList);
 ---
 
 <BaseLayout
@@ -78,9 +83,10 @@ searchList.sort((a, b) => {
 				id="training-list"
 				class="links-list"
 				role="listbox"
-				data-style="divided"
-				data-layout="compact"
-				data-content="training"
+				data-style="grid"
+				data-columns="2"
+				data-layout="card"
+				data-content="asset"
 				data-sort-control="training-list-primary-controls"
 				data-filter-control="training-list-secondary-controls"
 				data-search-control="training-list-primary-controls"
@@ -89,26 +95,59 @@ searchList.sort((a, b) => {
 				data-list-item-categories='["training"]'
 			>
 				{
-					searchList.map((item, index) => (
-						<DetailedLink
-							itemData={item}
+					searchList.map((itemData, index) => (
+						<LinksListItem
+							itemData={itemData}
 							index={index}
 							listName={'training-list'}
 							listGroupSize={10}
 						/>
 					))
 				}
-			</ul>
 
-			<button
-				class="show-more"
-				type="button"
-				data-list="training-list"
-				data-style="solid"
-				data-size="large"
-			>
-				Show More Results
-			</button>
+				<li
+					id="training-list_item-0"
+					data-pos="2"
+					data-item-id="tra-0"
+				>
+					<div
+						class="detailed-link"
+						data-style-as="link"
+						data-theme="gray"
+					>
+						<div class="banner">
+							<div class="icon-and-label-container type-icon-container">
+								<IconDocument24 />
+								<span class="label-container"
+									><span class="label">Training</span></span
+								>
+							</div>
+							<span class="icon-container">
+								<IconArrowRight16 classes={'destination'} />
+							</span>
+						</div>
+						<div class="wrapper">
+							<span class="text-container">
+								<span class="title"> More Coming Soon </span>
+								<span class="description"
+									>New training opportunities will be added here once available.</span
+								>
+							</span>
+						</div>
+					</div>
+				</li>
+			</ul>
 		</div>
+
+		<button
+			class="show-more"
+			type="button"
+			data-list="training-list"
+			data-style="solid"
+			data-size="large"
+			hidden
+		>
+			Show More Results
+		</button>
 	</div>
 </BaseLayout>

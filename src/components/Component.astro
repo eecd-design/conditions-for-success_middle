@@ -2,7 +2,8 @@
 import { getCollection, getEntry } from "astro:content";
 
 import Accordion from "../components/Accordion.astro";
-import DetailedLink from "./DetailedLink.astro";
+import DetailedLink from "../components/DetailedLink.astro";
+import LinkListItem from "../components/LinksListItem.astro";
 
 import PhaseIcons from "./icons/PhaseIcons.astro";
 import IconFlag from "./icons/IconFlag_24.astro";
@@ -31,10 +32,12 @@ let description:any = allDescriptions.find((match:any) =>
 // Get the explainer resource (if there is one)
 let explainerResource = null;
 if (entry.data.explainerResource) {
-	let resource = await getEntry('resources', entry.data.explainerResource); 
-	explainerResource = JSON.parse(JSON.stringify(resource.data));
-	explainerResource.category = 'resource';
-	explainerResource.slug = resource.id;
+	let resource = await getEntry('resources', entry.data.explainerResource);
+	if (resource) {
+		explainerResource = JSON.parse(JSON.stringify(resource.data));
+		explainerResource.category = 'resource';
+		explainerResource.slug = resource.id;
+	} 
 }
 
 // Get all reflection questions
@@ -148,8 +151,8 @@ let phases = [
 
 	{ explainerResource && (
 
-		<div class="explainer-resource link-container" data-content="resources" data-layout="detailed">
-			<DetailedLink itemData={explainerResource} includeItemWrapper={false}/>
+		<div class="explainer-resource link-container" data-content="asset" data-layout="list-detailed">
+			<DetailedLink itemData={explainerResource}/>
 		</div>
 
 	)}
@@ -272,7 +275,7 @@ let phases = [
 																</summary>
 
 																<div class="contents">
-																	<ul class="resources-list links-list" data-style="divided" data-layout="detailed" data-content="resources">
+																	<ul class="resources-list links-list" data-style="divided" data-layout="list-detailed" data-content="asset">
 																		{consideration.resources
 																			.sort((a, b) => {
 																				let aIsInternalVideo = (a.data.type === 'video' && a.data.external.discriminant === false) ? 1 : 0;
@@ -283,7 +286,7 @@ let phases = [
 																			let data = JSON.parse(JSON.stringify(resource.data));
 																			data.category = 'resource';
 																			data.slug = resource.id;
-																			return <DetailedLink itemData={data}/> 
+																			return <LinkListItem itemData={data}/> 
 																		})}
 																	</ul>
 																</div>
