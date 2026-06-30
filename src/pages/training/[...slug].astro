@@ -1,17 +1,15 @@
 ---
 import { getCollection, render } from 'astro:content';
+
+import { toTitleCase } from 'src/utilities/helpers';
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionNav from '../../components/SectionNav.astro';
 import PageNav from 'src/components/PageNav.astro';
-import AssessmentToolbar from '../../components/AssessmentToolbar.astro';
-import AssessmentDialogs from '../../components/dialogs/AssessmentDialogs.astro';
-import AssessmentToasts from '../../components/AssessmentToasts.astro';
-import Component from '../../components/Component.astro';
-import IconCompass from 'src/components/icons/IconCompass_24.astro';
-import IconArrowDownSmall from 'src/components/icons/IconArrowDown_16.astro';
-import IconArrowRightSmall from 'src/components/icons/IconArrowRight_16.astro';
-import IconArrowLeftSmall from 'src/components/icons/IconArrowLeft_16.astro';
+import ResourceIcons from 'src/components/icons/ResourceIcons.astro';
+
 import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
+import DetailedLink from 'src/components/DetailedLink.astro';
+import IconArrowLeft16 from 'src/components/icons/IconArrowLeft_16.astro';
 
 let path = Astro.url.pathname;
 
@@ -24,16 +22,9 @@ export async function getStaticPaths() {
 	}));
 }
 
-const { headings } = await training.render();
+const { training } = Astro.props;
 
-// TODO: Check how best to add the id to the heading for jump links
-let sectionLinks = [];
-for (let heading of headings) {
-	sectionLinks.push({
-		url: `${path}#${heading.slug}`,
-		text: `${heading.text}`,
-	});
-}
+const { title, type, external, linkAction } = training.data;
 
 // Store the path to the entry
 const pathToTraining = `src/content/training/${training.id}`;
@@ -47,18 +38,83 @@ let allContent = Object.values(
 
 // Get the current entry's content file
 let pageContent: any = allContent.find((match: any) => match.file.includes(pathToTraining));
+
+const headings = await pageContent.getHeadings();
+
+let sectionLinks = [];
+for (let heading of headings) {
+	sectionLinks.push({
+		url: `${path}#${heading.slug}`,
+		text: `${heading.text}`,
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	});
+}
+
+let launchText = `View ${training.data.type}`;
+
+let typeColourMap = {
+	video: 'red',
+	document: 'orange',
+	webinar: 'green',
+	website: 'teal',
+	community: 'blue',
+	course: 'purple',
+};
+let typeColour = typeColourMap[type];
+
+let opensDialog = linkAction === 'dialog';
+let InteractiveWrapper = opensDialog ? 'button' : 'a';
+let interactiveWrapperAttrs = opensDialog
+	? {
+			class: 'open-dialog',
+			type: 'button',
+			'data-size': 'large',
+			'data-dialog': 'media-dialog',
+			'data-dialog-heading': title,
+			'data-media-type': type,
+			'data-media-src': path,
+			'data-media-external': external.discriminant,
+		}
+	: {
+			'data-style-as': 'button',
+			'data-size': 'large',
+			href: path,
+		};
 ---
 
 <BaseLayout
 	pageTitle={training.data.title}
 	indicatorTag={training.data.tag}
-	pageType={'big-seven'}
+	pageType={'training'}
 >
 	<MediaDialog />
 
-	<PageNav sectionLinks={sectionLinks} />
+	{sectionLinks.length > 0 && <PageNav sectionLinks={sectionLinks} />}
 
 	<div class="content">
+		<a
+			class="back-to-link"
+			href="/training/"
+		>
+			<span class="icon-and-label-container">
+				<IconArrowLeft16 classes={['destination', 'left']} />
+				<span class="label-container">
+					<span class="label">Back to list of training opportunities</span>
+				</span>
+			</span>
+		</a>
+
+		<ResourceIcons
+			type={training.data.type}
+			collapsible={false}
+			dataset={[
+				{ key: 'theme', value: typeColour },
+				{ key: 'vibrancy', value: 'vivid' },
+				{ key: 'style', value: 'solid' },
+				{ key: 'size', value: 'big' },
+			]}
+		/>
+
 		<h1
 			id="main-heading"
 			tabindex="-1"
@@ -66,6 +122,101 @@ let pageContent: any = allContent.find((match: any) => match.file.includes(pathT
 			{training.data.title}
 		</h1>
 
+		<div
+			class="callout metadata-container"
+			data-style="outline"
+		>
+			<div class="wrapper">
+				<dl>
+					<!-- <div class="detail-container">
+				<dt>Date Added:</dt>
+				<dd>{training.data.dateAdded}</dd>
+			</div> -->
+					<div class="detail-container">
+						<dt>Provider:</dt>
+						<dd>
+							{
+								training.data.provider
+									.map((item) => {
+										if (item === 'eecd') return 'EECD';
+										if (item === 'nbta') return 'NBTA';
+										return toTitleCase(item);
+									})
+									.join(', ')
+							}
+						</dd>
+					</div>
+					<div class="detail-container">
+						<dt>Audience:</dt>
+						<dd>
+							{training.data.audience.map((item) => toTitleCase(item)).join(', ')}
+						</dd>
+					</div>
+					<div class="detail-container">
+						<dt>Location:</dt>
+						<dd>{toTitleCase(training.data.location)}</dd>
+					</div>
+					{
+						training.data.dateStart && (
+							<div class="detail-container">
+								<dt>Date:</dt>
+								<dd>
+									{new Date(training.data.dateStart).toLocaleDateString('en-US', {
+										day: 'numeric',
+										month: 'long',
+										year: 'numeric',
+									})}
+								</dd>
+							</div>
+						)
+					}
+					<div class="detail-container">
+						<dt>Duration:</dt>
+						<dd>{training.data.duration} hours</dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+
 		{pageContent && <pageContent.Content />}
+
+		<hr class="section" />
+
+		<InteractiveWrapper {...interactiveWrapperAttrs}> {launchText} </InteractiveWrapper>
 	</div>
 </BaseLayout>
+
+<style is:global>
+	main.training {
+		& .back-to-link {
+			--icon-size: 1rem;
+			--label-size: var(--font-size-xs);
+
+			display: block;
+			font-size: var(--font-size-sm);
+			margin-bottom: var(--space-xl);
+		}
+
+		& h1 {
+			margin: var(--space-sm) 0 var(--space-xl);
+		}
+
+		& .metadata-container {
+			--callout-margin: var(--space-xl) 0;
+
+			& > .wrapper {
+				--callout-padding: var(--space-base);
+			}
+
+			& dl {
+				--detail-list-margin: var(--space-lg);
+				--detail-list-gap: var(--space-2xs);
+				--detail-list-font-size: var(--font-size-xs);
+			}
+		}
+
+		hr.section {
+			margin: var(--space-2xl) 0;
+		}
+	}
+</style>
