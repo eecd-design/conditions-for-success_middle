@@ -58,6 +58,7 @@ for (let component of components) {
 	sectionLinks.push({
 		url: `${path}#component-${component.data.tag.replaceAll('.', '-')}`,
 		text: `${component.data.tag} ${component.data.title}`,
+		dataset: [{key: 'icon-on-hover', value: ''}],
 	})
 }
 
@@ -87,7 +88,7 @@ for (let component of components) {
 			{components.map((component) => (
 
 				<li>
-					<a href={`${path}#component-${component.data.tag.replaceAll('.', '-')}`}>
+					<a href={`${path}#component-${component.data.tag.replaceAll('.', '-')}`} data-icon-on-hover>
 						<span class="icon-and-label-container">
 							<span class="label-container">
 								<span class="label">{component.data.tag} {component.data.title}</span>
