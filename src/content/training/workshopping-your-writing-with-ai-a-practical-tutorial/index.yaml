@@ -1,0 +1,27 @@
+title: 'Workshopping Your Writing with AI: A Practical Tutorial'
+published: true
+dateAdded: 2026-06-26
+dateStart: 2026-07-15
+type: document
+audience:
+  - administrators
+  - leadership
+provider:
+  - district
+location: virtual
+duration: 4.5
+description: >-
+  This tutorial walks writers through using AI as a collaborative tool for
+  drafting, revising, and strengthening their work, from brainstorming ideas to
+  refining tone and structure. It covers practical prompting strategies for
+  getting useful feedback without letting AI take over the creative voice.
+topics:
+  - test
+external:
+  discriminant: false
+  value: {}
+linkAction: link
+linkedIndicators: []
+linkedComponents:
+  - '7.2'
+linkedConsiderations: []
