@@ -816,35 +816,46 @@ p {
 	/* WITH ARROW ICON */
 
 	&:has(.icon.destination.arrow) {
-		position: relative;
-	}
+		& .icon.destination.arrow {
+			transition: translate var(--transition-linear-fast);
+		}
 
-	&:has(.icon.destination.arrow) .icon.destination {
-		position: absolute;
-		left: calc((var(--icon-size) + var(--space-xs)) * -1);
-	}
+		& .icon.destination.arrow.left {
+			translate: 0;
+		}
 
-	& .icon.destination.arrow {
-		opacity: 0;
-		transition:
-			opacity var(--transition-linear-fast),
-			translate var(--transition-linear-fast) 0.5s;
-	}
+		&:is(:hover, :focus-visible) .icon.destination.arrow.left {
+			translate: -0.25rem;
+		}
 
-	&:is(:hover, :focus-visible) .icon.destination.arrow {
-		opacity: 1;
-		translate: 0 !important;
-		transition:
-			opacity var(--transition-linear-medium) 0.1s,
-			translate var(--transition-ease-medium) 0.1s;
-	}
+		&[data-icon-on-hover] {
+			position: relative;
 
-	& .icon.destination.arrow.right {
-		translate: -0.25rem;
-	}
+			& .icon.destination.arrow {
+				position: absolute;
+				left: calc((var(--icon-size) + var(--space-xs)) * -1);
+				opacity: 0;
+				transition:
+					opacity var(--transition-linear-fast),
+					translate var(--transition-linear-fast) 0.5s;
+			}
 
-	& .icon.destination.arrow.down {
-		translate: 0px -0.25rem;
+			& .icon.destination.arrow.right {
+				translate: -0.25rem;
+			}
+
+			& .icon.destination.arrow.down {
+				translate: 0px -0.25rem;
+			}
+
+			&:is(:hover, :focus-visible) .icon.destination.arrow {
+				opacity: 1;
+				translate: 0 !important;
+				transition:
+					opacity var(--transition-linear-medium) 0.1s,
+					translate var(--transition-ease-medium) 0.1s;
+			}
+		}
 	}
 }
 
@@ -2040,17 +2051,17 @@ dialog {
 			--callout-padding: var(--space-xl);
 			display: flex;
 			flex-flow: column nowrap;
-			align-items: center;
 			border: 2px solid var(--colour-border-neutral-subtle);
 			position: relative;
-			width: 100%;
 		}
 
 		/* Heading On Outline */
 
 		&[data-elem-on-path="heading"] {
-			> .wrapper {
+			& > .wrapper {
 				--callout-padding: var(--space-xl) var(--space-2xl);
+				align-items: center;
+				width: 100%;
 			}
 
 			& .heading {
@@ -2069,6 +2080,11 @@ dialog {
 		/* Icon On Outline */
 
 		&[data-elem-on-path="icon"] {
+			& > .wrapper {
+				align-items: center;
+				width: 100%;
+			}
+
 			& .icon-container {
 				--icon-size: 2.5rem;
 				--icon-colour: var(--colour-ui-accent-subtle);
@@ -2266,17 +2282,14 @@ dialog {
 dl {
 	display: flex;
 	flex-flow: column;
-	gap: var(--space-xs);
-	margin: var(--space-xl) 0;
+	gap: var(--detail-list-gap, var(--space-xs));
+	margin: var(--detail-list-margin, var(--space-xl)) 0;
 	line-height: 1.2;
 
 	&[data-fit="compact"] {
-		gap: var(--space-2xs);
-		margin: var(--space-2xs) 0;
-
-		& :is(dt, dd) {
-			font-size: var(--font-size-2xs);
-		}
+		--detail-list-gap: var(--space-2xs);
+		--detail-list-margin: var(--space-2xs);
+		--detail-list-font-size: font-size: var(--font-size-2xs);
 	}
 
 	& .detail-container {
@@ -2288,7 +2301,7 @@ dl {
 	}
 
 	& :is(dt, dd) {
-		font-size: var(--font-size-xs);
+		font-size: var(--detail-list-font-size, var(--font-size-xs));
 	}
 
 	& dt {
@@ -2534,7 +2547,7 @@ details {
 	/* STYLES */
 
 	&:is([data-style="solid"], [data-style="outline"], [data-style="solid-outline"]) {
-		--container-padding: var(--space-2xs) var(--space-xs);
+		--container-padding: var(--space-2xs) var(--space-2xs);
 		--container-border-radius: var(--label-border-radius, var(--border-radius-small));
 		--label-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
@@ -2553,8 +2566,8 @@ details {
 	}
 
 	&[data-size="big"] {
-		--label-size: var(--font-size-xs);
-		--label-weight: 700;
+		--label-size: var(--font-size-2xs);
+		--label-weight: 600;
 	}
 
 	/* COLLAPSIBLE LABEL */
