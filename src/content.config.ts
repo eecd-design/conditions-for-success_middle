@@ -119,5 +119,26 @@ const training = defineCollection({
 	}),
 });
 
+const support = defineCollection({
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/support' }),
+	schema: z.object({
+		title: z.string(),
+		published: z.boolean(),
+		dateAdded: z.date(),
+		type: z.string(),
+		description: z.string(),
+		external: z.object({
+			discriminant: z.boolean(),
+			value: z.optional(
+				z.object({
+					url: z.optional(z.string()),
+					fileType: z.optional(z.string()),
+				}),
+			),
+		}),
+		linkAction: z.string(),
+	}),
+});
+
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { indicators, components, resources, training };
+export const collections = { indicators, components, resources, training, support };

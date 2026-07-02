@@ -516,7 +516,6 @@ export default config({
 			},
 		}),
 
-		// Testing
 		training: collection({
 			label: 'Training',
 			columns: ['type', 'title'],
@@ -624,7 +623,7 @@ export default config({
 						true: fields.object({
 							url: fields.url({
 								label: 'External URL',
-								description: 'Provide a full, valid URL to the resource.',
+								description: 'Provide a full, valid URL to the training.',
 							}),
 						}),
 						false: fields.object({
@@ -637,9 +636,9 @@ export default config({
 					},
 				),
 				linkAction: fields.select({
-					label: 'Resource Link Action',
+					label: 'Training Link Action',
 					description:
-						'Select the resource link action. "Open in dialog" displays the resource in a pop-up window on the same page, while "Open in a new page" navigates to the resource URL.',
+						'Select the training link action. "Open in dialog" displays the training in a pop-up window on the same page, while "Open in a new page" navigates to the training URL.',
 					options: [
 						{ label: 'Open in dialog', value: 'dialog' },
 						{ label: 'Open in a new page', value: 'link' },
@@ -712,6 +711,82 @@ export default config({
 						itemLabel: (props) => props.value ?? 'Add consideration tag',
 					},
 				),
+			},
+		}),
+
+		support: collection({
+			label: 'Support',
+			columns: ['type', 'title'],
+			slugField: 'title',
+			path: 'src/content/support/*/',
+			schema: {
+				title: fields.slug({
+					name: {
+						label: 'Support Title',
+						description:
+							'Enter the title as it should appear on the website and in links.',
+					},
+					slug: {
+						label: 'Support URL',
+					},
+				}),
+				published: fields.checkbox({
+					label: 'Published',
+					defaultValue: true,
+					description:
+						'When checked, the support resource is visible on the site. Unchecking it hides it from public view.',
+				}),
+				dateAdded: fields.date({
+					label: 'Date Added',
+					description: 'Defaults to today’s date.',
+					defaultValue: { kind: 'today' },
+				}),
+				type: fields.select({
+					label: 'Support Type',
+					description: 'Determines icon shown in links.',
+					options: [
+						{ label: 'Video', value: 'video' },
+						{ label: 'Document', value: 'document' },
+					],
+					defaultValue: 'video',
+				}),
+				description: fields.text({
+					label: 'Support Description',
+					description: 'Enter a short summary about the support to appear in links.',
+					multiline: true,
+				}),
+				external: fields.conditional(
+					fields.checkbox({
+						label: 'External Support',
+						description: 'Check if this support is hosted on an external website.',
+						defaultValue: false,
+					}),
+					{
+						true: fields.object({
+							url: fields.url({
+								label: 'External URL',
+								description: 'Provide a full, valid URL to the support resource.',
+							}),
+						}),
+						false: fields.object({
+							fileType: fields.text({
+								label: 'File Type',
+								description:
+									'Specify only if different from default: video (.mp4), document (.pdf), webinar (.mp4).',
+							}),
+						}),
+					},
+				),
+				linkAction: fields.select({
+					label: 'Support Link Action',
+					description:
+						'Select the support resource link action. "Open in dialog" displays the support resource in a pop-up window on the same page, while "Open in a new page" navigates to the support resource URL.',
+					options: [
+						{ label: 'Open in dialog', value: 'dialog' },
+						{ label: 'Open in a new page', value: 'link' },
+					],
+					defaultValue: 'dialog',
+				}),
 			},
 		}),
 	},
