@@ -7,10 +7,6 @@ import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
 import PageNav from 'src/components/PageNav.astro';
 
-import IconWarning from 'src/components/icons/IconWarning_16.astro';
-import IconDocument24 from 'src/components/icons/IconDocument_24.astro';
-import IconArrowRight16 from 'src/components/icons/IconArrowRight_16.astro';
-
 let guideList = [];
 let guideIndex = 1;
 
@@ -36,14 +32,17 @@ let questionList = [];
 let allQuestions = await getCollection('faq', ({ data }) => {
 	return data.published === true;
 });
-    let allAnswers = Object.values(
+let allAnswers = Object.values(
 	import.meta.glob('src/content/faq/**/answer.md', {
 		eager: true,
-	}));
+	}),
+);
 
 for (let question of allQuestions) {
 	let data = JSON.parse(JSON.stringify(question.data));
-    data.answer = allAnswers.find((match: any) => match.file.includes(`src/content/faq/${question.id}`));
+	data.answer = allAnswers.find((match: any) =>
+		match.file.includes(`src/content/faq/${question.id}`),
+	);
 	questionList.push(data);
 }
 
@@ -125,17 +124,26 @@ let sectionLinks = [
 
 		<h2 id="faq">Frequently Asked Questions</h2>
 
-        {
-            questionList.map((itemData) => {
-                <Accordion title={itemData.question}>
-                    {}
-                </Accordion>
-            })
-        }
-
+		<div class="accordion-group">
+			{
+				questionList.map((itemData) => (
+					<Accordion title={itemData.question}>
+						{itemData.answer && itemData.answer.rawContent().trim().length > 0 && (
+							<itemData.answer.Content />
+						)}
+					</Accordion>
+				))
+			}
+		</div>
 
 		<hr class="section" />
 
 		<h2 id="contact">Contact</h2>
+
+		<p>
+			<strong>Beth Henderson</strong><br />
+			Middle Level Learning Project Lead<br />
+			<a href="mailto:beth.henderson@gnb.ca">beth.henderson@gnb.ca</a>
+		</p>
 	</div>
 </BaseLayout>
