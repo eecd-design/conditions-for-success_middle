@@ -714,35 +714,50 @@ export default config({
 			},
 		}),
 
-		support: collection({
-			label: 'Support',
-			columns: ['type', 'title'],
+		guides: collection({
+			label: 'Guides',
+			columns: ['order', 'type', 'title'],
 			slugField: 'title',
-			path: 'src/content/support/*/',
+			path: 'src/content/guides/*/',
 			schema: {
 				title: fields.slug({
 					name: {
-						label: 'Support Title',
+						label: 'Guide Title',
 						description:
 							'Enter the title as it should appear on the website and in links.',
 					},
 					slug: {
-						label: 'Support URL',
+						label: 'Guide Filename',
+						description: `Use a short, lowercase, hyphen-separated name (e.g., behaviour-management-pink-envelope). Max 50 characters.`,
+						validation: {
+							length: {
+								max: 50,
+							},
+						},
 					},
 				}),
 				published: fields.checkbox({
 					label: 'Published',
 					defaultValue: true,
 					description:
-						'When checked, the support resource is visible on the site. Unchecking it hides it from public view.',
+						'When checked, the guide is visible on the site. Unchecking it hides it from public view.',
 				}),
 				dateAdded: fields.date({
 					label: 'Date Added',
 					description: 'Defaults to today’s date.',
 					defaultValue: { kind: 'today' },
 				}),
+				order: fields.number({
+					label: 'Guide Order',
+					description:
+						'Enter which position the guide should appear in the group, number one being the first item of the group.',
+					step: 1,
+					validation: {
+						min: 1,
+					},
+				}),
 				type: fields.select({
-					label: 'Support Type',
+					label: 'Guide Type',
 					description: 'Determines icon shown in links.',
 					options: [
 						{ label: 'Video', value: 'video' },
@@ -751,21 +766,21 @@ export default config({
 					defaultValue: 'video',
 				}),
 				description: fields.text({
-					label: 'Support Description',
-					description: 'Enter a short summary about the support to appear in links.',
+					label: 'Guide Description',
+					description: 'Enter a short summary about the guide to appear in links.',
 					multiline: true,
 				}),
 				external: fields.conditional(
 					fields.checkbox({
-						label: 'External Support',
-						description: 'Check if this support is hosted on an external website.',
+						label: 'External Guide',
+						description: 'Check if this guide is hosted on an external website.',
 						defaultValue: false,
 					}),
 					{
 						true: fields.object({
 							url: fields.url({
 								label: 'External URL',
-								description: 'Provide a full, valid URL to the support resource.',
+								description: 'Provide a full, valid URL to the guide.',
 							}),
 						}),
 						false: fields.object({
@@ -778,14 +793,58 @@ export default config({
 					},
 				),
 				linkAction: fields.select({
-					label: 'Support Link Action',
+					label: 'Guide Link Action',
 					description:
-						'Select the support resource link action. "Open in dialog" displays the support resource in a pop-up window on the same page, while "Open in a new page" navigates to the support resource URL.',
+						'Select the guide link action. "Open in dialog" displays the guide in a pop-up window on the same page, while "Open in a new page" navigates to the guide URL.',
 					options: [
 						{ label: 'Open in dialog', value: 'dialog' },
 						{ label: 'Open in a new page', value: 'link' },
 					],
 					defaultValue: 'dialog',
+				}),
+			},
+		}),
+
+		faq: collection({
+			label: 'FAQ',
+			columns: ['order', 'question'],
+			slugField: 'question',
+			path: 'src/content/faq/*/',
+			schema: {
+				question: fields.slug({
+					name: {
+						label: 'Question',
+						description:
+							'Enter the question that should appear in the accordion button.',
+					},
+					slug: {
+						label: 'Question URL',
+					},
+				}),
+				published: fields.checkbox({
+					label: 'Published',
+					defaultValue: true,
+					description:
+						'When checked, the question is visible on the site. Unchecking it hides it from public view.',
+				}),
+				dateAdded: fields.date({
+					label: 'Date Added',
+					description: 'Defaults to today’s date.',
+					defaultValue: { kind: 'today' },
+				}),
+				order: fields.number({
+					label: 'Question Order',
+					description:
+						'Enter which position the question should appear in the group, number one being the first item of the group.',
+					step: 1,
+					validation: {
+						min: 1,
+					},
+				}),
+				answer: fields.mdx({
+					label: 'Answer',
+					description: 'Enter the answer to the question.',
+					extension: 'md',
 				}),
 			},
 		}),

@@ -119,12 +119,13 @@ const training = defineCollection({
 	}),
 });
 
-const support = defineCollection({
-	loader: glob({ pattern: '**/*.yaml', base: './src/content/support' }),
+const guides = defineCollection({
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/guides' }),
 	schema: z.object({
 		title: z.string(),
 		published: z.boolean(),
 		dateAdded: z.date(),
+		order: z.number(),
 		type: z.string(),
 		description: z.string(),
 		external: z.object({
@@ -140,5 +141,15 @@ const support = defineCollection({
 	}),
 });
 
+const faq = defineCollection({
+	loader: glob({ pattern: '**/*.yaml', base: './src/content/faq' }),
+	schema: z.object({
+		question: z.string(),
+		published: z.boolean(),
+		dateAdded: z.date(),
+		order: z.number(),
+	}),
+});
+
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { indicators, components, resources, training, support };
+export const collections = { indicators, components, resources, training, guides, faq };
