@@ -30,7 +30,7 @@ let {
 
 let path;
 let date = null;
-if (category === 'resource') {
+if (['resource', 'guides'].includes(category)) {
 	path = getResourcePath(itemData);
 	date = new Date(dateAdded).toLocaleDateString('en-US', {
 		day: 'numeric',
@@ -92,7 +92,7 @@ if (category === 'resource') {
 
 // If resource is a video or internal audio, open it in a dialog
 let opensDialog = false;
-if (category === 'resource') opensDialog = linkAction === 'dialog';
+if (['resource', 'guides'].includes(category)) opensDialog = linkAction === 'dialog';
 let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
 	? {
@@ -119,7 +119,7 @@ let interactiveWrapperAttrs = opensDialog
 let DestinationIcon = null;
 
 // Pages and Locations
-if (category !== 'resource') {
+if (!['resource', 'guides'].includes(category)) {
 	DestinationIcon = IconArrowRight;
 }
 // Embedded Media
