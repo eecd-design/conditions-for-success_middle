@@ -2011,7 +2011,7 @@ dialog {
 			);
 			--callout-ui-colour: var(--colour-ui-reverse);
 
-			&:is(button:not([data-style-as="link"]), [data-style-as="button"]) {
+			& :is(button:not([data-style-as="link"]), [data-style-as="button"]) {
 				--button-background-colour: var(--colour-background);
 				--container-gap: var(--space-xs);
 				--icon-size: 1.25rem;
@@ -2174,7 +2174,7 @@ dialog {
 
 .card {
 	--card-boxshadow-colour: var(--colour-border-neutral-subtle);
-	--card-boxshadow-width: 2px;
+	--card-boxshadow-width: 1px;
 	container: card / inline-size;
 	display: flex;
 	flex-flow: column;
@@ -2185,8 +2185,8 @@ dialog {
 		opacity var(--transition-linear-medium);
 
 	&:has(button:is(:hover, :focus-visible)) {
-		--card-boxshadow-colour: var(--colour-border-neutral-bold);
-		--card-boxshadow-width: 3px;
+		--card-boxshadow-colour: var(--colour-border-neutral-mid);
+		--card-boxshadow-width: 2px;
 	}
 
 	& .banner {
@@ -2289,7 +2289,7 @@ dl {
 	&[data-fit="compact"] {
 		--detail-list-gap: var(--space-2xs);
 		--detail-list-margin: var(--space-2xs);
-		--detail-list-font-size: font-size: var(--font-size-2xs);
+		--detail-list-font-size: var(--font-size-2xs);
 	}
 
 	& .detail-container {
