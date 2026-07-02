@@ -105,15 +105,11 @@ let interactiveWrapperAttrs = opensDialog
 			'data-media-type': type,
 			'data-media-src': path,
 			'data-media-external': external.discriminant,
-			'data-theme': typeColour,
-			'data-vibrancy': 'vivid',
 		}
 	: {
 			class: 'detailed-link',
 			href: path,
 			role: isInListItem ? 'option' : null,
-			'data-theme': typeColour,
-			'data-vibrancy': 'vivid',
 		};
 
 let DestinationIcon = null;
@@ -137,7 +133,11 @@ else {
 ---
 
 <InteractiveWrapper {...interactiveWrapperAttrs}>
-	<div class="banner">
+	<div
+		class="banner"
+		data-theme={typeColour}
+		data-vibrancy="vivid"
+	>
 		<ResourceIcons
 			type={type}
 			containerClasses={['type-icon-container']}
@@ -263,7 +263,6 @@ else {
 		& .type-icon-container {
 			--label-colour: var(--link-ui-colour);
 			--label-size: var(--font-size-2xs);
-			--icon-colour: var(--link-ui-colour);
 
 			grid-area: type;
 			place-self: stretch;
@@ -276,6 +275,8 @@ else {
 		*/
 
 		& :is(.icon.destination, .icon.type) {
+			--icon-colour: var(--link-ui-colour);
+
 			position: unset !important;
 		}
 
@@ -381,6 +382,22 @@ else {
 		}
 
 		/*
+		// State Styles
+		*/
+
+		&:is(:hover, :focus-visible) {
+			& .icon.destination {
+				@media (hover: hover) {
+					opacity: 1;
+					scale: 100%;
+					transition:
+						opacity var(--transition-linear-medium) 0.1s,
+						scale var(--transition-ease-medium) 0.1s;
+				}
+			}
+		}
+
+		/*
 		// Layout Styles
 		*/
 
@@ -395,16 +412,6 @@ else {
 					var(--colour-border-neutral-mid)
 				);
 				--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-
-				& .icon.destination {
-					@media (hover: hover) {
-						opacity: 1;
-						scale: 100%;
-						transition:
-							opacity var(--transition-linear-medium) 0.1s,
-							scale var(--transition-ease-medium) 0.1s;
-					}
-				}
 
 				& .text-container {
 					& .date {
@@ -483,8 +490,8 @@ else {
 		}
 
 		[data-layout='card'] & {
-			--card-boxshadow-colour: var(--colour-border-accent-mid);
-			--card-boxshadow-width: 2px;
+			--card-boxshadow-colour: var(--colour-border-neutral-subtle);
+			--card-boxshadow-width: 1px;
 
 			display: grid;
 			grid-template-rows: auto 1fr;
@@ -496,6 +503,8 @@ else {
 				opacity var(--transition-linear-medium);
 
 			& .banner {
+				--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+
 				display: flex;
 
 				& .icon-and-label-container {
@@ -549,8 +558,8 @@ else {
 			}
 
 			&:is(:hover, :focus-visible) {
-				--card-boxshadow-colour: var(--colour-border-accent-bold);
-				--card-boxshadow-width: 3px;
+				--card-boxshadow-colour: var(--colour-border-neutral-mid);
+				--card-boxshadow-width: 2px;
 			}
 
 			/* Coming Soon Placeholder Card */
