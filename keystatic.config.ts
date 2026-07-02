@@ -602,6 +602,9 @@ export default config({
 					label: 'Training Description',
 					description: 'Enter a short summary about the training to appear in links.',
 					multiline: true,
+					validation: {
+						isRequired: true,
+					},
 				}),
 				topics: fields.multiselect({
 					label: 'Topics',

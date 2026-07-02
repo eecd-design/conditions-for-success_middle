@@ -125,7 +125,7 @@ const guides = defineCollection({
 		title: z.string(),
 		published: z.boolean(),
 		dateAdded: z.date(),
-		order: z.number(),
+		order: z.optional(z.number()),
 		type: z.string(),
 		description: z.string(),
 		external: z.object({
@@ -147,7 +147,7 @@ const faq = defineCollection({
 		question: z.string(),
 		published: z.boolean(),
 		dateAdded: z.date(),
-		order: z.number(),
+		order: z.optional(z.number()),
 	}),
 });
 
