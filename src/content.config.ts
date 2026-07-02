@@ -100,7 +100,7 @@ const training = defineCollection({
 		audience: z.array(z.string()),
 		provider: z.array(z.string()),
 		location: z.string(),
-		duration: z.number(),
+		duration: z.optional(z.number()),
 		description: z.string(),
 		topics: z.array(z.string()),
 		external: z.object({
