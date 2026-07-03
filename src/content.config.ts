@@ -128,6 +128,7 @@ const guides = defineCollection({
 		order: z.optional(z.number()),
 		type: z.string(),
 		description: z.string(),
+		topics: z.array(z.string()),
 		external: z.object({
 			discriminant: z.boolean(),
 			value: z.optional(

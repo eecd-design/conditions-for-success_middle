@@ -773,6 +773,11 @@ export default config({
 					description: 'Enter a short summary about the guide to appear in links.',
 					multiline: true,
 				}),
+				topics: fields.multiselect({
+					label: 'Topics',
+					description: 'Select topics to categorize the training for filtering.',
+					options: [{ label: 'Test', value: 'test' }],
+				}),
 				external: fields.conditional(
 					fields.checkbox({
 						label: 'External Guide',
