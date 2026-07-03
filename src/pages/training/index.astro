@@ -48,7 +48,10 @@ console.log('Search List', searchList);
 			Training
 		</h1>
 
-		<div class="list-container">
+		<div
+			class="list-container elem-group"
+			data-columns="3"
+		>
 			<p
 				id="training-list_error-status"
 				class="error-status"
@@ -69,10 +72,8 @@ console.log('Search List', searchList);
 
 			<ul
 				id="training-list"
-				class="links-list"
+				class="links-list wrapper"
 				role="listbox"
-				data-style="grid"
-				data-columns="2"
 				data-layout="card"
 				data-content="asset"
 				data-sort-control="training-list-primary-controls"

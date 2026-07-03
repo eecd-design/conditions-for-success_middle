@@ -916,47 +916,6 @@ p {
 	}
 }
 
-.links-list[data-style="grid"] {
-	container: link-list / inline-size;
-	display: grid;
-	grid-template-columns: repeat(var(--group-columns), 1fr);
-	gap: var(--group-gap, var(--space-lg));
-
-	& > * {
-		margin: 0 !important;
-	}
-
-	&[data-columns]:has(> *:not(template):only-of-type) > * {
-		grid-column: span var(--group-columns);
-	}
-
-	&[data-columns="2"] {
-		--group-columns: 2;
-
-		&:has(> *:not(template):nth-last-child(n + 3)) > * {
-			grid-column: span 2;
-		}
-
-		&:not([data-fit="compact"]) {
-			@container link-list (width < 700px) {
-				--group-columns: 1;
-			}
-		}
-	}
-
-	&[data-columns="3"] {
-		--group-columns: 3;
-
-		@container link-list (width < 800px) {
-			--group-columns: 1;
-		}
-
-		&:has(> *:not(template):nth-last-child(n + 4)) > * {
-			grid-column: span 3;
-		}
-	}
-}
-
 /* 
 // Link Container (single link)
 */
