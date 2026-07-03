@@ -2156,6 +2156,7 @@ dialog {
 		font-weight: 600;
 		color: var(--colour-ui-accent-subtle);
 		background-color: var(--colour-fill-accent-subtle);
+		border-bottom: 1px solid var(--colour-border-accent-subtle);
 		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
 		height: 2rem;
 	}
