@@ -4,7 +4,8 @@ dateAdded: 2026-07-02
 order: 1
 type: video
 description: Step-by-step guidance for creating a self-assessment.
+topics: []
 external:
-  discriminant: false
-  value: {}
+    discriminant: false
+    value: {}
 linkAction: dialog
