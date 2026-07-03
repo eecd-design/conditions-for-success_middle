@@ -557,9 +557,15 @@ else {
 				}
 			}
 
-			&:is(:hover, :focus-visible) {
+			&:hover {
 				--card-boxshadow-colour: var(--colour-border-neutral-mid);
 				--card-boxshadow-width: 2px;
+			}
+
+			&:focus-visible {
+				--card-boxshadow-colour: var(--colour-border-neutral-bold);
+				--card-boxshadow-width: 3px;
+				outline: none;
 			}
 
 			/* Coming Soon Placeholder Card */

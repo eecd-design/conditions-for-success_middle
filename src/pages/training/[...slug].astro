@@ -51,14 +51,14 @@ for (let heading of headings) {
 	});
 }
 
-let launchText = `View ${type}`;
+let launchText = `View ${toTitleCase(type)}`;
 
 let typeColourMap = {
 	video: 'red',
-	document: 'orange',
-	webinar: 'green',
-	website: 'teal',
-	community: 'blue',
+	document: 'blue',
+	website: 'green',
+	webinar: 'teal',
+	community: 'yellow',
 	course: 'purple',
 };
 let typeColour = typeColourMap[type];
@@ -204,9 +204,15 @@ let interactiveWrapperAttrs = opensDialog
 			--icon-size: 1rem;
 			--label-size: var(--font-size-xs);
 
-			display: block;
+			display: inline-block;
 			font-size: var(--font-size-sm);
 			margin-bottom: var(--space-xl);
+
+			&:focus-visible {
+				& .icon.arrow {
+					translate: 0 !important;
+				}
+			}
 		}
 
 		& h1 {
