@@ -9,6 +9,7 @@ import LinksListItem from 'src/components/LinksListItem.astro';
 import IconWarning from 'src/components/icons/IconWarning_16.astro';
 import IconSapling24 from 'src/components/icons/IconSapling_24.astro';
 import IconArrowRight16 from 'src/components/icons/IconArrowRight_16.astro';
+import IconSignpost from 'src/components/icons/IconSignpost_24.astro';
 
 let searchList = [];
 let itemIndex = 1;
@@ -47,6 +48,20 @@ console.log('Search List', searchList);
 		>
 			Training
 		</h1>
+
+		<div class="callout">
+			<div class="wrapper">
+				<p class="heading">
+					<IconSignpost />
+					<strong>Need help finding something?</strong>
+				</p>
+				<p>
+					Find guides on how to use this website and answers to frequently asked questions
+					on the <a href={`./support/`}>Support</a> page and resources to help you progress
+					through the continuums on the <a href={`./resources/`}>Resources</a> page.
+				</p>
+			</div>
+		</div>
 
 		<div
 			class="list-container elem-group"
