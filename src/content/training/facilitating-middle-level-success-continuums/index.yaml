@@ -10,11 +10,11 @@ provider:
 location: virtual
 duration: 4
 description: >
-  This short course serves two audiences. It opens with an introduction for all
-  middle level educators on the Conditions for Success Developmental Continuums,
-  including how they support self-assessment and progress planning. It then
-  includes three modules designed specifically for facilitators of the
-  framework.
+  This short course opens with an introduction to the Conditions for Success
+  Developmental Continuums, including how they support self-assessment and
+  progress planning at the middle level. The intro, designed for all middle
+  level educators, is then followed by three modules designed specifically for
+  facilitators of the framework.
 topics: []
 external:
   discriminant: true
