@@ -1,1 +1,1 @@
-Where does the page content goooooo
+This is a more detailed description of the training content!
