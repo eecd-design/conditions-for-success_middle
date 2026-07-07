@@ -5,6 +5,7 @@ type: course
 audience:
   - facilitators
   - educators
+  - supportStaff
 provider:
   - eecd
 location: virtual
