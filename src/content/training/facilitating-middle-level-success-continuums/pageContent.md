@@ -1,6 +1,6 @@
 ## Course Overview
 
-This short course explores the purpose, structure, and developmental nature of the *Conditions for Success Developmental Continuums*, including how they support self-assessment and progress planning at the middle level.
+This course explores the purpose, structure, and developmental nature of the *Conditions for Success Developmental Continuums*, including how they support self-assessment and progress planning at the middle level.
 
 ## Course Structure and Topics
 

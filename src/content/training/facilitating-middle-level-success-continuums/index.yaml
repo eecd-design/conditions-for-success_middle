@@ -11,11 +11,11 @@ provider:
 location: virtual
 duration: 4
 description: >
-  This short course opens with an introduction module designed for all middle
-  school team members on the Conditions for Success Developmental Continuums,
-  including how they support self-assessment and progress planning at the middle
-  level. The introduction is then followed by three modules designed
-  specifically for facilitators of the continuums framework.
+  This course opens with an introduction module designed for all middle school
+  team members on the Conditions for Success Developmental Continuums, including
+  how they support self-assessment and progress planning at the middle level.
+  The introduction is then followed by three modules designed specifically for
+  facilitators of the continuums framework.
 topics: []
 external:
   discriminant: true
