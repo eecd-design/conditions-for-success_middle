@@ -1,1 +1,1 @@
-The "Active Assessor" is the person currently responsible for making changes to the assessment.
+The "Active Assessor" is the person currently making changes to the assessment. For the purpose of version control, when collaborating on an assessment with others, we recommend you enable this function from the "Assessment Mode" toolbar.
