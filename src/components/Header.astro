@@ -328,13 +328,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		max-width: calc(1920px - (2*var(--wrapper-margin)));
 	}
 
-	@container header (width < 1112px) {
+	@container header (width < 1266px) {
 		header .site-masthead {
 			min-height: 6rem;
 		}
 	}
 
-	@container header (width < 664px) {
+	@container header (width < 800px) {
 		header .site-masthead {
 			min-height: 5rem;
 		}
@@ -446,7 +446,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		min-height: 0;
 	}
 
-	@container header (width < 664px) {
+	@container header (width < 800px) {
 		header nav.global li:not(.home-icon) {
 			display: none;
 		}
@@ -485,7 +485,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		padding: var(--space-2xs) var(--space-xs);
 	}
 
-	@container header (width < 1112px) {
+	@container header (width < 1266px) {
 		header nav.global .home-icon {
 			display: block;
 		}
@@ -524,13 +524,13 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		display: none;
 	}
 
-	@container header (width < 664px) {
+	@container header (width < 800px) {
 		header .global-controls button.menu {
 			display: inline;
 		}
 	}
 
-	@container header (width < 1112px) {
+	@container header (width < 1266px) {
 		header .global-controls button.search .label-container {
 			display: none;
 		}
@@ -571,7 +571,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		padding: var(--space-sm) var(--space-lg);
 	}
 
-	@container header (width < 1112px) {
+	@container header (width < 1266px) {
 		header .site-title-container {
 			max-width: min(704px, calc(100% - (2*var(--wrapper-margin))));
 		}
