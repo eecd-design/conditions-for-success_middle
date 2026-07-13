@@ -2,14 +2,13 @@
 // Helpers
 //
 
-
 //
 // Dates
 //
 
 let dateFormatter = new Intl.DateTimeFormat('en-US', {
 	dateStyle: 'medium',
-	timeStyle: 'short'
+	timeStyle: 'short',
 });
 
 /**
@@ -47,7 +46,7 @@ let parseImportedDateString = (str) => {
 		Number(hours),
 		Number(minutes),
 		Number(seconds),
-		Number(ms)
+		Number(ms),
 	);
 
 	return d.getTime();
@@ -81,16 +80,15 @@ let normalizeImportedDate = (value) => {
 };
 
 let formatDateAsHTML = (timestamp) => {
-	let parts = dateFormatter.format(new Date(timestamp)).split(", ");
+	let parts = dateFormatter.format(new Date(timestamp)).split(', ');
 	return parts
 		.map((str, index) => {
 			if (index === 0) return `<span class="day">${str}</span>`;
 			if (index === 1) return `<span class="year">, ${str}</span>`;
 			return `<span class="time">, ${str}</span>`;
 		})
-		.join("");
+		.join('');
 };
-
 
 /**
  * Returns the human-readable time difference between two date strings or timestamps.
@@ -125,7 +123,8 @@ let getTimeDifference = (d1, d2) => {
 	if (diffDays > 0) parts.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
 	if (diffHours > 0) parts.push(`${diffHours} hour${diffHours !== 1 ? 's' : ''}`);
 	if (diffMinutes > 0) parts.push(`${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}`);
-	if (diffSeconds > 0 || parts.length === 0) parts.push(`${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}`);
+	if (diffSeconds > 0 || parts.length === 0)
+		parts.push(`${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}`);
 
 	return parts.join(', ');
 };
@@ -153,8 +152,6 @@ let formatDateAsString = (date, includeTime = true) => {
 		return `${year}-${month}-${day}`;
 	}
 };
-
-
 
 //
 // Object/Array Traversal
@@ -186,7 +183,7 @@ let findHighestValueByKey = (arr, key) => {
  * @param {string} key - Key to match.
  * @param {*} value - Value to match.
  * @returns {number} Index of the found object, or -1 if not found.
-*/
+ */
 let findIndexByKey = (arr, key, value) => {
 	if (!arr || !key || value === undefined) return -1;
 	for (let i = 0; i < arr.length; i++) {
@@ -214,20 +211,18 @@ let findObjectByKey = (arr, key, value) => {
 	return null;
 };
 
-
-
-
 //
 // String Transformations
 //
 
 let sanitizeHTML = (input) => {
-	return input.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
-}
+	return input
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+};
 
 /**
  * Converts a string to a boolean.
@@ -248,7 +243,7 @@ let stringToBoolean = function (str) {
 let toCamelCase = function (str) {
 	if (!str) return '';
 	// Normalize separators and spaces
-	str = str.replace(/[_-\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '');
+	str = str.replace(/[_-\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
 	// Lowercase first character
 	return str.charAt(0).toLowerCase() + str.slice(1);
 };
@@ -283,9 +278,7 @@ let toTitleCase = function (str) {
 	str = str.replace(/([a-z])([A-Z])/g, '$1 $2');
 	str = str.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2');
 	// Capitalize first letter of each word
-	return str
-		.toLowerCase()
-		.replace(/\b\w/g, char => char.toUpperCase());
+	return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
 /**
@@ -300,9 +293,6 @@ let joinWithAnd = function (arr) {
 	return `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
 };
 
-
-
-
 //
 // Misc
 //
@@ -316,24 +306,20 @@ let joinWithAnd = function (arr) {
 let emitEvent = ({ target, name, detail = {} }) => {
 	let event = new CustomEvent(name, {
 		detail,
-		bubbles: true,   // let the event bubble up through the DOM
-		composed: true   // allow crossing shadow DOM boundaries if needed
+		bubbles: true, // let the event bubble up through the DOM
+		composed: true, // allow crossing shadow DOM boundaries if needed
 	});
 	target.dispatchEvent(event);
 };
 
 let getResourcePath = (resource) => {
-
 	let { slug, type, external } = resource;
 
 	if (!slug || !type || !external) return null;
 
 	if (external.discriminant === true) {
-
 		return external.value.url;
-
 	} else if (external.discriminant === false) {
-
 		let subfolder;
 		switch (type) {
 			case 'video':
@@ -351,6 +337,9 @@ let getResourcePath = (resource) => {
 			case 'presentation':
 				subfolder = 'files';
 				break;
+			case 'webinar':
+				subfolder = 'media';
+				break;
 			default:
 				subfolder = 'files';
 		}
@@ -358,11 +347,8 @@ let getResourcePath = (resource) => {
 		let fileType = external.value?.fileType ?? null;
 
 		if (fileType) {
-
 			fileType = fileType.replaceAll('.', '').trim();
-
 		} else {
-
 			switch (type) {
 				case 'video':
 					fileType = 'mp4';
@@ -379,9 +365,11 @@ let getResourcePath = (resource) => {
 				case 'presentation':
 					fileType = 'pdf';
 					break;
+				case 'webinar':
+					fileType = 'mp4';
+					break;
 				default:
 			}
-
 		}
 
 		// Default relative path for the production site
@@ -393,13 +381,10 @@ let getResourcePath = (resource) => {
 		}
 
 		return path;
-
 	} else {
 		return null;
 	}
-}
-
-
+};
 
 /**
  * Create an DOM element from HTML string
@@ -407,7 +392,7 @@ let getResourcePath = (resource) => {
  * @return  {Element}
  */
 let htmlToElement = (html) => {
-	let template = document.createElement("template");
+	let template = document.createElement('template');
 	html = html.trim(); // Never return a node of whitespace as a result
 	template.innerHTML = html;
 	return template.content.firstChild;
@@ -438,37 +423,26 @@ let isEqual = function (a, b) {
  * @returns {boolean} True if element is in view (fully or partially).
  */
 let isInViewport = (elem, options = {}) => {
+	let { fully = false } = options;
+	let rect = elem.getBoundingClientRect();
 
-	let { fully = false } = options
-	let rect = elem.getBoundingClientRect()
-
-	let viewHeight = window.innerHeight || document.documentElement.clientHeight
-	let viewWidth = window.innerWidth || document.documentElement.clientWidth
+	let viewHeight = window.innerHeight || document.documentElement.clientHeight;
+	let viewWidth = window.innerWidth || document.documentElement.clientWidth;
 
 	if (fully) {
 		return (
-			rect.top >= 0 &&
-			rect.left >= 0 &&
-			rect.bottom <= viewHeight &&
-			rect.right <= viewWidth
-		)
+			rect.top >= 0 && rect.left >= 0 && rect.bottom <= viewHeight && rect.right <= viewWidth
+		);
 	}
 
-	return (
-		rect.bottom > 0 &&
-		rect.right > 0 &&
-		rect.top < viewHeight &&
-		rect.left < viewWidth
-	)
-
-}
+	return rect.bottom > 0 && rect.right > 0 && rect.top < viewHeight && rect.left < viewWidth;
+};
 
 /**
  * Scroll an element into view
  * @param  {Node} elem The elem to show
  */
 let scrollIntoView = (elem, options = {}) => {
-
 	let { block = 'start' } = options;
 
 	let fullyInView = isInViewport(elem, {
@@ -481,8 +455,7 @@ let scrollIntoView = (elem, options = {}) => {
 			block: block,
 		});
 	}
-
-}
+};
 
 /**
  * Stop all actively playing videos within a container element
@@ -499,8 +472,6 @@ let stopVideo = (elem) => {
 		video.pause();
 	}
 };
-
-
 
 //
 // Exports
