@@ -129,7 +129,10 @@ let sectionLinks = [
 		<div class="accordion-group">
 			{
 				questionList.map((itemData) => (
-					<Accordion title={itemData.question}>
+					<Accordion
+						title={itemData.question}
+						dataset={[{ key: 'font-size', value: 'base' }]}
+					>
 						{itemData.answer && itemData.answer.rawContent().trim().length > 0 && (
 							<itemData.answer.Content />
 						)}

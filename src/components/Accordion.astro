@@ -1,17 +1,11 @@
 ---
-import IconCaretSmall from "./icons/IconCaretDown_14.astro";
-import IconCaretMedium from "./icons/IconCaretDown_16.astro";
-import IconCaretLarge from "./icons/IconCaretDown_20.astro";
+import IconCaretSmall from './icons/IconCaretDown_14.astro';
+import IconCaretMedium from './icons/IconCaretDown_16.astro';
+import IconCaretLarge from './icons/IconCaretDown_20.astro';
 
-import { toKebabCase } from "../utilities/helpers";
+import { toKebabCase } from '../utilities/helpers';
 
-const {
-	title,
-	id,
-	dataset,
-	crossIconSize = "large",
-	wrapper = true,
-} = Astro.props;
+const { title, id, dataset, crossIconSize = 'large', wrapper = true } = Astro.props;
 
 let datasetAttrs = {};
 if (dataset) {
@@ -29,8 +23,14 @@ const crossIcons = {
 let IconCross = crossIcons[crossIconSize];
 ---
 
-<div class="accordion" {...datasetAttrs}>
-	<h3 id={id ? id : toKebabCase(title)} class="heading">
+<div
+	class="accordion"
+	{...datasetAttrs}
+>
+	<h3
+		id={id ? id : toKebabCase(title)}
+		class="heading"
+	>
 		<button type="button">
 			<span class="icon-and-label-container">
 				<slot name="button-icon" />
@@ -45,7 +45,10 @@ let IconCross = crossIcons[crossIconSize];
 		</button>
 	</h3>
 
-	<div class="panel" data-js-visibility="hidden">
+	<div
+		class="panel"
+		data-js-visibility="hidden"
+	>
 		{
 			wrapper ? (
 				<div class="content">
@@ -90,8 +93,7 @@ let IconCross = crossIcons[crossIconSize];
 		height: auto;
 		min-height: 3.5rem;
 		width: 100%;
-		padding: var(--space-2xs) var(--space-base) var(--space-2xs)
-			var(--space-sm);
+		padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
 		box-shadow: inset 0 0 0 var(--button-boxshadow-width, 2px)
 			var(--button-boxshadow-colour, transparent);
 		transition: background-color var(--transition-linear-fast);
@@ -102,23 +104,17 @@ let IconCross = crossIcons[crossIconSize];
 		--button-ui-colour: var(--button-ui-colour);
 	}
 
-	.accordion
-		.heading
-		button:not([aria-expanded="true"]):is(:hover, :focus-visible) {
+	.accordion .heading button:not([aria-expanded='true']):is(:hover, :focus-visible) {
 		--button-boxshadow-colour: var(
 			--colour-border-accent-subtle,
 			var(--colour-border-neutral-subtle)
 		);
 	}
 
-	.accordion .heading button[aria-expanded="true"] {
-		--button-background-colour: var(
-			--colour-fill-accent-bold,
-			var(--colour-fill-neutral-mid)
-		);
+	.accordion .heading button[aria-expanded='true'] {
+		--button-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
 		--icon-colour: var(--colour-ui-reverse);
-		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0
-			0;
+		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
 	}
 
 	.accordion .heading button .icon-and-label-container {
@@ -129,7 +125,11 @@ let IconCross = crossIcons[crossIconSize];
 		text-align: left;
 	}
 
-	.accordion .heading button[aria-expanded="true"] .icon-and-label-container {
+	.accordion[data-font-size='base'] .heading button .icon-and-label-container {
+		--label-size: var(--font-size-base);
+	}
+
+	.accordion .heading button[aria-expanded='true'] .icon-and-label-container {
 		--label-colour: var(--colour-ui-reverse);
 	}
 
@@ -139,7 +139,7 @@ let IconCross = crossIcons[crossIconSize];
 		transform-origin: center;
 	}
 
-	.accordion .heading button[aria-expanded="true"] > .icon.caret {
+	.accordion .heading button[aria-expanded='true'] > .icon.caret {
 		rotate: x 180deg;
 	}
 
@@ -152,23 +152,21 @@ let IconCross = crossIcons[crossIconSize];
 		min-width: 1rem;
 	}
 
-	.accordion .heading button[aria-expanded="true"] .tag {
+	.accordion .heading button[aria-expanded='true'] .tag {
 		color: var(--colour-ui-reverse);
 	}
 
 	.accordion .panel {
 		display: block;
-		border: 1px solid
-			var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
-		border-radius: 0 0 var(--border-radius-normal)
-			var(--border-radius-normal);
+		border: 1px solid var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
 	}
 
 	[data-js] .accordion .panel {
 		display: none;
 	}
 
-	[data-js] .accordion:has(> .heading > button[aria-expanded="true"]) .panel {
+	[data-js] .accordion:has(> .heading > button[aria-expanded='true']) .panel {
 		display: block;
 	}
 
@@ -193,13 +191,8 @@ let IconCross = crossIcons[crossIconSize];
 	// Imports
 	//
 
-	import { eventControl } from "src/utilities/event";
-	import {
-		emitEvent,
-		isInViewport,
-		scrollIntoView,
-		stopVideo,
-	} from "../utilities/helpers";
+	import { eventControl } from 'src/utilities/event';
+	import { emitEvent, isInViewport, scrollIntoView, stopVideo } from '../utilities/helpers';
 
 	//
 	// Module
@@ -211,8 +204,8 @@ let IconCross = crossIcons[crossIconSize];
 		//
 
 		let setupDOM = (accordion) => {
-			let btn = accordion.querySelector(":scope>.heading>button");
-			btn.setAttribute("aria-expanded", "false");
+			let btn = accordion.querySelector(':scope>.heading>button');
+			btn.setAttribute('aria-expanded', 'false');
 		};
 
 		//
@@ -225,25 +218,21 @@ let IconCross = crossIcons[crossIconSize];
 		 */
 		let toggleAccordion = (targetAccordion) => {
 			// Get the accordion group, if there is one
-			let accordionGroup = targetAccordion.closest(".accordion-group");
+			let accordionGroup = targetAccordion.closest('.accordion-group');
 
 			// If there is an accordion group, check whether it allows multiple open panels, default to false
 			let allowMultiple = accordionGroup
-				? accordionGroup.hasAttribute("data-allow-multiple")
+				? accordionGroup.hasAttribute('data-allow-multiple')
 				: false;
 
 			// Get the target accordion toggle button
-			let targetToggle = targetAccordion.querySelector(
-				".accordion .heading button",
-			);
+			let targetToggle = targetAccordion.querySelector('.accordion .heading button');
 
 			// Get the target accordion panel
-			let targetPanel =
-				targetAccordion.querySelector(".accordion .panel");
+			let targetPanel = targetAccordion.querySelector('.accordion .panel');
 
 			// Check if the target panel is expanded
-			let isExpanded =
-				targetToggle.getAttribute("aria-expanded") == "true";
+			let isExpanded = targetToggle.getAttribute('aria-expanded') == 'true';
 
 			// Get the active toggle button
 			let activeToggle = accordionGroup
@@ -252,54 +241,49 @@ let IconCross = crossIcons[crossIconSize];
 
 			// Get the active panel
 			let activePanel = activeToggle
-				? activeToggle.closest(".accordion").querySelector(".panel")
+				? activeToggle.closest('.accordion').querySelector('.panel')
 				: null;
 
 			// If the active panel contains a video, pause it
 			if (
 				activePanel &&
-				(activePanel.matches("video, .embed") ||
-					activePanel.querySelector("video, .embed"))
+				(activePanel.matches('video, .embed') || activePanel.querySelector('video, .embed'))
 			) {
 				stopVideo(activePanel);
 			}
 
 			// If accordion group does not allows multiple open panels and the target toggle is not the active toggle
-			if (
-				!allowMultiple &&
-				activeToggle &&
-				activeToggle !== targetToggle
-			) {
+			if (!allowMultiple && activeToggle && activeToggle !== targetToggle) {
 				// Reset the active toggle
-				activeToggle.setAttribute("aria-expanded", "false");
+				activeToggle.setAttribute('aria-expanded', 'false');
 
 				// Hide the active panel
-				activePanel.setAttribute("hidden", "");
+				activePanel.setAttribute('hidden', '');
 			}
 
 			// If the target is collapsed, expand it
 			if (!isExpanded) {
 				// Set the toggle to expanded
-				targetToggle.setAttribute("aria-expanded", "true");
+				targetToggle.setAttribute('aria-expanded', 'true');
 
 				// Show the target panel
-				targetPanel.removeAttribute("hidden");
+				targetPanel.removeAttribute('hidden');
 			}
 
 			// If the target is expanded, collapse it
 			else if (isExpanded) {
 				// Set the expanded state on the triggering element
-				targetToggle.setAttribute("aria-expanded", "false");
+				targetToggle.setAttribute('aria-expanded', 'false');
 
 				// Hide the target panel
-				targetPanel.setAttribute("hidden", "");
+				targetPanel.setAttribute('hidden', '');
 			}
 
 			// Get the transition length and convert it to a number
 			let transitionLength = Number(
 				getComputedStyle(targetAccordion)
-					.getPropertyValue("transition-duration")
-					.replace(/[^0-9\.]/g, ""),
+					.getPropertyValue('transition-duration')
+					.replace(/[^0-9\.]/g, ''),
 			);
 
 			setTimeout(() => {
@@ -316,9 +300,9 @@ let IconCross = crossIcons[crossIconSize];
 		//
 
 		let onClick = (event) => {
-			if (!event.target.matches(".accordion .heading button")) return;
-			console.log("Accordion Click");
-			let targetAccordion = event.target.closest(".accordion");
+			if (!event.target.matches('.accordion .heading button')) return;
+			console.log('Accordion Click');
+			let targetAccordion = event.target.closest('.accordion');
 			toggleAccordion(targetAccordion);
 		};
 
@@ -327,9 +311,7 @@ let IconCross = crossIcons[crossIconSize];
 		//
 
 		let init = () => {
-			let accordions = document.querySelectorAll(
-				".accordion",
-			) as NodeListOf<HTMLElement>;
+			let accordions = document.querySelectorAll('.accordion') as NodeListOf<HTMLElement>;
 
 			for (let accordion of accordions) {
 				setupDOM(accordion);
@@ -337,12 +319,12 @@ let IconCross = crossIcons[crossIconSize];
 
 			emitEvent({
 				target: document,
-				name: "accordionSetupComplete",
+				name: 'accordionSetupComplete',
 			});
 
 			eventControl.add({
-				selector: ".accordion",
-				eventType: "click",
+				selector: '.accordion',
+				eventType: 'click',
 				fn: onClick,
 			});
 		};
@@ -357,7 +339,7 @@ let IconCross = crossIcons[crossIconSize];
 	accordion.init();
 	eventControl.add({
 		elem: document,
-		eventType: "astro:after-swap",
+		eventType: 'astro:after-swap',
 		fn: accordion.init,
 	});
 </script>
