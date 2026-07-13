@@ -19,7 +19,7 @@ let { allowMultiple = false, includeControls = true } = Astro.props;
 				<div
 					class="separator"
 					data-orientation="vertical"
-				></div>
+				/>
 				<button
 					class="close-all"
 					data-style-as="link"
@@ -46,13 +46,10 @@ let { allowMultiple = false, includeControls = true } = Astro.props;
 			margin: 0 0 var(--space-2xs);
 
 			& button {
-				--link-underline-colour: var(--colour-ui-neutral-subtle);
+				--link-colour: var(--colour-ui-neutral-subtle);
 				color: var(--colour-ui-neutral-subtle);
+				font-size: var(--font-size-xs);
 				text-decoration-line: underline;
-
-				&:is(:hover, :focus-visible) {
-					--link-underline-colour: transparent;
-				}
 			}
 
 			& .separator {
