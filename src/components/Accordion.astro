@@ -62,127 +62,137 @@ let IconCross = crossIcons[crossIconSize];
 </div>
 
 <style is:global>
-	.accordion-group {
-		display: flex;
-		flex-flow: column;
-		gap: var(--space-2xs);
-		margin: var(--space-2xl) 0;
-	}
-
 	.accordion {
-		container: accordion / inline-size;
-	}
-
-	.accordion .heading {
-		margin: 0;
-	}
-
-	.accordion .heading button {
-		--button-background-colour: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-		--button-border-radius: var(--border-radius-normal);
-		--button-ui-colour: var(--colour-ui-neutral);
-		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: var(--space-sm);
-		height: auto;
-		min-height: 3.5rem;
-		width: 100%;
-		padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
-		box-shadow: inset 0 0 0 var(--button-boxshadow-width, 2px)
-			var(--button-boxshadow-colour, transparent);
-		transition: background-color var(--transition-linear-fast);
-	}
-
-	.accordion .heading button:is(:hover, :focus-visible) {
-		--button-background-colour: transparent;
-		--button-ui-colour: var(--button-ui-colour);
-	}
-
-	.accordion .heading button:not([aria-expanded='true']):is(:hover, :focus-visible) {
-		--button-boxshadow-colour: var(
-			--colour-border-accent-subtle,
-			var(--colour-border-neutral-subtle)
-		);
-	}
-
-	.accordion .heading button[aria-expanded='true'] {
-		--button-background-colour: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
-		--icon-colour: var(--colour-ui-reverse);
-		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
-	}
-
-	.accordion .heading button .icon-and-label-container {
-		--container-gap: var(--space-xs);
 		--label-size: var(--font-size-lg);
-		--icon-size: 1.5rem;
-		flex: 1;
-		text-align: left;
-	}
 
-	.accordion[data-font-size='base'] .heading button .icon-and-label-container {
-		--label-size: var(--font-size-base);
-	}
+		container: accordion / inline-size;
 
-	.accordion .heading button[aria-expanded='true'] .icon-and-label-container {
-		--label-colour: var(--colour-ui-reverse);
-	}
+		&[data-font-size='base'] {
+			--label-size: var(--font-size-base);
+		}
 
-	.accordion .heading button > .icon.caret {
-		--icon-size: 1rem;
-		transition: rotate var(--transition-ease-medium);
-		transform-origin: center;
-	}
+		& > .heading {
+			margin: 0;
 
-	.accordion .heading button[aria-expanded='true'] > .icon.caret {
-		rotate: x 180deg;
-	}
+			& button {
+				--button-background-colour: var(
+					--colour-fill-accent-subtle,
+					var(--colour-fill-neutral-subtle)
+				);
+				--button-border-radius: var(--border-radius-normal);
+				--button-ui-colour: var(--colour-ui-neutral);
+				--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 
-	.accordion .heading button .tag {
-		font-size: var(--font-size-lg);
-		font-weight: 500;
-		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-		line-height: 1.2;
-		text-align: center;
-		min-width: 1rem;
-	}
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				gap: var(--space-sm);
+				height: auto;
+				min-height: 3.5rem;
+				width: 100%;
+				padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
+				box-shadow: inset 0 0 0 var(--button-boxshadow-width, 2px)
+					var(--button-boxshadow-colour, transparent);
+				transition: background-color var(--transition-linear-fast);
 
-	.accordion .heading button[aria-expanded='true'] .tag {
-		color: var(--colour-ui-reverse);
-	}
+				/* States */
 
-	.accordion .panel {
-		display: block;
-		border: 1px solid var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
-		border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
-	}
+				&:is(:hover, :focus-visible) {
+					--button-background-colour: transparent;
+					--button-ui-colour: var(--button-ui-colour);
+				}
 
-	[data-js] .accordion .panel {
-		display: none;
-	}
+				&:not([aria-expanded='true']):is(:hover, :focus-visible) {
+					--button-boxshadow-colour: var(
+						--colour-border-accent-subtle,
+						var(--colour-border-neutral-subtle)
+					);
+				}
 
-	[data-js] .accordion:has(> .heading > button[aria-expanded='true']) .panel {
-		display: block;
-	}
+				&[aria-expanded='true'] {
+					--button-background-colour: var(
+						--colour-fill-accent-bold,
+						var(--colour-fill-neutral-mid)
+					);
+					--icon-colour: var(--colour-ui-reverse);
+					border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
+				}
 
-	.accordion .panel :where(p, li, a) {
-		font-size: var(--font-size-xs);
-		line-height: 1.2;
-	}
+				/* Icon and Label Container */
 
-	.accordion .panel > .content {
-		padding: var(--space-lg);
-		font-size: var(--font-size-base);
-	}
+				& .icon-and-label-container {
+					--container-gap: var(--space-xs);
+					/* --label-size: var(--font-size-lg); */
+					--icon-size: 1.5rem;
+					flex: 1;
+					text-align: left;
+				}
 
-	.accordion .panel > .content :where(p, li, a) {
-		font-size: inherit;
-		line-height: 1.6;
+				&[aria-expanded='true'] .icon-and-label-container {
+					--label-colour: var(--colour-ui-reverse);
+				}
+
+				/* Caret */
+
+				& > .icon.caret {
+					--icon-size: 1rem;
+					transition: rotate var(--transition-ease-medium);
+					transform-origin: center;
+				}
+
+				&[aria-expanded='true'] > .icon.caret {
+					rotate: x 180deg;
+				}
+
+				/* Tag */
+
+				& .tag {
+					font-size: var(--font-size-lg);
+					font-weight: 500;
+					color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+					line-height: 1.2;
+					text-align: center;
+					min-width: 1rem;
+				}
+
+				&[aria-expanded='true'] .tag {
+					color: var(--colour-ui-reverse);
+				}
+			}
+		}
+
+		& > .panel {
+			display: block;
+			border: 1px solid var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+			border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+
+			& :where(p, li, a) {
+				font-size: var(--font-size-xs);
+				line-height: 1.2;
+			}
+
+			& > .content {
+				padding: var(--space-lg);
+				font-size: var(--font-size-base);
+
+				& :where(p, li, a) {
+					font-size: inherit;
+					line-height: 1.6;
+				}
+			}
+		}
+
+		/* Javascript Enabled Browsing */
+
+		[data-js] & {
+			& > .panel {
+				display: none;
+			}
+
+			&:has(> .heading > button[aria-expanded='true']) > .panel {
+				display: block;
+			}
+		}
 	}
 </style>
 
