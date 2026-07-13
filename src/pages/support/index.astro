@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Accordion from 'src/components/Accordion.astro';
+import AccordionGroup from 'src/components/AccordionGroup.astro';
 import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
 import PageNav from 'src/components/PageNav.astro';
@@ -126,7 +127,7 @@ let sectionLinks = [
 
 		<h2 id="faq">Frequently Asked Questions</h2>
 
-		<div class="accordion-group">
+		<AccordionGroup>
 			{
 				questionList.map((itemData) => (
 					<Accordion
@@ -139,7 +140,7 @@ let sectionLinks = [
 					</Accordion>
 				))
 			}
-		</div>
+		</AccordionGroup>
 
 		<hr class="section" />
 

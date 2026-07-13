@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from "astro:content";
 
 import Accordion from "../components/Accordion.astro";
+import AccordionGroup from "../components/AccordionGroup.astro";
 import DetailedLink from "../components/DetailedLink.astro";
 import LinkListItem from "../components/LinksListItem.astro";
 
@@ -176,7 +177,7 @@ let phases = [
 		<goal.Content />
 	)}
 	
-	<div class="accordion-group" data-allow-multiple>
+	<AccordionGroup allowMultiple={true}>
 	
 		{ phases.map((phase) => {
 	
@@ -313,7 +314,7 @@ let phases = [
 	
 		}) }
 	
-	</div>
+	</AccordionGroup>
 
 </section>
 

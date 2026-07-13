@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Accordion from 'src/components/Accordion.astro';
+import AccordionGroup from 'src/components/AccordionGroup.astro';
 import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
 
@@ -126,7 +127,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					aria-hidden="true"
 				>
 				</div>
-				<div class="accordion-group">
+				<AccordionGroup includeControls={false}>
 					<Accordion
 						title={'Type'}
 						id={'filters_type'}
@@ -272,7 +273,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 							}
 						</fieldset>
 					</Accordion>
-				</div>
+				</AccordionGroup>
 			</form>
 		</div>
 	</aside>

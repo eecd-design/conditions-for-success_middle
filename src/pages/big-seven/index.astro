@@ -7,6 +7,7 @@ import AssessmentToolbar from '../../components/AssessmentToolbar.astro';
 import AssessmentDialogs from '../../components/dialogs/AssessmentDialogs.astro';
 import AssessmentToasts from '../../components/AssessmentToasts.astro';
 import Accordion from '../../components/Accordion.astro';
+import AccordionGroup from '../../components/AccordionGroup.astro';
 import Tab from '../../components/Tab.astro';
 import PhaseIcons from '../../components/icons/PhaseIcons.astro';
 import IconArrowRightSmall from 'src/components/icons/IconArrowRight_16.astro';
@@ -81,7 +82,7 @@ let sectionLinks = [
 		<section>
 			<h2 id="what-are-the-big-seven-indicators">What are “The Big Seven” indicators?</h2>
 
-			<div class="accordion-group">
+			<AccordionGroup>
 				<Accordion
 					title={'Leadership and Teaming'}
 					dataset={[
@@ -315,7 +316,7 @@ let sectionLinks = [
 						}
 					</ul>
 				</Accordion>
-			</div>
+			</AccordionGroup>
 
 			<p>
 				When a school self-assesses their progress within one indicator, they'll review and
@@ -500,7 +501,7 @@ let sectionLinks = [
 			</p>
 			<p>Use the below information about each phase as a guide.</p>
 
-			<div class="accordion-group">
+			<AccordionGroup>
 				<Accordion title={'Initiating'}>
 					<PhaseIcons
 						phase={'initiating'}
@@ -550,7 +551,7 @@ let sectionLinks = [
 						knowledge that are needed to preserve this practice.
 					</p>
 				</Accordion>
-			</div>
+			</AccordionGroup>
 
 			<div
 				class="callout stay-tuned"
