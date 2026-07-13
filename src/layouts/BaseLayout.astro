@@ -1,13 +1,13 @@
 ---
-import { ClientRouter } from "astro:transitions";
+import { ClientRouter } from 'astro:transitions';
 
-import Header from "../components/Header.astro";
+import Header from '../components/Header.astro';
 
-import "../styles/normalize.css";
-import "../styles/global.css";
+import '../styles/normalize.css';
+import '../styles/global.css';
 
-import { Image } from "astro:assets";
-import GNBLogo from "../images/gnb-logo-reverse.png";
+import { Image } from 'astro:assets';
+import GNBLogo from '../images/gnb-logo-reverse.png';
 
 let path = Astro.url.pathname;
 
@@ -15,33 +15,56 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-loading>
+<html
+	lang="en"
+	data-loading
+>
 	<head>
 		<!-- Set relative path root to '/conditions-for-success/' -->
 		<base href={Astro.url.origin + import.meta.env.BASE_URL} />
 
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="./favicon.svg"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1"
+		/>
+		<meta
+			name="generator"
+			content={Astro.generator}
+		/>
 		<!-- <meta name="color-scheme" content="dark light" /> -->
 		<title>{pageTitle}</title>
 
 		<!-- Progressive Enhancement Handlers (not for view transition) -->
 		<script is:inline>
 			let html = document.documentElement;
-			html.dataset.js = "";
+			html.dataset.js = '';
 		</script>
 
 		<!-- Public Sans Font ~ Google Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="preconnect"
+			href="https://fonts.googleapis.com"
+		/>
+		<link
+			rel="preconnect"
+			href="https://fonts.gstatic.com"
+			crossorigin
+		/>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900"
 			rel="stylesheet"
 		/>
 		<!-- Aesthet Nova Font ~ Adobe Fonts -->
-		<link rel="stylesheet" href="https://use.typekit.net/omy5wmz.css" />
+		<link
+			rel="stylesheet"
+			href="https://use.typekit.net/omy5wmz.css"
+		/>
 
 		<ClientRouter />
 	</head>
@@ -51,7 +74,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			data-theme="red"
 			data-background="dark"
 		>
-			<a href={`${path}#main-heading`} class="skip-link"
+			<a
+				href={`${path}#main-content`}
+				class="skip-link"
 				>Skip to main content</a
 			>
 		</div>
@@ -60,6 +85,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			class:list={[pageType]}
 			data-mode="reading"
 			data-indicator-tag={indicatorTag ? indicatorTag : null}
+			id="main-content"
 		>
 			<div class="wrapper">
 				<div class="toast-group">
@@ -96,8 +122,8 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 							alt="Government of New Brunswick Logo"
 						/>
 						<small class="copyright"
-							>Copyright © <span id="copyrightYear">2025</span> Government
-							of New Brunswick. All Rights Reserved.</small
+							>Copyright © <span id="copyrightYear">2025</span> Government of New Brunswick.
+							All Rights Reserved.</small
 						>
 					</div>
 				</div>
@@ -108,35 +134,28 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		// Imports
 		//
 
-		import {
-			getActiveAssessmentData,
-			setState,
-			subscribe,
-		} from "src/stores/userDataStore";
-		import { scrollIntoView } from "src/utilities/helpers";
-		import { dialogControl } from "src/utilities/dialog";
-		import { scrollControl } from "src/utilities/scroll";
-		import { eventControl } from "src/utilities/event";
-		import { results, search } from "src/utilities/list";
+		import { getActiveAssessmentData, setState, subscribe } from 'src/stores/userDataStore';
+		import { scrollIntoView } from 'src/utilities/helpers';
+		import { dialogControl } from 'src/utilities/dialog';
+		import { scrollControl } from 'src/utilities/scroll';
+		import { eventControl } from 'src/utilities/event';
+		import { results, search } from 'src/utilities/list';
 
 		//
 		// DOM Updates
 		//
 
 		let updateCopyright = () => {
-			let field = document.querySelector("#copyrightYear");
+			let field = document.querySelector('#copyrightYear');
 			if (field) field.textContent = String(new Date().getFullYear());
 		};
 		updateCopyright();
 
 		let updateContinuumVersion = (data: UserData, changes) => {
-			let triggerKeys = ["currentContinuumVersion"];
+			let triggerKeys = ['currentContinuumVersion'];
 			if (
 				!changes.initiating &&
-				!(
-					changes.uiState &&
-					triggerKeys.some((val) => changes.uiState.includes(val))
-				)
+				!(changes.uiState && triggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 				return;
 
@@ -145,29 +164,25 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let continuumVersion = data.uiState.currentContinuumVersion;
 
 			// 1. Site footer
-			let fields = document.querySelectorAll(
-				`[data-field="continuumVersion"]`,
-			);
+			let fields = document.querySelectorAll(`[data-field="continuumVersion"]`);
 			for (let field of fields) {
 				field.textContent = continuumVersion;
 			}
 		};
 
 		let updateTheme = (data: UserData, changes) => {
-			let triggerKeys = ["theme"];
+			let triggerKeys = ['theme'];
 			if (
 				!changes.initiating &&
 				!(
 					changes.uiPreferences &&
-					triggerKeys.some((val) =>
-						changes.uiPreferences.includes(val),
-					)
+					triggerKeys.some((val) => changes.uiPreferences.includes(val))
 				)
 			)
 				return;
 
 			let theme = data.uiPreferences.theme;
-			if (theme !== "dark" && theme !== "light") return;
+			if (theme !== 'dark' && theme !== 'light') return;
 
 			// console.log("Updating Theme (on html)");
 
@@ -175,46 +190,39 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let html = document.documentElement;
 
 			// Update the theme
-			html.setAttribute("data-theme", theme);
+			html.setAttribute('data-theme', theme);
 		};
 
 		let updateMode = (data: UserData, changes) => {
-			let triggerKeys = ["mode"];
+			let triggerKeys = ['mode'];
 			if (
 				!changes.initiating &&
-				!(
-					changes.uiState &&
-					triggerKeys.some((val) => changes.uiState.includes(val))
-				)
+				!(changes.uiState && triggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 				return;
 
 			let mode = data.uiState.mode;
-			if (mode !== "assessment" && mode !== "reading") mode = "reading";
+			if (mode !== 'assessment' && mode !== 'reading') mode = 'reading';
 
 			// console.log("Updating Mode (on main)");
 
 			// Get the main
-			let main = document.querySelector("main");
+			let main = document.querySelector('main');
 
 			// Update the mode
-			main.setAttribute("data-mode", mode);
+			main.setAttribute('data-mode', mode);
 		};
 
 		let updateStatus = (data: UserData, changes) => {
-			let stateTriggerKeys = ["activeAssessmentId"];
-			let assessmentTriggerKeys = ["status"];
+			let stateTriggerKeys = ['activeAssessmentId'];
+			let assessmentTriggerKeys = ['status'];
 			if (
 				!changes.initiating &&
 				!(
 					(changes.assessments &&
-						assessmentTriggerKeys.some((val) =>
-							changes.assessments.includes(val),
-						)) ||
+						assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
 					(changes.uiState &&
-						stateTriggerKeys.some((val) =>
-							changes.uiState.includes(val),
-						))
+						stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 				)
 			)
 				return;
@@ -225,33 +233,25 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			// console.log("Updating Status (on main)");
 
 			let status = assessment.status;
-			if (status !== "In Progress" && status !== "Complete")
-				status = "In Progress";
+			if (status !== 'In Progress' && status !== 'Complete') status = 'In Progress';
 
 			// Get the main
-			let main = document.querySelector("main");
+			let main = document.querySelector('main');
 
 			// Update the status
-			main.setAttribute(
-				"data-status",
-				status.split(" ").join("-").toLowerCase(),
-			);
+			main.setAttribute('data-status', status.split(' ').join('-').toLowerCase());
 		};
 
 		let updateAssessor = (data: UserData, changes) => {
-			let stateTriggerKeys = ["activeAssessmentId"];
-			let assessmentTriggerKeys = ["activeAssessor"];
+			let stateTriggerKeys = ['activeAssessmentId'];
+			let assessmentTriggerKeys = ['activeAssessor'];
 			if (
 				!changes.initiating &&
 				!(
 					(changes.assessments &&
-						assessmentTriggerKeys.some((val) =>
-							changes.assessments.includes(val),
-						)) ||
+						assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
 					(changes.uiState &&
-						stateTriggerKeys.some((val) =>
-							changes.uiState.includes(val),
-						))
+						stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 				)
 			)
 				return;
@@ -262,16 +262,13 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			// console.log("Updating Assessor (on main)");
 
 			// Get the main
-			let main = document.querySelector("main");
+			let main = document.querySelector('main');
 
 			// Update the assessor
-			if (
-				!assessment.activeAssessor ||
-				assessment.activeAssessor === undefined
-			) {
-				main.setAttribute("data-assessor", "false");
+			if (!assessment.activeAssessor || assessment.activeAssessor === undefined) {
+				main.setAttribute('data-assessor', 'false');
 			} else {
-				main.setAttribute("data-assessor", "true");
+				main.setAttribute('data-assessor', 'true');
 			}
 		};
 
@@ -292,21 +289,21 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		dialogControl.init();
 		eventControl.add({
 			elem: document,
-			eventType: "astro:after-swap",
+			eventType: 'astro:after-swap',
 			fn: dialogControl.init,
 		});
 
 		search.init();
 		eventControl.add({
 			elem: document,
-			eventType: "astro:after-swap",
+			eventType: 'astro:after-swap',
 			fn: search.init,
 		});
 
 		results.init();
 		eventControl.add({
 			elem: document,
-			eventType: "astro:after-swap",
+			eventType: 'astro:after-swap',
 			fn: results.init,
 		});
 
@@ -332,36 +329,35 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			// Handle search queries
 			let query = new URLSearchParams(window.location.search);
-			console.log("Query: ", query);
-			let dialog = query.get("dialog");
+			console.log('Query: ', query);
+			let dialog = query.get('dialog');
 			if (dialog) {
 				let dialogId;
-				if (dialog === "create-assessment")
-					dialogId = "edit-assessment-properties-dialog";
+				if (dialog === 'create-assessment') dialogId = 'edit-assessment-properties-dialog';
 				if (!dialogId) return;
 				dialogControl.open({
 					dialogId,
-					context: "setup",
+					context: 'setup',
 				});
-				history.replaceState({}, "", window.location.pathname);
+				history.replaceState({}, '', window.location.pathname);
 			}
 
 			// After delay, clear loading state
 			setTimeout(() => {
-				document.documentElement.removeAttribute("data-loading");
+				document.documentElement.removeAttribute('data-loading');
 			}, 1000);
 		};
 		eventControl.add({
 			elem: document,
-			eventType: "astro:page-load",
+			eventType: 'astro:page-load',
 			fn: onPageLoad,
 		});
 
 		let onBeforeSwap = (event) => {
 			let newDocument = event.newDocument.documentElement;
-			console.log("Before Swap: Incoming Document: ", newDocument);
-			newDocument.dataset.js = "";
-			newDocument.dataset.loading = "";
+			console.log('Before Swap: Incoming Document: ', newDocument);
+			newDocument.dataset.js = '';
+			newDocument.dataset.loading = '';
 			// if ("scrollRestoration" in history) {
 			// 	let prev = history.scrollRestoration;
 			// 	history.scrollRestoration = "manual";
@@ -371,7 +367,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		};
 		eventControl.add({
 			elem: document,
-			eventType: "astro:before-swap",
+			eventType: 'astro:before-swap',
 			fn: onBeforeSwap,
 		});
 
