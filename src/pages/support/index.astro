@@ -24,7 +24,7 @@ for (let guide of allGuides) {
 }
 
 guideList.sort((a, b) => {
-	return b.order - a.order;
+	return a.order - b.order;
 });
 
 let questionList = [];
@@ -47,7 +47,7 @@ for (let question of allQuestions) {
 }
 
 questionList.sort((a, b) => {
-	return b.order - a.order;
+	return a.order - b.order;
 });
 
 let path = Astro.url.pathname;
