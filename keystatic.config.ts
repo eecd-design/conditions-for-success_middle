@@ -586,6 +586,7 @@ export default config({
 					description: 'Enter whether the training is virtual or in person.',
 					options: [
 						{ label: 'Virtual', value: 'virtual' },
+						{ label: 'Hybrid', value: 'hybrid' },
 						{ label: 'In Person', value: 'inPerson' },
 					],
 					defaultValue: 'virtual',
