@@ -12,8 +12,10 @@ import IconFocus from "./icons/IconTarget_20.astro";
 import IconCompass from "./icons/IconCompass_14.astro";
 import IconCheckmark from "./icons/IconCheckmark_12.astro";
 import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
+import IconArrowUp from "./icons/IconArrowUp_16.astro";
 
 const { entry } = Astro.props;
+let path = Astro.url.pathname;
 
 // Store the path to the current component
 const pathToComponent = `src/content/components/${entry.id}`;
@@ -316,6 +318,15 @@ let phases = [
 	
 	</AccordionGroup>
 
+	<a class="top-link" href={`${path}#top`}>
+		<span class="icon-and-label-container">
+			<IconArrowUp classes={['destination']} />
+			<span class="label-container">
+				<span class="label">Back To Top</span>
+			</span>
+		</span>
+	</a>
+
 </section>
 
 <style is:global>
@@ -605,6 +616,20 @@ let phases = [
 
 	.considerations-list .resources .resources-list .text-container .tags-list  {
 		display: none !important;
+	}
+
+
+
+	.component .top-link {
+		--label-size: var(--font-size-xs);
+		--label-colour: var(--colour-ui-neutral-subtle);
+		--link-colour: var(--label-colour);
+
+		display: none;
+
+		@container main (width < 1112px) {
+			display: block;
+		}
 	}
 
 
