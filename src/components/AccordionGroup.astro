@@ -1,30 +1,35 @@
 ---
-let { allowMultiple = false } = Astro.props;
+let { allowMultiple = false, includeControls = true } = Astro.props;
 ---
 
 <div
 	class="accordion-group"
 	data-allow-multiple={allowMultiple ? '' : null}
 >
-	<div class="accordion-controls button-group">
-		<button
-			class="expand-all"
-			data-style-as="link"
-			type="button"
-			>Expand All</button
-		>
-		<div
-			class="separator"
-			data-orientation="vertical"
-		>
-		</div>
-		<button
-			class="close-all"
-			data-style-as="link"
-			type="button"
-			>Close All</button
-		>
-	</div>
+	{
+		includeControls && (
+			<div class="accordion-controls button-group">
+				<button
+					class="expand-all"
+					data-style-as="link"
+					type="button"
+				>
+					Expand All
+				</button>
+				<div
+					class="separator"
+					data-orientation="vertical"
+				></div>
+				<button
+					class="close-all"
+					data-style-as="link"
+					type="button"
+				>
+					Close All
+				</button>
+			</div>
+		)
+	}
 
 	<slot />
 </div>
