@@ -465,6 +465,10 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			&:has([data-field='exportStatus']) {
 				--label-colour: var(--colour-ui-neutral-subtle);
 				margin: 0 var(--space-2xs) !important;
+				@container assessment-controls (width < 1296px) {
+					display: none;
+				}
+			}
 			}
 		}
 
@@ -477,8 +481,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				--separator-long-edge-dimension: 1.75rem;
 			}
 
-			&:has(+ .field-container [data-field='exportStatus']),
-			.field-container:has([data-field='exportStatus']) {
+			&:has(+ .field-container [data-field='exportStatus']) {
 				@container assessment-controls (width < 1296px) {
 					display: none;
 				}
@@ -486,13 +489,13 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		}
 
 		& [data-restrict-device-min='medium'] {
-			@container main (width < 1154px) {
+			@container main (width < 920px) {
 				display: none !important;
 			}
 		}
 
 		& [data-restrict-device-max='small'] {
-			@container main (width >= 1154px) {
+			@container main (width >= 920px) {
 				display: none !important;
 			}
 		}
