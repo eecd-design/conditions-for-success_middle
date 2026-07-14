@@ -1,11 +1,11 @@
 ---
-import IconAssessment from "src/components/icons/IconAssessment_20.astro";
-import IconWarningBig from "src/components/icons/IconWarning_24.astro";
-import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
-import IconXmark from "src/components/icons/IconXmark_20.astro";
-import Toast from "src/components/Toast.astro";
-import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
-import IconTrash from "src/components/icons/IconTrash_20.astro";
+import IconAssessment from 'src/components/icons/IconAssessment_20.astro';
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
+import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import Toast from 'src/components/Toast.astro';
+import IconCheckmark from 'src/components/icons/IconCheckmark_12.astro';
+import IconTrash from 'src/components/icons/IconTrash_20.astro';
 ---
 
 <dialog
@@ -13,19 +13,21 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	aria-describedby="open-assessment-dialog_heading"
 	data-reset-forms="true"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Open Assessment Dialog"><IconXmark /></button
-	>
-
-	<h2
-		id="open-assessment-dialog_heading"
-		class="heading"
-		data-default-text="Open Assessment"
-	>
-		Open or Import Assessment
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Open Assessment Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="open-assessment-dialog_heading"
+			class="heading"
+			data-default-text="Open Assessment"
+		>
+			Open or Import Assessment
+		</h2>
+	</div>
 
 	<section class="import">
 		<h3>Import Assessment</h3>
@@ -41,13 +43,22 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 					<span
 						data-style-as="button"
 						data-style="solid"
-						data-size="large">Choose File</span
+						data-size="large"
+						>Choose File</span
 					>
-					<input type="file" accept=".csv" data-focus-start />
+					<input
+						type="file"
+						accept=".csv"
+						data-focus-start
+					/>
 				</label>
 			</fieldset>
 
-			<div class="separator item" data-orientation="vertical"></div>
+			<div
+				class="separator item"
+				data-orientation="vertical"
+			>
+			</div>
 
 			<fieldset class="code">
 				<!-- <h4 class="heading">Code</h4> -->
@@ -91,18 +102,24 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				</div>
 				<div class="text-container">
 					<p>
-						To view a report, the assessment must be <strong
-							>Complete</strong
-						>.
+						To view a report, the assessment must be <strong>Complete</strong>.
 					</p>
 				</div>
 			</div>
 		</div>
 
-		<div class="elem-group" data-fit="compact" data-columns="2">
+		<div
+			class="elem-group"
+			data-fit="compact"
+			data-columns="2"
+		>
 			<ul class="saved-assessments-list wrapper">
 				<template>
-					<li class="card" data-theme="red" data-vibrancy="vivid">
+					<li
+						class="card"
+						data-theme="red"
+						data-vibrancy="vivid"
+					>
 						<div
 							class="banner"
 							data-theme="blue"
@@ -115,11 +132,14 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 							<h4 class="heading icon-and-label-container">
 								<!-- <IconAssessment /> -->
 								<span class="label-container">
-									<span class="title" data-field="school"
+									<span
+										class="title"
+										data-field="school"
 									></span>
 									<span
 										class="subtitle"
-										data-field="reportingYear">2025</span
+										data-field="reportingYear"
+										>2025</span
 									>
 								</span>
 							</h4>
@@ -132,7 +152,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 									>
 										<span
 											class="label"
-											data-field="editStatus"></span>
+											data-field="editStatus"
+										></span>
 									</div>
 									<div
 										class="export-status label-container field-container"
@@ -181,7 +202,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 									data-size="large"
 									data-toast-success="open-assessment-dialog_open-toast_success"
 									data-toast-failure="open-assessment-dialog_open-toast_failure"
-									hidden>Open</button
+									hidden
+									>Open</button
 								>
 								<button
 									class="open-assessment change-status"
@@ -189,7 +211,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 									data-size="large"
 									data-toast-success="open-assessment-dialog_open-toast_success"
 									data-toast-failure="open-assessment-dialog_open-toast_failure"
-									hidden>Mark Complete and Open</button
+									hidden
+									>Mark Complete and Open</button
 								>
 								<button
 									class="delete open-dialog"
@@ -220,69 +243,69 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 	<div class="toast-group">
 		<Toast
-			id={"import-conflict-dialog_overwrite-toast_success"}
+			id={'import-conflict-dialog_overwrite-toast_success'}
 			message={`Assessment overwritten.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"deletion-confirmation-dialog_delete-toast_success"}
+			id={'deletion-confirmation-dialog_delete-toast_success'}
 			message={`Assessment deleted.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"open-assessment-dialog_import-file-toast_success"}
+			id={'open-assessment-dialog_import-file-toast_success'}
 			message={`Assessment imported into 'Saved Assessments'.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"open-assessment-dialog_import-file-toast_failure"}
+			id={'open-assessment-dialog_import-file-toast_failure'}
 			message={`Unable to import assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"open-assessment-dialog_import-code-toast_success"}
+			id={'open-assessment-dialog_import-code-toast_success'}
 			message={`Assessment imported into 'Saved Assessments'.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"open-assessment-dialog_import-code-toast_failure"}
+			id={'open-assessment-dialog_import-code-toast_failure'}
 			message={`Unable to import assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"open-assessment-dialog_import-code-toast_failure-JSON"}
+			id={'open-assessment-dialog_import-code-toast_failure-JSON'}
 			message={`Unable to import assessment. Import code is not valid.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 		<!-- Success Toast located in Assessors Dialogs -->
 		<Toast
-			id={"open-assessment-dialog_open-toast_failure"}
+			id={'open-assessment-dialog_open-toast_failure'}
 			message={`Unable to open assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>
@@ -291,19 +314,21 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	id="import-conflict-dialog"
 	aria-describedby="import-conflict-dialog_heading"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Open Assessment Dialog"><IconXmark /></button
-	>
-
-	<h2
-		id="import-conflict-dialog_heading"
-		class="heading"
-		data-default-text="Import Conflict"
-	>
-		Import Conflict
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Open Assessment Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="import-conflict-dialog_heading"
+			class="heading"
+			data-default-text="Import Conflict"
+		>
+			Import Conflict
+		</h2>
+	</div>
 	<div
 		class="callout"
 		data-style="solid"
@@ -317,21 +342,24 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			</div>
 			<div class="text-container">
 				<p>
-					The imported assessment conflicts with an assessment already
-					saved in the browser. <strong
-						>Each school can have only one assessment per reporting
-						year</strong
+					The imported assessment conflicts with an assessment already saved in the
+					browser. <strong
+						>Each school can have only one assessment per reporting year</strong
 					>.
 				</p>
 				<p>
-					Review the assessment properties below and choose whether to
-					keep the saved assessment or overwrite it.
+					Review the assessment properties below and choose whether to keep the saved
+					assessment or overwrite it.
 				</p>
 			</div>
 		</div>
 	</div>
 	<template class="highlight">
-		<div class="highlight-container" data-theme="red" data-vibrancy="vivid">
+		<div
+			class="highlight-container"
+			data-theme="red"
+			data-vibrancy="vivid"
+		>
 			<IconWarningSmall />
 			<span>
 				<span class="value"></span>
@@ -346,13 +374,19 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	>
 		<div class="wrapper">
 			<div class="card local">
-				<div class="banner" data-theme="blue" data-vibrancy="vivid">
+				<div
+					class="banner"
+					data-theme="blue"
+					data-vibrancy="vivid"
+				>
 					Saved
 				</div>
 				<div class="wrapper">
 					<h4 class="heading icon-and-label-container">
 						<!-- <IconAssessment /> -->
-						<span class="label-container" data-field="school"
+						<span
+							class="label-container"
+							data-field="school"
 						></span>
 					</h4>
 					<div class="details">
@@ -378,13 +412,19 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				</div>
 			</div>
 			<div class="card imported">
-				<div class="banner" data-theme="yellow" data-vibrancy="vivid">
+				<div
+					class="banner"
+					data-theme="yellow"
+					data-vibrancy="vivid"
+				>
 					Imported
 				</div>
 				<div class="wrapper">
 					<h4 class="heading icon-and-label-container">
 						<!-- <IconAssessment /> -->
-						<span class="label-container" data-field="school"
+						<span
+							class="label-container"
+							data-field="school"
 						></span>
 					</h4>
 					<div class="details">
@@ -418,7 +458,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			type="button"
 			data-size="large"
 			data-style="outline"
-			data-focus-start>Keep Saved</button
+			data-focus-start
+			>Keep Saved</button
 		>
 		<button
 			class="overwrite"
@@ -434,12 +475,12 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	<div class="toast-group">
 		<!-- Success Toast in Open Assessment Dialog -->
 		<Toast
-			id={"import-conflict-dialog_overwrite-toast_failure"}
+			id={'import-conflict-dialog_overwrite-toast_failure'}
 			message={`Unable to overwrite assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>
@@ -448,26 +489,27 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	id="deletion-confirmation-dialog"
 	aria-describedby="deletion-confirmation-dialog_heading"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Open Assessment Dialog"><IconXmark /></button
-	>
-
-	<h2
-		id="deletion-confirmation-dialog_heading"
-		class="heading"
-		data-default-text="Delete Assessment"
-	>
-		Delete Assessment
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Open Assessment Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="deletion-confirmation-dialog_heading"
+			class="heading"
+			data-default-text="Delete Assessment"
+		>
+			Delete Assessment
+		</h2>
+	</div>
 
 	<p class="instructions">
 		Are you sure you want to delete the <strong>
 			<span data-field="reportingYear"></span>
-		</strong> assessment for <strong
-			><span data-field="school"></span></strong
-		>? This action cannot be undone.
+		</strong> assessment for <strong><span data-field="school"></span></strong>? This action
+		cannot be undone.
 	</p>
 
 	<div class="button-group">
@@ -476,7 +518,8 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			type="button"
 			data-size="large"
 			data-style="outline"
-			data-dialog="open-assessment-dialog">Cancel</button
+			data-dialog="open-assessment-dialog"
+			>Cancel</button
 		>
 		<button
 			class="delete"
@@ -491,10 +534,10 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 	<div class="toast-group">
 		<Toast
-			id={"deletion-confirmation-dialog_delete-toast_failure"}
+			id={'deletion-confirmation-dialog_delete-toast_failure'}
 			message={`Unable to delete assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		/>
 	</div>
 </dialog>
@@ -504,12 +547,12 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	// Open Assessment Dialog
 	*/
 
-	#open-assessment-dialog input[type="file"] {
+	#open-assessment-dialog input[type='file'] {
 		font-size: var(--font-size-3xs);
 		overflow: visible !important;
 	}
 
-	#open-assessment-dialog input[type="file"]::file-selector-button {
+	#open-assessment-dialog input[type='file']::file-selector-button {
 		overflow: visible !important;
 	}
 
@@ -567,16 +610,12 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		min-width: 3rem;
 	}
 
-	#open-assessment-dialog
-		.saved-assessments-list
-		.card
-		button.delete:is(:hover, :focus-visible) {
+	#open-assessment-dialog .saved-assessments-list .card button.delete:is(:hover, :focus-visible) {
 		--icon-colour: var(--colour-ui-reverse);
 		--button-background-colour: var(--colour-fill-accent-bold);
 	}
 
-	#open-assessment-dialog:not([data-context="report"])
-		[data-restrict-context="report"] {
+	#open-assessment-dialog:not([data-context='report']) [data-restrict-context='report'] {
 		display: none !important;
 	}
 
@@ -642,7 +681,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		findObjectByKey,
 		formatDateAsHTML,
 		sanitizeHTML,
-	} from "src/utilities/helpers";
+	} from 'src/utilities/helpers';
 	import {
 		getUserData,
 		getAssessmentName,
@@ -655,9 +694,9 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		subscribe,
 		decompressData,
 		updateChangeLog,
-	} from "src/stores/userDataStore";
-	import { dialogControl } from "src/utilities/dialog";
-	import { toastControl } from "src/utilities/toast";
+	} from 'src/stores/userDataStore';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
 	import {
 		getActiveAssessmentData,
 		findAssessmentConflicts,
@@ -666,25 +705,20 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		deleteAssessment,
 		generateContinuumCompletion,
 		deleteImportConflictData,
-	} from "src/stores/userDataStore";
-	import { eventControl } from "src/utilities/event";
-	import { resetForm } from "src/utilities/form";
+	} from 'src/stores/userDataStore';
+	import { eventControl } from 'src/utilities/event';
+	import { resetForm } from 'src/utilities/form';
 
 	//
 	// Methods
 	//
 
-	let createAssessmentCard = (
-		assessment: Assessment,
-		active = false,
-		context = "assessment",
-	) => {
+	let createAssessmentCard = (assessment: Assessment, active = false, context = 'assessment') => {
 		if (!assessment || assessment === undefined) return;
-		let { dateCompleted, dateExported, status, id, unexportedChanges } =
-			assessment;
+		let { dateCompleted, dateExported, status, id, unexportedChanges } = assessment;
 
 		let template = document.querySelector(
-			"#open-assessment-dialog .saved-assessments-list template",
+			'#open-assessment-dialog .saved-assessments-list template',
 		) as HTMLTemplateElement;
 
 		if (!template) return;
@@ -693,85 +727,74 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		let card = template.content.cloneNode(true) as HTMLElement;
 
 		// Set active status
-		let li = card.querySelector("li");
-		if (active) li.setAttribute("data-active", "");
+		let li = card.querySelector('li');
+		if (active) li.setAttribute('data-active', '');
 
 		// Set banner attributes
-		let banner = card.querySelector(".banner");
+		let banner = card.querySelector('.banner');
 		if (active) {
-			banner.removeAttribute("hidden");
-			if (context === "assessment") {
-				banner.setAttribute("data-theme", getStatusColour(assessment));
-				banner.textContent =
-					status === "In Progress" ? "Editing" : "Reviewing";
-			} else if (context === "report") {
-				banner.setAttribute("data-theme", getStatusColour(assessment));
-				banner.textContent = "Viewing";
+			banner.removeAttribute('hidden');
+			if (context === 'assessment') {
+				banner.setAttribute('data-theme', getStatusColour(assessment));
+				banner.textContent = status === 'In Progress' ? 'Editing' : 'Reviewing';
+			} else if (context === 'report') {
+				banner.setAttribute('data-theme', getStatusColour(assessment));
+				banner.textContent = 'Viewing';
 			}
 		}
 
 		// Set title text
 		let schoolField = card.querySelector('[data-field="school"]');
-		let reportingYearField = card.querySelector(
-			'[data-field="reportingYear"]',
-		);
+		let reportingYearField = card.querySelector('[data-field="reportingYear"]');
 		schoolField.textContent = assessment.school;
 		reportingYearField.textContent = assessment.reportingYear;
 
 		// Set edit status field
 		let editStatusField = card.querySelector('[data-field="editStatus"]');
 		editStatusField
-			.closest(".field-container")
-			.setAttribute("data-theme", getStatusColour(assessment));
+			.closest('.field-container')
+			.setAttribute('data-theme', getStatusColour(assessment));
 		editStatusField.textContent = status;
 
 		// Set export status field
-		if (unexportedChanges && context === "assessment") {
-			let exportStatusField = card.querySelector(
-				'[data-field="exportStatus"]',
-			);
-			exportStatusField
-				.closest(".field-container")
-				.removeAttribute("hidden");
+		if (unexportedChanges && context === 'assessment') {
+			let exportStatusField = card.querySelector('[data-field="exportStatus"]');
+			exportStatusField.closest('.field-container').removeAttribute('hidden');
 		}
 
 		let setAssessmentDate = ({ card, assessment, type }) => {
 			let field = card.querySelector(`[data-field="${type}"]`);
 			field.innerHTML = getAssessmentDate({ assessment, type });
-			field.closest(".detail-container").removeAttribute("hidden");
+			field.closest('.detail-container').removeAttribute('hidden');
 		};
 
 		// Set dates
-		setAssessmentDate({ card, assessment, type: "dateCreated" });
+		setAssessmentDate({ card, assessment, type: 'dateCreated' });
 
 		if (dateCompleted) {
-			setAssessmentDate({ card, assessment, type: "dateCompleted" });
+			setAssessmentDate({ card, assessment, type: 'dateCompleted' });
 		} else if (dateExported) {
-			setAssessmentDate({ card, assessment, type: "dateExported" });
+			setAssessmentDate({ card, assessment, type: 'dateExported' });
 		} else {
-			setAssessmentDate({ card, assessment, type: "dateModified" });
+			setAssessmentDate({ card, assessment, type: 'dateModified' });
 		}
 
 		// Show open buttons
 		if (!active) {
-			if (status === "In Progress" && context === "report") {
-				let btn = card.querySelector(
-					"button.open-assessment.change-status",
-				);
-				btn.removeAttribute("hidden");
-				btn.setAttribute("data-id", String(id));
+			if (status === 'In Progress' && context === 'report') {
+				let btn = card.querySelector('button.open-assessment.change-status');
+				btn.removeAttribute('hidden');
+				btn.setAttribute('data-id', String(id));
 			} else {
-				let btn = card.querySelector(
-					"button.open-assessment:not(.change-status)",
-				);
-				btn.removeAttribute("hidden");
-				btn.setAttribute("data-id", String(id));
+				let btn = card.querySelector('button.open-assessment:not(.change-status)');
+				btn.removeAttribute('hidden');
+				btn.setAttribute('data-id', String(id));
 			}
 		}
 
-		let deleteBtn = card.querySelector("button.delete");
-		deleteBtn.setAttribute("data-id", `${assessment.id}`);
-		deleteBtn.setAttribute("data-dialog-context", `${assessment.id}`);
+		let deleteBtn = card.querySelector('button.delete');
+		deleteBtn.setAttribute('data-id', `${assessment.id}`);
+		deleteBtn.setAttribute('data-dialog-context', `${assessment.id}`);
 
 		return card;
 	};
@@ -801,7 +824,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			});
 
 			dialogControl.open({
-				dialogId: "import-conflict-dialog",
+				dialogId: 'import-conflict-dialog',
 			});
 
 			return false;
@@ -841,32 +864,24 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	 * @param data
 	 */
 	let updateOpenAssessmentDialog = (data: UserData, changes) => {
-		let dialog = document.querySelector("#open-assessment-dialog");
+		let dialog = document.querySelector('#open-assessment-dialog');
 		if (!dialog) return;
 
-		let stateTriggerKeys = ["activeAssessmentId", "activeReportId"];
+		let stateTriggerKeys = ['activeAssessmentId', 'activeReportId'];
 		if (
 			!changes.initiating &&
 			!(
 				changes.assessments ||
-				(changes.uiState &&
-					stateTriggerKeys.some((val) =>
-						changes.uiState.includes(val),
-					))
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 		)
 			return;
 
-		let context = window.location.pathname.includes("/report")
-			? "report"
-			: "assessment";
-		let savedAssessmentList = dialog?.querySelector(
-			"ul.saved-assessments-list",
-		);
-		let savedAssessmentListItems =
-			savedAssessmentList?.querySelectorAll("li");
-		let savedAssessmentsSection = savedAssessmentList.closest("section");
-		let hr = dialog.querySelector("hr.group");
+		let context = window.location.pathname.includes('/report') ? 'report' : 'assessment';
+		let savedAssessmentList = dialog?.querySelector('ul.saved-assessments-list');
+		let savedAssessmentListItems = savedAssessmentList?.querySelectorAll('li');
+		let savedAssessmentsSection = savedAssessmentList.closest('section');
+		let hr = dialog.querySelector('hr.group');
 
 		if (!savedAssessmentList) return;
 
@@ -877,23 +892,21 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 			// Create a shallow copy of the array
 			let assessments = [...data.assessments];
 
-			if (context === "assessment") {
+			if (context === 'assessment') {
 				// Sort array of assessments by date modified
 				assessments.sort((a, b) => b.dateModified - a.dateModified);
-			} else if (context === "report") {
-				assessments.sort(
-					(a, b) => Number(b.reportingYear) - Number(a.reportingYear),
-				);
+			} else if (context === 'report') {
+				assessments.sort((a, b) => Number(b.reportingYear) - Number(a.reportingYear));
 			}
 
 			let activeId =
-				context === "assessment"
+				context === 'assessment'
 					? data.uiState.activeAssessmentId
 					: data.uiState.activeReportId;
 
 			if (activeId) {
 				// Get the index of the active assessment
-				let activeIndex = findIndexByKey(assessments, "id", activeId);
+				let activeIndex = findIndexByKey(assessments, 'id', activeId);
 
 				// Move it to the top of the array, if not already
 				if (activeIndex > 0) {
@@ -910,49 +923,30 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				if (assessment !== null) {
 					if (activeId && i === 0) active = true;
 
-					let card = createAssessmentCard(
-						assessment,
-						active,
-						context,
-					);
+					let card = createAssessmentCard(assessment, active, context);
 
 					savedAssessmentList.append(card);
 				}
 			}
-			savedAssessmentsSection.removeAttribute("hidden");
-			hr.removeAttribute("hidden");
+			savedAssessmentsSection.removeAttribute('hidden');
+			hr.removeAttribute('hidden');
 		} else {
-			savedAssessmentsSection.setAttribute("hidden", "");
-			hr.setAttribute("hidden", "");
+			savedAssessmentsSection.setAttribute('hidden', '');
+			hr.setAttribute('hidden', '');
 		}
 	};
 
-	let updateImportConflictDialog = ({
-		importedAssessment,
-		localAssessment,
-	}) => {
-		let dialog = document.querySelector(
-			"#import-conflict-dialog",
-		) as HTMLDialogElement;
+	let updateImportConflictDialog = ({ importedAssessment, localAssessment }) => {
+		let dialog = document.querySelector('#import-conflict-dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
 		if (!importedAssessment || !localAssessment) return;
 
-		let localCard = dialog.querySelector(".conflicting-assessments .local");
-		let importedCard = dialog.querySelector(
-			".conflicting-assessments .imported",
-		);
-		let highlightTemplate = dialog.querySelector(
-			"template.highlight",
-		) as HTMLTemplateElement;
+		let localCard = dialog.querySelector('.conflicting-assessments .local');
+		let importedCard = dialog.querySelector('.conflicting-assessments .imported');
+		let highlightTemplate = dialog.querySelector('template.highlight') as HTMLTemplateElement;
 
-		let metadataKeys = [
-			"school",
-			"status",
-			"reportingYear",
-			"dateModified",
-			"lastModifiedBy",
-		];
+		let metadataKeys = ['school', 'status', 'reportingYear', 'dateModified', 'lastModifiedBy'];
 
 		/**
 		 * Compare two objects with the same schema and return keys with mismatched values.
@@ -972,7 +966,7 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				if (!a && !b) continue;
 
 				// Compare strings trimmed, else strict equality
-				if (typeof a === "string" && typeof b === "string") {
+				if (typeof a === 'string' && typeof b === 'string') {
 					if (a.trim() !== b.trim()) mismatches.push(key);
 				} else if (a !== b) {
 					mismatches.push(key);
@@ -983,26 +977,20 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		};
 
 		let updateCard = (card, assessment) => {
-			let mismatchedKeys = getMismatchedKeys(
-				localAssessment,
-				importedAssessment,
-			);
+			let mismatchedKeys = getMismatchedKeys(localAssessment, importedAssessment);
 
 			for (let key of metadataKeys) {
 				let field = card.querySelector(`[data-field="${key}"]`);
 				if (!field) return;
-				let value = assessment[key] || "(none)";
-				if (value !== "(none)" && key.startsWith("date"))
-					value = formatDateAsHTML(value);
+				let value = assessment[key] || '(none)';
+				if (value !== '(none)' && key.startsWith('date')) value = formatDateAsHTML(value);
 
-				if (card.matches(".imported") && mismatchedKeys.includes(key)) {
-					let highlightContainer =
-						highlightTemplate.content.cloneNode(
-							true,
-						) as HTMLElement;
-					highlightContainer.querySelector(".value").innerHTML =
-						value;
-					field.innerHTML = "";
+				if (card.matches('.imported') && mismatchedKeys.includes(key)) {
+					let highlightContainer = highlightTemplate.content.cloneNode(
+						true,
+					) as HTMLElement;
+					highlightContainer.querySelector('.value').innerHTML = value;
+					field.innerHTML = '';
 					field.append(highlightContainer);
 				} else {
 					field.innerHTML = value;
@@ -1015,22 +1003,16 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	};
 
 	let updateDeletionConfirmationDialog = (target) => {
-		let dialog = document.querySelector("#deletion-confirmation-dialog");
+		let dialog = document.querySelector('#deletion-confirmation-dialog');
 		if (!dialog) return;
 
-		let assessmentId = target.getAttribute("data-id");
+		let assessmentId = target.getAttribute('data-id');
 		if (!assessmentId) return;
 
-		let assessment = findObjectByKey(
-			getUserData().assessments,
-			"id",
-			Number(assessmentId),
-		);
+		let assessment = findObjectByKey(getUserData().assessments, 'id', Number(assessmentId));
 		if (!assessment) return;
 
-		let reportingYearField = dialog.querySelector(
-			'[data-field="reportingYear"]',
-		);
+		let reportingYearField = dialog.querySelector('[data-field="reportingYear"]');
 		let schoolField = dialog.querySelector('[data-field="school"]');
 
 		reportingYearField.textContent = assessment.reportingYear;
@@ -1050,16 +1032,16 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 	let onOpenAssessmentClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
-		if (target.matches("button.open-assessment")) {
+		if (target.matches('button.open-assessment')) {
 			try {
-				let context = window.location.pathname.includes("/report")
-					? "report"
-					: "assessment";
+				let context = window.location.pathname.includes('/report')
+					? 'report'
+					: 'assessment';
 
-				if (context === "assessment") {
+				if (context === 'assessment') {
 					let assessment = getActiveAssessmentData();
 					if (assessment) {
 						// Set existing assessment active assessor to null prior to opening new one
@@ -1076,25 +1058,23 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 					}
 
 					setState({
-						mode: "assessment",
-						activeAssessmentId: Number(
-							target.getAttribute("data-id"),
-						),
+						mode: 'assessment',
+						activeAssessmentId: Number(target.getAttribute('data-id')),
 					});
 
-					toastControl.show({ target, type: "success" });
+					toastControl.show({ target, type: 'success' });
 
 					// Open select assessor dialog
 					dialogControl.open({
-						dialogId: "assessor-dialog",
-						headingText: "Select Active Assessor",
-						context: "setup",
+						dialogId: 'assessor-dialog',
+						headingText: 'Select Active Assessor',
+						context: 'setup',
 					});
-				} else if (context === "report") {
-					if (target.matches("button.change-status")) {
+				} else if (context === 'report') {
+					if (target.matches('button.change-status')) {
 						setAssessment({
-							id: Number(target.getAttribute("data-id")),
-							status: "Complete",
+							id: Number(target.getAttribute('data-id')),
+							status: 'Complete',
 							dateCompleted: Date.now(),
 							changeLog: updateChangeLog({
 								message: `updated assessment status to completed.`,
@@ -1103,41 +1083,31 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 					}
 
 					setState({
-						activeReportId: Number(target.getAttribute("data-id")),
+						activeReportId: Number(target.getAttribute('data-id')),
 					});
 
 					setPreferences({
-						reportIncludedIndicators: [
-							"1",
-							"2",
-							"3",
-							"4",
-							"5",
-							"6",
-							"7",
-						],
+						reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
 					});
 
-					toastControl.show({ target, type: "success" });
+					toastControl.show({ target, type: 'success' });
 
 					dialogControl.close(dialog);
 				}
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 
-		if (target.matches("button.import-code")) {
+		if (target.matches('button.import-code')) {
 			try {
-				let codeInput = target
-					.closest("fieldset")
-					.querySelector("input");
+				let codeInput = target.closest('fieldset').querySelector('input');
 
 				let importedCode = sanitizeHTML(codeInput.value);
 
 				if (importedCode.length === 0) {
-					throw new Error("Import code is empty");
+					throw new Error('Import code is empty');
 				}
 
 				let importedAssessment = decompressData(importedCode);
@@ -1148,36 +1118,35 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 				let importResult = handleAssessmentImport(importedAssessment);
 
-				if (importResult)
-					toastControl.show({ target, type: "success" });
+				if (importResult) toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
-				if (error.cause === "JSON") {
+				if (error.cause === 'JSON') {
 					toastControl.show({
 						target,
-						type: "failure",
+						type: 'failure',
 						selector: `${target.getAttribute(`data-toast-failure`)}-${error.cause}`,
 					});
 				} else {
-					toastControl.show({ target, type: "failure" });
+					toastControl.show({ target, type: 'failure' });
 				}
 			}
 		}
 
-		if (target.matches("button.delete")) {
+		if (target.matches('button.delete')) {
 			updateDeletionConfirmationDialog(target);
 		}
 	};
 	eventControl.add({
-		selector: "#open-assessment-dialog",
-		eventType: "click",
+		selector: '#open-assessment-dialog',
+		eventType: 'click',
 		fn: onOpenAssessmentClick,
 	});
 
 	let onOpenAssessmentChange = async (event) => {
 		let target = event.target as any;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
 		if (target.matches('input[type="file"]')) {
@@ -1194,44 +1163,41 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 
 				let importResult = handleAssessmentImport(importedAssessment);
 
-				if (importResult)
-					toastControl.show({ target, type: "success" });
+				if (importResult) toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 
 			// Clear user uploaded file, so it can be selected again if needed
-			target.value = "";
+			target.value = '';
 		}
 	};
 	eventControl.add({
-		selector: "#open-assessment-dialog",
-		eventType: "change",
+		selector: '#open-assessment-dialog',
+		eventType: 'change',
 		fn: onOpenAssessmentChange,
 	});
 
 	let onOpenAssessmentInput = (event) => {
 		let target = event.target as any;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
 		if (target.matches('[type="text"][name="import-code"]')) {
-			let importBtn = target
-				.closest("fieldset")
-				.querySelector("button.import-code");
+			let importBtn = target.closest('fieldset').querySelector('button.import-code');
 
 			if (target.value.length > 0) {
-				importBtn.removeAttribute("disabled");
+				importBtn.removeAttribute('disabled');
 			} else {
-				importBtn.setAttribute("disabled", "");
+				importBtn.setAttribute('disabled', '');
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#open-assessment-dialog",
-		eventType: "input",
+		selector: '#open-assessment-dialog',
+		eventType: 'input',
 		fn: onOpenAssessmentInput,
 	});
 
@@ -1239,31 +1205,30 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 		let target = event.target as HTMLInputElement;
 
 		if (target.matches(`input[type="text"]`)) {
-			if (event.key === "Enter") {
+			if (event.key === 'Enter') {
 				event.preventDefault();
 				let importBtn = target
-					.closest("fieldset")
-					.querySelector("button.import-code") as HTMLButtonElement;
+					.closest('fieldset')
+					.querySelector('button.import-code') as HTMLButtonElement;
 				if (importBtn) importBtn.click();
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#open-assessment-dialog",
-		eventType: "keydown",
+		selector: '#open-assessment-dialog',
+		eventType: 'keydown',
 		fn: onOpenAssessmentKeydown,
 	});
 
 	let onImportConflictClick = async (event) => {
 		let target = event.target as any;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
-		if (target.matches("button.overwrite")) {
+		if (target.matches('button.overwrite')) {
 			try {
-				let { importedAssessment, localAssessment } =
-					getImportConflictData();
+				let { importedAssessment, localAssessment } = getImportConflictData();
 				if (!importedAssessment || !localAssessment) return;
 
 				// Make sure the ids match
@@ -1285,36 +1250,36 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				// Clear out the import conflict data cache
 				deleteImportConflictData();
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 
 				dialogControl.open({
-					dialogId: "open-assessment-dialog",
+					dialogId: 'open-assessment-dialog',
 				});
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 
-		if (target.matches("button.keep")) {
+		if (target.matches('button.keep')) {
 			deleteImportConflictData();
 		}
 	};
 	eventControl.add({
-		selector: "#import-conflict-dialog",
-		eventType: "click",
+		selector: '#import-conflict-dialog',
+		eventType: 'click',
 		fn: onImportConflictClick,
 	});
 
 	let onDeletionConfirmationClick = async (event) => {
 		let target = event.target as any;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
-		if (target.matches("button.delete")) {
+		if (target.matches('button.delete')) {
 			try {
-				let assessmentId = Number(dialog.getAttribute("data-context"));
+				let assessmentId = Number(dialog.getAttribute('data-context'));
 
 				deleteAssessment(assessmentId);
 
@@ -1326,30 +1291,28 @@ import IconTrash from "src/components/icons/IconTrash_20.astro";
 				}
 
 				// Reset create assessment dialog
-				let createDialog = document.querySelector(
-					"#edit-assessment-properties-dialog",
-				);
+				let createDialog = document.querySelector('#edit-assessment-properties-dialog');
 				if (createDialog) {
 					resetForm({
-						form: createDialog.querySelector("form"),
-						resetType: "hard",
+						form: createDialog.querySelector('form'),
+						resetType: 'hard',
 					});
 				}
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 
 				dialogControl.open({
-					dialogId: "open-assessment-dialog",
+					dialogId: 'open-assessment-dialog',
 				});
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#deletion-confirmation-dialog",
-		eventType: "click",
+		selector: '#deletion-confirmation-dialog',
+		eventType: 'click',
 		fn: onDeletionConfirmationClick,
 	});
 </script>

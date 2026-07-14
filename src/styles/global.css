@@ -1754,7 +1754,23 @@ dialog {
 	}
 
 	&.media {
-		width: min(100%, 960px);
+		width: min(100%, 800px);
+		overflow: hidden;
+
+		&[open] {
+			display: grid;
+			grid-template-rows: auto 1fr auto;
+		}
+
+		& .media-container {
+			flex: 1;
+			min-height: 0;
+			width: 100%;
+		}
+
+		& video {
+			height: 100%;
+		}
 	}
 
 	&:focus {
@@ -1796,11 +1812,16 @@ dialog {
 		}
 	}
 
-	& > .heading {
+	& .heading-container {
+		width: 100%;
 		margin: 0 0 var(--space-lg);
 		padding: 0 0 var(--space-sm);
 		border-bottom: 2px solid var(--dialog-ui-colour, var(--colour-border-neutral-subtle));
-		color: var(--dialog-ui-colour, inherit);
+
+		& .heading {
+			margin: 0;
+			color: var(--dialog-ui-colour, inherit);
+		}
 	}
 
 	& .instructions {

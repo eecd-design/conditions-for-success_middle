@@ -1,12 +1,12 @@
 ---
-import IconCaretDown from "../icons/IconCaretDown_14.astro";
-import IconCross from "src/components/icons/IconCross_16.astro";
-import IconWarningBig from "src/components/icons/IconWarning_24.astro";
-import IconXmarkBig from "src/components/icons/IconXmark_20.astro";
-import IconXmark16 from "src/components/icons/IconXmark_16.astro";
-import Toast from "src/components/Toast.astro";
-import IconCheckmark from "../icons/IconCheckmark_12.astro";
-import IconWarningSmall from "../icons/IconWarning_16.astro";
+import IconCaretDown from '../icons/IconCaretDown_14.astro';
+import IconCross from 'src/components/icons/IconCross_16.astro';
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
+import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
+import IconXmark16 from 'src/components/icons/IconXmark_16.astro';
+import Toast from 'src/components/Toast.astro';
+import IconCheckmark from '../icons/IconCheckmark_12.astro';
+import IconWarningSmall from '../icons/IconWarning_16.astro';
 ---
 
 <dialog
@@ -14,19 +14,21 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	aria-describedby="assessor-dialog_heading"
 	data-reset-forms="true"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Select Assessor Dialog"><IconXmarkBig /></button
-	>
-
-	<h2
-		id="assessor-dialog_heading"
-		class="heading"
-		data-default-text="Assign Assessors"
-	>
-		Assign Assessors
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Select Assessor Dialog"
+			><IconXmarkBig /></button
+		>
+		<h2
+			id="assessor-dialog_heading"
+			class="heading"
+			data-default-text="Assign Assessors"
+		>
+			Assign Assessors
+		</h2>
+	</div>
 
 	<div
 		class="callout"
@@ -40,10 +42,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				<IconWarningBig />
 			</div>
 			<div class="text-container">
-				<p>
-					Adding assessors is optional but recommended for
-					collaborative workflows.
-				</p>
+				<p>Adding assessors is optional but recommended for collaborative workflows.</p>
 			</div>
 		</div>
 	</div>
@@ -59,7 +58,10 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					placeholder="Enter a name..."
 					data-focus-start
 				/>
-				<button class="add-assessor" type="button">
+				<button
+					class="add-assessor"
+					type="button"
+				>
 					<span class="icon-and-label-container">
 						<IconCross />
 						<span class="label-container">
@@ -76,7 +78,10 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				<template>
 					<li>
 						<!-- <span class="group">Assessor</span> -->
-						<span class="title" data-field-value></span>
+						<span
+							class="title"
+							data-field-value
+						></span>
 						<button
 							class="clear remove-assessor"
 							type="button"
@@ -89,17 +94,17 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			</ul>
 		</fieldset>
 
-		<fieldset class="active-assessor" hidden>
-			<label for="assessor-dialog_active-assessor-select"
-				>Active Assessor</label
-			>
+		<fieldset
+			class="active-assessor"
+			hidden
+		>
+			<label for="assessor-dialog_active-assessor-select">Active Assessor</label>
 			<p class="instructions">
 				Select the person currently making changes to this assessment.
 			</p>
 			<p class="instructions">
-				This helps maintain clear version history and makes it easier to
-				understand who last updated the data when it's shared with
-				others.
+				This helps maintain clear version history and makes it easier to understand who last
+				updated the data when it's shared with others.
 			</p>
 			<div class="select-container">
 				<select
@@ -118,14 +123,16 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				type="button"
 				data-size="large"
 				data-style="outline"
-				data-restrict-context="setup">Skip</button
+				data-restrict-context="setup"
+				>Skip</button
 			>
 			<button
 				class="close-dialog"
 				type="button"
 				data-size="large"
 				data-style="outline"
-				data-restrict-context="configure">Cancel</button
+				data-restrict-context="configure"
+				>Cancel</button
 			>
 			<button
 				class="save"
@@ -134,44 +141,45 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				data-style="solid"
 				data-toast-success="assessor-dialog_save-toast_success"
 				data-toast-failure="assessor-dialog_save-toast_failure"
-				disabled>Save</button
+				disabled
+				>Save</button
 			>
 		</div>
 	</form>
 
 	<div class="toast-group">
 		<Toast
-			id={"edit-assessment-properties-dialog_create-toast_success"}
+			id={'edit-assessment-properties-dialog_create-toast_success'}
 			message={`Assessment created!`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"open-assessment-dialog_open-toast_success"}
+			id={'open-assessment-dialog_open-toast_success'}
 			message={`Assessment opened!`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"status-warning-dialog_change-status-toast_success"}
+			id={'status-warning-dialog_change-status-toast_success'}
 			message={`Status updated to 'In Progress'.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<!-- Save Toast located in Assessment Dialogs -->
 		<Toast
-			id={"assessor-dialog_save-toast_failure"}
+			id={'assessor-dialog_save-toast_failure'}
 			message={`Unable to save. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>
@@ -189,12 +197,12 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		setState,
 		subscribe,
 		updateChangeLog,
-	} from "src/stores/userDataStore";
-	import { sanitizeHTML } from "src/utilities/helpers.js";
-	import { getFormValues } from "src/utilities/form";
-	import { dialogControl } from "src/utilities/dialog";
-	import { toastControl } from "src/utilities/toast";
-	import { eventControl } from "src/utilities/event";
+	} from 'src/stores/userDataStore';
+	import { sanitizeHTML } from 'src/utilities/helpers.js';
+	import { getFormValues } from 'src/utilities/form';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
+	import { eventControl } from 'src/utilities/event';
 
 	//
 	// Methods
@@ -203,47 +211,42 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	let createAssessorListItem = (name, dialog) => {
 		if (!name || name === undefined || !dialog) return;
 
-		let template = dialog.querySelector(
-			".assessors-list template",
-		) as HTMLTemplateElement;
+		let template = dialog.querySelector('.assessors-list template') as HTMLTemplateElement;
 		if (!template) return;
 
 		// Clone the template
 		let item = template.content.cloneNode(true) as HTMLElement;
 
 		// Update the label
-		item.querySelector(".title").textContent = sanitizeHTML(name).trim();
+		item.querySelector('.title').textContent = sanitizeHTML(name).trim();
 
 		return item;
 	};
 
-	let addAssessorToList = (
-		target: HTMLButtonElement | HTMLInputElement,
-		dialog,
-	) => {
-		let input = target.closest(".input-container").querySelector("input");
+	let addAssessorToList = (target: HTMLButtonElement | HTMLInputElement, dialog) => {
+		let input = target.closest('.input-container').querySelector('input');
 		let item = createAssessorListItem(input.value, dialog);
 		if (!item) return;
-		let list = target.closest("form").querySelector(".assessors-list");
+		let list = target.closest('form').querySelector('.assessors-list');
 		list.append(item);
-		list.removeAttribute("hidden");
-		input.value = "";
+		list.removeAttribute('hidden');
+		input.value = '';
 	};
 
 	let removeAssessorFromList = (target: HTMLButtonElement) => {
-		let item = target.closest("li");
-		let list = target.closest("form").querySelector(".assessors-list");
+		let item = target.closest('li');
+		let list = target.closest('form').querySelector('.assessors-list');
 		if (!item) return;
 		item.remove();
-		let items = list.querySelectorAll(":scope > li");
-		if (items.length === 0) list.setAttribute("hidden", "");
+		let items = list.querySelectorAll(':scope > li');
+		if (items.length === 0) list.setAttribute('hidden', '');
 	};
 
 	let createAssessorSelectOption = (assessor) => {
 		if (!assessor || assessor === undefined) return;
 
-		let option = document.createElement("option");
-		option.setAttribute("value", assessor);
+		let option = document.createElement('option');
+		option.setAttribute('value', assessor);
 		option.textContent = assessor;
 
 		return option;
@@ -256,15 +259,15 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	let updateAssessorList = ({ dialog, assessors }) => {
 		if (!Array.isArray(assessors) || !dialog) return;
 
-		let list = dialog.querySelector(".assessors-list");
-		let items = list?.querySelectorAll(":scope > li");
+		let list = dialog.querySelector('.assessors-list');
+		let items = list?.querySelectorAll(':scope > li');
 
 		// Clear previous items
 		for (let item of items) item.remove();
 
 		// If there are no assessors, hide list
 		if (assessors.length === 0) {
-			list.setAttribute("hidden", "");
+			list.setAttribute('hidden', '');
 			return;
 		}
 
@@ -275,24 +278,20 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		}
 
 		// Show list
-		list.removeAttribute("hidden");
+		list.removeAttribute('hidden');
 	};
 
-	let updateActiveAssessorSelect = ({
-		dialog,
-		assessors,
-		activeAssessor = null,
-	}) => {
+	let updateActiveAssessorSelect = ({ dialog, assessors, activeAssessor = null }) => {
 		if (!assessors || !dialog) return;
 
-		let fieldset = dialog.querySelector("fieldset.active-assessor");
+		let fieldset = dialog.querySelector('fieldset.active-assessor');
 
 		if (assessors.length === 0) {
-			fieldset.setAttribute("hidden", "");
+			fieldset.setAttribute('hidden', '');
 			return;
 		}
 
-		let select = dialog.querySelector("fieldset.active-assessor select");
+		let select = dialog.querySelector('fieldset.active-assessor select');
 		if (!select) return;
 
 		// Reset select options
@@ -307,11 +306,11 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 			// If there is an active assessor, set it to checked
 			if (activeAssessor && assessor === activeAssessor) {
-				option.setAttribute("selected", "");
+				option.setAttribute('selected', '');
 			}
 		}
 
-		fieldset.removeAttribute("hidden");
+		fieldset.removeAttribute('hidden');
 	};
 
 	/**
@@ -319,24 +318,17 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	 * @param data
 	 */
 	let updateAssessorDialog = (data: UserData, changes) => {
-		let dialog = document.querySelector(
-			"#assessor-dialog",
-		) as HTMLDialogElement;
+		let dialog = document.querySelector('#assessor-dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
-		let stateTriggerKeys = ["activeAssessmentId"];
-		let assessmentTriggerKeys = ["assessors", "activeAssessor"];
+		let stateTriggerKeys = ['activeAssessmentId'];
+		let assessmentTriggerKeys = ['assessors', 'activeAssessor'];
 		if (
 			!changes.initiating &&
 			!(
 				(changes.assessments &&
-					assessmentTriggerKeys.some((val) =>
-						changes.assessments.includes(val),
-					)) ||
-				(changes.uiState &&
-					stateTriggerKeys.some((val) =>
-						changes.uiState.includes(val),
-					))
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 		)
 			return;
@@ -373,17 +365,17 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		let dialog = target.closest("dialog") as HTMLDialogElement;
+		let dialog = target.closest('dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
-		let form = dialog.querySelector("form") as HTMLFormElement;
-		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
+		let form = dialog.querySelector('form') as HTMLFormElement;
+		let saveBtn = dialog.querySelector('button.save') as HTMLButtonElement;
 
-		if (target.matches("button.close-dialog")) {
-			saveBtn.setAttribute("disabled", "");
+		if (target.matches('button.close-dialog')) {
+			saveBtn.setAttribute('disabled', '');
 		}
 
-		if (target.matches("button.add-assessor")) {
+		if (target.matches('button.add-assessor')) {
 			addAssessorToList(target, dialog);
 			let values = getFormValues(form);
 			let activeAssessor = getActiveAssessor();
@@ -392,10 +384,10 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				assessors: values.assessors,
 				activeAssessor,
 			});
-			saveBtn.removeAttribute("disabled");
+			saveBtn.removeAttribute('disabled');
 		}
 
-		if (target.matches("button.remove-assessor")) {
+		if (target.matches('button.remove-assessor')) {
 			removeAssessorFromList(target);
 			let values = getFormValues(form);
 			let activeAssessor = getActiveAssessor();
@@ -404,15 +396,15 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				assessors: values.assessors,
 				activeAssessor,
 			});
-			saveBtn.removeAttribute("disabled");
+			saveBtn.removeAttribute('disabled');
 		}
 
-		if (target.matches("button.save")) {
+		if (target.matches('button.save')) {
 			try {
 				let values = getFormValues(form);
 				let assessment = getActiveAssessmentData();
 				if (!assessment) {
-					throw new Error("No active assessment data to update.");
+					throw new Error('No active assessment data to update.');
 				}
 
 				let check = checkForChanges({
@@ -437,17 +429,16 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 							let lastAction;
 
 							for (let change of entry.changes) {
-								if (!change.value || !change.value.length)
-									continue;
+								if (!change.value || !change.value.length) continue;
 								let values = Array.isArray(change.value)
-									? change.value.join(", ")
+									? change.value.join(', ')
 									: change.value;
 								parts.push(`${change.type} ${values}`);
 								lastAction = change.type;
 							}
 
 							if (parts.length) {
-								message = `${parts.join(", and ")} ${lastAction === "added" ? "to" : "from"} the assessor list.`;
+								message = `${parts.join(', and ')} ${lastAction === 'added' ? 'to' : 'from'} the assessor list.`;
 							}
 						}
 					}
@@ -458,39 +449,37 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				}
 
 				// If the active assessor is set to none
-				if (update.activeAssessor === "") {
+				if (update.activeAssessor === '') {
 					update.activeAssessor = null;
 				}
 
 				setAssessment(update);
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 
 				dialogControl.close(target);
-				saveBtn.setAttribute("disabled", "");
+				saveBtn.setAttribute('disabled', '');
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#assessor-dialog",
-		eventType: "click",
+		selector: '#assessor-dialog',
+		eventType: 'click',
 		fn: onClick,
 	});
 
 	let onKeydown = (event) => {
-		if (event.key === "Enter") {
+		if (event.key === 'Enter') {
 			let target = event.target as HTMLInputElement;
 
-			let dialog = target.closest("dialog") as HTMLDialogElement;
+			let dialog = target.closest('dialog') as HTMLDialogElement;
 			if (!dialog) return;
 
-			let form = dialog.querySelector("form") as HTMLFormElement;
-			let saveBtn = dialog.querySelector(
-				"button.save",
-			) as HTMLButtonElement;
+			let form = dialog.querySelector('form') as HTMLFormElement;
+			let saveBtn = dialog.querySelector('button.save') as HTMLButtonElement;
 
 			if (target.matches(`input.assessor`)) {
 				event.preventDefault();
@@ -502,31 +491,31 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					assessors: values.assessors,
 					activeAssessor,
 				});
-				saveBtn.removeAttribute("disabled");
+				saveBtn.removeAttribute('disabled');
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#assessor-dialog",
-		eventType: "keydown",
+		selector: '#assessor-dialog',
+		eventType: 'keydown',
 		fn: onKeydown,
 	});
 
 	let onChange = (event) => {
 		let target = event.target as HTMLInputElement | HTMLSelectElement;
 
-		let dialog = target.closest("dialog") as HTMLDialogElement;
+		let dialog = target.closest('dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
-		let saveBtn = dialog.querySelector("button.save") as HTMLButtonElement;
+		let saveBtn = dialog.querySelector('button.save') as HTMLButtonElement;
 
 		if (target.matches(`select[name="active-assessor"]`)) {
-			saveBtn.removeAttribute("disabled");
+			saveBtn.removeAttribute('disabled');
 		}
 	};
 	eventControl.add({
-		selector: "#assessor-dialog",
-		eventType: "change",
+		selector: '#assessor-dialog',
+		eventType: 'change',
 		fn: onChange,
 	});
 </script>

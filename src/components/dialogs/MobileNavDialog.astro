@@ -17,19 +17,21 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 	data-theme="red"
 	aria-labelledby="mobile-nav-dialog_heading"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Media Dialog"
-	>
-		<IconXmark />
-	</button>
-	<h2
-		id="mobile-nav-dialog_heading"
-		class="heading"
-	>
-		Menu
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Media Dialog"
+		>
+			<IconXmark />
+		</button>
+		<h2
+			id="mobile-nav-dialog_heading"
+			class="heading"
+		>
+			Menu
+		</h2>
+	</div>
 	<nav
 		class="mobile"
 		aria-label="Main navigation"

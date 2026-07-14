@@ -11,44 +11,45 @@ import videoPoster from 'src/images/video-poster.png';
 	class="media"
 	aria-labelledby="media-dialog_heading"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Media Dialog"
-		><IconXmark /></button
-	>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Media Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="media-dialog_heading"
+			class="heading"
+			data-default-text="Media Resource"
+		>
+			Media Resource
+		</h2>
+	</div>
 
-	<h2
-		id="media-dialog_heading"
-		class="heading"
-		data-default-text="Media Resource"
-	>
-		Media Resource
-	</h2>
-
-	<video
-		controls
-		poster={videoPoster.src}
-		tabindex="0"
-		hidden
-	></video>
-
-	<audio
-		controls
-		src=""
-		tabindex="0"
-		hidden
-	></audio>
-
-	<iframe
-		src=""
-		title=""
-		frameborder="0"
-		referrerpolicy="strict-origin-when-cross-origin"
-		allowfullscreen
-		tabindex="0"
-		hidden
-	></iframe>
+	<div class="media-container">
+		<video
+			controls
+			poster={videoPoster.src}
+			tabindex="0"
+			hidden
+		></video>
+		<audio
+			controls
+			src=""
+			tabindex="0"
+			hidden
+		></audio>
+		<iframe
+			src=""
+			title=""
+			frameborder="0"
+			referrerpolicy="strict-origin-when-cross-origin"
+			allowfullscreen
+			tabindex="0"
+			hidden
+		></iframe>
+	</div>
 
 	<div
 		class="transcript accordion-group"

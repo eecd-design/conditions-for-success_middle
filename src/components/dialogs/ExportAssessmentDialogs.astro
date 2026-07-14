@@ -1,29 +1,31 @@
 ---
-import IconWarningBig from "src/components/icons/IconWarning_24.astro";
-import IconCopy from "src/components/icons/IconCopy_20.astro";
-import IconXmark from "src/components/icons/IconXmark_20.astro";
-import Toast from "src/components/Toast.astro";
-import IconCheckmark from "../icons/IconCheckmark_12.astro";
-import IconWarningSmall from "../icons/IconWarning_16.astro";
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
+import IconCopy from 'src/components/icons/IconCopy_20.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import Toast from 'src/components/Toast.astro';
+import IconCheckmark from '../icons/IconCheckmark_12.astro';
+import IconWarningSmall from '../icons/IconWarning_16.astro';
 ---
 
 <dialog
 	id="export-assessment-dialog"
 	aria-describedby="export-assessment-dialog_heading"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Export Assessment Dialog"><IconXmark /></button
-	>
-
-	<h2
-		id="export-assessment-dialog_heading"
-		class="heading"
-		data-default-text="Export Assessment"
-	>
-		Export Assessment
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Export Assessment Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="export-assessment-dialog_heading"
+			class="heading"
+			data-default-text="Export Assessment"
+		>
+			Export Assessment
+		</h2>
+	</div>
 
 	<section class="edit-status">
 		<h3>Update Status Before Export</h3>
@@ -31,8 +33,9 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			id="export-assessment-dialog_edit-status_in-progress-instructions"
 			class="instructions"
 		>
-			This assessment is marked as <strong>In Progress</strong>. Mark it
-			as <strong>Complete</strong> before exporting?
+			This assessment is marked as <strong>In Progress</strong>. Mark it as <strong
+				>Complete</strong
+			> before exporting?
 		</p>
 		<p
 			id="export-assessment-dialog_edit-status_complete-instructions"
@@ -53,7 +56,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				data-toast-success="export-assessment-dialog_change-status-toast_success"
 				data-toast-failure="export-assessment-dialog_change-status-toast_failure"
 				aria-describedby="export-assessment-dialog_edit-status_in-progress-instructions"
-				data-focus-start>Mark as Complete</button
+				data-focus-start
+				>Mark as Complete</button
 			>
 		</div>
 	</section>
@@ -63,9 +67,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	<section class="export-file">
 		<h3>Export File</h3>
 		<p class="instructions">
-			Download a copy of this assessment to backup your work. This file
-			can be used to restore the assessment later or continue working on
-			it on another device.
+			Download a copy of this assessment to backup your work. This file can be used to restore
+			the assessment later or continue working on it on another device.
 		</p>
 
 		<div
@@ -81,8 +84,8 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 				</div>
 				<div class="text-container">
 					<p>
-						<strong>Warning</strong>: Editing this file may prevent
-						it from being imported again.
+						<strong>Warning</strong>: Editing this file may prevent it from being
+						imported again.
 					</p>
 				</div>
 			</div>
@@ -107,12 +110,18 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	<section class="export-code">
 		<h3>Export Code</h3>
 		<p class="instructions">
-			Use this code to continue working on this assessment on another
-			device, or to share it with another assessor.
+			Use this code to continue working on this assessment on another device, or to share it
+			with another assessor.
 		</p>
 
-		<div class="code-container" data-style-as="input-container">
-			<div class="url" data-style-as="input">
+		<div
+			class="code-container"
+			data-style-as="input-container"
+		>
+			<div
+				class="url"
+				data-style-as="input"
+			>
 				<span data-field="exportCode"></span>
 			</div>
 			<button
@@ -134,53 +143,53 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 	<div class="toast-group">
 		<Toast
-			id={"export-assessment-dialog_change-status-toast_success"}
+			id={'export-assessment-dialog_change-status-toast_success'}
 			message={`Status change saved.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"export-assessment-dialog_change-status-toast_failure"}
+			id={'export-assessment-dialog_change-status-toast_failure'}
 			message={`Unable to change status. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 
 		<Toast
-			id={"export-assessment-dialog_export-file-toast_success"}
+			id={'export-assessment-dialog_export-file-toast_success'}
 			message={`File exported!`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"export-assessment-dialog_export-file-toast_failure"}
+			id={'export-assessment-dialog_export-file-toast_failure'}
 			message={`Unable to export file. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"export-assessment-dialog_copy-code-toast_success"}
-			message={"Export code copied to the clipboard."}
-			colour={"green"}
-			type={"success"}
+			id={'export-assessment-dialog_copy-code-toast_success'}
+			message={'Export code copied to the clipboard.'}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<Toast
-			id={"export-assessment-dialog_copy-code-toast_failure"}
+			id={'export-assessment-dialog_copy-code-toast_failure'}
 			message={`Unable to copy export code. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>
@@ -189,35 +198,34 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	id="export-warning-dialog"
 	aria-describedby="export-warning-dialog_heading"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Warning Dialog"
-		data-toast-success="export-warning-dialog_close-toast_success"
-		data-toast-failure="export-warning-dialog_close-toast_failure"
-		><IconXmark /></button
-	>
-
-	<h2
-		id="export-warning-dialog_heading"
-		class="heading"
-		data-default-text="Unexported Changes"
-	>
-		Export Your Changes?
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Warning Dialog"
+			data-toast-success="export-warning-dialog_close-toast_success"
+			data-toast-failure="export-warning-dialog_close-toast_failure"
+			><IconXmark /></button
+		>
+		<h2
+			id="export-warning-dialog_heading"
+			class="heading"
+			data-default-text="Unexported Changes"
+		>
+			Export Your Changes?
+		</h2>
+	</div>
 
 	<p class="instructions">
 		Your changes are saved in the browser, but have not been exported<span
 			class="field-container"
 			hidden
 			><strong><span data-field="exportStatus"></span></strong></span
-		>. Remember to download a copy of your assessment regularly to keep your
-		data safe and restore it if needed.
+		>. Remember to download a copy of your assessment regularly to keep your data safe and
+		restore it if needed.
 	</p>
 
-	<p class="instructions">
-		Would you like to export a backup before you stop editing?
-	</p>
+	<p class="instructions">Would you like to export a backup before you stop editing?</p>
 
 	<div class="button-group">
 		<button
@@ -227,34 +235,36 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 			data-style="outline"
 			data-toast-success="export-warning-dialog_close-toast_success"
 			data-toast-failure="export-warning-dialog_close-toast_failure"
-			data-focus-start>Continue Without Exporting</button
+			data-focus-start
+			>Continue Without Exporting</button
 		>
 		<button
 			class="open-dialog"
 			data-dialog="export-assessment-dialog"
 			type="button"
 			data-size="large"
-			data-style="solid">Export Changes</button
+			data-style="solid"
+			>Export Changes</button
 		>
 	</div>
 
 	<div class="toast-group">
 		<Toast
-			id={"edit-status-dialog_change-status-and-warn-toast_success"}
+			id={'edit-status-dialog_change-status-and-warn-toast_success'}
 			message={`Status change saved.`}
-			colour={"green"}
-			type={"success"}
+			colour={'green'}
+			type={'success'}
 		>
-			<IconCheckmark slot={"icon"} />
+			<IconCheckmark slot={'icon'} />
 		</Toast>
 		<!-- Success toast in Assessment Dialogs -->
 		<Toast
-			id={"export-warning-dialog_close-toast_failure"}
+			id={'export-warning-dialog_close-toast_failure'}
 			message={`Unable to close assessment. Please reload the page to try again.`}
-			colour={"red"}
-			type={"failure"}
+			colour={'red'}
+			type={'failure'}
 		>
-			<IconWarningSmall slot={"icon"} />
+			<IconWarningSmall slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>
@@ -274,9 +284,9 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 		subscribe,
 		getExportStatus,
 		updateChangeLog,
-	} from "src/stores/userDataStore";
-	import { eventControl } from "src/utilities/event";
-	import { toastControl } from "src/utilities/toast";
+	} from 'src/stores/userDataStore';
+	import { eventControl } from 'src/utilities/event';
+	import { toastControl } from 'src/utilities/toast';
 
 	/**
 	 * Copy text to the user's clipboard
@@ -296,20 +306,15 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	 * @param data
 	 */
 	let updateExportAssessmentDialog = (data: UserData, changes) => {
-		let dialog = document.querySelector(
-			"#export-assessment-dialog",
-		) as HTMLDialogElement;
+		let dialog = document.querySelector('#export-assessment-dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
-		let stateTriggerKeys = ["activeAssessmentId"];
+		let stateTriggerKeys = ['activeAssessmentId'];
 		if (
 			!changes.initiating &&
 			!(
 				changes.assessments ||
-				(changes.uiState &&
-					stateTriggerKeys.some((val) =>
-						changes.uiState.includes(val),
-					))
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 		)
 			return;
@@ -321,7 +326,7 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 		// console.log("Updating Dialog (export)");
 
-		let exportCodeSection = dialog.querySelector("section.export-code");
+		let exportCodeSection = dialog.querySelector('section.export-code');
 		let codeField = dialog.querySelector('[data-field="exportCode"]');
 
 		editStatusSection({ dialog, status: assessment.status });
@@ -335,58 +340,47 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 			// Otherwise, hide the section
 		} else {
-			exportCodeSection.setAttribute("hidden", "");
+			exportCodeSection.setAttribute('hidden', '');
 		}
 	};
 
 	let editStatusSection = ({ dialog, status }) => {
 		if (!dialog || !status) return;
 
-		let isComplete = status === "Complete";
+		let isComplete = status === 'Complete';
 
 		let completeInstructions = dialog.querySelector(
-			"#export-assessment-dialog_edit-status_complete-instructions",
+			'#export-assessment-dialog_edit-status_complete-instructions',
 		);
 		let inProgressInstructions = dialog.querySelector(
-			"#export-assessment-dialog_edit-status_in-progress-instructions",
+			'#export-assessment-dialog_edit-status_in-progress-instructions',
 		);
-		completeInstructions.toggleAttribute("hidden", !isComplete);
-		inProgressInstructions.toggleAttribute("hidden", isComplete);
+		completeInstructions.toggleAttribute('hidden', !isComplete);
+		inProgressInstructions.toggleAttribute('hidden', isComplete);
 
-		let btn = dialog.querySelector(
-			"section.edit-status button.change-status",
-		);
+		let btn = dialog.querySelector('section.edit-status button.change-status');
 
-		btn.textContent = isComplete
-			? "Mark as In Progress"
-			: "Mark as Complete";
+		btn.textContent = isComplete ? 'Mark as In Progress' : 'Mark as Complete';
 		btn.setAttribute(
-			"aria-describedby",
+			'aria-describedby',
 			isComplete
-				? "export-assessment-dialog_edit-status_complete-instructions"
-				: "export-assessment-dialog_edit-status_in-progress-instructions",
+				? 'export-assessment-dialog_edit-status_complete-instructions'
+				: 'export-assessment-dialog_edit-status_in-progress-instructions',
 		);
 	};
 
 	let updateExportWarningDialog = (data: UserData, changes) => {
-		let dialog = document.querySelector(
-			"#export-warning-dialog",
-		) as HTMLDialogElement;
+		let dialog = document.querySelector('#export-warning-dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
-		let stateTriggerKeys = ["activeAssessmentId"];
-		let assessmentTriggerKeys = ["unexportedChanges", "dateExported"];
+		let stateTriggerKeys = ['activeAssessmentId'];
+		let assessmentTriggerKeys = ['unexportedChanges', 'dateExported'];
 		if (
 			!changes.initiating &&
 			!(
 				(changes.assessments &&
-					assessmentTriggerKeys.some((val) =>
-						changes.assessments.includes(val),
-					)) ||
-				(changes.uiState &&
-					stateTriggerKeys.some((val) =>
-						changes.uiState.includes(val),
-					))
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 		)
 			return;
@@ -396,23 +390,19 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 
 		// console.log("Updating Dialog (export warning)");
 
-		let exportStatusField = dialog.querySelector(
-			'[data-field="exportStatus"]',
-		);
-		let exportStatusFieldContainer =
-			exportStatusField?.closest(".field-container");
+		let exportStatusField = dialog.querySelector('[data-field="exportStatus"]');
+		let exportStatusFieldContainer = exportStatusField?.closest('.field-container');
 
 		if (!exportStatusField || !exportStatusFieldContainer) return;
 
 		let timeSinceExport = getExportStatus({ verbose: false }) as number;
-		let exportStatus =
-			timeSinceExport === 0 ? null : ` for ${timeSinceExport}`;
+		let exportStatus = timeSinceExport === 0 ? null : ` for ${timeSinceExport}`;
 
 		if (exportStatus) {
 			exportStatusField.innerHTML = exportStatus;
-			exportStatusFieldContainer.removeAttribute("hidden");
+			exportStatusFieldContainer.removeAttribute('hidden');
 		} else {
-			exportStatusFieldContainer.setAttribute("hidden", "");
+			exportStatusFieldContainer.setAttribute('hidden', '');
 		}
 	};
 
@@ -430,16 +420,15 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 	let onExportAssessmentClick = async (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
-		if (target.matches("button.change-status")) {
+		if (target.matches('button.change-status')) {
 			try {
 				let assessment = getActiveAssessmentData();
 
 				let { status } = assessment;
-				let newStatus =
-					status === "In Progress" ? "Complete" : "In Progress";
+				let newStatus = status === 'In Progress' ? 'Complete' : 'In Progress';
 
 				setAssessment({
 					status: newStatus,
@@ -449,20 +438,20 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					}),
 				});
 
-				if (newStatus === "In Progress") {
+				if (newStatus === 'In Progress') {
 					setState({
 						activeReportId: null,
 					});
 				}
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 
-		if (target.matches("button.download-file")) {
+		if (target.matches('button.download-file')) {
 			try {
 				exportAssessment(getActiveAssessmentData());
 
@@ -471,47 +460,45 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					dateExported: Date.now(),
 				});
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 
-		if (target.matches("button.copy-code")) {
+		if (target.matches('button.copy-code')) {
 			try {
-				let codeField = target
-					.closest("dialog")
-					.querySelector('[data-field="exportCode"]');
+				let codeField = target.closest('dialog').querySelector('[data-field="exportCode"]');
 
 				copyToClipboard(codeField.textContent);
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#export-assessment-dialog",
-		eventType: "click",
+		selector: '#export-assessment-dialog',
+		eventType: 'click',
 		fn: onExportAssessmentClick,
 	});
 
 	let onExportWarningClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		let dialog = target.closest("dialog");
+		let dialog = target.closest('dialog');
 		if (!dialog) return;
 
-		if (target.matches("button.close-dialog")) {
+		if (target.matches('button.close-dialog')) {
 			try {
 				setAssessment({
 					activeAssessor: null,
 				});
 				setState({
-					mode: "reading",
+					mode: 'reading',
 					activeAssessmentId: null,
 				});
 				// Reset consideration checkboxes
@@ -521,16 +508,16 @@ import IconWarningSmall from "../icons/IconWarning_16.astro";
 					input.checked = false;
 				}
 
-				toastControl.show({ target, type: "success" });
+				toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: "failure" });
+				toastControl.show({ target, type: 'failure' });
 			}
 		}
 	};
 	eventControl.add({
-		selector: "#export-warning-dialog",
-		eventType: "click",
+		selector: '#export-warning-dialog',
+		eventType: 'click',
 		fn: onExportWarningClick,
 	});
 </script>

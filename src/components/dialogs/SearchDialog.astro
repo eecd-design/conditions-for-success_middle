@@ -69,20 +69,21 @@ for (let resource of allResources) {
 	aria-labelledby="search-dialog_heading"
 	data-reset-forms="true"
 >
-	<button
-		class="close-dialog"
-		type="button"
-		aria-label="Close Search Dialog"
-		><IconXmark /></button
-	>
-
-	<h2
-		id="search-dialog_heading"
-		class="heading"
-		data-default-text="Search"
-	>
-		Search
-	</h2>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Search Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="search-dialog_heading"
+			class="heading"
+			data-default-text="Search"
+		>
+			Search
+		</h2>
+	</div>
 
 	<form
 		id="site-contents-list_primary-controls"
