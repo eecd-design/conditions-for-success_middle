@@ -47,10 +47,14 @@ let userSchema = {
 						path: window.location.pathname,
 					}
 				: null,
+		latestResourceTimestamp:
+			Number(
+				document.querySelector('header .site-announcement-container')?.dataset
+					.mostRecentTimestamp,
+			) ?? null,
 		announcementSession: {
 			views: 0,
 			lastSeen: null,
-			timeout: 24 * 60 * 60 * 1000,
 		},
 		mode: 'reading',
 		onboardingCompleted: false,
@@ -576,29 +580,41 @@ let checkForChanges = ({ data, update }) => {
 };
 
 let checkAnnouncementSession = () => {
+	console.log(data.uiState);
 	let announcementSession = data.uiState.announcementSession ?? {
 		views: 0,
 		lastSeen: null,
 	};
 
 	let { views, lastSeen } = announcementSession;
+	let { latestResourceTimestamp } = data.uiState;
 
-	let timeout = 24 * 60 * 60 * 1000; // 24 hours
-
+	let sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
+	let recencyTimeout = 30 * 24 * 60 * 60 * 1000; // 30 days
 	let now = Date.now();
 
-	// Check if session expired
-	if (!lastSeen || now - lastSeen > timeout) {
-		// Reset new session
+	let showAnnouncement = false;
+
+	// Check if it's been over a month since the most recent resource was added
+	if (!latestResourceTimestamp || now - latestResourceTimestamp > recencyTimeout) {
+		// Reset session
 		views = 0;
+		lastSeen = null;
+	} else {
+		// Check if it's been over 24 hours since the user has accessed the site
+		if (!lastSeen || now - lastSeen > sessionTimeout) {
+			// Reset session
+			views = 0;
+		}
+
+		// Keep track of announcement views
+		views = (views || 0) + 1;
+
+		lastSeen = now;
+
+		// Show for the first 3 page views
+		showAnnouncement = views <= 3;
 	}
-
-	views = (views || 0) + 1;
-	// Keep track of active session, only reset if the user has not used the site in 24 hours
-	lastSeen = now;
-
-	// Show for the first 2 page views
-	let showAnnouncement = views <= 2;
 
 	setState({
 		announcementSession: {

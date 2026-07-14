@@ -32,15 +32,20 @@ let patternUrl = `url('${base}patterns/pattern.svg')`;
 let allIndicators = await getCollection("indicators");
 let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
+let allResources = await getCollection("resources", ({data}) => {
+	return data.published === true;
+});
+let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resource.data.dateAdded.getTime()));
+
 ---
 
 <header id="top" data-theme="red" data-background="dark">
 
 	<div class="wrapper">
 
-		<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden>
+		<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden data-most-recent-timestamp={mostRecentResourceTimestamp}>
 			<IconMegaphone/>
-			<span>New resources are added regularly. <a href={`./resources/`}>Explore what's new.</a></span>
+			<span>New resources were added recently. <a href={`./resources/`}>Explore what's new.</a></span>
 		</div>
 		<div class="site-masthead">
 			<nav class="global" aria-label="Main navigation">
