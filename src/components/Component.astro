@@ -486,6 +486,7 @@ let phases = [
 	/* Categories */
 
 	.considerations-list .label-group .categories-list {
+		--label-size: var(--font-size-2xs);
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
@@ -651,6 +652,7 @@ let phases = [
 		updateContinuumCompletion
 	} from "src/stores/userDataStore.js";
 	import { eventControl } from "src/utilities/event";
+import { toastControl } from "src/utilities/toast";
 
 
 
@@ -827,10 +829,14 @@ let phases = [
 			setAssessment({
 				changeLog: updatedChangeLog,
 				considerationsEstablished: assessment.considerationsEstablished,
-				continuumCompletion: updatedContinuumCompletion,
+				continuumCompletion: updatedContinuumCompletion.entries,
 				unexportedChanges: true,
 				dateModified: Date.now(),
 			})
+
+			if (target.checked && updatedContinuumCompletion.notify) {
+				toastControl.show({selector: 'big-seven_data-entry-toast_reminder', duration: 8000})
+			}
 
 		}
 

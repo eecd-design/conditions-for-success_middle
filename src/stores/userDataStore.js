@@ -534,7 +534,36 @@ let updateContinuumCompletion = async ({
 			operation,
 		});
 
-		return continuumCompletion;
+		let notify = false;
+
+		let hasUnassessed = false;
+		let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
+		let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
+		let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
+
+		switch (phase) {
+			case 'implementing':
+				if (initiatingIsUnassessed) hasUnassessed = true;
+				break;
+			case 'developing':
+				if (initiatingIsUnassessed || implementingIsUnassessed) hasUnassessed = true;
+				break;
+			case 'sustaining':
+				if (initiatingIsUnassessed || implementingIsUnassessed || developingIsUnassessed)
+					hasUnassessed = true;
+				break;
+		}
+
+		// Only remind once per component (resets on import)
+		if (hasUnassessed && !continuumCompletion[component].reminded) {
+			notify = true;
+			continuumCompletion[component].reminded = true;
+		}
+
+		return {
+			entries: continuumCompletion,
+			notify,
+		};
 	}
 };
 
