@@ -6,7 +6,7 @@ const { id, message, colour, type } = Astro.props;
 	id={id}
 	class="toast-container"
 	role="status"
-	aria-live={type === "success" ? "polite" : "assertive"}
+	aria-live={type === 'failure' ? 'assertive' : 'polite'}
 >
 	<div
 		class="toast"
@@ -32,7 +32,7 @@ const { id, message, colour, type } = Astro.props;
 		pointer-events: none;
 	}
 
-	main.big-seven[data-mode="assessment"] .toast-group {
+	main.big-seven[data-mode='assessment'] .toast-group {
 		padding-top: var(--space-base);
 		top: 3.75rem;
 	}
@@ -79,16 +79,13 @@ const { id, message, colour, type } = Astro.props;
 		gap: var(--space-xs);
 		padding: var(--space-2xs) var(--space-sm);
 		min-height: 3rem;
-		background-color: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
+		background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
 		border-radius: var(--border-radius-normal);
 		font-size: var(--font-size-2xs);
 		box-shadow: var(--box-shadow);
 	}
 
-	.toast[data-type="failure"] {
+	.toast:is([data-type='failure'], [data-type='reminder']) {
 		--icon-size: 1rem;
 	}
 </style>

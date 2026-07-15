@@ -2,8 +2,7 @@
 import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import IconXmark from 'src/components/icons/IconXmark_20.astro';
 import Toast from 'src/components/Toast.astro';
-import IconCheckmark from '../icons/IconCheckmark_12.astro';
-import IconWarningSmall from '../icons/IconWarning_16.astro';
+import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 ---
 
 <dialog
@@ -76,7 +75,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 			colour={'red'}
 			type={'failure'}
 		>
-			<IconWarningSmall slot={'icon'} />
+			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>
@@ -151,7 +150,7 @@ import IconWarningSmall from '../icons/IconWarning_16.astro';
 			colour={'red'}
 			type={'failure'}
 		>
-			<IconWarningSmall slot={'icon'} />
+			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
 	</div>
 </dialog>

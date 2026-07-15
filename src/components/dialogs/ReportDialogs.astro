@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Toast from 'src/components/Toast.astro';
 import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
 import IconCheckmark from '../icons/IconCheckmark_8.astro';
-import IconWarningSmall from '../icons/IconWarning_16.astro';
+import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -120,7 +120,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		colour={'red'}
 		type={'failure'}
 	>
-		<IconWarningSmall slot={'icon'} />
+		<IconXmarkInCircle slot={'icon'} />
 	</Toast>
 </dialog>
 
