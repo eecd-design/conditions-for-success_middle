@@ -35,18 +35,24 @@ components = components.map((component) => {
 	}
 })
 
+let path = Astro.url.pathname;
+
 let sectionLinks = [];
 sectionLinks.push({
-	url: "#overview",
+	url: `${path}#overview`,
 	text: "Overview",
 	dataset: [{
 		key: 'tag',
 		value: '0'
+	}, {
+		key: 'icon-on-hover', 
+		value: ''
 	}]
 })
+
 for (let indicator of indicators) {
 	sectionLinks.push({
-		url: `#indicator-${indicator.data.tag}`,
+		url: `${path}#indicator-${indicator.data.tag}`,
 		text: indicator.data.title,
 		dataset: [{
 			key: 'tag',
