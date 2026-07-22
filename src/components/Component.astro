@@ -697,12 +697,15 @@ let phases = [
 		);
 
 		// 1. Update checkboxes to match checked state
-		for (let consideration of relevantConsiderationsEstablished) {
-			let input = document.querySelector(
-				`input[value="${consideration}"]`,
-			) as HTMLInputElement;
-
-			input.checked = true;
+		let considerationInputs = document.querySelectorAll(
+			'input[name="considerationsEstablished"]',
+		) as NodeListOf<HTMLInputElement>;
+		for (let input of considerationInputs) {
+			if (relevantConsiderationsEstablished.includes(input.value)) {
+				input.checked = true;
+			} else {
+				input.checked = false;
+			}
 		}
 
 		// 2. Update consideration status on accordion buttons
