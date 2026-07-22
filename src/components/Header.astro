@@ -1,27 +1,27 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-import SearchDialog from "./dialogs/SearchDialog.astro";
-import MediaDialog from "./dialogs/MediaDialog.astro";
-import MobileNavDialog from "./dialogs/MobileNavDialog.astro";
+import SearchDialog from './dialogs/SearchDialog.astro';
+import MediaDialog from './dialogs/MediaDialog.astro';
+import MobileNavDialog from './dialogs/MobileNavDialog.astro';
 
-import IconSearch from "./icons/IconSearch_24.astro";
-import IconLight from "./icons/IconLight_24.astro";
-import IconDark from "./icons/IconDark_24.astro";
-import IconInfo20 from "./icons/IconInfo_20.astro";
-import IconEdit20 from "./icons/IconEdit_20.astro";
-import IconSearch20 from "./icons/IconSearch_20.astro";
-import IconHistory20 from "./icons/IconHistory_20.astro";
-import IconMegaphone from "./icons/IconMegaphone_24.astro";
-import IconMenu from "./icons/IconMenu_20.astro";
-import IconHome from "./icons/IconHome_24.astro";
-import IconCaretDown14 from "./icons/IconCaretDown_14.astro";
-import IconArrowRight16 from "./icons/IconArrowRight_16.astro";
-import IconXmark from "src/components/icons/IconXmark_20.astro";
-import IconVideo from "src/components/icons/IconVideo_48.astro";
+import IconSearch from './icons/IconSearch_24.astro';
+import IconLight from './icons/IconLight_24.astro';
+import IconDark from './icons/IconDark_24.astro';
+import IconInfo20 from './icons/IconInfo_20.astro';
+import IconEdit20 from './icons/IconEdit_20.astro';
+import IconSearch20 from './icons/IconSearch_20.astro';
+import IconHistory20 from './icons/IconHistory_20.astro';
+import IconMegaphone from './icons/IconMegaphone_24.astro';
+import IconMenu from './icons/IconMenu_20.astro';
+import IconHome from './icons/IconHome_24.astro';
+import IconCaretDown14 from './icons/IconCaretDown_14.astro';
+import IconArrowRight16 from './icons/IconArrowRight_16.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import IconVideo from 'src/components/icons/IconVideo_48.astro';
 
-import { Image } from "astro:assets";
-import welcomeVideoPoster from "src/images/welcome-video-poster.png";
+import { Image } from 'astro:assets';
+import welcomeVideoPoster from 'src/images/welcome-video-poster.png';
 
 const { url } = Astro;
 let path = url.pathname;
@@ -29,83 +29,150 @@ let base = import.meta.env.BASE_URL;
 
 let patternUrl = `url('${base}patterns/pattern.svg')`;
 
-let allIndicators = await getCollection("indicators");
+let allIndicators = await getCollection('indicators');
 let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
-let allResources = await getCollection("resources", ({data}) => {
+let allResources = await getCollection('resources', ({ data }) => {
 	return data.published === true;
 });
-let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resource.data.dateAdded.getTime()));
-
+let mostRecentResourceTimestamp = Math.max(
+	...allResources.map((resource) => resource.data.dateAdded.getTime()),
+);
 ---
 
-<header id="top" data-theme="red" data-background="dark">
-
+<header
+	id="top"
+	data-theme="red"
+	data-background="dark"
+>
 	<div class="wrapper">
-
-		<div class="site-announcement-container" role="region" aria-label="Site announcement" data-theme="red" hidden data-most-recent-timestamp={mostRecentResourceTimestamp}>
-			<IconMegaphone/>
-			<span>New resources were added recently. <a href={`./resources/`}>Explore what's new.</a></span>
+		<div
+			class="site-announcement-container"
+			role="region"
+			aria-label="Site announcement"
+			data-theme="red"
+			hidden
+			data-most-recent-timestamp={mostRecentResourceTimestamp}
+		>
+			<IconMegaphone />
+			<span
+				>New resources were added recently. <a href={`./resources/`}>Explore what's new.</a
+				></span
+			>
 		</div>
 		<div class="site-masthead">
-			<nav class="global" aria-label="Main navigation">
+			<nav
+				class="global"
+				aria-label="Main navigation"
+			>
 				<ul class="nav-links-list">
 					<li class="home-name">
-						<a href="./" data-font-type="serif" aria-label="Home" data-style-as="button">
+						<a
+							href="./"
+							data-font-type="serif"
+							aria-label="Home"
+							data-style-as="button"
+						>
 							NB Middle School Conditions for Success
 						</a>
 					</li>
 					<li class="home-icon">
-						<a href="./" aria-label="Home" data-style-as="button" >
+						<a
+							href="./"
+							aria-label="Home"
+							data-style-as="button"
+						>
 							<span class="icon-and-label-container">
 								<IconHome />
-								<span class="label-container" hidden>
+								<span
+									class="label-container"
+									hidden
+								>
 									<span class="label">Home</span>
 								</span>
 							</span>
 						</a>
 					</li>
 					<li class="subnav-container">
-						<button class="subnav-toggle" type="button" aria-expanded="false">
+						<button
+							class="subnav-toggle"
+							type="button"
+							aria-expanded="false"
+						>
 							<span class="icon-and-label-container">
 								<span class="label-container">
 									<span class="label">The Big Seven</span>
 								</span>
-								<IconCaretDown14/>
+								<IconCaretDown14 />
 							</span>
 						</button>
 						<ul class="subnav-links-list">
 							<li>
-								<a class="subnav-link"
-									aria-current={path.endsWith("/big-seven/") ? "page" : null}
-									href={`./big-seven/`}>
+								<a
+									class="subnav-link"
+									aria-current={path.endsWith('/big-seven/') ? 'page' : null}
+									href={`./big-seven/`}
+								>
 									Introduction
 								</a>
 							</li>
-							{indicators.map((indicator)=> {
-								let indicatorPath = `./big-seven/${indicator.id}/`;
-								return (
-									<li>
-										<a class="subnav-link"
-											aria-current={path.endsWith(`/${indicator.id}/`)
-												? "page"
-												: null}
-											href={indicatorPath}
+							{
+								indicators.map((indicator) => {
+									let indicatorPath = `./big-seven/${indicator.id}/`;
+									return (
+										<li>
+											<a
+												class="subnav-link"
+												aria-current={
+													path.endsWith(`/${indicator.id}/`)
+														? 'page'
+														: null
+												}
+												href={indicatorPath}
 											>
-											{indicator.data.title}								
-										</a>
-									</li>
-								)
-							})}
+												{indicator.data.title}
+											</a>
+										</li>
+									);
+								})
+							}
 						</ul>
 					</li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/resources/') ? 'page' : null} href={`./resources/`}>Resources</a></li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/training/') ? 'page' : null} href={`./training/`}>Training</a></li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/report/') ? 'page' : null} href={`./report/`}>Report</a></li>
-					<li><a class="nav-link" data-style-as="button" aria-current={path.includes('/support/') ? 'page' : null} href={`./support/`}>Support</a></li>
+					<li>
+						<a
+							class="nav-link"
+							data-style-as="button"
+							aria-current={path.includes('/resources/') ? 'page' : null}
+							href={`./resources/`}
+							>Resources</a>
+					</li>
+					<li>
+						<a
+							class="nav-link"
+							data-style-as="button"
+							aria-current={path.includes('/training/') ? 'page' : null}
+							href={`./training/`}
+							>Training</a>
+					</li>
+					<li>
+						<a
+							class="nav-link"
+							data-style-as="button"
+							aria-current={path.includes('/report/') ? 'page' : null}
+							href={`./report/`}
+							>Report</a>
+					</li>
+					<li>
+						<a
+							class="nav-link"
+							data-style-as="button"
+							aria-current={path.includes('/support/') ? 'page' : null}
+							href={`./support/`}
+							>Support</a>
+					</li>
 				</ul>
 			</nav>
-			<MobileNavDialog/>
+			<MobileNavDialog />
 			<div class="global-controls">
 				<button
 					class="search open-dialog"
@@ -129,7 +196,12 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 						</span>
 					</span>
 				</button> -->
-				<button class="menu open-dialog" data-dialog="mobile-nav-dialog" type="button" aria-label="Open Menu">
+				<button
+					class="menu open-dialog"
+					data-dialog="mobile-nav-dialog"
+					type="button"
+					aria-label="Open Menu"
+				>
 					<span class="icon-and-label-container">
 						<IconMenu />
 						<span class="label-container">
@@ -139,124 +211,181 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 				</button>
 			</div>
 		</div>
-		<div class="background" aria-hidden="true"></div>
-
+		<div
+			class="background"
+			aria-hidden="true"
+		>
+		</div>
 
 		<!-- 
 		---- Homepage Only
 		-->
 
-		{path === base && (
-			<div class="site-title-container">
-				<h1 id="main-heading" class="site-title" tabindex="-1">New Brunswick Middle Schools: A Window of Opportunity</h1>
-				<p class="site-subtitle" data-font-type="serif">Conditions for Success Developmental Continuums</p>
-			</div>
-			<div class="media-container">
-				<button class="media open-dialog" data-dialog="media-dialog" data-dialog-heading="Welcome to the Conditions for Success Website!" data-media-type="video" data-media-src={`./assets/media/welcome.mp4`} data-media-external="false" type="button">
-					<Image
-						src={welcomeVideoPoster}
-						alt="A snapshot of the website welcome video."
-					/>
-					<span class="icon-container">
-						<IconVideo/>
-					</span>
-				</button>
-			</div>
-			<MediaDialog/>
-			<div class="launchpad callout" data-style="solid" data-intensity="bold">
-				<div class="wrapper">
-					<h2>I want to...</h2>
-					<ul class="shortcuts-list favourite">
-						<li>
-							<a href={`./big-seven/`} data-style-as="button" data-style="solid" data-size="large">
-								<span class="icon-and-label-container">
-									<IconInfo20/>
-									<span class="label-container">
-										<span class="label">Learn about the continuums</span>
-									</span>
-								</span>
-							</a>
-						</li>
-						<li data-restrict-device-min="medium">
-							<a href={`./big-seven/?dialog=create-assessment`} data-style-as="button" data-style="solid" data-size="large">
-								<span class="icon-and-label-container">
-									<IconEdit20/>
-									<span class="label-container">
-										<span class="label" data-field="assessmentShortcut">Start an assessment</span>
-									</span>
-								</span>
-							</a>
-						</li>
-						<li>
-							<a href={`./resources/`} data-style-as="button" data-style="solid" data-size="large">
-								<span class="icon-and-label-container">
-									<IconSearch20/>
-									<span class="label-container">
-										<span class="label">Find a resource</span>
-									</span>
-								</span>
-							</a>
-						</li>
-					</ul>
-					<h2 hidden>Last time, I was working on...</h2>
-					<ul class="shortcuts-list recent" hidden>
-						<template>
-							<li>
-								<a href="" data-style-as="button" data-style="solid" data-size="large">
-									<span class="icon-and-label-container">
-										<IconHistory20/>
-										<span class="label-container">
-											<span class="label"></span>
+		{
+			path === base && (
+				<>
+					<div class="site-title-container">
+						<h1
+							id="main-heading"
+							class="site-title"
+							tabindex="-1"
+						>
+							New Brunswick Middle Schools: A Window of Opportunity
+						</h1>
+						<p
+							class="site-subtitle"
+							data-font-type="serif"
+						>
+							Conditions for Success Developmental Continuums
+						</p>
+					</div>
+					<div class="media-container">
+						<button
+							class="media open-dialog"
+							data-dialog="media-dialog"
+							data-dialog-heading="Welcome to the Conditions for Success Website!"
+							data-media-type="video"
+							data-media-src={`./assets/media/welcome.mp4`}
+							data-media-external="false"
+							type="button"
+						>
+							<Image
+								src={welcomeVideoPoster}
+								alt="A snapshot of the website welcome video."
+							/>
+							<span class="icon-container">
+								<IconVideo />
+							</span>
+						</button>
+					</div>
+					<MediaDialog />
+					<div
+						class="launchpad callout"
+						data-style="solid"
+						data-intensity="bold"
+					>
+						<div class="wrapper">
+							<h2>I want to...</h2>
+							<ul class="shortcuts-list favourite">
+								<li>
+									<a
+										href={`./big-seven/`}
+										data-style-as="button"
+										data-style="solid"
+										data-size="large"
+									>
+										<span class="icon-and-label-container">
+											<IconInfo20 />
+											<span class="label-container">
+												<span class="label">
+													Learn about the continuums
+												</span>
+											</span>
 										</span>
-									</span>
-								</a>
-							</li>
-						</template>
-					</ul>
-				</div>
-			</div>
-		)}
-
+									</a>
+								</li>
+								<li data-restrict-device-min="medium">
+									<a
+										href={`./big-seven/?dialog=create-assessment`}
+										data-style-as="button"
+										data-style="solid"
+										data-size="large"
+									>
+										<span class="icon-and-label-container">
+											<IconEdit20 />
+											<span class="label-container">
+												<span
+													class="label"
+													data-field="assessmentShortcut"
+												>
+													Start an assessment
+												</span>
+											</span>
+										</span>
+									</a>
+								</li>
+								<li>
+									<a
+										href={`./resources/`}
+										data-style-as="button"
+										data-style="solid"
+										data-size="large"
+									>
+										<span class="icon-and-label-container">
+											<IconSearch20 />
+											<span class="label-container">
+												<span class="label">Find a resource</span>
+											</span>
+										</span>
+									</a>
+								</li>
+							</ul>
+							<h2 hidden>Last time, I was working on...</h2>
+							<ul
+								class="shortcuts-list recent"
+								hidden
+							>
+								<template>
+									<li>
+										<a
+											href=""
+											data-style-as="button"
+											data-style="solid"
+											data-size="large"
+										>
+											<span class="icon-and-label-container">
+												<IconHistory20 />
+												<span class="label-container">
+													<span class="label" />
+												</span>
+											</span>
+										</a>
+									</li>
+								</template>
+							</ul>
+						</div>
+					</div>
+				</>
+			)
+		}
 	</div>
-
 </header>
 
 <SearchDialog />
 
 <style is:global define:vars={{ patternUrl }}>
-
 	header {
 		container: header / inline-size;
-        position: relative;
-        z-index: 100;
+		position: relative;
+		z-index: 100;
 	}
-	
+
 	header > .wrapper {
 		--wrapper-margin: var(--space-2xl);
 
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-template-rows: auto auto auto auto auto;
-		grid-template-areas: 
-		"announcement announcement"
-		"masthead masthead"
-		"title title"
-		"media launchpad"
-		"media launchpad";
+		grid-template-areas:
+			'announcement announcement'
+			'masthead masthead'
+			'title title'
+			'media launchpad'
+			'media launchpad';
 		align-items: center;
 		justify-items: center;
 		column-gap: var(--space-2xl);
 	}
 
 	@container header (width < 1464px) {
-		header >.wrapper {
-			grid-template-areas: 
-			"announcement announcement"
-			"masthead masthead"
-			"title title"
-			"media media"
-			"launchpad launchpad"
-			"launchpad launchpad";
+		header > .wrapper {
+			grid-template-areas:
+				'announcement announcement'
+				'masthead masthead'
+				'title title'
+				'media media'
+				'launchpad launchpad'
+				'launchpad launchpad';
 		}
 	}
 
@@ -269,13 +398,13 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 	/* 
 	// Background Pattern
 	*/
-	
+
 	header .background {
 		grid-column: 1 / span 2;
 		grid-row: 1 / span 4;
 		width: 100%;
 		height: 100%;
-		background: 
+		background:
 			var(--patternUrl) repeat,
 			var(--colour-fill-neutral-bold);
 		background-blend-mode: screen;
@@ -295,7 +424,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 	header .site-announcement-container {
 		--icon-size: 1.25rem;
 		--icon-colour: var(--colour-ui-reverse);
-		
+
 		grid-area: announcement;
 		display: flex;
 		align-items: center;
@@ -329,8 +458,8 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		align-items: center;
 		gap: var(--space-2xs);
 		min-height: 7rem;
-		width: calc(100% - ((2*var(--wrapper-margin)) - (2*(var(--space-sm)))));
-		max-width: calc(1920px - (2*var(--wrapper-margin)));
+		width: calc(100% - ((2 * var(--wrapper-margin)) - (2 * (var(--space-sm)))));
+		max-width: calc(1920px - (2 * var(--wrapper-margin)));
 	}
 
 	@container header (width < 1266px) {
@@ -381,14 +510,14 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		z-index: 100;
 	}
 
-	header nav.global button.subnav-toggle[aria-expanded="true"] + .subnav-links-list {
+	header nav.global button.subnav-toggle[aria-expanded='true'] + .subnav-links-list {
 		display: flex;
 	}
 
-    header nav.global .subnav-links-list > li {
-        font-size: var(--font-size-xs);
-        line-height: 1.2;
-    }
+	header nav.global .subnav-links-list > li {
+		font-size: var(--font-size-xs);
+		line-height: 1.2;
+	}
 
 	/* Text Links and Buttons */
 
@@ -406,7 +535,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		align-items: center;
 		min-height: 3rem;
 		padding: var(--space-2xs) var(--space-sm);
-		
+
 		font-size: var(--font-size-sm);
 	}
 
@@ -416,15 +545,15 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		--label-colour: var(--colour-ui-neutral);
 		--button-ui-colour: var(--colour-ui-neutral);
 	}
-	
-	header nav.global .nav-link[aria-current="page"],
-	header nav.global .nav-link[aria-current="page"]:is(:hover, :focus-visible) {
+
+	header nav.global .nav-link[aria-current='page'],
+	header nav.global .nav-link[aria-current='page']:is(:hover, :focus-visible) {
 		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
 		--button-background-colour: transparent;
 		--button-ui-colour: var(--colour-ui-reverse);
 	}
 
-	header nav.global button.subnav-toggle[aria-expanded="true"] {
+	header nav.global button.subnav-toggle[aria-expanded='true'] {
 		--icon-colour: var(--colour-ui-reverse);
 		--label-colour: var(--colour-ui-reverse);
 		background-color: var(--colour-fill-accent-bold);
@@ -437,16 +566,16 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		transform-origin: center;
 	}
 
-	header nav.global button.subnav-toggle[aria-expanded="true"] .icon.caret {
+	header nav.global button.subnav-toggle[aria-expanded='true'] .icon.caret {
 		rotate: x 180deg;
 	}
 
 	header nav.global .subnav-link {
-        display: inline-block;
+		display: inline-block;
 		--link-colour: var(--colour-ui-reverse);
 		font-size: var(--font-size-xs);
 		font-weight: 300;
-		line-height: 1.2; 
+		line-height: 1.2;
 		padding: 0;
 		min-height: 0;
 	}
@@ -462,7 +591,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 	header nav.global .home-name {
 		flex-grow: 1;
 	}
-	
+
 	header nav.global .home-name a {
 		display: inline-flex;
 		width: auto;
@@ -478,9 +607,9 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		background-color: transparent;
 		color: var(--colour-ui-reverse);
 	}
-	
+
 	/* Home Icon Link */
-	
+
 	header nav.global .home-icon {
 		display: none;
 		flex-grow: 0;
@@ -499,7 +628,6 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		}
 	}
 
-
 	/* 
 	// Site Controls
 	*/
@@ -515,7 +643,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		padding: var(--space-2xs) var(--space-sm);
 		min-width: 3rem;
 	}
-	
+
 	header .global-controls button.search {
 		--icon-size: 1.25rem;
 	}
@@ -578,7 +706,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 
 	@container header (width < 1266px) {
 		header .site-title-container {
-			max-width: min(704px, calc(100% - (2*var(--wrapper-margin))));
+			max-width: min(704px, calc(100% - (2 * var(--wrapper-margin))));
 		}
 		header .site-title-container .site-title {
 			margin: 0 0 var(--space-lg);
@@ -587,11 +715,11 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 			padding: 0.875rem 1.125rem;
 		}
 	}
-	
+
 	/* 
 	// Homepage: Welcome Media
 	*/
-	
+
 	header .media-container {
 		grid-area: media;
 		justify-self: end;
@@ -610,7 +738,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		header .media-container {
 			justify-self: center;
 			min-height: 280px;
-			width: min(900px, calc(100% - (2*var(--wrapper-margin))));
+			width: min(900px, calc(100% - (2 * var(--wrapper-margin))));
 			margin: 0 0 var(--space-2xl);
 			aspect-ratio: 16 / 9;
 		}
@@ -626,7 +754,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		width: 100%;
 		margin: 0;
 	}
-	
+
 	header .launchpad > .wrapper {
 		margin-right: var(--wrapper-margin);
 	}
@@ -650,7 +778,7 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 	@container header (width < 1464px) {
 		header .launchpad {
 			justify-self: center;
-			width: min(900px, calc(100% - (2*var(--wrapper-margin))));
+			width: min(900px, calc(100% - (2 * var(--wrapper-margin))));
 			margin: 0;
 		}
 		header .launchpad > .wrapper {
@@ -659,29 +787,25 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 	}
 
 	@container header (width < 904px) {
-		header [data-restrict-device-min="medium"] {
+		header [data-restrict-device-min='medium'] {
 			display: none !important;
 		}
 	}
-
-
 </style>
 
 <script>
-
 	//
 	// Imports
 	//
 
-	import { subscribe, checkAnnouncementSession } from "src/stores/userDataStore";
-	import { eventControl } from "src/utilities/event";
+	import { subscribe, checkAnnouncementSession } from 'src/stores/userDataStore';
+	import { eventControl } from 'src/utilities/event';
 
-	// 
+	//
 	// Methods
 	//
 
-	let createLaunchpadLink = ({list, title, path}) => {
-
+	let createLaunchpadLink = ({ list, title, path }) => {
 		let template = list.querySelector('template');
 		if (!template) return;
 
@@ -689,12 +813,11 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		let item = template.content.cloneNode(true) as HTMLElement;
 
 		// Update the label
-		item.querySelector(".label").textContent = title.trim();
+		item.querySelector('.label').textContent = title.trim();
 		item.querySelector('a').href = path;
 
 		return item;
-
-	}
+	};
 
 	//
 	// DOM Updates
@@ -704,37 +827,31 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		let launchpad = document.querySelector('.launchpad');
 		if (!launchpad) return;
 
-		let triggerKeys = [
-			"mode",
-			"lastVisitedPage",
-			"lastModifiedPage",
-		];
+		let triggerKeys = ['mode', 'lastVisitedPage', 'lastModifiedPage'];
 		if (
 			!changes.initiating &&
-			!(
-				changes.uiState &&
-				triggerKeys.some((val) => changes.uiState.includes(val))
-			)
+			!(changes.uiState && triggerKeys.some((val) => changes.uiState.includes(val)))
 		)
 			return;
 
 		let { mode, lastVisitedPage, lastModifiedPage } = data.uiState;
-		
+
 		// Update the assessment button
-		let assessmentShortcutField = launchpad.querySelector('.shortcuts-list.favourite [data-field="assessmentShortcut"]');
+		let assessmentShortcutField = launchpad.querySelector(
+			'.shortcuts-list.favourite [data-field="assessmentShortcut"]',
+		);
 
 		if (assessmentShortcutField) {
-
 			let assessmentShortcutLink = assessmentShortcutField.closest('a');
 
 			if (mode === 'assessment' && lastModifiedPage) {
 				assessmentShortcutField.textContent = 'Continue assessment';
-				assessmentShortcutLink.href = lastModifiedPage?.path ?? './big-seven/leadership-and-teaming/';
+				assessmentShortcutLink.href =
+					lastModifiedPage?.path ?? './big-seven/leadership-and-teaming/';
 			} else {
 				assessmentShortcutField.textContent = 'Start an assessment';
 				assessmentShortcutLink.href = `./big-seven/?dialog=create-assessment`;
 			}
-
 		}
 
 		// Update the recent page button
@@ -743,7 +860,6 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		let recentShortcutsHeading = recentShortcutsList.previousElementSibling;
 
 		if (lastVisitedPage && lastVisitedPage.path !== '/') {
-
 			let link = createLaunchpadLink({
 				list: recentShortcutsList,
 				title: lastVisitedPage.title,
@@ -757,24 +873,20 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 			recentShortcutsList.append(link);
 			recentShortcutsList.removeAttribute('hidden');
 			recentShortcutsHeading.removeAttribute('hidden');
-
 		} else {
 			recentShortcutsList.setAttribute('hidden', '');
 			recentShortcutsHeading.setAttribute('hidden', '');
 		}
+	};
 
-	}
-
-	// 
+	//
 	// Inits
 	//
 
-	
-	
 	let onPageLoad = (event) => {
 		let path = window.location.pathname;
 		let base = import.meta.env.BASE_URL;
-		
+
 		if (path.endsWith(base)) {
 			subscribe(updateLaunchpad);
 		}
@@ -784,13 +896,12 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 			let announcementContainer = document.querySelector('.site-announcement-container');
 			announcementContainer.toggleAttribute('hidden', !showAnnouncement);
 		}
-
-	}
+	};
 	eventControl.add({
 		elem: document,
-		eventType: "astro:page-load",
+		eventType: 'astro:page-load',
 		fn: onPageLoad,
-	})
+	});
 
 	let onSubnavToggleClick = (event) => {
 		let target = event.target as any;
@@ -798,48 +909,44 @@ let mostRecentResourceTimestamp = Math.max(...allResources.map(resource => resou
 		if (target.matches('button.subnav-toggle')) {
 			let expanded = target.getAttribute('aria-expanded') === 'true';
 			target.setAttribute('aria-expanded', String(!expanded));
-            return;
+			return;
 		}
-        
-	}
+	};
 	eventControl.add({
 		selector: 'header .site-masthead',
-		eventType: "click",
+		eventType: 'click',
 		fn: onSubnavToggleClick,
-	})
+	});
 
 	let onDocumentClick = (event) => {
 		let target = event.target as any;
 
-        let subnavContainer = document.querySelector('nav.global .subnav-container');	
-        if (!subnavContainer.contains(target)) {
-            let btn = subnavContainer.querySelector('button.subnav-toggle');
-            btn.setAttribute('aria-expanded', 'false'); 
-        }
-
-	}
+		let subnavContainer = document.querySelector('nav.global .subnav-container');
+		if (!subnavContainer.contains(target)) {
+			let btn = subnavContainer.querySelector('button.subnav-toggle');
+			btn.setAttribute('aria-expanded', 'false');
+		}
+	};
 	eventControl.add({
 		elem: document,
-		eventType: "click",
+		eventType: 'click',
 		fn: onDocumentClick,
-	})
+	});
 
 	let onFocusout = (event) => {
 		let target = event.target as any;
 		let next = event.relatedTarget as any;
 
 		if (target.matches('button.subnav-toggle, .subnav-link')) {
-			let subnavContainer = target.closest('.subnav-container');			
+			let subnavContainer = target.closest('.subnav-container');
 			if (subnavContainer && subnavContainer.contains(next)) return;
 			let btn = subnavContainer.querySelector('button.subnav-toggle');
 			btn.setAttribute('aria-expanded', 'false');
 		}
-
-	}
+	};
 	eventControl.add({
 		selector: 'header .site-masthead',
-		eventType: "focusout",
+		eventType: 'focusout',
 		fn: onFocusout,
-	})
-
+	});
 </script>
