@@ -1081,10 +1081,6 @@ main {
 
 		& > .left-aside {
 			grid-area: left-aside;
-
-			@container main (width < 1112px) {
-				display: none;
-			}
 		}
 
 		& > .content {
