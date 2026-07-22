@@ -148,11 +148,22 @@ for (let indicator of indicators) {
 				
 				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
 
-				<button class="download-report" aria-label="Download Assessment Report" type="button" >
+				<button class="download-report-pdf" aria-label="Download Assessment PDF Report" type="button" >
 					<span class="icon-and-label-container">
 						<IconDownload20/>
 						<span class="label-container">
-							<span class="label">Download</span>
+							<span class="label">Download PDF</span>
+						</span>
+					</span>
+				</button>
+
+				<div class="separator item" data-orientation="vertical" aria-hidden="true" ></div>
+
+				<button class="download-report-csv" aria-label="Download Assessment CSV Report" type="button" >
+					<span class="icon-and-label-container">
+						<IconDownload20/>
+						<span class="label-container">
+							<span class="label">Download CSV</span>
 						</span>
 					</span>
 				</button>
@@ -388,8 +399,9 @@ for (let indicator of indicators) {
 	} from 'src/stores/userDataStore';
 	import html2canvas from 'html2canvas';
 	import jsPDF from 'jspdf';
+	import Papa from 'papaparse';
 	import { eventControl } from 'src/utilities/event';
-import { toastControl } from 'src/utilities/toast';
+	import { toastControl } from 'src/utilities/toast';
 
 	//
 	// Methods
@@ -496,7 +508,7 @@ import { toastControl } from 'src/utilities/toast';
 
 	})();
 
-	let packageReport = async () => {
+	let packageReportAsPdf = async () => {
 
         let debug = false;
 
@@ -751,6 +763,70 @@ import { toastControl } from 'src/utilities/toast';
 
 	}
 
+	let packageReportAsCsv = async () => {
+
+		let assessment = getActiveReportData();
+		if (!assessment) return;
+
+		// Define columns for the main CSV
+		let data = [];
+
+		let count = await userDataStore.getConsiderationCount();
+
+		console.log(count);
+
+		for (let [tag, value] of Object.entries(count)) {
+
+			if (tag.match(/^\d$/) || tag.match(/^\d\.\d$/)){
+
+				let completion = assessment.continuumCompletion[tag];
+				let entry = {
+					School: assessment.school || '',
+					District: assessment.district || '',
+					'Reporting Year': assessment.reportingYear || '',
+					'Indicator or Component': tag,
+					'Considerations Established': 0,
+					'Total Considerations': value.total,
+					'Completion Percentage': 0,
+					'Current Phase': 'Initiating',
+					'Assessment Completion Date': formatDateAsString(assessment.dateCompleted),
+					'Continuum Version': assessment.continuumVersion || '',
+				}
+
+				if (completion) {
+					entry['Considerations Established'] = completion.count;
+					entry['Completion Percentage'] = Math.floor(completion.ratio * 100);
+					entry['Current Phase'] = completion.phase;
+				}
+					
+				data.push(entry);
+				
+			}
+
+		}
+
+		data.sort((a, b) => {
+			return a['Indicator or Component'] - b['Indicator or Component'];
+		})
+		
+		console.log(data);
+
+		// Convert both sections to CSV
+		let csv = Papa.unparse(data);
+
+		// Filename
+		let fileDate = formatDateAsString(new Date(), false);
+		let filename = `${toKebabCase(assessment.school)}_${assessment.reportingYear}-report_downloaded-${fileDate}.csv`;
+
+		// Trigger download
+		let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+		let link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = filename;
+		link.click();
+
+	}
+
 	//
 	// DOM Updates
 	//
@@ -912,8 +988,12 @@ import { toastControl } from 'src/utilities/toast';
 		let toolbar = target.closest('#report-controls');
 		if (!toolbar) return;
 
-		if (target.matches('button.download-report')) {
-			packageReport();
+		if (target.matches('button.download-report-pdf')) {
+			packageReportAsPdf();
+		}
+
+		if (target.matches('button.download-report-csv')) {
+			packageReportAsCsv();
 		}
 
 		if (target.matches('button.close-report')) {
