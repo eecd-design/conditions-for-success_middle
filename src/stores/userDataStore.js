@@ -241,8 +241,8 @@ let setAssessment = (update) => {
 					: null;
 
 			update.lastModifiedBy = update.activeAssessor ?? data.assessments[index].activeAssessor;
-			Object.assign(data.assessments[index], update);
 		}
+		Object.assign(data.assessments[index], update);
 	}
 	let changes = {
 		assessments: Object.keys(update),
