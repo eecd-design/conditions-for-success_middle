@@ -185,6 +185,7 @@ let schoolList = {
 					name="school"
 					required
 					disabled
+					data-disabled-by-default
 				>
 					<option value="">Select a school...</option>
 				</select>
@@ -264,6 +265,16 @@ let schoolList = {
 				>Create</button
 			>
 			<button
+				class="duplicate"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-restrict-context="duplicate"
+				data-toast-success="edit-assessment-properties-dialog_duplicate-toast_success"
+				data-toast-failure="edit-assessment-properties-dialog_duplicate-toast_failure"
+				>Duplicate</button
+			>
+			<button
 				class="save"
 				type="button"
 				data-style="solid"
@@ -282,6 +293,15 @@ let schoolList = {
 		<Toast
 			id={'edit-assessment-properties-dialog_create-toast_failure'}
 			message={`Unable to create assessment. Please reload the page to try again.`}
+			colour={'red'}
+			type={'failure'}
+		>
+			<IconXmarkInCircle slot={'icon'} />
+		</Toast>
+		<!-- Duplication Success Toast in Assessors Dialog -->
+		<Toast
+			id={'edit-assessment-properties-dialog_duplicate-toast_failure'}
+			message={`Unable to duplicate assessment. Please reload the page to try again.`}
 			colour={'red'}
 			type={'failure'}
 		>
@@ -475,11 +495,13 @@ let schoolList = {
 		createAssessment,
 		updateChangeLog,
 		getActiveAssessmentData,
+		getAssessmentData,
 		getAssessmentDate,
 		getStatusColour,
 		setAssessment,
 		subscribe,
 		getUserData,
+		duplicateAssessment,
 	} from 'src/stores/userDataStore';
 	import { getFormValues, resetForm, validateForm, validateField } from 'src/utilities/form';
 	import { joinWithAnd, toTitleCase } from 'src/utilities/helpers.js';
@@ -716,19 +738,35 @@ let schoolList = {
 			// console.log("Updating Dialog (edit properties)");
 
 			let context = dialog.getAttribute('data-context');
+			let targetId = Number(dialog.getAttribute('data-target-id'));
+
+			let districtSelect = dialog.querySelector(
+				'select[name="district"]',
+			) as HTMLSelectElement;
+			let schoolSelect = dialog.querySelector('select[name="school"]') as HTMLSelectElement;
+			let reportingYearField = dialog.querySelector(
+				'input[name="reportingYear"]',
+			) as HTMLInputElement;
 
 			if (context === 'setup') {
 				let forms = dialog.querySelectorAll('form');
 				for (let form of forms) {
 					resetForm({ form, resetType: 'hard' });
 				}
-			} else if (context === 'configure' || !context) {
-				let districtSelect = dialog.querySelector('select[name="district"]');
-				revealSchoolOptionGroup(districtSelect, assessment.district);
+			} else if (['configure', 'duplicate'].includes(context) || !context) {
+				let targetAssessment = assessment;
+				if (targetId) targetAssessment = getAssessmentData(targetId);
+				revealSchoolOptionGroup(districtSelect, targetAssessment.district);
 				updateFieldsFromAssessmentData({
-					assessment: assessment,
+					assessment: targetAssessment,
 					dialog: dialog,
 				});
+
+				if (context === 'duplicate') {
+					districtSelect.disabled = true;
+					schoolSelect.disabled = true;
+					reportingYearField.value = String(Number(reportingYearField.value) + 1);
+				}
 			}
 		} else {
 			let forms = dialog.querySelectorAll('form');
@@ -773,6 +811,7 @@ let schoolList = {
 			try {
 				// Get the form values and create the assessment
 				let values = getFormValues(form);
+
 				createAssessment(values);
 				// Reset consideration checkboxes
 				for (let input of document.querySelectorAll(
@@ -780,6 +819,42 @@ let schoolList = {
 				) as NodeListOf<HTMLInputElement>) {
 					input.checked = false;
 				}
+
+				toastControl.show({ target, type: 'success' });
+
+				// Open assessor dialog
+				dialogControl.open({
+					dialogId: 'assessor-dialog',
+					context: 'setup',
+				});
+
+				// Reset touched fields
+				touchedFormFields.clear();
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+
+		if (target.matches('button.duplicate')) {
+			let form = target.closest('form');
+			let context = dialog.getAttribute('data-context');
+
+			// Mark all fields as interacted with
+			let fields = form.querySelectorAll('input[required], select[required]');
+			for (let field of fields) touchedFormFields.add(field);
+
+			let formValidity = validateForm({ form, touchedFormFields });
+			if (!formValidity) return;
+
+			try {
+				// Get the form values and create the assessment
+				let values = getFormValues(form);
+
+				let targetId = Number(dialog.getAttribute('data-target-id'));
+				let targetAssessment = getAssessmentData(targetId);
+
+				duplicateAssessment(targetAssessment, values.reportingYear);
 
 				toastControl.show({ target, type: 'success' });
 
