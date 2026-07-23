@@ -112,7 +112,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		<div
 			class="elem-group"
 			data-fit="compact"
-			data-columns="2"
+			data-columns="1"
 		>
 			<ul class="saved-assessments-list wrapper">
 				<template>
@@ -130,117 +130,116 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						>
 						</div>
 						<div class="wrapper">
-							<h4 class="heading icon-and-label-container">
-								<!-- <IconAssessment /> -->
-								<span class="label-container">
-									<span
-										class="title"
-										data-field="school"
-									></span>
-									<span
-										class="subtitle"
-										data-field="reportingYear"
-										>2025</span
-									>
-								</span>
-							</h4>
-							<div class="details">
-								<span class="label-group">
-									<div
-										class="edit-status label-container field-container"
-										data-vibrancy="vivid"
-										data-style="solid"
-									>
+							<div class="metadata-container">
+								<h4 class="heading icon-and-label-container">
+									<!-- <IconAssessment /> -->
+									<span class="label-container">
 										<span
-											class="label"
-											data-field="editStatus"
+											class="title"
+											data-field="school"
 										></span>
-									</div>
-									<div
-										class="export-status label-container field-container"
-										data-theme="red"
-										hidden
-									>
 										<span
-											class="label"
-											data-field="exportStatus"
-											>*Unexported Changes</span
+											class="subtitle"
+											data-field="reportingYear"
+											>2025</span
 										>
-									</div>
-								</span>
-								<dl data-fit="compact">
-									<div class="date-created detail-container">
-										<dt>Date Created:</dt>
-										<dd data-field="dateCreated"></dd>
-									</div>
-									<div
-										class="date-completed detail-container"
-										hidden
-									>
-										<dt>Date Completed:</dt>
-										<dd data-field="dateCompleted"></dd>
-									</div>
-									<div
-										class="date-exported detail-container"
-										hidden
-									>
-										<dt>Date Exported:</dt>
-										<dd data-field="dateExported"></dd>
-									</div>
-									<div
-										class="date-modified detail-container"
-										hidden
-									>
-										<dt>Date Modified:</dt>
-										<dd data-field="dateModified"></dd>
-									</div>
-								</dl>
+									</span>
+								</h4>
+								<div class="details">
+									<span class="label-group">
+										<div
+											class="edit-status label-container field-container"
+											data-vibrancy="vivid"
+											data-style="solid"
+										>
+											<span
+												class="label"
+												data-field="editStatus"
+											></span>
+										</div>
+										<div
+											class="export-status label-container field-container"
+											data-theme="red"
+											hidden
+										>
+											<span
+												class="label"
+												data-field="exportStatus"
+												>*Unexported Changes</span
+											>
+										</div>
+									</span>
+									<dl data-fit="compact">
+										<div class="date-created detail-container">
+											<dt>Date Created:</dt>
+											<dd data-field="dateCreated"></dd>
+										</div>
+										<div
+											class="date-completed detail-container"
+											hidden
+										>
+											<dt>Date Completed:</dt>
+											<dd data-field="dateCompleted"></dd>
+										</div>
+										<div
+											class="date-exported detail-container"
+											hidden
+										>
+											<dt>Date Exported:</dt>
+											<dd data-field="dateExported"></dd>
+										</div>
+										<div
+											class="date-modified detail-container"
+											hidden
+										>
+											<dt>Date Modified:</dt>
+											<dd data-field="dateModified"></dd>
+										</div>
+									</dl>
+								</div>
 							</div>
-							<div class="button-group">
-								<button
-									class="open-assessment"
-									type="button"
-									data-size="large"
-									data-toast-success="open-assessment-dialog_open-toast_success"
-									data-toast-failure="open-assessment-dialog_open-toast_failure"
-									hidden
-									>Open</button
-								>
-								<button
-									class="open-assessment change-status"
-									type="button"
-									data-size="large"
-									data-toast-success="open-assessment-dialog_open-toast_success"
-									data-toast-failure="open-assessment-dialog_open-toast_failure"
-									hidden
-									>Mark Complete and Open</button
-								>
-								<button
-									class="duplicate-assessment open-dialog"
-									type="button"
-									data-size="large"
-									data-dialog="edit-assessment-properties-dialog"
-									data-dialog-context="duplicate"
-									data-dialog-heading="Duplicate Assessment"
-									>Duplicate</button
-								>
-								<button
-									class="delete open-dialog"
-									type="button"
-									data-size="large"
-									data-theme="red"
-									data-vibrancy="vivid"
-									aria-label="Delete Assessment"
-									data-dialog="deletion-confirmation-dialog"
-								>
-									<IconTrash />
-									<!-- <div class="icon-and-label-container">
-										<IconTrash />
-										<span class="label-container">
-											<span class="label">Delete</span>
-										</span>
-									</div> -->
-								</button>
+							<div class="controls-container">
+								<div class="button-group">
+									<button
+										class="open-assessment"
+										type="button"
+										data-size="large"
+										data-toast-success="open-assessment-dialog_open-toast_success"
+										data-toast-failure="open-assessment-dialog_open-toast_failure"
+										hidden
+										>Open</button
+									>
+									<button
+										class="open-assessment change-status"
+										type="button"
+										data-size="large"
+										data-toast-success="open-assessment-dialog_open-toast_success"
+										data-toast-failure="open-assessment-dialog_open-toast_failure"
+										hidden
+										>Mark Complete and Open</button
+									>
+									<button
+										class="duplicate-assessment open-dialog"
+										type="button"
+										data-size="large"
+										data-dialog="edit-assessment-properties-dialog"
+										data-dialog-context="duplicate"
+										data-dialog-heading="Duplicate Assessment"
+										>Duplicate</button
+									>
+									<button
+										class="delete open-dialog"
+										type="button"
+										data-size="large"
+										data-theme="red"
+										data-vibrancy="vivid"
+										aria-label="Delete Assessment"
+										data-dialog="deletion-confirmation-dialog"
+									>
+										<!-- <IconTrash /> -->
+										Delete
+									</button>
+								</div>
 							</div>
 						</div>
 					</li>
@@ -555,96 +554,66 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Open Assessment Dialog
 	*/
 
-	#open-assessment-dialog input[type='file'] {
-		font-size: var(--font-size-3xs);
-		overflow: visible !important;
-	}
+	#open-assessment-dialog {
+		& input[type='file'] {
+			font-size: var(--font-size-3xs);
+			overflow: visible !important;
 
-	#open-assessment-dialog input[type='file']::file-selector-button {
-		overflow: visible !important;
-	}
-
-	#open-assessment-dialog section.import form {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: var(--space-sm);
-	}
-
-	#open-assessment-dialog section.import form fieldset.code {
-		flex-grow: 1;
-	}
-
-	#open-assessment-dialog section.import form fieldset .heading {
-		font-size: var(--font-size-xs);
-		font-weight: 500;
-		margin: 0 0 var(--space-2xs);
-	}
-
-	#open-assessment-dialog section.import form .separator.item {
-		--separator-long-edge-dimension: 2rem;
-	}
-
-	#open-assessment-dialog section:not(:has(~ :not([hidden]))) {
-		margin-bottom: 0 !important;
-	}
-
-	#open-assessment-dialog .saved-assessments-list {
-		--group-margin: 0;
-	}
-
-	#open-assessment-dialog
-		.saved-assessments-list
-		.card:has(button.delete:is(:hover, :focus-visible)) {
-		--card-boxshadow-colour: var(--colour-border-accent-bold);
-	}
-
-	#open-assessment-dialog .saved-assessments-list .card .heading {
-		--icon-colour: var(--colour-ui-neutral-subtle);
-	}
-
-	#open-assessment-dialog .saved-assessments-list .card .button-group {
-		--group-gap: var(--space-2xs);
-		margin: 0;
-	}
-
-	#open-assessment-dialog .saved-assessments-list .card button {
-		--icon-size: 1.25rem;
-		--label-size: var(--font-size-xs);
-		padding: var(--space-2xs) var(--space-xs);
-	}
-
-	#open-assessment-dialog .saved-assessments-list .card button.delete {
-		min-width: 3rem;
-	}
-
-	#open-assessment-dialog .saved-assessments-list .card button.delete:is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-ui-reverse);
-		--button-background-colour: var(--colour-fill-accent-bold);
-	}
-
-	#open-assessment-dialog:not([data-context='report']) [data-restrict-context='report'] {
-		display: none !important;
-	}
-
-	@container card (max-width: 300px) {
-		#open-assessment-dialog
-			.saved-assessments-list
-			.card
-			.button-group:has(button.open-assessment:not([hidden]))
-			button.delete
-			.label-container {
-			display: none;
-			min-width: 3rem;
+			&::file-selector-button {
+				overflow: visible !important;
+			}
 		}
-		#open-assessment-dialog
-			.saved-assessments-list
-			.card
-			.button-group:has(button.open-assessment:not([hidden]))
-			button.delete
-			.label-container {
-			display: none;
-			min-width: 3rem;
+
+		& section.import form {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			gap: var(--space-sm);
+
+			& fieldset.code {
+				flex-grow: 1;
+			}
+
+			& fieldset .heading {
+				font-size: var(--font-size-xs);
+				font-weight: 500;
+				margin: 0 0 var(--space-2xs);
+			}
+
+			& .separator.item {
+				--separator-long-edge-dimension: 2rem;
+			}
+		}
+
+		& section:not(:has(~ :not([hidden]))) {
+			margin-bottom: 0 !important;
+		}
+
+		& .saved-assessments-list {
+			--group-margin: 0;
+
+			& .card {
+				&:has(button.delete:is(:hover, :focus-visible)) {
+					--card-boxshadow-colour: var(--colour-border-accent-bold);
+				}
+
+				& .heading {
+					--icon-colour: var(--colour-ui-neutral-subtle);
+				}
+
+				& .button-group {
+					--group-gap: var(--space-2xs);
+					margin: 0;
+
+					& button.delete:is(:hover, :focus-visible) {
+						--button-background-colour: var(--colour-fill-accent-bold);
+					}
+				}
+			}
+		}
+
+		&:not([data-context='report']) [data-restrict-context='report'] {
+			display: none !important;
 		}
 	}
 
@@ -652,30 +621,32 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Import Conflict Dialog
 	*/
 
-	#import-conflict-dialog:has(button.overwrite:hover) .card.imported {
-		--card-boxshadow-colour: var(--colour-border-neutral-bold);
-		--card-boxshadow-width: 3px;
-	}
+	#import-conflict-dialog {
+		&:has(button.overwrite:hover) .card.imported {
+			--card-boxshadow-colour: var(--colour-border-neutral-bold);
+			--card-boxshadow-width: 3px;
+		}
 
-	#import-conflict-dialog:has(button.keep:hover) .card.local {
-		--card-boxshadow-colour: var(--colour-border-neutral-bold);
-		--card-boxshadow-width: 3px;
-	}
+		&:has(button.keep:hover) .card.local {
+			--card-boxshadow-colour: var(--colour-border-neutral-bold);
+			--card-boxshadow-width: 3px;
+		}
 
-	.conflicting-assessments {
-		--group-margin: var(--space-xl) 0;
-	}
+		& .conflicting-assessments {
+			--group-margin: var(--space-xl) 0;
+		}
 
-	.highlight-container {
-		--icon-size: 1rem;
-		--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+		& .highlight-container {
+			--icon-size: 1rem;
+			--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
 
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: start;
-		gap: var(--space-2xs);
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: start;
+			gap: var(--space-2xs);
 
-		color: var(--colour-ui-accent, var(--colour-ui-neutral));
+			color: var(--colour-ui-accent, var(--colour-ui-neutral));
+		}
 	}
 </style>
 
