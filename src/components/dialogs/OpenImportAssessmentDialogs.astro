@@ -216,6 +216,15 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 									>Mark Complete and Open</button
 								>
 								<button
+									class="duplicate-assessment open-dialog"
+									type="button"
+									data-size="large"
+									data-dialog="edit-assessment-properties-dialog"
+									data-dialog-context="duplicate"
+									data-dialog-heading="Duplicate Assessment"
+									>Duplicate</button
+								>
+								<button
 									class="delete open-dialog"
 									type="button"
 									data-size="large"
@@ -223,8 +232,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 									data-vibrancy="vivid"
 									aria-label="Delete Assessment"
 									data-dialog="deletion-confirmation-dialog"
-									data-dialog-context=""
-									data-id=""
 								>
 									<IconTrash />
 									<!-- <div class="icon-and-label-container">
@@ -729,6 +736,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		// Set active status
 		let li = card.querySelector('li');
+		li.setAttribute('data-id', String(id));
 		if (active) li.setAttribute('data-active', '');
 
 		// Set banner attributes
@@ -785,17 +793,16 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			if (status === 'In Progress' && context === 'report') {
 				let btn = card.querySelector('button.open-assessment.change-status');
 				btn.removeAttribute('hidden');
-				btn.setAttribute('data-id', String(id));
 			} else {
-				let btn = card.querySelector('button.open-assessment:not(.change-status)');
-				btn.removeAttribute('hidden');
-				btn.setAttribute('data-id', String(id));
+				let createBtn = card.querySelector('button.open-assessment:not(.change-status)');
+				createBtn.removeAttribute('hidden');
 			}
 		}
 
+		let duplicateBtn = card.querySelector('button.duplicate-assessment');
+		duplicateBtn.setAttribute('data-dialog-target-id', `${assessment.id}`);
 		let deleteBtn = card.querySelector('button.delete');
-		deleteBtn.setAttribute('data-id', `${assessment.id}`);
-		deleteBtn.setAttribute('data-dialog-context', `${assessment.id}`);
+		deleteBtn.setAttribute('data-dialog-target-id', `${assessment.id}`);
 
 		return card;
 	};
@@ -1007,7 +1014,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let dialog = document.querySelector('#deletion-confirmation-dialog');
 		if (!dialog) return;
 
-		let assessmentId = target.getAttribute('data-id');
+		let assessmentId = target.closest('.card')?.getAttribute('data-id');
 		if (!assessmentId) return;
 
 		let assessment = findObjectByKey(getUserData().assessments, 'id', Number(assessmentId));
@@ -1042,6 +1049,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					? 'report'
 					: 'assessment';
 
+				let targetAssessmentId = Number(target.closest('.card').getAttribute('data-id'));
+
 				if (context === 'assessment') {
 					let assessment = getActiveAssessmentData();
 					if (assessment) {
@@ -1060,7 +1069,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 					setState({
 						mode: 'assessment',
-						activeAssessmentId: Number(target.getAttribute('data-id')),
+						activeAssessmentId: targetAssessmentId,
 					});
 
 					toastControl.show({ target, type: 'success' });
@@ -1074,7 +1083,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				} else if (context === 'report') {
 					if (target.matches('button.change-status')) {
 						setAssessment({
-							id: Number(target.getAttribute('data-id')),
+							id: targetAssessmentId,
 							status: 'Complete',
 							dateCompleted: Date.now(),
 							changeLog: updateChangeLog({
@@ -1084,7 +1093,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					}
 
 					setState({
-						activeReportId: Number(target.getAttribute('data-id')),
+						activeReportId: targetAssessmentId,
 					});
 
 					setPreferences({
@@ -1280,7 +1289,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		if (target.matches('button.delete')) {
 			try {
-				let assessmentId = Number(dialog.getAttribute('data-context'));
+				let assessmentId = Number(dialog.getAttribute('data-target-id'));
 
 				deleteAssessment(assessmentId);
 
