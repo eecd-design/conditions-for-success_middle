@@ -127,7 +127,7 @@ let validateField = ({ field, form, touchedFormFields }) => {
 			(a) => a.school === schoolField.value && a.reportingYear === field.value,
 		);
 		if (schoolYearConflict) {
-			message = `An assessment for this school and year is already saved in your browser. To view it, open the 'Open Assessment' dialog from the toolbar.`;
+			message = `An assessment for this school and year is already saved in your browser. To view it, open the 'Manage Assessments' dialog from the toolbar.`;
 		}
 	}
 
