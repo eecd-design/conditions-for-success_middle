@@ -301,6 +301,47 @@ let createAssessment = (values) => {
 	setAssessment(assessment);
 };
 
+let duplicateAssessment = async (oldAssessment, newReportingYear) => {
+	let highestId = findHighestValueByKey(data.assessments, 'id');
+	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
+
+	let newAssessment = {
+		activeAssessor: null,
+		assessors: [],
+		changeLog: [
+			{
+				date: Date.now(),
+				assessor: null,
+				message: 'Assessment created.',
+			},
+		],
+		continuumCompletion: {},
+		considerationsEstablished: oldAssessment.considerationsEstablished,
+		continuumVersion: currentContinuumVersion,
+		dateCompleted: null,
+		dateCreated: Date.now(),
+		dateExported: null,
+		dateModified: Date.now(),
+		district: oldAssessment.district,
+		id,
+		lastModifiedBy: null,
+		reportingYear: newReportingYear,
+		school: oldAssessment.school,
+		status: 'In Progress',
+		schemaVersion: '1.0',
+		unexportedChanges: true,
+	};
+
+	newAssessment.continuumCompletion = await generateContinuumCompletion(newAssessment);
+
+	setState({
+		activeAssessmentId: id,
+		mode: 'assessment',
+	});
+
+	setAssessment(assessment);
+};
+
 let setImportConflictData = ({ importedAssessment, localAssessment }) => {
 	importConflictData = {
 		importedAssessment,
@@ -319,6 +360,7 @@ let generateContinuumCompletion = async (assessment) => {
 		return continuumCompletion;
 	} else {
 		continuumCompletion = {};
+		considerationsEstablished = convertConsiderations(assessment);
 	}
 
 	let count = await userDataStore.getConsiderationCount();
@@ -567,6 +609,67 @@ let updateContinuumCompletion = async ({
 	}
 };
 
+let convertConsiderations = (assessment) => {
+	let { continuumVersion, considerationsEstablished } = assessment;
+
+	let converter = null;
+
+	let convertToVersion2_0 = {
+		from1_0: {
+			1.1: {
+				changeType: 'transform',
+				changeFn: () => {
+					return ['1.2'];
+				},
+			},
+			1.2: {
+				changeType: 'delete',
+				changeFn: () => {
+					return [];
+				},
+			},
+			1.3: {
+				changeType: 'split',
+				changeFn: () => {
+					return ['1.3', '1.4'];
+				},
+			},
+			// Does completing one count as completing the new?
+			1.5: {
+				changeType: 'combine',
+				changeFn: () => {
+					return ['1.5'];
+				},
+			},
+			1.6: {
+				changeType: 'combine',
+				changeFn: () => {
+					return ['1.5'];
+				},
+			},
+		},
+	};
+
+	if (continuumVersion === '1.0' && currentContinuumVersion === '2.0') {
+		converter = convertToVersion2_0.from1_0;
+	}
+
+	if (!converter) {
+		console.error('Aborted consideration conversion. No map available');
+		return [];
+	}
+
+	let convertedConsiderations = [];
+	for (let consideration of considerationsEstablished) {
+		convertConsiderations.push(...converter[consideration]);
+	}
+
+	// Ensure unique values (due to combine change type duplicates)
+	convertedConsiderations = [...new Set(convertedConsiderations)];
+
+	return convertedConsiderations;
+};
+
 //
 // Methods (Checkers)
 //
@@ -765,8 +868,14 @@ let importAssessment = (file) => {
 			let [mainCsv, logCsv] = data.split(/\n\s*\n/);
 
 			// Parse with PapaParse
-			let mainResult = Papa.parse(mainCsv, { header: true, skipEmptyLines: true });
-			let logResult = Papa.parse(logCsv || '', { header: true, skipEmptyLines: true });
+			let mainResult = Papa.parse(mainCsv, {
+				header: true,
+				skipEmptyLines: true,
+			});
+			let logResult = Papa.parse(logCsv || '', {
+				header: true,
+				skipEmptyLines: true,
+			});
 
 			if (!mainResult.data || !mainResult.data.length) {
 				return reject('No main data found in the file');
