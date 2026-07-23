@@ -88,6 +88,13 @@ let getActiveAssessmentData = () => {
 };
 
 /**
+ * Get a target assessment's data
+ */
+let getAssessmentData = (id) => {
+	return findObjectByKey(data.assessments, 'id', id);
+};
+
+/**
  * Get the active assessment data
  */
 let getActiveReportData = () => {
@@ -307,12 +314,12 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 
 	let newAssessment = {
 		activeAssessor: null,
-		assessors: [],
+		assessors: oldAssessment.assessors,
 		changeLog: [
 			{
 				date: Date.now(),
 				assessor: null,
-				message: 'Assessment created.',
+				message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
 			},
 		],
 		continuumCompletion: {},
@@ -339,7 +346,7 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 		mode: 'assessment',
 	});
 
-	setAssessment(assessment);
+	setAssessment(newAssessment);
 };
 
 let setImportConflictData = ({ importedAssessment, localAssessment }) => {
@@ -1090,6 +1097,7 @@ export {
 	findAssessmentConflicts,
 	getActiveAssessmentData,
 	getActiveReportData,
+	getAssessmentData,
 	getAssessmentDate,
 	getAssessmentName,
 	getActiveAssessor,
@@ -1101,6 +1109,7 @@ export {
 	setPreferences,
 	setState,
 	createAssessment,
+	duplicateAssessment,
 	setAssessment,
 	setImportConflictData,
 	deleteAssessment,
