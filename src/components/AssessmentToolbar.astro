@@ -146,12 +146,13 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 								</span>
 							</button>
 						</li>
-						<li>
+						<li data-restrict-mode="assessment">
 							<button
 								class="open-dialog"
 								data-dialog="edit-assessment-properties-dialog"
 								data-dialog-context="duplicate"
 								data-dialog-heading="Duplicate Assessment"
+								data-dialog-target-id=""
 								type="button"
 							>
 								<span class="icon-and-label-container">
@@ -648,6 +649,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		let assessmentField = toolbar?.querySelector('[data-field="activeAssessmentName"]');
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 		let assessorField = toolbar?.querySelector('[data-field="activeAssessor"]');
+		let duplicateBtn = toolbar?.querySelector('[data-dialog-context="duplicate"]');
 
 		if (!assessment) return;
 
@@ -701,6 +703,11 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				assessorField.textContent = assessorStr;
 				assessorField.setAttribute('title', assessorStr);
 			}
+		}
+
+		// 5. Update the duplicate btn target id
+		if (duplicateBtn) {
+			duplicateBtn.setAttribute('data-dialog-target-id', assessment.id);
 		}
 	};
 
@@ -806,7 +813,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		let buttonContainer = document.querySelector(
 			'#assessment-controls .button-container:has(.subgroup)',
 		);
-		if (!buttonContainer.contains(target)) {
+		if (buttonContainer && !buttonContainer.contains(target)) {
 			let btn = buttonContainer.querySelector('.subgroup-toggle');
 			btn.setAttribute('aria-expanded', 'false');
 		}

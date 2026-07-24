@@ -144,7 +144,8 @@ let mostRecentResourceTimestamp = Math.max(
 							data-style-as="button"
 							aria-current={path.includes('/resources/') ? 'page' : null}
 							href={`./resources/`}
-							>Resources</a>
+							>Resources</a
+						>
 					</li>
 					<li>
 						<a
@@ -152,7 +153,8 @@ let mostRecentResourceTimestamp = Math.max(
 							data-style-as="button"
 							aria-current={path.includes('/training/') ? 'page' : null}
 							href={`./training/`}
-							>Training</a>
+							>Training</a
+						>
 					</li>
 					<li>
 						<a
@@ -160,7 +162,8 @@ let mostRecentResourceTimestamp = Math.max(
 							data-style-as="button"
 							aria-current={path.includes('/report/') ? 'page' : null}
 							href={`./report/`}
-							>Report</a>
+							>Report</a
+						>
 					</li>
 					<li>
 						<a
@@ -168,7 +171,8 @@ let mostRecentResourceTimestamp = Math.max(
 							data-style-as="button"
 							aria-current={path.includes('/support/') ? 'page' : null}
 							href={`./support/`}
-							>Support</a>
+							>Support</a
+						>
 					</li>
 				</ul>
 			</nav>
@@ -922,7 +926,7 @@ let mostRecentResourceTimestamp = Math.max(
 		let target = event.target as any;
 
 		let subnavContainer = document.querySelector('nav.global .subnav-container');
-		if (!subnavContainer.contains(target)) {
+		if (subnavContainer && !subnavContainer.contains(target)) {
 			let btn = subnavContainer.querySelector('button.subnav-toggle');
 			btn.setAttribute('aria-expanded', 'false');
 		}
