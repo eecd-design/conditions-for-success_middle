@@ -7,6 +7,9 @@ import IconEdit from './icons/IconEdit_20.astro';
 import IconEditSmall from './icons/IconEdit_14.astro';
 import IconEditStop from './icons/IconEditStop_20.astro';
 import IconAssessor from './icons/IconAssessor_20.astro';
+import IconCopy from './icons/IconCopy_20.astro';
+import IconBlank from './icons/IconBlank_20.astro';
+import IconTest from './icons/IconTest_20.astro';
 import IconAssessment from './icons/IconAssessment_20.astro';
 import IconXmark from './icons/IconXmark_20.astro';
 import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
@@ -112,21 +115,71 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			</div>
 			<div class="file-group button-group">
 				<!-- Create Assessment Button -->
-				<button
-					class="open-dialog"
-					data-dialog="edit-assessment-properties-dialog"
-					data-dialog-context="setup"
-					aria-label="Create New Assessment"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconCross />
-						<span class="label-container">
-							<span class="label">New</span>
+				<div class="button-container">
+					<button
+						class="subgroup-toggle"
+						aria-label="Create New Assessment"
+						type="button"
+					>
+						<span class="icon-and-label-container">
+							<IconCross />
+							<span class="label-container">
+								<span class="label">New</span>
+							</span>
 						</span>
-					</span>
-					<span class="tooltip">Create Assessment</span>
-				</button>
+						<span class="tooltip">Create Assessment</span>
+					</button>
+
+					<ul class="subgroup">
+						<li>
+							<button
+								class="open-dialog"
+								data-dialog="edit-assessment-properties-dialog"
+								data-dialog-context="setup"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconBlank />
+									<span class="label-container">
+										<span class="label">Blank Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button
+								class="open-dialog"
+								data-dialog="edit-assessment-properties-dialog"
+								data-dialog-context="duplicate"
+								data-dialog-heading="Duplicate Assessment"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconCopy />
+									<span class="label-container">
+										<span class="label">Duplicate Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button
+								class="open-dialog"
+								data-dialog="edit-assessment-properties-dialog"
+								data-dialog-context="test"
+								data-dialog-heading="Create Test Assessment"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconTest />
+									<span class="label-container">
+										<span class="label">Test Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+					</ul>
+				</div>
 				<div
 					class="separator item"
 					data-orientation="vertical"
@@ -326,7 +379,9 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				position: static;
 			}
 
-			& :is(button, [data-style-as='button']):not(.field-container) .label-container {
+			&
+				:is(button, [data-style-as='button']):not(.field-container, .subgroup button)
+				.label-container {
 				@container assessment-controls (width < 1648px) {
 					display: none;
 				}
@@ -383,6 +438,42 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		& .button-group {
 			--group-gap: var(--space-xs);
 			flex-shrink: 0;
+
+			& .button-container {
+				position: relative;
+
+				& .subgroup {
+					display: none;
+					flex-flow: column nowrap;
+					align-items: start;
+					gap: var(--space-3xs);
+					list-style-type: none;
+					background-color: var(--colour-fill-neutral-subtle);
+					border: 1px solid var(--colour-border-neutral-subtle);
+					border-radius: var(--border-radius-normal);
+					width: max-content;
+					padding: var(--space-2xs);
+					box-shadow: var(--box-shadow);
+					position: absolute;
+					top: calc(2rem + var(--space-xs));
+					left: calc(-1 * var(--space-xs));
+					z-index: 100;
+
+					& li {
+						width: 100%;
+					}
+
+					& button {
+						justify-content: start;
+						width: 100%;
+						font-size: var(--font-size-2xs);
+					}
+				}
+
+				& .subgroup-toggle[aria-expanded='true'] + .subgroup {
+					display: flex;
+				}
+			}
 		}
 
 		& .export-group {
@@ -396,14 +487,14 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				--icon-size: 1.25rem;
 				--button-background-colour: transparent;
 
-				&:is(:hover, :focus-visible) {
+				&:is(:hover, :focus-visible, [aria-expanded='true']) {
 					--icon-colour: var(--colour-ui-reverse);
 					--label-colour: var(--colour-ui-reverse);
 					--button-background-colour: var(--colour-fill-neutral-bold);
 				}
 			}
 
-			&:is(:hover, :focus-visible) {
+			&:not([aria-expanded='true']):is(:hover, :focus-visible) {
 				& .tooltip {
 					opacity: 1;
 					visibility: visible;
@@ -697,11 +788,48 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				}
 			}
 		}
+
+		if (target.matches('button.subgroup-toggle')) {
+			let expanded = target.getAttribute('aria-expanded') === 'true';
+			target.setAttribute('aria-expanded', String(!expanded));
+		}
 	};
 	eventControl.add({
 		selector: '#assessment-controls',
 		eventType: 'click',
 		fn: onClick,
+	});
+
+	let onDocumentClick = (event) => {
+		let target = event.target as any;
+
+		let subButtonGroup = document.querySelector('#assessment-controls .button-group .subgroup');
+		if (!subButtonGroup.contains(target)) {
+			let btn = subButtonGroup.closest('.button-container').querySelector('.subgroup-toggle');
+			btn.setAttribute('aria-expanded', 'false');
+		}
+	};
+	eventControl.add({
+		elem: document,
+		eventType: 'click',
+		fn: onDocumentClick,
+	});
+
+	let onFocusout = (event) => {
+		let target = event.target as any;
+		let next = event.relatedTarget as any;
+
+		if (target.matches('button.subgroup-toggle, .subgroup button')) {
+			let buttonContainer = target.closest('.button-container');
+			if (buttonContainer && buttonContainer.contains(next)) return;
+			let btn = buttonContainer.querySelector('button.subgroup-toggle');
+			btn.setAttribute('aria-expanded', 'false');
+		}
+	};
+	eventControl.add({
+		selector: '#assessment-controls',
+		eventType: 'focusout',
+		fn: onFocusout,
 	});
 
 	let onFocus = (event) => {};
