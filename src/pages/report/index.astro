@@ -384,7 +384,21 @@ for (let indicator of indicators) {
 				<h2 id="summary">Summary</h2>
 				<!-- <h3>Component Progress</h3> -->
 				<MatrixChart
-					entries={components}
+					entries={components.filter((component) => Number(component.data.tag) < 6)}
+					scope={'Components'}
+					fit={'compact'}
+				/>
+			</section>
+
+			<section
+				class="summary"
+				data-include="true"
+				hidden
+			>
+				<h2 id="summary">Summary (Continued)</h2>
+				<!-- <h3>Component Progress</h3> -->
+				<MatrixChart
+					entries={components.filter((component) => Number(component.data.tag) >= 6)}
 					scope={'Components'}
 					fit={'compact'}
 				/>
@@ -481,10 +495,6 @@ for (let indicator of indicators) {
 
 	#report-container > section {
 		width: 100%;
-	}
-
-	#report-container > section.summary {
-		width: 900px !important;
 	}
 
 	#report-container h3 {
