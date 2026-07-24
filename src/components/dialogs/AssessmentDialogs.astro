@@ -19,6 +19,12 @@ import EditStatusDialogs from 'src/components/dialogs/EditStatusDialogs.astro';
 	dialog:not([data-context='configure']) [data-restrict-context='configure'] {
 		display: none !important;
 	}
+	dialog:not([data-context='duplicate']) [data-restrict-context='duplicate'] {
+		display: none !important;
+	}
+	dialog:not([data-context='test']) [data-restrict-context='test'] {
+		display: none !important;
+	}
 	dialog:not([data-context='close']) [data-restrict-context='close'] {
 		display: none !important;
 	}

@@ -163,6 +163,8 @@ let schoolList = {
 					<option value="ASD-N">ASD-N</option>
 					<option value="ASD-E">ASD-E</option>
 					<option value="ASD-S">ASD-S</option>
+					<hr />
+					<option value="ASD-X">ASD-X</option>
 				</select>
 				<IconCaretDown />
 			</div>
@@ -201,6 +203,9 @@ let schoolList = {
 				</template>
 				<template id="edit-assessment-properties-dialog_school-select_asd-s-options">
 					{schoolList.south.map((school) => <option value={school}>{school}</option>)}
+				</template>
+				<template id="edit-assessment-properties-dialog_school-select_asd-x-options">
+					<option value="Test Middle School">Test Middle School</option>
 				</template>
 			</div>
 			<p
@@ -260,6 +265,16 @@ let schoolList = {
 				data-style="solid"
 				data-size="large"
 				data-restrict-context="setup"
+				data-toast-success="edit-assessment-properties-dialog_create-toast_success"
+				data-toast-failure="edit-assessment-properties-dialog_create-toast_failure"
+				>Create</button
+			>
+			<button
+				class="create"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-restrict-context="test"
 				data-toast-success="edit-assessment-properties-dialog_create-toast_success"
 				data-toast-failure="edit-assessment-properties-dialog_create-toast_failure"
 				>Create</button
@@ -767,6 +782,13 @@ let schoolList = {
 					schoolSelect.disabled = true;
 					reportingYearField.value = String(Number(reportingYearField.value) + 1);
 				}
+			} else if (context === 'test') {
+				districtSelect.value = 'ASD-X';
+				revealSchoolOptionGroup(districtSelect, 'ASD-X');
+				schoolSelect.value = 'Test Middle School';
+				reportingYearField.value = String(new Date().getFullYear());
+				districtSelect.disabled = true;
+				schoolSelect.disabled = true;
 			}
 		} else {
 			let forms = dialog.querySelectorAll('form');
