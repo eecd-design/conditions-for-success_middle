@@ -1,19 +1,24 @@
 ---
-import IconTrowel24 from "src/components/icons/IconTrowel_24.astro";
-import IconSeed24 from "src/components/icons/IconSeed_24.astro";
-import IconSapling24 from "src/components/icons/IconSapling_24.astro";
-import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
+import IconTrowel24 from 'src/components/icons/IconTrowel_24.astro';
+import IconSeed24 from 'src/components/icons/IconSeed_24.astro';
+import IconSapling24 from 'src/components/icons/IconSapling_24.astro';
+import IconWateringCan24 from 'src/components/icons/IconWateringCan_24.astro';
 
-let { entries, fit = "normal", colour } = Astro.props;
+let { entries, fit = 'normal', colour } = Astro.props;
 ---
 
-<table class="chart-container matrix" aria-hidden="true" data-fit={fit} data-theme={colour ?? null}>
+<table
+	class="chart-container matrix"
+	aria-hidden="true"
+	data-fit={fit}
+	data-theme={colour ?? null}
+>
 	<colgroup>
-		<col style={fit === "compact" ? "width: 12%" : "width: 25%"} />
-		<col style={fit === "compact" ? "width: 22%" : "width: 18.75%"} />
-		<col style={fit === "compact" ? "width: 22%" : "width: 18.75%"} />
-		<col style={fit === "compact" ? "width: 22%" : "width: 18.75%"} />
-		<col style={fit === "compact" ? "width: 22%" : "width: 18.75%"} />
+		<col style="width: 25%" />
+		<col style="width: 18.75%" />
+		<col style="width: 18.75%" />
+		<col style="width: 18.75%" />
+		<col style="width: 18.75%" />
 	</colgroup>
 	<thead>
 		<tr>
@@ -55,7 +60,7 @@ let { entries, fit = "normal", colour } = Astro.props;
 				>
 					<th scope="row">
 						<span class="tag">{entry.data.tag}</span>
-						{fit !== "compact" ? entry.data.title : ""}
+						{entry.data.title}
 					</th>
 					<td />
 					<td />
@@ -67,10 +72,17 @@ let { entries, fit = "normal", colour } = Astro.props;
 	</tbody>
 </table>
 
-<table class="matrix-simplified" data-screen-reader>
+<table
+	class="matrix-simplified"
+	data-screen-reader
+>
 	<thead>
 		<tr>
-			<th scope="col" data-field="scope">Indicator / Component</th>
+			<th
+				scope="col"
+				data-field="scope"
+				>Indicator / Component</th
+			>
 			<th scope="col">Phase Achieved</th>
 		</tr>
 	</thead>
@@ -101,200 +113,176 @@ let { entries, fit = "normal", colour } = Astro.props;
 		table-layout: fixed;
 		border-collapse: collapse;
 		margin: var(--space-base) 0 var(--space-2xl);
-	}
 
-	/* Cell Defaults */
+		/* Cell Defaults */
 
-	.chart-container.matrix :is(th, td) {
-		height: 4.5rem;
-		padding: 0 var(--space-sm);
-		position: relative;
-		text-align: center;
-		vertical-align: middle;
-		font-size: var(--font-size-xs);
-	}
+		& :is(th, td) {
+			height: 4.5rem;
+			padding: 0 var(--space-sm);
+			position: relative;
+			text-align: center;
+			vertical-align: middle;
+			font-size: var(--font-size-xs);
+		}
 
-	.chart-container.matrix th {
-		font-weight: 500;
-	}
+		& th {
+			font-weight: 500;
 
-	.chart-container.matrix th .tag {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		height: 1.125rem;
-		min-width: 1.125rem;
-		padding: 0 var(--space-3xs);
-		margin: 0 0.375rem 0 0;
-		float: left;
-		background-color: var(--colour-fill-accent-subtle);
-		border-radius: var(--border-radius-small);
-		font-size: var(--font-size-3xs);
-		font-weight: 500;
-		line-height: 1;
-		color: var(--colour-ui-accent);
-	}
+			& .tag {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				height: 1.125rem;
+				min-width: 1.125rem;
+				padding: 0 var(--space-3xs);
+				margin: 0 0.375rem 0 0;
+				float: left;
+				background-color: var(--colour-fill-accent-subtle);
+				border-radius: var(--border-radius-small);
+				font-size: var(--font-size-3xs);
+				font-weight: 500;
+				line-height: 1;
+				color: var(--colour-ui-accent);
+			}
+		}
 
-	.chart-container.matrix[data-fit="compact"] th .tag {
-		font-size: var(--font-size-2xs);
-	}
+		/* Table Head */
 
-	/* Table Head */
+		& thead th {
+			--icon-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+			--icon-size: 1.75rem;
+			border-bottom: 1px solid var(--colour-border-neutral-bold);
 
-	.chart-container.matrix thead th {
-		--icon-colour: var(
-			--colour-ui-accent-subtle,
-			var(--colour-ui-neutral-subtle)
-		);
-		--icon-size: 1.75rem;
-		border-bottom: 1px solid var(--colour-border-neutral-bold);
-	}
+			&:first-of-type {
+				border: none;
+			}
 
-	.chart-container.matrix thead th:first-of-type {
-		border: none;
-	}
+			&:last-of-type {
+				border-right: none;
+			}
 
-	.chart-container.matrix thead th:last-of-type {
-		border-right: none;
-	}
+			& div {
+				display: inline-flex;
+				flex-flow: column;
+				align-items: center;
+				gap: var(--space-2xs);
+			}
+		}
 
-	.chart-container.matrix thead th div {
-		display: inline-flex;
-		flex-flow: column;
-		align-items: center;
-		gap: var(--space-2xs);
-	}
+		/* Table Body */
 
-	/* Table Body */
+		& tbody {
+			& :is(th, td) {
+				height: auto;
+			}
 
-	.chart-container.matrix[data-fit="compact"] tbody :is(th, td) {
-		height: auto;
-	}
+			& th {
+				border-right: 1px solid var(--colour-border-neutral-bold);
+				border-bottom: 1px solid var(--colour-border-neutral-subtle);
+				padding: var(--space-sm) var(--space-sm) var(--space-sm) 0;
+				text-align: left;
+				vertical-align: bottom;
+				position: relative;
+				line-height: 1.3;
 
-	.chart-container.matrix tbody th {
-		border-right: 1px solid var(--colour-border-neutral-bold);
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
-		padding: var(--space-sm) var(--space-sm) var(--space-sm) 0;
-		text-align: left;
-		vertical-align: bottom;
-		position: relative;
-		line-height: 1.3;
-	}
+				[data-fit='compact'] & {
+					font-size: var(--font-size-2xs);
+					padding: var(--space-2xs) var(--space-2xs) var(--space-2xs) 0;
+				}
+			}
 
-	.chart-container.matrix[data-fit="compact"] tbody th {
-		padding: var(--space-2xs) var(--space-2xs) var(--space-2xs) 0;
-	}
+			& td {
+				--dot-diameter: 1.5rem;
+				--dot-radius: calc(var(--dot-diameter) / 2);
+				border-right: 1px dashed var(--colour-border-neutral-subtle);
+				border-bottom: 1px solid var(--colour-border-neutral-subtle);
+				line-height: 1;
 
-	.chart-container.matrix tbody td {
-		--dot-diameter: 1.5rem;
-		--dot-radius: calc(var(--dot-diameter) / 2);
-		border-right: 1px dashed var(--colour-border-neutral-subtle);
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
-		line-height: 1;
-	}
+				[data-fit='compact'] & {
+					--dot-diameter: 0.75rem;
+				}
+			}
 
-	.chart-container.matrix[data-fit="compact"] tbody td {
-		--dot-diameter: 0.75rem;
-	}
+			& tr td:last-of-type {
+				border-right: 1px solid var(--colour-border-neutral-bold);
+			}
 
-	.chart-container.matrix tbody tr td:last-of-type {
-		border-right: 1px solid var(--colour-border-neutral-bold);
-	}
+			& tr:last-of-type td {
+				border-bottom: 1px solid var(--colour-border-neutral-bold);
+			}
 
-	.chart-container.matrix tbody tr:last-of-type td {
-		border-bottom: 1px solid var(--colour-border-neutral-bold);
-	}
+			section.summary & tr:last-of-type th {
+				border-bottom: 1px solid var(--colour-border-neutral-bold);
+			}
 
-	/* Position Dot */
+			& tr:has(+ tr[data-tag*='.1']:not([data-tag='1.1'])) :is(th, td) {
+				border-bottom: 1px solid var(--colour-border-neutral-bold);
+			}
+		}
 
-	.chart-container.matrix td::after {
-		content: "";
-		display: none;
-		flex-shrink: 0;
-		border-radius: 10rem;
-		height: var(--dot-diameter);
-		width: var(--dot-diameter);
-		background-color: var(
-			--colour-fill-accent-bold,
-			var(--colour-fill-neutral-mid)
-		);
-		position: absolute;
-		top: calc(50% - var(--dot-radius));
-		left: calc(50% - var(--dot-radius));
-		z-index: 2;
-	}
+		/* Position Dot */
 
-	.chart-container.matrix
-		tr[data-phase="initiating"]
-		td:nth-of-type(1)::after,
-	.chart-container.matrix
-		tr[data-phase="implementing"]
-		td:nth-of-type(2)::after,
-	.chart-container.matrix
-		tr[data-phase="developing"]
-		td:nth-of-type(3)::after,
-	.chart-container.matrix
-		tr[data-phase="sustaining"]
-		td:nth-of-type(4)::after {
-		display: inline-block;
-	}
+		& td::after {
+			content: '';
+			display: none;
+			flex-shrink: 0;
+			border-radius: 10rem;
+			height: var(--dot-diameter);
+			width: var(--dot-diameter);
+			background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+			position: absolute;
+			top: calc(50% - var(--dot-radius));
+			left: calc(50% - var(--dot-radius));
+			z-index: 2;
+		}
 
-	/* Position Line */
+		& tr[data-phase='initiating'] td:nth-of-type(1)::after,
+		& tr[data-phase='implementing'] td:nth-of-type(2)::after,
+		& tr[data-phase='developing'] td:nth-of-type(3)::after,
+		& tr[data-phase='sustaining'] td:nth-of-type(4)::after {
+			display: inline-block;
+		}
 
-	.chart-container.matrix td::before {
-		content: "";
-		display: none;
-		border-radius: 10rem;
-		height: var(--dot-diameter);
-		background-color: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-		position: absolute;
-		top: calc(50% - var(--dot-radius));
-		z-index: 1;
-	}
+		/* Position Line */
 
-	/* Center to Right Margin */
-	.chart-container.matrix
-		tr:is(
-			[data-phase="implementing"],
-			[data-phase="developing"],
-			[data-phase="sustaining"]
-		)
-		td:nth-of-type(1)::before {
-		display: inline-block;
-		left: calc(50% - var(--dot-radius));
-		border-radius: 10rem 0 0 10rem;
-		width: calc(50% + var(--dot-radius) + 2px);
-	}
+		& td::before {
+			content: '';
+			display: none;
+			border-radius: 10rem;
+			height: var(--dot-diameter);
+			background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+			position: absolute;
+			top: calc(50% - var(--dot-radius));
+			z-index: 1;
+		}
 
-	/* Left Margin to Right Margin */
-	.chart-container.matrix
-		tr:is([data-phase="developing"], [data-phase="sustaining"])
-		td:nth-of-type(2)::before,
-	.chart-container.matrix
-		tr:is([data-phase="sustaining"])
-		td:nth-of-type(3)::before {
-		display: inline-block;
-		left: -2px;
-		border-radius: 0;
-		width: calc(100% + 4px);
-	}
+		/* Center to Right Margin */
+		&
+			tr:is([data-phase='implementing'], [data-phase='developing'], [data-phase='sustaining'])
+			td:nth-of-type(1)::before {
+			display: inline-block;
+			left: calc(50% - var(--dot-radius));
+			border-radius: 10rem 0 0 10rem;
+			width: calc(50% + var(--dot-radius) + 2px);
+		}
 
-	/* Left Margin to Center */
-	.chart-container.matrix
-		tr:is([data-phase="implementing"])
-		td:nth-of-type(2)::before,
-	.chart-container.matrix
-		tr:is([data-phase="developing"])
-		td:nth-of-type(3)::before,
-	.chart-container.matrix
-		tr:is([data-phase="sustaining"])
-		td:nth-of-type(4)::before {
-		display: inline-block;
-		left: -2px;
-		border-radius: 0 10rem 10rem 0;
-		width: calc(50% + var(--dot-radius) + 2px);
+		/* Left Margin to Right Margin */
+		& tr:is([data-phase='developing'], [data-phase='sustaining']) td:nth-of-type(2)::before,
+		& tr:is([data-phase='sustaining']) td:nth-of-type(3)::before {
+			display: inline-block;
+			left: -2px;
+			border-radius: 0;
+			width: calc(100% + 4px);
+		}
+
+		/* Left Margin to Center */
+		& tr:is([data-phase='implementing']) td:nth-of-type(2)::before,
+		& tr:is([data-phase='developing']) td:nth-of-type(3)::before,
+		& tr:is([data-phase='sustaining']) td:nth-of-type(4)::before {
+			display: inline-block;
+			left: -2px;
+			border-radius: 0 10rem 10rem 0;
+			width: calc(50% + var(--dot-radius) + 2px);
+		}
 	}
 </style>
