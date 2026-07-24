@@ -803,9 +803,11 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 	let onDocumentClick = (event) => {
 		let target = event.target as any;
 
-		let subButtonGroup = document.querySelector('#assessment-controls .button-group .subgroup');
-		if (!subButtonGroup.contains(target)) {
-			let btn = subButtonGroup.closest('.button-container').querySelector('.subgroup-toggle');
+		let buttonContainer = document.querySelector(
+			'#assessment-controls .button-container:has(.subgroup)',
+		);
+		if (!buttonContainer.contains(target)) {
+			let btn = buttonContainer.querySelector('.subgroup-toggle');
 			btn.setAttribute('aria-expanded', 'false');
 		}
 	};
