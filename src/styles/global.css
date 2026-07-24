@@ -1520,7 +1520,8 @@ label:has(input[type='checkbox']) {
 	box-shadow: inset 0 0 0 var(--container-boxshadow-width) var(--container-boxshadow-colour);
 	width: 100%;
 	min-height: 3rem;
-	padding: var(--space-2xs) 0;
+	/* padding: var(--space-2xs) 0; */
+	padding: 0;
 	margin: 0;
 
 	&:has(:is(input, select)[aria-invalid='true']) {
@@ -1536,13 +1537,14 @@ label:has(input[type='checkbox']) {
 :is(input[type='text'], select, [data-style-as='input']) {
 	display: flex;
 	align-items: center;
+	align-self: stretch;
 	appearance: none;
 	border: none;
 	background: none;
-	height: 100%;
+	/* height: 100%; */
 	min-width: 0;
 	/* Fixed text-overflow inside flex item */
-	padding: 0 var(--space-sm);
+	padding: var(--space-2xs) var(--space-sm);
 	margin: 0;
 	flex-grow: 1;
 	font-size: var(--font-size-xs);
@@ -1584,10 +1586,28 @@ input[type='text']::placeholder {
 	margin-right: var(--space-sm);
 }
 
-.select-container .icon {
-	width: 0.875rem;
-	position: absolute;
-	right: 1rem;
+.select-container {
+	& select {
+		&:not(:disabled) {
+			cursor: pointer;
+		}
+
+		&:disabled {
+			opacity: 0.5;
+		}
+	}
+
+	&:has(select:disabled) {
+		& .icon {
+			opacity: 0.5;
+		}
+	}
+
+	& .icon {
+		width: 0.875rem;
+		position: absolute;
+		right: 1rem;
+	}
 }
 
 /* FILE INPUTS */
