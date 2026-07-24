@@ -94,9 +94,9 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		<h2
 			id="status-warning-dialog_heading"
 			class="heading"
-			data-default-text="Edit Completed Assessment?"
+			data-default-text="Edit or Duplicate Assessment?"
 		>
-			Edit Completed Assessment?
+			Edit or Duplicate Assessment?
 		</h2>
 	</div>
 
@@ -114,13 +114,17 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			<div class="text-container">
 				<p>
 					This assessment is marked as <strong>Complete</strong>. To make changes, its
-					status must be updated to <strong>In Progress</strong>.
+					status must be set to <strong>In Progress</strong>.
 				</p>
 			</div>
 		</div>
 	</div>
 
-	<p class="instructions">Do you want to continue?</p>
+	<p class="instructions">
+		Select <strong>Edit</strong> to change this assessment's status and make updates, or <strong
+			>Duplicate</strong
+		> to copy it into a new reporting year.
+	</p>
 
 	<div class="button-group">
 		<button
@@ -138,7 +142,17 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			data-size="large"
 			data-toast-success="status-warning-dialog_change-status-toast_success"
 			data-toast-failure="status-warning-dialog_change-status-toast_failure"
-			>Edit Assessment</button
+			>Edit</button
+		>
+		<button
+			class="open-dialog"
+			type="button"
+			data-style="solid"
+			data-size="large"
+			data-dialog="edit-assessment-properties-dialog"
+			data-dialog-context="duplicate"
+			data-dialog-heading="Duplicate Assessment"
+			>Duplicate</button
 		>
 	</div>
 
