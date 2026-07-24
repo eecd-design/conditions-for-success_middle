@@ -599,7 +599,7 @@ let phases = [
 								}
 							}
 
-							&:has(input[type='checkbox']:is(:hover, :focus-visible)) {
+							&:has(input[type='checkbox']:not(:checked):is(:hover, :focus-visible)) {
 								background-color: var(--colour-fill-accent-subtle-highlight);
 
 								& .tag {
