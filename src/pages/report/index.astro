@@ -8,7 +8,7 @@ import IconCog20 from 'src/components/icons/IconCog_20.astro';
 import IconXmark20 from 'src/components/icons/IconXmark_20.astro';
 import ProgressChart from 'src/components/charts/ProgressChart.astro';
 import MatrixChart from 'src/components/charts/MatrixChart.astro';
-import OpenImportAssessmentDialogs from 'src/components/dialogs/OpenImportAssessmentDialogs.astro';
+import ManageAssessmentsDialogs from 'src/components/dialogs/ManageAssessmentsDialogs.astro';
 import ReportDialogs from 'src/components/dialogs/ReportDialogs.astro';
 import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import { findObjectByKey } from 'src/utilities/helpers';
@@ -83,7 +83,7 @@ for (let indicator of indicators) {
 
 	<ReportToasts slot="toast-group" />
 
-	<OpenImportAssessmentDialogs />
+	<ManageAssessmentsDialogs />
 	<ReportDialogs />
 
 	<div class="content report">
