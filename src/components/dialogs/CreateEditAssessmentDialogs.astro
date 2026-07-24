@@ -749,52 +749,51 @@ let schoolList = {
 			return;
 
 		let assessment = getActiveAssessmentData();
-		if (assessment) {
-			// console.log("Updating Dialog (edit properties)");
 
-			let context = dialog.getAttribute('data-context');
-			let targetId = Number(dialog.getAttribute('data-target-id'));
+		let context = dialog.getAttribute('data-context');
+		let targetId = Number(dialog.getAttribute('data-target-id'));
 
-			let districtSelect = dialog.querySelector(
-				'select[name="district"]',
-			) as HTMLSelectElement;
-			let schoolSelect = dialog.querySelector('select[name="school"]') as HTMLSelectElement;
-			let reportingYearField = dialog.querySelector(
-				'input[name="reportingYear"]',
-			) as HTMLInputElement;
+		let districtSelect = dialog.querySelector('select[name="district"]') as HTMLSelectElement;
+		let schoolSelect = dialog.querySelector('select[name="school"]') as HTMLSelectElement;
+		let reportingYearField = dialog.querySelector(
+			'input[name="reportingYear"]',
+		) as HTMLInputElement;
 
-			if (context === 'setup') {
-				let forms = dialog.querySelectorAll('form');
-				for (let form of forms) {
-					resetForm({ form, resetType: 'hard' });
-				}
-			} else if (['configure', 'duplicate'].includes(context) || !context) {
-				let targetAssessment = assessment;
-				if (targetId) targetAssessment = getAssessmentData(targetId);
-				revealSchoolOptionGroup(districtSelect, targetAssessment.district);
-				updateFieldsFromAssessmentData({
-					assessment: targetAssessment,
-					dialog: dialog,
-				});
-
-				if (context === 'duplicate') {
-					districtSelect.disabled = true;
-					schoolSelect.disabled = true;
-					reportingYearField.value = String(Number(reportingYearField.value) + 1);
-				}
-			} else if (context === 'test') {
-				districtSelect.value = 'ASD-X';
-				revealSchoolOptionGroup(districtSelect, 'ASD-X');
-				schoolSelect.value = 'Test Middle School';
-				reportingYearField.value = String(new Date().getFullYear());
-				districtSelect.disabled = true;
-				schoolSelect.disabled = true;
-			}
-		} else {
+		if (context === 'setup') {
 			let forms = dialog.querySelectorAll('form');
 			for (let form of forms) {
 				resetForm({ form, resetType: 'hard' });
 			}
+		}
+
+		if (assessment && (context === 'configure' || !context)) {
+			revealSchoolOptionGroup(districtSelect, assessment.district);
+			updateFieldsFromAssessmentData({
+				assessment,
+				dialog,
+			});
+		}
+
+		if (context === 'duplicate') {
+			let targetAssessment = assessment;
+			if (targetId) targetAssessment = getAssessmentData(targetId);
+			revealSchoolOptionGroup(districtSelect, targetAssessment.district);
+			updateFieldsFromAssessmentData({
+				assessment: targetAssessment,
+				dialog,
+			});
+			reportingYearField.value = String(Number(reportingYearField.value) + 1);
+			districtSelect.disabled = true;
+			schoolSelect.disabled = true;
+		}
+
+		if (context === 'test') {
+			districtSelect.value = 'ASD-X';
+			revealSchoolOptionGroup(districtSelect, 'ASD-X');
+			schoolSelect.value = 'Test Middle School';
+			reportingYearField.value = String(new Date().getFullYear());
+			districtSelect.disabled = true;
+			schoolSelect.disabled = true;
 		}
 	};
 
@@ -812,7 +811,7 @@ let schoolList = {
 	// Track which fields the user has interacted with
 	let touchedFormFields = new Set();
 
-	let onClick = (event) => {
+	let onClick = async (event) => {
 		let target = event.target as HTMLButtonElement;
 		let dialog = target.closest('dialog') as HTMLDialogElement;
 
@@ -876,7 +875,7 @@ let schoolList = {
 				let targetId = Number(dialog.getAttribute('data-target-id'));
 				let targetAssessment = getAssessmentData(targetId);
 
-				duplicateAssessment(targetAssessment, values.reportingYear);
+				await duplicateAssessment(targetAssessment, values.reportingYear);
 
 				toastControl.show({ target, type: 'success' });
 
