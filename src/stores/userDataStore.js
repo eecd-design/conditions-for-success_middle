@@ -322,7 +322,6 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 				message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
 			},
 		],
-		continuumCompletion: {},
 		considerationsEstablished: oldAssessment.considerationsEstablished,
 		continuumVersion: currentContinuumVersion,
 		dateCompleted: null,
@@ -365,9 +364,11 @@ let generateContinuumCompletion = async (assessment) => {
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
 		return continuumCompletion;
-	} else {
+	} else if (continuumVersion !== currentContinuumVersion) {
 		continuumCompletion = {};
 		considerationsEstablished = convertConsiderations(assessment);
+	} else {
+		continuumCompletion = {};
 	}
 
 	let count = await userDataStore.getConsiderationCount();
