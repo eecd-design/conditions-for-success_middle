@@ -39,7 +39,7 @@ if (['resource', 'guides'].includes(category)) {
 	});
 } else if (category === 'indicator') {
 	path = `./big-seven/${slug}/`;
-} else if (category === 'component') {
+} else if (category === 'component' || category === 'consideration') {
 	path = `./big-seven/${indicator}/#${category}-${tag.replaceAll('.', '-')}`;
 } else if (category === 'training') {
 	path = `./training/${slug}/`;
