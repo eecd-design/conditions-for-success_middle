@@ -5,36 +5,42 @@ initiating:
   considerations:
     - tag: 1.5.1
       title: >-
-        Discuss Skill Descriptors but lack a structured approach to the four PLC
+        Discusses Skill Descriptors found in the New Brunswick Curriculum
+        Framework, but lacks a structured approach to answering the four PLC
         questions.
       compass: false
       categories: []
     - tag: 1.5.2
       title: >-
-        Rely primarily on individual assessment practices without common
+        Relies primarily on individual assessment practices, with limited common
         assessment and shared analysis of learner learning.
+      compass: false
+      categories: []
+    - tag: 1.5.3
+      title: >-
+        Begins to discuss learner needs and possible responses, with educators
+        primarily determining next steps individually.
       compass: false
       categories: []
 implementing:
   considerations:
-    - tag: 1.5.3
-      title: >-
-        Identifies Skill Descriptors that they will provide explicit instruction
-        in.
-      compass: false
-      categories: []
     - tag: 1.5.4
-      title: Begin to develop common assessments.
+      title: >-
+        Identifies Skill Descriptors for which they will provide explicit
+        instruction.
       compass: false
       categories: []
     - tag: 1.5.5
-      title: Begin to analyze learner data collectively.
+      title: >-
+        Begins to develop common assessments and analyzes learner data
+        collectively.
       compass: false
       categories: []
     - tag: 1.5.6
       title: >-
-        Start discussing intervention response to learners who haven’t and have
-        learned it but apply them inconsistently.
+        Starts discussing intervention responses for when learners have not yet
+        learned and when they have already learned, but applies these responses
+        inconsistently.
       compass: false
       categories: []
 developing:
@@ -48,7 +54,10 @@ developing:
       compass: true
       categories: []
     - tag: 1.5.9
-      title: Implements targeted interventions based on learner needs.
+      title: >-
+        Implements targeted responses (interventions) based on learner needs,
+        including providing additional support, further challenges, and/or
+        acceleration opportunities.
       compass: true
       categories: []
 sustaining:
@@ -63,5 +72,11 @@ sustaining:
       title: >-
         Embeds the four PLC questions into daily decision-making, fostering a
         culture of continuous improvement.
+      compass: false
+      categories: []
+    - tag: 1.5.12
+      title: >-
+        Collectively monitors the impact of instructional responses and assumes
+        shared responsibility for the success of every learner.
       compass: false
       categories: []
