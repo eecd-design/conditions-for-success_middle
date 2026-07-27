@@ -46,9 +46,9 @@ sustaining:
     - tag: 1.1.7
       title: >-
         All learning partners can explain the shared vision and mission, which
-        is regularly celebrated, guides decision-making, and shapes how staff
-        use data to demonstrate progress toward vision-aligned goals and adjust
-        as needed.
+        is regularly celebrated and guides decision-making. Staff use data to
+        demonstrate progress toward vision-aligned goals and to adjust their
+        approach as needed.
       compass: false
       categories: []
     - tag: 1.1.8
