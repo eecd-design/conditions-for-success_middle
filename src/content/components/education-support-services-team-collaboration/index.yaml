@@ -10,7 +10,9 @@ initiating:
       compass: false
       categories: []
     - tag: 1.4.2
-      title: Focus on isolated incidents with little or no data-driven discussion.
+      title: >-
+        Meetings are primarily focused on individual situations, with data used
+        infrequently to inform discussion and planning.
       compass: false
       categories: []
     - tag: 1.4.3
@@ -32,13 +34,18 @@ implementing:
       compass: false
       categories: []
     - tag: 1.4.6
-      title: Begin using data to discuss trends and patterns in learner performance.
+      title: >-
+        Educators participate in the ESS referral process, including pre- and
+        post-communication.
       compass: false
       categories: []
 developing:
   considerations:
     - tag: 1.4.7
-      title: Educators participate in ESS-hosted Problem-Solving Meetings.
+      title: >-
+        Educators participate in ESS-hosted Problem-Solving Meetings to
+        collaboratively design and implement interventions and supports for
+        learners' academic and/or behavioural needs.
       compass: false
       categories: []
     - tag: 1.4.8
