@@ -5,18 +5,20 @@ initiating:
   considerations:
     - tag: 1.4.1
       title: >-
-        Hold initial meetings with minimal structure, primarily addressing
+        Initial meetings are held with minimal structure, primarily addressing
         immediate learner needs.
       compass: false
       categories: []
     - tag: 1.4.2
       title: >-
-        Meetings are primarily focused on individual situations, with data used
-        infrequently to inform discussion and planning.
+        Meetings are primarily focused on individual situations, with data being
+        used infrequently to inform discussion and planning.
       compass: false
       categories: []
     - tag: 1.4.3
-      title: A method is established that allows for learner input on key issues.
+      title: >-
+        A method has been established that allows for learner input on key
+        issues.
       compass: false
       categories: []
 implementing:
