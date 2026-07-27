@@ -5,7 +5,7 @@ initiating:
   considerations:
     - tag: 1.4.1
       title: >-
-        Initial meetings are held with minimal structure, primarily addressing
+        Initial meetings involve minimal structure and primarily address
         immediate learner needs.
       compass: false
       categories: []
@@ -25,8 +25,8 @@ implementing:
   considerations:
     - tag: 1.4.4
       title: >-
-        Meetings are biweekly, with structured agendas focused on academic and
-        behavioural needs.
+        Meetings are held biweekly, with structured agendas focused on academic
+        and behavioural needs.
       compass: true
       categories: []
     - tag: 1.4.5
