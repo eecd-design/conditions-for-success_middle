@@ -5,20 +5,20 @@ initiating:
   considerations:
     - tag: 1.5.1
       title: >-
-        Discusses Skill Descriptors found in the New Brunswick Curriculum
-        Framework, but lacks a structured approach to answering the four PLC
+        Discuss Skill Descriptors found in the New Brunswick Curriculum
+        Framework, but lack a structured approach for answering the four PLC
         questions.
       compass: false
       categories: []
     - tag: 1.5.2
       title: >-
-        Relies primarily on individual assessment practices, with limited common
+        Rely primarily on individual assessment practices, with limited common
         assessment and shared analysis of learner learning.
       compass: false
       categories: []
     - tag: 1.5.3
       title: >-
-        Begins to discuss learner needs and possible responses, with educators
+        Begin to discuss learner needs and possible responses, with educators
         primarily determining next steps individually.
       compass: false
       categories: []
@@ -26,57 +26,57 @@ implementing:
   considerations:
     - tag: 1.5.4
       title: >-
-        Identifies Skill Descriptors for which they will provide explicit
+        Can identify Skill Descriptors for which they will provide explicit
         instruction.
       compass: false
       categories: []
     - tag: 1.5.5
       title: >-
-        Begins to develop common assessments and analyzes learner data
+        Begin to develop common assessments and analyze learner data
         collectively.
       compass: false
       categories: []
     - tag: 1.5.6
       title: >-
-        Starts discussing intervention responses for when learners have not yet
-        learned and when they have already learned, but applies these responses
+        Begin discussing intervention responses for learners who have not yet
+        learned the skill and for those who have learned it but apply it
         inconsistently.
       compass: false
       categories: []
 developing:
   considerations:
     - tag: 1.5.7
-      title: Regularly uses common assessments to monitor learner progress.
+      title: Regularly use common assessments to monitor learner progress.
       compass: false
       categories: []
     - tag: 1.5.8
-      title: Uses results of common assessments to inform instructional decisions.
+      title: Use results of common assessments to inform instructional decisions.
       compass: true
       categories: []
     - tag: 1.5.9
       title: >-
-        Implements targeted responses (interventions) based on learner needs,
-        including providing additional support, further challenges, and/or
-        acceleration opportunities.
+        Implement targeted responses (interventions) based on learner needs,
+        including providing additional support and/or acceleration
+        opportunities.
       compass: true
       categories: []
 sustaining:
   considerations:
     - tag: 1.5.10
       title: >-
-        Continuously refines instructional practices based on learner data,
+        Continuously refine instructional practices based on learner data,
         ensuring all learners receive appropriate support and challenge.
       compass: false
       categories: []
     - tag: 1.5.11
       title: >-
-        Embeds the four PLC questions into daily decision-making, fostering a
+        Embed the four PLC questions into daily decision-making, fostering a
         culture of continuous improvement.
       compass: false
       categories: []
     - tag: 1.5.12
       title: >-
-        Collectively monitors the impact of instructional responses and assumes
+        Collectively monitor the impact of instructional responses and assume
         shared responsibility for the success of every learner.
       compass: false
       categories: []
