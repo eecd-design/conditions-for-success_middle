@@ -11,8 +11,8 @@ initiating:
       categories: []
     - tag: 1.4.2
       title: >-
-        Meetings are primarily focused on individual situations, with data being
-        used infrequently to inform discussion and planning.
+        Meetings are primarily focused on individual situations, with minimal
+        use of data to inform discussion and planning.
       compass: false
       categories: []
     - tag: 1.4.3
