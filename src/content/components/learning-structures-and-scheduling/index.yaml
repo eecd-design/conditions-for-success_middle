@@ -63,7 +63,8 @@ implementing:
     - tag: 1.3.8
       title: >-
         Learners engage more deeply in each learning area due to extended class
-        time, though learning areas are still largely taught separately.
+        time or schedule changes, though learning areas are still largely taught
+        separately.
       compass: false
       categories:
         - Learner Experience
