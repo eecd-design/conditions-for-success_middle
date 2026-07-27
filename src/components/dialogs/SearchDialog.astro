@@ -6,7 +6,6 @@ import { findObjectByKey } from 'src/utilities/helpers';
 import IconXmark from 'src/components/icons/IconXmark_20.astro';
 import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
 import IconSearch from 'src/components/icons/IconSearch_20.astro';
-import DetailedLink from 'src/components/DetailedLink.astro';
 import LinksListItem from '../LinksListItem.astro';
 
 let searchList = [];
@@ -157,6 +156,7 @@ for (let resource of allResources) {
 						index={index}
 						listName={'site-content-list'}
 						itemHiddenByDefault={true}
+						listLocation={'searchDialog'}
 					/>
 				))
 			}
@@ -180,3 +180,36 @@ for (let resource of allResources) {
 		margin-top: var(--space-xl);
 	}
 </style>
+
+<script>
+	import { eventControl } from 'src/utilities/event';
+
+	let onDialogOpen = (event) => {
+		let dialog = event.target as HTMLDialogElement;
+
+		if (dialog.open) {
+			let context = dialog.getAttribute('data-context');
+
+			if (context === 'last-search') {
+				let form = dialog.querySelector('form');
+				let listId = form.getAttribute('data-list');
+				let list = document.querySelector(`#${listId}`);
+
+				if (list) {
+					let lastSearch = list._state.search.last;
+					let input = form.querySelector('input[name="search"]');
+					if (input) {
+						input.value = lastSearch;
+						let inputEvent = new Event('input', { bubbles: true, cancelable: true });
+						input.dispatchEvent(inputEvent);
+					}
+				}
+			}
+		}
+	};
+	eventControl.add({
+		selector: '#search-dialog',
+		eventType: 'dialogOpen',
+		fn: onDialogOpen,
+	});
+</script>

@@ -121,7 +121,7 @@ import videoPoster from 'src/images/video-poster.png';
 	// Event Listeners
 	//
 
-	let onClick = (event) => {
+	let onLaunchClick = (event) => {
 		let target = event.target.closest(
 			`button.open-dialog[data-dialog="media-dialog"]`,
 		) as HTMLButtonElement;
@@ -198,6 +198,26 @@ import videoPoster from 'src/images/video-poster.png';
 	eventControl.add({
 		selector: `button.open-dialog[data-dialog="media-dialog"]`,
 		eventType: 'click',
-		fn: onClick,
+		fn: onLaunchClick,
+	});
+
+	let onCloseClick = (event) => {
+		let target = event.target;
+
+		if (target.matches('button.close-dialog')) {
+			console.log('Closing media dialog');
+			let dialog = target.closest('dialog');
+			let context = dialog?.getAttribute('data-context');
+
+			if (context && context === 'from-search-dialog') {
+				console.log('Opening search dialog');
+				dialogControl.open({ dialogId: 'search-dialog', context: 'last-search' });
+			}
+		}
+	};
+	eventControl.add({
+		selector: `#media-dialog`,
+		eventType: 'click',
+		fn: onCloseClick,
 	});
 </script>

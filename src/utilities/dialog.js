@@ -41,6 +41,9 @@ let dialogControl = (() => {
 		let dialog = target.closest('dialog');
 		if (!dialog) return;
 		stopVideo(dialog);
+		dialog.removeAttribute('data-context');
+		dialog.removeAttribute('data-target-id');
+		dialog.removeAttribute('data-heading');
 		// Disable smooth scroll
 		document.documentElement.style.scrollBehavior = 'auto';
 		// Unlock background scroll

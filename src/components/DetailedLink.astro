@@ -9,7 +9,7 @@ import IconExpand from './icons/IconExpand_16.astro';
 import IconExternal from './icons/IconExternal_16.astro';
 import IconDownload from './icons/IconDownload_16.astro';
 
-let { itemData, isInListItem = false } = Astro.props;
+let { itemData, isInListItem = false, listLocation = null } = Astro.props;
 
 let {
 	category = null,
@@ -102,6 +102,7 @@ let interactiveWrapperAttrs = opensDialog
 			'data-style-as': 'link',
 			'data-dialog': 'media-dialog',
 			'data-dialog-heading': title,
+			'data-dialog-context': listLocation === 'searchDialog' ? 'from-search-dialog' : null,
 			'data-media-type': type,
 			'data-media-src': path,
 			'data-media-external': external.discriminant,

@@ -192,7 +192,7 @@ let showListGroup = (list) => {
 
 			let descElem = elem.querySelector('.text-container .description');
 			if (descElem) {
-				highlightText(descElem, list._state.search);
+				highlightText(descElem, list._state.search.current);
 			}
 		}
 
@@ -227,7 +227,7 @@ let updateList = async (list) => {
 
 	let searchIndex = list._listIndex;
 	let values = {
-		search: list._state.search,
+		search: list._state.search.current,
 		filters: list._state.filters,
 	};
 	let defaultItemVisibility = list._options.defaultItemVisibility;
@@ -504,7 +504,10 @@ let ensureListControls = (list) => {
 let ensureListState = (list) => {
 	if (!list._state) {
 		list._state = {
-			search: null,
+			search: {
+				current: null,
+				last: null,
+			},
 			filter: null,
 			sort: {
 				primary: 'relevance',
@@ -855,7 +858,7 @@ let search = (() => {
 		let list = getList(form);
 		if (!form && !list) return;
 
-		list._state.search = target.value.toLowerCase().trim();
+		list._state.search.current = target.value.toLowerCase().trim();
 
 		target.removeAttribute('aria-activedescendant');
 		let selectedItem = list.querySelector('[aria-selected]');
@@ -952,7 +955,8 @@ let search = (() => {
 				if (currentItem) currentItem.firstElementChild.removeAttribute('aria-selected');
 
 				target.value = '';
-				list._state.search = null;
+				list._state.search.last = list._state.search.current;
+				list._state.search.current = null;
 
 				target.setAttribute('aria-activedescendant', '');
 				scrollIntoView(target, {
@@ -985,7 +989,8 @@ let search = (() => {
 		let selectedItem = list.querySelector('[aria-selected]');
 		if (selectedItem) selectedItem.removeAttribute('aria-selected');
 
-		list._state.search = null;
+		list._state.search.last = list._state.search.current;
+		list._state.search.current = null;
 
 		if (list._options.defaultItemVisibility === 'hidden') {
 			list.setAttribute('hidden', '');

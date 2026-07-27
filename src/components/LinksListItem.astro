@@ -1,7 +1,14 @@
 ---
 import DetailedLink from '../components/DetailedLink.astro';
 
-let { itemData, index, listName, listGroupSize = 0, itemHiddenByDefault = false } = Astro.props;
+let {
+	itemData,
+	index,
+	listName,
+	listGroupSize = 0,
+	itemHiddenByDefault = false,
+	listLocation = null,
+} = Astro.props;
 
 let { colour = null, itemId = null } = itemData;
 
@@ -18,5 +25,6 @@ let itemWrapperAttrs = {
 	<DetailedLink
 		itemData={itemData}
 		isInListItem={true}
+		listLocation={listLocation}
 	/>
 </li>
