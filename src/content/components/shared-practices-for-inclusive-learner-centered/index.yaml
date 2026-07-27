@@ -76,8 +76,9 @@ developing:
       categories: []
     - tag: 1.2.12
       title: >-
-        Staff use inclusive teaching practices to ensure all learners are
-        supported to participate and achieve.
+        Staff plan independently and collaboratively, using inclusive teaching
+        practices to ensure all learners are supported to participate and
+        achieve.
       compass: false
       categories: []
     - tag: 1.2.13
@@ -109,7 +110,9 @@ sustaining:
       compass: false
       categories: []
     - tag: 1.2.17
-      title: Staff are skilled in using strategies that meet learner needs.
+      title: >-
+        Staff skillfully and consistently apply inclusive strategies that meet
+        learner needs.
       compass: false
       categories: []
     - tag: 1.2.18
