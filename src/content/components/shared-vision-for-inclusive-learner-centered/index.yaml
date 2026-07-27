@@ -8,7 +8,12 @@ initiating:
       compass: false
       categories: []
     - tag: 1.1.2
-      title: Leadership introduces the concept of middle block philosophy.
+      title: >-
+        Leadership introduces the middle block philosophy as an approach that
+        recognizes the unique developmental needs of early adolescents, ages
+        11–14. This philosophy promotes a balanced and supportive learning
+        environment that fosters academic growth, social-emotional development,
+        and a strong sense of belonging.
       compass: false
       categories: []
 implementing:
