@@ -9,33 +9,32 @@ initiating:
       compass: false
       categories: []
     - tag: 4.1.2
-      title: Leadership shares the importance of empathy in staff interactions.
+      title: >-
+        Leadership introduces the importance of empathy and creates
+        opportunities for staff to discuss its role in their interactions and
+        practice.
       compass: false
       categories: []
     - tag: 4.1.3
-      title: Empathy is discussed in staff meetings.
-      compass: false
-      categories: []
-    - tag: 4.1.4
       title: >-
-        Staff are aware of how adverse childhood experiences can impact the
-        classroom environment.
+        Staff build self-awareness and recognize how adverse childhood
+        experiences can impact learners and the classroom environment.
       compass: false
       categories: []
 implementing:
   considerations:
-    - tag: 4.1.5
+    - tag: 4.1.4
       title: >-
         Staff participate in basic training on active listening, emotional
         awareness, finding common ground, negotiation, conflict resolution,
         supportive communication, and addressing discrimination.
       compass: false
       categories: []
-    - tag: 4.1.6
+    - tag: 4.1.5
       title: Staff can identify examples of implicit bias.
       compass: false
       categories: []
-    - tag: 4.1.7
+    - tag: 4.1.6
       title: >-
         All staff are trauma-informed* and know how to provide positive
         childhood experiences to support any potential adverse childhood
@@ -49,17 +48,20 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 4.1.8
-      title: Leadership and staff regularly check-in on each other’s well-being.
+    - tag: 4.1.7
+      title: >-
+        Leadership and staff regularly check in on learners' well-being and use
+        what they learn to inform their interactions and support, while also
+        creating opportunities for collegial check-ins.
       compass: false
       categories: []
-    - tag: 4.1.9
+    - tag: 4.1.8
       title: >-
         Staff incorporate strategies and structures in each classroom to support
         the social-emotional development of all learners.
       compass: false
       categories: []
-    - tag: 4.1.10
+    - tag: 4.1.9
       title: >-
         All staff are trauma-assumed*. Staff understand that many learners may
         be affected by adverse childhood experiences and provide positive
@@ -75,19 +77,20 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 4.1.11
+    - tag: 4.1.10
       title: >-
-        Staff consistently use evidence-based practices to ensure all learners
-        feel seen, heard, and valued.
+        Staff consistently use evidence-based practices and ongoing check-ins to
+        ensure all learners feel seen, heard, and valued, while fostering a
+        supportive and connected staff culture.
       compass: true
       categories: []
-    - tag: 4.1.12
+    - tag: 4.1.11
       title: >-
         Staff survey data shows a strong sense of emotional safety and support
         within the school.
       compass: false
       categories: []
-    - tag: 4.1.13
+    - tag: 4.1.12
       title: >-
         All staff are trauma-invested* and consistently evaluate their practices
         to create positive childhood experiences for all learners.
