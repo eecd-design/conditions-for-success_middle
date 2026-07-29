@@ -6,8 +6,14 @@ initiating:
     - tag: 7.5.1
       title: >-
         Educators facilitate occasional group work or partner activities focused
-        on simple collaboration, like sharing ideas (e.g., think-pair-share) or
-        solving a problem together.
+        on simple collaboration, like sharing ideas or solving a problem
+        together.
+      compass: false
+      categories: []
+    - tag: 7.5.2
+      title: >-
+        Basic peer learning structures, such as think-pair-share, are introduced
+        and primarily guided by the educator.
       compass: false
       categories: []
 implementing:
