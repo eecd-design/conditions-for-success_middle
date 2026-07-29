@@ -18,13 +18,13 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 7.5.2
+    - tag: 7.5.3
       title: >-
         Learners regularly engage in cooperative learning tasks, such as peer
         teaching or collaborative projects, to develop interdependence.
       compass: false
       categories: []
-    - tag: 7.5.3
+    - tag: 7.5.4
       title: >-
         Educators use strategies like peer feedback to encourage mutual
         learning.
@@ -32,14 +32,14 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 7.5.4
+    - tag: 7.5.5
       title: >-
         Learners work in teams on complex projects that require them to rely on
         each other’s strengths, with educator support for group dynamics and
         conflict resolution.
       compass: false
       categories: []
-    - tag: 7.5.5
+    - tag: 7.5.6
       title: >-
         Reflection on team projects includes identifying how peers contributed
         to individual learning.
@@ -47,13 +47,13 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 7.5.6
+    - tag: 7.5.7
       title: >-
         Peer learning is an integral part of daily instruction, with learners
         leading collaborative efforts and teaching each other.
       compass: false
       categories: []
-    - tag: 7.5.7
+    - tag: 7.5.8
       title: >-
         Learners consistently articulate what they have learned from their peers
         and how it enhances their understanding.
