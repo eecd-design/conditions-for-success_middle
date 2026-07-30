@@ -32,8 +32,21 @@ initiating:
       categories: []
     - tag: 6.2.5
       title: >-
-        Assessment is summative, with little formative feedback for learners to
-        reflect and grow as independent readers and writers.
+        Learners use writing mainly to record information or complete assigned
+        tasks. They have limited opportunities to engage in planning, revision,
+        the feedback cycle, and/or reflection as part of the writing process.
+      compass: false
+      categories: []
+    - tag: 6.2.6
+      title: >-
+        Assessment is primarily summative, with limited opportunities for
+        learners to use feedback to improve learning.
+      compass: false
+      categories: []
+    - tag: 6.2.7
+      title: >-
+        Learners rely heavily on educator support to access texts, participate
+        in discussions, and communicate understanding.
       compass: false
       categories: []
 implementing:
