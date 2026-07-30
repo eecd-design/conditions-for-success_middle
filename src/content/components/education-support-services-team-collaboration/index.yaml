@@ -80,5 +80,5 @@ sustaining:
         Educators and support teams work interdependently with learners to
         refine supports, with learners actively contributing to decisions that
         support their success.
-      compass: false
+      compass: true
       categories: []
