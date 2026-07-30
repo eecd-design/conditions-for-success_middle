@@ -25,10 +25,9 @@ initiating:
       categories: []
     - tag: 6.2.4
       title: >-
-        Questioning is recall-based, with minimal opportunities to seek
-        clarification or evaluate and respond to ideas (e.g., educators ask,
-        “What happened in the story?” rather than prompting learners to explain
-        author’s intent or argumentation strategies).
+        Discussion is primarily educator-directed, and learners have limited
+        opportunities to explain thinking, ask questions, or build on the ideas
+        of others.
       compass: false
       categories: []
     - tag: 6.2.5
