@@ -88,44 +88,35 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 6.2.11
-      title: >-
-        Reciprocal teaching, questioning, and self-questioning are learner-led,
-        allowing them to seek information and analyze critically (e.g., learners
-        generate their own discussion questions, make connections between texts,
-        and clarify misunderstandings in small groups).
-      compass: false
-      categories: []
-    - tag: 6.2.12
-      title: >-
-        Metacognitive strategies are used to reflect on and apply feedback from
-        others (e.g., learners write reading reflections, identifying challenges
-        and strategies they used to understand the text and how they plan to
-        adjust).
-      compass: false
-      categories: []
     - tag: 6.2.13
       title: >-
-        Cooperative learning and peer tutoring promote deeper engagement in
-        assessing self and others (e.g., learners provide structured peer
-        feedback on each other’s essays, using a rubric to guide constructive
-        critique). 
+        Educators use formative assessment and provide feedback to support
+        learner growth in reading, writing, speaking, and listening.
       compass: false
       categories: []
     - tag: 6.2.14
       title: >-
-        Class discussion and formal discussions (e.g., Socratic seminars,
-        debates) are learner-driven, reinforcing the importance of supporting
-        and extending understanding (e.g., learners facilitate their own
-        Socratic seminar, analyzing how texts convey societal values and
-        perspectives).
+        Learners begin applying literacy routines and strategies with guidance
+        and support across learning areas.
       compass: false
       categories: []
     - tag: 6.2.15
       title: >-
-        Formative assessment and feedback loops guide instruction and learning
-        (e.g., learners use self-assessment checklists and peer review
-        strategies to refine their writing and questioning skills).
+        Learners independently use comprehension strategies to monitor
+        understanding, make connections, determine importance, summarize, and
+        construct meaning from increasingly complex texts.
+      compass: false
+      categories: []
+    - tag: 6.2.16
+      title: >-
+        Learners use vocabulary knowledge, context clues, word study, and prior
+        knowledge to support comprehension and communicate understanding.
+      compass: false
+      categories: []
+    - tag: 6.2.17
+      title: >-
+        Learners independently select and use strategies and tools to organize
+        information, monitor comprehension, and support learning.
       compass: true
       categories: []
 sustaining:
