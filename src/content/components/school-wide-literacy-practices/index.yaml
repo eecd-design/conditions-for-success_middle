@@ -119,6 +119,31 @@ developing:
         information, monitor comprehension, and support learning.
       compass: true
       categories: []
+    - tag: 6.2.18
+      title: >-
+        Learners participate in collaborative discussions, inquiry, peer
+        tutoring, and feedback processes where they ask questions, use evidence,
+        consider multiple perspectives, and build on others' thinking.
+      compass: false
+      categories: []
+    - tag: 6.2.19
+      title: >-
+        Learners write for a variety of purposes and audiences, using feedback
+        and self-assessment to improve clarity, organization, and communication.
+      compass: false
+      categories: []
+    - tag: 6.2.20
+      title: >-
+        Learners use self-assessment, peer feedback, success criteria, and
+        reflection to identify strengths and next steps.
+      compass: false
+      categories: []
+    - tag: 6.2.21
+      title: >-
+        Learners increasingly take ownership of literacy practices and apply
+        strategies independently in different contexts.
+      compass: false
+      categories: []
 sustaining:
   considerations:
     - tag: 6.2.16
