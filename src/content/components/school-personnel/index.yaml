@@ -40,7 +40,7 @@ implementing:
         Reflection on staff identities is more comprehensive, connecting
         personal identity to instructional approaches, curriculum choices, and
         learner outcomes.
-      compass: false
+      compass: true
       categories: []
 developing:
   considerations:
