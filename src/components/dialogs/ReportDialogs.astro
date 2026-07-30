@@ -137,12 +137,12 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 	fieldset.indicators label:has(input[type='checkbox']) {
 		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-small);
+		border-radius: var(--brd-radius-small);
 		width: fit-content;
 	}
 
 	fieldset.indicators label:has(input[type='checkbox']:is(:hover, :focus-visible)) {
-		background-color: var(--colour-fill-neutral-subtle);
+		background-color: var(--colour-bkg-surface-subtle-1);
 	}
 
 	fieldset.indicators label:has(input[type='checkbox']:focus-visible) {

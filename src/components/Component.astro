@@ -404,7 +404,7 @@ let phases = [
 		& .phase-status {
 			line-height: 1.2;
 			margin: 0 0 var(--space-sm);
-			color: var(--colour-ui-accent-subtle);
+			color: var(--colour-txt-on-subtle-2-accent);
 
 			[data-mode='assessment'] & ~ h2 {
 				@container main (width >= 904px) {
@@ -440,8 +440,8 @@ let phases = [
 			gap: var(--space-sm);
 			align-items: center;
 			padding: var(--space-xs) var(--space-base);
-			background-color: var(--colour-fill-neutral-subtle);
-			border-bottom: 1px solid var(--colour-border-neutral-subtle);
+			background-color: var(--colour-bkg-surface-subtle-1);
+			border-bottom: 1px solid var(--colour-brd-subtle);
 
 			@container accordion (width < 480px) {
 				flex-flow: column;
@@ -449,7 +449,7 @@ let phases = [
 			}
 
 			& .label {
-				--icon-colour: var(--colour-ui-neutral-subtle);
+				--icon-colour: var(--colour-txt-on-subtle-2);
 				--icon-size: 1.25rem;
 				display: flex;
 				flex-flow: row nowrap;
@@ -463,12 +463,12 @@ let phases = [
 			}
 
 			& .statement {
-				border-left: 1px solid var(--colour-border-neutral-subtle);
+				border-left: 1px solid var(--colour-brd-subtle);
 				padding: 0 0 0 var(--space-sm);
 
 				@container accordion (width < 480px) {
 					border-left: none;
-					border-top: 1px solid var(--colour-border-neutral-subtle);
+					border-top: 1px solid var(--colour-brd-subtle);
 					padding: var(--space-sm) 0 0;
 				}
 			}
@@ -478,7 +478,7 @@ let phases = [
 			& .considerations-status {
 				display: inline-flex;
 				--label-size: var(--font-size-2xs);
-				--label-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+				--label-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
 
 				main[data-mode='assessment'] & {
 					@container main (width <= 904px) {
@@ -488,7 +488,7 @@ let phases = [
 			}
 
 			&[aria-expanded='true'] .considerations-status {
-				--label-colour: var(--colour-ui-reverse);
+				--label-colour: var(--colour-txt-on-bold-1);
 			}
 		}
 
@@ -500,7 +500,7 @@ let phases = [
 				padding: var(--space-base);
 
 				&:not(:first-of-type) {
-					border-top: 1px solid var(--colour-border-neutral-subtle);
+					border-top: 1px solid var(--colour-brd-subtle);
 				}
 			}
 
@@ -525,12 +525,16 @@ let phases = [
 						gap: 0;
 						height: 1.5rem;
 						padding: 0 var(--space-2xs) 0 0;
-						background-color: var(--colour-fill-accent-subtle);
-						border-radius: var(--border-radius-small);
+						background-color: var(--colour-bkg-surface-subtle-1-accent);
+						border-radius: var(--brd-radius-small);
 						cursor: default;
 
+						:root[data-theme='dark'] & {
+							background-color: var(--colour-bkg-surface-subtle-2);
+						}
+
 						& .icon.compass {
-							--icon-colour: var(--colour-ui-accent);
+							--icon-colour: var(--colour-txt-on-subtle-1-accent);
 							--icon-size: 0.875rem;
 							margin: 0 0 0 var(--space-3xs);
 						}
@@ -540,7 +544,7 @@ let phases = [
 							font-size: var(--font-size-2xs);
 							font-weight: 700;
 							line-height: 1;
-							color: var(--colour-ui-accent);
+							color: var(--colour-txt-on-subtle-1-accent);
 							transition: color var(--transition-linear-fast);
 						}
 
@@ -580,30 +584,33 @@ let phases = [
 							}
 
 							&:has(input[type='checkbox']:checked) {
-								background-color: var(--colour-fill-accent-bold);
+								background-color: var(
+									--colour-bkg-surface-bold-1-accent,
+									var(--colour-bkg-surface-bold-1)
+								);
 
 								@container main (width <= 904px) {
-									background-color: var(--colour-fill-accent-subtle);
+									background-color: var(--colour-bkg-surface-subtle-1-accent);
 								}
 
 								& .icon.compass {
-									--icon-colour: var(--colour-ui-reverse);
+									--icon-colour: var(--colour-txt-on-bold-1);
 								}
 
 								& .tag {
-									color: var(--colour-ui-reverse);
+									color: var(--colour-txt-on-bold-1);
 
 									@container main (width <= 904px) {
-										color: var(--colour-ui-accent);
+										color: var(--colour-txt-on-subtle-1-accent);
 									}
 								}
 							}
 
 							&:has(input[type='checkbox']:not(:checked):is(:hover, :focus-visible)) {
-								background-color: var(--colour-fill-accent-subtle-highlight);
+								background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
 
 								& .tag {
-									color: var(--colour-ui-accent-bold);
+									color: var(--colour-txt-on-subtle-1-accent-hover);
 								}
 							}
 
@@ -629,7 +636,7 @@ let phases = [
 
 		& .top-link {
 			--label-size: var(--font-size-xs);
-			--label-colour: var(--colour-ui-neutral-subtle);
+			--label-colour: var(--colour-txt-on-subtle-2);
 			--link-colour: var(--label-colour);
 
 			display: none;

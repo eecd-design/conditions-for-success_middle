@@ -395,8 +395,17 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 
 		& > .notice {
 			height: 100%;
-			background-color: var(--colour-fill-accent-subtle);
-			border-bottom: 1px solid var(--colour-border-accent-subtle);
+			background-color: var(--colour-bkg-surface-subtle-1-accent);
+			border-bottom: 1px solid var(--colour-brd-subtle-accent);
+
+			:root[data-theme='dark'] & {
+				--icon-colour: var(--colour-brd-bold-accent);
+
+				/* background-color: var(--colour-bkg-surface-bold-1-accent); */
+				background-color: var(--colour-bkg-surface-subtle-1);
+				border-top: 1px solid var(--colour-bkg-surface-bold-1-accent);
+				border-bottom: 1px solid var(--colour-bkg-surface-bold-1-accent);
+			}
 
 			& > .wrapper {
 				--icon-size: 1rem;
@@ -422,8 +431,9 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 
 		& > .tools {
 			height: 100%;
-			background-color: var(--colour-fill-neutral-subtle);
-			border-bottom: 1px solid var(--colour-border-neutral-subtle);
+			background-color: var(--colour-bkg-surface-subtle-1);
+			border-top: 1px solid var(--colour-brd-subtle);
+			border-bottom: 1px solid var(--colour-brd-subtle);
 
 			& > .wrapper {
 				display: flex;
@@ -449,9 +459,9 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					align-items: start;
 					gap: var(--space-3xs);
 					list-style-type: none;
-					background-color: var(--colour-fill-neutral-subtle);
-					border: 1px solid var(--colour-border-neutral-subtle);
-					border-radius: var(--border-radius-normal);
+					background-color: var(--colour-bkg-surface-subtle-1);
+					border: 1px solid var(--colour-brd-subtle);
+					border-radius: var(--brd-radius-normal);
 					width: max-content;
 					padding: var(--space-2xs);
 					box-shadow: var(--box-shadow);
@@ -486,12 +496,12 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 
 			&:not([data-style='solid-outline']) {
 				--icon-size: 1.25rem;
-				--button-background-colour: transparent;
+				--button-bkg-colour: transparent;
 
 				&:is(:hover, :focus-visible, [aria-expanded='true']) {
-					--icon-colour: var(--colour-ui-reverse);
-					--label-colour: var(--colour-ui-reverse);
-					--button-background-colour: var(--colour-fill-neutral-bold);
+					--icon-colour: var(--colour-txt-on-bold-1);
+					--label-colour: var(--colour-txt-on-bold-1);
+					--button-bkg-colour: var(--colour-bkg-surface-bold-1);
 				}
 			}
 
@@ -515,12 +525,12 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				left: 50%;
 				translate: -50%;
 				font-size: var(--font-size-2xs);
-				color: var(--colour-ui-reverse);
+				color: var(--colour-txt-on-bold-1);
 				line-height: 1.2;
-				background-color: var(--colour-fill-neutral-bold);
+				background-color: var(--colour-bkg-surface-bold-1);
 				width: max-content;
 				padding: var(--space-2xs) var(--space-2xs);
-				border-radius: var(--border-radius-small);
+				border-radius: var(--brd-radius-small);
 				visibility: hidden;
 				opacity: 0;
 				transition: opacity var(--transition-linear-fast) 0s;
@@ -555,7 +565,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			}
 
 			&:has([data-field='exportStatus']) {
-				--label-colour: var(--colour-ui-neutral-subtle);
+				--label-colour: var(--colour-txt-on-subtle-2);
 				margin: 0 var(--space-2xs) !important;
 				@container assessment-controls (width < 1296px) {
 					display: none;

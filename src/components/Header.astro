@@ -44,6 +44,7 @@ let mostRecentResourceTimestamp = Math.max(
 	id="top"
 	data-theme="red"
 	data-background="dark"
+	data-theme-fixed
 >
 	<div class="wrapper">
 		<div
@@ -409,22 +410,12 @@ let mostRecentResourceTimestamp = Math.max(
 			height: 100%;
 			background:
 				var(--patternUrl) repeat,
-				var(--colour-bkg-surface-bold-1);
+				var(--colour-bkg-canvas-bold-2);
 			background-blend-mode: screen;
 			z-index: -1;
 
 			@container header (width < 1464px) {
 				grid-row: 1 / span 5;
-			}
-
-			/* Theme Overrides */
-			:root[data-theme='dark'] & {
-				background-color: var(--colour-bkg-canvas-bold-1);
-
-				:is(h2, small, a, [data-style-as='link']) {
-					--link-colour: var(--colour-txt-on-subtle-1);
-					color: var(--colour-txt-on-subtle-1);
-				}
 			}
 		}
 
@@ -440,8 +431,8 @@ let mostRecentResourceTimestamp = Math.max(
 			place-self: start;
 			margin: 0 var(--wrapper-margin);
 			padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
-			background-color: var(--colour-bkg-surface-bold-1);
-			border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+			background-color: var(--colour-bkg-surface-bold-1-accent);
+			border-radius: 0 0 var(--brd-radius-normal) var(--brd-radius-normal);
 			min-height: 3rem;
 			font-size: var(--font-size-2xs);
 			font-weight: 500;
@@ -464,19 +455,19 @@ let mostRecentResourceTimestamp = Math.max(
 			width: calc(100% - ((2 * var(--wrapper-margin)) - (2 * (var(--space-sm)))));
 			max-width: calc(1920px - (2 * var(--wrapper-margin)));
 
-			@container header (width < 1266px) {
+			@container header (width < 1296px) {
 				min-height: 6rem;
 			}
 
-			@container header (width < 800px) {
+			@container header (width < 830px) {
 				min-height: 5rem;
 			}
 		}
 
 		& :is(nav.global, .global-controls) :is(a, button) {
-			--button-background-colour: transparent;
-			--button-border-radius: var(--border-radius-normal);
-			--button-ui-colour: var(--colour-txt-on-bold-1);
+			--button-bkg-colour: transparent;
+			--button-brd-radius: var(--brd-radius-normal);
+			--button-txt-colour: var(--colour-txt-on-bold-1);
 			--icon-size: 1.5rem;
 			--icon-colour: var(--colour-txt-on-bold-1);
 			--label-size: var(--font-size-sm);
@@ -491,10 +482,10 @@ let mostRecentResourceTimestamp = Math.max(
 			font-size: var(--font-size-sm);
 
 			&:is(:hover, :focus-visible) {
-				--button-background-colour: var(--colour-bkg-surface-subtle-1);
+				--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 				--icon-colour: var(--colour-txt-on-subtle-1);
 				--label-colour: var(--colour-txt-on-subtle-1);
-				--button-ui-colour: var(--colour-txt-on-subtle-1);
+				--button-txt-colour: var(--colour-txt-on-subtle-1);
 			}
 		}
 
@@ -516,7 +507,7 @@ let mostRecentResourceTimestamp = Math.max(
 
 				& > li {
 					&:not(.home-icon) {
-						@container header (width < 800px) {
+						@container header (width < 830px) {
 							display: none;
 						}
 					}
@@ -525,15 +516,15 @@ let mostRecentResourceTimestamp = Math.max(
 				& .nav-link[aria-current='page'],
 				& .nav-link[aria-current='page']:is(:hover, :focus-visible) {
 					--button-boxshadow-colour: var(--colour-brd-subtle);
-					--button-background-colour: transparent;
-					--button-ui-colour: var(--colour-txt-on-bold-1);
+					--button-bkg-colour: transparent;
+					--button-txt-colour: var(--colour-txt-on-bold-1);
 				}
 
 				& button.subnav-toggle {
 					&[aria-expanded='true'] {
 						--icon-colour: var(--colour-txt-on-bold-1);
 						--label-colour: var(--colour-txt-on-bold-1);
-						background-color: var(--colour-bkg-surface-bold-1);
+						background-color: var(--colour-bkg-surface-bold-1-accent);
 						box-shadow: var(--box-shadow);
 
 						& .icon.caret {
@@ -551,7 +542,7 @@ let mostRecentResourceTimestamp = Math.max(
 				& .home-name {
 					flex-grow: 1;
 
-					@container header (width < 1266px) {
+					@container header (width < 1296px) {
 						display: none;
 					}
 
@@ -560,15 +551,15 @@ let mostRecentResourceTimestamp = Math.max(
 						width: auto;
 						min-height: 3rem;
 						padding: var(--space-2xs) var(--space-sm);
-						border-radius: var(--border-radius-normal);
+						border-radius: var(--brd-radius-normal);
 						font-size: var(--font-size-base);
 						text-decoration: none;
 						color: var(--colour-txt-on-bold-1);
-					}
 
-					&:is(:hover, :focus-visible) {
-						background-color: transparent;
-						color: var(--colour-txt-on-bold-1);
+						&:is(:hover, :focus-visible) {
+							background-color: transparent;
+							color: var(--colour-txt-on-bold-1);
+						}
 					}
 				}
 
@@ -576,7 +567,7 @@ let mostRecentResourceTimestamp = Math.max(
 					display: none;
 					flex-grow: 0;
 
-					@container header (width < 1266px) {
+					@container header (width < 1296px) {
 						display: block;
 					}
 
@@ -591,8 +582,8 @@ let mostRecentResourceTimestamp = Math.max(
 				flex-flow: column nowrap;
 				align-items: start;
 				gap: var(--space-base);
-				background-color: var(--colour-bkg-surface-bold-1);
-				border-radius: var(--border-radius-normal);
+				background-color: var(--colour-bkg-surface-bold-1-accent);
+				border-radius: var(--brd-radius-normal);
 				padding: var(--space-sm) var(--space-sm) var(--space-base);
 				box-shadow: var(--box-shadow);
 				position: absolute;
@@ -633,12 +624,12 @@ let mostRecentResourceTimestamp = Math.max(
 				&.search {
 					--icon-size: 1.25rem;
 
-					@container header (width < 1266px) {
+					@container header (width < 1296px) {
 						padding: var(--space-2xs) var(--space-xs);
 					}
 
 					& .label-container {
-						@container header (width < 1266px) {
+						@container header (width < 1296px) {
 							display: none;
 						}
 					}
@@ -646,6 +637,10 @@ let mostRecentResourceTimestamp = Math.max(
 
 				&.theme {
 					padding: var(--space-2xs) var(--space-xs);
+
+					& .icon.dark {
+						display: none;
+					}
 
 					:root[data-theme='light'] & {
 						& .icon.light {
@@ -672,7 +667,7 @@ let mostRecentResourceTimestamp = Math.max(
 					--icon-size: 1.25rem;
 					display: none;
 
-					@container header (width < 800px) {
+					@container header (width < 830px) {
 						display: inline;
 					}
 				}
@@ -688,7 +683,7 @@ let mostRecentResourceTimestamp = Math.max(
 			max-width: 720px;
 			margin: var(--space-2xl) 0 var(--space-4xl);
 
-			@container header (width < 1266px) {
+			@container header (width < 1296px) {
 				max-width: min(704px, calc(100% - (2 * var(--wrapper-margin))));
 			}
 
@@ -697,7 +692,7 @@ let mostRecentResourceTimestamp = Math.max(
 				text-align: center;
 				text-wrap: balance;
 
-				@container header (width < 1266px) {
+				@container header (width < 1296px) {
 					margin: 0 0 var(--space-lg);
 				}
 			}
@@ -709,11 +704,11 @@ let mostRecentResourceTimestamp = Math.max(
 				line-height: 1;
 				color: var(--colour-txt-on-bold-1);
 				text-align: center;
-				background-color: var(--colour-bkg-surface-bold-1);
-				border-radius: var(--border-radius-normal);
+				background-color: var(--colour-bkg-surface-bold-1-accent);
+				border-radius: var(--brd-radius-normal);
 				padding: var(--space-sm) var(--space-lg);
 
-				@container header (width < 1266px) {
+				@container header (width < 1296px) {
 					padding: 0.875rem 1.125rem;
 				}
 			}
@@ -730,7 +725,7 @@ let mostRecentResourceTimestamp = Math.max(
 			flex-shrink: 0;
 			flex-grow: 1;
 			background-color: var(--colour-bkg-surface-subtle-1);
-			border-radius: var(--border-radius-normal);
+			border-radius: var(--brd-radius-normal);
 
 			@container header (width < 1464px) {
 				justify-self: center;

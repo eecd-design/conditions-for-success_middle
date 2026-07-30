@@ -123,6 +123,7 @@ let { entries, fit = 'normal', colour } = Astro.props;
 			text-align: center;
 			vertical-align: middle;
 			font-size: var(--font-size-xs);
+			color: var(--colour-txt-on-subtle-1);
 		}
 
 		& th {
@@ -137,21 +138,21 @@ let { entries, fit = 'normal', colour } = Astro.props;
 				padding: 0 var(--space-3xs);
 				margin: 0 0.375rem 0 0;
 				float: left;
-				background-color: var(--colour-fill-accent-subtle);
-				border-radius: var(--border-radius-small);
+				background-color: var(--colour-bkg-surface-subtle-1-accent);
+				border-radius: var(--brd-radius-small);
 				font-size: var(--font-size-3xs);
 				font-weight: 500;
 				line-height: 1;
-				color: var(--colour-ui-accent);
+				color: var(--colour-txt-on-subtle-1-accent);
 			}
 		}
 
 		/* Table Head */
 
 		& thead th {
-			--icon-colour: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+			--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
 			--icon-size: 1.75rem;
-			border-bottom: 1px solid var(--colour-border-neutral-bold);
+			border-bottom: 1px solid var(--colour-brd-bold);
 
 			&:first-of-type {
 				border: none;
@@ -177,8 +178,8 @@ let { entries, fit = 'normal', colour } = Astro.props;
 			}
 
 			& th {
-				border-right: 1px solid var(--colour-border-neutral-bold);
-				border-bottom: 1px solid var(--colour-border-neutral-subtle);
+				border-right: 1px solid var(--colour-brd-bold);
+				border-bottom: 1px solid var(--colour-brd-subtle);
 				padding: var(--space-sm) var(--space-sm) var(--space-sm) 0;
 				text-align: left;
 				vertical-align: bottom;
@@ -194,8 +195,8 @@ let { entries, fit = 'normal', colour } = Astro.props;
 			& td {
 				--dot-diameter: 1.5rem;
 				--dot-radius: calc(var(--dot-diameter) / 2);
-				border-right: 1px dashed var(--colour-border-neutral-subtle);
-				border-bottom: 1px solid var(--colour-border-neutral-subtle);
+				border-right: 1px dashed var(--colour-brd-subtle);
+				border-bottom: 1px solid var(--colour-brd-subtle);
 				line-height: 1;
 
 				[data-fit='compact'] & {
@@ -204,19 +205,19 @@ let { entries, fit = 'normal', colour } = Astro.props;
 			}
 
 			& tr td:last-of-type {
-				border-right: 1px solid var(--colour-border-neutral-bold);
+				border-right: 1px solid var(--colour-brd-bold);
 			}
 
 			& tr:last-of-type td {
-				border-bottom: 1px solid var(--colour-border-neutral-bold);
+				border-bottom: 1px solid var(--colour-brd-bold);
 			}
 
 			section.summary & tr:last-of-type th {
-				border-bottom: 1px solid var(--colour-border-neutral-bold);
+				border-bottom: 1px solid var(--colour-brd-bold);
 			}
 
 			& tr:has(+ tr[data-tag*='.1']:not([data-tag='1.1'])) :is(th, td) {
-				border-bottom: 1px solid var(--colour-border-neutral-bold);
+				border-bottom: 1px solid var(--colour-brd-bold);
 			}
 		}
 
@@ -229,7 +230,10 @@ let { entries, fit = 'normal', colour } = Astro.props;
 			border-radius: 10rem;
 			height: var(--dot-diameter);
 			width: var(--dot-diameter);
-			background-color: var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
+			background-color: var(
+				--colour-bkg-surface-bold-1-accent,
+				var(--colour-bkg-surface-bold-2)
+			);
 			position: absolute;
 			top: calc(50% - var(--dot-radius));
 			left: calc(50% - var(--dot-radius));
@@ -250,7 +254,10 @@ let { entries, fit = 'normal', colour } = Astro.props;
 			display: none;
 			border-radius: 10rem;
 			height: var(--dot-diameter);
-			background-color: var(--colour-fill-accent-subtle, var(--colour-fill-neutral-subtle));
+			background-color: var(
+				--colour-bkg-surface-subtle-1-accent,
+				var(--colour-bkg-surface-subtle-1)
+			);
 			position: absolute;
 			top: calc(50% - var(--dot-radius));
 			z-index: 1;

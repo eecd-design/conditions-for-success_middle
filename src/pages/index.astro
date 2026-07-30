@@ -1,41 +1,37 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import IconArrowDownRight from "src/components/icons/IconArrowDownRight_20.astro";
-import IconBrain from "src/components/icons/IconBrain_40.astro";
-import IconHeart from "src/components/icons/IconHeart_40.astro";
-import IconDownload20 from "src/components/icons/IconDownload_20.astro";
-import { Image } from "astro:assets";
-import girlDeskImage from "../images/girl-portrait-desk.jpg";
-import boyTennisImage from "../images/boy-portrait-tennis.jpg";
-import girlScooterImage from "../images/girl-portrait-scooter.jpg";
-import { getEntry } from "astro:content";
-import { getResourcePath } from "src/utilities/helpers";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IconArrowDownRight from 'src/components/icons/IconArrowDownRight_20.astro';
+import IconBrain from 'src/components/icons/IconBrain_40.astro';
+import IconHeart from 'src/components/icons/IconHeart_40.astro';
+import IconDownload20 from 'src/components/icons/IconDownload_20.astro';
+import { Image } from 'astro:assets';
+import girlDeskImage from '../images/girl-portrait-desk.jpg';
+import boyTennisImage from '../images/boy-portrait-tennis.jpg';
+import girlScooterImage from '../images/girl-portrait-scooter.jpg';
+import { getEntry } from 'astro:content';
+import { getResourcePath } from 'src/utilities/helpers';
 
-let continuumsResource = await getEntry(
-	"resources",
-	"nb-middle-school-developmental-continuums",
-);
-let continuumsResourceData = JSON.parse(
-	JSON.stringify(continuumsResource.data),
-);
+let continuumsResource = await getEntry('resources', 'nb-middle-school-developmental-continuums');
+let continuumsResourceData = JSON.parse(JSON.stringify(continuumsResource.data));
 continuumsResourceData.slug = continuumsResource.id;
-continuumsResourceData.category = "resource";
+continuumsResourceData.category = 'resource';
 let continuumsResourcePath = getResourcePath(continuumsResourceData);
 ---
 
 <BaseLayout
-	pageTitle={"NB Middle Schools: A Window of Opportunity"}
-	pageType={"home"}
+	pageTitle={'NB Middle Schools: A Window of Opportunity'}
+	pageType={'home'}
 >
-	<div class="content" data-theme="red">
+	<div
+		class="content"
+		data-theme="red"
+	>
 		<section>
 			<h2 id="the-middle-program-block">The Middle Program Block</h2>
 			<p>
-				New Brunswick's Middle Program Block has been designed to
-				support all young adolescent learners—both in the English Prime
-				and French Immersion programs—by responding to <strong
-					>who</strong
-				> they are, <strong>what</strong> they need, and <strong
+				New Brunswick's Middle Program Block has been designed to support all young
+				adolescent learners—both in the English Prime and French Immersion programs—by
+				responding to <strong>who</strong> they are, <strong>what</strong> they need, and <strong
 					>how</strong
 				> they grow and develop.
 			</p>
@@ -44,21 +40,24 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 		<hr class="section" />
 
 		<section>
-			<h2 id="what-does-the-research-show">
-				What does the research show?
-			</h2>
-			<p class="heading-subtitle" data-style-as="h2">
+			<h2 id="what-does-the-research-show">What does the research show?</h2>
+			<p
+				class="heading-subtitle"
+				data-style-as="h2"
+			>
 				<IconArrowDownRight />
 				Early adolescence matters!
 			</p>
 			<p>
-				While early childhood is renowned for its rapid neural growth,
-				adolescence represents another critical phase of heightened
-				plasticity and neural refinement. This stage is vital for
-				shaping lifelong behaviours, supporting mental health, and
+				While early childhood is renowned for its rapid neural growth, adolescence
+				represents another critical phase of heightened plasticity and neural refinement.
+				This stage is vital for shaping lifelong behaviours, supporting mental health, and
 				fostering academic growth.
 			</p>
-			<div class="elem-group" data-columns="2">
+			<div
+				class="elem-group"
+				data-columns="2"
+			>
 				<div class="wrapper">
 					<div
 						class="callout"
@@ -70,16 +69,13 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 								<IconBrain />
 							</div>
 							<h3 class="heading">
-								Early adolescence is a time for rapid learning
-								and growth.
+								Early adolescence is a time for rapid learning and growth.
 							</h3>
 							<p>
-								This stage of life is marked by substantial
-								remodeling of brain structures and
-								reconfiguration of neural systems. These changes
-								not only enhance learning capacity but also
-								highlight the importance of providing the right
-								supports to make the most of this opportunity.
+								This stage of life is marked by substantial remodeling of brain
+								structures and reconfiguration of neural systems. These changes not
+								only enhance learning capacity but also highlight the importance of
+								providing the right supports to make the most of this opportunity.
 							</p>
 						</div>
 					</div>
@@ -93,16 +89,13 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 								<IconHeart />
 							</div>
 							<h3 class="heading">
-								Early adolescence is a period of vulnerability
-								and potential.
+								Early adolescence is a period of vulnerability and potential.
 							</h3>
 							<p>
-								Adolescence brings increased sensation-seeking,
-								stronger motivations for social connections, and
-								heightened sensitivity to social feedback. These
-								developmental traits create a unique
-								environment, priming adolescents for learning
-								and personal development.
+								Adolescence brings increased sensation-seeking, stronger motivations
+								for social connections, and heightened sensitivity to social
+								feedback. These developmental traits create a unique environment,
+								priming adolescents for learning and personal development.
 							</p>
 						</div>
 					</div>
@@ -116,43 +109,72 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 			<h2 id="what-does-this-research-mean-for-middle-schools-in-nb">
 				What does this research mean for Middle Schools in NB?
 			</h2>
-			<p class="heading-subtitle" data-style-as="h2">
+			<p
+				class="heading-subtitle"
+				data-style-as="h2"
+			>
 				<IconArrowDownRight />
 				Our Middle Schools are catalysts for change!
 			</p>
 			<p>We know that Middle School Learners:</p>
-			<div class="elem-group" data-columns="3">
+			<div
+				class="elem-group"
+				data-columns="3"
+			>
 				<div class="wrapper">
-					<div class="callout" data-style="image" data-theme="red">
+					<div
+						class="callout"
+						data-style="image"
+						data-theme="red"
+						data-theme-fixed
+					>
 						<div class="wrapper">
-							<Image src={girlDeskImage} alt="" />
+							<Image
+								src={girlDeskImage}
+								alt=""
+							/>
 							<div class="text-container">
 								<p>
-									Have unique identities and opinions,
-									justifications, and beliefs.
+									Have unique identities and opinions, justifications, and
+									beliefs.
 								</p>
 							</div>
 						</div>
 					</div>
-					<div class="callout" data-style="image" data-theme="blue">
+					<div
+						class="callout"
+						data-style="image"
+						data-theme="blue"
+						data-theme-fixed
+					>
 						<div class="wrapper">
-							<Image src={boyTennisImage} alt="" />
+							<Image
+								src={boyTennisImage}
+								alt=""
+							/>
 							<div class="text-container">
 								<p>
-									Have increasing agency and decision-making
-									power, and that their peer group takes on
-									increasing importance.
+									Have increasing agency and decision-making power, and that their
+									peer group takes on increasing importance.
 								</p>
 							</div>
 						</div>
 					</div>
-					<div class="callout" data-style="image" data-theme="green">
+					<div
+						class="callout"
+						data-style="image"
+						data-theme="green"
+						data-theme-fixed
+					>
 						<div class="wrapper">
-							<Image src={girlScooterImage} alt="" />
+							<Image
+								src={girlScooterImage}
+								alt=""
+							/>
 							<div class="text-container">
 								<p>
-									Want to feel grown-up and have varying
-									responsibilities that they must balance.
+									Want to feel grown-up and have varying responsibilities that
+									they must balance.
 								</p>
 							</div>
 						</div>
@@ -160,17 +182,15 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 				</div>
 			</div>
 			<p>
-				We also know that our Middle Schools play a pivotal role in
-				shaping the trajectories of our Middle School Learners. By
-				fostering responsive relationships and creating networks of
-				belonging, schools can activate adolescents' sense of agency and
+				We also know that our Middle Schools play a pivotal role in shaping the trajectories
+				of our Middle School Learners. By fostering responsive relationships and creating
+				networks of belonging, schools can activate adolescents' sense of agency and
 				engagement in their learning.
 			</p>
 			<p>
-				Additionally, for learners who have not yet achieved proficiency
-				in literacy and numeracy, adolescence offers a critical moment
-				for targeted support. The brain’s capacity for learning during
-				this period allows for meaningful progress through
+				Additionally, for learners who have not yet achieved proficiency in literacy and
+				numeracy, adolescence offers a critical moment for targeted support. The brain’s
+				capacity for learning during this period allows for meaningful progress through
 				evidence-based, responsive teaching practices.
 			</p>
 		</section>
@@ -178,62 +198,108 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 		<hr class="section" />
 
 		<section>
-			<h2
-				id="how-can-our-schools-best-embrace-this-window-of-opportunity"
-			>
+			<h2 id="how-can-our-schools-best-embrace-this-window-of-opportunity">
 				How can our schools best embrace this window of opportunity?
 			</h2>
-			<p class="heading-subtitle" data-style-as="h2">
+			<p
+				class="heading-subtitle"
+				data-style-as="h2"
+			>
 				<IconArrowDownRight />
 				By using “The Big Seven” developmental continuums!
 			</p>
 			<p>
-				The Conditions for Success Developmental Continuums span seven
-				key indicators, called “The Big Seven.” These continuums, which
-				are rooted in the Holistic Curriculum Framework and align with
-				research-based practices, together comprise a comprehensive
-				framework for NB Middle Schools. Schools can use this framework
-				to create responsive, inclusive, and empowering environments
-				that meet the unique needs of adolescents.
+				The Conditions for Success Developmental Continuums span seven key indicators,
+				called “The Big Seven.” These continuums, which are rooted in the Holistic
+				Curriculum Framework and align with research-based practices, together comprise a
+				comprehensive framework for NB Middle Schools. Schools can use this framework to
+				create responsive, inclusive, and empowering environments that meet the unique needs
+				of adolescents.
 			</p>
 			<ol class="fancy">
-				<li data-theme="red" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif"
+				<li
+					data-theme="red"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
 						>Leadership and Teaming</span
 					>
 				</li>
-				<li data-theme="orange" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif"
+				<li
+					data-theme="orange"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
 						>Access and Equity</span
 					>
 				</li>
-				<li data-theme="yellow" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif"
+				<li
+					data-theme="yellow"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
 						>Relationships</span
 					>
 				</li>
-				<li data-theme="green" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif">Empathy</span>
+				<li
+					data-theme="green"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
+						>Empathy</span
+					>
 				</li>
-				<li data-theme="teal" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif">Identities</span>
+				<li
+					data-theme="teal"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
+						>Identities</span
+					>
 				</li>
-				<li data-theme="blue" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif"
+				<li
+					data-theme="blue"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
 						>High-yield Instructional Practices</span
 					>
 				</li>
-				<li data-theme="purple" data-vibrancy="vivid">
-					<span class="text" data-font-type="serif"
+				<li
+					data-theme="purple"
+					data-vibrancy="vivid"
+					data-theme-fixed
+				>
+					<span
+						class="text"
+						data-font-type="serif"
 						>Meaningful Learning Experiences</span
 					>
 				</li>
 			</ol>
 			<p>
-				This website houses key framework details and resources. It can
-				help schools to self-assess, plan improvements, and celebrate
-				progress. Check out <a href={`./big-seven/`}>The Big Seven</a> page
-				to learn more.
+				This website houses key framework details and resources. It can help schools to
+				self-assess, plan improvements, and celebrate progress. Check out <a
+					href={`./big-seven/`}>The Big Seven</a
+				> page to learn more.
 			</p>
 		</section>
 
@@ -243,14 +309,16 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 			data-intensity="bold"
 			data-spacing="large"
 			data-background="dark"
+			data-theme="red"
+			data-theme-fixed
 		>
 			<div class="wrapper">
 				<h2
 					id="want-a-paper-based-version-of-the-conditions-for-success-developmental-continuums"
 					class="heading"
 				>
-					Want a paper-based version of the Conditions for Success
-					Developmental Continuums?
+					Want a paper-based version of the Conditions for Success Developmental
+					Continuums?
 				</h2>
 				<a
 					href={continuumsResourcePath}
@@ -262,10 +330,9 @@ let continuumsResourcePath = getResourcePath(continuumsResourceData);
 						<IconDownload20 />
 						<span class="label-container">
 							<span class="label">
-								Download the Framework
-								<small class="version"
-									>(v<span data-field="continuumVersion"
-									></span>)</small
+								<span>Download the Framework </span>
+								<small class="version">
+									(v<span data-field="continuumVersion"></span>)</small
 								>
 							</span>
 						</span>

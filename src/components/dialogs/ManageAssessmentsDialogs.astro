@@ -389,32 +389,34 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					Saved
 				</div>
 				<div class="wrapper">
-					<h4 class="heading icon-and-label-container">
-						<!-- <IconAssessment /> -->
-						<span
-							class="label-container"
-							data-field="school"
-						></span>
-					</h4>
-					<div class="details">
-						<dl data-fit="compact">
-							<div class="detail-container">
-								<dt>Reporting Year:</dt>
-								<dd data-field="reportingYear"></dd>
-							</div>
-							<div class="detail-container">
-								<dt>Status:</dt>
-								<dd data-field="status"></dd>
-							</div>
-							<div class="detail-container">
-								<dt>Date Modified:</dt>
-								<dd data-field="dateModified"></dd>
-							</div>
-							<div class="detail-container">
-								<dt>Last Modified By:</dt>
-								<dd data-field="lastModifiedBy"></dd>
-							</div>
-						</dl>
+					<div class="metadata-container">
+						<h4 class="heading icon-and-label-container">
+							<!-- <IconAssessment /> -->
+							<span
+								class="label-container"
+								data-field="school"
+							></span>
+						</h4>
+						<div class="details">
+							<dl data-fit="compact">
+								<div class="detail-container">
+									<dt>Reporting Year:</dt>
+									<dd data-field="reportingYear"></dd>
+								</div>
+								<div class="detail-container">
+									<dt>Status:</dt>
+									<dd data-field="status"></dd>
+								</div>
+								<div class="detail-container">
+									<dt>Date Modified:</dt>
+									<dd data-field="dateModified"></dd>
+								</div>
+								<div class="detail-container">
+									<dt>Last Modified By:</dt>
+									<dd data-field="lastModifiedBy"></dd>
+								</div>
+							</dl>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -427,32 +429,34 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					Imported
 				</div>
 				<div class="wrapper">
-					<h4 class="heading icon-and-label-container">
-						<!-- <IconAssessment /> -->
-						<span
-							class="label-container"
-							data-field="school"
-						></span>
-					</h4>
-					<div class="details">
-						<dl data-fit="compact">
-							<div class="detail-container">
-								<dt>Reporting Year:</dt>
-								<dd data-field="reportingYear"></dd>
-							</div>
-							<div class="detail-container">
-								<dt>Status:</dt>
-								<dd data-field="status"></dd>
-							</div>
-							<div class="detail-container">
-								<dt>Date Modified:</dt>
-								<dd data-field="dateModified"></dd>
-							</div>
-							<div class="detail-container">
-								<dt>Last Modified By:</dt>
-								<dd data-field="lastModifiedBy"></dd>
-							</div>
-						</dl>
+					<div class="metadata-container">
+						<h4 class="heading icon-and-label-container">
+							<!-- <IconAssessment /> -->
+							<span
+								class="label-container"
+								data-field="school"
+							></span>
+						</h4>
+						<div class="details">
+							<dl data-fit="compact">
+								<div class="detail-container">
+									<dt>Reporting Year:</dt>
+									<dd data-field="reportingYear"></dd>
+								</div>
+								<div class="detail-container">
+									<dt>Status:</dt>
+									<dd data-field="status"></dd>
+								</div>
+								<div class="detail-container">
+									<dt>Date Modified:</dt>
+									<dd data-field="dateModified"></dd>
+								</div>
+								<div class="detail-container">
+									<dt>Last Modified By:</dt>
+									<dd data-field="lastModifiedBy"></dd>
+								</div>
+							</dl>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -594,19 +598,42 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 			& .card {
 				&:has(button.delete:is(:hover, :focus-visible)) {
-					--card-boxshadow-colour: var(--colour-border-accent-bold);
+					--card-boxshadow-colour: var(--colour-bkg-surface-bold-error);
+
+					& .banner {
+						background-color: var(--colour-bkg-surface-bold-error);
+						border-color: var(--colour-bkg-surface-bold-error);
+						color: var(--colour-txt-on-bold-1);
+					}
+
+					& button.delete:is(:hover, :focus-visible) {
+						--button-bkg-colour: var(--colour-bkg-surface-bold-error);
+					}
 				}
 
 				& .heading {
-					--icon-colour: var(--colour-ui-neutral-subtle);
+					--icon-colour: var(--colour-txt-on-subtle-2);
 				}
 
 				& .button-group {
 					--group-gap: var(--space-2xs);
 					margin: 0;
+				}
 
-					& button.delete:is(:hover, :focus-visible) {
-						--button-background-colour: var(--colour-fill-accent-bold);
+				:root[data-theme='dark'] & {
+					&:has(button.delete:is(:hover, :focus-visible)) {
+						--card-boxshadow-colour: var(--colour-bkg-surface-subtle-error);
+
+						& .banner {
+							background-color: var(--colour-bkg-surface-subtle-error);
+							border-color: var(--colour-bkg-surface-subtle-error);
+							color: var(--colour-txt-on-subtle-1);
+						}
+
+						& button.delete:is(:hover, :focus-visible) {
+							--button-bkg-colour: var(--colour-bkg-surface-subtle-error);
+							--button-txt-colour: var(--colour-txt-on-subtle-1);
+						}
 					}
 				}
 			}
@@ -623,13 +650,25 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 	#import-conflict-dialog {
 		&:has(button.overwrite:hover) .card.imported {
-			--card-boxshadow-colour: var(--colour-border-neutral-bold);
+			--card-boxshadow-colour: var(--colour-brd-bold);
 			--card-boxshadow-width: 3px;
+
+			& .banner {
+				border-top-color: var(--card-boxshadow-colour);
+				border-left-color: var(--card-boxshadow-colour);
+				border-right-color: var(--card-boxshadow-colour);
+			}
 		}
 
 		&:has(button.keep:hover) .card.local {
-			--card-boxshadow-colour: var(--colour-border-neutral-bold);
+			--card-boxshadow-colour: var(--colour-brd-bold);
 			--card-boxshadow-width: 3px;
+
+			& .banner {
+				border-top-color: var(--card-boxshadow-colour);
+				border-left-color: var(--card-boxshadow-colour);
+				border-right-color: var(--card-boxshadow-colour);
+			}
 		}
 
 		& .conflicting-assessments {
@@ -638,14 +677,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		& .highlight-container {
 			--icon-size: 1rem;
-			--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+			--icon-colour: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
 
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: start;
 			gap: var(--space-2xs);
 
-			color: var(--colour-ui-accent, var(--colour-ui-neutral));
+			color: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
 		}
 	}
 </style>

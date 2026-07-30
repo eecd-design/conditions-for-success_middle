@@ -75,13 +75,32 @@ let IconCross = crossIcons[crossIconSize];
 			margin: 0;
 
 			& button {
-				--button-background-colour: var(
-					--colour-fill-accent-subtle,
-					var(--colour-fill-neutral-subtle)
+				--default-button-bkg: var(
+					--colour-bkg-surface-subtle-1-accent,
+					var(--colour-bkg-surface-subtle-1)
 				);
-				--button-border-radius: var(--border-radius-normal);
-				--button-ui-colour: var(--colour-ui-neutral);
-				--icon-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
+				--default-button-bkg-expanded: var(
+					--colour-bkg-surface-bold-1-accent,
+					var(--colour-bkg-surface-bold-2)
+				);
+				--default-button-boxshadow-hover: var(
+					--colour-brd-subtle-accent,
+					var(--colour-brd-subtle)
+				);
+
+				:root[data-theme='dark'] & {
+					--default-button-bkg: var(--colour-bkg-surface-subtle-1);
+					--default-button-bkg-expanded: var(--colour-bkg-surface-bold-2);
+					--default-button-boxshadow-hover: var(
+						--colour-brd-mid-accent,
+						var(--colour-brd-subtle)
+					);
+				}
+
+				--button-bkg-colour: var(--default-button-bkg);
+				--button-brd-radius: var(--brd-radius-normal);
+				--button-txt-colour: var(--colour-txt-on-subtle-1);
+				--icon-colour: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
 
 				display: flex;
 				flex-flow: row nowrap;
@@ -98,24 +117,18 @@ let IconCross = crossIcons[crossIconSize];
 				/* States */
 
 				&:is(:hover, :focus-visible) {
-					--button-background-colour: transparent;
-					--button-ui-colour: var(--button-ui-colour);
+					--button-bkg-colour: transparent;
+					--button-txt-colour: var(--button-txt-colour);
 				}
 
 				&:not([aria-expanded='true']):is(:hover, :focus-visible) {
-					--button-boxshadow-colour: var(
-						--colour-border-accent-subtle,
-						var(--colour-border-neutral-subtle)
-					);
+					--button-boxshadow-colour: var(--default-button-boxshadow-hover);
 				}
 
 				&[aria-expanded='true'] {
-					--button-background-colour: var(
-						--colour-fill-accent-bold,
-						var(--colour-fill-neutral-mid)
-					);
-					--icon-colour: var(--colour-ui-reverse);
-					border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
+					--button-bkg-colour: var(--default-button-bkg-expanded);
+					--icon-colour: var(--colour-txt-on-bold-1);
+					border-radius: var(--brd-radius-normal) var(--brd-radius-normal) 0 0;
 				}
 
 				/* Icon and Label Container */
@@ -129,7 +142,7 @@ let IconCross = crossIcons[crossIconSize];
 				}
 
 				&[aria-expanded='true'] .icon-and-label-container {
-					--label-colour: var(--colour-ui-reverse);
+					--label-colour: var(--colour-txt-on-bold-1);
 				}
 
 				/* Caret */
@@ -149,22 +162,27 @@ let IconCross = crossIcons[crossIconSize];
 				& .tag {
 					font-size: var(--font-size-lg);
 					font-weight: 500;
-					color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
+					color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
 					line-height: 1.2;
 					text-align: center;
 					min-width: 1rem;
 				}
 
 				&[aria-expanded='true'] .tag {
-					color: var(--colour-ui-reverse);
+					color: var(--colour-txt-on-bold-1);
 				}
 			}
 		}
 
 		& > .panel {
 			display: block;
-			border: 1px solid var(--colour-fill-accent-bold, var(--colour-fill-neutral-mid));
-			border-radius: 0 0 var(--border-radius-normal) var(--border-radius-normal);
+			border: 1px solid
+				var(--colour-bkg-surface-bold-1-accent, var(--colour-bkg-surface-bold-2));
+			border-radius: 0 0 var(--brd-radius-normal) var(--brd-radius-normal);
+
+			:root[data-theme='dark'] & {
+				border-color: var(--colour-bkg-surface-bold-2);
+			}
 
 			& :where(p, li, a) {
 				font-size: var(--font-size-xs);

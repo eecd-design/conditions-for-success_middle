@@ -145,7 +145,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 			& .subnav-links-list {
 				padding: 0 0 0 var(--space-xl);
-				border-left: 1px solid var(--colour-border-accent-subtle);
+				border-left: 1px solid var(--colour-brd-subtle-accent);
 				gap: var(--space-lg);
 
 				& .subnav-link {
@@ -155,14 +155,14 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		}
 
 		& a {
-			--link-colour: var(--dialog-ui-colour);
+			--link-colour: var(--dialog-txt-colour);
 			font-size: var(--font-size-base);
 			font-weight: 600;
 			line-height: 1;
 			width: 100%;
 
 			& .icon.destination {
-				--icon-colour: var(--dialog-ui-colour);
+				--icon-colour: var(--dialog-txt-colour);
 			}
 		}
 	}

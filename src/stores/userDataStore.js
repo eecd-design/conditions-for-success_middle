@@ -32,7 +32,7 @@ let userSchema = {
 		resourcePageSort: 'date',
 		resourcePageLayout: 'list-compact',
 		reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-		theme: 'light',
+		theme: document.documentElement.getAttribute('data-theme'),
 		schemaVersion: currentPreferencesSchemaVersion,
 	},
 	uiState: {

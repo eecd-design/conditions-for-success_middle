@@ -569,8 +569,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		padding: var(--space-xl) 0;
 		min-width: 300px;
 		height: 100%;
-		border-right: 1px solid var(--colour-border-neutral-subtle);
-		background-color: var(--colour-background);
+		border-right: 1px solid var(--colour-brd-subtle);
+		background-color: var(--colour-bkg-canvas-subtle-1);
 	}
 
 	@container main (width < 1016px) {
@@ -628,7 +628,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	*/
 
 	#resources-list-secondary-controls .heading-group :is(button, [data-style-as='button']) {
-		--button-background-colour: transparent;
+		--button-bkg-colour: transparent;
 		--icon-size: 1.25rem;
 		margin: 0;
 	}
@@ -639,7 +639,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	#resources-list-secondary-controls
 		.heading-group
 		:is(button, [data-style-as='button']):has(input:focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
+		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 	}
 
 	#resources-list-secondary-controls
@@ -677,9 +677,9 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	}
 
 	#resources-list-secondary-controls .accordion .heading button {
-		--button-background-colour: transparent;
-		--button-border-radius: var(--border-radius-small);
-		--button-ui-colour: var(--colour-ui-neutral);
+		--button-bkg-colour: transparent;
+		--button-brd-radius: var(--brd-radius-small);
+		--button-txt-colour: var(--colour-txt-on-subtle-1);
 		min-height: auto;
 		padding: var(--space-xs);
 	}
@@ -689,7 +689,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		.accordion
 		.heading
 		button[aria-expanded='true']:is(:hover, :focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
+		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 	}
 
 	#resources-list-secondary-controls
@@ -700,14 +700,18 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	}
 
 	#resources-list-secondary-controls .accordion .heading button[aria-expanded='true'] {
-		--button-background-colour: transparent;
+		--button-bkg-colour: transparent;
 		--icon-colour: unset;
-		border-radius: var(--button-border-radius);
+		border-radius: var(--button-brd-radius);
 	}
 
 	#resources-list-secondary-controls .accordion .heading button .icon-and-label-container {
 		--label-size: var(--font-size-xs);
 		--label-weight: 600;
+	}
+
+	#resources-list-secondary-controls .accordion .heading button .filter-group-status {
+		--label-size: var(--font-size-2xs);
 	}
 
 	#resources-list-secondary-controls .accordion .heading button > .icon.caret {
@@ -762,13 +766,13 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	#resources-list-secondary-controls fieldset.filters label:has(input[type='checkbox']) {
 		margin: 0 var(--space-xs);
 		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-small);
+		border-radius: var(--brd-radius-small);
 	}
 
 	#resources-list-secondary-controls
 		fieldset.filters
 		label:has(input[type='checkbox']:is(:hover, :focus-visible)) {
-		background-color: var(--colour-fill-neutral-subtle);
+		background-color: var(--colour-bkg-surface-subtle-1);
 	}
 
 	#resources-list-secondary-controls
@@ -847,7 +851,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) legend {
 		font-size: var(--font-size-3xs);
-		color: var(--colour-ui-neutral-subtle);
+		color: var(--colour-txt-on-subtle-2);
 		margin: 0 0 0.325rem;
 	}
 
@@ -862,24 +866,24 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	#resources-list-primary-controls
 		fieldset:is(.filter, .sort, .layout)
 		button:not(:is([aria-pressed='true'], [aria-expanded='true'])):is(:hover, :focus-visible) {
-		--button-background-colour: transparent;
-		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
+		--button-bkg-colour: transparent;
+		--button-boxshadow-colour: var(--colour-brd-subtle);
 	}
 
 	#resources-list-primary-controls
 		fieldset:is(.filter, .sort, .layout)
 		button:is([aria-pressed='true'], [aria-expanded='true']) {
-		--icon-colour: var(--colour-ui-reverse);
-		--label-colour: var(--colour-ui-reverse);
+		--icon-colour: var(--colour-txt-on-bold-1);
+		--label-colour: var(--colour-txt-on-bold-1);
 	}
 
 	#resources-list-primary-controls
 		fieldset:disabled
 		button:is([aria-pressed='true'], [aria-expanded='true'], :has(input:checked)) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-		--button-ui-colour: var(--colour-ui-neutral);
-		--icon-colour: var(--colour-ui-neutral);
-		--label-colour: var(--colour-ui-neutral);
+		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+		--button-txt-colour: var(--colour-txt-on-subtle-1);
+		--icon-colour: var(--colour-txt-on-subtle-1);
+		--label-colour: var(--colour-txt-on-subtle-1);
 	}
 
 	#resources-list-primary-controls

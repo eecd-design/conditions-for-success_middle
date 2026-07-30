@@ -20,6 +20,31 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 	data-loading
 >
 	<head>
+		<ClientRouter />
+
+		<script is:inline>
+			let key = 'user';
+			let data;
+
+			try {
+				let raw = localStorage.getItem(key);
+				if (raw) data = JSON.parse(raw);
+			} catch (err) {
+				console.warn('Failed to load user data:', err);
+				localStorage.removeItem(key);
+			}
+
+			let applyInitialTheme = (data) => {
+				let system = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				let theme = data?.uiPreferences?.theme || (system ? 'dark' : 'light');
+
+				document.documentElement.setAttribute('data-theme', theme);
+				document.documentElement.setAttribute('data-theme-switching', '');
+			};
+
+			applyInitialTheme(data);
+		</script>
+
 		<!-- Set relative path root to '/conditions-for-success/' -->
 		<base href={Astro.url.origin + import.meta.env.BASE_URL} />
 
@@ -65,14 +90,13 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			rel="stylesheet"
 			href="https://use.typekit.net/omy5wmz.css"
 		/>
-
-		<ClientRouter />
 	</head>
 	<body>
 		<div
 			class="skip-link-container"
 			data-theme="red"
 			data-background="dark"
+			data-theme-fixed
 		>
 			<a
 				href={`${path}#main-content`}
@@ -94,7 +118,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 				<slot />
 			</div>
 		</main>
-		<footer>
+		<footer data-theme-fixed>
 			<div class="wrapper">
 				<div class="content-container">
 					<div class="contact-container">
@@ -181,8 +205,8 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			)
 				return;
 
-			let theme = data.uiPreferences.theme;
-			if (theme !== 'dark' && theme !== 'light') return;
+			let system = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			let theme = data.uiPreferences.theme || (system ? 'dark' : 'light');
 
 			// console.log("Updating Theme (on html)");
 
@@ -190,7 +214,11 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let html = document.documentElement;
 
 			// Update the theme
+			html.setAttribute('data-theme-switching', '');
 			html.setAttribute('data-theme', theme);
+			setTimeout(() => {
+				html.removeAttribute('data-theme-switching');
+			}, 500);
 		};
 
 		let updateMode = (data: UserData, changes) => {
@@ -342,6 +370,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 				history.replaceState({}, '', window.location.pathname);
 			}
 
+			document.documentElement.removeAttribute('data-theme-switching');
 			// After delay, clear loading state
 			setTimeout(() => {
 				document.documentElement.removeAttribute('data-loading');
