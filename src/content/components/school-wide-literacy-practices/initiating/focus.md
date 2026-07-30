@@ -1,1 +1,1 @@
-Instruction is educator-directed, with limited scaffolding and minimal learner engagement in reading, writing, and discussion.
+Build awareness that literacy supports learning in every classroom and begin identifying where learners need support before, during, and after reading, writing, and interactions.

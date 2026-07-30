@@ -1,1 +1,1 @@
-Educators introduce structured scaffolding, interactive reading and writing strategies, and guided discussion to build comprehension.
+Develop consistent literacy routines across learning areas so learners receive structured support before, during, and after learning.
