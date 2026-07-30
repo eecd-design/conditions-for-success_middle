@@ -86,8 +86,6 @@ implementing:
         understanding.
       compass: false
       categories: []
-developing:
-  considerations:
     - tag: 6.2.13
       title: >-
         Educators use formative assessment and provide feedback to support
@@ -100,6 +98,8 @@ developing:
         and support across learning areas.
       compass: false
       categories: []
+developing:
+  considerations:
     - tag: 6.2.15
       title: >-
         Learners independently use comprehension strategies to monitor
