@@ -146,43 +146,48 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 6.2.16
+    - tag: 6.2.22
       title: >-
-        Self-questioning and metacognitive strategies are routine, allowing
-        learners to read and write to learn about self, world, and others (e.g.,
-        learners annotate texts independently, making inferences and drawing
-        personal connections without educator prompts).
+        Learners independently analyze, synthesize, evaluate, and apply
+        information from multiple texts and sources to deepen understanding and
+        solve problems across disciplines.
       compass: false
       categories: []
-    - tag: 6.2.17
+    - tag: 6.2.23
       title: >-
-        Scaffolding is dynamic, with learners adjusting their own supports as
-        needed (e.g., some learners choose audiobooks, annotation tools, or
-        graphic organizers that best support their comprehension needs.)
+        Learners independently acquire, apply, and transfer disciplinary
+        vocabulary and concepts across learning areas and real-world situations.
       compass: false
       categories: []
-    - tag: 6.2.18
+    - tag: 6.2.24
       title: >-
-        Class discussions are fully learner-led, with deeper textual analysis
-        supporting questioning and analyzing situations (e.g., in a
-        learner-moderated debate, participants cite multiple texts as evidence
-        for their arguments and challenge opposing perspectives constructively).
+        Learners strategically select, adapt, and combine literacy tools and
+        strategies based on purpose, task demands, and text complexity.
       compass: false
       categories: []
-    - tag: 6.2.19
+    - tag: 6.2.25
       title: >-
-        Formal discussions (e.g., structured debates, peer-led literature
-        circles) replace educator-led questioning (e.g., learners explore
-        multiple representations by analyzing a novel, documentary, and opinion
-        article on the same topic, comparing perspectives).
+        Learners independently lead discussions, seminars, debates, and
+        collaborative inquiries that deepen understanding and create new
+        learning.
       compass: false
       categories: []
-    - tag: 6.2.20
+    - tag: 6.2.26
       title: >-
-        Formative assessment is fully integrated, with learners self-regulating
-        their learning and demonstrating knowledge by writing for a variety of
-        purposes (e.g., learners track their growth over time using a reading
-        and writing portfolio, setting personalized literacy goals based on
-        feedback from peers and educators).
+        Learners independently use writing to analyze, synthesize, evaluate,
+        create, reflect, and communicate understanding across learning areas.
+      compass: false
+      categories: []
+    - tag: 6.2.27
+      title: >-
+        Learners independently use feedback, reflection, and goal-setting to
+        monitor growth and continuously improve literacy skills.
+      compass: false
+      categories: []
+    - tag: 6.2.28
+      title: >-
+        Learners independently transfer literacy skills, strategies, and habits
+        of thinking across disciplines, tasks, and authentic real-world
+        situations.
       compass: false
       categories: []
