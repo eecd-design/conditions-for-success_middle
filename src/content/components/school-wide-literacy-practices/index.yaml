@@ -51,44 +51,39 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 6.2.6
-      title: >-
-        Reciprocal teaching is introduced, allowing learners to use talk to own
-        thinking and understanding through peer discussions (e.g., in pairs,
-        learners take turns leading discussions about a shared text, practicing
-        predicting, questioning, clarifying, and summarizing).
-      compass: false
-      categories: []
-    - tag: 6.2.7
-      title: >-
-        Vocabulary instruction is embedded in reading and writing activities,
-        leveraging prior knowledge to support meaning-making across texts (e.g.,
-        before reading XX, learners connect historical context to the novel’s
-        themes, increasing stamina and engagement).
-      compass: false
-      categories: []
     - tag: 6.2.8
       title: >-
-        Summarizing and note-taking are modeled, with learners beginning to
-        apply these strategies independently to reference texts for verification
-        (e.g., learners use graphic organizers to track key ideas while reading
-        a novel and develop their own interpretations).
+        Educators intentionally support comprehension before, during, and after
+        reading by activating prior knowledge, establishing a purpose for
+        reading, and modelling high-yield comprehension strategies.
       compass: false
       categories: []
     - tag: 6.2.9
       title: >-
-        Class discussion and cooperative learning emerge, allowing learners to
-        begin supporting and defending their ideas with evidence (e.g., after
-        reading an editorial, learners engage in a structured debate, practicing
-        evaluating and responding to multiple viewpoints).
+        Educators intentionally build background knowledge and teach important
+        vocabulary in context before learning begins.
       compass: false
       categories: []
     - tag: 6.2.10
       title: >-
-        Formative assessment is used, but learners rely on the educator for
-        corrections rather than reflecting authentically on their progress
-        (e.g., learners complete exit tickets, but reflection is still prompted
-        by the educator rather than learner-initiated).
+        Educators model and provide opportunities to use high-yield literacy
+        tools and strategies such as predicting, questioning, clarifying,
+        visualizing, summarizing, "Know, Want to Know, Learned" (KWL),
+        anticipation guides, note-taking, and graphic organizers.
+      compass: false
+      categories: []
+    - tag: 6.2.11
+      title: >-
+        Educators model effective speaking and listening behaviours and provide
+        structured opportunities for discussion, cooperative learning, and
+        evidence-based conversations.
+      compass: false
+      categories: []
+    - tag: 6.2.12
+      title: >-
+        Educators model planning, drafting, revising, and editing processes, and
+        learners use writing tools and organizational supports to communicate
+        understanding.
       compass: false
       categories: []
 developing:
