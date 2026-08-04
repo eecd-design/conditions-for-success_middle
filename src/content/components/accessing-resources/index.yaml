@@ -87,9 +87,3 @@ sustaining:
         needs.
       compass: true
       categories: []
-    - tag: 2.4.13
-      title: >-
-        There is a continuous process for evaluating and adapting the resource
-        system to meet changing needs.
-      compass: true
-      categories: []
