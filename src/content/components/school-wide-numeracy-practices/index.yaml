@@ -130,6 +130,24 @@ developing:
         whether their solutions make sense, and learn from mistakes.
       compass: true
       categories: []
+    - tag: 6.3.19
+      title: >-
+        Learners explain and justify their thinking, compare strategies, and
+        build on the ideas of others.
+      compass: false
+      categories: []
+    - tag: 6.3.20
+      title: >-
+        Learners use success criteria, feedback, and reflection to identify
+        strengths, address misunderstandings, and determine next steps.
+      compass: false
+      categories: []
+    - tag: 6.3.21
+      title: >-
+        Learners increasingly choose strategies and apply numeracy in different
+        contexts with growing independence.
+      compass: false
+      categories: []
 sustaining:
   considerations:
     - tag: 6.3.13
