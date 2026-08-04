@@ -1,1 +1,1 @@
-Effective numeracy practices are being used more often, with tasks that offer multiple entry points and allow for varied solution strategies. Learners are developing their ability to draw on prior mathematical knowledge and are gaining experience applying it to different types of tasks.
+Educators intentionally include simple numeracy opportunities and provide guidance so learners can make sense of information, use strategies, solve problems, and explain their thinking.

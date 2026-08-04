@@ -5,37 +5,49 @@ initiating:
   considerations:
     - tag: 6.3.1
       title: >-
-        Educators make reference to the Curriculum Framework to identify
-        concepts and skills in their assigned subject areas. For example,
-        learners read graphs or maps that include numbers but focus on content
-        rather than numeracy connections.
+        Educators recognize that learners may need support to understand
+        quantities, patterns, data, and relationships in all subjects. They
+        begin drawing attention to the meaning behind the numbers, information,
+        or processes being used.
       compass: false
       categories: []
     - tag: 6.3.2
       title: >-
-        Educators design tasks that are primarily procedural and may lack
-        opportunities for deeper learning. Learners are dependent on educators
-        to complete tasks and have a fixed mindset. For example, learners follow
-        step-by-step lab instructions with little room for inquiry or
-        estimation.
+        Educators identify where learners use numbers and mathematical ideas
+        within their subjects. Examples may include estimating, measuring,
+        comparing, calculating, sequencing, or noticing patterns.
       compass: false
       categories: []
     - tag: 6.3.3
       title: >-
-        Educators lead class discussions through direct questioning and
-        demonstrate how to use specific models. Learners answer direct questions
-        and use tools or models only when guided by the educator. For example,
-        learners answer educator-led comprehension questions about data in a
-        French text but do not generate their own.
+        Educators begin using visuals, models, tables, graphs, diagrams, or
+        other tools to help learners understand information.
       compass: false
       categories: []
     - tag: 6.3.4
       title: >-
-        Educators are aware of formative assessment strategies but primarily use
-        summative tasks to gather evidence. Feedback is generally focused on
-        errors. Learners rely on educators to monitor their progress. For
-        example, quizzes and tests are the main form of assessment; feedback
-        centers on correct/incorrect answers.
+        Learners are beginning to encounter tasks where they can consider more
+        than one approach, make choices, and explain how they reached an answer
+        or decision.
+      compass: false
+      categories: []
+    - tag: 6.3.5
+      title: >-
+        Educators begin creating opportunities for learners to explain how they
+        interpreted information, selected a strategy, or reached a conclusion.
+      compass: false
+      categories: []
+    - tag: 6.3.6
+      title: >-
+        Assessment often focuses on the final answer or completed product.
+        Educators begin noticing the strategies, reasoning, and understanding
+        learners demonstrate along the way.
+      compass: false
+      categories: []
+    - tag: 6.3.7
+      title: >-
+        Learners often rely on educator guidance to choose strategies, complete
+        tasks, and/or decide whether their answers or conclusions make sense.
       compass: false
       categories: []
 implementing:
