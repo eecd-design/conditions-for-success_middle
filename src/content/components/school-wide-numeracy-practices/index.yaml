@@ -102,44 +102,32 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 6.3.9
+    - tag: 6.3.15
       title: >-
-        The Curriculum Framework is referenced and used collaboratively to
-        identify relevant concepts and skills that connect across multiple
-        subject areas. Learners can articulate goals, connect them to prior
-        learning, and apply them to other contexts. For example, learners read
-        an infographic about recycling rates in French and discuss percentages
-        using math vocabulary.
+        Learners explain connections between mathematical ideas and the context
+        in which they are being used. They use what they already know to make
+        sense of increasingly complex information.
       compass: false
       categories: []
-    - tag: 6.3.10
+    - tag: 6.3.16
       title: >-
-        Educators design tasks that promote reasoning and more complex problem
-        solving and allow for productive struggle. Learners engage with
-        challenging tasks and view mistakes as a valuable part of learning. For
-        example, learners design a sustainable community, budgeting costs and
-        using reasoning to justify decisions.
+        Learners select and apply appropriate mathematical knowledge to
+        interpret information, solve problems, and make decisions, such as
+        comparing options, analyzing data, calculating change, or estimating
+        outcomes.
       compass: false
       categories: []
-    - tag: 6.3.11
+    - tag: 6.3.17
       title: >-
-        Educators facilitate various learner-led discussions and have them
-        explain to others their process and reasoning. Learners generate their
-        own questions and independently use a variety of mathematical
-        representations. For example, learners examine data sets about climate
-        or migration and generate their own “What does this tell us?” questions.
+        Learners select useful strategies and representations to organize
+        information and communicate their understanding, such as using a table,
+        graph, diagram, model, or written explanation.
       compass: false
       categories: []
-    - tag: 6.3.12
+    - tag: 6.3.18
       title: >-
-        Educators use evidence gathered daily from a variety of sources
-        (observations, conversations, products) to plan and adjust instruction.
-        Feedback is clear and specific and offers guidance during the
-        instructional process. Learners use self- and peer-assessment to
-        independently reflect on and monitor their own progress. For example,
-        learners review opinion texts that use statistics to support ideas. The
-        educator gives feedback on how data strengthens arguments, and learners
-        revise their writing using self-assessment checklists.
+        Learners use different strategies, explain their decisions, check
+        whether their solutions make sense, and learn from mistakes.
       compass: true
       categories: []
 sustaining:
