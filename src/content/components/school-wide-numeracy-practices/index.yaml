@@ -150,44 +150,48 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 6.3.13
+    - tag: 6.3.22
       title: >-
-        Educators consistently collaborate to connect concepts and skills across
-        subject areas and regularly check for readiness with learners. Learners
-        can articulate and set their own goals and connect them to a variety of
-        contexts. For example, learners identify math goals while designing a
-        travel brochure in French (distance, budget, time).
+        Learners independently recognize mathematical relationships and apply
+        their understanding in new subjects, situations, and real-world
+        problems.
       compass: false
       categories: []
-    - tag: 6.3.14
+    - tag: 6.3.23
       title: >-
-        Educators design tasks that promote reasoning, enable more complex
-        problem solving, and allow varied solution strategies. Learners have a
-        growth mindset and use self-reflection and critical thinking skills to
-        complete tasks and value mistakes. For example, learners compare news
-        articles with conflicting statistics, evaluate credibility, and discuss
-        how numbers influence readers. They justify conclusions with evidence
-        and refine their analysis through peer feedback.
+        Learners flexibly and accurately use mathematical knowledge to make
+        informed decisions in real-world situations.
       compass: false
       categories: []
-    - tag: 6.3.15
+    - tag: 6.3.24
       title: >-
-        Learner-led discussions are monitored, with learners explaining or
-        challenging the processes and reasoning used. Learners independently
-        generate probing analytical questions and use a variety of mathematical
-        representations to defend their reasoning. For example, learners debate
-        which experimental setup gives the most reliable data, using charts and
-        trendlines to defend their position.
+        Learners independently choose, adapt, and connect strategies, tools, and
+        representations based on the task and purpose.
       compass: false
       categories: []
-    - tag: 6.3.16
+    - tag: 6.3.25
       title: >-
-        Educators use evidence gathered from a variety of sources during
-        instruction to adjust pace and tasks. Feedback is timely, descriptive,
-        and specific and encourages reflection. Learners independently set goals
-        and use metacognitive strategies to reflect on and monitor their
-        progress. For example, after presenting data visualizations, learners
-        reflect on how effectively their graph communicated a message and set
-        goals for clarity for next time.
+        Learners independently work through unfamiliar problems, compare
+        approaches, and use mathematical reasoning to make informed decisions.
+      compass: false
+      categories: []
+    - tag: 6.3.26
+      title: >-
+        Learners confidently ask questions, clarify and refine their thinking,
+        and communicate mathematical ideas using appropriate language and
+        representations.
+      compass: false
+      categories: []
+    - tag: 6.3.27
+      title: >-
+        Learners independently use feedback, reflection, and goal-setting to
+        monitor their growth and improve their mathematical thinking.
+      compass: false
+      categories: []
+    - tag: 6.3.28
+      title: >-
+        Learners independently transfer their mathematical knowledge,
+        strategies, and ways of thinking across subjects, tasks, and real-world
+        situations.
       compass: false
       categories: []
