@@ -1,0 +1,14 @@
+title: The Inclusive Design Guide
+published: true
+dateAdded: 2026-08-05
+type: website
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://guide.inclusivedesign.ca/practices/collaborate/
+linkAction: link
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations:
+  - 2.5.6
