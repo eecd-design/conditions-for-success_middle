@@ -10,5 +10,4 @@ external:
 linkAction: link
 linkedIndicators: []
 linkedComponents: []
-linkedConsiderations:
-  - 2.8.5
+linkedConsiderations: []
