@@ -81,11 +81,11 @@ developing:
         scaffolds rather than lower text complexity.
       compass: false
       categories: []
-    - tag: 2.8.11
+    - tag: 2.8.12
       title: >-
-        Assessment practices recognize learners’ ability to demonstrate
-        understanding through various media, such as learner-created videos,
-        visual annotations, and audio responses.
+        Assessment practices enable learners to demonstrate understanding
+        through various formats, such as learner-created videos, visual
+        annotations, and audio responses.
       compass: false
       categories: []
 sustaining:
