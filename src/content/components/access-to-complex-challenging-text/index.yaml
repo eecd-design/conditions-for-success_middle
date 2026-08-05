@@ -15,6 +15,19 @@ initiating:
         texts.
       compass: false
       categories: []
+    - tag: 2.8.3
+      title: >-
+        Texts are limited to traditional print materials, with little
+        recognition of an expanded definition of text (e.g., multimodal texts,
+        digital media, spoken word, infographics, visual narratives).
+      compass: false
+      categories: []
+    - tag: 2.8.4
+      title: >-
+        Reading tasks and supports focus mainly on addressing gaps, with limited
+        emphasis on independence, confidence, or learner choice.
+      compass: false
+      categories: []
 implementing:
   considerations:
     - tag: 2.8.3
