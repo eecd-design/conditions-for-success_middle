@@ -52,15 +52,10 @@ implementing:
         annotation apps) to help learners access and engage with complex texts.
       compass: false
       categories: []
-    - tag: 2.8.6
+    - tag: 2.8.8
       title: >-
-        Learners begin using digital tools and assistive technologies (e.g.,
-        text-to-speech, audiobooks, screen readers, annotation apps) to access
-        and engage with complex texts.
-      compass: false
-      categories: []
-    - tag: 2.8.7
-      title: Discussions about acceleration begin, but remediation mindsets persist.
+        Discussions about acceleration and learner independence begin, though
+        remediation mindsets and practices may still persist.
       compass: false
       categories: []
 developing:
