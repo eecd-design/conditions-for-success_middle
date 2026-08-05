@@ -30,25 +30,26 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 2.8.3
+    - tag: 2.8.5
       title: >-
         Instruction begins incorporating grade-level texts with some
-        scaffolding, though reliance on below-grade-level materials remains.
+        scaffolding, although reliance on below-grade-level materials may
+        remain.
       compass: false
       categories: []
-    - tag: 2.8.4
+    - tag: 2.8.6
       title: >-
         Expanded definition of text begins to emerge, with educators introducing
         multimodal texts (e.g., podcasts, digital articles, visual storytelling,
-        graphic novels) to engage learners, but traditional print-based
+        graphic novels) to engage learners, though traditional print-based
         materials still dominate.
       compass: false
       categories: []
-    - tag: 2.8.5
+    - tag: 2.8.7
       title: >-
-        Educators experiment with high-interest, relevant texts to engage
-        learners but may still lower text complexity rather than layering
-        supports.
+        Educators experiment with scaffolds, digital tools, and assistive
+        technologies (e.g., text-to-speech, audiobooks, screen readers,
+        annotation apps) to help learners access and engage with complex texts.
       compass: false
       categories: []
     - tag: 2.8.6
