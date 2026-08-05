@@ -54,9 +54,9 @@ developing:
     - tag: 2.4.8
       title: >-
         Educators have timely and equitable access to a range of resources to
-        support learners achieving below grade level literacy and numeracy,
-        learning language at the same time as content, and achieving above grade
-        level expectations.
+        support learners achieving below grade-level literacy and numeracy,
+        learning language at the same time as content, and achieving above
+        grade-level expectations.
       compass: true
       categories: []
     - tag: 2.4.9
