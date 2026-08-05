@@ -6,8 +6,7 @@ initiating:
     - tag: 2.8.1
       title: >-
         Instruction is primarily remedial, focusing on below-grade-level texts
-        and skills. Reading tasks often emphasize filling gaps rather than
-        building independence and confidence in literacy.
+        and isolated skills.
       compass: false
       categories: []
     - tag: 2.8.2
