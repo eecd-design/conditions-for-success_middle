@@ -96,11 +96,11 @@ sustaining:
         scaffolds ensuring all learners engage meaningfully.
       compass: false
       categories: []
-    - tag: 2.8.13
+    - tag: 2.8.14
       title: >-
-        Expanded definition of text is fully normalized, with learners choosing
-        from diverse text formats based on purpose, audience, and accessibility
-        needs.
+        An expanded definition of text is fully normalized, with learners
+        choosing from diverse text formats based on purpose, audience, and
+        accessibility needs.
       compass: false
       categories: []
     - tag: 2.8.14
