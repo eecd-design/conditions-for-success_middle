@@ -320,7 +320,93 @@ for (let indicator of indicators) {
 		/>
 
 		<div
-			id="report-container"
+			id="digital-report-container"
+			data-restrict-report="active"
+		>
+			<section
+				class="overview"
+				data-tag="0"
+				data-include="true"
+			>
+				<h2 id="overview">Overview</h2>
+				<!-- <h3>Continuum Progress</h3>
+				<ProgressChart/> -->
+				<h3>Indicator Progress</h3>
+				<MatrixChart
+					entries={indicators}
+					scope={'Indicators'}
+				/>
+			</section>
+
+			{
+				indicators.map((indicator) => {
+					// Get all current indicator components
+					let components = allComponents
+						.filter((component) => component.data.indicator === indicator.id)
+						.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+
+					return (
+						<>
+							<hr
+								class="section"
+								data-print="false"
+							/>
+
+							<section
+								class="indicator"
+								data-tag={indicator.data.tag}
+								data-theme={indicator.data.colour}
+								data-vibrancy="vivid"
+								data-include="true"
+							>
+								<h2 id={`indicator-${indicator.data.tag}`}>
+									<span class="title">{indicator.data?.title}</span>
+								</h2>
+								<h3>Overall Progress</h3>
+								<ProgressChart colour={indicator.data.colour} />
+								<h3>Component Progress</h3>
+								<MatrixChart
+									entries={components}
+									scope={'Components'}
+									colour={indicator.data.colour}
+								/>
+							</section>
+						</>
+					);
+				})
+			}
+
+			<section
+				class="summary"
+				data-include="true"
+				hidden
+			>
+				<h2 id="summary">Summary</h2>
+				<!-- <h3>Component Progress</h3> -->
+				<MatrixChart
+					entries={components.filter((component) => Number(component.data.tag) < 6)}
+					scope={'Components'}
+					fit={'compact'}
+				/>
+			</section>
+
+			<section
+				class="summary"
+				data-include="true"
+				hidden
+			>
+				<h2 id="summary">Summary (Continued)</h2>
+				<!-- <h3>Component Progress</h3> -->
+				<MatrixChart
+					entries={components.filter((component) => Number(component.data.tag) >= 6)}
+					scope={'Components'}
+					fit={'compact'}
+				/>
+			</section>
+		</div>
+
+		<div
+			id="print-report-container"
 			data-restrict-report="active"
 		>
 			<section
@@ -432,117 +518,122 @@ for (let indicator of indicators) {
 	// Page Heading
 	*/
 
-	.content.report h1 .subtitle {
-		display: block;
-		font-weight: 400;
-		font-size: var(--font-size-xl);
-		color: var(--colour-txt-on-subtle-2);
-		margin: var(--space-2xs) 0 0;
-	}
+	main.report {
+		& h1 .subtitle {
+			display: block;
+			font-weight: 400;
+			font-size: var(--font-size-xl);
+			color: var(--colour-txt-on-subtle-2);
+			margin: var(--space-2xs) 0 0;
+		}
 
-	/* 
-	// Welcome Container Buttons
-	*/
+		/* 
+		// Welcome Container Buttons
+		*/
 
-	main.report .welcome-container :is(button, [data-style-as='button']) {
-		--container-gap: var(--space-xs);
-		--label-size: var(--font-size-xs);
-		--icon-size: 1.25rem;
-	}
+		& .welcome-container {
+			& .button-group {
+				margin: var(--space-lg) 0 0;
+			}
 
-	main.report
-		.welcome-container
-		:is(button, [data-style-as='button']):is(:hover, :focus-visible) {
-		--label-colour: var(--colour-txt-on-bold-1);
-		--icon-colour: var(--colour-txt-on-bold-1);
-	}
+			:is(button, [data-style-as='button']) {
+				--container-gap: var(--space-xs);
+				--label-size: var(--font-size-xs);
+				--icon-size: 1.25rem;
 
-	main.report .welcome-container .button-group {
-		margin: var(--space-lg) 0 0;
-	}
+				&:is(:hover, :focus-visible) {
+					--label-colour: var(--colour-txt-on-bold-1);
+					--icon-colour: var(--colour-txt-on-bold-1);
+				}
+			}
+		}
 
-	#report-controls {
-		--group-gap: var(--space-2xs);
-		display: inline-flex;
-		flex-flow: row wrap;
-		align-items: center;
-		gap: var(--space-2xs);
-		min-height: 3.25rem;
-		padding: var(--space-2xs);
-		margin: var(--space-sm) 0 0;
-		background-color: var(--colour-bkg-surface-subtle-1);
-		border-radius: var(--brd-radius-normal);
-	}
+		& #report-controls {
+			--group-gap: var(--space-2xs);
+			display: inline-flex;
+			flex-flow: row wrap;
+			align-items: center;
+			gap: var(--space-2xs);
+			min-height: 3.25rem;
+			padding: var(--space-2xs);
+			margin: var(--space-sm) 0 0;
+			background-color: var(--colour-bkg-surface-subtle-1);
+			border-radius: var(--brd-radius-normal);
 
-	#report-controls :is(button, [data-style-as='button']) {
-		--icon-size: 1.25rem;
-		--button-bkg-colour: transparent;
-	}
+			& :is(button, [data-style-as='button']) {
+				--icon-size: 1.25rem;
+				--button-bkg-colour: transparent;
 
-	#report-controls :is(button, [data-style-as='button']):is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-txt-on-bold-1);
-		--label-colour: var(--colour-txt-on-bold-1);
-		--button-bkg-colour: var(--colour-bkg-surface-bold-1);
-	}
+				&:is(:hover, :focus-visible) {
+					--icon-colour: var(--colour-txt-on-bold-1);
+					--label-colour: var(--colour-txt-on-bold-1);
+					--button-bkg-colour: var(--colour-bkg-surface-bold-1);
+				}
+			}
 
-	#report-controls .separator.item {
-		--separator-long-edge-dimension: 1.75rem;
-	}
+			& .separator.item {
+				--separator-long-edge-dimension: 1.75rem;
+			}
+		}
 
-	#report-container {
-		position: relative;
-	}
+		& #digital-report-container {
+			position: relative;
 
-	#report-container > section {
-		width: 100%;
-	}
+			& > section {
+				width: 100%;
+			}
 
-	#report-container h3 {
-		font-weight: 500;
-	}
+			& h3 {
+				font-weight: 500;
+			}
 
-	hr:has(+ #report-container[hidden]) {
-		display: none;
-	}
+			& hr:has(+ section[hidden]) {
+				display: none;
+			}
+		}
 
-	#report-container hr:has(+ section[hidden]) {
-		display: none;
-	}
+		hr:has(+ #digital-report-container[hidden]) {
+			display: none;
+		}
 
-	#pdf-export-progress-container {
-		width: 100%;
-		max-width: 400px;
-		margin: var(--space-lg) 0 0;
-	}
+		& #pdf-export-progress-container {
+			width: 100%;
+			max-width: 400px;
+			margin: var(--space-lg) 0 0;
 
-	#pdf-export-progress-container .text-container {
-		font-size: var(--font-size-xs);
-		color: var(--colour-txt-on-subtle-2);
-		margin: 0 0 var(--space-xs);
-	}
+			& .text-container {
+				font-size: var(--font-size-xs);
+				color: var(--colour-txt-on-subtle-2);
+				margin: 0 0 var(--space-xs);
+			}
 
-	#pdf-export-progress-container [role='progressbar'] {
-		width: 100%;
-		height: 1rem;
-		border-radius: var(--brd-radius-normal);
-		background-color: var(--colour-bkg-surface-subtle-1);
-		overflow: hidden;
-	}
+			& [role='progressbar'] {
+				width: 100%;
+				height: 1rem;
+				border-radius: var(--brd-radius-normal);
+				background-color: var(--colour-bkg-surface-subtle-1);
+				overflow: hidden;
 
-	#pdf-export-progress-container [role='progressbar'] [data-role='bar'] {
-		width: 0%;
-		height: 100%;
-		background-color: var(--colour-bkg-surface-bold-1-accent, var(--colour-bkg-surface-bold-1));
-	}
+				& [data-role='bar'] {
+					width: 0%;
+					height: 100%;
+					background-color: var(
+						--colour-bkg-surface-bold-1-accent,
+						var(--colour-bkg-surface-bold-1)
+					);
+				}
+			}
+		}
 
-	@media print {
-		header,
-		main > aside,
-		dialog,
-		hr,
-		#report-controls,
-		footer {
-			display: none !important;
+		@media print {
+			header,
+			main > aside,
+			dialog,
+			hr,
+			#report-controls,
+			footer {
+				display: none !important;
+			}
 		}
 	}
 </style>
@@ -1025,7 +1116,7 @@ for (let indicator of indicators) {
 	//
 
 	let updateReport = async (data: UserData, changes) => {
-		let reportContainer = document.querySelector('#report-container');
+		let reportContainer = document.querySelector('#digital-report-container');
 		if (!reportContainer) return;
 
 		let stateTriggerKeys = ['activeReportId'];
