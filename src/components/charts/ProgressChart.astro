@@ -146,26 +146,28 @@ let { colour } = Astro.props;
 	*/
 
 	.chart-container.progress {
+		--chart-scale: 1;
+
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
-		padding: var(--space-2xl) 0;
+		padding: calc(var(--space-2xl) * var(--chart-scale)) 0;
 		margin: 0;
 
 		& .segment-container {
 			display: flex;
 			flex-flow: column nowrap;
-			gap: var(--space-sm);
+			gap: calc(var(--space-sm) * var(--chart-scale));
 			position: relative;
 
 			/* Block */
 
 			& .block-container .block {
-				--icon-size: 2.5rem;
+				--icon-size: calc(2.5rem * var(--chart-scale));
 				--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				height: 100px;
+				height: calc(100px * var(--chart-scale));
 				background-color: var(
 					--colour-bkg-surface-subtle-1-accent,
 					var(--colour-bkg-surface-subtle-1)
@@ -182,7 +184,7 @@ let { colour } = Astro.props;
 
 			&[data-active] .block-container .block {
 				--icon-colour: var(--colour-txt-on-bold-1);
-				height: 140px;
+				height: calc(140px * var(--chart-scale));
 				border-radius: var(--brd-radius-normal);
 				background-color: var(
 					--colour-bkg-surface-bold-1-accent,
@@ -201,19 +203,19 @@ let { colour } = Astro.props;
 				flex-flow: column nowrap;
 				align-items: center;
 				justify-content: end;
-				gap: var(--space-2xs);
+				gap: calc(var(--space-2xs) * var(--chart-scale));
 				flex-grow: 1;
 				color: var(--colour-txt-on-subtle-1);
 
 				& .title {
-					font-size: var(--font-size-sm);
+					font-size: calc(var(--font-size-sm) * var(--chart-scale));
 					font-weight: 500;
 				}
 
 				/* Active Flag */
 
 				& .active-container {
-					--icon-size: 1rem;
+					--icon-size: calc(1rem * var(--chart-scale));
 					--icon-colour: var(
 						--colour-txt-on-subtle-2-accent,
 						var(--colour-txt-on-subtle-2)
@@ -221,12 +223,12 @@ let { colour } = Astro.props;
 					display: flex;
 					flex-flow: column nowrap;
 					align-items: center;
-					gap: var(--space-3xs);
+					gap: calc(var(--space-3xs) * var(--chart-scale));
 					position: absolute;
-					top: -2.5rem;
+					top: calc(-2.5rem * var(--chart-scale));
 
 					& span {
-						font-size: var(--font-size-3xs);
+						font-size: calc(var(--font-size-3xs) * var(--chart-scale));
 						font-weight: 700;
 						text-transform: uppercase;
 						color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
@@ -235,7 +237,7 @@ let { colour } = Astro.props;
 			}
 
 			&[data-active] .title-container .title {
-				font-size: var(--font-size-base);
+				font-size: calc(var(--font-size-base) * var(--chart-scale));
 				font-weight: 600;
 			}
 
@@ -249,18 +251,22 @@ let { colour } = Astro.props;
 				display: flex;
 				flex-flow: column nowrap;
 				align-items: center;
-				gap: var(--space-3xs);
+				gap: calc(var(--space-3xs) * var(--chart-scale));
 				flex-grow: 1;
 				padding: 0 var(--space-xs);
-				font-size: var(--font-size-2xs);
+				font-size: calc(var(--font-size-2xs) * var(--chart-scale));
 				color: var(--colour-txt-on-subtle-2);
 				text-align: center;
 
 				& .count {
-					font-size: var(--font-size-xs);
+					font-size: calc(var(--font-size-xs) * var(--chart-scale));
 					font-weight: 600;
 				}
 			}
+		}
+
+		#print-report-container & {
+			--chart-scale: 0.75;
 		}
 	}
 </style>
