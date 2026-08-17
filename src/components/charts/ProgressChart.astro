@@ -150,118 +150,117 @@ let { colour } = Astro.props;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 		padding: var(--space-2xl) 0;
 		margin: 0;
-	}
 
-	.chart-container.progress .segment-container {
-		display: flex;
-		flex-flow: column nowrap;
-		gap: var(--space-sm);
-		position: relative;
-	}
+		& .segment-container {
+			display: flex;
+			flex-flow: column nowrap;
+			gap: var(--space-sm);
+			position: relative;
 
-	/* Block */
+			/* Block */
 
-	.chart-container.progress .segment-container .block-container .block {
-		--icon-size: 2.5rem;
-		--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100px;
-		background-color: var(
-			--colour-bkg-surface-subtle-1-accent,
-			var(--colour-bkg-surface-subtle-1)
-		);
-	}
+			& .block-container .block {
+				--icon-size: 2.5rem;
+				--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100px;
+				background-color: var(
+					--colour-bkg-surface-subtle-1-accent,
+					var(--colour-bkg-surface-subtle-1)
+				);
+			}
 
-	.chart-container.progress .segment-container:first-of-type .block-container .block {
-		border-radius: var(--brd-radius-normal) 0 0 var(--brd-radius-normal);
-	}
+			&:first-of-type .block-container .block {
+				border-radius: var(--brd-radius-normal) 0 0 var(--brd-radius-normal);
+			}
 
-	.chart-container.progress .segment-container:last-of-type .block-container .block {
-		border-radius: 0 var(--brd-radius-normal) var(--brd-radius-normal) 0;
-	}
+			&:last-of-type .block-container .block {
+				border-radius: 0 var(--brd-radius-normal) var(--brd-radius-normal) 0;
+			}
 
-	.chart-container.progress .segment-container[data-active] .block-container .block {
-		--icon-colour: var(--colour-txt-on-bold-1);
-		height: 140px;
-		border-radius: var(--brd-radius-normal);
-		background-color: var(--colour-bkg-surface-bold-1-accent, var(--colour-bkg-surface-bold-2));
-	}
+			&[data-active] .block-container .block {
+				--icon-colour: var(--colour-txt-on-bold-1);
+				height: 140px;
+				border-radius: var(--brd-radius-normal);
+				background-color: var(
+					--colour-bkg-surface-bold-1-accent,
+					var(--colour-bkg-surface-bold-2)
+				);
+			}
 
-	.chart-container.progress
-		.segment-container:not([data-active])
-		+ :not([data-active])
-		.block-container
-		.block {
-		border-left: 2px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
-	}
+			&:not([data-active]) + :not([data-active]) .block-container .block {
+				border-left: 2px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+			}
 
-	/* Title */
+			/* Title */
 
-	.chart-container.progress .segment-container .title-container {
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		justify-content: end;
-		gap: var(--space-2xs);
-		flex-grow: 1;
-		color: var(--colour-txt-on-subtle-1);
-	}
+			& .title-container {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				justify-content: end;
+				gap: var(--space-2xs);
+				flex-grow: 1;
+				color: var(--colour-txt-on-subtle-1);
 
-	.chart-container.progress .segment-container .title-container .title {
-		font-size: var(--font-size-sm);
-		font-weight: 500;
-	}
+				& .title {
+					font-size: var(--font-size-sm);
+					font-weight: 500;
+				}
 
-	.chart-container.progress .segment-container[data-active] .title-container .title {
-		font-size: var(--font-size-base);
-		font-weight: 600;
-	}
+				/* Active Flag */
 
-	/* Active Flag */
+				& .active-container {
+					--icon-size: 1rem;
+					--icon-colour: var(
+						--colour-txt-on-subtle-2-accent,
+						var(--colour-txt-on-subtle-2)
+					);
+					display: flex;
+					flex-flow: column nowrap;
+					align-items: center;
+					gap: var(--space-3xs);
+					position: absolute;
+					top: -2.5rem;
 
-	.chart-container.progress .segment-container .title-container .active-container {
-		--icon-size: 1rem;
-		--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		gap: var(--space-3xs);
-		position: absolute;
-		top: -2.5rem;
-	}
+					& span {
+						font-size: var(--font-size-3xs);
+						font-weight: 700;
+						text-transform: uppercase;
+						color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+					}
+				}
+			}
 
-	.chart-container.progress .segment-container .title-container .active-container span {
-		font-size: var(--font-size-3xs);
-		font-weight: 700;
-		text-transform: uppercase;
-		color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
-	}
+			&[data-active] .title-container .title {
+				font-size: var(--font-size-base);
+				font-weight: 600;
+			}
 
-	.chart-container.progress
-		.segment-container:not([data-active])
-		.title-container
-		.active-container {
-		display: none;
-	}
+			&:not([data-active]) .title-container .active-container {
+				display: none;
+			}
 
-	/* Details */
+			/* Details */
 
-	.chart-container.progress .segment-container .details-container {
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		gap: var(--space-3xs);
-		flex-grow: 1;
-		padding: 0 var(--space-xs);
-		font-size: var(--font-size-2xs);
-		color: var(--colour-txt-on-subtle-2);
-		text-align: center;
-	}
+			& .details-container {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				gap: var(--space-3xs);
+				flex-grow: 1;
+				padding: 0 var(--space-xs);
+				font-size: var(--font-size-2xs);
+				color: var(--colour-txt-on-subtle-2);
+				text-align: center;
 
-	.chart-container.progress .segment-container .details-container .count {
-		font-size: var(--font-size-xs);
-		font-weight: 600;
+				& .count {
+					font-size: var(--font-size-xs);
+					font-weight: 600;
+				}
+			}
+		}
 	}
 </style>
