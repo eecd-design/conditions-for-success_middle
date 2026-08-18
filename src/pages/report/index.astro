@@ -1,5 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import IconFolder20 from 'src/components/icons/IconFolder_20.astro';
 import IconCross20 from 'src/components/icons/IconCross_20.astro';
@@ -14,6 +16,8 @@ import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import { findObjectByKey } from 'src/utilities/helpers';
 import PageNav from 'src/components/PageNav.astro';
 import ReportToasts from 'src/components/ReportToasts.astro';
+
+import gnbLogo from 'src/images/gnb-logo-colour.png';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -407,8 +411,42 @@ for (let indicator of indicators) {
 
 		<div
 			id="print-report-container"
-			data-restrict-report="active"
+			data-theme-fixed
 		>
+			<section
+				class="cover"
+				data-include="true"
+				data-theme="red"
+			>
+				<div class="title-container">
+					<Image
+						src={gnbLogo}
+						alt="Government of New Brunswick Logo"
+					/>
+					<h1>New Brunswick Middle Schools</h1>
+					<p
+						class="subtitle"
+						data-font-type="serif"
+					>
+						Conditions for Success Developmental Continuums
+					</p>
+				</div>
+
+				<div class="meta-container">
+					<p
+						data-field="school"
+						data-style-as="h2"
+					>
+						School Name
+					</p>
+					<p data-style-as="h3"><span data-field="reportingYear"></span> Report</p>
+					<p>
+						Assessment Completed: <span data-field="assessmentCompletionDate"></span>
+					</p>
+					<p>Report Generated: <span data-field="reportGenerationDate"></span></p>
+				</div>
+			</section>
+
 			<section
 				class="overview"
 				data-tag="0"
@@ -432,32 +470,25 @@ for (let indicator of indicators) {
 						.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
 					return (
-						<>
-							<hr
-								class="section"
-								data-print="false"
+						<section
+							class="indicator"
+							data-tag={indicator.data.tag}
+							data-include="true"
+							data-theme={indicator.data.colour}
+							data-vibrancy="vivid"
+						>
+							<h2 id={`indicator-${indicator.data.tag}`}>
+								<span class="title">{indicator.data?.title}</span>
+							</h2>
+							<h3>Overall Progress</h3>
+							<ProgressChart colour={indicator.data.colour} />
+							<h3>Component Progress</h3>
+							<MatrixChart
+								entries={components}
+								scope={'Components'}
+								colour={indicator.data.colour}
 							/>
-
-							<section
-								class="indicator"
-								data-tag={indicator.data.tag}
-								data-theme={indicator.data.colour}
-								data-vibrancy="vivid"
-								data-include="true"
-							>
-								<h2 id={`indicator-${indicator.data.tag}`}>
-									<span class="title">{indicator.data?.title}</span>
-								</h2>
-								<h3>Overall Progress</h3>
-								<ProgressChart colour={indicator.data.colour} />
-								<h3>Component Progress</h3>
-								<MatrixChart
-									entries={components}
-									scope={'Components'}
-									colour={indicator.data.colour}
-								/>
-							</section>
-						</>
+						</section>
 					);
 				})
 			}
@@ -465,7 +496,6 @@ for (let indicator of indicators) {
 			<section
 				class="summary"
 				data-include="true"
-				hidden
 			>
 				<h2 id="summary">Summary</h2>
 				<!-- <h3>Component Progress</h3> -->
@@ -479,7 +509,6 @@ for (let indicator of indicators) {
 			<section
 				class="summary"
 				data-include="true"
-				hidden
 			>
 				<h2 id="summary">Summary (Continued)</h2>
 				<!-- <h3>Component Progress</h3> -->
@@ -592,6 +621,90 @@ for (let indicator of indicators) {
 			}
 		}
 
+		& #print-report-container {
+			width: 816px !important;
+			margin: 0 auto;
+			background-color: #ffffff;
+			color: var(--colour-txt-on-subtle-1);
+			position: fixed;
+			top: 0;
+			left: -9999px;
+			overflow: visible;
+			pointer-events: none;
+
+			& section {
+				box-sizing: border-box !important;
+				width: 816px !important;
+				min-height: 1056px !important;
+				padding: 48px !important;
+				background-color: #ffffff;
+				position: relative;
+				overflow: hidden;
+
+				page-break-before: always;
+				page-break-after: always;
+				break-before: page;
+				break-after: page;
+
+				& :is(h3, [data-style-as='h3']) {
+					font-weight: 500;
+				}
+
+				&.cover {
+					display: flex;
+					flex-flow: column;
+					justify-content: space-between;
+					padding-top: 2.5in;
+
+					& .title-container {
+						& img {
+							height: 48px;
+							width: auto;
+						}
+
+						& h1 {
+							font-size: var(--font-size-3xl);
+							margin: var(--space-xl) 0 var(--space-sm);
+						}
+
+						& .subtitle {
+							display: inline-block;
+							font-size: var(--font-size-lg);
+							font-weight: 500;
+							line-height: 1;
+							color: var(--colour-txt-on-bold-1);
+							background-color: var(--colour-bkg-surface-bold-1-accent);
+							border-radius: var(--brd-radius-normal);
+							padding: var(--space-sm) var(--space-base);
+						}
+					}
+				}
+
+				& .meta-container {
+					&
+						:is(
+							:has([data-field='reportGenerationDate']),
+							:has([data-field='assessmentCompletionDate'])
+						) {
+						font-size: var(--font-size-xs);
+						margin: 0;
+					}
+
+					& [data-field='school'] {
+						margin: 0 0 var(--space-xs);
+					}
+
+					& :has([data-field='reportingYear']) {
+						margin: 0 0 var(--space-2xl);
+					}
+				}
+
+				[data-screen-reader] {
+					display: none !important;
+				}
+			}
+		}
+
 		hr:has(+ #digital-report-container[hidden]) {
 			display: none;
 		}
@@ -624,17 +737,6 @@ for (let indicator of indicators) {
 				}
 			}
 		}
-
-		@media print {
-			header,
-			main > aside,
-			dialog,
-			hr,
-			#report-controls,
-			footer {
-				display: none !important;
-			}
-		}
 	}
 </style>
 
@@ -646,9 +748,11 @@ for (let indicator of indicators) {
 	import { formatDateAsString, toKebabCase } from 'src/utilities/helpers';
 	import { userDataStore, setState, subscribe, setPreferences } from 'src/stores/userDataStore';
 	import { getActiveReportData } from 'src/stores/userDataStore';
-	import html2canvas from 'html2canvas';
+
 	import jsPDF from 'jspdf';
 	import Papa from 'papaparse';
+	import { snapdom } from '@zumer/snapdom';
+
 	import { eventControl } from 'src/utilities/event';
 	import { toastControl } from 'src/utilities/toast';
 
@@ -724,7 +828,7 @@ for (let indicator of indicators) {
 			barContainer.setAttribute('aria-valuemin', 0);
 			barContainer.setAttribute('aria-valuemax', totalPages);
 			barContainer.setAttribute('aria-valuenow', 0);
-			let estimatedDuration = Math.floor(totalPages * 3.66);
+			let estimatedDuration = Math.floor(totalPages * 0.5);
 			let message = `Preparing report for download (about ${estimatedDuration} seconds)...`;
 			messageField.textContent = message;
 			barContainer.setAttribute('aria-valuetext', message);
@@ -755,7 +859,7 @@ for (let indicator of indicators) {
 	})();
 
 	let packageReportAsPdf = async () => {
-		let debug = false;
+		let debug = true;
 
 		/**
 		 * Add wrapped text to jsPDF
@@ -785,19 +889,27 @@ for (let indicator of indicators) {
 			return y; // return new Y so you can keep adding below
 		};
 
-		let reportContainer = document.querySelector('main .content') as HTMLElement;
+		let reportContainer = document.querySelector('#print-report-container') as HTMLElement;
 		if (!reportContainer) return;
 
-		let sections = reportContainer.querySelectorAll(
-			'section[data-include]',
-		) as NodeListOf<HTMLElement>;
-		let totalPages = sections.length + 1; // Cover + charts
+		let sections = Array.from(
+			reportContainer.querySelectorAll('section[data-include]'),
+		) as HTMLElement[];
+		let totalPages = sections.length;
 
+		// Start the progress tracker
 		progressTracker.init('#pdf-export-progress-container');
 		progressTracker.start(totalPages);
+		// Yield to the event loop so the DOM updates visually
+		await new Promise((resolve) => setTimeout(resolve, 10));
 
 		let assessment = getActiveReportData();
 
+		//
+		// 1. Setup
+		//
+
+		// Initialize the pdf
 		let pdf = new jsPDF({
 			orientation: 'portrait',
 			unit: 'pt',
@@ -806,17 +918,14 @@ for (let indicator of indicators) {
 
 		if (debug) console.log('jsPDF Created', pdf);
 
+		// Set page parameters
 		let margin = 72;
 		let pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
 		let pageHeight = pdf.internal.pageSize.getHeight();
 		let currentYPosition = margin;
 		pdf.setLineHeightFactor(1.1);
 
-		let aesthetNovaMediumBase64 = await fetchFontBase64('./fonts/AesthetNova-Medium.ttf');
-		let aesthetNovaBoldBase64 = await fetchFontBase64('./fonts/AesthetNova-Bold.ttf');
-		let publicSansRegularBase64 = await fetchFontBase64('./fonts/PublicSans-Regular.ttf');
-		let publicSansBoldBase64 = await fetchFontBase64('./fonts/PublicSans-Bold.ttf');
-
+		// Embed fonts
 		pdf.addFileToVFS('AesthetNova-Medium.ttf', aesthetNovaMediumBase64);
 		pdf.addFont('AesthetNova-Medium.ttf', 'Aesthet Nova', 'normal');
 		pdf.addFileToVFS('AesthetNova-Bold.ttf', aesthetNovaBoldBase64);
@@ -828,16 +937,18 @@ for (let indicator of indicators) {
 
 		if (debug) console.log('Added Fonts', pdf);
 
-		let gnbLogoBase64 = await fetchPngBase64('./images/gnb-logo-colour.png');
+		//
+		// 2. Create the report cover page
+		//
 
-		// 1. Create the report cover page
-
+		// Add the gnb logo
 		let gnbLogoHeight = 34.4073;
-		pdf.addImage(gnbLogoBase64, margin, 160, 100, gnbLogoHeight);
+		pdf.addImage(gnbLogo, margin, 160, 100, gnbLogoHeight);
 		currentYPosition = 160 + gnbLogoHeight;
 
 		currentYPosition += 24;
 
+		// Add the website title and subtitle
 		let websiteTitle = 'New Brunswick Middle Schools';
 		pdf.setFont('Aesthet Nova', 'bold');
 		pdf.setFontSize(32);
@@ -850,7 +961,6 @@ for (let indicator of indicators) {
 		pdf.roundedRect(margin, currentYPosition, 424, 36, 8, 8, 'F');
 
 		let websiteSubtitle = 'Conditions for Success Developmental Continuums';
-		pdf.setFont('Aesthet Nova', 'normal');
 		pdf.setFontSize(18);
 		pdf.setTextColor('#FFFFFF');
 		currentYPosition = addWrappedText(
@@ -863,6 +973,7 @@ for (let indicator of indicators) {
 
 		currentYPosition += 280;
 
+		// Add the report metadata
 		let schoolName = assessment.school;
 		pdf.setFont('Aesthet Nova', 'bold');
 		pdf.setFontSize(24);
@@ -879,7 +990,6 @@ for (let indicator of indicators) {
 		currentYPosition += 36;
 
 		let assessmentCompletionDate = `Assessment Completed: ${formatDateAsString(assessment.dateCompleted, false)}`;
-		pdf.setFont('Public Sans', 'normal');
 		pdf.setFontSize(12);
 		currentYPosition = addWrappedText(
 			pdf,
@@ -892,13 +1002,61 @@ for (let indicator of indicators) {
 		currentYPosition += 6;
 
 		let reportDate = `Report Created: ${formatDateAsString(Date.now(), false)}`;
-		pdf.setFont('Public Sans', 'normal');
-		pdf.setFontSize(12);
 		currentYPosition = addWrappedText(pdf, reportDate, margin, currentYPosition, pageWidth);
 
+		currentYPosition += 6;
+
+		let continuumVersion = `Continuum Version: ${assessment.continuumVersion}`;
+		currentYPosition = addWrappedText(
+			pdf,
+			continuumVersion,
+			margin,
+			currentYPosition,
+			pageWidth,
+		);
+
+		// Update the progress tracker
 		progressTracker.update(1, totalPages);
 
-		// 2. Create the chart pages
+		//
+		// 3. Convert the charts to canvas
+		//
+
+		let canvases = await Promise.all(
+			sections.map(async (section) => {
+				let progressChartElem = section.querySelector('.progress') as HTMLElement;
+				let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
+
+				let progressPromise = null;
+				if (progressChartElem) {
+					progressPromise = snapdom.toCanvas(progressChartElem, {
+						scale: 3,
+						embedFonts: true,
+						backgroundColor: '#ffffff',
+					});
+				}
+
+				let matrixPromise = null;
+				if (matrixChartElem) {
+					matrixPromise = snapdom.toCanvas(matrixChartElem, {
+						scale: 3,
+						embedFonts: true,
+						backgroundColor: '#ffffff',
+					});
+				}
+
+				return {
+					progress: progressPromise ? await progressPromise : null,
+					matrix: matrixPromise ? await matrixPromise : null,
+				};
+			}),
+		);
+
+		if (debug) console.log(canvases);
+
+		//
+		// 4. Create the chart pages
+		//
 
 		margin = 54;
 		pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
@@ -906,14 +1064,14 @@ for (let indicator of indicators) {
 
 		if (debug) console.log('Page Width: ', pageWidth);
 
-		// Safari Fix:
-		let lazyElements = document.querySelectorAll('[loading="lazy"]');
-		for (let elem of lazyElements) {
-			elem.setAttribute('loading', 'eager');
-		}
+		for (let i = 0; i < sections.length; i++) {
+			let section = sections[i];
+			let charts = canvases[i];
 
-		for (let [index, section] of sections.entries()) {
+			let isCover = section.matches('.cover');
 			let isSummary = section.matches('.summary');
+
+			if (isCover) continue;
 
 			pdf.addPage();
 
@@ -921,59 +1079,7 @@ for (let indicator of indicators) {
 
 			currentYPosition = margin - 16; // Account for section heading line height padding
 
-			// Convert on screen charts to images
-
-			let progressChartElem = section.querySelector('.progress') as HTMLElement;
-			let progressChartCanvas = null;
-			let progressChartImgProps;
-			let progressChartImgHeight;
-			if (progressChartElem) {
-				let clone = progressChartElem.cloneNode(true) as HTMLElement;
-				clone.setAttribute('data-theme-fixed', '');
-				clone.style.width = '900px';
-				clone.style.position = 'absolute';
-				clone.style.left = '-9999px';
-				document.body.append(clone);
-
-				progressChartCanvas = (await html2canvas(clone, {
-					scale: 2,
-					useCORS: true,
-				})) as HTMLCanvasElement;
-				progressChartImgProps = pdf.getImageProperties(progressChartCanvas);
-				progressChartImgHeight =
-					(progressChartImgProps.height * imgWidth) / progressChartImgProps.width;
-
-				clone.remove();
-			}
-
-			if (debug) console.log('Converted Progress Chart', progressChartCanvas);
-
-			let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
-			let matrixChartCanvas = null;
-			let matrixChartImgProps;
-			let matrixChartImgHeight;
-			if (matrixChartElem) {
-				let clone = matrixChartElem.cloneNode(true) as HTMLElement;
-				clone.setAttribute('data-theme-fixed', '');
-				clone.style.width = '900px';
-				clone.style.position = 'absolute';
-				clone.style.left = '-9999px';
-				document.body.append(clone);
-				matrixChartCanvas = (await html2canvas(clone, {
-					scale: 2,
-					useCORS: true,
-				})) as HTMLCanvasElement;
-				matrixChartImgProps = pdf.getImageProperties(matrixChartCanvas);
-				matrixChartImgHeight =
-					(matrixChartImgProps.height * imgWidth) / matrixChartImgProps.width;
-
-				clone.remove();
-			}
-
-			if (debug) console.log('Converted Matrix Chart', matrixChartCanvas);
-
-			// Create page layout
-
+			// Add the page heading
 			let sectionHeading = section.querySelector('h2').textContent.trim();
 			pdf.setFont('Aesthet Nova', 'bold');
 			pdf.setFontSize(24);
@@ -987,10 +1093,12 @@ for (let indicator of indicators) {
 
 			currentYPosition += 18;
 
-			if (progressChartCanvas) {
+			// Add the charts and their accompanying headings
+			pdf.setFont('Public Sans', 'normal');
+			pdf.setFontSize(18);
+
+			if (charts.progress) {
 				let chartHeading1 = 'Overall Progress';
-				pdf.setFont('Public Sans', 'normal');
-				pdf.setFontSize(18);
 				currentYPosition = addWrappedText(
 					pdf,
 					chartHeading1,
@@ -1001,8 +1109,12 @@ for (let indicator of indicators) {
 
 				currentYPosition += 24;
 
+				let progressChartImgProps = pdf.getImageProperties(charts.progress);
+				let progressChartImgHeight =
+					(progressChartImgProps.height * imgWidth) / progressChartImgProps.width;
+
 				pdf.addImage(
-					progressChartCanvas,
+					charts.progress,
 					margin,
 					currentYPosition,
 					imgWidth,
@@ -1013,11 +1125,9 @@ for (let indicator of indicators) {
 				currentYPosition += 12;
 			}
 
-			if (matrixChartCanvas) {
+			if (charts.matrix) {
 				if (!isSummary) {
-					let chartHeading2 = `${index === 0 ? 'Indicator' : 'Component'} Progress`;
-					pdf.setFont('Public Sans', 'normal');
-					pdf.setFontSize(18);
+					let chartHeading2 = `${i === 1 ? 'Indicator' : 'Component'} Progress`;
 					currentYPosition = addWrappedText(
 						pdf,
 						chartHeading2,
@@ -1028,28 +1138,41 @@ for (let indicator of indicators) {
 					currentYPosition += 24;
 				}
 
+				let matrixChartImgProps = pdf.getImageProperties(charts.matrix);
+				let matrixChartImgHeight =
+					(matrixChartImgProps.height * imgWidth) / matrixChartImgProps.width;
+
 				pdf.addImage(
-					matrixChartCanvas,
+					charts.matrix,
 					margin,
 					currentYPosition,
 					imgWidth,
 					matrixChartImgHeight,
 				);
 
-				progressTracker.update(index + 2, totalPages);
+				progressTracker.update(i + 1, totalPages);
 			}
 
-			let pageFooter = `${schoolName} | ${reportingYear} | Page ${index + 2} of ${sections.length + 1}`;
-			pdf.setFont('Public Sans', 'normal');
+			// Add the page footer
+			let pageFooter = `${schoolName} | ${reportingYear} | ${continuumVersion} | Page ${i + 1} of ${sections.length}`;
 			pdf.setFontSize(10);
-
 			addWrappedText(pdf, pageFooter, margin, pageHeight - margin + 16, pageWidth);
+
+			// Update the progress tracker
+			progressTracker.update(i + 1, totalPages);
+			// Yield to the event loop so the DOM updates visually
+			await new Promise((resolve) => setTimeout(resolve, 10));
 		}
+
+		//
+		// 5. Save the report to the user's computer
+		//
 
 		let fileDate = formatDateAsString(new Date(), false);
 		let filename = `assessment_${toKebabCase(assessment.school)}_${assessment.reportingYear}_report-${fileDate}.pdf`;
-
 		pdf.save(filename);
+
+		// Stop the tracker
 		progressTracker.finish();
 	};
 
@@ -1116,8 +1239,9 @@ for (let indicator of indicators) {
 	//
 
 	let updateReport = async (data: UserData, changes) => {
-		let reportContainer = document.querySelector('#digital-report-container');
-		if (!reportContainer) return;
+		let digitalReportContainer = document.querySelector('#digital-report-container');
+		let printReportContainer = document.querySelector('#print-report-container');
+		if (!digitalReportContainer) return;
 
 		let stateTriggerKeys = ['activeReportId'];
 		let preferencesTriggerKeys = ['reportIncludedIndicators'];
@@ -1135,7 +1259,10 @@ for (let indicator of indicators) {
 			return;
 
 		let main = document.querySelector('main');
-		let sections = reportContainer?.querySelectorAll(':scope > section');
+		let sections = [
+			...digitalReportContainer?.querySelectorAll(':scope > section'),
+			...printReportContainer?.querySelectorAll(':scope > section'),
+		];
 		let onPageNav = document.querySelector('nav.on-page');
 		let reportHeading = document.querySelector('h1');
 		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
@@ -1274,6 +1401,22 @@ for (let indicator of indicators) {
 	//
 
 	subscribe(updateReport);
+
+	// Preload Fonts and Logo for Report Generation
+	let [
+		aesthetNovaMediumBase64,
+		aesthetNovaBoldBase64,
+		publicSansRegularBase64,
+		publicSansBoldBase64,
+	] = await Promise.all([
+		fetchFontBase64('./fonts/AesthetNova-Medium.ttf'),
+		fetchFontBase64('./fonts/AesthetNova-Bold.ttf'),
+		fetchFontBase64('./fonts/PublicSans-Regular.ttf'),
+		fetchFontBase64('./fonts/PublicSans-Bold.ttf'),
+	]);
+
+	let gnbLogo = new Image();
+	gnbLogo.src = './images/gnb-logo-colour.png';
 
 	//
 	// Event Listeners
