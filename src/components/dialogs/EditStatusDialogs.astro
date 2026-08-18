@@ -257,6 +257,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					status: newStatus,
 					dateCompleted: newStatus === 'In Progress' ? null : Date.now(),
 					changeLog: updateChangeLog({
+						changeLog: assessment.changeLog,
 						message: `updated assessment status to ${newStatus.toLowerCase()}.`,
 					}),
 				});
@@ -357,11 +358,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let target = event.target as HTMLButtonElement;
 
 		if (target.matches('button.change-status')) {
+			let assessment = getActiveAssessmentData();
+
 			try {
 				setAssessment({
 					status: 'In Progress',
 					dateCompleted: null,
 					changeLog: updateChangeLog({
+						changeLog: assessment.changeLog,
 						message: `updated assessment status to in progress.`,
 					}),
 				});

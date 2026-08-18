@@ -441,12 +441,11 @@ let updateSchema = (oldData, schema) => {
 	return updated;
 };
 
-let updateChangeLog = ({
-	assessment = getActiveAssessmentData(),
-	assessor = getActiveAssessor(),
-	message,
-}) => {
-	if (!assessment || !message) return;
+let updateChangeLog = ({ changeLog, assessor = getActiveAssessor(), message }) => {
+	if (!changeLog || !message) {
+		console.warn('Change log or change message missing. Unable to update change log.');
+		return;
+	}
 
 	let entry = {
 		date: Date.now(),
@@ -454,12 +453,12 @@ let updateChangeLog = ({
 		message: message,
 	};
 
-	assessment.changeLog.push(entry);
+	changeLog.push(entry);
 
 	// Limit change history to 20 items
-	if (assessment.changeLog.length > 20) assessment.changeLog.splice(0, 1);
+	if (changeLog.length > 20) changeLog.splice(0, 1);
 
-	return assessment.changeLog;
+	return changeLog;
 };
 
 let updateContinuumVersion = (assessment) => {

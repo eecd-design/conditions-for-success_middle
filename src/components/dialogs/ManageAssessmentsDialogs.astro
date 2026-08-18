@@ -1091,12 +1091,19 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						context: 'setup',
 					});
 				} else if (context === 'report') {
+					let assessment = findObjectByKey(
+						getUserData().assessments,
+						'id',
+						targetAssessmentId,
+					);
+
 					if (target.matches('button.change-status')) {
 						setAssessment({
 							id: targetAssessmentId,
 							status: 'Complete',
 							dateCompleted: Date.now(),
 							changeLog: updateChangeLog({
+								changeLog: assessment.changeLog,
 								message: `updated assessment status to completed.`,
 							}),
 						});

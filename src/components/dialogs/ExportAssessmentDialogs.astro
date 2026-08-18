@@ -434,6 +434,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					status: newStatus,
 					dateModified: Date.now(),
 					changeLog: updateChangeLog({
+						changeLog: assessment.changeLog,
 						message: `updated assessment status to ${newStatus.toLowerCase()}.`,
 					}),
 				});
