@@ -1,10 +1,13 @@
 ---
-import IconAudio from "../icons/IconAudio_24.astro";
-import IconDocument from "../icons/IconDocument_24.astro";
-import IconImage from "../icons/IconImage_24.astro";
-import IconPresentation from "../icons/IconPresentation_24.astro";
-import IconVideo from "../icons/IconVideo_24.astro";
-import IconWeb from "../icons/IconWeb_24.astro";
+import IconAudio from '../icons/IconAudio_24.astro';
+import IconDocument from '../icons/IconDocument_24.astro';
+import IconImage from '../icons/IconImage_24.astro';
+import IconPresentation from '../icons/IconPresentation_24.astro';
+import IconVideo from '../icons/IconVideo_24.astro';
+import IconWeb from '../icons/IconWeb_24.astro';
+import IconWebinar from './IconWebinar_24.astro';
+import IconCourse from './IconCourse_24.astro';
+import IconCommunity from './IconCommunity_24.astro';
 
 const resourceIcons = {
 	audio: IconAudio,
@@ -13,18 +16,30 @@ const resourceIcons = {
 	presentation: IconPresentation,
 	video: IconVideo,
 	website: IconWeb,
+	webinar: IconWebinar,
+	course: IconCourse,
+	community: IconCommunity,
 };
 
 const resourceLabels = {
-	audio: "Audio",
-	document: "Document",
-	image: "Image",
-	presentation: "Presentation",
-	video: "Video",
-	website: "Website",
+	audio: 'Audio',
+	document: 'Document',
+	image: 'Image',
+	presentation: 'Presentation',
+	video: 'Video',
+	website: 'Website',
+	webinar: 'Webinar',
+	course: 'Course',
+	community: 'Community',
 };
 
-const { type, classes, dataset } = Astro.props;
+const {
+	type,
+	collapsible = true,
+	containerClasses = [],
+	iconClasses = [],
+	dataset = [],
+} = Astro.props;
 
 let datasetAttrs = {};
 if (dataset) {
@@ -40,11 +55,11 @@ let label = resourceLabels[type];
 {
 	Icon && label && (
 		<div
-			class="icon-and-label-container"
-			data-collapsible="label"
+			class={['icon-and-label-container', ...containerClasses].join(' ')}
+			data-collapsible={collapsible ? 'label' : null}
 			{...datasetAttrs}
 		>
-			<Icon classes={classes} />
+			<Icon classes={iconClasses} />
 			<span class="label-container">
 				<span class="label">{label}</span>
 			</span>

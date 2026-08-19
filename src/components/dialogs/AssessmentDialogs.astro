@@ -1,25 +1,31 @@
 ---
-import CreateEditAssessmentDialogs from "src/components/dialogs/CreateEditAssessmentDialogs.astro";
-import AssessorDialogs from "src/components/dialogs/AssessorDialogs.astro";
-import OpenImportAssessmentDialogs from "src/components/dialogs/OpenImportAssessmentDialogs.astro";
-import ExportAssessmentDialogs from "src/components/dialogs/ExportAssessmentDialogs.astro";
-import EditStatusDialogs from "src/components/dialogs/EditStatusDialogs.astro";
+import CreateEditAssessmentDialogs from 'src/components/dialogs/CreateEditAssessmentDialogs.astro';
+import AssessorDialogs from 'src/components/dialogs/AssessorDialogs.astro';
+import ManageAssessmentsDialogs from 'src/components/dialogs/ManageAssessmentsDialogs.astro';
+import ExportAssessmentDialogs from 'src/components/dialogs/ExportAssessmentDialogs.astro';
+import EditStatusDialogs from 'src/components/dialogs/EditStatusDialogs.astro';
 ---
 
 <CreateEditAssessmentDialogs />
 <AssessorDialogs />
-<OpenImportAssessmentDialogs />
+<ManageAssessmentsDialogs />
 <ExportAssessmentDialogs />
 <EditStatusDialogs />
 
 <style is:global>
-	dialog:not([data-context="setup"]) [data-restrict-context="setup"] {
+	dialog:not([data-context='setup']) [data-restrict-context='setup'] {
 		display: none !important;
 	}
-	dialog:not([data-context="configure"]) [data-restrict-context="configure"] {
+	dialog:not([data-context='configure']) [data-restrict-context='configure'] {
 		display: none !important;
 	}
-	dialog:not([data-context="close"]) [data-restrict-context="close"] {
+	dialog:not([data-context='duplicate']) [data-restrict-context='duplicate'] {
+		display: none !important;
+	}
+	dialog:not([data-context='test']) [data-restrict-context='test'] {
+		display: none !important;
+	}
+	dialog:not([data-context='close']) [data-restrict-context='close'] {
 		display: none !important;
 	}
 </style>

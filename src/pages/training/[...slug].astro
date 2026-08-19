@@ -1,0 +1,241 @@
+---
+import { getCollection, render } from 'astro:content';
+
+import { getResourcePath, toTitleCase } from 'src/utilities/helpers';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from 'src/components/PageNav.astro';
+import ResourceIcons from 'src/components/icons/ResourceIcons.astro';
+
+import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
+import DetailedLink from 'src/components/DetailedLink.astro';
+import IconArrowLeft16 from 'src/components/icons/IconArrowLeft_16.astro';
+
+let pagePath = Astro.url.pathname;
+
+// Get the current indicator
+export async function getStaticPaths() {
+	const training = await getCollection('training');
+	return training.map((training) => ({
+		params: { slug: training.id },
+		props: { training },
+	}));
+}
+
+const { training } = Astro.props;
+const { title, type, external, linkAction, provider, audience, dateStart, location, duration } =
+	training.data;
+
+const trainingData = training.data;
+trainingData.slug = training.id;
+
+// Store the path to the entry
+const entryPath = `src/content/training/${training.id}`;
+
+// Get all training content files
+let allContent = Object.values(
+	import.meta.glob('src/content/training/**/pageContent.md', {
+		eager: true,
+	}),
+);
+
+// Get the current entry's content file
+let pageContent: any = allContent.find((match: any) => match.file.includes(entryPath));
+
+const headings = await pageContent.getHeadings();
+
+let sectionLinks = [];
+for (let heading of headings) {
+	sectionLinks.push({
+		url: `${pagePath}#${heading.slug}`,
+		text: `${heading.text}`,
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	});
+}
+
+let trainingPath = getResourcePath(trainingData);
+let launchText = `View ${toTitleCase(type)}`;
+
+let typeColourMap = {
+	video: 'red',
+	document: 'blue',
+	website: 'green',
+	webinar: 'teal',
+	community: 'yellow',
+	course: 'purple',
+};
+let typeColour = typeColourMap[type];
+
+let opensDialog = linkAction === 'dialog';
+let InteractiveWrapper = opensDialog ? 'button' : 'a';
+let interactiveWrapperAttrs = opensDialog
+	? {
+			class: 'open-dialog',
+			type: 'button',
+			'data-size': 'large',
+			'data-dialog': 'media-dialog',
+			'data-dialog-heading': title,
+			'data-media-type': type,
+			'data-media-src': trainingPath,
+			'data-media-external': external.discriminant,
+		}
+	: {
+			'data-style-as': 'button',
+			'data-size': 'large',
+			href: trainingPath,
+		};
+---
+
+<BaseLayout
+	pageTitle={title}
+	pageType={'training'}
+>
+	{sectionLinks.length > 0 && <PageNav sectionLinks={sectionLinks} />}
+
+	<div class="content">
+		<a
+			class="back-to-link"
+			href="/training/"
+		>
+			<span class="icon-and-label-container">
+				<IconArrowLeft16 classes={['destination', 'left']} />
+				<span class="label-container">
+					<span class="label">Back to list of training opportunities</span>
+				</span>
+			</span>
+		</a>
+
+		<ResourceIcons
+			type={type}
+			collapsible={false}
+			dataset={[
+				{ key: 'theme', value: typeColour },
+				{ key: 'vibrancy', value: 'vivid' },
+				{ key: 'style', value: 'solid' },
+				{ key: 'size', value: 'big' },
+			]}
+		/>
+
+		<h1
+			id="main-heading"
+			tabindex="-1"
+		>
+			{title}
+		</h1>
+
+		<div
+			class="callout metadata-container"
+			data-style="outline"
+		>
+			<div class="wrapper">
+				<dl>
+					<!-- <div class="detail-container">
+						<dt>Date Added:</dt>
+						<dd>{dateAdded}</dd>
+					</div> -->
+					{
+						provider && provider.length > 0 && (
+							<div class="detail-container">
+								<dt>Provider:</dt>
+								<dd>
+									{provider
+										.map((item) => {
+											if (item === 'eecd') return 'EECD';
+											if (item === 'nbta') return 'NBTA';
+											return toTitleCase(item);
+										})
+										.join(', ')}
+								</dd>
+							</div>
+						)
+					}
+					{
+						audience && audience.length > 0 && (
+							<div class="detail-container">
+								<dt>Audience:</dt>
+								<dd>{audience.map((item) => toTitleCase(item)).join(', ')}</dd>
+							</div>
+						)
+					}
+					{
+						location && (
+							<div class="detail-container">
+								<dt>Location:</dt>
+								<dd>{toTitleCase(location)}</dd>
+							</div>
+						)
+					}
+					{
+						dateStart && (
+							<div class="detail-container">
+								<dt>Date:</dt>
+								<dd>
+									{new Date(dateStart).toLocaleDateString('en-US', {
+										day: 'numeric',
+										month: 'long',
+										year: 'numeric',
+									})}
+								</dd>
+							</div>
+						)
+					}
+					{
+						duration && (
+							<div class="detail-container">
+								<dt>Duration:</dt>
+								<dd>{duration} hours</dd>
+							</div>
+						)
+					}
+				</dl>
+			</div>
+		</div>
+
+		{pageContent && <pageContent.Content />}
+
+		<hr class="section" />
+
+		<InteractiveWrapper {...interactiveWrapperAttrs}> {launchText} </InteractiveWrapper>
+	</div>
+</BaseLayout>
+
+<style is:global>
+	main.training {
+		& .back-to-link {
+			--icon-size: 1rem;
+			--label-size: var(--font-size-xs);
+
+			display: inline-block;
+			font-size: var(--font-size-sm);
+			margin-bottom: var(--space-xl);
+
+			&:focus-visible {
+				& .icon.arrow {
+					translate: 0 !important;
+				}
+			}
+		}
+
+		& h1 {
+			margin: var(--space-sm) 0 var(--space-xl);
+		}
+
+		& .metadata-container {
+			--callout-margin: var(--space-xl) 0;
+
+			& > .wrapper {
+				--callout-padding: var(--space-base);
+			}
+
+			& dl {
+				--detail-list-margin: var(--space-lg);
+				--detail-list-gap: var(--space-2xs);
+				--detail-list-font-size: var(--font-size-xs);
+			}
+		}
+
+		hr.section {
+			margin: var(--space-2xl) 0;
+		}
+	}
+</style>

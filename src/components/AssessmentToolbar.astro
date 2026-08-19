@@ -1,18 +1,21 @@
 ---
-import IconCross from "./icons/IconCross_20.astro";
-import IconInfo from "./icons/IconInfo_20.astro";
-import IconFolder from "./icons/IconFolder_20.astro";
-import IconSave from "./icons/IconSave_20.astro";
-import IconEdit from "./icons/IconEdit_20.astro";
-import IconEditSmall from "./icons/IconEdit_14.astro";
-import IconEditStop from "./icons/IconEditStop_20.astro";
-import IconAssessor from "./icons/IconAssessor_20.astro";
-import IconAssessment from "./icons/IconAssessment_20.astro";
-import IconXmark from "./icons/IconXmark_20.astro";
-import IconWarningSmall from "src/components/icons/IconWarning_16.astro";
-import IconCheckmark from "src/components/icons/IconCheckmark_12.astro";
-import Toast from "./Toast.astro";
-import IconWarning16 from "src/components/icons/IconWarning_16.astro";
+import IconCross from './icons/IconCross_20.astro';
+import IconInfo from './icons/IconInfo_20.astro';
+import IconFolder from './icons/IconFolder_20.astro';
+import IconSave from './icons/IconSave_20.astro';
+import IconEdit from './icons/IconEdit_20.astro';
+import IconEditSmall from './icons/IconEdit_14.astro';
+import IconEditStop from './icons/IconEditStop_20.astro';
+import IconAssessor from './icons/IconAssessor_20.astro';
+import IconCopy from './icons/IconCopy_20.astro';
+import IconBlank from './icons/IconBlank_20.astro';
+import IconTest from './icons/IconTest_20.astro';
+import IconAssessment from './icons/IconAssessment_20.astro';
+import IconXmark from './icons/IconXmark_20.astro';
+import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
+import IconCheckmark from 'src/components/icons/IconCheckmark_12.astro';
+import Toast from './Toast.astro';
+import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 ---
 
 <section
@@ -30,14 +33,17 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 			<IconWarning16 />
 			<div>
 				<p>
-					The assessment feature isn't available on small screens.
-					Please use a tablet or desktop device to access it.
+					The assessment feature isn't available on small screens. Please use a tablet or
+					desktop device to access it.
 				</p>
 			</div>
 		</div>
 	</div>
 
-	<div class="tools" data-restrict-device-min="medium">
+	<div
+		class="tools"
+		data-restrict-device-min="medium"
+	>
 		<div class="wrapper">
 			<div
 				class="info-group button-group"
@@ -46,8 +52,13 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				<!-- Assessment Title -->
 				<div class="field-container icon-and-label-container">
 					<IconAssessment />
-					<span class="label-container" data-restrict-length>
-						<span class="label" data-field="activeAssessmentName"
+					<span
+						class="label-container"
+						data-restrict-length
+					>
+						<span
+							class="label"
+							data-field="activeAssessmentName"
 						></span>
 					</span>
 				</div>
@@ -63,11 +74,15 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					data-collapsible="icon"
 				>
 					<span class="label-container">
-						<span class="label" data-field="status"></span>
+						<span
+							class="label"
+							data-field="status"
+						></span>
 					</span>
 					<span class="icon-container">
 						<IconEditSmall />
 					</span>
+					<span class="tooltip">Change Status</span>
 				</button>
 				<div
 					class="separator item"
@@ -88,6 +103,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							<span class="label">Properties</span>
 						</span>
 					</span>
+					<span class="tooltip">View Properties</span>
 				</button>
 			</div>
 			<div
@@ -99,20 +115,72 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 			</div>
 			<div class="file-group button-group">
 				<!-- Create Assessment Button -->
-				<button
-					class="open-dialog"
-					data-dialog="edit-assessment-properties-dialog"
-					data-dialog-context="setup"
-					aria-label="Create New Assessment"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconCross />
-						<span class="label-container">
-							<span class="label">New</span>
+				<div class="button-container">
+					<button
+						class="subgroup-toggle"
+						aria-label="Create New Assessment"
+						type="button"
+					>
+						<span class="icon-and-label-container">
+							<IconCross />
+							<span class="label-container">
+								<span class="label">New</span>
+							</span>
 						</span>
-					</span>
-				</button>
+						<span class="tooltip">Create Assessment</span>
+					</button>
+
+					<ul class="subgroup">
+						<li>
+							<button
+								class="open-dialog"
+								data-dialog="edit-assessment-properties-dialog"
+								data-dialog-context="setup"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconBlank />
+									<span class="label-container">
+										<span class="label">Blank Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+						<li data-restrict-mode="assessment">
+							<button
+								class="open-dialog"
+								data-dialog="edit-assessment-properties-dialog"
+								data-dialog-context="duplicate"
+								data-dialog-heading="Duplicate Assessment"
+								data-dialog-target-id=""
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconCopy />
+									<span class="label-container">
+										<span class="label">Duplicate Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button
+								class="open-dialog"
+								data-dialog="edit-assessment-properties-dialog"
+								data-dialog-context="test"
+								data-dialog-heading="Create Test Assessment"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconTest />
+									<span class="label-container">
+										<span class="label">Test Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+					</ul>
+				</div>
 				<div
 					class="separator item"
 					data-orientation="vertical"
@@ -122,7 +190,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				<!-- Open/Import Assessment Button -->
 				<button
 					class="open-dialog"
-					data-dialog="open-assessment-dialog"
+					data-dialog="manage-assessments-dialog"
 					data-dialog-context="assessment"
 					aria-label="Open or Import Assessment"
 					type="button"
@@ -133,6 +201,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							<span class="label">Open</span>
 						</span>
 					</span>
+					<span class="tooltip">Manage Assessments</span>
 				</button>
 			</div>
 			<div
@@ -159,6 +228,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							<span class="label">Export</span>
 						</span>
 					</span>
+					<span class="tooltip">Export Assessment</span>
 				</button>
 				<div
 					class="separator item"
@@ -168,7 +238,10 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 				</div>
 				<!-- Export Status -->
 				<div class="field-container label-container">
-					<span class="label" data-field="exportStatus"></span>
+					<span
+						class="label"
+						data-field="exportStatus"
+					></span>
 				</div>
 			</div>
 			<div
@@ -197,6 +270,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							<span class="label">Assessors</span>
 						</span>
 					</span>
+					<span class="tooltip">Edit Assessors</span>
 				</button>
 				<div
 					class="separator item"
@@ -218,12 +292,19 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 					data-theme="purple"
 					data-restrict-assessor="true"
 				>
-					<span class="label-container" data-restrict-length="short">
-						<span class="label" data-field="activeAssessor"></span>
+					<span
+						class="label-container"
+						data-restrict-length="short"
+					>
+						<span
+							class="label"
+							data-field="activeAssessor"
+						></span>
 					</span>
 					<span class="icon-container">
 						<IconEditSmall />
 					</span>
+					<span class="tooltip">Change Active Assessor</span>
 				</button>
 			</div>
 			<div
@@ -251,6 +332,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							<span class="label">Edit</span>
 						</span>
 					</span>
+					<span class="tooltip">Edit Assessment</span>
 				</button>
 				<div
 					class="separator item"
@@ -273,6 +355,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							<span class="label">Close</span>
 						</span>
 					</span>
+					<span class="tooltip">Close Assessment</span>
 				</button>
 			</div>
 		</div>
@@ -289,155 +372,234 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		z-index: 11;
 		user-select: none;
 		-webkit-user-select: none;
-	}
 
-	[data-mode="assessment"] #assessment-controls {
-		position: sticky;
-	}
+		[data-mode='assessment'] & {
+			position: sticky;
 
-	#assessment-controls :is(.notice, .tools) > .wrapper {
-		max-width: 1920px;
-	}
+			@container main (width < 904px) {
+				position: static;
+			}
 
-	#assessment-controls > .notice {
-		height: 100%;
-		background-color: var(--colour-fill-accent-subtle);
-		border-bottom: 1px solid var(--colour-border-accent-subtle);
-	}
-
-	#assessment-controls > .notice > .wrapper {
-		--icon-size: 1rem;
-		display: flex;
-		align-items: center;
-		gap: var(--space-base);
-		height: 100%;
-		padding: var(--space-base) var(--space-2xl);
-		margin: 0 auto;
-	}
-
-	#assessment-controls > .notice p {
-		font-size: var(--font-size-2xs);
-		line-height: 1.2;
-		margin: 0 0 0.125rem;
-		text-wrap: balance;
-	}
-
-	#assessment-controls > .tools {
-		height: 100%;
-		background-color: var(--colour-fill-neutral-subtle);
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
-	}
-
-	#assessment-controls > .tools > .wrapper {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: var(--space-xs);
-		height: 100%;
-		padding: 0 var(--space-2xl);
-		margin: 0 auto;
-	}
-
-	@container main (width < 720px) {
-		#assessment-controls > .notice > .wrapper {
-			padding: var(--space-base) var(--space-xl);
-		}
-	}
-
-	@container main (width < 904px) {
-		[data-mode="assessment"] #assessment-controls {
-			position: static;
+			&
+				:is(button, [data-style-as='button']):not(.field-container, .subgroup button)
+				.label-container {
+				@container assessment-controls (width < 1648px) {
+					display: none;
+				}
+			}
 		}
 
-		#assessment-controls [data-restrict-device-min="medium"] {
-			display: none !important;
+		& :is(.notice, .tools) > .wrapper {
+			max-width: 1920px;
 		}
-	}
 
-	@container main (width >= 904px) {
-		#assessment-controls [data-restrict-device-max="small"] {
-			display: none !important;
+		& > .notice {
+			height: 100%;
+			background-color: var(--colour-bkg-surface-subtle-1-accent);
+			border-bottom: 1px solid var(--colour-brd-subtle-accent);
+
+			:root[data-theme='dark'] & {
+				--icon-colour: var(--colour-brd-bold-accent);
+
+				/* background-color: var(--colour-bkg-surface-bold-1-accent); */
+				background-color: var(--colour-bkg-surface-subtle-1);
+				border-top: 1px solid var(--colour-bkg-surface-bold-1-accent);
+				border-bottom: 1px solid var(--colour-bkg-surface-bold-1-accent);
+			}
+
+			& > .wrapper {
+				--icon-size: 1rem;
+				display: flex;
+				align-items: center;
+				gap: var(--space-base);
+				height: 100%;
+				padding: var(--space-base) var(--space-2xl);
+				margin: 0 auto;
+
+				@container main (width < 720px) {
+					padding: var(--space-base) var(--space-xl);
+				}
+			}
+
+			& p {
+				font-size: var(--font-size-2xs);
+				line-height: 1.2;
+				margin: 0 0 0.125rem;
+				text-wrap: balance;
+			}
 		}
-	}
 
-	#assessment-controls .button-group {
-		--group-gap: var(--space-xs);
-		flex-shrink: 0;
-	}
+		& > .tools {
+			height: 100%;
+			background-color: var(--colour-bkg-surface-subtle-1);
+			border-top: 1px solid var(--colour-brd-subtle);
+			border-bottom: 1px solid var(--colour-brd-subtle);
 
-	#assessment-controls .export-group {
-		flex-grow: 1;
-	}
-
-	#assessment-controls
-		:is(button, [data-style-as="button"]):not(
-			[data-style="solid-outline"]
-		) {
-		--icon-size: 1.25rem;
-		--button-background-colour: transparent;
-	}
-
-	#assessment-controls
-		:is(button, [data-style-as="button"]):is(:hover, :focus-visible):not(
-			[data-style="solid-outline"]
-		) {
-		--icon-colour: var(--colour-ui-reverse);
-		--label-colour: var(--colour-ui-reverse);
-		--button-background-colour: var(--colour-fill-neutral-bold);
-	}
-
-	@container assessment-controls (width < 1648px) {
-		main[data-mode="assessment"]
-			#assessment-controls
-			:is(button, [data-style-as="button"]):not(.field-container)
-			.label-container {
-			display: none;
+			& > .wrapper {
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				gap: var(--space-xs);
+				height: 100%;
+				padding: 0 var(--space-2xl);
+				margin: 0 auto;
+			}
 		}
-	}
 
-	@container assessment-controls (width < 1296px) {
-		.separator:has(+ .field-container [data-field="exportStatus"]),
-		.field-container:has([data-field="exportStatus"]) {
-			display: none;
+		& .button-group {
+			--group-gap: var(--space-xs);
+			flex-shrink: 0;
+
+			& .button-container {
+				position: relative;
+
+				& .subgroup {
+					display: none;
+					flex-flow: column nowrap;
+					align-items: start;
+					gap: var(--space-3xs);
+					list-style-type: none;
+					background-color: var(--colour-bkg-surface-subtle-1);
+					border: 1px solid var(--colour-brd-subtle);
+					border-radius: var(--brd-radius-normal);
+					width: max-content;
+					padding: var(--space-2xs);
+					box-shadow: var(--box-shadow);
+					position: absolute;
+					top: calc(2rem + var(--space-xs));
+					left: calc(-1 * var(--space-xs));
+					z-index: 100;
+
+					& li {
+						width: 100%;
+					}
+
+					& button {
+						justify-content: start;
+						width: 100%;
+						font-size: var(--font-size-2xs);
+					}
+				}
+
+				& .subgroup-toggle[aria-expanded='true'] + .subgroup {
+					display: flex;
+				}
+			}
 		}
-	}
 
-	#assessment-controls .field-container {
-		--icon-size: 1.25rem;
-		--label-size: var(--font-size-2xs);
-		user-select: none;
-		-webkit-user-select: none;
-	}
+		& .export-group {
+			flex-grow: 1;
+		}
 
-	#assessment-controls
-		.field-container:has([data-field="activeAssessmentName"]) {
-		--label-size: var(--font-size-2xs);
-		--label-weight: 700;
-		gap: var(--space-xs);
-	}
+		& :is(button, [data-style-as='button']) {
+			position: relative;
 
-	#assessment-controls
-		.field-container:has(
-			[data-field="status"],
-			[data-field="activeAssessor"]
-		) {
-		--container-padding: var(--space-2xs);
-		--icon-size: 0.875rem;
-		min-height: 1.75rem;
-		margin: 0 var(--space-2xs) !important;
-	}
+			&:not([data-style='solid-outline']) {
+				--icon-size: 1.25rem;
+				--button-bkg-colour: transparent;
 
-	#assessment-controls .field-container:has([data-field="exportStatus"]) {
-		--label-colour: var(--colour-ui-neutral-subtle);
-		margin: 0 var(--space-2xs) !important;
-	}
+				&:is(:hover, :focus-visible, [aria-expanded='true']) {
+					--icon-colour: var(--colour-txt-on-bold-1);
+					--label-colour: var(--colour-txt-on-bold-1);
+					--button-bkg-colour: var(--colour-bkg-surface-bold-1);
+				}
+			}
 
-	#assessment-controls .separator.group {
-		--separator-long-edge-dimension: 100%;
-	}
+			&:not([aria-expanded='true']):is(:hover, :focus-visible) {
+				& .tooltip {
+					opacity: 1;
+					visibility: visible;
+					transition: opacity var(--transition-linear-fast) 750ms;
+				}
+			}
 
-	#assessment-controls .separator.item {
-		--separator-long-edge-dimension: 1.75rem;
+			&:focus-visible {
+				& .tooltip {
+					top: calc(100% + var(--space-xs));
+				}
+			}
+
+			.tooltip {
+				position: absolute;
+				top: calc(100% + var(--space-2xs));
+				left: 50%;
+				translate: -50%;
+				font-size: var(--font-size-2xs);
+				color: var(--colour-txt-on-bold-1);
+				line-height: 1.2;
+				background-color: var(--colour-bkg-surface-bold-1);
+				width: max-content;
+				padding: var(--space-2xs) var(--space-2xs);
+				border-radius: var(--brd-radius-small);
+				visibility: hidden;
+				opacity: 0;
+				transition: opacity var(--transition-linear-fast) 0s;
+			}
+
+			&.close {
+				& .tooltip {
+					left: auto;
+					right: calc(-1 * var(--space-xs));
+					translate: 0;
+				}
+			}
+		}
+
+		& .field-container {
+			--icon-size: 1.25rem;
+			--label-size: var(--font-size-2xs);
+			user-select: none;
+			-webkit-user-select: none;
+
+			&:has([data-field='activeAssessmentName']) {
+				--label-size: var(--font-size-2xs);
+				--label-weight: 700;
+				gap: var(--space-xs);
+			}
+
+			&:has([data-field='status'], [data-field='activeAssessor']) {
+				--container-padding: var(--space-2xs);
+				--icon-size: 0.875rem;
+				min-height: 1.75rem;
+				margin: 0 var(--space-2xs) !important;
+			}
+
+			&:has([data-field='exportStatus']) {
+				--label-colour: var(--colour-txt-on-subtle-2);
+				margin: 0 var(--space-2xs) !important;
+				@container assessment-controls (width < 1296px) {
+					display: none;
+				}
+			}
+		}
+
+		& .separator {
+			&.group {
+				--separator-long-edge-dimension: 100%;
+			}
+
+			&.item {
+				--separator-long-edge-dimension: 1.75rem;
+			}
+
+			&:has(+ .field-container [data-field='exportStatus']) {
+				@container assessment-controls (width < 1296px) {
+					display: none;
+				}
+			}
+		}
+
+		& [data-restrict-device-min='medium'] {
+			@container main (width < 920px) {
+				display: none !important;
+			}
+		}
+
+		& [data-restrict-device-max='small'] {
+			@container main (width >= 920px) {
+				display: none !important;
+			}
+		}
 	}
 </style>
 
@@ -455,41 +617,34 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		setAssessment,
 		setState,
 		subscribe,
-	} from "src/stores/userDataStore";
-	import { dialogControl } from "src/utilities/dialog";
-	import { eventControl } from "src/utilities/event";
-	import { resetForm } from "src/utilities/form";
-	import { toastControl } from "src/utilities/toast";
+	} from 'src/stores/userDataStore';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { eventControl } from 'src/utilities/event';
+	import { resetForm } from 'src/utilities/form';
+	import { toastControl } from 'src/utilities/toast';
 
 	//
 	// DOM Updates
 	//
 
 	let updateToolbar = (data: UserData, changes) => {
-		let toolbar = document.querySelector(
-			"#assessment-controls",
-		) as HTMLElement;
+		let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
 		if (!toolbar) return;
 
-		let stateTriggerKeys = ["activeAssessmentId"];
+		let stateTriggerKeys = ['activeAssessmentId'];
 		let assessmentTriggerKeys = [
-			"status",
-			"reportingYear",
-			"school",
-			"unexportedChanges",
-			"activeAssessor",
+			'status',
+			'reportingYear',
+			'school',
+			'unexportedChanges',
+			'activeAssessor',
 		];
 		if (
 			!changes.initiating &&
 			!(
 				(changes.assessments &&
-					assessmentTriggerKeys.some((val) =>
-						changes.assessments.includes(val),
-					)) ||
-				(changes.uiState &&
-					stateTriggerKeys.some((val) =>
-						changes.uiState.includes(val),
-					))
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 		)
 			return;
@@ -501,56 +656,48 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 
 		// Get the update fields
 		let statusField = toolbar?.querySelector('[data-field="status"]');
-		let assessmentField = toolbar?.querySelector(
-			'[data-field="activeAssessmentName"]',
-		);
+		let assessmentField = toolbar?.querySelector('[data-field="activeAssessmentName"]');
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
-		let assessorField = toolbar?.querySelector(
-			'[data-field="activeAssessor"]',
-		);
+		let assessorField = toolbar?.querySelector('[data-field="activeAssessor"]');
+		let duplicateBtn = toolbar?.querySelector('[data-dialog-context="duplicate"]');
 
 		if (!assessment) return;
 
 		// 1. Update the assessment status
 		if (statusField) {
 			if (assessment.status === undefined) {
-				statusField.setAttribute("hidden", "");
+				statusField.setAttribute('hidden', '');
 			} else {
-				statusField.removeAttribute("hidden");
+				statusField.removeAttribute('hidden');
 			}
 
 			// Create the assessment title string and inject it
 			let statusStr = `${assessment.status}`;
 			statusField.textContent = statusStr;
-			statusField.setAttribute("title", statusStr);
-			statusField
-				.closest(".field-container")
-				?.setAttribute("data-theme", getStatusColour());
+			statusField.setAttribute('title', statusStr);
+			statusField.closest('.field-container')?.setAttribute('data-theme', getStatusColour());
 		}
 
 		// 2. Update the assessment name
 		if (assessmentField) {
-			if (
-				assessment.reportingYear === undefined ||
-				assessment.school === undefined
-			) {
-				assessmentField.setAttribute("hidden", "");
+			if (assessment.reportingYear === undefined || assessment.school === undefined) {
+				assessmentField.setAttribute('hidden', '');
 			} else {
-				assessmentField.removeAttribute("hidden");
+				assessmentField.removeAttribute('hidden');
 			}
 
 			// Create the assessment title string and inject it
 			let assessmentStr = getAssessmentName();
 			assessmentField.textContent = assessmentStr;
-			assessmentField.setAttribute("title", assessmentStr);
+			assessmentField.setAttribute('title', assessmentStr);
 		}
 
 		// 3. Update the export status
 		if (exportField) {
 			if (assessment.unexportedChanges === undefined) {
-				exportField.setAttribute("hidden", "");
+				exportField.setAttribute('hidden', '');
 			} else {
-				exportField.removeAttribute("hidden");
+				exportField.removeAttribute('hidden');
 			}
 
 			exportField.textContent = getExportStatus({}) as string;
@@ -559,24 +706,27 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 		// 4. Update the assessor name
 		if (assessorField) {
 			if (assessment.activeAssessor === undefined) {
-				assessorField.setAttribute("hidden", "");
+				assessorField.setAttribute('hidden', '');
 			} else {
-				assessorField.removeAttribute("hidden");
+				assessorField.removeAttribute('hidden');
 				let assessorStr = `Active: ${assessment.activeAssessor}`;
 				assessorField.textContent = assessorStr;
-				assessorField.setAttribute("title", assessorStr);
+				assessorField.setAttribute('title', assessorStr);
 			}
+		}
+
+		// 5. Update the duplicate btn target id
+		if (duplicateBtn) {
+			duplicateBtn.setAttribute('data-dialog-target-id', assessment.id);
 		}
 	};
 
 	let updateToolbarExportStatus = () => {
-		let toolbar = document.querySelector(
-			"#assessment-controls",
-		) as HTMLElement;
+		let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
 		if (!toolbar) return;
 
 		let userData = getUserData();
-		if (userData.uiState.mode !== "assessment") return;
+		if (userData.uiState.mode !== 'assessment') return;
 
 		// Get the update fields
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
@@ -602,24 +752,22 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 	let onClick = (event) => {
 		let target = event.target as HTMLButtonElement;
 
-		let toolbar = document.querySelector(
-			"#assessment-controls",
-		) as HTMLElement;
+		let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
 		if (!toolbar) return;
 
-		if (target.matches("button.close")) {
+		if (target.matches('button.close')) {
 			let activeAssessment = getActiveAssessmentData();
 
-			if (activeAssessment.status === "In Progress") {
+			if (activeAssessment.status === 'In Progress') {
 				dialogControl.open({
-					dialogId: "edit-status-dialog",
-					context: "close",
-					headingText: "Update Status Before Closing",
+					dialogId: 'edit-status-dialog',
+					context: 'close',
+					headingText: 'Update Status Before Closing',
 				});
 			} else {
 				if (activeAssessment.unexportedChanges) {
 					dialogControl.open({
-						dialogId: "export-warning-dialog",
+						dialogId: 'export-warning-dialog',
 					});
 				} else {
 					try {
@@ -627,7 +775,7 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 							activeAssessor: null,
 						});
 						setState({
-							mode: "reading",
+							mode: 'reading',
 							activeAssessmentId: null,
 						});
 
@@ -640,27 +788,80 @@ import IconWarning16 from "src/components/icons/IconWarning_16.astro";
 
 						// Reset create assessment dialog
 						let createDialog = document.querySelector(
-							"#edit-assessment-properties-dialog",
+							'#edit-assessment-properties-dialog',
 						);
 						if (createDialog) {
 							resetForm({
-								form: createDialog.querySelector("form"),
-								resetType: "hard",
+								form: createDialog.querySelector('form'),
+								resetType: 'hard',
 							});
 						}
 
-						toastControl.show({ target, type: "success" });
+						toastControl.show({ target, type: 'success' });
 					} catch (error) {
 						console.error(error);
-						toastControl.show({ target, type: "failure" });
+						toastControl.show({ target, type: 'failure' });
 					}
 				}
 			}
 		}
+
+		if (target.matches('button.subgroup-toggle')) {
+			let expanded = target.getAttribute('aria-expanded') === 'true';
+			target.setAttribute('aria-expanded', String(!expanded));
+		}
 	};
 	eventControl.add({
-		selector: "#assessment-controls",
-		eventType: "click",
+		selector: '#assessment-controls',
+		eventType: 'click',
 		fn: onClick,
+	});
+
+	let onDocumentClick = (event) => {
+		let target = event.target as any;
+
+		let buttonContainer = document.querySelector(
+			'#assessment-controls .button-container:has(.subgroup)',
+		);
+		if (buttonContainer && !buttonContainer.contains(target)) {
+			let btn = buttonContainer.querySelector('.subgroup-toggle');
+			btn.setAttribute('aria-expanded', 'false');
+		}
+	};
+	eventControl.add({
+		elem: document,
+		eventType: 'click',
+		fn: onDocumentClick,
+	});
+
+	let onFocusout = (event) => {
+		let target = event.target as any;
+		let next = event.relatedTarget as any;
+
+		if (target.matches('button.subgroup-toggle, .subgroup button')) {
+			let buttonContainer = target.closest('.button-container');
+			if (buttonContainer && buttonContainer.contains(next)) return;
+			let btn = buttonContainer.querySelector('button.subgroup-toggle');
+			btn.setAttribute('aria-expanded', 'false');
+		}
+	};
+	eventControl.add({
+		selector: '#assessment-controls',
+		eventType: 'focusout',
+		fn: onFocusout,
+	});
+
+	let onFocus = (event) => {};
+	eventControl.add({
+		selector: '#assessment-controls',
+		eventType: 'focus',
+		fn: onFocus,
+	});
+
+	let onBlur = (event) => {};
+	eventControl.add({
+		selector: '#assessment-controls',
+		eventType: 'blur',
+		fn: onBlur,
 	});
 </script>

@@ -1,5 +1,5 @@
 ---
-import IconArrowDown16 from "./icons/IconArrowDown_16.astro";
+import IconArrowDown16 from './icons/IconArrowDown_16.astro';
 
 const { heading, sectionLinks, dataset } = Astro.props;
 
@@ -16,7 +16,7 @@ if (dataset) {
 	{...datasetAttrs}
 	aria-label="Page Section Navigation"
 >
-	<h2 class="heading">{heading ?? "On this page"}</h2>
+	<h2 class="heading">{heading ?? 'On this page'}</h2>
 	<ul class="links-list">
 		{
 			sectionLinks.map((link) => {
@@ -28,12 +28,17 @@ if (dataset) {
 				}
 				return (
 					<li>
-						<a href={link.url} {...linkDatasetAttrs}>
+						<a
+							href={link.url}
+							{...linkDatasetAttrs}
+						>
 							<span class="icon-and-label-container">
 								<span class="label-container">
-									<span class="label">{link.text}</span>
+									<span class="label">
+										<Fragment set:html={link.text} />
+									</span>
 								</span>
-								<IconArrowDown16 classes={["destination"]} />
+								<IconArrowDown16 classes={['destination']} />
 							</span>
 						</a>
 					</li>
@@ -47,17 +52,17 @@ if (dataset) {
 	nav.on-page {
 		position: sticky;
 		top: var(--space-2xl);
-		height: 100vh;
+		height: fit-content;
 		margin: var(--space-2xl) 0 !important;
 	}
 
-	main.big-seven[data-mode="assessment"] nav.on-page {
+	main.big-seven[data-mode='assessment'] nav.on-page {
 		top: calc(3.75rem + var(--space-2xl));
 	}
 
 	nav.on-page .heading {
 		font-size: var(--font-size-lg);
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
+		border-bottom: 1px solid var(--colour-brd-subtle);
 		padding: 0 0 var(--space-2xs);
 		margin: 0;
 	}

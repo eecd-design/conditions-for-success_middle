@@ -1,5 +1,5 @@
-import { getUserData } from "src/stores/userDataStore";
-import { toCamelCase } from "./helpers";
+import { getUserData } from 'src/stores/userDataStore';
+import { toCamelCase } from './helpers';
 
 let getFormValues = (form) => {
 	let result = {};
@@ -19,7 +19,7 @@ let getFormValues = (form) => {
 		// 1. Handle radio button groups
 		if (type === 'radio') {
 			// Only capture checked radio once
-			if ((field).checked) {
+			if (field.checked) {
 				result[name] = field.value;
 			}
 			// 2. Handle checkboxes
@@ -27,7 +27,7 @@ let getFormValues = (form) => {
 			// Create an array to hold checkbox group values
 			if (!result[name]) result[name] = [];
 			// If checked, add value to array
-			if ((field).checked) {
+			if (field.checked) {
 				result[name].push(field.value);
 			}
 			// 3. Handle text inputs and selects
@@ -51,7 +51,6 @@ let getFormValues = (form) => {
 };
 
 let resetForm = ({ form, resetType = 'soft' }) => {
-
 	// Soft reset: Restore fields to original value state
 	if (resetType === 'soft') {
 		form.reset();
@@ -82,10 +81,14 @@ let resetForm = ({ form, resetType = 'soft' }) => {
 		status.setAttribute('hidden', '');
 	}
 
-	// Reset aria-invalid on all fields
 	let fields = form.querySelectorAll('input, select');
 	for (let field of fields) {
+		// Reset aria-invalid
 		field.removeAttribute('aria-invalid');
+
+		// Reset to default enabled status
+		let disabledByDefault = field.hasAttribute('data-disabled-by-default');
+		field.disabled = disabledByDefault;
 	}
 };
 
@@ -107,7 +110,6 @@ let validateField = ({ field, form, touchedFormFields }) => {
 
 	// Cross-field check for reporting year
 	if (field.name === 'reportingYear') {
-
 		let schoolField = form.querySelector('select[name="school"]');
 
 		// If school is empty, skip conflict check
@@ -121,11 +123,11 @@ let validateField = ({ field, form, touchedFormFields }) => {
 		}
 
 		let userData = getUserData();
-		let schoolYearConflict = userData.assessments.some(a =>
-			a.school === schoolField.value && a.reportingYear === field.value
+		let schoolYearConflict = userData.assessments.some(
+			(a) => a.school === schoolField.value && a.reportingYear === field.value,
 		);
 		if (schoolYearConflict) {
-			message = `An assessment for this school and year is already saved in your browser. To view it, open the 'Open Assessment' dialog from the toolbar.`;
+			message = `An assessment for this school and year is already saved in your browser. To view it, open the 'Manage Assessments' dialog from the toolbar.`;
 		}
 	}
 
@@ -146,7 +148,6 @@ let validateField = ({ field, form, touchedFormFields }) => {
 
 	// If school field changes, reset reportingYear error
 	if (field.name === 'school') {
-
 		let reportingYearField = form.querySelector('input[name="reportingYear"]');
 
 		if (reportingYearField.value) {
@@ -157,7 +158,6 @@ let validateField = ({ field, form, touchedFormFields }) => {
 			reportingYearField.removeAttribute('aria-invalid');
 		}
 	}
-
 };
 
 let validateForm = ({ form, touchedFormFields }) => {
@@ -166,7 +166,6 @@ let validateForm = ({ form, touchedFormFields }) => {
 	// Validate every field in the form
 	let fields = form.querySelectorAll('input[required], select[required]');
 	for (let field of fields) {
-
 		validateField({ field, form, touchedFormFields });
 
 		// Store the first invalid field
@@ -184,4 +183,4 @@ let validateForm = ({ form, touchedFormFields }) => {
 	return true;
 };
 
-export { getFormValues, resetForm, validateField, validateForm }
+export { getFormValues, resetForm, validateField, validateForm };

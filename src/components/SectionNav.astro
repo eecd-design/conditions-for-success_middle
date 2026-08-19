@@ -1,23 +1,25 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
 const { url } = Astro;
 let path = url.pathname;
 
-let allIndicators = await getCollection("indicators");
-let indicators = allIndicators.sort((a, b) =>
-	a.data.tag.localeCompare(b.data.tag),
-);
+let allIndicators = await getCollection('indicators');
+let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 ---
 
-<nav class="left-aside section" aria-label="The Big Seven Navigation">
+<nav
+	class="left-aside section"
+	aria-label="The Big Seven Navigation"
+>
 	<h2>The Big Seven</h2>
 	<ul>
 		<li>
 			<a
-				aria-current={path.endsWith("/big-seven/") ? "page" : null}
+				aria-current={path.endsWith('/big-seven/') ? 'page' : null}
 				href={`./big-seven/`}
-				data-style-as="button">Introduction</a
+				data-style-as="button"
+				>Introduction</a
 			>
 		</li>
 		{
@@ -26,15 +28,11 @@ let indicators = allIndicators.sort((a, b) =>
 				return (
 					<li>
 						<a
-							aria-current={
-								path.endsWith(`/${indicator.id}/`)
-									? "page"
-									: null
-							}
+							aria-current={path.endsWith(`/${indicator.id}/`) ? 'page' : null}
 							href={indicatorPath}
 							data-style-as="button"
 						>
-							{indicator.data.title}
+							{indicator.data.tag}.&ensp;{indicator.data.title}
 						</a>
 					</li>
 				);
@@ -49,16 +47,16 @@ let indicators = allIndicators.sort((a, b) =>
 		top: 0;
 		height: 100vh;
 		padding: var(--space-2xl) var(--space-xl) var(--space-2xl) 0;
-		border-right: 1px solid var(--colour-border-neutral-subtle);
+		border-right: 1px solid var(--colour-brd-subtle);
 	}
 
-	main.big-seven[data-mode="assessment"] nav.section {
+	main.big-seven[data-mode='assessment'] nav.section {
 		top: 3.75rem;
 	}
 
 	nav.section h2 {
 		font-size: var(--font-size-lg);
-		border-bottom: 1px solid var(--colour-border-neutral-subtle);
+		border-bottom: 1px solid var(--colour-brd-subtle);
 		padding: 0 0 var(--space-2xs);
 		margin: 0 0 var(--space-sm);
 	}
@@ -84,9 +82,9 @@ let indicators = allIndicators.sort((a, b) =>
 	}
 
 	nav.section a {
-		--button-background-colour: transparent;
-		--button-border-radius: var(--border-radius-normal);
-		--button-ui-colour: var(--colour-ui-neutral);
+		--button-bkg-colour: transparent;
+		--button-brd-radius: var(--brd-radius-normal);
+		--button-txt-colour: var(--colour-txt-on-subtle-1);
 		display: flex;
 		align-items: center;
 		text-decoration: none;
@@ -94,18 +92,18 @@ let indicators = allIndicators.sort((a, b) =>
 		padding: var(--space-xs) var(--space-sm);
 		font-size: var(--font-size-xs);
 		line-height: 1.2;
-		border-radius: var(--border-radius-normal);
+		border-radius: var(--brd-radius-normal);
 		justify-content: unset;
 	}
 
 	nav.section a:is(:hover, :focus-visible) {
-		--button-background-colour: var(--colour-fill-neutral-subtle);
-		--button-ui-colour: var(--colour-ui-neutral);
+		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+		--button-txt-colour: var(--colour-txt-on-subtle-1);
 	}
 
-	nav.section [aria-current="page"],
-	nav.section [aria-current="page"]:is(:hover, :focus-visible) {
-		--button-boxshadow-colour: var(--colour-border-neutral-subtle);
-		--button-background-colour: transparent;
+	nav.section [aria-current='page'],
+	nav.section [aria-current='page']:is(:hover, :focus-visible) {
+		--button-boxshadow-colour: var(--colour-brd-subtle);
+		--button-bkg-colour: transparent;
 	}
 </style>

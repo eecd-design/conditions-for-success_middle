@@ -1,11 +1,15 @@
 let toastControl = (() => {
-
 	const toastTimers = new WeakMap();
-	const activeToasts = new Set;
+	const activeToasts = new Set();
 
-	let show = ({ target, type, selector = null }) => {
-
+	let show = ({ target = null, type = null, selector = null, duration = null }) => {
 		let toast;
+
+		if (!selector && !target) {
+			console.error('Toast creation aborted. No selector or target to build from.');
+			return;
+		}
+
 		if (!selector) {
 			toast = document.querySelector(`#${target.getAttribute(`data-toast-${type}`)}`);
 		} else {
@@ -25,7 +29,8 @@ let toastControl = (() => {
 		// console.log('Opening Toast');
 		activeToasts.add(toast);
 
-		let duration = type === 'success' ? 2000 : 4000;
+		if (!duration) duration = type === 'success' ? 2000 : 4000;
+
 		let timer = setTimeout(() => {
 			toast.removeAttribute('open');
 			activeToasts.delete(toast);
@@ -41,10 +46,9 @@ let toastControl = (() => {
 			clearTimeout(toastTimers.get(toast));
 			toastTimers.delete(toast);
 		}
-	}
+	};
 
 	return { show, hide };
-
 })();
 
 export { toastControl };

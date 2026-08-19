@@ -1,23 +1,23 @@
 ---
-import { getCollection, render } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import SectionNav from "../../components/SectionNav.astro";
-import PageNav from "src/components/PageNav.astro";
-import AssessmentToolbar from "../../components/AssessmentToolbar.astro";
-import AssessmentDialogs from "../../components/dialogs/AssessmentDialogs.astro";
-import AssessmentToasts from "../../components/AssessmentToasts.astro";
-import Component from "../../components/Component.astro";
-import IconCompass from "src/components/icons/IconCompass_24.astro";
-import IconArrowDownSmall from "src/components/icons/IconArrowDown_16.astro";
-import IconArrowRightSmall from "src/components/icons/IconArrowRight_16.astro";
-import IconArrowLeftSmall from "src/components/icons/IconArrowLeft_16.astro";
-import MediaDialog from "src/components/dialogs/MediaDialog.astro";
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionNav from '../../components/SectionNav.astro';
+import PageNav from 'src/components/PageNav.astro';
+import AssessmentToolbar from '../../components/AssessmentToolbar.astro';
+import AssessmentDialogs from '../../components/dialogs/AssessmentDialogs.astro';
+import AssessmentToasts from '../../components/AssessmentToasts.astro';
+import Component from '../../components/Component.astro';
+import IconCompass from 'src/components/icons/IconCompass_24.astro';
+import IconArrowDownSmall from 'src/components/icons/IconArrowDown_16.astro';
+import IconArrowRightSmall from 'src/components/icons/IconArrowRight_16.astro';
+import IconArrowLeftSmall from 'src/components/icons/IconArrowLeft_16.astro';
+import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 
 let path = Astro.url.pathname;
 
 // Get the current indicator
 export async function getStaticPaths() {
-	const indicators = await getCollection("indicators");
+	const indicators = await getCollection('indicators');
 	return indicators.map((indicator) => ({
 		params: { slug: indicator.id },
 		props: { indicator },
@@ -31,121 +31,148 @@ const pathToIndicator = `src/content/indicators/${indicator.id}`;
 
 // Get all indicator descriptions
 let allDescriptions = Object.values(
-	import.meta.glob("src/content/indicators/**/description.md", {
+	import.meta.glob('src/content/indicators/**/description.md', {
 		eager: true,
 	}),
 );
 
 // Get the current indicator description
-let description:any = allDescriptions.find((match:any) =>
-	match.file.includes(pathToIndicator),
-);
+let description: any = allDescriptions.find((match: any) => match.file.includes(pathToIndicator));
 
 // Get all indicator components
-let allComponents = await getCollection("components");
+let allComponents = await getCollection('components');
 
 // Get all current indicator components
-let components = allComponents.filter((component => component.data.indicator === indicator.id)).sort((a, b) => a.data.tag.localeCompare(b.data.tag));
+let components = allComponents
+	.filter((component) => component.data.indicator === indicator.id)
+	.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 
 // Get all indicator components
-let allIndicators = await getCollection("indicators");
+let allIndicators = await getCollection('indicators');
 
-let prevIndicator = indicator.data.tag === '1' ? null : allIndicators.filter((sibling => Number(sibling.data.tag) == Number(indicator.data.tag) - 1))[0];
-let nextIndicator = indicator.data.tag === '7' ? null : allIndicators.filter((sibling => Number(sibling.data.tag) == Number(indicator.data.tag) + 1))[0];
+let prevIndicator =
+	indicator.data.tag === '1'
+		? null
+		: allIndicators.filter(
+				(sibling) => Number(sibling.data.tag) == Number(indicator.data.tag) - 1,
+			)[0];
+let nextIndicator =
+	indicator.data.tag === '7'
+		? null
+		: allIndicators.filter(
+				(sibling) => Number(sibling.data.tag) == Number(indicator.data.tag) + 1,
+			)[0];
 
 let sectionLinks = [];
 for (let component of components) {
 	sectionLinks.push({
 		url: `${path}#component-${component.data.tag.replaceAll('.', '-')}`,
-		text: `${component.data.tag} ${component.data.title}`,
-	})
+		text: `${component.data.tag}&ensp;${component.data.title}`,
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	});
 }
-
 ---
 
-<BaseLayout pageTitle={indicator.data.title} indicatorTag={indicator.data.tag} pageType={"big-seven"}>
-
+<BaseLayout
+	pageTitle={indicator.data.title}
+	indicatorTag={indicator.data.tag}
+	pageType={'big-seven'}
+>
 	<AssessmentToolbar />
 
 	<AssessmentDialogs />
 
-    <AssessmentToasts slot="toast-group"/>
-
-	<MediaDialog/>
+	<AssessmentToasts slot="toast-group" />
 
 	<SectionNav />
 
-	<PageNav sectionLinks={sectionLinks}/>
+	<PageNav sectionLinks={sectionLinks} />
 
-	<div class="content" data-theme={indicator.data.colour}>
-
-		<h1 id="main-heading" tabindex="-1">{indicator.data.title}</h1>
+	<div
+		class="content"
+		data-theme={indicator.data.colour}
+	>
+		<h1
+			id="main-heading"
+			tabindex="-1"
+		>
+			{indicator.data.title}
+		</h1>
 
 		{description && <description.Content />}
 
 		<ul class="links-list">
-			{components.map((component) => (
-
-				<li>
-					<a href={`${path}#component-${component.data.tag.replaceAll('.', '-')}`}>
-						<span class="icon-and-label-container">
-							<span class="label-container">
-								<span class="label">{component.data.tag} {component.data.title}</span>
+			{
+				components.map((component) => (
+					<li>
+						<a
+							href={`${path}#component-${component.data.tag.replaceAll('.', '-')}`}
+							data-icon-on-hover
+						>
+							<span class="icon-and-label-container">
+								<span class="label-container">
+									<span class="label">
+										{component.data.tag}&ensp;{component.data.title}
+									</span>
+								</span>
+								<IconArrowDownSmall classes={['destination']} />
 							</span>
-							<IconArrowDownSmall classes={["destination"]} />
-						</span>
-					</a>
-				</li>
-
-			))}
+						</a>
+					</li>
+				))
+			}
 		</ul>
 
-		<div class="callout" data-style="solid">
+		<div
+			class="callout"
+			data-style="solid"
+		>
 			<div class="wrapper">
 				<p class="heading">
-					<IconCompass/>
+					<IconCompass />
 					<strong>Be on the lookout for the compass symbol!</strong>
 				</p>
-				<p>It flags focus areas on responding to learners who have not demonstrated literacy and numeracy proficiency. A compass symbolizes guidance, and reflects the idea of navigating challenges toward learner success.</p>
+				<p>
+					It flags focus areas on responding to learners who have not demonstrated
+					literacy and numeracy proficiency. A compass symbolizes guidance, and reflects
+					the idea of navigating challenges toward learner success.
+				</p>
 			</div>
 		</div>
 
-		{components.map((component) => (
-
-			<hr class="section"/>
-
-			<Component entry={component}/>
-
-		))}
+		{
+			components.map((component) => (
+				<>
+					<hr class="section" />
+					<Component entry={component} />
+				</>
+			))
+		}
 
 		<div id="pagination-controls">
+			{
+				prevIndicator && (
+					<div class="prev-container">
+						<span class="label">
+							<IconArrowLeftSmall />
+							Previous Indicator
+						</span>
+						<a href={`./big-seven/${prevIndicator.id}/`}>{prevIndicator.data.title}</a>
+					</div>
+				)
+			}
 
-			{ prevIndicator && (
-				<div class="prev-container">
-					<span class="label">
-						<IconArrowLeftSmall />
-						Previous Indicator
-					</span>
-					<a href={`./big-seven/${prevIndicator.id}/`}>
-						{prevIndicator.data.title}
-					</a>
-				</div>
-			)}
-
-			{ nextIndicator && (
-				<div class="next-container">
-					<span class="label">
-						Next Indicator
-						<IconArrowRightSmall />
-					</span>
-					<a href={`./big-seven/${nextIndicator.id}/`}>
-						{nextIndicator.data.title}
-					</a>
-				</div>
-			)}
-
+			{
+				nextIndicator && (
+					<div class="next-container">
+						<span class="label">
+							Next Indicator
+							<IconArrowRightSmall />
+						</span>
+						<a href={`./big-seven/${nextIndicator.id}/`}>{nextIndicator.data.title}</a>
+					</div>
+				)
+			}
 		</div>
-
 	</div>
-
 </BaseLayout>

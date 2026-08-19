@@ -1,21 +1,21 @@
 indicator: access-and-equity
-tag: '2.4'
+tag: '2.8'
 title: Accessing Resources
 initiating:
   considerations:
-    - tag: 2.4.1
+    - tag: 2.8.1
       title: >-
         A formal system for requesting additional resources is in the early
         stages and may not be widely understood or used.
       compass: false
       categories: []
-    - tag: 2.4.2
+    - tag: 2.8.2
       title: >-
         Some resources are available, but educators are unsure of how to request
         additional support and resources for learners.
       compass: false
       categories: []
-    - tag: 2.4.3
+    - tag: 2.8.3
       title: >-
         Resource needs are usually addressed as they arise, with limited
         coordination across staff and support services.
@@ -23,20 +23,20 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 2.4.4
+    - tag: 2.8.4
       title: >-
         A formal system is in place for requesting and accessing resources, with
         educators beginning to use it regularly.
       compass: false
       categories: []
-    - tag: 2.4.5
+    - tag: 2.8.5
       title: >-
         Staff are becoming familiar with available academic, linguistic,
         social-cultural, social-emotional, behavioural, and classroom
         resources/supports and are beginning to use them consistently.
       compass: false
       categories: []
-    - tag: 2.4.6
+    - tag: 2.8.6
       title: >-
         Staff are beginning to collaborate to identify resource needs, but
         barriers to access may still exist (e.g., MLLs using technology to
@@ -45,13 +45,13 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 2.4.7
+    - tag: 2.8.7
       title: >-
         The resource request system is streamlined, ensuring staff can access
         the support they need in a timely manner.
       compass: false
       categories: []
-    - tag: 2.4.8
+    - tag: 2.8.8
       title: >-
         Educators have timely and equitable access to a range of resources to
         support learners achieving below grade-level literacy and numeracy,
@@ -59,7 +59,7 @@ developing:
         grade-level expectations.
       compass: true
       categories: []
-    - tag: 2.4.9
+    - tag: 2.8.9
       title: >-
         Staff collaborate with school, district, and external supports to
         coordinate resources and respond to identified needs.
@@ -67,20 +67,20 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 2.4.10
+    - tag: 2.8.10
       title: >-
         The system for identifying, requesting, and accessing resources is fully
         embedded, efficient, and consistently used.
       compass: false
       categories: []
-    - tag: 2.4.11
+    - tag: 2.8.11
       title: >-
         Educators have timely and equitable access to academic, linguistic,
         social-emotional, behavioural, instructional, and classroom resources
         that support success for all learners.
       compass: true
       categories: []
-    - tag: 2.4.12
+    - tag: 2.8.12
       title: >-
         Staff continuously evaluate resource access and effectiveness, adapting
         the system and collaborating across settings to respond to changing

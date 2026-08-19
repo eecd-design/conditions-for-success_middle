@@ -7,9 +7,9 @@ external:
   discriminant: true
   value:
     url: >-
-      https://www.gnb.ca/en/topic/education-training/kindergarten-grade-12/cultural-linguistic-inclusion.html
+      https://www.gnb.ca/en/topic/education-training/k-12/info-teachers/cultural-linguistic-inclusion.html
 linkAction: link
 linkedIndicators: []
 linkedComponents: []
 linkedConsiderations:
-  - 2.7.1
+  - 2.5.1

@@ -1,29 +1,22 @@
 ---
-import { getResourcePath, toKebabCase } from "src/utilities/helpers";
+import { getResourcePath } from 'src/utilities/helpers';
 
-import { toTitleCase } from "src/utilities/helpers";
+import { toTitleCase } from 'src/utilities/helpers';
 
-import ResourceIcons from "./icons/ResourceIcons.astro";
-import IconArrowRight from "./icons/IconArrowRight_16.astro";
-import IconExpand from "./icons/IconExpand_16.astro";
-import IconExternal from "./icons/IconExternal_16.astro";
-import IconDownload from "./icons/IconDownload_16.astro";
+import ResourceIcons from './icons/ResourceIcons.astro';
+import IconArrowRight from './icons/IconArrowRight_16.astro';
+import IconExpand from './icons/IconExpand_16.astro';
+import IconExternal from './icons/IconExternal_16.astro';
+import IconDownload from './icons/IconDownload_16.astro';
 
-let {
-	itemData,
-	includeItemWrapper = true,
-	index,
-	listName,
-	listGroupSize = 0,
-	itemHiddenByDefault = false,
-} = Astro.props;
+let { itemData, isInListItem = false, listLocation = null } = Astro.props;
 
 let {
 	category = null,
-	colour = null,
 	title = null,
 	tag = null,
 	type = null,
+	audience = null,
 	dateAdded = null,
 	description = null,
 	external = null,
@@ -33,83 +26,97 @@ let {
 	linkedIndicators = null,
 	linkedComponents = null,
 	linkedConsiderations = null,
-	itemId = null,
 } = itemData;
-
-let colourMap = {
-	"1": "red",
-	"2": "orange",
-	"3": "yellow",
-	"4": "green",
-	"5": "teal",
-	"6": "blue",
-	"7": "purple",
-};
 
 let path;
 let date = null;
-if (category === "resource") {
+if (['resource', 'guides'].includes(category)) {
 	path = getResourcePath(itemData);
-	date = new Date(dateAdded).toLocaleDateString("en-US", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
+	date = new Date(dateAdded).toLocaleDateString('en-US', {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
 	});
-} else {
-	if (category === "indicator") {
-		path = `./big-seven/${slug}/`;
-	} else {
-		path = `./big-seven/${indicator}/#${category}-${tag.replaceAll(".", "-")}`;
+} else if (category === 'indicator') {
+	path = `./big-seven/${slug}/`;
+} else if (category === 'component' || category === 'consideration') {
+	path = `./big-seven/${indicator}/#${category}-${tag.replaceAll('.', '-')}`;
+} else if (category === 'training') {
+	path = `./training/${slug}/`;
+}
+
+let typeColourMap = {
+	video: 'red',
+	document: 'blue',
+	website: 'green',
+	webinar: 'teal',
+	community: 'yellow',
+	course: 'purple',
+};
+let typeColour = typeColourMap[type];
+
+let indicatorColourMap = {
+	'1': 'red',
+	'2': 'orange',
+	'3': 'yellow',
+	'4': 'green',
+	'5': 'teal',
+	'6': 'blue',
+	'7': 'purple',
+};
+
+let tags = null;
+if (category === 'resource') {
+	if (linkedIndicators || linkedComponents || linkedConsiderations) {
+		tags = linkedIndicators.concat(linkedComponents, linkedConsiderations);
+		tags = tags.map((tag) => {
+			return {
+				colour: indicatorColourMap[tag.charAt(0)],
+				tag,
+			};
+		});
+		tags.sort((a, b) => {
+			return (a.tag || '').localeCompare(b.tag || '');
+		});
+	}
+} else if (category === 'training') {
+	if (audience) {
+		tags = audience.map((tag) => {
+			return {
+				colour: typeColour,
+				tag: toTitleCase(tag),
+			};
+		});
 	}
 }
 
-let tags = null;
-if (linkedIndicators || linkedComponents || linkedConsiderations) {
-	tags = linkedIndicators.concat(linkedComponents, linkedConsiderations);
-	tags = tags.map((tag) => {
-		return {
-			colour: colourMap[tag.charAt(0)],
-			tag,
-		};
-	});
-	tags.sort((a, b) => {
-		return (a.tag || "").localeCompare(b.tag || "");
-	});
-}
-
-let ItemWrapper = includeItemWrapper ? "li" : null;
-let itemWrapperAttrs = {
-	id: `${listName}_item-${index + 1}`,
-	"data-pos": index < listGroupSize ? index + 1 : null,
-	"data-item-id": itemId,
-	"data-theme": colour ?? null,
-	hidden: (itemHiddenByDefault || index + 1 > listGroupSize) ?? null,
-};
-
 // If resource is a video or internal audio, open it in a dialog
-let opensDialog = linkAction === "dialog";
-let InteractiveWrapper = opensDialog ? "button" : "a";
+let opensDialog = false;
+if (['resource', 'guides'].includes(category)) opensDialog = linkAction === 'dialog';
+let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
 	? {
-			class: "open-dialog detailed-link",
-			type: "button",
-			role: includeItemWrapper ? "option" : null,
-			"data-style-as": "link",
-			"data-dialog": "media-dialog",
-			"data-dialog-heading": title,
-			"data-media-type": type,
-			"data-media-src": path,
-			"data-media-external": external.discriminant,
+			class: 'open-dialog detailed-link',
+			type: 'button',
+			role: isInListItem ? 'option' : null,
+			'data-style-as': 'link',
+			'data-dialog': 'media-dialog',
+			'data-dialog-heading': title,
+			'data-dialog-context': listLocation === 'searchDialog' ? 'from-search-dialog' : null,
+			'data-media-type': type,
+			'data-media-src': path,
+			'data-media-external': external.discriminant,
 		}
 	: {
-			class: "detailed-link",
+			class: 'detailed-link',
 			href: path,
-			role: includeItemWrapper ? "option" : null,
+			role: isInListItem ? 'option' : null,
 		};
 
 let DestinationIcon = null;
+
 // Pages and Locations
-if (category !== "resource") {
+if (!['resource', 'guides'].includes(category)) {
 	DestinationIcon = IconArrowRight;
 }
 // Embedded Media
@@ -117,112 +124,60 @@ else if (opensDialog) {
 	DestinationIcon = IconExpand;
 }
 // Internal Files
-else if (
-	external.discriminant === false &&
-	["document", "presentation"].includes(type)
-) {
+else if (external.discriminant === false && ['document', 'presentation'].includes(type)) {
 	DestinationIcon = IconDownload;
 }
 // Everything else
 else {
 	DestinationIcon = IconExternal;
 }
+
+let label = toTitleCase(category);
+if (category === 'resource') {
+	label = `${toTitleCase(type)} Resource`;
+}
+if (['indicator', 'component', 'consideration'].includes(category)) {
+	label = `${toTitleCase(category)} ${tag}`;
+}
 ---
 
-{
-	ItemWrapper ? (
-		<ItemWrapper {...itemWrapperAttrs}>
-			<InteractiveWrapper {...interactiveWrapperAttrs}>
-				<ResourceIcons
-					type={type}
-					classes={["type"]}
-					dataset={[{ key: "restrict-content", value: "resources" }]}
-				/>
-				<div
-					class="separator group"
-					data-orientation="vertical"
-					data-restrict-content="resources"
-					aria-hidden="true"
-				/>
-				<span class="text-container">
-					<span class="detailed label" data-restrict-content="mixed">
-						{category !== "resource"
-							? `${toTitleCase(category)} ${tag}`
-							: `${toTitleCase(type)} Resource`}
-					</span>
-					{category === "resource" && (
-						<span class="simple label">{toTitleCase(type)}</span>
-					)}
-					<span class="title">
-						{title}
-						{tags && (
-							<ul
-								class="tags-list"
-								data-restrict-content="resources"
-							>
-								{tags.map((tag) => (
-									<li
-										class="tag"
-										data-theme={tag.colour}
-										data-vibrancy="vivid"
-									>
-										{tag.tag}
-									</li>
-								))}
-							</ul>
-						)}
-					</span>
-					{date && (
-						<span
-							class="date"
-							data-theme="red"
-							data-restrict-content="resources"
-						>
-							Date Added: {date}
-						</span>
-					)}
-					{description && (
-						<span
-							class="description"
-							data-restrict-layout="detailed"
-						>
-							{description}
-						</span>
-					)}
-				</span>
-				<span class="icon-container">
-					{DestinationIcon && (
-						<DestinationIcon classes={["destination"]} />
-					)}
-				</span>
-			</InteractiveWrapper>
-		</ItemWrapper>
-	) : (
-		<InteractiveWrapper {...interactiveWrapperAttrs}>
-			<ResourceIcons
-				type={type}
-				classes={["type"]}
-				dataset={[{ key: "restrict-content", value: "resources" }]}
-			/>
-			<div
-				class="separator group"
-				data-orientation="vertical"
-				data-restrict-content="resources"
-				aria-hidden="true"
-			/>
-			<span class="text-container">
-				<span class="detailed label" data-restrict-content="mixed">
-					{category !== "resource"
-						? `${toTitleCase(category)} ${tag}`
-						: `${toTitleCase(type)} Resource`}
-				</span>
-				{category === "resource" && (
-					<span class="simple label">{toTitleCase(type)}</span>
-				)}
-				<span class="title">
-					{title}
-					{tags && (
-						<ul class="tags-list" data-restrict-content="resources">
+<InteractiveWrapper {...interactiveWrapperAttrs}>
+	<div
+		class="banner"
+		data-theme={typeColour}
+		data-vibrancy="vivid"
+	>
+		<ResourceIcons
+			type={type}
+			containerClasses={['type-icon-container']}
+			iconClasses={['type']}
+		/>
+		<span class="icon-container">
+			{DestinationIcon && <DestinationIcon classes={['destination']} />}
+		</span>
+	</div>
+	<div class="wrapper">
+		<ResourceIcons
+			type={type}
+			containerClasses={['type-icon-container']}
+			iconClasses={['type']}
+		/>
+		<div
+			class="separator group"
+			data-orientation="vertical"
+			aria-hidden="true"
+		>
+		</div>
+		<span class="text-container">
+			<span class="detailed label">
+				{label}
+			</span>
+			{category === 'resource' && <span class="simple label">{toTitleCase(type)}</span>}
+			<span class="title">
+				{title}
+				{
+					tags && (
+						<ul class="tags-list">
 							{tags.map((tag) => (
 								<li
 									class="tag"
@@ -233,328 +188,507 @@ else {
 								</li>
 							))}
 						</ul>
-					)}
-				</span>
-				{date && (
+					)
+				}
+			</span>
+			{
+				date && (
 					<span
 						class="date"
 						data-theme="red"
-						data-restrict-content="resources"
 					>
 						Date Added: {date}
 					</span>
-				)}
-				{description && (
-					<span class="description" data-restrict-layout="detailed">
-						{description}
-					</span>
-				)}
-			</span>
-			<span class="icon-container">
-				{DestinationIcon && (
-					<DestinationIcon classes={["destination"]} />
-				)}
-			</span>
-		</InteractiveWrapper>
-	)
-}
+				)
+			}
+			{description && <span class="description">{description}</span>}
+		</span>
+		<span class="destination-icon-container icon-container">
+			{DestinationIcon && <DestinationIcon classes={['destination']} />}
+		</span>
+	</div>
+</InteractiveWrapper>
 
 <style is:global>
 	/* 
 	// Detailed Link
 	// ------------------------*/
 
-	:is(a, [data-style-as="link"]).detailed-link {
-		--link-ui-colour: var(--colour-ui-neutral-subtle);
+	:is(a, [data-style-as='link']).detailed-link {
+		--link-txt-colour: var(--colour-txt-on-subtle-2);
 		container: detailed-link / inline-size;
-		display: flex !important;
-		flex-flow: row nowrap;
-		align-items: center;
-		line-height: 1.2;
-		gap: var(--space-xs);
+
 		width: 100%;
-		padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
-		background-color: var(--link-background-colour, transparent);
-		border-radius: var(--border-radius-normal);
+		background-color: var(--link-bkg-colour, transparent);
+		border-radius: var(--brd-radius-normal);
+		line-height: 1.2;
 		text-decoration: none;
-	}
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible),
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"] {
-		--link-background-colour: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-		--link-border-colour: var(
-			--colour-border-accent-mid,
-			var(--colour-border-neutral-mid)
-		);
-		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-	}
+		/* 
+		// Wrapper
+		*/
 
-	/*
-	// Type Icon and Label
-	*/
-
-	:is(a, [data-style-as="link"]).detailed-link .icon-and-label-container {
-		--label-colour: var(--link-ui-colour);
-		place-self: stretch;
-		flex-wrap: nowrap;
-		flex-shrink: 0;
-	}
-
-	/*
-	// Destination Icon
-	*/
-
-	:is(a, [data-style-as="link"]).detailed-link
-		:is(.icon.destination, .icon.type) {
-		--icon-colour: var(--link-ui-colour);
-		position: unset !important;
-	}
-
-	@media (hover: hover) {
-		:is(a, [data-style-as="link"]).detailed-link .icon.destination {
-			opacity: 0;
-			scale: 90%;
-			transition:
-				opacity var(--transition-linear-fast),
-				scale var(--transition-ease-fast);
+		& .wrapper {
+			display: flex !important;
+			flex-flow: row nowrap;
+			align-items: center;
+			gap: var(--space-xs);
+			width: 100%;
+			padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
 		}
 
-		:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-			.icon.destination,
-		:is(dialog, .content):has(fieldset.search input:focus-visible)
-			:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-			.icon.destination {
-			opacity: 1;
-			scale: 100%;
-			transition:
-				opacity var(--transition-linear-medium) 0.1s,
-				scale var(--transition-ease-medium) 0.1s;
-		}
-	}
+		/* 
+		// Banner 
+		*/
 
-	/*
-	// Separator
-	*/
+		& .banner {
+			display: none;
+			align-items: center;
+			justify-content: space-between;
+			padding: var(--space-2xs) var(--space-base);
+			background-color: var(
+				--colour-bkg-surface-subtle-1-accent,
+				var(--colour-bkg-surface-subtle-1)
+			);
+			border-top: 1px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+			border-left: 1px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+			border-right: 1px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+			border-bottom: 1px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+			border-radius: var(--brd-radius-normal) var(--brd-radius-normal) 0 0;
+			margin: -1px -1px 0 -1px !important;
+			min-height: 2rem;
 
-	:is(a, [data-style-as="link"]).detailed-link .separator {
-		--separator-colour: var(--link-border-colour);
-		align-self: stretch;
-	}
+			& .type-icon-container {
+				--label-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-1));
+			}
 
-	/*
-	// Text Container
-	*/
-
-	:is(a, [data-style-as="link"]).detailed-link .text-container {
-		display: flex;
-		flex-flow: column;
-		gap: var(--space-2xs);
-		flex-grow: 1;
-	}
-
-	/* Title */
-
-	:is(a, [data-style-as="link"]).detailed-link .text-container .title {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: start;
-		gap: var(--space-2xs);
-		font-size: var(--font-size-xs);
-	}
-
-	/* Date */
-
-	:is(a, [data-style-as="link"]).detailed-link .text-container .date {
-		font-size: var(--font-size-3xs);
-		font-weight: 500;
-		color: var(--colour-ui-neutral-subtle);
-	}
-
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.text-container
-		.date,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		.text-container
-		.date {
-		color: var(--colour-ui-neutral);
-	}
-
-	/* Tags */
-
-	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list {
-		display: flex;
-		flex-flow: row wrap;
-		align-items: start;
-		column-gap: 0.375rem;
-		row-gap: 0.375rem;
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	:is(a, [data-style-as="link"]).detailed-link .text-container .tags-list li {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0 var(--space-3xs);
-		height: 1.125rem;
-		min-width: 1.125rem;
-		border-radius: var(--border-radius-small);
-		background-color: var(--colour-fill-accent-subtle);
-		font-size: var(--font-size-3xs);
-		color: var(--colour-ui-accent);
-		line-height: 1;
-		transition: all var(--transition-linear-fast);
-	}
-
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.text-container
-		.tags-list
-		li,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		.text-container
-		.tags-list
-		li {
-		background-color: var(--colour-fill-neutral-mid);
-		color: var(--colour-ui-reverse);
-	}
-
-	/* Description */
-
-	:is(a, [data-style-as="link"]).detailed-link .text-container .description {
-		font-size: var(--font-size-2xs);
-		font-weight: 500;
-		color: var(--colour-ui-neutral-subtle);
-		line-height: 1.4;
-		transition: max-height var(--transition-ease-medium);
-	}
-
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		.description,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		.description {
-		color: var(--colour-ui-neutral);
-	}
-
-	/* Label */
-
-	:is(a, [data-style-as="link"]).detailed-link .label {
-		font-size: var(--font-size-2xs);
-		font-weight: 600;
-		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-	}
-
-	:is(a, [data-style-as="link"]).detailed-link .label.simple {
-		display: none;
-	}
-
-	@container detailed-link (width < 400px) {
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.icon-and-label-container {
-			display: none !important;
+			& .icon {
+				--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-1));
+			}
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.text-container
-			.title {
+		/*
+		// Type Icon and Label
+		*/
+
+		& .type-icon-container {
+			--label-colour: var(--link-txt-colour);
+			--label-size: var(--font-size-2xs);
+
+			grid-area: type;
+			place-self: stretch;
+			flex-wrap: nowrap;
+			flex-shrink: 0;
+		}
+
+		/*
+		// Destination Icon
+		*/
+
+		& :is(.icon.destination, .icon.type) {
+			--icon-colour: var(--link-txt-colour);
+
+			position: unset !important;
+		}
+
+		& .icon.destination {
+			@media (hover: hover) {
+				opacity: 0;
+				scale: 90%;
+				transition:
+					opacity var(--transition-linear-fast),
+					scale var(--transition-ease-fast);
+			}
+		}
+
+		/*
+		// Separator
+		*/
+
+		& .separator {
+			--separator-colour: var(--link-brd-colour);
+
+			grid-area: separator;
+			align-self: stretch;
+		}
+
+		/*
+		// Text Container
+		*/
+
+		& .text-container {
+			grid-area: text;
+			display: flex;
 			flex-flow: column;
+			gap: var(--space-2xs);
+			flex-grow: 1;
+
+			/* Title */
+
+			& .title {
+				display: flex;
+				flex-flow: row wrap;
+				align-items: start;
+				gap: var(--space-2xs);
+				font-size: var(--font-size-xs);
+			}
+
+			/* Date */
+
+			& .date {
+				font-size: var(--font-size-3xs);
+				font-weight: 500;
+				color: var(--colour-txt-on-subtle-2);
+			}
+
+			/* Tags */
+
+			& .tags-list {
+				display: flex;
+				flex-flow: row wrap;
+				align-items: start;
+				column-gap: 0.375rem;
+				row-gap: 0.375rem;
+				list-style-type: none;
+				padding: 0;
+				margin: 0;
+
+				& li {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0 var(--space-3xs);
+					height: 1.125rem;
+					min-width: 1.125rem;
+					border-radius: var(--brd-radius-small);
+					background-color: var(--colour-bkg-surface-subtle-1-accent);
+					font-size: var(--font-size-3xs);
+					color: var(--colour-txt-on-subtle-1-accent);
+					line-height: 1;
+					transition: all var(--transition-linear-fast);
+				}
+			}
+
+			/* Label */
+
+			& .label {
+				font-size: var(--font-size-2xs);
+				font-weight: 600;
+				color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+
+				&.simple {
+					display: none;
+				}
+			}
+
+			/* Description */
+
+			& .description {
+				font-size: var(--font-size-2xs);
+				font-weight: 500;
+				color: var(--colour-txt-on-subtle-2);
+				line-height: 1.4;
+				transition: max-height var(--transition-ease-medium);
+			}
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.separator {
-			display: none !important;
+		/*
+		// State Styles
+		*/
+
+		&:is(:hover, :focus-visible) {
+			& .icon.destination {
+				@media (hover: hover) {
+					opacity: 1;
+					scale: 100%;
+					transition:
+						opacity var(--transition-linear-medium) 0.1s,
+						scale var(--transition-ease-medium) 0.1s;
+				}
+			}
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.label.simple {
-			display: initial !important;
+		/*
+		// Layout Styles
+		*/
+
+		[data-layout^='list-'] & {
+			&:is(:hover, :focus-visible) {
+				--link-bkg-colour: var(
+					--colour-bkg-surface-subtle-1-accent,
+					var(--colour-bkg-surface-subtle-1)
+				);
+				--link-brd-colour: var(--colour-brd-mid-accent, var(--colour-brd-mid));
+				--link-txt-colour: var(
+					--colour-txt-on-subtle-1-accent,
+					var(--colour-txt-on-subtle-1)
+				);
+
+				& .text-container {
+					& .date {
+						color: var(--colour-txt-on-subtle-1);
+					}
+
+					& .tags-list li {
+						background-color: var(--colour-bkg-surface-bold-2);
+						color: var(--colour-txt-on-bold-1);
+					}
+
+					& .description {
+						color: var(--colour-txt-on-subtle-1);
+					}
+
+					& span.highlight {
+						--highlight-surface-colour: transparent;
+						--highlight-txt-colour: var(--colour-txt-on-subtle-1);
+					}
+				}
+			}
+
+			[data-content='asset'] & {
+				/* FIX: This container query mucks up the grid view, these styles are specific to list view */
+				& .type-icon-container {
+					@container detailed-link (width < 400px) {
+						display: none !important;
+					}
+				}
+
+				& .icon.destination {
+					@container detailed-link (width < 400px) {
+						opacity: 1;
+						scale: 100%;
+						transition: none;
+					}
+				}
+
+				& .separator {
+					@container detailed-link (width < 400px) {
+						display: none !important;
+					}
+				}
+
+				& .text-container {
+					& .title {
+						@container detailed-link (width < 400px) {
+							flex-flow: column;
+						}
+					}
+
+					& .label {
+						&.detailed {
+							display: none !important;
+						}
+
+						@container detailed-link
+							(width < 400px) {
+							&.simple {
+								display: initial !important;
+							}
+
+							&.detailed {
+								display: none !important;
+							}
+						}
+					}
+				}
+			}
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.label.detailed {
-			display: none !important;
+		[data-layout='list-compact'] & {
+			& .text-container .description {
+				display: none !important;
+			}
 		}
 
-		:is(
-				.links-list[data-content="resources"],
-				.link-container[data-content="resources"]
-			)
-			:is(a, [data-style-as="link"]).detailed-link
-			.icon.destination {
-			opacity: 1;
-			scale: 100%;
-			transition: none;
+		[data-layout='card'] & {
+			--card-boxshadow-colour: var(--colour-brd-subtle);
+			--card-boxshadow-width: 1px;
+
+			display: grid;
+			grid-template-rows: auto 1fr;
+			height: 100%;
+			box-shadow: 0 0 0 var(--card-boxshadow-width) var(--card-boxshadow-colour);
+			border-radius: var(--brd-radius-normal);
+			transition:
+				box-shadow var(--transition-linear-fast),
+				opacity var(--transition-linear-medium);
+
+			& .banner {
+				--link-txt-colour: var(
+					--colour-txt-on-subtle-1-accent,
+					var(--colour-txt-on-subtle-1)
+				);
+
+				display: flex;
+
+				& .icon-and-label-container {
+					gap: var(--space-2xs);
+					pointer-events: none;
+
+					& .label-container {
+						grid-template-columns: 1fr;
+						opacity: 1;
+					}
+				}
+			}
+
+			& .wrapper {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-auto-rows: auto 1fr;
+				column-gap: var(--space-base);
+				row-gap: var(--space-base);
+				align-items: start;
+				padding: var(--space-base);
+				flex-grow: 1;
+
+				@container card (min-width: 460px) {
+					grid-template-columns: 1fr auto;
+					grid-template-rows: auto auto;
+					row-gap: var(--space-xs);
+				}
+
+				& .type-icon-container {
+					display: none;
+				}
+
+				& .separator {
+					display: none;
+				}
+
+				& .destination-icon-container {
+					display: none;
+				}
+
+				& .text-container {
+					& .title {
+						flex-flow: column;
+					}
+
+					& .label {
+						display: none !important;
+					}
+				}
+			}
+
+			&:is(:hover, :focus-visible) {
+				& .banner {
+					border-top-color: var(--card-boxshadow-colour);
+					border-left-color: var(--card-boxshadow-colour);
+					border-right-color: var(--card-boxshadow-colour);
+				}
+			}
+
+			&:hover {
+				--card-boxshadow-colour: var(--colour-brd-mid);
+				--card-boxshadow-width: 2px;
+			}
+
+			&:focus-visible {
+				--card-boxshadow-colour: var(--colour-brd-bold);
+				--card-boxshadow-width: 3px;
+				outline: none;
+			}
+
+			/* Coming Soon Placeholder Card */
+			div& {
+				pointer-events: none;
+			}
 		}
-	}
 
-	/* Highlight */
+		/*
+		// Context Styles
+		*/
 
-	:is(a, [data-style-as="link"]).detailed-link:is(:hover, :focus-visible)
-		span.highlight,
-	:is(dialog, .content):has(fieldset.search input:focus-visible)
-		:is(a, [data-style-as="link"]).detailed-link[aria-selected="true"]
-		span.highlight {
-		--highlight-background-colour: transparent;
-		--highlight-ui-colour: var(--colour-ui-neutral);
-	}
+		/* Inside Link Container */
 
-	/* 
-	// Link Container Customization
-	*/
+		.link-container & {
+			--link-bkg-colour: var(
+				--colour-bkg-surface-subtle-1-accent,
+				var(--colour-bkg-surface-subtle-1)
+			);
+			--link-txt-colour: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
+			--link-brd-colour: var(--colour-brd-mid-accent, var(--colour-brd-mid));
+			--link-boxshadow-colour: var(--colour-brd-subtle-accent);
+			min-height: 3.5rem;
 
-	.link-container .detailed-link {
-		--link-background-colour: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-		--link-ui-colour: var(--colour-ui-accent, var(--colour-ui-neutral));
-		--link-border-colour: var(
-			--colour-border-accent-mid,
-			var(--colour-border-neutral-mid)
-		);
-		min-height: 3.5rem;
-	}
+			:root[data-theme='dark'] & {
+				--link-bkg-colour: var(--colour-bkg-surface-subtle-1);
+				--link-brd-colour: var(--colour-brd-mid);
+				--link-boxshadow-colour: var(--colour-brd-mid-accent);
+			}
 
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link:is(
-			:hover,
-			:focus-visible
-		) {
-		background-color: transparent;
-		box-shadow: inset 0 0 0 2px var(--colour-border-accent-subtle);
-	}
+			&:is(:hover, :focus-visible) {
+				background-color: transparent;
+				box-shadow: inset 0 0 0 2px var(--link-boxshadow-colour);
+			}
 
-	.link-container
-		:is(a, [data-style-as="link"]).detailed-link
-		.text-container
-		.description {
-		color: var(--colour-ui-neutral);
+			& .text-container .description {
+				color: var(--colour-txt-on-subtle-1);
+			}
+		}
+
+		/* Inside Resource Search List or Container */
+
+		[data-content='mixed'] & {
+			& .type-icon-container {
+				display: none !important;
+			}
+
+			& .separator {
+				display: none !important;
+			}
+
+			& .text-container {
+				& .tags-list {
+					display: none !important;
+				}
+
+				& .date {
+					display: none !important;
+				}
+			}
+		}
+
+		/* Selected Inside Search List */
+
+		:is(dialog, .content):has(fieldset.search input:focus-visible) &[aria-selected='true'] {
+			--link-bkg-colour: var(
+				--colour-bkg-surface-subtle-1-accent,
+				var(--colour-bkg-surface-subtle-1)
+			);
+			--link-brd-colour: var(--colour-brd-mid-accent, var(--colour-brd-mid));
+			--link-txt-colour: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
+
+			& .icon.destination {
+				@media (hover: hover) {
+					opacity: 1;
+					scale: 100%;
+					transition:
+						opacity var(--transition-linear-medium) 0.1s,
+						scale var(--transition-ease-medium) 0.1s;
+				}
+			}
+
+			& .text-container {
+				& .date {
+					color: var(--colour-txt-on-subtle-1);
+				}
+
+				& .tags-list li {
+					background-color: var(--colour-bkg-surface-bold-2);
+					color: var(--colour-txt-on-bold-1);
+				}
+
+				& .description {
+					color: var(--colour-txt-on-subtle-1);
+				}
+
+				& span.highlight {
+					--highlight-surface-colour: transparent;
+					--highlight-txt-colour: var(--colour-txt-on-subtle-1);
+				}
+			}
+		}
 	}
 </style>

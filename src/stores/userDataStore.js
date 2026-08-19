@@ -10,12 +10,11 @@ import {
 	formatDateAsString,
 	isEqual,
 	normalizeImportedDate,
-	toKebabCase
-} from "src/utilities/helpers.js";
-import Papa from "papaparse";
+	toKebabCase,
+} from 'src/utilities/helpers.js';
+import Papa from 'papaparse';
 import LZString from 'lz-string'; // LZString is used to compress data into the exportcode
-import { eventControl } from "src/utilities/event";
-
+import { eventControl } from 'src/utilities/event';
 
 //
 // Variables
@@ -31,9 +30,9 @@ let currentAssessmentSchemaVersion = '1.0';
 let userSchema = {
 	uiPreferences: {
 		resourcePageSort: 'date',
-		resourcePageLayout: 'compact',
+		resourcePageLayout: 'list-compact',
 		reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-		theme: 'light',
+		theme: document.documentElement.getAttribute('data-theme'),
 		schemaVersion: currentPreferencesSchemaVersion,
 	},
 	uiState: {
@@ -41,14 +40,21 @@ let userSchema = {
 		activeReportId: null,
 		currentContinuumVersion,
 		lastModifiedPage: null,
-		lastVisitedPage: typeof window !== 'undefined' ? {
-			title: document.title,
-			path: window.location.pathname
-		} : null,
+		lastVisitedPage:
+			typeof window !== 'undefined'
+				? {
+						title: document.title,
+						path: window.location.pathname,
+					}
+				: null,
+		latestResourceTimestamp:
+			Number(
+				document.querySelector('header .site-announcement-container')?.dataset
+					.mostRecentTimestamp,
+			) ?? null,
 		announcementSession: {
 			views: 0,
 			lastSeen: null,
-			timeout: 24 * 60 * 60 * 1000,
 		},
 		mode: 'reading',
 		onboardingCompleted: false,
@@ -62,9 +68,6 @@ let data = structuredClone(userSchema);
 let subscribers = [];
 
 let importConflictData = null;
-
-
-
 
 //
 // Methods (Getters)
@@ -82,6 +85,13 @@ let getUserData = () => {
  */
 let getActiveAssessmentData = () => {
 	return findObjectByKey(data.assessments, 'id', data.uiState.activeAssessmentId);
+};
+
+/**
+ * Get a target assessment's data
+ */
+let getAssessmentData = (id) => {
+	return findObjectByKey(data.assessments, 'id', id);
 };
 
 /**
@@ -116,7 +126,6 @@ let getActiveAssessor = (assessment = getActiveAssessmentData()) => {
 };
 
 let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true }) => {
-
 	let { unexportedChanges, dateExported } = assessment;
 
 	if (unexportedChanges) {
@@ -162,8 +171,6 @@ let getStatusColour = (assessment = getActiveAssessmentData()) => {
 
 let getImportConflictData = () => importConflictData;
 
-
-
 //
 // Methods (Setters)
 //
@@ -192,7 +199,7 @@ let setPreferences = (update) => {
 	Object.assign(data.uiPreferences, update);
 	let changes = {
 		uiPreferences: Object.keys(update),
-	}
+	};
 	save();
 	notify(changes);
 };
@@ -206,7 +213,7 @@ let setState = (update) => {
 	Object.assign(data.uiState, update);
 	let changes = {
 		uiState: Object.keys(update),
-	}
+	};
 	save();
 	notify(changes);
 };
@@ -229,31 +236,27 @@ let setAssessment = (update) => {
 	}
 	// Otherwise, update the assessment
 	else {
-
 		let path = window.location.pathname;
 		if (path.includes('/big-seven/')) {
-
 			// Update last modified page
-			data.uiState.lastModifiedPage = typeof window !== 'undefined' ? {
-				title: document.title,
-				path,
-			} : null;
+			data.uiState.lastModifiedPage =
+				typeof window !== 'undefined'
+					? {
+							title: document.title,
+							path,
+						}
+					: null;
 
 			update.lastModifiedBy = update.activeAssessor ?? data.assessments[index].activeAssessor;
-			Object.assign(data.assessments[index], update);
-
 		}
-
+		Object.assign(data.assessments[index], update);
 	}
 	let changes = {
 		assessments: Object.keys(update),
-	}
+	};
 	save();
 	notify(changes);
 };
-
-
-
 
 //
 // Methods (Creators)
@@ -268,16 +271,18 @@ let createAssessment = (values) => {
 	let { reportingYear, district, school } = values;
 
 	let highestId = findHighestValueByKey(data.assessments, 'id');
-	let id = (typeof highestId === 'number' && !isNaN(highestId)) ? highestId + 1 : 1;
+	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
 
 	let assessment = {
 		activeAssessor: null,
 		assessors: [],
-		changeLog: [{
-			date: Date.now(),
-			assessor: null,
-			message: 'Assessment created.',
-		}],
+		changeLog: [
+			{
+				date: Date.now(),
+				assessor: null,
+				message: 'Assessment created.',
+			},
+		],
 		continuumCompletion: {},
 		considerationsEstablished: [],
 		continuumVersion: currentContinuumVersion,
@@ -298,18 +303,57 @@ let createAssessment = (values) => {
 	setState({
 		activeAssessmentId: id,
 		mode: 'assessment',
-	})
+	});
 
 	setAssessment(assessment);
+};
 
+let duplicateAssessment = async (oldAssessment, newReportingYear) => {
+	let highestId = findHighestValueByKey(data.assessments, 'id');
+	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
+
+	let newAssessment = {
+		activeAssessor: null,
+		assessors: oldAssessment.assessors,
+		changeLog: [
+			{
+				date: Date.now(),
+				assessor: null,
+				message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
+			},
+		],
+		considerationsEstablished: oldAssessment.considerationsEstablished,
+		continuumVersion: currentContinuumVersion,
+		dateCompleted: null,
+		dateCreated: Date.now(),
+		dateExported: null,
+		dateModified: Date.now(),
+		district: oldAssessment.district,
+		id,
+		lastModifiedBy: null,
+		reportingYear: newReportingYear,
+		school: oldAssessment.school,
+		status: 'In Progress',
+		schemaVersion: '1.0',
+		unexportedChanges: true,
+	};
+
+	newAssessment.continuumCompletion = await generateContinuumCompletion(newAssessment);
+
+	setState({
+		activeAssessmentId: id,
+		mode: 'assessment',
+	});
+
+	setAssessment(newAssessment);
 };
 
 let setImportConflictData = ({ importedAssessment, localAssessment }) => {
 	importConflictData = {
 		importedAssessment,
-		localAssessment
+		localAssessment,
 	};
-}
+};
 
 let generateContinuumCompletion = async (assessment) => {
 	if (!assessment) return;
@@ -320,6 +364,9 @@ let generateContinuumCompletion = async (assessment) => {
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
 		return continuumCompletion;
+	} else if (continuumVersion !== currentContinuumVersion) {
+		continuumCompletion = {};
+		considerationsEstablished = convertConsiderations(assessment);
 	} else {
 		continuumCompletion = {};
 	}
@@ -328,7 +375,6 @@ let generateContinuumCompletion = async (assessment) => {
 	if (!count) return;
 
 	for (let consideration of considerationsEstablished) {
-
 		if (!count[consideration]) continue;
 
 		// Get the connections
@@ -336,20 +382,36 @@ let generateContinuumCompletion = async (assessment) => {
 		let indicator = count[consideration].indicator;
 		let component = count[consideration].component;
 
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation: 'add' });
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation: 'add' });
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation: 'add' });
-
+		updateContinuumCompletionEntry({
+			count,
+			continuumCompletion,
+			key: 'continuum',
+			scope: 'continuum',
+			phase,
+			operation: 'add',
+		});
+		updateContinuumCompletionEntry({
+			count,
+			continuumCompletion,
+			key: indicator,
+			scope: indicator,
+			phase,
+			operation: 'add',
+		});
+		updateContinuumCompletionEntry({
+			count,
+			continuumCompletion,
+			key: component,
+			scope: component,
+			phase,
+			operation: 'add',
+		});
 	}
 
 	updateContinuumVersion(assessment);
 
 	return continuumCompletion;
-
-}
-
-
-
+};
 
 //
 // Methods (Updaters)
@@ -379,31 +441,38 @@ let updateSchema = (oldData, schema) => {
 	return updated;
 };
 
-let updateChangeLog = ({ assessment = getActiveAssessmentData(), assessor = getActiveAssessor(), message }) => {
-
-	if (!assessment || !message) return;
+let updateChangeLog = ({ changeLog, assessor = getActiveAssessor(), message }) => {
+	if (!changeLog || !message) {
+		console.warn('Change log or change message missing. Unable to update change log.');
+		return;
+	}
 
 	let entry = {
 		date: Date.now(),
 		assessor: assessor,
 		message: message,
-	}
+	};
 
-	assessment.changeLog.push(entry);
+	changeLog.push(entry);
 
 	// Limit change history to 20 items
-	if (assessment.changeLog.length > 20) assessment.changeLog.splice(0, 1);
+	if (changeLog.length > 20) changeLog.splice(0, 1);
 
-	return assessment.changeLog;
-
-}
+	return changeLog;
+};
 
 let updateContinuumVersion = (assessment) => {
 	assessment.continuumVersion = currentContinuumVersion;
-}
+};
 
-let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, scope, phase, operation }) => {
-
+let updateContinuumCompletionEntry = async ({
+	count,
+	continuumCompletion,
+	key,
+	scope,
+	phase,
+	operation,
+}) => {
 	if (!count[scope]) return;
 
 	let entry = continuumCompletion[key] ?? {
@@ -425,7 +494,7 @@ let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, s
 		developingRatio: 0,
 		sustainingRatio: 0,
 
-		phase: 'Initiating'
+		phase: 'Initiating',
 	};
 
 	let phaseCountKey = `${phase}Count`;
@@ -442,11 +511,20 @@ let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, s
 	entry.ratio = count[scope].total ? entry.count / count[scope].total : 0;
 	entry[phaseRatioKey] = count[scope][phase] ? entry[phaseCountKey] / count[scope][phase] : 0;
 
-	if ((entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) || entry.initiatingRatio === 1) {
+	if (
+		(entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) ||
+		entry.initiatingRatio === 1
+	) {
 		entry.phase = 'Implementing';
-		if ((entry.implementingRatio >= 0.75 && entry.developingRatio >= 0.25) || entry.implementingRatio === 1) {
+		if (
+			(entry.implementingRatio >= 0.75 && entry.developingRatio >= 0.25) ||
+			entry.implementingRatio === 1
+		) {
 			entry.phase = 'Developing';
-			if ((entry.developingRatio >= 0.75 && entry.sustainingRatio >= 0.25) || entry.developingRatio === 1) {
+			if (
+				(entry.developingRatio >= 0.75 && entry.sustainingRatio >= 0.25) ||
+				entry.developingRatio === 1
+			) {
 				entry.phase = 'Sustaining';
 			}
 		}
@@ -455,21 +533,20 @@ let updateContinuumCompletionEntry = async ({ count, continuumCompletion, key, s
 	}
 
 	continuumCompletion[key] = entry;
-
 };
 
-let updateContinuumCompletion = async ({ assessment = getActiveAssessmentData(), consideration, operation }) => {
-
+let updateContinuumCompletion = async ({
+	assessment = getActiveAssessmentData(),
+	consideration,
+	operation,
+}) => {
 	if (!assessment || !consideration || !/^\d+\.\d+\.\d+$/.test(consideration)) return;
 
 	let { continuumCompletion, continuumVersion } = assessment;
 
 	if (continuumVersion !== currentContinuumVersion) {
-
 		return generateContinuumCompletion(assessment);
-
 	} else {
-
 		let count = await userDataStore.getConsiderationCount();
 
 		if (!count || !count[consideration]) return;
@@ -481,18 +558,124 @@ let updateContinuumCompletion = async ({ assessment = getActiveAssessmentData(),
 
 		if (!continuumCompletion) return;
 
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: 'continuum', scope: 'continuum', phase, operation });
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: indicator, scope: indicator, phase, operation });
-		updateContinuumCompletionEntry({ count, continuumCompletion, key: component, scope: component, phase, operation });
+		updateContinuumCompletionEntry({
+			count,
+			continuumCompletion,
+			key: 'continuum',
+			scope: 'continuum',
+			phase,
+			operation,
+		});
+		updateContinuumCompletionEntry({
+			count,
+			continuumCompletion,
+			key: indicator,
+			scope: indicator,
+			phase,
+			operation,
+		});
+		updateContinuumCompletionEntry({
+			count,
+			continuumCompletion,
+			key: component,
+			scope: component,
+			phase,
+			operation,
+		});
 
-		return continuumCompletion;
+		let notify = false;
 
+		let hasUnassessed = false;
+		let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
+		let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
+		let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
+
+		switch (phase) {
+			case 'implementing':
+				if (initiatingIsUnassessed) hasUnassessed = true;
+				break;
+			case 'developing':
+				if (initiatingIsUnassessed || implementingIsUnassessed) hasUnassessed = true;
+				break;
+			case 'sustaining':
+				if (initiatingIsUnassessed || implementingIsUnassessed || developingIsUnassessed)
+					hasUnassessed = true;
+				break;
+		}
+
+		// Only remind once per component (resets on import)
+		if (hasUnassessed && !continuumCompletion[component].reminded) {
+			notify = true;
+			continuumCompletion[component].reminded = true;
+		}
+
+		return {
+			entries: continuumCompletion,
+			notify,
+		};
+	}
+};
+
+let convertConsiderations = (assessment) => {
+	let { continuumVersion, considerationsEstablished } = assessment;
+
+	let converter = null;
+
+	let convertToVersion2_0 = {
+		from1_0: {
+			1.1: {
+				changeType: 'transform',
+				changeFn: () => {
+					return ['1.2'];
+				},
+			},
+			1.2: {
+				changeType: 'delete',
+				changeFn: () => {
+					return [];
+				},
+			},
+			1.3: {
+				changeType: 'split',
+				changeFn: () => {
+					return ['1.3', '1.4'];
+				},
+			},
+			// Does completing one count as completing the new?
+			1.5: {
+				changeType: 'combine',
+				changeFn: () => {
+					return ['1.5'];
+				},
+			},
+			1.6: {
+				changeType: 'combine',
+				changeFn: () => {
+					return ['1.5'];
+				},
+			},
+		},
+	};
+
+	if (continuumVersion === '1.0' && currentContinuumVersion === '2.0') {
+		converter = convertToVersion2_0.from1_0;
 	}
 
-}
+	if (!converter) {
+		console.error('Aborted consideration conversion. No map available');
+		return [];
+	}
 
+	let convertedConsiderations = [];
+	for (let consideration of considerationsEstablished) {
+		convertConsiderations.push(...converter[consideration]);
+	}
 
+	// Ensure unique values (due to combine change type duplicates)
+	convertedConsiderations = [...new Set(convertedConsiderations)];
 
+	return convertedConsiderations;
+};
 
 //
 // Methods (Checkers)
@@ -507,16 +690,16 @@ let checkForChanges = ({ data, update }) => {
 
 		// If the value is an array, detect added/removed items
 		if (Array.isArray(value) && Array.isArray(oldValue)) {
-			let added = value.filter(v => !oldValue.includes(v));
-			let removed = oldValue.filter(v => !value.includes(v));
+			let added = value.filter((v) => !oldValue.includes(v));
+			let removed = oldValue.filter((v) => !value.includes(v));
 
 			if (added.length || removed.length) {
 				updatedKeys.push({
 					key,
 					changes: [
 						...(added.length ? [{ type: 'added', value: added }] : []),
-						...(removed.length ? [{ type: 'removed', value: removed }] : [])
-					]
+						...(removed.length ? [{ type: 'removed', value: removed }] : []),
+					],
 				});
 				changedValues[key] = value;
 			}
@@ -533,47 +716,54 @@ let checkForChanges = ({ data, update }) => {
 	} else {
 		return false;
 	}
-}
+};
 
 let checkAnnouncementSession = () => {
-
+	console.log(data.uiState);
 	let announcementSession = data.uiState.announcementSession ?? {
 		views: 0,
 		lastSeen: null,
 	};
 
 	let { views, lastSeen } = announcementSession;
+	let { latestResourceTimestamp } = data.uiState;
 
-	let timeout = 24 * 60 * 60 * 1000; // 24 hours
-
+	let sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
+	let recencyTimeout = 30 * 24 * 60 * 60 * 1000; // 30 days
 	let now = Date.now();
 
-	// Check if session expired
-	if (!lastSeen || now - lastSeen > timeout) {
-		// Reset new session
+	let showAnnouncement = false;
+
+	// Check if it's been over a month since the most recent resource was added
+	if (!latestResourceTimestamp || now - latestResourceTimestamp > recencyTimeout) {
+		// Reset session
 		views = 0;
+		lastSeen = null;
+	} else {
+		// Check if it's been over 24 hours since the user has accessed the site
+		if (!lastSeen || now - lastSeen > sessionTimeout) {
+			// Reset session
+			views = 0;
+		}
+
+		// Keep track of announcement views
+		views = (views || 0) + 1;
+
+		lastSeen = now;
+
+		// Show for the first 3 page views
+		showAnnouncement = views <= 3;
 	}
-
-	views = (views || 0) + 1;
-	// Keep track of active session, only reset if the user has not used the site in 24 hours
-	lastSeen = now;
-
-	// Show for the first 2 page views
-	let showAnnouncement = views <= 2;
 
 	setState({
 		announcementSession: {
 			views,
 			lastSeen,
 		},
-	})
+	});
 
 	return showAnnouncement;
-
-}
-
-
-
+};
 
 //
 // Methods (Deleters)
@@ -582,7 +772,7 @@ let checkAnnouncementSession = () => {
 let deleteAssessment = (id) => {
 	// console.log('Deleting Assessment', id);
 	let changes = {};
-	let index = data.assessments.findIndex(obj => obj.id === id);
+	let index = data.assessments.findIndex((obj) => obj.id === id);
 	if (index !== -1) {
 		let update = [...data.assessments];
 		update.splice(index, 1);
@@ -596,7 +786,7 @@ let deleteAssessment = (id) => {
 		let update = {};
 		if (isActiveAssessment) {
 			update.activeAssessmentId = null;
-			update.mode = "reading";
+			update.mode = 'reading';
 		}
 		if (isActiveReport) {
 			update.activeReportId = null;
@@ -606,12 +796,9 @@ let deleteAssessment = (id) => {
 	}
 	save();
 	notify(changes);
-}
+};
 
-let deleteImportConflictData = () => importConflictData = null;
-
-
-
+let deleteImportConflictData = () => (importConflictData = null);
 
 //
 // Methods (Import/Export)
@@ -623,28 +810,30 @@ let deleteImportConflictData = () => importConflictData = null;
  */
 let exportAssessment = (assessment) => {
 	// Define columns for the main CSV
-	let mainData = [{
-		'Id': assessment.id || '',
-		'School': assessment.school || '',
-		'District': assessment.district || '',
-		'Reporting Year': assessment.reportingYear || '',
-		'Status': assessment.status || '',
-		'Date Completed': formatDateAsString(assessment.dateCompleted),
-		'Date Created': formatDateAsString(assessment.dateCreated),
-		'Date Modified': formatDateAsString(assessment.dateModified),
-		'Date Exported': formatDateAsString(assessment.dateExported),
-		'Last Modified By': assessment.lastModifiedBy || '',
-		'Assessors': (assessment.assessors || []).join(', '),
-		'Considerations Established': (assessment.considerationsEstablished || []).join(', '),
-		'Continuum Version': assessment.continuumVersion || '',
-		'Schema Version': assessment.schemaVersion || '',
-	}];
+	let mainData = [
+		{
+			Id: assessment.id || '',
+			School: assessment.school || '',
+			District: assessment.district || '',
+			'Reporting Year': assessment.reportingYear || '',
+			Status: assessment.status || '',
+			'Date Completed': formatDateAsString(assessment.dateCompleted),
+			'Date Created': formatDateAsString(assessment.dateCreated),
+			'Date Modified': formatDateAsString(assessment.dateModified),
+			'Date Exported': formatDateAsString(assessment.dateExported),
+			'Last Modified By': assessment.lastModifiedBy || '',
+			Assessors: (assessment.assessors || []).join(', '),
+			'Considerations Established': (assessment.considerationsEstablished || []).join(', '),
+			'Continuum Version': assessment.continuumVersion || '',
+			'Schema Version': assessment.schemaVersion || '',
+		},
+	];
 
 	// Define change log CSV
-	let changeLogData = (assessment.changeLog || []).map(log => ({
-		'Date': formatDateAsString(log.date) || '',
-		'Message': log.message || '',
-		'Assessor': log.assessor || '',
+	let changeLogData = (assessment.changeLog || []).map((log) => ({
+		Date: formatDateAsString(log.date) || '',
+		Message: log.message || '',
+		Assessor: log.assessor || '',
 	}));
 
 	if (!changeLogData.length) {
@@ -656,7 +845,7 @@ let exportAssessment = (assessment) => {
 	let logCsv = Papa.unparse(changeLogData);
 
 	// Combine with separation
-	let combinedCsv = mainCsv + "\n\n" + logCsv;
+	let combinedCsv = mainCsv + '\n\n' + logCsv;
 
 	// Filename
 	let fileDate = formatDateAsString(assessment.dateExported || new Date(), false);
@@ -686,24 +875,42 @@ let importAssessment = (file) => {
 			let [mainCsv, logCsv] = data.split(/\n\s*\n/);
 
 			// Parse with PapaParse
-			let mainResult = Papa.parse(mainCsv, { header: true, skipEmptyLines: true });
-			let logResult = Papa.parse(logCsv || "", { header: true, skipEmptyLines: true });
+			let mainResult = Papa.parse(mainCsv, {
+				header: true,
+				skipEmptyLines: true,
+			});
+			let logResult = Papa.parse(logCsv || '', {
+				header: true,
+				skipEmptyLines: true,
+			});
 
 			if (!mainResult.data || !mainResult.data.length) {
-				return reject("No main data found in the file");
+				return reject('No main data found in the file');
 			}
 
 			let mainRow = mainResult.data[0]; // Only one row expected
 			let assessment = {
 				activeAssessor: null,
-				assessors: mainRow['Assessors'] ? mainRow['Assessors'].split(',').map(s => s.trim()) : [],
+				assessors: mainRow['Assessors']
+					? mainRow['Assessors'].split(',').map((s) => s.trim())
+					: [],
 				changeLog: [],
-				considerationsEstablished: mainRow['Considerations Established'] ? mainRow['Considerations Established'].split(',').map(s => s.trim()) : [],
+				considerationsEstablished: mainRow['Considerations Established']
+					? mainRow['Considerations Established'].split(',').map((s) => s.trim())
+					: [],
 				continuumVersion: mainRow['Continuum Version'] || '',
-				dateCompleted: mainRow['Date Completed'] ? normalizeImportedDate(mainRow['Date Completed']) : null,
-				dateCreated: mainRow['Date Created'] ? normalizeImportedDate(mainRow['Date Created']) : null,
-				dateExported: mainRow['Date Exported'] ? normalizeImportedDate(mainRow['Date Exported']) : null,
-				dateModified: mainRow['Date Modified'] ? normalizeImportedDate(mainRow['Date Modified']) : null,
+				dateCompleted: mainRow['Date Completed']
+					? normalizeImportedDate(mainRow['Date Completed'])
+					: null,
+				dateCreated: mainRow['Date Created']
+					? normalizeImportedDate(mainRow['Date Created'])
+					: null,
+				dateExported: mainRow['Date Exported']
+					? normalizeImportedDate(mainRow['Date Exported'])
+					: null,
+				dateModified: mainRow['Date Modified']
+					? normalizeImportedDate(mainRow['Date Modified'])
+					: null,
 				district: mainRow['District'] || '',
 				id: Number(mainRow['Id']) || 1,
 				lastModifiedBy: mainRow['Last Modified By'] || null,
@@ -716,10 +923,10 @@ let importAssessment = (file) => {
 
 			// Parse change log rows
 			if (logResult.data && logResult.data.length) {
-				assessment.changeLog = logResult.data.map(log => ({
+				assessment.changeLog = logResult.data.map((log) => ({
 					date: log['Date'] ? normalizeImportedDate(log['Date']) : null,
 					assessor: log['Assessor'] || null,
-					message: log['Message'] || log['Note'] || ''
+					message: log['Message'] || log['Note'] || '',
 				}));
 			}
 
@@ -757,8 +964,6 @@ let findAssessmentConflicts = ({ importedAssessment, localAssessments }) => {
 	return { idConflict, schoolYearConflict };
 };
 
-
-
 //
 // Methods (Encoding)
 //
@@ -767,18 +972,17 @@ let compressData = (data) => {
 	try {
 		return LZString.compressToBase64(JSON.stringify(data));
 	} catch (err) {
-		throw new Error("Unable to compress JSON", { cause: 'JSON' })
+		throw new Error('Unable to compress JSON', { cause: 'JSON' });
 	}
-}
+};
 
 let decompressData = (data) => {
 	try {
 		return JSON.parse(LZString.decompressFromBase64(data));
 	} catch (err) {
-		throw new Error("Unable to parse JSON", { cause: 'JSON' })
+		throw new Error('Unable to parse JSON', { cause: 'JSON' });
 	}
-}
-
+};
 
 //
 // Methods (Storage and DOM Updates)
@@ -809,7 +1013,7 @@ let subscribe = (fn) => {
 		subscribers.push(fn);
 		let changes = {
 			initiating: true,
-		}
+		};
 		fn(structuredClone(data), changes);
 	}
 	// Return a function that removes the subscriber
@@ -818,7 +1022,6 @@ let subscribe = (fn) => {
 		subscribers = subscribers.filter((sub) => sub !== fn);
 	};
 };
-
 
 //
 // Inits
@@ -846,22 +1049,20 @@ try {
 	}
 
 	// console.log('User data after schema check', data);
-
 } catch (err) {
 	console.warn('Failed to load user data:', err);
 	localStorage.removeItem(key);
 }
 
 let userDataStore = (() => {
-
 	let considerationCountPromise = null;
 
 	let init = () => {
 		// console.log('Initiating User Data Store');
 		if (!considerationCountPromise) {
 			considerationCountPromise = fetch('./data/consideration-count.json')
-				.then(res => res.json())
-				.catch(err => {
+				.then((res) => res.json())
+				.catch((err) => {
 					console.error('Failed to fetch consideration count:', err);
 					return null;
 				});
@@ -869,23 +1070,21 @@ let userDataStore = (() => {
 		save();
 		let changes = {
 			initiating: true,
-		}
+		};
 		notify(changes);
-	}
+	};
 
 	let getConsiderationCount = () => considerationCountPromise;
 
 	return { init, getConsiderationCount };
-
 })();
 
 userDataStore.init();
 eventControl.add({
 	elem: document,
-	eventType: "astro:after-swap",
+	eventType: 'astro:after-swap',
 	fn: userDataStore.init,
 });
-
 
 //
 // Exports
@@ -898,6 +1097,7 @@ export {
 	findAssessmentConflicts,
 	getActiveAssessmentData,
 	getActiveReportData,
+	getAssessmentData,
 	getAssessmentDate,
 	getAssessmentName,
 	getActiveAssessor,
@@ -909,6 +1109,7 @@ export {
 	setPreferences,
 	setState,
 	createAssessment,
+	duplicateAssessment,
 	setAssessment,
 	setImportConflictData,
 	deleteAssessment,

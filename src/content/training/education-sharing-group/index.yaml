@@ -1,0 +1,22 @@
+title: Education Sharing Group
+published: false
+dateAdded: 2026-07-03
+type: community
+audience:
+  - educators
+  - supportStaff
+provider:
+  - other
+location: inPerson
+description: >-
+  An in-person community where educators can share experiences and learn best
+  practice.
+topics: []
+external:
+  discriminant: true
+  value:
+    url: https://en.wikipedia.org/wiki/Education
+linkAction: link
+linkedIndicators: []
+linkedComponents: []
+linkedConsiderations: []

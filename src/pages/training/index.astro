@@ -1,0 +1,158 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Accordion from 'src/components/Accordion.astro';
+import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
+import LinksListItem from 'src/components/LinksListItem.astro';
+
+import IconWarning from 'src/components/icons/IconWarning_16.astro';
+import IconSapling24 from 'src/components/icons/IconSapling_24.astro';
+import IconArrowRight16 from 'src/components/icons/IconArrowRight_16.astro';
+import IconSignpost from 'src/components/icons/IconSignpost_24.astro';
+
+let searchList = [];
+let itemIndex = 1;
+
+let allTraining = await getCollection('training', ({ data }) => {
+	return data.published === true;
+});
+
+for (let training of allTraining) {
+	let data = JSON.parse(JSON.stringify(training.data));
+	data.itemId = `tra-${itemIndex}`;
+	data.category = 'training';
+	data.slug = training.id;
+	searchList.push(data);
+	itemIndex += 1;
+}
+
+searchList.sort((a, b) => {
+	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
+	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
+});
+
+console.log('Search List', searchList);
+---
+
+<BaseLayout
+	pageTitle={'Training'}
+	pageType={'training'}
+>
+	<div class="content">
+		<h1
+			id="main-heading"
+			tabindex="-1"
+		>
+			Training
+		</h1>
+
+		<div class="callout">
+			<div class="wrapper">
+				<p class="heading">
+					<IconSignpost />
+					<strong>Need help finding something?</strong>
+				</p>
+				<p>
+					Find how-to guides and FAQs for this website on the <a href={`./support/`}
+						>Support</a
+					> page, and resources to help you progress through the continuums on the <a
+						href={`./resources/`}>Resources</a
+					> page.
+				</p>
+			</div>
+		</div>
+
+		<div
+			class="list-container elem-group"
+			data-columns="3"
+		>
+			<p
+				id="training-list_error-status"
+				class="error-status"
+				role="status"
+				hidden
+			>
+				<IconWarning aria-hidden="true" />
+				<span>There are no results that match the search term.</span>
+			</p>
+			<p
+				id="training-list_filter-status"
+				class="filter-status"
+				role="status"
+				aria-live="polite"
+				hidden
+			>
+			</p>
+
+			<ul
+				id="training-list"
+				class="links-list wrapper"
+				role="listbox"
+				data-layout="card"
+				data-content="asset"
+				data-sort-control="training-list-primary-controls"
+				data-filter-control="training-list-secondary-controls"
+				data-search-control="training-list-primary-controls"
+				data-filter-tag-list="active-filters-list"
+				data-default-item-visibility="shown"
+				data-list-item-categories='["training"]'
+			>
+				{
+					searchList.map((itemData, index) => (
+						<LinksListItem
+							itemData={itemData}
+							index={index}
+							listName={'training-list'}
+							listGroupSize={10}
+						/>
+					))
+				}
+
+				<li
+					id="training-list_item-0"
+					data-pos="2"
+					data-item-id="tra-0"
+				>
+					<div
+						class="detailed-link"
+						data-style-as="link"
+						data-theme="gray"
+						data-vibrancy="vivid"
+					>
+						<div class="banner">
+							<div class="icon-and-label-container type-icon-container">
+								<IconSapling24 />
+								<span class="label-container"
+									><span class="label">Training</span></span
+								>
+							</div>
+							<span class="icon-container">
+								<IconArrowRight16 classes={'destination'} />
+							</span>
+						</div>
+						<div class="wrapper">
+							<span class="text-container">
+								<span class="title"> More Coming Soon </span>
+								<span class="description"
+									>New training opportunities will be added here once available.</span
+								>
+							</span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<button
+			class="show-more"
+			type="button"
+			data-list="training-list"
+			data-style="solid"
+			data-size="large"
+			hidden
+		>
+			Show More Results
+		</button>
+	</div>
+</BaseLayout>

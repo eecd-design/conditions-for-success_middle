@@ -1,39 +1,61 @@
 ---
-import Accordion from "src/components/Accordion.astro";
-import IconXmark from "src/components/icons/IconXmark_20.astro";
-import IconTranscript from "src/components/icons/IconTranscript_24.astro";
-import { Image } from "astro:assets";
-import videoPoster from "src/images/video-poster.png";
+import Accordion from 'src/components/Accordion.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
+import { Image } from 'astro:assets';
+import videoPoster from 'src/images/video-poster.png';
 ---
 
-<dialog id="media-dialog" class="media" aria-labelledby="media-dialog_heading">
-	<button class="close-dialog" type="button" aria-label="Close Media Dialog"
-		><IconXmark /></button
+<dialog
+	id="media-dialog"
+	class="media"
+	aria-labelledby="media-dialog_heading"
+>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Media Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="media-dialog_heading"
+			class="heading"
+			data-default-text="Media Resource"
+		>
+			Media Resource
+		</h2>
+	</div>
+
+	<div class="media-container">
+		<video
+			controls
+			poster={videoPoster.src}
+			tabindex="0"
+			hidden
+		></video>
+		<audio
+			controls
+			src=""
+			tabindex="0"
+			hidden
+		></audio>
+		<iframe
+			src=""
+			title=""
+			frameborder="0"
+			referrerpolicy="strict-origin-when-cross-origin"
+			allowfullscreen
+			tabindex="0"
+			hidden
+		></iframe>
+	</div>
+
+	<div
+		class="transcript accordion-group"
+		hidden
 	>
-
-	<h2
-		id="media-dialog_heading"
-		class="heading"
-		data-default-text="Media Resource"
-	>
-		Media Resource
-	</h2>
-
-	<video controls poster={videoPoster.src} tabindex="0" hidden></video>
-
-	<audio controls src="" tabindex="0" hidden></audio>
-
-	<iframe
-		src=""
-		title=""
-		frameborder="0"
-		referrerpolicy="strict-origin-when-cross-origin"
-		allowfullscreen
-		tabindex="0"
-		hidden></iframe>
-
-	<div class="transcript accordion-group" hidden>
-		<Accordion title={"Transcript"}>
+		<Accordion title={'Transcript'}>
 			<IconTranscript slot="button-icon" />
 			<p>Transcript goes here...</p>
 		</Accordion>
@@ -45,9 +67,9 @@ import videoPoster from "src/images/video-poster.png";
 	// Imports
 	//
 
-	import { dialogControl } from "src/utilities/dialog";
-	import { eventControl } from "src/utilities/event";
-	import { stringToBoolean } from "src/utilities/helpers";
+	import { dialogControl } from 'src/utilities/dialog';
+	import { eventControl } from 'src/utilities/event';
+	import { stringToBoolean } from 'src/utilities/helpers';
 
 	//
 	// Methods
@@ -88,7 +110,7 @@ import videoPoster from "src/images/video-poster.png";
 	 * @returns {string} URL without the file extension
 	 */
 	let removeFileExtension = function (url) {
-		return url.replace(/\.[^.\/?#]+(?=$|[?#])/, "");
+		return url.replace(/\.[^.\/?#]+(?=$|[?#])/, '');
 	};
 
 	//
@@ -99,84 +121,103 @@ import videoPoster from "src/images/video-poster.png";
 	// Event Listeners
 	//
 
-	let onClick = (event) => {
+	let onLaunchClick = (event) => {
 		let target = event.target.closest(
 			`button.open-dialog[data-dialog="media-dialog"]`,
 		) as HTMLButtonElement;
-		let mediaDialog = document.querySelector("#media-dialog");
+		let mediaDialog = document.querySelector('#media-dialog');
 
 		if (!mediaDialog || !target) return;
 
 		// Get the media elements
-		let video = mediaDialog.querySelector("video");
-		let iframe = mediaDialog.querySelector("iframe");
-		let audio = mediaDialog.querySelector("audio");
-		let transcriptAccordion = mediaDialog.querySelector(".transcript");
+		let video = mediaDialog.querySelector('video');
+		let iframe = mediaDialog.querySelector('iframe');
+		let audio = mediaDialog.querySelector('audio');
+		let transcriptAccordion = mediaDialog.querySelector('.transcript');
 
 		// Reset visibility
-		video.setAttribute("hidden", "");
-		iframe.setAttribute("hidden", "");
-		audio.setAttribute("hidden", "");
-		transcriptAccordion.setAttribute("hidden", "");
+		video.setAttribute('hidden', '');
+		iframe.setAttribute('hidden', '');
+		audio.setAttribute('hidden', '');
+		transcriptAccordion.setAttribute('hidden', '');
 
 		// Get the media data from the button
-		let mediaType = target.getAttribute("data-media-type");
-		let mediaExternal = target.getAttribute("data-media-external")
-			? stringToBoolean(target.getAttribute("data-media-external"))
+		let mediaType = target.getAttribute('data-media-type');
+		let mediaExternal = target.getAttribute('data-media-external')
+			? stringToBoolean(target.getAttribute('data-media-external'))
 			: false;
-		let mediaSrc = target.getAttribute("data-media-src");
-		let mediaTitle = target.getAttribute("data-dialog-heading");
+		let mediaSrc = target.getAttribute('data-media-src');
+		let mediaTitle = target.getAttribute('data-dialog-heading');
 
 		if (!mediaType && !mediaSrc) return;
 
 		// Get a path only version of the src url
 		let mediaSrcPathOnly = removeFileExtension(mediaSrc);
 
-		if (mediaType === "video") {
+		if (mediaType === 'video' || mediaType === 'webinar') {
 			let iframeSrc = convertURLToEmbedURL(mediaSrc);
 			if (iframeSrc) {
-				iframe.setAttribute("src", convertURLToEmbedURL(mediaSrc));
-				iframe.setAttribute("title", mediaTitle);
-				iframe.removeAttribute("hidden");
+				iframe.setAttribute('src', convertURLToEmbedURL(mediaSrc));
+				iframe.setAttribute('title', mediaTitle);
+				iframe.removeAttribute('hidden');
 			} else {
-				video.removeAttribute("hidden");
+				video.removeAttribute('hidden');
 				video.src = mediaSrc;
 
 				// Disable old tracks
 				for (let track of video.textTracks) {
-					track.mode = "disabled";
+					track.mode = 'disabled';
 				}
 
 				// Remove old tracks
-				for (let track of video.querySelectorAll("track")) {
+				for (let track of video.querySelectorAll('track')) {
 					track.remove();
 				}
 
 				// Create new track
-				let newTrack = document.createElement("track");
+				let newTrack = document.createElement('track');
 				newTrack.src = `${mediaSrcPathOnly}.vtt`;
-				newTrack.kind = "captions";
-				newTrack.srclang = "en";
-				newTrack.label = "English";
+				newTrack.kind = 'captions';
+				newTrack.srclang = 'en';
+				newTrack.label = 'English';
 				video.append(newTrack);
 
 				// Force reload
 				video.load();
 			}
-		} else if (mediaType === "audio") {
-			audio.setAttribute("src", mediaSrc);
-			audio.removeAttribute("hidden");
-			transcriptAccordion.removeAttribute("hidden");
-			let transcriptPanel =
-				transcriptAccordion.querySelector(".panel > .content");
-			transcriptPanel.innerHTML = "<p>Updated transcript...</p>";
+		} else if (mediaType === 'audio') {
+			audio.setAttribute('src', mediaSrc);
+			audio.removeAttribute('hidden');
+			transcriptAccordion.removeAttribute('hidden');
+			let transcriptPanel = transcriptAccordion.querySelector('.panel > .content');
+			transcriptPanel.innerHTML = '<p>Updated transcript...</p>';
 		} else {
-			console.warn("Invalid Resource Type");
+			console.warn('Invalid Resource Type');
 		}
 	};
 	eventControl.add({
 		selector: `button.open-dialog[data-dialog="media-dialog"]`,
-		eventType: "click",
-		fn: onClick,
+		eventType: 'click',
+		fn: onLaunchClick,
+	});
+
+	let onCloseClick = (event) => {
+		let target = event.target;
+
+		if (target.matches('button.close-dialog')) {
+			console.log('Closing media dialog');
+			let dialog = target.closest('dialog');
+			let context = dialog?.getAttribute('data-context');
+
+			if (context && context === 'from-search-dialog') {
+				console.log('Opening search dialog');
+				dialogControl.open({ dialogId: 'search-dialog', context: 'last-search' });
+			}
+		}
+	};
+	eventControl.add({
+		selector: `#media-dialog`,
+		eventType: 'click',
+		fn: onCloseClick,
 	});
 </script>

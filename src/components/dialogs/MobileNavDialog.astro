@@ -1,16 +1,14 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-import IconXmark from "src/components/icons/IconXmark_20.astro";
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
 
 const { url } = Astro;
 let path = url.pathname;
 let base = import.meta.env.BASE_URL;
 
-let allIndicators = await getCollection("indicators");
-let indicators = allIndicators.sort((a, b) =>
-	a.data.tag.localeCompare(b.data.tag),
-);
+let allIndicators = await getCollection('indicators');
+let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 ---
 
 <dialog
@@ -19,16 +17,30 @@ let indicators = allIndicators.sort((a, b) =>
 	data-theme="red"
 	aria-labelledby="mobile-nav-dialog_heading"
 >
-	<button class="close-dialog" type="button" aria-label="Close Media Dialog">
-		<IconXmark />
-	</button>
-	<h2 id="mobile-nav-dialog_heading" class="heading">Menu</h2>
-	<nav class="mobile" aria-label="Main navigation">
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Media Dialog"
+		>
+			<IconXmark />
+		</button>
+		<h2
+			id="mobile-nav-dialog_heading"
+			class="heading"
+		>
+			Menu
+		</h2>
+	</div>
+	<nav
+		class="mobile"
+		aria-label="Main navigation"
+	>
 		<ul class="nav-links-list">
 			<li class="home-icon">
 				<a
 					class="nav-link"
-					aria-current={path.endsWith(base) ? "page" : null}
+					aria-current={path.endsWith(base) ? 'page' : null}
 					href="./"
 				>
 					Home
@@ -40,9 +52,7 @@ let indicators = allIndicators.sort((a, b) =>
 					<li>
 						<a
 							class="subnav-link"
-							aria-current={path.endsWith("/big-seven/")
-								? "page"
-								: null}
+							aria-current={path.endsWith('/big-seven/') ? 'page' : null}
 							href={`./big-seven/`}
 						>
 							Introduction
@@ -56,13 +66,11 @@ let indicators = allIndicators.sort((a, b) =>
 									<a
 										class="subnav-link"
 										aria-current={
-											path.endsWith(`/${indicator.id}/`)
-												? "page"
-												: null
+											path.endsWith(`/${indicator.id}/`) ? 'page' : null
 										}
 										href={indicatorPath}
 									>
-										{indicator.data.title}
+										{indicator.data.tag}.&ensp;{indicator.data.title}
 									</a>
 								</li>
 							);
@@ -73,7 +81,7 @@ let indicators = allIndicators.sort((a, b) =>
 			<li>
 				<a
 					class="nav-link"
-					aria-current={path.includes("/resources/") ? "page" : null}
+					aria-current={path.includes('/resources/') ? 'page' : null}
 					href={`./resources/`}
 				>
 					Resources
@@ -82,11 +90,27 @@ let indicators = allIndicators.sort((a, b) =>
 			<li>
 				<a
 					class="nav-link"
-					aria-current={path.includes("/report/") ? "page" : null}
+					aria-current={path.includes('/training/') ? 'page' : null}
+					href={`./training/`}
+					>Training</a
+				>
+			</li>
+			<li>
+				<a
+					class="nav-link"
+					aria-current={path.includes('/report/') ? 'page' : null}
 					href={`./report/`}
 				>
 					Report
 				</a>
+			</li>
+			<li>
+				<a
+					class="nav-link"
+					aria-current={path.includes('/support/') ? 'page' : null}
+					href={`./support/`}
+					>Support</a
+				>
 			</li>
 		</ul>
 	</nav>
@@ -95,49 +119,51 @@ let indicators = allIndicators.sort((a, b) =>
 <style is:global>
 	nav.mobile {
 		margin: var(--space-xl) 0 0;
-	}
 
-	nav.mobile ul {
-		display: flex;
-		flex-flow: column;
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
+		& ul {
+			display: flex;
+			flex-flow: column;
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
 
-	nav.mobile ul li {
-		line-height: 1;
-	}
+			& li {
+				line-height: 1;
+			}
+		}
 
-	nav.mobile .nav-links-list {
-		gap: var(--space-xl);
-	}
+		& .nav-links-list {
+			gap: var(--space-xl);
+		}
 
-	nav.mobile .subnav-container > span {
-		display: inline-block;
-		margin: 0 0 var(--space-lg);
-		font-weight: 600;
-	}
+		& .subnav-container {
+			& > span {
+				display: inline-block;
+				margin: 0 0 var(--space-lg);
+				font-weight: 600;
+			}
 
-	nav.mobile .subnav-links-list {
-		padding: 0 0 0 var(--space-xl);
-		border-left: 1px solid var(--colour-border-accent-subtle);
-		gap: var(--space-lg);
-	}
+			& .subnav-links-list {
+				padding: 0 0 0 var(--space-xl);
+				border-left: 1px solid var(--colour-brd-subtle-accent);
+				gap: var(--space-lg);
 
-	nav.mobile a {
-		--link-colour: var(--dialog-ui-colour);
-		font-size: var(--font-size-base);
-		font-weight: 600;
-		line-height: 1;
-		width: 100%;
-	}
+				& .subnav-link {
+					font-weight: 300;
+				}
+			}
+		}
 
-	nav.mobile .subnav-link {
-		font-weight: 300;
-	}
+		& a {
+			--link-colour: var(--dialog-txt-colour);
+			font-size: var(--font-size-base);
+			font-weight: 600;
+			line-height: 1;
+			width: 100%;
 
-	nav.mobile a .icon.destination {
-		--icon-colour: var(--dialog-ui-colour);
+			& .icon.destination {
+				--icon-colour: var(--dialog-txt-colour);
+			}
+		}
 	}
 </style>

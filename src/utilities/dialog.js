@@ -1,52 +1,54 @@
-import { eventControl } from "./event";
-import { resetForm } from "./form";
-import { emitEvent, stopVideo } from "./helpers";
+import { eventControl } from './event';
+import { resetForm } from './form';
+import { emitEvent, stopVideo } from './helpers';
 
 let dialogControl = (() => {
-
 	let scrollY = 0;
 
-	let open = ({ dialogId, headingText = null, context = null }) => {
-		let activeDialog = document.querySelector(
-			"dialog[open]");
-		let targetDialog = document.querySelector(
-			`#${dialogId}`);
+	let open = ({ dialogId, headingText = null, context = null, targetId = null }) => {
+		let activeDialog = document.querySelector('dialog[open]');
+		let targetDialog = document.querySelector(`#${dialogId}`);
 		if (!targetDialog) return;
 		if (activeDialog) close(activeDialog);
 		if (context) targetDialog.setAttribute('data-context', context);
+		if (targetId) targetDialog.setAttribute('data-target-id', targetId);
 		let heading = targetDialog.querySelector('h2');
 		if (heading) {
-			let defaultText = heading.getAttribute('data-default-text')?.trim() ?? heading.textContent;
+			let defaultText =
+				heading.getAttribute('data-default-text')?.trim() ?? heading.textContent;
 			headingText = headingText ? headingText.trim() : defaultText;
 			if (headingText !== heading.textContent) heading.textContent = headingText;
 		}
 		// Save scroll position
 		scrollY = window.scrollY;
 		// Lock background scroll
-		document.body.style.position = 'fixed'
-		document.body.style.top = `-${scrollY}px`
+		document.body.style.position = 'fixed';
+		document.body.style.top = `-${scrollY}px`;
 
 		targetDialog.showModal();
-		let focusStart = targetDialog.querySelector('[data-focus-start]')
+		let focusStart = targetDialog.querySelector('[data-focus-start]');
 		if (focusStart) focusStart.focus();
-        emitEvent({
-            target: targetDialog,
-            name: 'dialogOpen',
-            detail: {
-                context
-            }
-        })
-	}
+		emitEvent({
+			target: targetDialog,
+			name: 'dialogOpen',
+			detail: {
+				context,
+			},
+		});
+	};
 
 	let close = (target) => {
 		let dialog = target.closest('dialog');
 		if (!dialog) return;
 		stopVideo(dialog);
+		dialog.removeAttribute('data-context');
+		dialog.removeAttribute('data-target-id');
+		dialog.removeAttribute('data-heading');
 		// Disable smooth scroll
 		document.documentElement.style.scrollBehavior = 'auto';
 		// Unlock background scroll
-		document.body.style.position = ''
-		document.body.style.top = ''
+		document.body.style.position = '';
+		document.body.style.top = '';
 		// Close dialog
 		dialog.scrollTo(0, 0);
 		dialog.close();
@@ -54,8 +56,8 @@ let dialogControl = (() => {
 		window.scrollTo(0, scrollY);
 		// Reset scroll behaviour
 		requestAnimationFrame(() => {
-			document.documentElement.style.scrollBehavior = ''
-		})
+			document.documentElement.style.scrollBehavior = '';
+		});
 		let resetForms = dialog.getAttribute('data-reset-forms') === 'true' ?? false;
 		if (resetForms) {
 			let forms = dialog.querySelectorAll('form');
@@ -63,44 +65,46 @@ let dialogControl = (() => {
 				resetForm({ form });
 			}
 		}
-	}
+	};
 
 	let onClick = (event) => {
-		let target = event.target
+		let target = event.target;
 
 		let openDialogBtn = target.closest('button.open-dialog');
 		if (openDialogBtn) {
 			let dialogId = openDialogBtn.getAttribute('data-dialog');
 			let headingText = openDialogBtn.getAttribute('data-dialog-heading');
 			let context = openDialogBtn.getAttribute('data-dialog-context');
+			let targetId = openDialogBtn.getAttribute('data-dialog-target-id');
 			open({
 				dialogId,
 				headingText,
-				context
+				context,
+				targetId,
 			});
 		} else if (target.matches('dialog button.close-dialog')) {
 			close(target);
 		} else if (target.matches('html')) {
 			let openDialog = document.querySelector('dialog[open]');
 			let clickPath = event.composedPath();
-			let clickedOutsideDialog = openDialog && !clickPath.some(el => el.tagName === 'DIALOG');
+			let clickedOutsideDialog =
+				openDialog && !clickPath.some((el) => el.tagName === 'DIALOG');
 			if (clickedOutsideDialog) {
 				let openDialog = document.querySelector('dialog[open]');
 				close(openDialog);
 			}
 		}
-	}
+	};
 
 	let init = () => {
 		eventControl.add({
 			elem: document,
 			eventType: 'click',
 			fn: onClick,
-		})
-	}
+		});
+	};
 
 	return { init, open, close };
-
 })();
 
 export { dialogControl };

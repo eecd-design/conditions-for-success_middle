@@ -1,15 +1,23 @@
 ---
-import IconTrowel24 from "src/components/icons/IconTrowel_24.astro";
-import IconArrowDown16 from "src/components/icons/IconArrowDown_16.astro";
-import IconSeed24 from "src/components/icons/IconSeed_24.astro";
-import IconSapling24 from "src/components/icons/IconSapling_24.astro";
-import IconWateringCan24 from "src/components/icons/IconWateringCan_24.astro";
+import IconTrowel24 from 'src/components/icons/IconTrowel_24.astro';
+import IconArrowDown16 from 'src/components/icons/IconArrowDown_16.astro';
+import IconSeed24 from 'src/components/icons/IconSeed_24.astro';
+import IconSapling24 from 'src/components/icons/IconSapling_24.astro';
+import IconWateringCan24 from 'src/components/icons/IconWateringCan_24.astro';
 
 let { colour } = Astro.props;
 ---
 
-<div class="chart-container progress" aria-hidden="true" data-theme={colour ?? null}>
-	<div class="segment-container" data-phase="initiating">
+<div
+	class="chart-container progress"
+	aria-hidden="true"
+	data-theme={colour ?? null}
+	data-vibrancy="vivid"
+>
+	<div
+		class="segment-container"
+		data-phase="initiating"
+	>
 		<div class="title-container">
 			<div class="active-container">
 				<span>Currently</span>
@@ -24,14 +32,15 @@ let { colour } = Astro.props;
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count">0</span>&nbsp;/&nbsp;<span
-					data-field="total">0</span
-				>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span data-field="total">0</span>
 			</span>
 			<span>Considerations Established</span>
 		</div>
 	</div>
-	<div class="segment-container" data-phase="implementing">
+	<div
+		class="segment-container"
+		data-phase="implementing"
+	>
 		<div class="title-container">
 			<div class="active-container">
 				<span>Currently</span>
@@ -46,14 +55,15 @@ let { colour } = Astro.props;
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count">0</span>&nbsp;/&nbsp;<span
-					data-field="total">0</span
-				>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span data-field="total">0</span>
 			</span>
 			<span>Considerations Established</span>
 		</div>
 	</div>
-	<div class="segment-container" data-phase="developing">
+	<div
+		class="segment-container"
+		data-phase="developing"
+	>
 		<div class="title-container">
 			<div class="active-container">
 				<span>Currently</span>
@@ -68,14 +78,15 @@ let { colour } = Astro.props;
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count">0</span>&nbsp;/&nbsp;<span
-					data-field="total">0</span
-				>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span data-field="total">0</span>
 			</span>
 			<span>Considerations Established</span>
 		</div>
 	</div>
-	<div class="segment-container" data-phase="sustaining">
+	<div
+		class="segment-container"
+		data-phase="sustaining"
+	>
 		<div class="title-container">
 			<div class="active-container">
 				<span>Currently</span>
@@ -90,16 +101,17 @@ let { colour } = Astro.props;
 		</div>
 		<div class="details-container">
 			<span class="count">
-				<span data-field="count">0</span>&nbsp;/&nbsp;<span
-					data-field="total">0</span
-				>
+				<span data-field="count">0</span>&nbsp;/&nbsp;<span data-field="total">0</span>
 			</span>
 			<span>Considerations Established</span>
 		</div>
 	</div>
 </div>
 
-<div class="progress-simplified" data-screen-reader>
+<div
+	class="progress-simplified"
+	data-screen-reader
+>
 	<p>Phase Achieved: <strong data-field="phase">Initiating</strong></p>
 	<dl>
 		<dt>Initiating</dt>
@@ -134,155 +146,127 @@ let { colour } = Astro.props;
 	*/
 
 	.chart-container.progress {
+		--chart-scale: 1;
+
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
-		padding: var(--space-2xl) 0;
+		padding: calc(var(--space-2xl) * var(--chart-scale)) 0;
 		margin: 0;
-	}
 
-	.chart-container.progress .segment-container {
-		display: flex;
-		flex-flow: column nowrap;
-		gap: var(--space-sm);
-		position: relative;
-	}
+		& .segment-container {
+			display: flex;
+			flex-flow: column nowrap;
+			gap: calc(var(--space-sm) * var(--chart-scale));
+			position: relative;
 
-	/* Block */
+			/* Block */
 
-	.chart-container.progress .segment-container .block-container .block {
-		--icon-size: 2.5rem;
-		--icon-colour: var(
-			--colour-ui-accent-subtle,
-			var(--colour-ui-neutral-subtle)
-		);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100px;
-		background-color: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
-		);
-	}
+			& .block-container .block {
+				--icon-size: calc(2.5rem * var(--chart-scale));
+				--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: calc(100px * var(--chart-scale));
+				background-color: var(
+					--colour-bkg-surface-subtle-1-accent,
+					var(--colour-bkg-surface-subtle-1)
+				);
+			}
 
-	.chart-container.progress
-		.segment-container:first-of-type
-		.block-container
-		.block {
-		border-radius: var(--border-radius-normal) 0 0
-			var(--border-radius-normal);
-	}
+			&:first-of-type .block-container .block {
+				border-radius: var(--brd-radius-normal) 0 0 var(--brd-radius-normal);
+			}
 
-	.chart-container.progress
-		.segment-container:last-of-type
-		.block-container
-		.block {
-		border-radius: 0 var(--border-radius-normal) var(--border-radius-normal)
-			0;
-	}
+			&:last-of-type .block-container .block {
+				border-radius: 0 var(--brd-radius-normal) var(--brd-radius-normal) 0;
+			}
 
-	.chart-container.progress
-		.segment-container[data-active]
-		.block-container
-		.block {
-		--icon-colour: var(--colour-ui-reverse);
-		height: 140px;
-		border-radius: var(--border-radius-normal);
-		background-color: var(
-			--colour-fill-accent-bold,
-			var(--colour-fill-neutral-mid)
-		);
-	}
+			&[data-active] .block-container .block {
+				--icon-colour: var(--colour-txt-on-bold-1);
+				height: calc(140px * var(--chart-scale));
+				border-radius: var(--brd-radius-normal);
+				background-color: var(
+					--colour-bkg-surface-bold-1-accent,
+					var(--colour-bkg-surface-bold-2)
+				);
+			}
 
-	.chart-container.progress
-		.segment-container:not([data-active])
-		+ :not([data-active])
-		.block-container
-		.block {
-		border-left: 2px solid
-			var(
-				--colour-border-accent-subtle,
-				var(--colour-border-neutral-subtle)
-			);
-	}
+			&:not([data-active]) + :not([data-active]) .block-container .block {
+				border-left: 2px solid var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+			}
 
-	/* Title */
+			/* Title */
 
-	.chart-container.progress .segment-container .title-container {
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		justify-content: end;
-		gap: var(--space-2xs);
-		flex-grow: 1;
-	}
+			& .title-container {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				justify-content: end;
+				gap: calc(var(--space-2xs) * var(--chart-scale));
+				flex-grow: 1;
+				color: var(--colour-txt-on-subtle-1);
 
-	.chart-container.progress .segment-container .title-container .title {
-		font-size: var(--font-size-sm);
-		font-weight: 500;
-	}
+				& .title {
+					font-size: calc(var(--font-size-sm) * var(--chart-scale));
+					font-weight: 500;
+				}
 
-	.chart-container.progress
-		.segment-container[data-active]
-		.title-container
-		.title {
-		font-size: var(--font-size-base);
-		font-weight: 600;
-	}
+				/* Active Flag */
 
-	/* Active Flag */
+				& .active-container {
+					--icon-size: calc(1rem * var(--chart-scale));
+					--icon-colour: var(
+						--colour-txt-on-subtle-2-accent,
+						var(--colour-txt-on-subtle-2)
+					);
+					display: flex;
+					flex-flow: column nowrap;
+					align-items: center;
+					gap: calc(var(--space-3xs) * var(--chart-scale));
+					position: absolute;
+					top: calc(-2.5rem * var(--chart-scale));
 
-	.chart-container.progress
-		.segment-container
-		.title-container
-		.active-container {
-		--icon-size: 1rem;
-		--icon-colour: var(
-			--colour-ui-accent-subtle,
-			var(--colour-ui-neutral-subtle)
-		);
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		gap: var(--space-3xs);
-		position: absolute;
-		top: -2.5rem;
-	}
+					& span {
+						font-size: calc(var(--font-size-3xs) * var(--chart-scale));
+						font-weight: 700;
+						text-transform: uppercase;
+						color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+					}
+				}
+			}
 
-	.chart-container.progress
-		.segment-container
-		.title-container
-		.active-container
-		span {
-		font-size: var(--font-size-3xs);
-		font-weight: 700;
-		text-transform: uppercase;
-		color: var(--colour-ui-accent-subtle, var(--colour-ui-neutral-subtle));
-	}
+			&[data-active] .title-container .title {
+				font-size: calc(var(--font-size-base) * var(--chart-scale));
+				font-weight: 600;
+			}
 
-	.chart-container.progress
-		.segment-container:not([data-active])
-		.title-container
-		.active-container {
-		display: none;
-	}
+			&:not([data-active]) .title-container .active-container {
+				display: none;
+			}
 
-	/* Details */
+			/* Details */
 
-	.chart-container.progress .segment-container .details-container {
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		gap: var(--space-3xs);
-		flex-grow: 1;
-		padding: 0 var(--space-xs);
-		font-size: var(--font-size-2xs);
-		color: var(--colour-ui-neutral-subtle);
-		text-align: center;
-	}
+			& .details-container {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				gap: calc(var(--space-3xs) * var(--chart-scale));
+				flex-grow: 1;
+				padding: 0 var(--space-xs);
+				font-size: calc(var(--font-size-2xs) * var(--chart-scale));
+				color: var(--colour-txt-on-subtle-2);
+				text-align: center;
 
-	.chart-container.progress .segment-container .details-container .count {
-		font-size: var(--font-size-xs);
-		font-weight: 600;
+				& .count {
+					font-size: calc(var(--font-size-xs) * var(--chart-scale));
+					font-weight: 600;
+				}
+			}
+		}
+
+		#print-report-container & {
+			--chart-scale: 0.75;
+		}
 	}
 </style>

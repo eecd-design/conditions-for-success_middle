@@ -1,0 +1,1 @@
+You can add other team members as assessors from within the assessment toolbar. Once added, assessors can contribute to the assessment. To give someone access to an existing assessment, you can share the exported file or code with them so they can import it to their own device.

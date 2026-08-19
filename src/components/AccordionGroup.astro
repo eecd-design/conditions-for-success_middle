@@ -1,0 +1,254 @@
+---
+let { allowMultiple = false, includeControls = true } = Astro.props;
+---
+
+<div
+	class="accordion-group"
+	data-allow-multiple={allowMultiple ? '' : null}
+>
+	{
+		includeControls && (
+			<div class="accordion-controls button-group">
+				<button
+					class="expand-all"
+					data-style-as="link"
+					type="button"
+				>
+					Expand All
+				</button>
+				<div
+					class="separator"
+					data-orientation="vertical"
+				/>
+				<button
+					class="close-all"
+					data-style-as="link"
+					type="button"
+				>
+					Close All
+				</button>
+			</div>
+		)
+	}
+
+	<slot />
+</div>
+
+<style is:global>
+	.accordion-group {
+		display: flex;
+		flex-flow: column;
+		gap: var(--space-2xs);
+		margin: var(--space-2xl) 0;
+
+		& .accordion-controls {
+			--group-gap: var(--space-2xs);
+			margin: 0 0 var(--space-2xs);
+
+			& button {
+				--link-colour: var(--colour-txt-on-subtle-2);
+				color: var(--colour-txt-on-subtle-2);
+				font-size: var(--font-size-xs);
+				text-decoration-line: underline;
+			}
+
+			& .separator {
+				place-self: normal;
+			}
+		}
+	}
+</style>
+
+<script>
+	//
+	// Imports
+	//
+
+	import { eventControl } from 'src/utilities/event';
+	import { emitEvent, isInViewport, scrollIntoView, stopVideo } from '../utilities/helpers';
+
+	//
+	// Module
+	//
+
+	let accordion = (() => {
+		//
+		// DOM Setup
+		//
+
+		let setupDOM = (accordion) => {
+			let btn = accordion.querySelector(':scope>.heading>button');
+			btn.setAttribute('aria-expanded', 'false');
+		};
+
+		//
+		// Methods
+		//
+
+		/**
+		 * Toggle accordion visibility
+		 * @param  {Node} targetAccordion The accordion to show
+		 */
+		let toggleAccordion = (targetAccordion) => {
+			// Get the accordion group, if there is one
+			let accordionGroup = targetAccordion.closest('.accordion-group');
+
+			// If there is an accordion group, check whether it allows multiple open panels, default to false
+			let allowMultiple = accordionGroup
+				? accordionGroup.hasAttribute('data-allow-multiple')
+				: false;
+
+			// Get the target accordion toggle button
+			let targetToggle = targetAccordion.querySelector('.accordion .heading button');
+
+			// Get the target accordion panel
+			let targetPanel = targetAccordion.querySelector('.accordion .panel');
+
+			// Check if the target panel is expanded
+			let isExpanded = targetToggle.getAttribute('aria-expanded') == 'true';
+
+			// Get the active toggle button
+			let activeToggle = accordionGroup
+				? accordionGroup.querySelector('[aria-expanded="true"]')
+				: null;
+
+			// Get the active panel
+			let activePanel = activeToggle
+				? activeToggle.closest('.accordion').querySelector('.panel')
+				: null;
+
+			// If the active panel contains a video, pause it
+			if (
+				activePanel &&
+				(activePanel.matches('video, .embed') || activePanel.querySelector('video, .embed'))
+			) {
+				stopVideo(activePanel);
+			}
+
+			// If accordion group does not allow multiple open panels and the target toggle is not the active toggle
+			if (!allowMultiple && activeToggle && activeToggle !== targetToggle) {
+				// Reset the active toggle
+				activeToggle.setAttribute('aria-expanded', 'false');
+
+				// Hide the active panel
+				activePanel.setAttribute('hidden', '');
+			}
+
+			// If the target is collapsed, expand it
+			if (!isExpanded) {
+				// Set the toggle to expanded
+				targetToggle.setAttribute('aria-expanded', 'true');
+
+				// Show the target panel
+				targetPanel.removeAttribute('hidden');
+			}
+
+			// If the target is expanded, collapse it
+			else if (isExpanded) {
+				// Set the expanded state on the triggering element
+				targetToggle.setAttribute('aria-expanded', 'false');
+
+				// Hide the target panel
+				targetPanel.setAttribute('hidden', '');
+			}
+
+			// Get the transition length and convert it to a number
+			let transitionLength = Number(
+				getComputedStyle(targetAccordion)
+					.getPropertyValue('transition-duration')
+					.replace(/[^0-9\.]/g, ''),
+			);
+
+			setTimeout(() => {
+				// If the target toggle is not in view after the transition
+				if (!isInViewport(targetToggle)) {
+					// Scroll it into view
+					scrollIntoView(targetToggle);
+				}
+			}, transitionLength * 1000);
+		};
+
+		let toggleAllAccordions = (targetAccordionGroup, action) => {
+			let accordions = targetAccordionGroup.querySelectorAll('.accordion');
+
+			for (let accordion of accordions) {
+				let toggle = accordion.querySelector('.heading button');
+				let panel = accordion.querySelector('.panel');
+
+				if (action === 'close') {
+					toggle.setAttribute('aria-expanded', 'false');
+					panel.setAttribute('hidden', '');
+				} else if (action === 'expand') {
+					toggle.setAttribute('aria-expanded', 'true');
+					panel.removeAttribute('hidden');
+				}
+			}
+		};
+
+		//
+		// Event Handlers
+		//
+
+		let onAccordionClick = (event) => {
+			if (!event.target.matches('.accordion .heading button')) return;
+
+			let targetAccordion = event.target.closest('.accordion');
+
+			toggleAccordion(targetAccordion);
+		};
+
+		let onControlsClick = (event) => {
+			if (!event.target.matches('.accordion-controls button')) return;
+
+			let targetAccordionGroup = event.target.closest('.accordion-group');
+
+			let action;
+			if (event.target.matches('.close-all')) action = 'close';
+			else if (event.target.matches('.expand-all')) action = 'expand';
+
+			toggleAllAccordions(targetAccordionGroup, action);
+		};
+
+		//
+		// Init and Destroy
+		//
+
+		let init = () => {
+			let accordions = document.querySelectorAll('.accordion') as NodeListOf<HTMLElement>;
+
+			for (let accordion of accordions) {
+				setupDOM(accordion);
+			}
+
+			emitEvent({
+				target: document,
+				name: 'accordionSetupComplete',
+			});
+
+			eventControl.add({
+				selector: '.accordion',
+				eventType: 'click',
+				fn: onAccordionClick,
+			});
+
+			eventControl.add({
+				selector: '.accordion-group',
+				eventType: 'click',
+				fn: onControlsClick,
+			});
+		};
+
+		return { init };
+	})();
+
+	//
+	// Inits
+	//
+
+	accordion.init();
+	eventControl.add({
+		elem: document,
+		eventType: 'astro:after-swap',
+		fn: accordion.init,
+	});
+</script>

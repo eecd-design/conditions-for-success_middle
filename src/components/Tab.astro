@@ -1,5 +1,5 @@
 ---
-import { toKebabCase } from "../utilities/helpers";
+import { toKebabCase } from '../utilities/helpers';
 
 const { title, id, dataset } = Astro.props;
 
@@ -11,10 +11,18 @@ if (dataset) {
 }
 ---
 
-<div class="tab" {...datasetAttrs}>
+<div
+	class="tab"
+	{...datasetAttrs}
+>
 	<div class="media-container"><slot name="media" /></div>
 	<div class="text-container">
-		<h3 id={id ? id : toKebabCase(title)} class="heading">{title}</h3>
+		<h3
+			id={id ? id : toKebabCase(title)}
+			class="heading"
+		>
+			{title}
+		</h3>
 		<slot />
 	</div>
 </div>
@@ -37,22 +45,19 @@ if (dataset) {
 		gap: var(--space-2xs);
 	}
 
-	.tab-group nav ul li button[aria-selected="true"] {
-		--button-background-colour: transparent;
-		--button-boxshadow-colour: var(
-			--colour-border-accent-subtle,
-			var(--colour-border-neutral-subtle)
-		);
-		--button-ui-colour: var(--colour-ui-neutral);
+	.tab-group nav ul li button[aria-selected='true'] {
+		--button-bkg-colour: transparent;
+		--button-boxshadow-colour: var(--colour-brd-subtle-accent, var(--colour-brd-subtle));
+		--button-txt-colour: var(--colour-txt-on-subtle-1);
 		pointer-events: none;
 	}
 
 	.tab-group nav ul li button {
-		--button-background-colour: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
+		--button-bkg-colour: var(
+			--colour-bkg-surface-subtle-1-accent,
+			var(--colour-bkg-surface-subtle-1)
 		);
-		--button-border-radius: var(--border-radius-normal);
+		--button-brd-radius: var(--brd-radius-normal);
 		min-height: 3rem;
 		padding: var(--space-2xs) var(--space-sm);
 		font-size: var(--font-size-base);
@@ -79,8 +84,7 @@ if (dataset) {
 	}
 
 	.tab-group .tab .media-container {
-		border-radius: var(--border-radius-normal) var(--border-radius-normal) 0
-			0;
+		border-radius: var(--brd-radius-normal) var(--brd-radius-normal) 0 0;
 		overflow: hidden;
 	}
 
@@ -95,15 +99,14 @@ if (dataset) {
 	.tab-group .tab .text-container {
 		padding: var(--space-xl);
 		background-color: var(
-			--colour-fill-accent-subtle,
-			var(--colour-fill-neutral-subtle)
+			--colour-bkg-surface-subtle-1-accent,
+			var(--colour-bkg-surface-subtle-1)
 		);
-		border-radius: var(--border-radius-normal);
+		border-radius: var(--brd-radius-normal);
 	}
 
 	.tab-group .tab:has(.media-container:not(:empty)) .text-container {
-		border-radius: 0 0 var(--border-radius-normal)
-			var(--border-radius-normal);
+		border-radius: 0 0 var(--brd-radius-normal) var(--brd-radius-normal);
 	}
 
 	.tab-group .tab:has(.media-container:not(:empty)) .text-container .heading {
@@ -111,10 +114,7 @@ if (dataset) {
 		margin: var(--space-sm) 0 var(--space-sm);
 	}
 
-	.tab-group
-		.tab:has(.media-container:not(:empty))
-		.text-container
-		:where(p, li, a) {
+	.tab-group .tab:has(.media-container:not(:empty)) .text-container :where(p, li, a) {
 		font-size: var(--font-size-xs);
 	}
 </style>
@@ -124,12 +124,8 @@ if (dataset) {
 	// Imports
 	//
 
-	import { eventControl } from "src/utilities/event";
-	import {
-		isInViewport,
-		scrollIntoView,
-		stopVideo,
-	} from "../utilities/helpers";
+	import { eventControl } from 'src/utilities/event';
+	import { isInViewport, scrollIntoView, stopVideo } from '../utilities/helpers';
 
 	//
 	// Module
@@ -142,14 +138,14 @@ if (dataset) {
 
 		let setupDOM = ({ tabGroup, tabGroupIndex }) => {
 			// Get the panels
-			let tabPanels = tabGroup.querySelectorAll(".tab");
+			let tabPanels = tabGroup.querySelectorAll('.tab');
 
 			// If there is one or fewer panels, bail
 			if (tabPanels.length <= 1) return;
 
 			// Create the tab list
-			let tabList = document.createElement("ul");
-			tabList.setAttribute("role", "tablist");
+			let tabList = document.createElement('ul');
+			tabList.setAttribute('role', 'tablist');
 
 			// Create a tab button for each panel
 			for (let i = 0; i < tabPanels.length; i++) {
@@ -163,35 +159,30 @@ if (dataset) {
 				tabPanel.id = `tab-panel${tabGroupIndex}-${tabPanelIndex}`;
 
 				// Get the tab name
-				let tabName = tabPanel
-					.querySelector(".heading")
-					.textContent.trim();
+				let tabName = tabPanel.querySelector('.heading').textContent.trim();
 
 				// Create a tab item
-				let tabItem = document.createElement("li");
+				let tabItem = document.createElement('li');
 
 				// Remove the item's implicit ARIA semantics from being exposed to the accessibility tree (no longer considered a list item)
-				tabItem.setAttribute("role", "presentation");
+				tabItem.setAttribute('role', 'presentation');
 
 				// Add it to the list
 				tabList.append(tabItem);
 
 				// Create a tab button
-				let tabBtn = document.createElement("button");
-				tabBtn.setAttribute("type", "button");
+				let tabBtn = document.createElement('button');
+				tabBtn.setAttribute('type', 'button');
 
 				// Link to the tab panel
-				tabBtn.setAttribute("aria-controls", `${tabPanel.id}`);
+				tabBtn.setAttribute('aria-controls', `${tabPanel.id}`);
 
 				// Add [role] and [aria-selected] attributes
-				tabBtn.setAttribute("role", "tab");
-				tabBtn.setAttribute(
-					"aria-selected",
-					i === 0 ? "true" : "false",
-				);
+				tabBtn.setAttribute('role', 'tab');
+				tabBtn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
 
 				// Add [aria-label]
-				tabBtn.setAttribute("aria-label", tabName);
+				tabBtn.setAttribute('aria-label', tabName);
 
 				// Add name to button
 				tabBtn.innerHTML = tabName;
@@ -203,30 +194,30 @@ if (dataset) {
 				tabItem.append(tabBtn);
 
 				// Add ARIA to tab panel
-				tabPanel.setAttribute("role", "tabpanel");
-				tabPanel.setAttribute("aria-labelledby", tabBtn.id);
+				tabPanel.setAttribute('role', 'tabpanel');
+				tabPanel.setAttribute('aria-labelledby', tabBtn.id);
 
 				// If it's not the active (first) tab,
 				if (i > 0) {
 					// Remove focus (navigation with arrow keys instead)
-					tabBtn.setAttribute("tabindex", "-1");
+					tabBtn.setAttribute('tabindex', '-1');
 				}
 
 				// If not the active panel, hide it
 				if (i !== 0) {
-					tabPanel.setAttribute("hidden", "");
+					tabPanel.setAttribute('hidden', '');
 				}
 			}
 
 			// Create the new nav element
-			let nav = document.createElement("nav");
+			let nav = document.createElement('nav');
 
 			tabGroup.prepend(nav);
 
 			nav.append(tabList);
 
 			// Flag heading as initialized
-			tabGroup.setAttribute("data-initialized", "");
+			tabGroup.setAttribute('data-initialized', '');
 		};
 
 		//
@@ -246,28 +237,26 @@ if (dataset) {
 			if (!targetTab || targetTab === activeTab) return;
 
 			// Get the target tab panel
-			let targetPanel = tabGroup.querySelector(
-				`#${targetTab.getAttribute("aria-controls")}`,
-			);
+			let targetPanel = tabGroup.querySelector(`#${targetTab.getAttribute('aria-controls')}`);
 
 			if (!targetPanel) return;
 
 			// Reset active tab attributes
-			activeTab.setAttribute("tabindex", -1);
-			activeTab.setAttribute("aria-selected", false);
+			activeTab.setAttribute('tabindex', -1);
+			activeTab.setAttribute('aria-selected', false);
 
 			// Set target tab attributes
-			targetTab.removeAttribute("tabindex");
-			targetTab.setAttribute("aria-selected", true);
+			targetTab.removeAttribute('tabindex');
+			targetTab.setAttribute('aria-selected', true);
 
 			// If the active panel contains a video, pause it
-			if (activePanel.querySelector("video, .embed")) {
+			if (activePanel.querySelector('video, .embed')) {
 				stopVideo(activePanel);
 			}
 
 			// Update panel visibility
-			activePanel.setAttribute("hidden", "");
-			targetPanel.removeAttribute("hidden");
+			activePanel.setAttribute('hidden', '');
+			targetPanel.removeAttribute('hidden');
 
 			targetTab.focus();
 		};
@@ -281,7 +270,7 @@ if (dataset) {
 			if (!event.target.matches('[role="tab"]')) return;
 
 			// Get the tab group and target tab
-			let tabGroup = event.target.closest(".tab-group");
+			let tabGroup = event.target.closest('.tab-group');
 			let targetTab = event.target;
 
 			// Ignore the active tab
@@ -292,7 +281,7 @@ if (dataset) {
 
 		let onKeydown = (event) => {
 			// Only run for left and right arrow keys
-			if (!["ArrowLeft", "ArrowRight"].includes(event.code)) return;
+			if (!['ArrowLeft', 'ArrowRight'].includes(event.code)) return;
 
 			// Only run if the element in focus is a tab
 			let focusedTab = document.activeElement.closest('[role="tab"]');
@@ -300,18 +289,18 @@ if (dataset) {
 
 			event.preventDefault();
 
-			let tabGroup = event.target.closest(".tab-group");
+			let tabGroup = event.target.closest('.tab-group');
 			let { activeTab } = tabGroup._tabs;
 
 			if (!tabGroup || !activeTab) return;
 
 			// Get the parent nav item
-			let navItem = activeTab.closest("li");
+			let navItem = activeTab.closest('li');
 
 			// If right arrow, get the next sibling
 			// Otherwise, get the previous sibling
 			let targetNavItem =
-				event.code === "ArrowRight"
+				event.code === 'ArrowRight'
 					? navItem.nextElementSibling
 					: navItem.previousElementSibling;
 
@@ -319,7 +308,7 @@ if (dataset) {
 			if (!targetNavItem) return;
 
 			// Otherwise, get the target tab
-			let targetTab = targetNavItem.querySelector("button");
+			let targetTab = targetNavItem.querySelector('button');
 
 			toggleTab({ tabGroup, targetTab });
 		};
@@ -330,9 +319,7 @@ if (dataset) {
 
 		let init = () => {
 			// Get all accordion headings
-			let tabGroups = document.querySelectorAll(
-				".tab-group:not([data-initialized])",
-			);
+			let tabGroups = document.querySelectorAll('.tab-group:not([data-initialized])');
 			for (let i = 0; i < tabGroups.length; i++) {
 				let tabGroup = tabGroups[i];
 				setupDOM({
@@ -343,28 +330,24 @@ if (dataset) {
 					buttons: tabGroup.querySelectorAll('[role="tab"]'),
 					panels: tabGroup.querySelectorAll('[role="tabpanel"]'),
 					get activeTab() {
-						return tabGroup.querySelector(
-							'[role="tab"][aria-selected="true"]',
-						);
+						return tabGroup.querySelector('[role="tab"][aria-selected="true"]');
 					},
 					get activePanel() {
 						let tab = this.activeTab;
 						return tab
-							? tabGroup.querySelector(
-									`#${tab.getAttribute("aria-controls")}`,
-								)
+							? tabGroup.querySelector(`#${tab.getAttribute('aria-controls')}`)
 							: null;
 					},
 				};
 			}
 			eventControl.add({
-				selector: ".tab-group",
-				eventType: "click",
+				selector: '.tab-group',
+				eventType: 'click',
 				fn: onClick,
 			});
 			eventControl.add({
-				selector: ".tab-group",
-				eventType: "keydown",
+				selector: '.tab-group',
+				eventType: 'keydown',
 				fn: onKeydown,
 			});
 		};
@@ -379,7 +362,7 @@ if (dataset) {
 	tabs.init();
 	eventControl.add({
 		elem: document,
-		eventType: "astro:after-swap",
+		eventType: 'astro:after-swap',
 		fn: tabs.init,
 	});
 </script>

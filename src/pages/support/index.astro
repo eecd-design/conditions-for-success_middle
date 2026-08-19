@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Accordion from 'src/components/Accordion.astro';
+import AccordionGroup from 'src/components/AccordionGroup.astro';
+import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
+import LinksListItem from 'src/components/LinksListItem.astro';
+import PageNav from 'src/components/PageNav.astro';
+
+let guideList = [];
+let guideIndex = 1;
+
+let allGuides = await getCollection('guides', ({ data }) => {
+	return data.published === true;
+});
+
+for (let guide of allGuides) {
+	let data = JSON.parse(JSON.stringify(guide.data));
+	data.itemId = `gui-${guideIndex}`;
+	data.category = 'guides';
+	data.slug = guide.id;
+	guideList.push(data);
+	guideIndex += 1;
+}
+
+guideList.sort((a, b) => {
+	return a.order - b.order;
+});
+
+let questionList = [];
+
+let allQuestions = await getCollection('faq', ({ data }) => {
+	return data.published === true;
+});
+let allAnswers = Object.values(
+	import.meta.glob('src/content/faq/**/answer.md', {
+		eager: true,
+	}),
+);
+
+for (let question of allQuestions) {
+	let data = JSON.parse(JSON.stringify(question.data));
+	data.answer = allAnswers.find((match: any) =>
+		match.file.includes(`src/content/faq/${question.id}`),
+	);
+	questionList.push(data);
+}
+
+questionList.sort((a, b) => {
+	return a.order - b.order;
+});
+
+let path = Astro.url.pathname;
+
+let sectionLinks = [
+	{
+		url: `${path}#guides`,
+		text: 'Guides',
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	},
+	{
+		url: `${path}#faq`,
+		text: 'Frequently Asked Questions',
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	},
+	{
+		url: `${path}#contact`,
+		text: 'Contact',
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	},
+];
+---
+
+<BaseLayout
+	pageTitle={'Support'}
+	pageType={'support'}
+>
+	<PageNav sectionLinks={sectionLinks} />
+
+	<div class="content">
+		<h1
+			id="main-heading"
+			tabindex="-1"
+		>
+			Support
+		</h1>
+
+		<p>
+			Find guides for completing a self-assessment and viewing reports, plus answers to
+			frequently asked questions about using this website.
+		</p>
+
+		<hr class="section" />
+
+		<h2 id="guides">Guides</h2>
+
+		<div
+			class="list-container elem-group"
+			data-style="grid"
+			data-columns="2"
+		>
+			<ul
+				id="support-list"
+				class="links-list wrapper"
+				role="listbox"
+				data-layout="card"
+				data-content="asset"
+				data-list-item-categories='["guides"]'
+			>
+				{
+					guideList.map((itemData, index) => (
+						<LinksListItem
+							itemData={itemData}
+							index={index}
+							listName={'guides-list'}
+							listGroupSize={10}
+						/>
+					))
+				}
+			</ul>
+		</div>
+
+		<hr class="section" />
+
+		<h2 id="faq">Frequently Asked Questions</h2>
+
+		<AccordionGroup>
+			{
+				questionList.map((itemData) => (
+					<Accordion
+						title={itemData.question}
+						dataset={[{ key: 'font-size', value: 'base' }]}
+					>
+						{itemData.answer && itemData.answer.rawContent().trim().length > 0 && (
+							<itemData.answer.Content />
+						)}
+					</Accordion>
+				))
+			}
+		</AccordionGroup>
+
+		<hr class="section" />
+
+		<h2 id="contact">Contact</h2>
+
+		<p>
+			<strong>Beth Henderson</strong><br />
+			Middle Level Learning Project Lead<br />
+			<a href="mailto:beth.henderson@gnb.ca">beth.henderson@gnb.ca</a>
+		</p>
+	</div>
+</BaseLayout>

@@ -1,9 +1,9 @@
 indicator: access-and-equity
-tag: '2.5'
+tag: '2.6'
 title: Flexible and Differentiated Instruction
 initiating:
   considerations:
-    - tag: 2.5.1
+    - tag: 2.6.1
       title: >-
         Educators begin to discuss the rationale for differentiation. They use
         minimal grouping or “one-size-fits-all” lessons with some basic attempts
@@ -11,13 +11,13 @@ initiating:
         learners).
       compass: false
       categories: []
-    - tag: 2.5.2
+    - tag: 2.6.2
       title: >-
         Most learners receive the same tasks; adaptations are not often evident
         for learners with different readiness levels.
       compass: false
       categories: []
-    - tag: 2.5.3
+    - tag: 2.6.3
       title: >-
         Staff attend introductory sessions on the “why” and “what” of
         differentiation but have limited practice integrating it.
@@ -25,7 +25,7 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 2.5.4
+    - tag: 2.6.4
       title: >-
         Educators begin to differentiate by adjusting content (e.g., text
         complexity), process (e.g., choice of learning activities), or product
@@ -34,14 +34,14 @@ implementing:
         data.
       compass: false
       categories: []
-    - tag: 2.5.5
+    - tag: 2.6.5
       title: >-
         Learners are given options or leveled tasks (e.g., striving readers
         receive scaffolded texts, advanced learners may explore deeper or
         extended tasks).
       compass: true
       categories: []
-    - tag: 2.5.6
+    - tag: 2.6.6
       title: >-
         Collaboration in grade-level or learning area teams to plan
         differentiated lessons. Educators share strategies (e.g., tiered
@@ -50,7 +50,7 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 2.5.7
+    - tag: 2.6.7
       title: >-
         Differentiation becomes routine, with consistent use of ongoing
         assessments to regroup learners and tailor instruction. Educators
@@ -58,14 +58,14 @@ developing:
         Indicators and learner needs.
       compass: true
       categories: []
-    - tag: 2.5.8
+    - tag: 2.6.8
       title: >-
         Learners frequently select from multiple pathways (e.g., learning
         centers, interactive tasks, peer teaching) that address their readiness,
         interests, etc.
       compass: true
       categories: []
-    - tag: 2.5.9
+    - tag: 2.6.9
       title: >-
         Grade-level or learning area (e.g., English Language Arts) teams
         regularly analyze learner work, refine differentiation strategies, and
@@ -74,21 +74,21 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 2.5.10
+    - tag: 2.6.10
       title: >-
         Differentiation is embedded in every lesson, supported by data-driven
         adjustments, co-teaching models, and robust professional learning.
         Educators also mentor newer staff in differentiation practices.
       compass: true
       categories: []
-    - tag: 2.5.11
+    - tag: 2.6.11
       title: >-
         Learners know how to advocate for their own learning needs, select tasks
         that challenge them, and track their progress. Learning is personalized,
         relevant, and leads to high achievement.
       compass: true
       categories: []
-    - tag: 2.5.12
+    - tag: 2.6.12
       title: >-
         Continuous reflection and research-based refinement. Differentiation
         best practices are shared school-wide and celebrated through improved
