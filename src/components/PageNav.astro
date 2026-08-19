@@ -34,7 +34,9 @@ if (dataset) {
 						>
 							<span class="icon-and-label-container">
 								<span class="label-container">
-									<span class="label">{link.text}</span>
+									<span class="label">
+										<Fragment set:html={link.text} />
+									</span>
 								</span>
 								<IconArrowDown16 classes={['destination']} />
 							</span>

@@ -67,7 +67,7 @@ let sectionLinks = [];
 for (let component of components) {
 	sectionLinks.push({
 		url: `${path}#component-${component.data.tag.replaceAll('.', '-')}`,
-		text: `${component.data.tag} ${component.data.title}`,
+		text: `${component.data.tag}&ensp;${component.data.title}`,
 		dataset: [{ key: 'icon-on-hover', value: '' }],
 	});
 }
@@ -112,7 +112,7 @@ for (let component of components) {
 							<span class="icon-and-label-container">
 								<span class="label-container">
 									<span class="label">
-										{component.data.tag} {component.data.title}
+										{component.data.tag}&ensp;{component.data.title}
 									</span>
 								</span>
 								<IconArrowDownSmall classes={['destination']} />
