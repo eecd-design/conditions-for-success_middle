@@ -1,1 +1,1 @@
-Instruction is focused on isolated numeracy skills with limited implementation of numeracy instructional practices. Learners are developing their ability to apply prior mathematical knowledge and, with some encouragement, are building confidence in tackling problem-solving tasks.
+Educators recognize that numeracy supports learning in every subject and benefits all learners. They begin identifying mathematical thinking already present in their learning area and where learners may need support.

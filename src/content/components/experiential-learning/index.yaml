@@ -5,8 +5,10 @@ initiating:
   considerations:
     - tag: 7.3.1
       title: >-
-        Educators plan occasional experiential activities, such as outdoor
-        observations or classroom experiments, with limited learner input.
+        Educators plan occasional experiential activities (such as outdoor
+        observations or classroom experiments) to spark curiosity, but these
+        offer learners limited opportunities to make meaning or apply their
+        learning.
       compass: false
       categories: []
     - tag: 7.3.2
@@ -25,9 +27,9 @@ implementing:
   considerations:
     - tag: 7.3.4
       title: >-
-        Learners participate in experiential activities, like experiments, local
-        field studies, or Land-based learning opportunities connected to
-        curriculum goals.
+        Learners participate in regular, curriculum-connected experiential
+        activities that spark curiosity and include educator-guided
+        opportunities to make meaning and apply learning.
       compass: false
       categories: []
     - tag: 7.3.5
@@ -46,9 +48,9 @@ developing:
   considerations:
     - tag: 7.3.7
       title: >-
-        Learners collaborate to design experiential learning activities, such as
-        community engagement projects, outdoor investigations, or Land-based
-        learning.
+        Learners collaborate to design curriculum-connected experiential
+        learning activities that spark curiosity and provide purposeful
+        opportunities to make meaning and apply learning in new contexts.
       compass: false
       categories: []
     - tag: 7.3.8
@@ -67,9 +69,10 @@ sustaining:
   considerations:
     - tag: 7.3.10
       title: >-
-        Experiential, outdoor learning, and Land-based learning are fully
-        integrated, with learners routinely designing and engaging in hands-on,
-        real-world problem-solving.
+        Experiential, outdoor, and Land-based learning are fully integrated into
+        the curriculum, with learners routinely designing and engaging in
+        experiences that spark curiosity, support meaning-making, and enable the
+        application of learning through authentic, real-world problem-solving.
       compass: false
       categories: []
     - tag: 7.3.11

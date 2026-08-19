@@ -5,69 +5,80 @@ initiating:
   considerations:
     - tag: 1.4.1
       title: >-
-        Hold initial meetings with minimal structure, primarily addressing
+        Initial meetings involve minimal structure and primarily address
         immediate learner needs.
       compass: false
       categories: []
     - tag: 1.4.2
-      title: Focus on isolated incidents with little or no data-driven discussion.
+      title: >-
+        Meetings are primarily focused on individual situations, with minimal
+        use of data to inform discussion and planning.
       compass: false
       categories: []
     - tag: 1.4.3
-      title: Outline a method for including learner voice to define key issues.
+      title: >-
+        A method has been established that allows for learner input on key
+        issues.
       compass: false
       categories: []
 implementing:
   considerations:
     - tag: 1.4.4
       title: >-
-        Meet biweekly with structured agendas focused on academic and
-        behavioural needs.
+        Meetings are held biweekly, with structured agendas focused on academic
+        and behavioural needs.
       compass: true
       categories: []
     - tag: 1.4.5
-      title: >-
-        Educators are part of the ESS referral process, including pre- and
-        post-communication.
+      title: Data is used to discuss trends and patterns in learner performance.
       compass: false
       categories: []
     - tag: 1.4.6
-      title: Begin using data to discuss trends and patterns in learner performance.
+      title: >-
+        Educators participate in the ESS referral process, including pre- and
+        post-communication.
       compass: false
       categories: []
 developing:
   considerations:
     - tag: 1.4.7
-      title: Educators participate in ESS-hosted Problem-Solving Meetings.
+      title: >-
+        Educators participate in ESS-hosted Problem-Solving Meetings to
+        collaboratively design and implement interventions and supports for
+        learners' academic and/or behavioural needs.
       compass: false
       categories: []
     - tag: 1.4.8
-      title: Use data trends to collaboratively design and implement interventions.
+      title: >-
+        Data trends are used to collaboratively design and implement
+        interventions.
       compass: true
       categories: []
     - tag: 1.4.9
       title: >-
-        Engage in co-planning and co-teaching with educators to address diverse
-        learner needs.
-      compass: true
-      categories: []
-    - tag: 1.4.10
-      title: >-
-        Engage impacted learners—provide learners agency in the design of the
-        approach to meet their needs.
+        Educators engage in co-planning and co-teaching to address diverse
+        learner needs and actively involve learners in designing supports
+        intended to meet their needs.
       compass: true
       categories: []
 sustaining:
   considerations:
-    - tag: 1.4.11
+    - tag: 1.4.10
       title: >-
         Meetings are solution-focused, driven by learner-centered data, and
         aligned with the school’s vision.
       compass: true
       categories: []
+    - tag: 1.4.11
+      title: >-
+        Continuous evaluation of interventions and progress monitoring ensures
+        dynamic and effective support for learners.
+      compass: true
+      categories: []
     - tag: 1.4.12
       title: >-
-        Continuous evaluation of interventions ensures dynamic and effective
-        support for learners.
+        Educators and support teams work interdependently with learners to
+        refine supports, with learners actively contributing to decisions that
+        support their success.
       compass: true
       categories: []

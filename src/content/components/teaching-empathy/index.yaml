@@ -11,15 +11,22 @@ initiating:
         responsible decisions).
       compass: false
       categories: []
-implementing:
-  considerations:
     - tag: 4.2.2
       title: >-
-        Leadership models empathy by recognizing staff efforts and providing
-        well-being support.
+        Staff begin to recognize how empathy can be modelled and intentionally
+        taught through every day interactions.
       compass: false
       categories: []
+implementing:
+  considerations:
     - tag: 4.2.3
+      title: >-
+        Leadership intentionally models empathy by recognizing staff efforts and
+        perspectives and responding to staff needs with care and appropriate
+        support.
+      compass: false
+      categories: []
+    - tag: 4.2.4
       title: >-
         Staff look for intentional opportunities in the prescribed curriculum to
         teach empathy.
@@ -27,29 +34,30 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 4.2.4
-      title: >-
-        Staff embed best practices (e.g., restorative circles) to assist
-        learners in understanding multiple perspectives, solving problems, etc.
-      compass: false
-      categories: []
     - tag: 4.2.5
       title: >-
-        Peer support groups or mentorships are established to foster mutual care
-        among staff.
+        Staff embed best practices (e.g., restorative circles) that help
+        learners understand multiple perspectives, solve problems, and respond
+        with empathy.
+      compass: false
+      categories: []
+    - tag: 4.2.6
+      title: >-
+        Peer support groups or mentorships are established to foster mutual
+        care, connection, and empathy among learners and staff.
       compass: false
       categories: []
 sustaining:
   considerations:
-    - tag: 4.2.6
-      title: >-
-        Empathy is consistently demonstrated in staff interactions and
-        decision-making.
-      compass: false
-      categories: []
     - tag: 4.2.7
       title: >-
-        School culture emphasizes teaching learners to help care for themselves
-        and those around them.
+        Empathy is consistently demonstrated in staff interactions,
+        instructional practices, and decision-making.
+      compass: false
+      categories: []
+    - tag: 4.2.8
+      title: >-
+        School culture emphasizes teaching learners to develop empathy, care for
+        themselves, and contribute to the well-being of others.
       compass: false
       categories: []

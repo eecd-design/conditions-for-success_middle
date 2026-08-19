@@ -1,1 +1,1 @@
-Most educators consistently use effective numeracy instructional practices to foster learners' conceptual understanding, problem-solving, and reasoning. Learners independently apply prior mathematical knowledge and collaborate to solve problem solving tasks across learning areas.
+Learners increasingly choose strategies, explain their thinking, use representations, and apply numeracy in different situations.

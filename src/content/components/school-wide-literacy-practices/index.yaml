@@ -5,164 +5,189 @@ initiating:
   considerations:
     - tag: 6.2.1
       title: >-
-        Direct instruction focuses on isolated skills rather than deeper meaning
-        (e.g., educators explicitly define literary terms before reading but do
-        not connect them to learners’ unique strengths or prior knowledge).
+        Educators recognize that learners need support in understanding texts
+        and making meaning from content across learning areas. Reading tasks
+        often focus on locating information and recalling ideas.
       compass: false
       categories: []
     - tag: 6.2.2
       title: >-
-        Vocabulary instruction relies on word lists rather than developing
-        thematic and technical vocabulary across learning areas (e.g., learners
-        memorize definitions instead of using new vocabulary to communicate
-        effectively in writing and discussions).
+        Educators identify vocabulary demands and occasionally provide supports
+        when learners encounter unfamiliar terms or concepts.
       compass: false
       categories: []
     - tag: 6.2.3
       title: >-
-        Summarizing and note-taking involve copying text rather than connecting
-        reading and writing or increasing stamina (e.g., learners complete
-        fill-in-the-blank summaries rather than constructing their own responses
-        to texts).
+        Educators occasionally provide graphic organizers, guiding questions,
+        note-taking supports, or reading tools, but use is inconsistent across
+        classrooms.
       compass: false
       categories: []
     - tag: 6.2.4
       title: >-
-        Questioning is recall-based, with minimal opportunities to seek
-        clarification or evaluate and respond to ideas (e.g., educators ask,
-        “What happened in the story?” rather than prompting learners to explain
-        author’s intent or argumentation strategies).
+        Discussion is primarily educator-directed, and learners have limited
+        opportunities to explain thinking, ask questions, or build on the ideas
+        of others.
       compass: false
       categories: []
     - tag: 6.2.5
       title: >-
-        Assessment is summative, with little formative feedback for learners to
-        reflect and grow as independent readers and writers.
+        Learners use writing mainly to record information or complete assigned
+        tasks. They have limited opportunities to engage in planning, revision,
+        the feedback cycle, and/or reflection as part of the writing process.
       compass: false
       categories: []
-implementing:
-  considerations:
     - tag: 6.2.6
       title: >-
-        Reciprocal teaching is introduced, allowing learners to use talk to own
-        thinking and understanding through peer discussions (e.g., in pairs,
-        learners take turns leading discussions about a shared text, practicing
-        predicting, questioning, clarifying, and summarizing).
+        Assessment is primarily summative, with limited opportunities for
+        learners to use feedback to improve learning.
       compass: false
       categories: []
     - tag: 6.2.7
       title: >-
-        Vocabulary instruction is embedded in reading and writing activities,
-        leveraging prior knowledge to support meaning-making across texts (e.g.,
-        before reading XX, learners connect historical context to the novel’s
-        themes, increasing stamina and engagement).
+        Learners rely heavily on educator support to access texts, participate
+        in discussions, and communicate understanding.
       compass: false
       categories: []
+implementing:
+  considerations:
     - tag: 6.2.8
       title: >-
-        Summarizing and note-taking are modeled, with learners beginning to
-        apply these strategies independently to reference texts for verification
-        (e.g., learners use graphic organizers to track key ideas while reading
-        a novel and develop their own interpretations).
+        Educators intentionally support comprehension before, during, and after
+        reading by activating prior knowledge, establishing a purpose for
+        reading, and modelling high-yield comprehension strategies.
       compass: false
       categories: []
     - tag: 6.2.9
       title: >-
-        Class discussion and cooperative learning emerge, allowing learners to
-        begin supporting and defending their ideas with evidence (e.g., after
-        reading an editorial, learners engage in a structured debate, practicing
-        evaluating and responding to multiple viewpoints).
+        Educators intentionally build background knowledge and teach important
+        vocabulary in context before learning begins.
       compass: false
       categories: []
     - tag: 6.2.10
       title: >-
-        Formative assessment is used, but learners rely on the educator for
-        corrections rather than reflecting authentically on their progress
-        (e.g., learners complete exit tickets, but reflection is still prompted
-        by the educator rather than learner-initiated).
+        Educators model and provide opportunities to use high-yield literacy
+        tools and strategies such as predicting, questioning, clarifying,
+        visualizing, summarizing, "Know, Want to Know, Learned" (KWL),
+        anticipation guides, note-taking, and graphic organizers.
       compass: false
       categories: []
-developing:
-  considerations:
     - tag: 6.2.11
       title: >-
-        Reciprocal teaching, questioning, and self-questioning are learner-led,
-        allowing them to seek information and analyze critically (e.g., learners
-        generate their own discussion questions, make connections between texts,
-        and clarify misunderstandings in small groups).
+        Educators model effective speaking and listening behaviours and provide
+        structured opportunities for discussion, cooperative learning, and
+        evidence-based conversations.
       compass: false
       categories: []
     - tag: 6.2.12
       title: >-
-        Metacognitive strategies are used to reflect on and apply feedback from
-        others (e.g., learners write reading reflections, identifying challenges
-        and strategies they used to understand the text and how they plan to
-        adjust).
+        Educators model planning, drafting, revising, and editing processes, and
+        learners use writing tools and organizational supports to communicate
+        understanding.
       compass: false
       categories: []
     - tag: 6.2.13
       title: >-
-        Cooperative learning and peer tutoring promote deeper engagement in
-        assessing self and others (e.g., learners provide structured peer
-        feedback on each other’s essays, using a rubric to guide constructive
-        critique). 
+        Educators use formative assessment and provide feedback to support
+        learner growth in reading, writing, speaking, and listening.
       compass: false
       categories: []
     - tag: 6.2.14
       title: >-
-        Class discussion and formal discussions (e.g., Socratic seminars,
-        debates) are learner-driven, reinforcing the importance of supporting
-        and extending understanding (e.g., learners facilitate their own
-        Socratic seminar, analyzing how texts convey societal values and
-        perspectives).
+        Learners begin applying literacy routines and strategies with guidance
+        and support across learning areas.
       compass: false
       categories: []
+developing:
+  considerations:
     - tag: 6.2.15
       title: >-
-        Formative assessment and feedback loops guide instruction and learning
-        (e.g., learners use self-assessment checklists and peer review
-        strategies to refine their writing and questioning skills).
-      compass: true
+        Learners independently use comprehension strategies to monitor
+        understanding, make connections, determine importance, summarize, and
+        construct meaning from increasingly complex texts.
+      compass: false
       categories: []
-sustaining:
-  considerations:
     - tag: 6.2.16
       title: >-
-        Self-questioning and metacognitive strategies are routine, allowing
-        learners to read and write to learn about self, world, and others (e.g.,
-        learners annotate texts independently, making inferences and drawing
-        personal connections without educator prompts).
+        Learners use vocabulary knowledge, context clues, word study, and prior
+        knowledge to support comprehension and communicate understanding.
       compass: false
       categories: []
     - tag: 6.2.17
       title: >-
-        Scaffolding is dynamic, with learners adjusting their own supports as
-        needed (e.g., some learners choose audiobooks, annotation tools, or
-        graphic organizers that best support their comprehension needs.)
-      compass: false
+        Learners independently select and use strategies and tools to organize
+        information, monitor comprehension, and support learning.
+      compass: true
       categories: []
     - tag: 6.2.18
       title: >-
-        Class discussions are fully learner-led, with deeper textual analysis
-        supporting questioning and analyzing situations (e.g., in a
-        learner-moderated debate, participants cite multiple texts as evidence
-        for their arguments and challenge opposing perspectives constructively).
+        Learners participate in collaborative discussions, inquiry, peer
+        tutoring, and feedback processes where they ask questions, use evidence,
+        consider multiple perspectives, and build on others' thinking.
       compass: false
       categories: []
     - tag: 6.2.19
       title: >-
-        Formal discussions (e.g., structured debates, peer-led literature
-        circles) replace educator-led questioning (e.g., learners explore
-        multiple representations by analyzing a novel, documentary, and opinion
-        article on the same topic, comparing perspectives).
+        Learners write for a variety of purposes and audiences, using feedback
+        and self-assessment to improve clarity, organization, and communication.
       compass: false
       categories: []
     - tag: 6.2.20
       title: >-
-        Formative assessment is fully integrated, with learners self-regulating
-        their learning and demonstrating knowledge by writing for a variety of
-        purposes (e.g., learners track their growth over time using a reading
-        and writing portfolio, setting personalized literacy goals based on
-        feedback from peers and educators).
+        Learners use self-assessment, peer feedback, success criteria, and
+        reflection to identify strengths and next steps.
+      compass: false
+      categories: []
+    - tag: 6.2.21
+      title: >-
+        Learners increasingly take ownership of literacy practices and apply
+        strategies independently in different contexts.
+      compass: false
+      categories: []
+sustaining:
+  considerations:
+    - tag: 6.2.22
+      title: >-
+        Learners independently analyze, synthesize, evaluate, and apply
+        information from multiple texts and sources to deepen understanding and
+        solve problems across disciplines.
+      compass: false
+      categories: []
+    - tag: 6.2.23
+      title: >-
+        Learners independently acquire, apply, and transfer disciplinary
+        vocabulary and concepts across learning areas and real-world situations.
+      compass: false
+      categories: []
+    - tag: 6.2.24
+      title: >-
+        Learners strategically select, adapt, and combine literacy tools and
+        strategies based on purpose, task demands, and text complexity.
+      compass: false
+      categories: []
+    - tag: 6.2.25
+      title: >-
+        Learners independently lead discussions, seminars, debates, and
+        collaborative inquiries that deepen understanding and create new
+        learning.
+      compass: false
+      categories: []
+    - tag: 6.2.26
+      title: >-
+        Learners independently use writing to analyze, synthesize, evaluate,
+        create, reflect, and communicate understanding across learning areas.
+      compass: false
+      categories: []
+    - tag: 6.2.27
+      title: >-
+        Learners independently use feedback, reflection, and goal-setting to
+        monitor growth and continuously improve literacy skills.
+      compass: false
+      categories: []
+    - tag: 6.2.28
+      title: >-
+        Learners independently transfer literacy skills, strategies, and habits
+        of thinking across disciplines, tasks, and authentic real-world
+        situations.
       compass: false
       categories: []

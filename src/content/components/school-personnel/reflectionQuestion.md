@@ -1,1 +1,1 @@
-How do we ensure that staff identities are recognized and valued as part of the school’s professional culture?
+How do we recognize, honour, and draw upon the varied identities of school personnel to strengthen school culture and learner experiences?

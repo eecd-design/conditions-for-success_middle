@@ -5,8 +5,8 @@ initiating:
   considerations:
     - tag: 1.2.1
       title: >-
-        Staff recognize the importance of inclusion but need to learn more about
-        what it entails and need support enacting it.
+        Staff recognize the importance of inclusion but need further learning
+        and support to understand and consistently enact inclusive practices.
       compass: false
       categories: []
     - tag: 1.2.2
@@ -14,7 +14,10 @@ initiating:
       compass: false
       categories: []
     - tag: 1.2.3
-      title: Staff have received minimal professional learning on implicit bias.
+      title: >-
+        Staff have had introductory opportunities to learn about implicit bias
+        (the unconscious attitudes or assumptions that influence decisions and
+        interactions).
       compass: false
       categories: []
     - tag: 1.2.4
@@ -26,8 +29,9 @@ initiating:
       categories: []
     - tag: 1.2.5
       title: >-
-        Learner voice is valued among school staff, but learners have limited
-        opportunities to provide feedback on decisions impacting them at school.
+        School staff value learner voice and are beginning to create
+        opportunities for learners to provide feedback on decisions that impact
+        their school experience.
       compass: false
       categories: []
 implementing:
@@ -72,8 +76,9 @@ developing:
       categories: []
     - tag: 1.2.12
       title: >-
-        Staff use inclusive teaching practices to ensure all learners are
-        supported to participate and achieve.
+        Staff plan independently and collaboratively, using inclusive teaching
+        practices to ensure all learners are supported to participate and
+        achieve.
       compass: false
       categories: []
     - tag: 1.2.13
@@ -105,7 +110,9 @@ sustaining:
       compass: false
       categories: []
     - tag: 1.2.17
-      title: Staff are skilled in using strategies that meet learner needs.
+      title: >-
+        Staff skillfully and consistently apply inclusive strategies that meet
+        learner needs.
       compass: false
       categories: []
     - tag: 1.2.18

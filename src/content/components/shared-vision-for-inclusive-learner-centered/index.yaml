@@ -8,7 +8,12 @@ initiating:
       compass: false
       categories: []
     - tag: 1.1.2
-      title: Leadership introduces the concept of middle block philosophy.
+      title: >-
+        Leadership introduces the middle block philosophy as an approach that
+        recognizes the unique developmental needs of early adolescents, ages
+        11–14. This philosophy promotes a balanced and supportive learning
+        environment that fosters academic growth, social-emotional development,
+        and a strong sense of belonging.
       compass: false
       categories: []
 implementing:
@@ -40,17 +45,13 @@ sustaining:
   considerations:
     - tag: 1.1.7
       title: >-
-        All learning partners can explain the shared vision and mission; it is
-        central to decision-making and celebrated regularly.
+        All learning partners can explain the shared vision and mission, which
+        is regularly celebrated and guides decision-making. Staff use data to
+        demonstrate progress toward vision-aligned goals and to adjust their
+        approach as needed.
       compass: false
       categories: []
     - tag: 1.1.8
-      title: >-
-        Staff use data to show progress toward vision-aligned goals and adjust
-        as needed.
-      compass: false
-      categories: []
-    - tag: 1.1.9
       title: >-
         All staff buy into the middle block philosophy; the school is a true
         middle school.

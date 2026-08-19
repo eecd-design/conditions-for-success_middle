@@ -44,11 +44,11 @@ implementing:
       categories: []
     - tag: 3.1.7
       title: >-
-        Assign learners to smaller cohorts with a core set of educators,
-        allowing deeper connections and better knowledge of each learner’s
-        background and needs. Implement systems like “Check-In/Check-Out” so
-        each learner has at least one go-to adult for emotional or academic
-        support.
+        Provide learners with opportunities to connect with a core set of
+        educators, enabling deeper connections and better knowledge of each
+        learner’s background and needs. Implement systems like
+        “Check-In/Check-Out” so each learner has at least one go-to adult for
+        emotional or academic support. (Check/Connect)
       compass: true
       categories: []
     - tag: 3.1.8

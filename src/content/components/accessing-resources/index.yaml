@@ -11,14 +11,14 @@ initiating:
       categories: []
     - tag: 2.8.2
       title: >-
-        Educators are unsure of how to request additional support and resources
-        for learners.
+        Some resources are available, but educators are unsure of how to request
+        additional support and resources for learners.
       compass: false
       categories: []
     - tag: 2.8.3
       title: >-
-        Some resources are available, but access is inconsistent and often
-        reactive.
+        Resource needs are usually addressed as they arise, with limited
+        coordination across staff and support services.
       compass: false
       categories: []
 implementing:
@@ -32,14 +32,15 @@ implementing:
     - tag: 2.8.5
       title: >-
         Staff are becoming familiar with available academic, linguistic,
-        social-cultural, social-emotional, and behavioural supports.
+        social-cultural, social-emotional, behavioural, and classroom
+        resources/supports and are beginning to use them consistently.
       compass: false
       categories: []
     - tag: 2.8.6
       title: >-
-        Some resources are consistently used to support learners, but barriers
-        to access may still exist (e.g., MLLs using technology to access grade
-        level text).
+        Staff are beginning to collaborate to identify resource needs, but
+        barriers to access may still exist (e.g., MLLs using technology to
+        access grade-level text).
       compass: false
       categories: []
 developing:
@@ -52,41 +53,37 @@ developing:
       categories: []
     - tag: 2.8.8
       title: >-
-        Educators have easy access to resources to support learners achieving
-        below grade level expectations in literacy and numeracy, learning
-        language at the same time as content, and achieving above grade level
-        expectations.
+        Educators have timely and equitable access to a range of resources to
+        support learners achieving below grade-level literacy and numeracy,
+        learning language at the same time as content, and achieving above
+        grade-level expectations.
       compass: true
       categories: []
     - tag: 2.8.9
       title: >-
-        Collaboration between staff and external supports and services (e.g.,
-        Central Office Curriculum and ESS Coordinators).
+        Staff collaborate with school, district, and external supports to
+        coordinate resources and respond to identified needs.
       compass: true
       categories: []
 sustaining:
   considerations:
     - tag: 2.8.10
       title: >-
-        Educators in rural schools establish virtual collaboration systems
-        (e.g., Microsoft Teams) for cross-school PLCs.
+        The system for identifying, requesting, and accessing resources is fully
+        embedded, efficient, and consistently used.
       compass: false
       categories: []
     - tag: 2.8.11
       title: >-
-        The system for accessing resources is fully embedded and efficient,
-        ensuring all learners thrive.
+        Educators have timely and equitable access to academic, linguistic,
+        social-emotional, behavioural, instructional, and classroom resources
+        that support success for all learners.
       compass: true
       categories: []
     - tag: 2.8.12
       title: >-
-        Educators have quick and effective access to resources to meet learners'
-        academic, linguistic, social-emotional, and behavioural needs.
-      compass: true
-      categories: []
-    - tag: 2.8.13
-      title: >-
-        There is a continuous process for evaluating and adapting the resource
-        system to meet changing needs.
+        Staff continuously evaluate resource access and effectiveness, adapting
+        the system and collaborating across settings to respond to changing
+        needs.
       compass: true
       categories: []
