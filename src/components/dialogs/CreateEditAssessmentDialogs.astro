@@ -164,7 +164,7 @@ let schoolList = {
 					<option value="ASD-E">ASD-E</option>
 					<option value="ASD-S">ASD-S</option>
 					<hr />
-					<option value="ASD-X">ASD-X</option>
+					<option value="Test">Test District</option>
 				</select>
 				<IconCaretDown />
 			</div>
@@ -204,7 +204,7 @@ let schoolList = {
 				<template id="edit-assessment-properties-dialog_school-select_asd-s-options">
 					{schoolList.south.map((school) => <option value={school}>{school}</option>)}
 				</template>
-				<template id="edit-assessment-properties-dialog_school-select_asd-x-options">
+				<template id="edit-assessment-properties-dialog_school-select_test-options">
 					<option value="Test Middle School">Test Middle School</option>
 				</template>
 			</div>
@@ -788,8 +788,8 @@ let schoolList = {
 		}
 
 		if (context === 'test') {
-			districtSelect.value = 'ASD-X';
-			revealSchoolOptionGroup(districtSelect, 'ASD-X');
+			districtSelect.value = 'Test';
+			revealSchoolOptionGroup(districtSelect, 'Test');
 			schoolSelect.value = 'Test Middle School';
 			reportingYearField.value = String(new Date().getFullYear());
 			districtSelect.disabled = true;
