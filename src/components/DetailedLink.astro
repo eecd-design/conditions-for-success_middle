@@ -131,6 +131,14 @@ else if (external.discriminant === false && ['document', 'presentation'].include
 else {
 	DestinationIcon = IconExternal;
 }
+
+let label = toTitleCase(category);
+if (category === 'resource') {
+	label = `${toTitleCase(type)} Resource`;
+}
+if (['indicator', 'component', 'consideration'].includes(category)) {
+	label = `${toTitleCase(category)} ${tag}`;
+}
 ---
 
 <InteractiveWrapper {...interactiveWrapperAttrs}>
@@ -162,11 +170,7 @@ else {
 		</div>
 		<span class="text-container">
 			<span class="detailed label">
-				{
-					category !== 'resource'
-						? `${toTitleCase(category)} ${tag}`
-						: `${toTitleCase(type)} Resource`
-				}
+				{label}
 			</span>
 			{category === 'resource' && <span class="simple label">{toTitleCase(type)}</span>}
 			<span class="title">

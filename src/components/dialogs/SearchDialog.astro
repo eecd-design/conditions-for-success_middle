@@ -61,6 +61,21 @@ for (let resource of allResources) {
 	searchList.push(data);
 	itemIndex += 1;
 }
+
+itemIndex = 1;
+
+// Get all resources
+let allTraining = await getCollection('training', ({ data }) => {
+	return data.published === true;
+});
+
+for (let training of allTraining) {
+	let data = JSON.parse(JSON.stringify(training.data));
+	((data.itemId = `tra-${itemIndex}`), (data.slug = training.id));
+	data.category = 'training';
+	searchList.push(data);
+	itemIndex += 1;
+}
 ---
 
 <dialog
@@ -146,7 +161,7 @@ for (let resource of allResources) {
 			role="listbox"
 			data-search-control="site-contents-list_primary-controls"
 			data-default-item-visibility="hidden"
-			data-list-item-categories='["indicator", "component", "consideration", "resource"]'
+			data-list-item-categories='["indicator", "component", "consideration", "resource", "training"]'
 			hidden
 		>
 			{
