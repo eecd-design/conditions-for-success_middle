@@ -12,5 +12,5 @@ external:
 linkAction: link
 linkedIndicators: []
 linkedComponents:
-  - '2.7'
+  - '2.5'
 linkedConsiderations: []

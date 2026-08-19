@@ -1,16 +1,16 @@
 indicator: access-and-equity
-tag: '2.8'
+tag: '2.7'
 title: Access to Complex, Challenging Text
 initiating:
   considerations:
-    - tag: 2.8.1
+    - tag: 2.7.1
       title: >-
         Instruction is primarily remedial, focusing on below-grade-level texts
         and skills. Reading tasks often emphasize filling gaps rather than
         building independence and confidence in literacy.
       compass: false
       categories: []
-    - tag: 2.8.2
+    - tag: 2.7.2
       title: >-
         Texts are limited to traditional print materials, with little
         recognition of an expanded definition of text (e.g., multimodal texts,
@@ -19,13 +19,13 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 2.8.3
+    - tag: 2.7.3
       title: >-
         Instruction begins incorporating grade-level texts with some
         scaffolding, though reliance on below-grade-level materials remains.
       compass: false
       categories: []
-    - tag: 2.8.4
+    - tag: 2.7.4
       title: >-
         Expanded definition of text begins to emerge, with educators introducing
         multimodal texts (e.g., podcasts, digital articles, visual storytelling,
@@ -33,34 +33,34 @@ implementing:
         materials still dominate.
       compass: false
       categories: []
-    - tag: 2.8.5
+    - tag: 2.7.5
       title: >-
         Educators experiment with high-interest, relevant texts to engage
         learners but may still lower text complexity rather than layering
         supports.
       compass: false
       categories: []
-    - tag: 2.8.6
+    - tag: 2.7.6
       title: >-
         Learners begin using digital tools and assistive technologies (e.g.,
         text-to-speech, audiobooks, screen readers, annotation apps) to access
         and engage with complex texts.
       compass: false
       categories: []
-    - tag: 2.8.7
+    - tag: 2.7.7
       title: Discussions about acceleration begin, but remediation mindsets persist.
       compass: false
       categories: []
 developing:
   considerations:
-    - tag: 2.8.8
+    - tag: 2.7.8
       title: >-
         Many learners read grade-level texts with structured scaffolds (e.g.,
         frontloading vocabulary, mixed ability groupings, guided annotation,
         modeling complex comprehension strategies).
       compass: true
       categories: []
-    - tag: 2.8.9
+    - tag: 2.7.9
       title: >-
         Expanded definition of text is fully embedded, with learners engaging in
         a variety of text types (e.g., documentary clips, professional writing,
@@ -68,13 +68,13 @@ developing:
         of grade-level material.
       compass: false
       categories: []
-    - tag: 2.8.10
+    - tag: 2.7.10
       title: >-
         Educators routinely analyze learner work and progress data to adjust
         scaffolds rather than lower text complexity.
       compass: false
       categories: []
-    - tag: 2.8.11
+    - tag: 2.7.11
       title: >-
         Assessment practices recognize learners’ ability to demonstrate
         understanding through various media, such as learner-created videos,
@@ -83,33 +83,33 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 2.8.12
+    - tag: 2.7.12
       title: >-
         Grade-level, culturally-responsive texts are the norm, with intentional
         scaffolds ensuring all learners engage meaningfully.
       compass: false
       categories: []
-    - tag: 2.8.13
+    - tag: 2.7.13
       title: >-
         Expanded definition of text is fully normalized, with learners choosing
         from diverse text formats based on purpose, audience, and accessibility
         needs.
       compass: false
       categories: []
-    - tag: 2.8.14
+    - tag: 2.7.14
       title: >-
         Educators use disciplinary literacy strategies, teaching learners how to
         navigate complex texts in different learning areas.
       compass: false
       categories: []
-    - tag: 2.8.15
+    - tag: 2.7.15
       title: >-
         Learners independently use a range of technologies (e.g., adaptive
         reading tools, digital collaboration platforms, interactive media) to
         access, analyze, and create complex texts across disciplines.
       compass: false
       categories: []
-    - tag: 2.8.16
+    - tag: 2.7.16
       title: >-
         Learner agency in reading is prioritized—learners engage in choice,
         goal-setting, and reflective reading practices.

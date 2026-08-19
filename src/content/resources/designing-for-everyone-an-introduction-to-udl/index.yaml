@@ -13,5 +13,5 @@ external:
 linkAction: dialog
 linkedIndicators: []
 linkedComponents:
-  - '2.6'
+  - '2.4'
 linkedConsiderations: []

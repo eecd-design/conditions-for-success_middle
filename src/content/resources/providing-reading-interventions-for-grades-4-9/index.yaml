@@ -13,5 +13,5 @@ linkedIndicators: []
 linkedComponents:
   - '6.2'
 linkedConsiderations:
-  - 2.8.8
+  - 2.7.8
   - 6.2.15

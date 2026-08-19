@@ -1,10 +1,10 @@
 indicator: access-and-equity
-tag: '2.6'
+tag: '2.4'
 title: Universal Design for Learning
 explainerResource: designing-for-everyone-an-introduction-to-udl
 initiating:
   considerations:
-    - tag: 2.6.1
+    - tag: 2.4.1
       title: >-
         Educators learn the foundational concepts of UDL—multiple means of
         engagement, representation, and expression. They occasionally adapt
@@ -12,14 +12,14 @@ initiating:
         proactive.
       compass: false
       categories: []
-    - tag: 2.6.2
+    - tag: 2.4.2
       title: >-
         Learning experiences are mostly uniform; learners with identified
         justified accommodations receive individual supports, but not all
         learners benefit from universally-designed lessons.
       compass: false
       categories: []
-    - tag: 2.6.3
+    - tag: 2.4.3
       title: >-
         Educators receive introductory sessions on UDL frameworks and
         guidelines. School leaders begin discussing implementation essentials.
@@ -27,21 +27,21 @@ initiating:
       categories: []
 implementing:
   considerations:
-    - tag: 2.6.4
+    - tag: 2.4.4
       title: >-
         Educators incorporate strategies such as varied media (e.g., video,
         audio, text) for content, flexible seating options, and multiple ways
         for learners to show learning (e.g., presentations, writing, art).
       compass: false
       categories: []
-    - tag: 2.6.5
+    - tag: 2.4.5
       title: >-
         Learners start to see more choices in how they engage with content
         (e.g., reading vs. listening) and demonstrate learning. Supports (e.g.,
         closed captions, graphic organizers) are more widely available.
       compass: false
       categories: []
-    - tag: 2.6.6
+    - tag: 2.4.6
       title: >-
         Educators collaborate to share practical UDL tools and plan lessons with
         at least one UDL principle in mind (e.g., multiple means of
@@ -50,7 +50,7 @@ implementing:
       categories: []
 developing:
   considerations:
-    - tag: 2.6.7
+    - tag: 2.4.7
       title: >-
         UDL is systematically applied. Educators proactively plan for learner
         variability, offering multiple avenues for engagement (e.g., choice
@@ -59,14 +59,14 @@ developing:
         written, oral, digital).
       compass: true
       categories: []
-    - tag: 2.6.8
+    - tag: 2.4.8
       title: >-
         Learners benefit from diverse ways to interact with content and show
         their understanding. They develop metacognitive skills by choosing
         strategies that suit their needs.
       compass: true
       categories: []
-    - tag: 2.6.9
+    - tag: 2.4.9
       title: >-
         Teams conduct lesson studies or peer observations focusing on UDL
         application. Data is used to reflect on how well UDL practices remove
@@ -75,21 +75,21 @@ developing:
       categories: []
 sustaining:
   considerations:
-    - tag: 2.6.10
+    - tag: 2.4.10
       title: >-
         All lessons, activities, and assessments are designed from the outset to
         be accessible and challenging for every learner. UDL is second nature,
         with ongoing innovation and sharing of best practices.
       compass: true
       categories: []
-    - tag: 2.6.11
+    - tag: 2.4.11
       title: >-
         Learners take ownership of their learning, frequently self-selecting
         resources, strategies, and modes of expression. They view “barrier-free”
         learning as the norm.
       compass: true
       categories: []
-    - tag: 2.6.12
+    - tag: 2.4.12
       title: >-
         UDL is infused in professional learning, coaching, and evaluation
         processes. Leaders and educators continuously refine practices based on
