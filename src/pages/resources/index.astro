@@ -127,12 +127,20 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					aria-hidden="true"
 				>
 				</div>
-				<AccordionGroup includeControls={false}>
+				<AccordionGroup
+					includeControls={false}
+					dataset=""
+				>
 					<Accordion
 						title={'Type'}
 						id={'filters_type'}
-						crossIconSize={'small'}
+						headingLevel="3"
+						caretIconSize={'small'}
 						wrapper={false}
+						dataset={[
+							{ key: 'style', value: 'flat' },
+							{ key: 'size', value: 'small' },
+						]}
 					>
 						<span
 							class="filter-group-status label-container field-container"
@@ -175,8 +183,13 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					<Accordion
 						title={'Indicator'}
 						id={'filters_indicator'}
-						crossIconSize={'small'}
+						headingLevel="3"
+						caretIconSize={'small'}
 						wrapper={false}
+						dataset={[
+							{ key: 'style', value: 'flat' },
+							{ key: 'size', value: 'small' },
+						]}
 					>
 						<span
 							class="filter-group-status label-container field-container"
@@ -228,8 +241,13 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					<Accordion
 						title={'Component'}
 						id={'filters_components'}
-						crossIconSize={'small'}
+						headingLevel="3"
+						caretIconSize={'small'}
 						wrapper={false}
+						dataset={[
+							{ key: 'style', value: 'flat' },
+							{ key: 'size', value: 'small' },
+						]}
 					>
 						<span
 							class="filter-group-status label-container field-container"
@@ -563,33 +581,33 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		position: sticky;
 		top: 0;
 		z-index: 10;
-	}
 
-	#filters-aside > .wrapper {
-		padding: var(--space-xl) 0;
-		min-width: 300px;
-		height: 100%;
-		border-right: 1px solid var(--colour-brd-subtle);
-		background-color: var(--colour-bkg-canvas-subtle-1);
-	}
-
-	@container main (width < 1016px) {
-		#filters-aside {
+		@container main (width < 1016px) {
 			display: initial;
 			margin: 0;
 			min-width: auto;
 			width: 0;
 		}
 
-		#filters-aside > .wrapper {
-			width: 300px;
-			box-shadow: var(--box-shadow);
-			translate: -300px;
-			transition: translate var(--transition-ease-medium);
-		}
+		& > .wrapper {
+			padding: var(--space-xl) 0;
+			min-width: 300px;
+			height: 100%;
+			border-right: 1px solid var(--colour-brd-subtle);
+			background-color: var(--colour-bkg-canvas-subtle-1);
 
-		main:has(button.filters-toggle[aria-expanded='true']) #filters-aside > .wrapper {
-			translate: 0;
+			@container main (width < 1016px) {
+				width: 300px;
+				box-shadow: var(--box-shadow);
+				translate: -300px;
+				transition: translate var(--transition-ease-medium);
+			}
+
+			main:has(button.filters-toggle[aria-expanded='true']) & {
+				@container main (width < 1016px) {
+					translate: 0;
+				}
+			}
 		}
 	}
 
@@ -599,308 +617,232 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	#resources-list-secondary-controls {
 		gap: var(--space-2xs);
-	}
 
-	/*
-	// Heading
-	*/
+		& .heading-group {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			gap: var(--space-2xs);
+			margin: 0 var(--space-2xs);
 
-	#resources-list-secondary-controls .heading-group {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: var(--space-2xs);
-		margin: 0 var(--space-2xs);
-	}
+			& .heading {
+				font-size: var(--font-size-lg);
+				margin: 0 0 0 var(--space-xs);
+				flex-grow: 1;
+			}
 
-	#resources-list-secondary-controls .heading-group .heading {
-		font-size: var(--font-size-lg);
-		margin: 0 0 0 var(--space-xs);
-		flex-grow: 1;
-	}
+			& .separator {
+				--separator-long-edge-dimension: 1.75rem;
+			}
 
-	#resources-list-secondary-controls .heading-group .separator {
-		--separator-long-edge-dimension: 1.75rem;
-	}
+			/* Reset and Close Buttons */
 
-	/* 
-	// Reset and Close Buttons
-	*/
+			& :is(button, [data-style-as='button']) {
+				--button-bkg-colour: transparent;
+				--icon-size: 1.25rem;
+				margin: 0;
 
-	#resources-list-secondary-controls .heading-group :is(button, [data-style-as='button']) {
-		--button-bkg-colour: transparent;
-		--icon-size: 1.25rem;
-		margin: 0;
-	}
+				&:is(:hover, :focus-visible),
+				&:has(input:focus-visible) {
+					--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+				}
 
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as='button']):is(:hover, :focus-visible),
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as='button']):has(input:focus-visible) {
-		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
-	}
+				&:has(input[type='reset']:focus-visible) {
+					outline: var(--colour-focus-ring) solid 2px;
+					outline-offset: 3px;
+				}
+			}
 
-	#resources-list-secondary-controls
-		.heading-group
-		:is(button, [data-style-as='button']):has(input[type='reset']:focus-visible) {
-		outline: var(--colour-focus-ring) solid 2px;
-		outline-offset: 3px;
-	}
+			/* Dialog Customization */
 
-	/* Dialog Customization */
+			dialog & {
+				margin: 0 0 var(--space-3xs);
 
-	dialog #resources-list-secondary-controls .heading-group {
-		margin: 0 0 var(--space-3xs);
-	}
+				& .heading {
+					font-size: var(--font-size-2xl);
+					margin: 0;
+				}
 
-	dialog #resources-list-secondary-controls .heading-group .heading {
-		font-size: var(--font-size-2xl);
-		margin: 0;
-	}
+				& + .separator.group {
+					--separator-short-edge-dimension: 2px;
+				}
+			}
+		}
 
-	dialog #resources-list-secondary-controls .heading-group + .separator.group {
-		--separator-short-edge-dimension: 2px;
-	}
+		/* Accordion Customization */
 
-	/*
-	// Accordion Customization 
-	*/
+		& .accordion-group {
+			margin: 0;
 
-	#resources-list-secondary-controls .accordion-group {
-		margin: 0;
-	}
+			& .accordion {
+				& > .heading {
+					margin: 0 var(--space-2xs);
+				}
 
-	#resources-list-secondary-controls .accordion .heading {
-		margin: 0 var(--space-2xs);
-	}
+				& .panel {
+					margin: 0 var(--space-2xs);
+					padding-top: var(--space-3xs);
+				}
+			}
 
-	#resources-list-secondary-controls .accordion .heading button {
-		--button-bkg-colour: transparent;
-		--button-brd-radius: var(--brd-radius-small);
-		--button-txt-colour: var(--colour-txt-on-subtle-1);
-		min-height: auto;
-		padding: var(--space-xs);
-	}
+			/* Dialog Customization */
 
-	#resources-list-secondary-controls .accordion .heading button:is(:hover, :focus-visible),
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button[aria-expanded='true']:is(:hover, :focus-visible) {
-		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
-	}
+			dialog & {
+				& .accordion {
+					& > .heading {
+						margin: 0;
+					}
+				}
+			}
+		}
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button:not([aria-expanded='true']):is(:hover, :focus-visible) {
-		--button-boxshadow-colour: transparent;
-	}
+		/* Separators */
 
-	#resources-list-secondary-controls .accordion .heading button[aria-expanded='true'] {
-		--button-bkg-colour: transparent;
-		--icon-colour: unset;
-		border-radius: var(--button-brd-radius);
-	}
+		& .separator.item {
+			--separator-long-edge-dimension: auto;
+			margin: 0 var(--space-xs);
 
-	#resources-list-secondary-controls .accordion .heading button .icon-and-label-container {
-		--label-size: var(--font-size-xs);
-		--label-weight: 600;
-	}
+			/* Dialog Customization */
 
-	#resources-list-secondary-controls .accordion .heading button .filter-group-status {
-		--label-size: var(--font-size-2xs);
-	}
+			dialog & {
+				margin: 0;
+			}
+		}
 
-	#resources-list-secondary-controls .accordion .heading button > .icon.caret {
-		--icon-size: 0.875rem;
-	}
+		/* 
+		// Fieldsets and Inputs 
+		*/
 
-	#resources-list-secondary-controls
-		.accordion
-		.heading
-		button[aria-expanded='true']
-		.icon-and-label-container {
-		--label-colour: unset;
-	}
+		& fieldset.filters {
+			padding: var(--space-xs) 0 var(--space-2xs);
+			max-height: min(500px, 50vh);
+			overflow: auto;
 
-	#resources-list-secondary-controls .accordion .panel {
-		margin: 0 var(--space-2xs);
-		padding-top: var(--space-3xs);
-		border: none;
-	}
+			/* Dialog Customization */
 
-	/* Dialog Customization */
+			dialog & {
+				overflow: initial;
+				max-height: none;
+			}
 
-	dialog #resources-list-secondary-controls .accordion .heading {
-		margin: 0;
-	}
+			& label {
+				&:has(input[type='checkbox']) {
+					margin: 0 var(--space-xs);
+					padding: var(--space-2xs) var(--space-xs);
+					border-radius: var(--brd-radius-small);
 
-	/* 
-	// Separators 
-	*/
+					& .icon.checkmark {
+						top: 0.75rem;
+						left: 1rem;
+					}
 
-	#resources-list-secondary-controls .separator.item {
-		--separator-long-edge-dimension: auto;
-		margin: 0 var(--space-xs);
-	}
+					/* Dialog Customization */
 
-	/* Dialog Customization */
+					dialog & {
+						margin: 0;
+					}
+				}
 
-	#resources-list-secondary-controls .separator.item {
-		margin: 0;
-	}
+				&:has(input[type='checkbox']:is(:hover, :focus-visible)) {
+					background-color: var(--colour-bkg-surface-subtle-1);
+				}
 
-	/* 
-	// Fieldsets and Inputs 
-	*/
-
-	#resources-list-secondary-controls fieldset.filters {
-		padding: var(--space-xs) 0 var(--space-2xs);
-		max-height: min(500px, 50vh);
-		overflow: auto;
-	}
-
-	#resources-list-secondary-controls fieldset.filters label:has(input[type='checkbox']) {
-		margin: 0 var(--space-xs);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--brd-radius-small);
-	}
-
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type='checkbox']:is(:hover, :focus-visible)) {
-		background-color: var(--colour-bkg-surface-subtle-1);
-	}
-
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type='checkbox']:focus-visible) {
-		outline: var(--colour-focus-ring) solid 2px;
-		outline-offset: 3px;
-	}
-
-	#resources-list-secondary-controls
-		fieldset.filters
-		label:has(input[type='checkbox'])
-		.icon.checkmark {
-		top: 0.75rem;
-		left: 1rem;
-	}
-
-	/* Dialog Customization */
-
-	dialog #resources-list-secondary-controls fieldset.filters {
-		overflow: initial;
-		max-height: none;
-	}
-
-	dialog #resources-list-secondary-controls fieldset.filters label:has(input[type='checkbox']) {
-		margin: 0;
+				&:has(input[type='checkbox']:focus-visible) {
+					outline: var(--colour-focus-ring) solid 2px;
+					outline-offset: 3px;
+				}
+			}
+		}
 	}
 
 	/* 
 	// Primary List Controls
 	------------------------*/
 
-	#resources-list-primary-controls,
-	#resources-list-primary-controls .fieldset-group {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: end;
-		column-gap: var(--space-sm);
-		row-gap: var(--space-base);
-		user-select: none;
-		-webkit-user-select: none;
-	}
+	#resources-list-primary-controls {
+		&,
+		& .fieldset-group {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: end;
+			column-gap: var(--space-sm);
+			row-gap: var(--space-base);
+			user-select: none;
+			-webkit-user-select: none;
+		}
 
-	@container main (width < 744px) {
-		#resources-list-primary-controls {
+		@container main (width < 744px) {
 			flex-flow: column;
 			align-items: stretch;
 		}
 
-		#resources-list-primary-controls .fieldset-group {
-			flex-wrap: wrap;
+		& .fieldset-group {
+			@container main (width < 744px) {
+				flex-wrap: wrap;
+			}
+
+			& .separator {
+				--separator-long-edge-dimension: 1.5rem;
+				margin-bottom: var(--space-3xs);
+
+				@container main (width < 744px) {
+					&:first-of-type {
+						display: none;
+					}
+				}
+			}
 		}
 
-		#resources-list-primary-controls .fieldset-group .separator:first-of-type {
-			display: none;
+		& fieldset {
+			&.search {
+				flex-grow: 1;
+			}
+
+			&:is(.filter, .sort, .layout) {
+				--group-gap: var(--space-2xs);
+
+				& legend {
+					font-size: var(--font-size-3xs);
+					color: var(--colour-txt-on-subtle-2);
+					margin: 0 0 0.325rem;
+				}
+
+				& button {
+					--icon-size: 1.25rem;
+					font-size: var(--font-size-2xs);
+					height: 2rem;
+
+					&:not(:is([aria-pressed='true'], [aria-expanded='true'])):is(
+							:hover,
+							:focus-visible
+						) {
+						--button-bkg-colour: transparent;
+						--button-boxshadow-colour: var(--colour-brd-subtle);
+					}
+
+					&:is([aria-pressed='true'], [aria-expanded='true']) {
+						--icon-colour: var(--colour-txt-on-bold-1);
+						--label-colour: var(--colour-txt-on-bold-1);
+					}
+
+					&[aria-pressed='true'] {
+						pointer-events: none;
+					}
+
+					& .label-container {
+						display: none;
+					}
+				}
+			}
+
+			&:disabled
+				button:is([aria-pressed='true'], [aria-expanded='true'], :has(input:checked)) {
+				--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+				--button-txt-colour: var(--colour-txt-on-subtle-1);
+				--icon-colour: var(--colour-txt-on-subtle-1);
+				--label-colour: var(--colour-txt-on-subtle-1);
+			}
 		}
-	}
-
-	/* 
-	// Search Input
-	*/
-
-	#resources-list-primary-controls fieldset.search {
-		flex-grow: 1;
-	}
-
-	/* 
-	// Fieldsets and Buttons
-	*/
-
-	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) {
-		--group-gap: var(--space-2xs);
-	}
-
-	/* Legend */
-
-	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) legend {
-		font-size: var(--font-size-3xs);
-		color: var(--colour-txt-on-subtle-2);
-		margin: 0 0 0.325rem;
-	}
-
-	/* Buttons */
-
-	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) button {
-		--icon-size: 1.25rem;
-		font-size: var(--font-size-2xs);
-		height: 2rem;
-	}
-
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button:not(:is([aria-pressed='true'], [aria-expanded='true'])):is(:hover, :focus-visible) {
-		--button-bkg-colour: transparent;
-		--button-boxshadow-colour: var(--colour-brd-subtle);
-	}
-
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button:is([aria-pressed='true'], [aria-expanded='true']) {
-		--icon-colour: var(--colour-txt-on-bold-1);
-		--label-colour: var(--colour-txt-on-bold-1);
-	}
-
-	#resources-list-primary-controls
-		fieldset:disabled
-		button:is([aria-pressed='true'], [aria-expanded='true'], :has(input:checked)) {
-		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
-		--button-txt-colour: var(--colour-txt-on-subtle-1);
-		--icon-colour: var(--colour-txt-on-subtle-1);
-		--label-colour: var(--colour-txt-on-subtle-1);
-	}
-
-	#resources-list-primary-controls
-		fieldset:is(.filter, .sort, .layout)
-		button[aria-pressed='true'] {
-		pointer-events: none;
-	}
-
-	#resources-list-primary-controls fieldset:is(.filter, .sort, .layout) button .label-container {
-		display: none;
-	}
-
-	/* Separator */
-
-	#resources-list-primary-controls .separator {
-		--separator-long-edge-dimension: 1.5rem;
-		margin-bottom: var(--space-3xs);
 	}
 </style>
 

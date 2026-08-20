@@ -217,8 +217,12 @@ let phases = [
 					<Accordion
 						title={phase.title}
 						id={`component-${entry.data.tag.replaceAll('.', '-')}_${phase.title.toLowerCase()}`}
-						dataset={[{ key: 'phase', value: phase.key }]}
-						crossIconSize={'medium'}
+						headingLevel="3"
+						dataset={[
+							{ key: 'phase', value: phase.key },
+							{ key: 'style', value: 'soft' },
+						]}
+						caretIconSize={'medium'}
 						wrapper={false}
 					>
 						<PhaseIcons

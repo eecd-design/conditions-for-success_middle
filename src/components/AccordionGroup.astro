@@ -32,32 +32,25 @@ let { allowMultiple = false, includeControls = true } = Astro.props;
 	}
 
 	<slot />
+
+	<script is:inline>
+		// Progressive Enhancement: If js is enabled, close accordions unless default state is open
+		(() => {
+			let script = document.currentScript;
+			let group = script.closest('.accordion-group');
+			let accordions = group.querySelectorAll('.accordion');
+			for (let accordion of accordions) {
+				let btn = accordion.querySelector(':scope>.heading>button');
+				let defaultState = accordion.getAttribute('data-default-state');
+				if (defaultState === 'open') {
+					btn.setAttribute('aria-expanded', 'true');
+				} else {
+					btn.setAttribute('aria-expanded', 'false');
+				}
+			}
+		})();
+	</script>
 </div>
-
-<style is:global>
-	.accordion-group {
-		display: flex;
-		flex-flow: column;
-		gap: var(--space-2xs);
-		margin: var(--space-2xl) 0;
-
-		& .accordion-controls {
-			--group-gap: var(--space-2xs);
-			margin: 0 0 var(--space-2xs);
-
-			& button {
-				--link-colour: var(--colour-txt-on-subtle-2);
-				color: var(--colour-txt-on-subtle-2);
-				font-size: var(--font-size-xs);
-				text-decoration-line: underline;
-			}
-
-			& .separator {
-				place-self: normal;
-			}
-		}
-	}
-</style>
 
 <script>
 	//
@@ -73,13 +66,7 @@ let { allowMultiple = false, includeControls = true } = Astro.props;
 
 	let accordion = (() => {
 		//
-		// DOM Setup
-		//
-
-		let setupDOM = (accordion) => {
-			let btn = accordion.querySelector(':scope>.heading>button');
-			btn.setAttribute('aria-expanded', 'false');
-		};
+		// DOM Setup (Handled by the inline script)
 
 		//
 		// Methods
@@ -214,12 +201,6 @@ let { allowMultiple = false, includeControls = true } = Astro.props;
 		//
 
 		let init = () => {
-			let accordions = document.querySelectorAll('.accordion') as NodeListOf<HTMLElement>;
-
-			for (let accordion of accordions) {
-				setupDOM(accordion);
-			}
-
 			emitEvent({
 				target: document,
 				name: 'accordionSetupComplete',
@@ -250,5 +231,22 @@ let { allowMultiple = false, includeControls = true } = Astro.props;
 		elem: document,
 		eventType: 'astro:after-swap',
 		fn: accordion.init,
+	});
+
+	eventControl.add({
+		elem: document,
+		eventType: 'astro:after-swap',
+		fn: () => {
+			let accordions = document.querySelectorAll('.accordion');
+			for (let accordion of accordions) {
+				let btn = accordion.querySelector(':scope>.heading>button');
+				let defaultState = accordion.getAttribute('data-default-state');
+				if (defaultState === 'open') {
+					btn.setAttribute('aria-expanded', 'true');
+				} else {
+					btn.setAttribute('aria-expanded', 'false');
+				}
+			}
+		},
 	});
 </script>

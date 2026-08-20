@@ -41,8 +41,10 @@ components = components.map((component) => {
 
 let path = Astro.url.pathname;
 
-let sectionLinks = [];
-sectionLinks.push({
+let navSections = [];
+
+let onPageSection = { title: 'On this page', links: [] };
+onPageSection.links.push({
 	url: `${path}#overview`,
 	text: 'Overview',
 	dataset: [
@@ -58,7 +60,7 @@ sectionLinks.push({
 });
 
 for (let indicator of indicators) {
-	sectionLinks.push({
+	onPageSection.links.push({
 		url: `${path}#indicator-${indicator.data.tag}`,
 		text: indicator.data.title,
 		dataset: [
@@ -73,6 +75,8 @@ for (let indicator of indicators) {
 		],
 	});
 }
+
+navSections.push(onPageSection);
 ---
 
 <BaseLayout
@@ -81,7 +85,7 @@ for (let indicator of indicators) {
 >
 	<PageNav
 		heading={'In this report'}
-		sectionLinks={sectionLinks}
+		navSections={navSections}
 		dataset={[{ key: 'restrict-report', value: 'active' }]}
 	/>
 

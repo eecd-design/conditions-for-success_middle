@@ -55,7 +55,11 @@ import videoPoster from 'src/images/video-poster.png';
 		class="transcript accordion-group"
 		hidden
 	>
-		<Accordion title={'Transcript'}>
+		<Accordion
+			title={'Transcript'}
+			headingLevel="3"
+			dataset={[{ key: 'style', value: 'flat' }]}
+		>
 			<IconTranscript slot="button-icon" />
 			<p>Transcript goes here...</p>
 		</Accordion>

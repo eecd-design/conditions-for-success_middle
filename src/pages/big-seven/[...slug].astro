@@ -63,14 +63,32 @@ let nextIndicator =
 				(sibling) => Number(sibling.data.tag) == Number(indicator.data.tag) + 1,
 			)[0];
 
-let sectionLinks = [];
+let navSections = [];
+
+let bigSevenSection = { title: 'The Big Seven', links: [] };
+bigSevenSection.links.push({
+	url: './big-seven/',
+	text: 'Introduction',
+	dataset: [{ key: 'icon-on-hover', value: '' }],
+});
+for (let indicator of allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag))) {
+	bigSevenSection.links.push({
+		url: `./big-seven/${indicator.id}/`,
+		text: `${indicator.data.tag}&ensp;${indicator.data.title}`,
+		dataset: [{ key: 'icon-on-hover', value: '' }],
+	});
+}
+
+let onPageSection = { title: 'On this page', links: [] };
 for (let component of components) {
-	sectionLinks.push({
+	onPageSection.links.push({
 		url: `${path}#component-${component.data.tag.replaceAll('.', '-')}`,
 		text: `${component.data.tag}&ensp;${component.data.title}`,
 		dataset: [{ key: 'icon-on-hover', value: '' }],
 	});
 }
+
+navSections.push(bigSevenSection, onPageSection);
 ---
 
 <BaseLayout
@@ -84,9 +102,9 @@ for (let component of components) {
 
 	<AssessmentToasts slot="toast-group" />
 
-	<SectionNav />
+	<!-- <SectionNav /> -->
 
-	<PageNav sectionLinks={sectionLinks} />
+	<PageNav navSections={navSections} />
 
 	<div
 		class="content"

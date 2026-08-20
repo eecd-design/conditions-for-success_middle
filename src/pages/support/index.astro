@@ -53,30 +53,37 @@ questionList.sort((a, b) => {
 
 let path = Astro.url.pathname;
 
-let sectionLinks = [
-	{
-		url: `${path}#guides`,
-		text: 'Guides',
-		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-	{
-		url: `${path}#faq`,
-		text: 'Frequently Asked Questions',
-		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-	{
-		url: `${path}#contact`,
-		text: 'Contact',
-		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-];
+let navSections = [];
+
+let onPageSection = {
+	title: 'On this page',
+	links: [
+		{
+			url: `${path}#guides`,
+			text: 'Guides',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+		{
+			url: `${path}#faq`,
+			text: 'Frequently Asked Questions',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+		{
+			url: `${path}#contact`,
+			text: 'Contact',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+	],
+};
+
+navSections.push(onPageSection);
 ---
 
 <BaseLayout
 	pageTitle={'Support'}
 	pageType={'support'}
 >
-	<PageNav sectionLinks={sectionLinks} />
+	<PageNav navSections={navSections} />
 
 	<div class="content">
 		<h1
@@ -130,7 +137,11 @@ let sectionLinks = [
 				questionList.map((itemData) => (
 					<Accordion
 						title={itemData.question}
-						dataset={[{ key: 'font-size', value: 'base' }]}
+						headingLevel="3"
+						dataset={[
+							{ key: 'font-size', value: 'base' },
+							{ key: 'style', value: 'soft' },
+						]}
 					>
 						{itemData.answer && itemData.answer.rawContent().trim().length > 0 && (
 							<itemData.answer.Content />

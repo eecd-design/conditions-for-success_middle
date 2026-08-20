@@ -30,28 +30,49 @@ for (let indicator of allIndicators) {
 		.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 }
 
-let sectionLinks = [
-	{
-		url: `${path}#what-are-the-big-seven-indicators`,
-		text: 'What are “The Big Seven” indicators?',
+let navSections = [];
+
+let onPageSection = {
+	title: 'On this page',
+	links: [
+		{
+			url: `${path}#what-are-the-big-seven-indicators`,
+			text: 'What are “The Big Seven” indicators?',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+		{
+			url: `${path}#what-are-the-four-phases-of-growth-and-success`,
+			text: 'What are the four phases of growth and success?',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+		{
+			url: `${path}#when-self-assessing-how-will-schools-know-which-phase-theyre-in`,
+			text: "When self-assessing, how will schools know which phase they're in?",
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+		{
+			url: `${path}#how-can-the-framework-help-with-continuous-improvement-planning`,
+			text: 'How can the framework help with continuous improvement planning?',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+	],
+};
+
+let bigSevenSection = { title: 'The Big Seven', links: [] };
+bigSevenSection.links.push({
+	url: './big-seven/',
+	text: 'Introduction',
+	dataset: [{ key: 'icon-on-hover', value: '' }],
+});
+for (let indicator of allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag))) {
+	bigSevenSection.links.push({
+		url: `./big-seven/${indicator.id}/`,
+		text: `${indicator.data.tag}&ensp;${indicator.data.title}`,
 		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-	{
-		url: `${path}#what-are-the-four-phases-of-growth-and-success`,
-		text: 'What are the four phases of growth and success?',
-		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-	{
-		url: `${path}#when-self-assessing-how-will-schools-know-which-phase-theyre-in`,
-		text: "When self-assessing, how will schools know which phase they're in?",
-		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-	{
-		url: `${path}#how-can-the-framework-help-with-continuous-improvement-planning`,
-		text: 'How can the framework help with continuous improvement planning?',
-		dataset: [{ key: 'icon-on-hover', value: '' }],
-	},
-];
+	});
+}
+
+navSections.push(bigSevenSection, onPageSection);
 ---
 
 <BaseLayout
@@ -64,9 +85,9 @@ let sectionLinks = [
 
 	<AssessmentToasts slot="toast-group" />
 
-	<SectionNav />
+	<!-- <SectionNav /> -->
 
-	<PageNav sectionLinks={sectionLinks} />
+	<PageNav navSections={navSections} />
 
 	<div class="content">
 		<h1
@@ -85,9 +106,11 @@ let sectionLinks = [
 			<AccordionGroup>
 				<Accordion
 					title={'Leadership and Teaming'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'red' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -119,9 +142,11 @@ let sectionLinks = [
 
 				<Accordion
 					title={'Access and Equity'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'orange' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -154,9 +179,11 @@ let sectionLinks = [
 
 				<Accordion
 					title={'Relationships'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'yellow' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -187,9 +214,11 @@ let sectionLinks = [
 
 				<Accordion
 					title={'Empathy'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'green' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -220,9 +249,11 @@ let sectionLinks = [
 
 				<Accordion
 					title={'Identities'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'teal' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -253,9 +284,11 @@ let sectionLinks = [
 
 				<Accordion
 					title={'High-yield Instructional Practices'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'blue' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -286,9 +319,11 @@ let sectionLinks = [
 
 				<Accordion
 					title={'Meaningful Learning Experiences'}
+					headingLevel="3"
 					dataset={[
 						{ key: 'theme', value: 'purple' },
 						{ key: 'vibrancy', value: 'vivid' },
+						{ key: 'style', value: 'soft' },
 					]}
 				>
 					<span
@@ -502,7 +537,11 @@ let sectionLinks = [
 			<p>Use the below information about each phase as a guide.</p>
 
 			<AccordionGroup>
-				<Accordion title={'Initiating'}>
+				<Accordion
+					title={'Initiating'}
+					headingLevel="3"
+					dataset={[{ key: 'style', value: 'soft' }]}
+				>
 					<PhaseIcons
 						phase={'initiating'}
 						slot="button-icon"
@@ -515,7 +554,11 @@ let sectionLinks = [
 					</p>
 				</Accordion>
 
-				<Accordion title={'Implementing'}>
+				<Accordion
+					title={'Implementing'}
+					headingLevel="3"
+					dataset={[{ key: 'style', value: 'soft' }]}
+				>
 					<PhaseIcons
 						phase={'implementing'}
 						slot="button-icon"
@@ -528,7 +571,11 @@ let sectionLinks = [
 					</p>
 				</Accordion>
 
-				<Accordion title={'Developing'}>
+				<Accordion
+					title={'Developing'}
+					headingLevel="3"
+					dataset={[{ key: 'style', value: 'soft' }]}
+				>
 					<PhaseIcons
 						phase={'developing'}
 						slot="button-icon"
@@ -540,7 +587,11 @@ let sectionLinks = [
 					</p>
 				</Accordion>
 
-				<Accordion title={'Sustaining'}>
+				<Accordion
+					title={'Sustaining'}
+					headingLevel="3"
+					dataset={[{ key: 'style', value: 'soft' }]}
+				>
 					<PhaseIcons
 						phase={'sustaining'}
 						slot="button-icon"

@@ -44,14 +44,18 @@ let pageContent: any = allContent.find((match: any) => match.file.includes(entry
 
 const headings = await pageContent.getHeadings();
 
-let sectionLinks = [];
+let navSections = [];
+
+let onPageSection = { title: 'On this page', links: [] };
 for (let heading of headings) {
-	sectionLinks.push({
+	onPageSection.links.push({
 		url: `${pagePath}#${heading.slug}`,
 		text: `${heading.text}`,
 		dataset: [{ key: 'icon-on-hover', value: '' }],
 	});
 }
+
+navSections.push(onPageSection);
 
 let trainingPath = getResourcePath(trainingData);
 let launchText = `View ${toTitleCase(type)}`;
@@ -90,7 +94,7 @@ let interactiveWrapperAttrs = opensDialog
 	pageTitle={title}
 	pageType={'training'}
 >
-	{sectionLinks.length > 0 && <PageNav sectionLinks={sectionLinks} />}
+	{onPageSection.links.length > 0 && <PageNav navSections={navSections} />}
 
 	<div class="content">
 		<a
