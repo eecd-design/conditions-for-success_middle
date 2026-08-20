@@ -1455,6 +1455,14 @@ main {
 			--aside-gap: 0;
 		}
 	}
+
+	&.big-seven > .wrapper {
+		grid-template-rows: auto 0px 1fr;
+		grid-template-areas:
+			'toolbar toolbar toolbar toolbar toolbar toolbar toolbar'
+			'. toasts toasts toasts toasts toasts .'
+			'. left-aside . content . right-aside .';
+	}
 }
 
 #assessment-controls {
