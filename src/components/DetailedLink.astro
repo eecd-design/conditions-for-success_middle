@@ -90,9 +90,17 @@ if (category === 'resource') {
 	}
 }
 
+let isLocation = !['resource', 'guides'].includes(category);
+let isExternal = external && external.discriminant;
+let isMedia = ['video', 'audio'].includes(type);
+let isFile = ['document', 'presentation', 'image'].includes(type);
+
 // If resource is a video or internal audio, open it in a dialog
 let opensDialog = false;
-if (['resource', 'guides'].includes(category)) opensDialog = linkAction === 'dialog';
+if (!isLocation) opensDialog = linkAction === 'dialog';
+
+let opensInNewTab = !isMedia && (isExternal || isFile);
+
 let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
 	? {
@@ -105,18 +113,20 @@ let interactiveWrapperAttrs = opensDialog
 			'data-dialog-context': listLocation === 'searchDialog' ? 'from-search-dialog' : null,
 			'data-media-type': type,
 			'data-media-src': path,
-			'data-media-external': external.discriminant,
+			'data-media-external': isExternal,
 		}
 	: {
 			class: 'detailed-link',
 			href: path,
+			target: opensInNewTab ? '_blank' : null,
+			rel: opensInNewTab ? 'noopener' : null,
 			role: isInListItem ? 'option' : null,
 		};
 
 let DestinationIcon = null;
 
 // Pages and Locations
-if (!['resource', 'guides'].includes(category)) {
+if (isLocation) {
 	DestinationIcon = IconArrowRight;
 }
 // Embedded Media
@@ -124,10 +134,10 @@ else if (opensDialog) {
 	DestinationIcon = IconExpand;
 }
 // Internal Files
-else if (external.discriminant === false && ['document', 'presentation'].includes(type)) {
+else if (!isExternal && isFile) {
 	DestinationIcon = IconDownload;
 }
-// Everything else
+// Everything else (e.g., external websites, files)
 else {
 	DestinationIcon = IconExternal;
 }
@@ -206,6 +216,7 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 		<span class="destination-icon-container icon-container">
 			{DestinationIcon && <DestinationIcon classes={['destination']} />}
 		</span>
+		{opensInNewTab && <span data-screen-reader>(opens in a new tab)</span>}
 	</div>
 </InteractiveWrapper>
 
