@@ -259,6 +259,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					></span>
 				</div>
 			</div>
+
 			<div
 				class="separator group"
 				data-orientation="vertical"
@@ -269,10 +270,13 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				data-restrict-breakpoint-big-seven-min="2"
 			>
 			</div>
+
 			<div
 				class="report-group button-group"
 				data-restrict-mode="assessment"
+				data-restrict-status="complete"
 			>
+				<!-- View Report Link -->
 				<a
 					class="open-dialog"
 					data-style-as="button"
@@ -290,6 +294,8 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					</span>
 					<span class="tooltip">View Report</span>
 				</a>
+
+				<!-- Report Settings Button -->
 				<button
 					class="open-dialog"
 					data-dialog="report-settings-dialog"
@@ -306,6 +312,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					</span>
 					<span class="tooltip">Report Settings</span>
 				</button>
+
 				<div
 					class="separator item"
 					data-orientation="vertical"
@@ -314,6 +321,8 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					data-restrict-breakpoint-report-min="1"
 				>
 				</div>
+
+				<!-- Download Report Button -->
 				<button
 					class="open-dialog"
 					data-dialog="report-download-dialog"
@@ -330,6 +339,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					<span class="tooltip">Download Report</span>
 				</button>
 			</div>
+
 			<div
 				class="separator group"
 				data-orientation="vertical"
@@ -338,9 +348,12 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				data-restrict-breakpoint-big-seven-min="4"
 			>
 			</div>
+
+			<!-- User Group -->
 			<div
 				class="user-group button-group"
 				data-restrict-mode="assessment"
+				data-restrict-breakpoint-big-seven-min="4"
 			>
 				<!-- Manage Assessors Button -->
 				<button
@@ -401,6 +414,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					<span class="tooltip">Change Active Assessor</span>
 				</button>
 			</div>
+
 			<div
 				class="separator group"
 				data-orientation="vertical"
@@ -410,6 +424,8 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				aria-hidden="true"
 			>
 			</div>
+
+			<!-- Mode Group -->
 			<div
 				class="mode-group button-group"
 				data-restrict-mode="assessment"
@@ -768,7 +784,11 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			}
 		}
 
-		& .report-group {
+		main.big-seven & .export-group {
+			flex-grow: 1;
+		}
+
+		main.report & .report-group {
 			flex-grow: 1;
 		}
 
@@ -849,6 +869,10 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				--label-colour: var(--colour-txt-on-subtle-2);
 				margin: 0 var(--space-2xs) !important;
 				text-wrap: balance;
+
+				& button {
+					--link-colour: var(--colour-txt-on-subtle-2);
+				}
 			}
 		}
 
@@ -1060,7 +1084,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				exportField.removeAttribute('hidden');
 			}
 
-			exportField.textContent = getExportStatus({}) as string;
+			exportField.innerHTML = getExportStatus({}) as string;
 		}
 
 		// 4. Update the assessor name
@@ -1091,7 +1115,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		// Get the update fields
 		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 
-		exportField.textContent = getExportStatus({}) as string;
+		exportField.innerHTML = getExportStatus({}) as string;
 	};
 
 	//

@@ -1088,6 +1088,7 @@ p {
 		color var(--transition-linear-fast);
 	/* ↓ Normalize buttons styled as links */
 	text-align: unset;
+	text-decoration: underline;
 	text-decoration-color: var(--link-underline-colour);
 	/* ↓ Forces Safari to render proper underline transition */
 	translate: 0 0 0;

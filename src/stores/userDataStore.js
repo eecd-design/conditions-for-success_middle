@@ -128,28 +128,33 @@ let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true 
 			let hours = Math.floor(minutes / 60);
 			let days = Math.floor(hours / 24);
 
-			if (minutes < 1) return verbose ? `Saved to browser. Exported just now.` : 0;
+			if (minutes < 1)
+				return verbose
+					? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+					: 0;
 
 			if (minutes < 60) {
 				return verbose
-					? `Saved in browser. ${minutes} min. since last export.`
+					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${minutes} min. since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
 					: `${minutes} minute${minutes === 1 ? '' : 's'}`;
 			}
 
 			if (hours < 24) {
 				return verbose
-					? `Saved in browser. ${hours} hour${hours === 1 ? '' : 's'} since last export.`
+					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${hours} hour${hours === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
 					: `${hours} hour${hours === 1 ? '' : 's'}`;
 			}
 
 			return verbose
-				? `Saved in browser. ${days} day${days === 1 ? '' : 's'} since last export.`
+				? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${days} day${days === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
 				: `${days} day${days === 1 ? '' : 's'}`;
 		}
-		return verbose ? 'Saved in browser. Export for backup.' : 0;
+		return verbose
+			? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+			: 0;
 	}
 
-	return verbose ? 'No changes since last export.' : 0;
+	return verbose ? 'No changes since last backup.' : 0;
 };
 
 /**
