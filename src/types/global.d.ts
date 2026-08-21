@@ -1,24 +1,22 @@
 declare global {
-
 	type UserData = {
-		uiPreferences: Preferences,
-		uiState: State,
-		assessments: Assessment[]
-	}
+		uiPreferences: Preferences;
+		uiState: State;
+		assessments: Assessment[];
+	};
 
 	type Preferences = {
-		schemaVersion: string,
-		theme: string,
-		reportIncludedIndicators: string[],
-		resourcePageSort: string,
-		resourcePageLayout: string,
-	}
+		schemaVersion: string;
+		theme: string;
+		reportIncludedIndicators: string[];
+		resourcePageSort: string;
+		resourcePageLayout: string;
+	};
 
 	type State = {
-		schemaVersion: string,
+		schemaVersion: string;
 		activeAssessmentId: number;
-		activeReportId: number;
-		currentContinuumVersion: string,
+		currentContinuumVersion: string;
 		lastModifiedPage: Page;
 		lastVisitedPage: Page;
 		mode: string;
@@ -26,11 +24,11 @@ declare global {
 	};
 
 	type Assessment = {
-		schemaVersion: string,
+		schemaVersion: string;
 		activeAssessor: string;
 		assessors: string[];
 		changeLog: ChangeLogItem[];
-		continuumCompletion: {},
+		continuumCompletion: {};
 		considerationsEstablished: string[];
 		continuumVersion: string;
 		dateCreated: number;
@@ -47,16 +45,15 @@ declare global {
 	};
 
 	type ChangeLogItem = {
-		assessor: string,
-		date: number,
-		message: string,
-	}
+		assessor: string;
+		date: number;
+		message: string;
+	};
 
 	type Page = {
-		path: string,
-		title: string,
-	}
-
+		path: string;
+		title: string;
+	};
 }
 
-export { };
+export {};

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AssessmentToolbar from '../../components/AssessmentToolbar.astro';
 import IconFolder20 from 'src/components/icons/IconFolder_20.astro';
 import IconCross20 from 'src/components/icons/IconCross_20.astro';
 import IconDownload20 from 'src/components/icons/IconDownload_20.astro';
@@ -18,6 +19,8 @@ import PageNav from 'src/components/PageNav.astro';
 import ReportToasts from 'src/components/ReportToasts.astro';
 
 import gnbLogo from 'src/images/gnb-logo-colour.png';
+import AssessmentDialogs from 'src/components/dialogs/AssessmentDialogs.astro';
+import AssessmentToasts from 'src/components/AssessmentToasts.astro';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -43,7 +46,7 @@ let path = Astro.url.pathname;
 
 let navSections = [];
 
-let onPageSection = { title: 'On this page', links: [] };
+let onPageSection = { title: 'In this report', links: [] };
 onPageSection.links.push({
 	url: `${path}#overview`,
 	text: 'Overview',
@@ -62,7 +65,7 @@ onPageSection.links.push({
 for (let indicator of indicators) {
 	onPageSection.links.push({
 		url: `${path}#indicator-${indicator.data.tag}`,
-		text: indicator.data.title,
+		text: `${indicator.data.tag}&ensp;${indicator.data.title}`,
 		dataset: [
 			{
 				key: 'tag',
@@ -84,15 +87,22 @@ navSections.push(onPageSection);
 	pageType={'report'}
 >
 	<PageNav
-		heading={'In this report'}
 		navSections={navSections}
-		dataset={[{ key: 'restrict-report', value: 'active' }]}
+		dataset={[
+			{ key: 'restrict-mode', value: 'assessment' },
+			{ key: 'restrict-status', value: 'complete' },
+		]}
 	/>
 
-	<ReportToasts slot="toast-group" />
+	<AssessmentToolbar />
 
-	<ManageAssessmentsDialogs />
+	<AssessmentDialogs />
+
+	<AssessmentToasts />
+
 	<ReportDialogs />
+
+	<ReportToasts slot="toast-group" />
 
 	<div class="content report">
 		<h1
@@ -100,24 +110,14 @@ navSections.push(onPageSection);
 			tabindex="-1"
 			aria-live="polite"
 		>
-			<span
-				class="title"
-				data-restrict-device-max="small"
-				>Report</span
-			>
-			<span
-				class="title"
-				data-restrict-device-min="medium"
-				data-field="reportSchool"
-				>Report</span
-			>
+			<span class="title">Report</span>
 			<span
 				class="subtitle"
 				data-font-type="sans-serif"
-				data-restrict-report="active"
+				data-restrict-status="complete"
 			>
+				<span data-field="reportSchool"></span>&ensp;&ndash;&ensp;
 				<span data-field="reportYear"></span>
-				<span> Report</span>
 			</span>
 		</h1>
 
@@ -144,192 +144,76 @@ navSections.push(onPageSection);
 
 		<div
 			class="welcome-container"
-			data-restrict-report="inactive"
 			data-restrict-device-min="medium"
 		>
 			<div class="wrapper">
-				<p class="instructions">
-					To view a report, create and complete an assessment or open a completed
-					assessment.
-				</p>
-				<div class="button-group">
-					<a
-						href={`./big-seven/?dialog=create-assessment`}
-						aria-label="Create Assessment"
-						data-style-as="button"
-						data-style="solid"
-						data-size="large"
-					>
-						<span class="icon-and-label-container">
-							<IconCross20 />
-							<span class="label-container">
-								<span class="label">Create</span>
+				<div data-restrict-mode="reading">
+					<p class="instructions">To view a report, open a completed assessment.</p>
+					<div class="button-group">
+						<button
+							class="open-dialog"
+							data-dialog="manage-assessments-dialog"
+							aria-label="Open or Import Assessment"
+							type="button"
+							data-style="solid"
+							data-size="large"
+						>
+							<span class="icon-and-label-container">
+								<IconFolder20 />
+								<span class="label-container">
+									<span class="label">Open</span>
+								</span>
 							</span>
-						</span>
-					</a>
-					<button
-						class="open-dialog"
-						data-dialog="manage-assessments-dialog"
-						data-dialog-context="report"
-						data-dialog-heading="Open Assessment Report"
-						aria-label="Open or Import Assessment"
-						type="button"
-						data-style="solid"
-						data-size="large"
-					>
-						<span class="icon-and-label-container">
-							<IconFolder20 />
-							<span class="label-container">
-								<span class="label">Open</span>
+						</button>
+					</div>
+				</div>
+
+				<div
+					data-restrict-mode="assessment"
+					data-restrict-status="in-progress"
+				>
+					<p class="instructions">
+						The <em
+							><span data-field="reportYear"></span><span> </span>
+							<span data-field="reportSchool"></span><span> Assessment</span>
+						</em> is currently <strong>In Progress</strong>. To view the report, its
+						status must be set to <strong>Complete</strong>.
+					</p>
+					<div class="button-group">
+						<button
+							class="open-dialog"
+							data-dialog="edit-status-dialog"
+							data-dialog-context="configure"
+							aria-label="Change Assessment Status"
+							type="button"
+							data-style="solid"
+							data-size="large"
+						>
+							<span class="icon-and-label-container">
+								<!-- <IconFolder20 /> -->
+								<span class="label-container">
+									<span class="label">Change Status</span>
+								</span>
 							</span>
-						</span>
-					</button>
+						</button>
+					</div>
 				</div>
-			</div>
-		</div>
-
-		<div
-			id="report-controls"
-			data-print="false"
-			data-restrict-report="active"
-		>
-			<div class="button-group">
-				<button
-					class="open-dialog"
-					data-dialog="manage-assessments-dialog"
-					data-dialog-context="report"
-					data-dialog-heading="Open Assessment Report"
-					aria-label="Open or Import Assessment"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconFolder20 />
-						<span class="label-container">
-							<span class="label">Open</span>
-						</span>
-					</span>
-				</button>
-
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-
-				<button
-					class="open-dialog"
-					data-dialog="report-settings-dialog"
-					aria-label="Modify Report Settings"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconCog20 />
-						<span class="label-container">
-							<span class="label">Settings</span>
-						</span>
-					</span>
-				</button>
-
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-
-				<button
-					class="download-report-pdf"
-					aria-label="Download Assessment PDF Report"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconDownload20 />
-						<span class="label-container">
-							<span class="label">Download PDF</span>
-						</span>
-					</span>
-				</button>
-
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-
-				<button
-					class="download-report-csv"
-					aria-label="Download Assessment CSV Report"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconDownload20 />
-						<span class="label-container">
-							<span class="label">Download CSV</span>
-						</span>
-					</span>
-				</button>
-
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-
-				<button
-					class="close-report"
-					aria-label="Close Assessment Report"
-					type="button"
-					data-toast-success="report-page_close-toast_success"
-					data-toast-failure="report-page_close-toast_failure"
-				>
-					<span class="icon-and-label-container">
-						<IconXmark20 />
-						<span class="label-container">
-							<span class="label">Close</span>
-						</span>
-					</span>
-				</button>
-			</div>
-		</div>
-
-		<div
-			id="pdf-export-progress-container"
-			role="status"
-			aria-live="polite"
-			aria-atomic="true"
-			data-theme="blue"
-			data-vibrancy="vivid"
-			hidden
-		>
-			<div
-				class="text-container"
-				data-field="pdfExportMessage"
-			>
-				Preparing report for download.
-			</div>
-			<div
-				class="progress-bar-container"
-				role="progressbar"
-				aria-valuemin="0"
-				aria-valuemax="100"
-				aria-valuenow="0"
-			>
-				<div data-role="bar"></div>
 			</div>
 		</div>
 
 		<hr
 			class="section"
 			data-print="false"
-			data-restrict-report="active"
+			data-restrict-mode="assessment"
+			data-restrict-status="complete"
+			data-restrict-device-min="medium"
 		/>
 
 		<div
 			id="digital-report-container"
-			data-restrict-report="active"
+			data-restrict-mode="assessment"
+			data-restrict-status="complete"
+			data-restrict-device-min="medium"
 		>
 			<section
 				class="overview"
@@ -531,17 +415,13 @@ navSections.push(onPageSection);
 	// Device Restrictions
 	*/
 
-	@container main (width < 904px) {
-		.content.report [data-restrict-report='active'] {
-			display: none !important;
-		}
-
+	@container main (width < 720px) {
 		.content.report [data-restrict-device-min='medium'] {
 			display: none !important;
 		}
 	}
 
-	@container main (width >= 904px) {
+	@container main (width >= 720px) {
 		.content.report [data-restrict-device-max='small'] {
 			display: none !important;
 		}
@@ -749,494 +629,12 @@ navSections.push(onPageSection);
 	// Imports
 	//
 
-	import { formatDateAsString, toKebabCase } from 'src/utilities/helpers';
-	import { userDataStore, setState, subscribe, setPreferences } from 'src/stores/userDataStore';
-	import { getActiveReportData } from 'src/stores/userDataStore';
-
-	import jsPDF from 'jspdf';
-	import Papa from 'papaparse';
-	import { snapdom } from '@zumer/snapdom';
-
-	import { eventControl } from 'src/utilities/event';
-	import { toastControl } from 'src/utilities/toast';
+	import { userDataStore, subscribe } from 'src/stores/userDataStore';
+	import { getActiveAssessmentData } from 'src/stores/userDataStore';
 
 	//
 	// Methods
 	//
-
-	let fetchFontBase64 = async (url: string) => {
-		const res = await fetch(url);
-		const arrayBuffer = await res.arrayBuffer();
-		const uint8 = new Uint8Array(arrayBuffer);
-
-		// Convert to base64
-		let binary = '';
-		for (let i = 0; i < uint8.length; i++) {
-			binary += String.fromCharCode(uint8[i]);
-		}
-		return btoa(binary);
-	};
-
-	let fetchPngBase64 = async (image) => {
-		let res = await fetch(image);
-		const arrayBuffer = await res.arrayBuffer();
-		const uint8 = new Uint8Array(arrayBuffer);
-
-		// Convert to base64
-		let binary = '';
-		for (let i = 0; i < uint8.length; i++) {
-			binary += String.fromCharCode(uint8[i]);
-		}
-		return btoa(binary);
-	};
-
-	let progressTracker = (() => {
-		let container,
-			barContainer,
-			bar,
-			messageField,
-			statusField,
-			current = 0,
-			target = 0,
-			rafId;
-
-		let animate = () => {
-			if (current < target) {
-				// move faster when gap is large, slower when near target
-				current += (target - current) * 0.2; // 20% of the gap per frame
-				if (Math.abs(target - current) < 0.1) current = target; // snap to target if very close
-				bar.style.width = current + '%';
-			}
-			rafId = requestAnimationFrame(animate);
-		};
-
-		let init = (selector) => {
-			container = document.querySelector(selector);
-			if (!container) return;
-			barContainer = container.querySelector('[role="progressbar"]');
-			bar = container.querySelector('[data-role="bar"]');
-			if (!bar) return;
-			messageField = container.querySelector('[data-field="pdfExportMessage"]');
-			statusField = container.querySelector('[data-field="pdfExportStatus"]');
-
-			current = 0;
-			target = 0;
-			bar.style.width = '0%';
-			cancelAnimationFrame(rafId);
-			rafId = requestAnimationFrame(animate);
-		};
-
-		let start = (totalPages) => {
-			if (!container || !barContainer) return;
-			container.removeAttribute('hidden');
-			barContainer.setAttribute('aria-valuemin', 0);
-			barContainer.setAttribute('aria-valuemax', totalPages);
-			barContainer.setAttribute('aria-valuenow', 0);
-			let estimatedDuration = Math.floor(totalPages * 0.5);
-			let message = `Preparing report for download (about ${estimatedDuration} seconds)...`;
-			messageField.textContent = message;
-			barContainer.setAttribute('aria-valuetext', message);
-		};
-
-		let update = (page, totalPages) => {
-			if (!barContainer) return;
-			target = Math.round((page / totalPages) * 100);
-			barContainer.setAttribute('aria-valuenow', page);
-			let message = `${page} of ${totalPages} pages complete.`;
-			messageField.textContent = message;
-			barContainer.setAttribute('aria-valuetext', message);
-		};
-
-		let finish = () => {
-			if (!barContainer) return;
-			target = 100;
-			barContainer.setAttribute('aria-valuenow', barContainer.getAttribute('aria-valuemax'));
-			let message = `Report is ready. Downloading now...`;
-			messageField.textContent = message;
-			barContainer.setAttribute('aria-valuetext', message);
-			setTimeout(() => {
-				container.setAttribute('hidden', '');
-			}, 2000);
-		};
-
-		return { init, start, update, finish };
-	})();
-
-	let packageReportAsPdf = async () => {
-		let debug = true;
-
-		/**
-		 * Add wrapped text to jsPDF
-		 * @param {object} doc - jsPDF instance
-		 * @param {string} text - Text to render
-		 * @param {number} x - Left position (margin start)
-		 * @param {number} y - Top position
-		 * @param {number} maxWidth - Max width available for text
-		 * @param {number} lineHeight - Line height (spacing between lines)
-		 * @returns {number} - Final y position after text block
-		 */
-		let addWrappedText = (doc, text, x, y, maxWidth, lineHeight = doc.getLineHeight()) => {
-			let lines = doc.splitTextToSize(text, maxWidth);
-
-			// Account for baseline text placement
-			y += lineHeight;
-
-			for (let i = 0; i < lines.length; i++) {
-				doc.text(lines[i], x, y);
-
-				// Only increase y if not on the last line
-				if (i < lines.length - 1) {
-					y += lineHeight;
-				}
-			}
-
-			return y; // return new Y so you can keep adding below
-		};
-
-		let reportContainer = document.querySelector('#print-report-container') as HTMLElement;
-		if (!reportContainer) return;
-
-		let sections = Array.from(
-			reportContainer.querySelectorAll('section[data-include]'),
-		) as HTMLElement[];
-		let totalPages = sections.length;
-
-		// Start the progress tracker
-		progressTracker.init('#pdf-export-progress-container');
-		progressTracker.start(totalPages);
-		// Yield to the event loop so the DOM updates visually
-		await new Promise((resolve) => setTimeout(resolve, 10));
-
-		let assessment = getActiveReportData();
-
-		//
-		// 1. Setup
-		//
-
-		// Initialize the pdf
-		let pdf = new jsPDF({
-			orientation: 'portrait',
-			unit: 'pt',
-			format: 'letter',
-		});
-
-		if (debug) console.log('jsPDF Created', pdf);
-
-		// Set page parameters
-		let margin = 72;
-		let pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-		let pageHeight = pdf.internal.pageSize.getHeight();
-		let currentYPosition = margin;
-		pdf.setLineHeightFactor(1.1);
-
-		// Embed fonts
-		pdf.addFileToVFS('AesthetNova-Medium.ttf', aesthetNovaMediumBase64);
-		pdf.addFont('AesthetNova-Medium.ttf', 'Aesthet Nova', 'normal');
-		pdf.addFileToVFS('AesthetNova-Bold.ttf', aesthetNovaBoldBase64);
-		pdf.addFont('AesthetNova-Bold.ttf', 'Aesthet Nova', 'bold');
-		pdf.addFileToVFS('PublicSans-Regular.ttf', publicSansRegularBase64);
-		pdf.addFont('PublicSans-Regular.ttf', 'Public Sans', 'normal');
-		pdf.addFileToVFS('PublicSans-Bold.ttf', publicSansBoldBase64);
-		pdf.addFont('PublicSans-Bold.ttf', 'Public Sans', 'bold');
-
-		if (debug) console.log('Added Fonts', pdf);
-
-		//
-		// 2. Create the report cover page
-		//
-
-		// Add the gnb logo
-		let gnbLogoHeight = 34.4073;
-		pdf.addImage(gnbLogo, margin, 160, 100, gnbLogoHeight);
-		currentYPosition = 160 + gnbLogoHeight;
-
-		currentYPosition += 24;
-
-		// Add the website title and subtitle
-		let websiteTitle = 'New Brunswick Middle Schools';
-		pdf.setFont('Aesthet Nova', 'bold');
-		pdf.setFontSize(32);
-		pdf.setTextColor('#162130');
-		currentYPosition = addWrappedText(pdf, websiteTitle, margin, currentYPosition, pageWidth);
-
-		currentYPosition += 18;
-
-		pdf.setFillColor('#8c3b43');
-		pdf.roundedRect(margin, currentYPosition, 424, 36, 8, 8, 'F');
-
-		let websiteSubtitle = 'Conditions for Success Developmental Continuums';
-		pdf.setFontSize(18);
-		pdf.setTextColor('#FFFFFF');
-		currentYPosition = addWrappedText(
-			pdf,
-			websiteSubtitle,
-			margin + 14,
-			currentYPosition + 3,
-			pageWidth,
-		);
-
-		currentYPosition += 280;
-
-		// Add the report metadata
-		let schoolName = assessment.school;
-		pdf.setFont('Aesthet Nova', 'bold');
-		pdf.setFontSize(24);
-		pdf.setTextColor('#162130');
-		currentYPosition = addWrappedText(pdf, schoolName, margin, currentYPosition, pageWidth);
-
-		currentYPosition += 12;
-
-		let reportingYear = `${assessment.reportingYear} Report`;
-		pdf.setFont('Public Sans', 'normal');
-		pdf.setFontSize(18);
-		currentYPosition = addWrappedText(pdf, reportingYear, margin, currentYPosition, pageWidth);
-
-		currentYPosition += 36;
-
-		let assessmentCompletionDate = `Assessment Completed: ${formatDateAsString(assessment.dateCompleted, false)}`;
-		pdf.setFontSize(12);
-		currentYPosition = addWrappedText(
-			pdf,
-			assessmentCompletionDate,
-			margin,
-			currentYPosition,
-			pageWidth,
-		);
-
-		currentYPosition += 6;
-
-		let reportDate = `Report Created: ${formatDateAsString(Date.now(), false)}`;
-		currentYPosition = addWrappedText(pdf, reportDate, margin, currentYPosition, pageWidth);
-
-		currentYPosition += 6;
-
-		let continuumVersion = `Continuum Version: ${assessment.continuumVersion}`;
-		currentYPosition = addWrappedText(
-			pdf,
-			continuumVersion,
-			margin,
-			currentYPosition,
-			pageWidth,
-		);
-
-		// Update the progress tracker
-		progressTracker.update(1, totalPages);
-
-		//
-		// 3. Convert the charts to canvas
-		//
-
-		let canvases = await Promise.all(
-			sections.map(async (section) => {
-				let progressChartElem = section.querySelector('.progress') as HTMLElement;
-				let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
-
-				let progressPromise = null;
-				if (progressChartElem) {
-					progressPromise = snapdom.toCanvas(progressChartElem, {
-						scale: 3,
-						embedFonts: true,
-						backgroundColor: '#ffffff',
-					});
-				}
-
-				let matrixPromise = null;
-				if (matrixChartElem) {
-					matrixPromise = snapdom.toCanvas(matrixChartElem, {
-						scale: 3,
-						embedFonts: true,
-						backgroundColor: '#ffffff',
-					});
-				}
-
-				return {
-					progress: progressPromise ? await progressPromise : null,
-					matrix: matrixPromise ? await matrixPromise : null,
-				};
-			}),
-		);
-
-		if (debug) console.log(canvases);
-
-		//
-		// 4. Create the chart pages
-		//
-
-		margin = 54;
-		pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-		let imgWidth = pageWidth - margin / 2;
-
-		if (debug) console.log('Page Width: ', pageWidth);
-
-		for (let i = 0; i < sections.length; i++) {
-			let section = sections[i];
-			let charts = canvases[i];
-
-			let isCover = section.matches('.cover');
-			let isSummary = section.matches('.summary');
-
-			if (isCover) continue;
-
-			pdf.addPage();
-
-			if (debug) console.log('Creating New Page', pdf);
-
-			currentYPosition = margin - 16; // Account for section heading line height padding
-
-			// Add the page heading
-			let sectionHeading = section.querySelector('h2').textContent.trim();
-			pdf.setFont('Aesthet Nova', 'bold');
-			pdf.setFontSize(24);
-			currentYPosition = addWrappedText(
-				pdf,
-				sectionHeading,
-				margin,
-				currentYPosition,
-				pageWidth,
-			);
-
-			currentYPosition += 18;
-
-			// Add the charts and their accompanying headings
-			pdf.setFont('Public Sans', 'normal');
-			pdf.setFontSize(18);
-
-			if (charts.progress) {
-				let chartHeading1 = 'Overall Progress';
-				currentYPosition = addWrappedText(
-					pdf,
-					chartHeading1,
-					margin,
-					currentYPosition,
-					pageWidth,
-				);
-
-				currentYPosition += 24;
-
-				let progressChartImgProps = pdf.getImageProperties(charts.progress);
-				let progressChartImgHeight =
-					(progressChartImgProps.height * imgWidth) / progressChartImgProps.width;
-
-				pdf.addImage(
-					charts.progress,
-					margin,
-					currentYPosition,
-					imgWidth,
-					progressChartImgHeight,
-				);
-				currentYPosition += progressChartImgHeight;
-
-				currentYPosition += 12;
-			}
-
-			if (charts.matrix) {
-				if (!isSummary) {
-					let chartHeading2 = `${i === 1 ? 'Indicator' : 'Component'} Progress`;
-					currentYPosition = addWrappedText(
-						pdf,
-						chartHeading2,
-						margin,
-						currentYPosition,
-						pageWidth,
-					);
-					currentYPosition += 24;
-				}
-
-				let matrixChartImgProps = pdf.getImageProperties(charts.matrix);
-				let matrixChartImgHeight =
-					(matrixChartImgProps.height * imgWidth) / matrixChartImgProps.width;
-
-				pdf.addImage(
-					charts.matrix,
-					margin,
-					currentYPosition,
-					imgWidth,
-					matrixChartImgHeight,
-				);
-
-				progressTracker.update(i + 1, totalPages);
-			}
-
-			// Add the page footer
-			let pageFooter = `${schoolName} | ${reportingYear} | ${continuumVersion} | Page ${i + 1} of ${sections.length}`;
-			pdf.setFontSize(10);
-			addWrappedText(pdf, pageFooter, margin, pageHeight - margin + 16, pageWidth);
-
-			// Update the progress tracker
-			progressTracker.update(i + 1, totalPages);
-			// Yield to the event loop so the DOM updates visually
-			await new Promise((resolve) => setTimeout(resolve, 10));
-		}
-
-		//
-		// 5. Save the report to the user's computer
-		//
-
-		let fileDate = formatDateAsString(new Date(), false);
-		let filename = `assessment_${toKebabCase(assessment.school)}_${assessment.reportingYear}_report-${fileDate}.pdf`;
-		pdf.save(filename);
-
-		// Stop the tracker
-		progressTracker.finish();
-	};
-
-	let packageReportAsCsv = async () => {
-		let assessment = getActiveReportData();
-		if (!assessment) return;
-
-		// Define columns for the main CSV
-		let data = [];
-
-		let count = await userDataStore.getConsiderationCount();
-
-		console.log(count);
-
-		for (let [tag, value] of Object.entries(count)) {
-			if (tag.match(/^\d$/) || tag.match(/^\d\.\d$/)) {
-				let completion = assessment.continuumCompletion[tag];
-				let entry = {
-					School: assessment.school || '',
-					District: assessment.district || '',
-					'Reporting Year': assessment.reportingYear || '',
-					'Indicator or Component': tag,
-					'Considerations Established': 0,
-					'Total Considerations': value.total,
-					'Completion Percentage': 0,
-					'Current Phase': 'Initiating',
-					'Assessment Completion Date': formatDateAsString(assessment.dateCompleted),
-					'Continuum Version': assessment.continuumVersion || '',
-				};
-
-				if (completion) {
-					entry['Considerations Established'] = completion.count;
-					entry['Completion Percentage'] = Math.floor(completion.ratio * 100);
-					entry['Current Phase'] = completion.phase;
-				}
-
-				data.push(entry);
-			}
-		}
-
-		data.sort((a, b) => {
-			return a['Indicator or Component'] - b['Indicator or Component'];
-		});
-
-		console.log(data);
-
-		// Convert both sections to CSV
-		let csv = Papa.unparse(data);
-
-		// Filename
-		let fileDate = formatDateAsString(new Date(), false);
-		let filename = `${toKebabCase(assessment.school)}_${assessment.reportingYear}-report_downloaded-${fileDate}.csv`;
-
-		// Trigger download
-		let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-		let link = document.createElement('a');
-		link.href = URL.createObjectURL(blob);
-		link.download = filename;
-		link.click();
-	};
 
 	//
 	// DOM Updates
@@ -1247,7 +645,7 @@ navSections.push(onPageSection);
 		let printReportContainer = document.querySelector('#print-report-container');
 		if (!digitalReportContainer) return;
 
-		let stateTriggerKeys = ['activeReportId'];
+		let stateTriggerKeys = ['activeAssessmentId'];
 		let preferencesTriggerKeys = ['reportIncludedIndicators'];
 		let assessmentTriggerKeys = ['school', 'reportingYear', 'continuumCompletion'];
 		if (
@@ -1268,15 +666,20 @@ navSections.push(onPageSection);
 			...printReportContainer?.querySelectorAll(':scope > section'),
 		];
 		let onPageNav = document.querySelector('nav.on-page');
+
 		let reportHeading = document.querySelector('h1');
 		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
 		let reportHeadingYear = reportHeading?.querySelector('[data-field="reportYear"]');
 
-		if (!data.uiState.activeReportId) {
+		let reportWelcome = document.querySelector('main.report .welcome-container');
+		let reportWelcomeSchool = reportWelcome?.querySelector('[data-field="reportSchool"]');
+		let reportWelcomeYear = reportWelcome?.querySelector('[data-field="reportYear"]');
+
+		if (!data.uiState.activeAssessmentId) {
 			main.setAttribute('data-report', 'inactive');
 			reportHeadingSchool.textContent = 'Report';
 		} else {
-			let assessment = getActiveReportData();
+			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
 
 			main.setAttribute('data-report', 'active');
@@ -1295,6 +698,8 @@ navSections.push(onPageSection);
 
 			reportHeadingSchool.textContent = assessment.school;
 			reportHeadingYear.textContent = assessment.reportingYear;
+			reportWelcomeSchool.textContent = assessment.school;
+			reportWelcomeYear.textContent = assessment.reportingYear;
 
 			for (let section of sections) {
 				let mainScopeTag = section.getAttribute('data-tag');
@@ -1405,61 +810,4 @@ navSections.push(onPageSection);
 	//
 
 	subscribe(updateReport);
-
-	// Preload Fonts and Logo for Report Generation
-	let [
-		aesthetNovaMediumBase64,
-		aesthetNovaBoldBase64,
-		publicSansRegularBase64,
-		publicSansBoldBase64,
-	] = await Promise.all([
-		fetchFontBase64('./fonts/AesthetNova-Medium.ttf'),
-		fetchFontBase64('./fonts/AesthetNova-Bold.ttf'),
-		fetchFontBase64('./fonts/PublicSans-Regular.ttf'),
-		fetchFontBase64('./fonts/PublicSans-Bold.ttf'),
-	]);
-
-	let gnbLogo = new Image();
-	gnbLogo.src = './images/gnb-logo-colour.png';
-
-	//
-	// Event Listeners
-	//
-
-	let onClick = async (event) => {
-		let target = event.target as any;
-
-		let toolbar = target.closest('#report-controls');
-		if (!toolbar) return;
-
-		if (target.matches('button.download-report-pdf')) {
-			packageReportAsPdf();
-		}
-
-		if (target.matches('button.download-report-csv')) {
-			packageReportAsCsv();
-		}
-
-		if (target.matches('button.close-report')) {
-			try {
-				setState({
-					activeReportId: null,
-				});
-
-				setPreferences({
-					reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-				});
-
-				toastControl.show({ target, type: 'success' });
-			} catch (error) {
-				console.error(error);
-				toastControl.show({ target, type: 'failure' });
-			}
-		}
-	};
-	eventControl.add({
-		selector: '#report-controls',
-		eventType: 'click',
-		fn: onClick,
-	});
 </script>

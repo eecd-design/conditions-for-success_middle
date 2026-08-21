@@ -24,7 +24,7 @@ let key = 'user';
 
 let currentContinuumVersion = '1.0';
 let currentPreferencesSchemaVersion = '1.0';
-let currentStateSchemaVersion = '1.0';
+let currentStateSchemaVersion = '2.0';
 let currentAssessmentSchemaVersion = '1.0';
 
 let userSchema = {
@@ -37,7 +37,6 @@ let userSchema = {
 	},
 	uiState: {
 		activeAssessmentId: null,
-		activeReportId: null,
 		currentContinuumVersion,
 		lastModifiedPage: null,
 		lastVisitedPage:
@@ -92,13 +91,6 @@ let getActiveAssessmentData = () => {
  */
 let getAssessmentData = (id) => {
 	return findObjectByKey(data.assessments, 'id', id);
-};
-
-/**
- * Get the active assessment data
- */
-let getActiveReportData = () => {
-	return findObjectByKey(data.assessments, 'id', data.uiState.activeReportId);
 };
 
 /**
@@ -779,17 +771,14 @@ let deleteAssessment = (id) => {
 		Object.assign(data, { assessments: update });
 		changes.assessments = [];
 	}
-	let isActiveAssessment = id === data.uiState.activeAssessmentId;
-	let isActiveReport = id === data.uiState.activeReportId;
 
-	if (isActiveAssessment || isActiveReport) {
+	let isActiveAssessment = id === data.uiState.activeAssessmentId;
+
+	if (isActiveAssessment) {
 		let update = {};
 		if (isActiveAssessment) {
 			update.activeAssessmentId = null;
 			update.mode = 'reading';
-		}
-		if (isActiveReport) {
-			update.activeReportId = null;
 		}
 		Object.assign(data.uiState, update);
 		changes.uiState = Object.keys(update);
@@ -1096,7 +1085,6 @@ export {
 	decompressData,
 	findAssessmentConflicts,
 	getActiveAssessmentData,
-	getActiveReportData,
 	getAssessmentData,
 	getAssessmentDate,
 	getAssessmentName,

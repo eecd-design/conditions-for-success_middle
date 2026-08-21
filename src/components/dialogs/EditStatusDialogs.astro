@@ -262,12 +262,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					}),
 				});
 
-				if (newStatus === 'In Progress') {
-					setState({
-						activeReportId: null,
-					});
-				}
-
 				if (dialog.getAttribute('data-context') === 'close') {
 					if (assessment.unexportedChanges) {
 						toastControl.show({
@@ -374,7 +368,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 				setState({
 					mode: 'assessment',
-					activeReportId: null,
 				});
 
 				dialogControl.open({

@@ -1456,7 +1456,7 @@ main {
 		}
 	}
 
-	&.big-seven > .wrapper {
+	&:is(.big-seven, .report) > .wrapper {
 		grid-template-rows: auto 0px 1fr;
 		grid-template-areas:
 			'toolbar toolbar toolbar toolbar toolbar toolbar toolbar'
@@ -1592,14 +1592,6 @@ main:not([data-assessor='true']) [data-restrict-assessor='true'] {
 }
 
 main:not([data-assessor='false']) [data-restrict-assessor='false'] {
-	display: none !important;
-}
-
-main:not([data-report='active']) [data-restrict-report='active'] {
-	display: none !important;
-}
-
-main:not([data-report='inactive']) [data-restrict-report='inactive'] {
 	display: none !important;
 }
 

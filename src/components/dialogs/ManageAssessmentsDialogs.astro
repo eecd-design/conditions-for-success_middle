@@ -90,26 +90,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		<h3>Saved Assessments</h3>
 
 		<div
-			class="callout"
-			data-style="solid"
-			data-vibrancy="vivid"
-			data-fit="compact"
-			data-theme="yellow"
-			data-restrict-context="report"
-		>
-			<div class="wrapper">
-				<div class="icon-container">
-					<IconWarningBig />
-				</div>
-				<div class="text-container">
-					<p>
-						To view a report, the assessment must be <strong>Complete</strong>.
-					</p>
-				</div>
-			</div>
-		</div>
-
-		<div
 			class="elem-group"
 			data-fit="compact"
 			data-columns="1"
@@ -208,15 +188,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 										data-toast-failure="manage-assessments-dialog_open-toast_failure"
 										hidden
 										>Open</button
-									>
-									<button
-										class="open change-status"
-										type="button"
-										data-size="large"
-										data-toast-success="manage-assessments-dialog_open-toast_success"
-										data-toast-failure="manage-assessments-dialog_open-toast_failure"
-										hidden
-										>Mark Complete and Open</button
 									>
 									<button
 										class="duplicate-assessment open-dialog"
@@ -731,7 +702,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Methods
 	//
 
-	let createAssessmentCard = (assessment: Assessment, active = false, context = 'assessment') => {
+	let createAssessmentCard = (assessment: Assessment, active = false) => {
 		if (!assessment || assessment === undefined) return;
 		let { dateCompleted, dateExported, status, id, unexportedChanges } = assessment;
 
@@ -753,13 +724,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let banner = card.querySelector('.banner');
 		if (active) {
 			banner.removeAttribute('hidden');
-			if (context === 'assessment') {
-				banner.setAttribute('data-theme', getStatusColour(assessment));
-				banner.textContent = status === 'In Progress' ? 'Editing' : 'Reviewing';
-			} else if (context === 'report') {
-				banner.setAttribute('data-theme', getStatusColour(assessment));
-				banner.textContent = 'Viewing';
-			}
+			banner.setAttribute('data-theme', getStatusColour(assessment));
+			banner.textContent = status === 'In Progress' ? 'Editing' : 'Reviewing';
 		}
 
 		// Set title text
@@ -776,7 +742,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		editStatusField.textContent = status;
 
 		// Set export status field
-		if (unexportedChanges && context === 'assessment') {
+		if (unexportedChanges) {
 			let exportStatusField = card.querySelector('[data-field="exportStatus"]');
 			exportStatusField.closest('.field-container').removeAttribute('hidden');
 		}
@@ -800,13 +766,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		// Show open buttons
 		if (!active) {
-			if (status === 'In Progress' && context === 'report') {
-				let btn = card.querySelector('button.open.change-status');
-				btn.removeAttribute('hidden');
-			} else {
-				let createBtn = card.querySelector('button.open:not(.change-status)');
-				createBtn.removeAttribute('hidden');
-			}
+			let createBtn = card.querySelector('button.open');
+			createBtn.removeAttribute('hidden');
 		}
 
 		let duplicateBtn = card.querySelector('button.duplicate-assessment');
@@ -885,7 +846,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let dialog = document.querySelector('#manage-assessments-dialog');
 		if (!dialog) return;
 
-		let stateTriggerKeys = ['activeAssessmentId', 'activeReportId'];
+		let stateTriggerKeys = ['activeAssessmentId'];
 		if (
 			!changes.initiating &&
 			!(
@@ -895,7 +856,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		)
 			return;
 
-		let context = window.location.pathname.includes('/report') ? 'report' : 'assessment';
 		let savedAssessmentList = dialog?.querySelector('ul.saved-assessments-list');
 		let savedAssessmentListItems = savedAssessmentList?.querySelectorAll('li');
 		let savedAssessmentsSection = savedAssessmentList.closest('section');
@@ -910,17 +870,10 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			// Create a shallow copy of the array
 			let assessments = [...data.assessments];
 
-			if (context === 'assessment') {
-				// Sort array of assessments by date modified
-				assessments.sort((a, b) => b.dateModified - a.dateModified);
-			} else if (context === 'report') {
-				assessments.sort((a, b) => Number(b.reportingYear) - Number(a.reportingYear));
-			}
+			// Sort array of assessments by date modified
+			assessments.sort((a, b) => b.dateModified - a.dateModified);
 
-			let activeId =
-				context === 'assessment'
-					? data.uiState.activeAssessmentId
-					: data.uiState.activeReportId;
+			let activeId = data.uiState.activeAssessmentId;
 
 			if (activeId) {
 				// Get the index of the active assessment
@@ -941,7 +894,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				if (assessment !== null) {
 					if (activeId && i === 0) active = true;
 
-					let card = createAssessmentCard(assessment, active, context);
+					let card = createAssessmentCard(assessment, active);
 
 					savedAssessmentList.append(card);
 				}
@@ -1055,72 +1008,41 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		if (target.matches('button.open')) {
 			try {
-				let context = window.location.pathname.includes('/report')
-					? 'report'
-					: 'assessment';
-
 				let targetAssessmentId = Number(target.closest('.card').getAttribute('data-id'));
 
-				if (context === 'assessment') {
-					let assessment = getActiveAssessmentData();
-					if (assessment) {
-						// Set existing assessment active assessor to null prior to opening new one
-						setAssessment({
-							activeAssessor: null,
-						});
-					}
-
-					// Reset consideration checkboxes
-					for (let input of document.querySelectorAll(
-						'input[name="considerationsEstablished"]',
-					) as NodeListOf<HTMLInputElement>) {
-						input.checked = false;
-					}
-
-					setState({
-						mode: 'assessment',
-						activeAssessmentId: targetAssessmentId,
+				let assessment = getActiveAssessmentData();
+				if (assessment) {
+					// Set existing assessment active assessor to null prior to opening new one
+					setAssessment({
+						activeAssessor: null,
 					});
-
-					toastControl.show({ target, type: 'success' });
-
-					// Open select assessor dialog
-					dialogControl.open({
-						dialogId: 'assessor-dialog',
-						headingText: 'Select Active Assessor',
-						context: 'setup',
-					});
-				} else if (context === 'report') {
-					let assessment = findObjectByKey(
-						getUserData().assessments,
-						'id',
-						targetAssessmentId,
-					);
-
-					if (target.matches('button.change-status')) {
-						setAssessment({
-							id: targetAssessmentId,
-							status: 'Complete',
-							dateCompleted: Date.now(),
-							changeLog: updateChangeLog({
-								changeLog: assessment.changeLog,
-								message: `updated assessment status to completed.`,
-							}),
-						});
-					}
-
-					setState({
-						activeReportId: targetAssessmentId,
-					});
-
-					setPreferences({
-						reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-					});
-
-					toastControl.show({ target, type: 'success' });
-
-					dialogControl.close(dialog);
 				}
+
+				// Reset consideration checkboxes
+				for (let input of document.querySelectorAll(
+					'input[name="considerationsEstablished"]',
+				) as NodeListOf<HTMLInputElement>) {
+					input.checked = false;
+				}
+
+				setState({
+					mode: 'assessment',
+					activeAssessmentId: targetAssessmentId,
+				});
+
+				// Reset report settings
+				setPreferences({
+					reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
+				});
+
+				toastControl.show({ target, type: 'success' });
+
+				// Open select assessor dialog
+				dialogControl.open({
+					dialogId: 'assessor-dialog',
+					headingText: 'Select Active Assessor',
+					context: 'setup',
+				});
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });

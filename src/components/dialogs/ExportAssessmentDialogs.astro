@@ -439,12 +439,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					}),
 				});
 
-				if (newStatus === 'In Progress') {
-					setState({
-						activeReportId: null,
-					});
-				}
-
 				toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
