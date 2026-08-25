@@ -5,6 +5,7 @@ import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
 import IconXmark from 'src/components/icons/IconXmark_20.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
+import IconInfo from '../icons/IconInfo_24.astro';
 import Toast from 'src/components/Toast.astro';
 import IconCheckmark from '../icons/IconCheckmark_12.astro';
 
@@ -140,8 +141,9 @@ let schoolList = {
 			</div>
 			<div class="text-container">
 				<p>
-					All information collected is stored exclusively in the browser. Download a copy
-					of your assessment regularly to keep your data safe and restore it if needed.
+					All information collected is stored exclusively in the browser. Download a
+					backup of your assessment regularly to keep your data safe and restore it if
+					needed.
 				</p>
 			</div>
 		</div>
@@ -449,7 +451,7 @@ let schoolList = {
 		</dl>
 	</section>
 
-	<hr class="group" />
+	<!-- <hr class="group" />
 
 	<section>
 		<h3 class="heading">Change History</h3>
@@ -461,42 +463,104 @@ let schoolList = {
 				</div>
 			</template>
 		</dl>
-	</section>
+	</section> -->
+</dialog>
+
+<dialog
+	id="change-history-dialog"
+	aria-describedby="change-history-dialog_heading"
+>
+	<div class="heading-container">
+		<button
+			class="close-dialog"
+			type="button"
+			aria-label="Close Change History Dialog"
+			><IconXmark /></button
+		>
+		<h2
+			id="change-history-dialog_heading"
+			class="heading"
+		>
+			Change History
+		</h2>
+	</div>
+
+	<p class="instructions">
+		The 20 most recent changes to this assessment are listed in this log.
+	</p>
+
+	<dl class="change-log-list">
+		<template>
+			<div class="detail-container">
+				<dt></dt>
+				<dd></dd>
+			</div>
+		</template>
+	</dl>
 </dialog>
 
 <style is:global>
-	#view-assessment-properties-dialog section :is(button, [data-style-as='button']) {
-		--icon-size: 0.875rem;
+	#view-assessment-properties-dialog {
+		& section {
+			& :is(button, [data-style-as='button']) {
+				--icon-size: 0.875rem;
+
+				&:is(:hover, :focus-visible) {
+					--icon-colour: var(--colour-txt-on-bold-1);
+					--label-colour: var(--colour-txt-on-bold-1);
+					--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+				}
+			}
+
+			& button.open-dialog {
+				float: right;
+				margin: 0 0 var(--space-sm) var(--space-sm);
+			}
+
+			& h3 {
+				margin: 0 0 var(--space-sm);
+				font-size: var(--font-size-base);
+				font-weight: 600;
+				line-height: 1.2;
+			}
+
+			& dl {
+				--detail-list-margin: var(--space-sm);
+				--detail-list-font-size: var(--font-size-2xs);
+				line-height: 1;
+			}
+		}
+
+		& hr.group {
+			margin: var(--space-lg) 0;
+		}
 	}
 
-	#view-assessment-properties-dialog
-		section
-		:is(button, [data-style-as='button']):is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-txt-on-bold-1);
-		--label-colour: var(--colour-txt-on-bold-1);
-		--button-bkg-colour: var(--colour-bkg-surface-bold-2);
-	}
+	#change-history-dialog {
+		& dl {
+			--detail-list-gap: var(--space-sm);
+			--detail-list-margin: var(--space-lg);
 
-	#view-assessment-properties-dialog hr.group {
-		margin: var(--space-lg) 0;
-	}
+			& .detail-container {
+				flex-flow: column;
 
-	#view-assessment-properties-dialog dl {
-		--detail-list-margin: var(--space-sm);
-		--detail-list-font-size: var(--font-size-2xs);
-		line-height: 1;
-	}
+				& + .detail-container {
+					border-top: 1px solid var(--colour-brd-faint);
+					padding-top: var(--space-sm);
+				}
 
-	#view-assessment-properties-dialog section h3 {
-		margin: 0 0 var(--space-sm);
-		font-size: var(--font-size-base);
-		font-weight: 600;
-		line-height: 1.2;
-	}
+				& dt {
+					font-size: var(--font-size-2xs);
+					font-weight: 500;
+					color: var(--colour-txt-on-subtle-2);
+				}
 
-	#view-assessment-properties-dialog button.open-dialog {
-		float: right;
-		margin: 0 0 var(--space-sm) var(--space-sm);
+				& dd {
+					color: var(--colour-txt-on-subtle-1);
+					font-weight: 500;
+				}
+			}
+		}
 	}
 </style>
 
@@ -670,7 +734,6 @@ let schoolList = {
 			'assessor',
 			'activeAssessor',
 			'status',
-			'changeLog',
 		];
 		if (
 			!changes.initiating &&
@@ -685,14 +748,32 @@ let schoolList = {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		// console.log("Updating Dialog (view properties)");
-
-		let changeLogList = dialog.querySelector('dl.change-log-list');
-
 		updateFieldsFromAssessmentData({
 			assessment: assessment,
 			dialog: dialog,
 		});
+	};
+
+	let updateChangeHistoryDialog = (data: UserData, changes) => {
+		let dialog = document.querySelector('#change-history-dialog') as HTMLDialogElement;
+		if (!dialog) return;
+
+		let stateTriggerKeys = ['activeAssessmentId'];
+		let assessmentTriggerKeys = ['changeLog'];
+		if (
+			!changes.initiating &&
+			!(
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+			)
+		)
+			return;
+
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let changeLogList = dialog.querySelector('dl.change-log-list');
 
 		for (let child of changeLogList.querySelectorAll(':not(template)')) {
 			child.remove();
@@ -722,7 +803,7 @@ let schoolList = {
 				definition: message,
 			});
 
-			changeLogList.append(item);
+			changeLogList.prepend(item);
 		}
 	};
 
@@ -802,6 +883,7 @@ let schoolList = {
 	//
 
 	subscribe(updateViewAssessmentPropertiesDialog);
+	subscribe(updateChangeHistoryDialog);
 	subscribe(updateEditAssessmentPropertiesDialog);
 
 	//
@@ -954,8 +1036,7 @@ let schoolList = {
 
 	let onDialogOpen = (event) => {
 		let dialog = event.target as HTMLDialogElement;
-		// console.log("Opening Edit Assessment Dialog", dialog);
-
+		
 		// On open, update dialog form with current assessment data
 		if (dialog.open) {
 			let changes = {

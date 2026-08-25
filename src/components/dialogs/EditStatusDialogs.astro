@@ -51,9 +51,19 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			data-size="large"
 			data-style="outline"
 			data-focus-start
+			data-restrict-context="configure"
 		>
-			<span data-restrict-context="configure">Cancel</span>
-			<span data-restrict-context="close">Skip</span>
+			Cancel
+		</button>
+		<button
+			class="skip"
+			type="button"
+			data-size="large"
+			data-style="outline"
+			data-focus-start
+			span data-restrict-context="close"
+		>
+			Skip
 		</button>
 		<button
 			class="change-status"
@@ -100,26 +110,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		</h2>
 	</div>
 
-	<div
-		class="callout"
-		data-style="solid"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="yellow"
-	>
-		<div class="wrapper">
-			<div class="icon-container">
-				<IconWarningBig />
-			</div>
-			<div class="text-container">
-				<p>
-					This assessment is marked as <strong>Complete</strong>. To make changes, its
-					status must be set to <strong>In Progress</strong>.
-				</p>
-			</div>
-		</div>
-	</div>
-
+	<p class="instructions">
+		The <span data-field="reportingYear"></span> assessment for <span data-field="school"
+		></span> is marked as <strong>Complete</strong>. To make changes, its status must be set to <strong
+			>In Progress</strong
+		>.
+	</p>
 	<p class="instructions">
 		Select <strong>Edit</strong> to change this assessment's status and make updates, or <strong
 			>Duplicate</strong
@@ -208,8 +204,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		// console.log("Updating Dialog (status)");
-
 		let isComplete = assessment.status === 'Complete';
 
 		let completeInstructions = dialog.querySelector(
@@ -232,11 +226,39 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		);
 	};
 
+	let updateStatusWarningDialog = (data: UserData, changes) => {
+		let dialog = document.querySelector('#status-warning-dialog') as HTMLDialogElement;
+		if (!dialog) return;
+
+		let stateTriggerKeys = ['activeAssessmentId'];
+		let assessmentTriggerKeys = ['reportingYear'];
+		if (
+			!changes.initiating &&
+			!(
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+			)
+		)
+			return;
+
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let fields = dialog.querySelectorAll('[data-field]') as NodeListOf<HTMLElement>;
+
+		for (let field of fields) {
+			let targetValue = field.dataset.field;
+			field.textContent = assessment[targetValue];
+		}
+	};
+
 	//
 	// Inits
 	//
 
 	subscribe(updateEditStatusDialog);
+	subscribe(updateStatusWarningDialog);
 
 	//
 	// Event Listeners
@@ -270,7 +292,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 							selector: 'edit-status-dialog_change-status-and-warn-toast_success',
 						});
 						dialogControl.open({
-							dialogId: 'export-warning-dialog',
+							dialogId: 'backup-warning-dialog',
 						});
 					} else {
 						try {
@@ -310,12 +332,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			}
 		}
 
-		if (target.matches('button.close-dialog')) {
+		if (target.matches('button.skip')) {
 			if (dialog.getAttribute('data-context') === 'close') {
 				let activeAssessment = getActiveAssessmentData();
 				if (activeAssessment.unexportedChanges) {
 					dialogControl.open({
-						dialogId: 'export-warning-dialog',
+						dialogId: 'backup-warning-dialog',
 						context: 'close',
 					});
 				} else {

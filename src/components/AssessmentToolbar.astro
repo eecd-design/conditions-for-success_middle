@@ -20,6 +20,8 @@ import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
 import IconCheckmark from 'src/components/icons/IconCheckmark_12.astro';
 import Toast from './Toast.astro';
 import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
+import IconShare from './icons/IconShare_20.astro';
+import IconHistory from './icons/IconHistory_20.astro';
 ---
 
 <section
@@ -88,16 +90,18 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					</span>
 					<span class="tooltip">Change Status</span>
 				</button>
-				<div
+
+				<!-- <div
 					class="separator item"
 					data-orientation="vertical"
 					aria-hidden="true"
 					data-restrict-context="big-seven"
 					data-restrict-breakpoint-big-seven-min="2"
 				>
-				</div>
+				</div> -->
+
 				<!-- Assessment Properties Button -->
-				<button
+				<!-- <button
 					class="open-dialog"
 					data-dialog="view-assessment-properties-dialog"
 					type="button"
@@ -113,6 +117,33 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					</span>
 					<span class="tooltip">View Properties</span>
 				</button>
+
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+					data-restrict-context="big-seven"
+					data-restrict-breakpoint-big-seven-min="2"
+				>
+				</div> -->
+
+				<!-- Change History Button -->
+				<!-- <button
+					class="open-dialog"
+					data-dialog="change-history-dialog"
+					type="button"
+					aria-label="Change History"
+					data-restrict-context="big-seven"
+					data-restrict-breakpoint-big-seven-min="2"
+				>
+					<span class="icon-and-label-container">
+						<IconHistory />
+						<span class="label-container">
+							<span class="label">History</span>
+						</span>
+					</span>
+					<span class="tooltip">Change History</span>
+				</button> -->
 			</div>
 			<div
 				class="separator group"
@@ -223,27 +254,30 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				data-restrict-mode="assessment"
 			>
 			</div>
+
+			<!-- Save Group -->
 			<div
-				class="export-group button-group"
+				class="save-group button-group"
 				data-restrict-mode="assessment"
 				data-restrict-context="big-seven"
 			>
-				<!-- Export Assessment Button -->
+				<!-- Share Assessment Button -->
 				<button
 					class="open-dialog"
-					data-dialog="export-assessment-dialog"
+					data-dialog="share-assessment-dialog"
 					type="button"
-					aria-label="Export Assessment"
+					aria-label="Share Assessment"
 					data-restrict-breakpoint-big-seven-min="3"
 				>
 					<span class="icon-and-label-container">
-						<IconSave />
+						<IconShare />
 						<span class="label-container">
-							<span class="label">Export</span>
+							<span class="label">Share</span>
 						</span>
 					</span>
-					<span class="tooltip">Export Assessment</span>
+					<span class="tooltip">Share Assessment</span>
 				</button>
+
 				<div
 					class="separator item"
 					data-orientation="vertical"
@@ -251,6 +285,32 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					data-restrict-breakpoint-big-seven-min="3"
 				>
 				</div>
+
+				<!-- Download Assessment Button -->
+				<button
+					class="open-dialog"
+					data-dialog="download-assessment-dialog"
+					type="button"
+					aria-label="Download Assessment"
+					data-restrict-breakpoint-big-seven-min="3"
+				>
+					<span class="icon-and-label-container">
+						<IconDownload />
+						<span class="label-container">
+							<span class="label">Download</span>
+						</span>
+					</span>
+					<span class="tooltip">Download Assessment</span>
+				</button>
+
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+					data-restrict-breakpoint-big-seven-min="3"
+				>
+				</div>
+
 				<!-- Export Status -->
 				<div class="field-container label-container">
 					<span
@@ -271,6 +331,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			>
 			</div>
 
+			<!-- Report Group -->
 			<div
 				class="report-group button-group"
 				data-restrict-mode="assessment"
@@ -415,7 +476,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				</button>
 			</div>
 
-			<div
+			<!-- <div
 				class="separator group"
 				data-orientation="vertical"
 				data-restrict-mode="assessment"
@@ -423,17 +484,17 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 				data-restrict-breakpoint-report-min="1"
 				aria-hidden="true"
 			>
-			</div>
+			</div> -->
 
 			<!-- Mode Group -->
-			<div
+			<!-- <div
 				class="mode-group button-group"
 				data-restrict-mode="assessment"
 				data-restrict-breakpoint-big-seven-min="2"
 				data-restrict-breakpoint-report-min="1"
-			>
-				<!-- Start Editing Button -->
-				<button
+			> -->
+			<!-- Start Editing Button -->
+			<!-- <button
 					class="open-dialog"
 					data-dialog="status-warning-dialog"
 					aria-label="Edit Completed Assessment"
@@ -448,17 +509,17 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 						</span>
 					</span>
 					<span class="tooltip">Edit Assessment</span>
-				</button>
-				<div
+				</button> -->
+			<!-- <div
 					class="separator item"
 					data-orientation="vertical"
 					data-restrict-status="complete"
 					data-restrict-context="big-seven"
 					aria-hidden="true"
 				>
-				</div>
-				<!-- Close Button -->
-				<button
+				</div> -->
+			<!-- Close Button -->
+			<!-- <button
 					class="close"
 					type="button"
 					aria-label="Close Assessment"
@@ -472,20 +533,19 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 						</span>
 					</span>
 					<span class="tooltip">Close Assessment</span>
-				</button>
-			</div>
+				</button> -->
+			<!-- </div> -->
 			<div
 				class="separator group"
 				data-orientation="vertical"
 				aria-hidden="true"
 				data-restrict-mode="assessment"
-				data-restrict-breakpoint-big-seven-max="2"
 				data-restrict-breakpoint-report-max="1"
 			>
 			</div>
 			<div
 				class="more-group button-group"
-				data-restrict-breakpoint-big-seven-max="2"
+				data-restrict-mode="assessment"
 				data-restrict-breakpoint-report-max="1"
 			>
 				<!-- More Options Buttons -->
@@ -525,21 +585,57 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 							</button>
 						</li>
 
-						<!-- Export Assessment Button -->
+						<!-- Change History -->
+						<li data-restrict-context="big-seven">
+							<button
+								class="open-dialog"
+								data-dialog="change-history-dialog"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconHistory />
+									<span class="label-container">
+										<span class="label">Change History</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Share Assessment Button -->
 						<li
 							data-restrict-context="big-seven"
 							data-restrict-breakpoint-big-seven-max="3"
 						>
 							<button
 								class="open-dialog"
-								data-dialog="export-assessment-dialog"
+								data-dialog="share-assessment-dialog"
 								type="button"
-								aria-label="Export Assessment"
+								aria-label="Share Assessment"
 							>
 								<span class="icon-and-label-container">
-									<IconSave />
+									<IconShare />
 									<span class="label-container">
-										<span class="label">Export Assessment</span>
+										<span class="label">Share Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Download Assessment Button -->
+						<li
+							data-restrict-context="big-seven"
+							data-restrict-breakpoint-big-seven-max="3"
+						>
+							<button
+								class="open-dialog"
+								data-dialog="download-assessment-dialog"
+								type="button"
+								aria-label="Download Assessment"
+							>
+								<span class="icon-and-label-container">
+									<IconDownload />
+									<span class="label-container">
+										<span class="label">Download Assessment</span>
 									</span>
 								</span>
 							</button>
@@ -550,6 +646,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 							data-restrict-mode="assessment"
 							data-restrict-context="big-seven"
 							data-restrict-status="complete"
+							data-restrict-breakpoint-big-seven-max="2"
 						>
 							<a
 								class="open-dialog"
@@ -784,7 +881,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			}
 		}
 
-		main.big-seven & .export-group {
+		main.big-seven & .save-group {
 			flex-grow: 1;
 		}
 
@@ -1036,8 +1133,6 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		// console.log("Updating Assessment Toolbar");
-
 		// Get the update fields
 		let statusField = toolbar?.querySelector('[data-field="status"]');
 		let assessmentField = toolbar?.querySelector('[data-field="activeAssessmentName"]');
@@ -1151,7 +1246,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			} else {
 				if (activeAssessment.unexportedChanges) {
 					dialogControl.open({
-						dialogId: 'export-warning-dialog',
+						dialogId: 'backup-warning-dialog',
 					});
 				} else {
 					try {

@@ -45,7 +45,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						data-style-as="button"
 						data-style="solid"
 						data-size="large"
-						>Choose File</span
+						>Choose Backup File</span
 					>
 					<input
 						type="file"
@@ -67,7 +67,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					<input
 						type="text"
 						name="import-code"
-						placeholder="Paste code here..."
+						placeholder="Paste save code..."
 					/>
 					<button
 						class="import-code"
@@ -545,6 +545,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			align-items: center;
 			gap: var(--space-sm);
 
+			& fieldset.file {
+				& .file-input-container {
+					white-space: nowrap;
+				}
+			}
+
 			& fieldset.code {
 				flex-grow: 1;
 			}
@@ -790,7 +796,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		// If there's a school/year conflict, open import conflict dialog
 		if (schoolYearConflict) {
-			// console.log("School/Year Conflict Detected");
+			if (debug) console.log("School/Year Conflict Detected");
 
 			setImportConflictData({
 				importedAssessment,
@@ -811,7 +817,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		// If there's an id conflict (but no school/year conflict), assign assessment a new id
 		if (idConflict) {
-			// console.log("ID Conflict Detected");
+			if (debug) console.log("ID Conflict Detected");
+			
 			let ids = localAssessments.map((a) => a.id).filter(Boolean);
 			let newId = ids.length ? Math.max(...ids) + 1 : 1;
 			importedAssessment.id = newId;
@@ -1060,10 +1067,11 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				}
 
 				let importedAssessment = decompressData(importedCode);
-				// console.log(
-				// 	"Imported Assessment (Code)",
-				// 	JSON.parse(JSON.stringify(importedAssessment)),
-				// );
+				
+				if (debug) console.log(
+					"Imported Assessment (Code)",
+					JSON.parse(JSON.stringify(importedAssessment)),
+				);
 
 				let importResult = handleAssessmentImport(importedAssessment);
 
@@ -1105,10 +1113,11 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 			try {
 				let importedAssessment = await importAssessment(file);
-				// console.log(
-				// 	"Imported Assessment (File)",
-				// 	JSON.parse(JSON.stringify(importedAssessment)),
-				// );
+
+				if (debug) console.log(
+					"Imported Assessment (File)",
+					JSON.parse(JSON.stringify(importedAssessment)),
+				);
 
 				let importResult = handleAssessmentImport(importedAssessment);
 

@@ -1,12 +1,12 @@
 ---
 import IconCaretDown from '../icons/IconCaretDown_14.astro';
 import IconCross from 'src/components/icons/IconCross_16.astro';
-import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
 import IconXmark16 from 'src/components/icons/IconXmark_16.astro';
 import Toast from 'src/components/Toast.astro';
 import IconCheckmark from '../icons/IconCheckmark_12.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
+import IconInfo from '../icons/IconInfo_24.astro';
 ---
 
 <dialog
@@ -30,26 +30,29 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		</h2>
 	</div>
 
-	<div
+	<!-- <div
 		class="callout"
 		data-style="solid"
 		data-vibrancy="vivid"
 		data-fit="compact"
-		data-theme="yellow"
+		data-theme="blue"
 	>
 		<div class="wrapper">
 			<div class="icon-container">
-				<IconWarningBig />
+				<IconInfo />
 			</div>
 			<div class="text-container">
-				<p>Adding assessors is optional but recommended for collaborative workflows.</p>
+				
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<form>
 		<fieldset class="assessors">
 			<label for="assessor-dialog_assessor-input">Assessors</label>
+			<p class="instructions">
+				Optional. Add the names of the people collaborating on this assessment.
+			</p>
 			<div class="input-container">
 				<input
 					id="assessor-dialog_assessor-input"
@@ -103,8 +106,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				Select the person currently making changes to this assessment.
 			</p>
 			<p class="instructions">
-				This helps maintain clear version history and makes it easier to understand who last
-				updated the data when it's shared with others.
+				Changes will be tagged to the active assessor, if there is one. You can view this
+				assessment's most recent changes in the <button
+					class="open-dialog"
+					data-dialog="change-history-dialog"
+					type="button"
+					data-style-as="link"
+					>Change History Dialog</button
+				>.
 			</p>
 			<div class="select-container">
 				<select
@@ -345,8 +354,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		if (!assessment || !dialog) return;
 
 		let { assessors, activeAssessor } = assessment;
-
-		// console.log("Updating Dialog (assessor)");
 
 		updateAssessorList({
 			dialog,

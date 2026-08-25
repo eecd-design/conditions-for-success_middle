@@ -32,6 +32,11 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		</h2>
 	</div>
 
+	<p class="instructions">
+		Select the indicators you would like to include in your report. These settings apply to both
+		the digital and PDF versions.
+	</p>
+
 	<form>
 		<fieldset
 			class="indicators"
@@ -188,6 +193,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			data-size="large"
 			data-style="solid"
 			data-focus-start
+			data-toast-success="report-download-dialog_download-toast_success"
+			data-toast-failure="report-download-dialog_download-toast_failure"
 			>Download PDF</button
 		>
 		<button
@@ -195,12 +202,22 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			type="button"
 			data-size="large"
 			data-style="solid"
+			data-toast-success="report-download-dialog_download-toast_success"
+			data-toast-failure="report-download-dialog_download-toast_failure"
 			>Download Spreadsheet</button
 		>
 	</div>
 
 	<!-- Save Toast located in Report page -->
 	<div class="toast-group">
+		<Toast
+			id={'report-download-dialog_download-toast_success'}
+			message={`Report downloaded.`}
+			colour={'green'}
+			type={'success'}
+		>
+			<IconCheckmark slot={'icon'} />
+		</Toast>
 		<Toast
 			id={'report-download-dialog_download-toast_failure'}
 			message={`Unable to download the report. Please reload the page to try again.`}
@@ -696,8 +713,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		let count = await userDataStore.getConsiderationCount();
 
-		console.log(count);
-
 		for (let [tag, value] of Object.entries(count)) {
 			if (tag.match(/^\d$/) || tag.match(/^\d\.\d$/)) {
 				let completion = assessment.continuumCompletion[tag];
@@ -727,8 +742,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		data.sort((a, b) => {
 			return a['Indicator or Component'] - b['Indicator or Component'];
 		});
-
-		console.log(data);
 
 		// Convert both sections to CSV
 		let csv = Papa.unparse(data);
@@ -908,14 +921,29 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		if (!dialog) return;
 
 		if (target.matches('button.download-pdf')) {
-			let btnGroup = dialog.querySelector('.button-group');
-			btnGroup.setAttribute('hidden', '');
-			await packageReportAsPdf();
-			btnGroup.removeAttribute('hidden');
+			try {
+				let btnGroup = dialog.querySelector('.button-group');
+				btnGroup.setAttribute('hidden', '');
+
+				await packageReportAsPdf();
+
+				btnGroup.removeAttribute('hidden');
+
+				toastControl.show({ target, type: 'success' });
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
 		}
 
 		if (target.matches('button.download-csv')) {
-			packageReportAsCsv();
+			try {
+				packageReportAsCsv();
+				toastControl.show({ target, type: 'success' });
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
 		}
 	};
 	eventControl.add({
