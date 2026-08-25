@@ -183,8 +183,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			)
 				return;
 
-			// console.log("Updating Continuum Version (footer)");
-
 			let continuumVersion = data.uiState.currentContinuumVersion;
 
 			// 1. Site footer
@@ -208,8 +206,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let system = window.matchMedia('(prefers-color-scheme: dark)').matches;
 			let theme = data.uiPreferences.theme || (system ? 'dark' : 'light');
 
-			// console.log("Updating Theme (on html)");
-
 			// Get the html root
 			let html = document.documentElement;
 
@@ -231,8 +227,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			let mode = data.uiState.mode;
 			if (mode !== 'assessment' && mode !== 'reading') mode = 'reading';
-
-			// console.log("Updating Mode (on main)");
 
 			// Get the main
 			let main = document.querySelector('main');
@@ -257,8 +251,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
-
-			// console.log("Updating Status (on main)");
 
 			let status = assessment.status;
 			if (status !== 'In Progress' && status !== 'Complete') status = 'In Progress';
@@ -286,8 +278,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
-
-			// console.log("Updating Assessor (on main)");
 
 			// Get the main
 			let main = document.querySelector('main');
@@ -342,6 +332,8 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		//
 
 		let onPageLoad = () => {
+			let debug = false;
+
 			// Store last visited page
 			let path = window.location.pathname;
 			let base = import.meta.env.BASE_URL;
@@ -357,7 +349,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			// Handle search queries
 			let query = new URLSearchParams(window.location.search);
-			console.log('Query: ', query);
+			
+			if (debug) console.log('Query: ', query);
+						
 			let dialog = query.get('dialog');
 			if (dialog) {
 				let dialogId;
@@ -384,7 +378,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 		let onBeforeSwap = (event) => {
 			let newDocument = event.newDocument.documentElement;
-			console.log('Before Swap: Incoming Document: ', newDocument);
 			newDocument.dataset.js = '';
 			newDocument.dataset.loading = '';
 			// if ("scrollRestoration" in history) {
@@ -399,7 +392,5 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			eventType: 'astro:before-swap',
 			fn: onBeforeSwap,
 		});
-
-		console.log(eventControl._registry);
 	</script>
 </html>

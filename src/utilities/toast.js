@@ -26,7 +26,6 @@ let toastControl = (() => {
 
 		// Show the new toast
 		toast.setAttribute('open', '');
-		// console.log('Opening Toast');
 		activeToasts.add(toast);
 
 		if (!duration) duration = type === 'success' ? 2000 : 4000;

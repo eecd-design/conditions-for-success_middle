@@ -692,8 +692,6 @@ let phases = [
 		let currentIndicatorTag = document.querySelector('main').getAttribute('data-indicator-tag');
 		if (!currentIndicatorTag) return;
 
-		// console.log('Updating Considerations');
-
 		let relevantConsiderationsEstablished = assessment.considerationsEstablished.filter(
 			(consideration) => {
 				if (!consideration) return;
