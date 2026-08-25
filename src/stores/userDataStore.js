@@ -130,27 +130,27 @@ let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true 
 
 			if (minutes < 1)
 				return verbose
-					? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+					? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 					: 0;
 
 			if (minutes < 60) {
 				return verbose
-					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${minutes} min. since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${minutes} min. since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 					: `${minutes} minute${minutes === 1 ? '' : 's'}`;
 			}
 
 			if (hours < 24) {
 				return verbose
-					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${hours} hour${hours === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${hours} hour${hours === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 					: `${hours} hour${hours === 1 ? '' : 's'}`;
 			}
 
 			return verbose
-				? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${days} day${days === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+				? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${days} day${days === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 				: `${days} day${days === 1 ? '' : 's'}`;
 		}
 		return verbose
-			? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="export-assessment-dialog">Download backup</button>.`
+			? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 			: 0;
 	}
 
@@ -716,7 +716,6 @@ let checkForChanges = ({ data, update }) => {
 };
 
 let checkAnnouncementSession = () => {
-	console.log(data.uiState);
 	let announcementSession = data.uiState.announcementSession ?? {
 		views: 0,
 		lastSeen: null,
