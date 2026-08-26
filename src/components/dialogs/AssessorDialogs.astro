@@ -1,162 +1,131 @@
 ---
+import Toast from 'src/components/Toast.astro';
+import Dialog from 'src/components/dialogs/Dialog.astro';
+
 import IconCaretDown from '../icons/IconCaretDown_14.astro';
 import IconCross from 'src/components/icons/IconCross_16.astro';
-import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
 import IconXmark16 from 'src/components/icons/IconXmark_16.astro';
-import Toast from 'src/components/Toast.astro';
 import IconCheckmark from '../icons/IconCheckmark_12.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
-import IconInfo from '../icons/IconInfo_24.astro';
 ---
 
-<dialog
-	id="assessor-dialog"
-	aria-describedby="assessor-dialog_heading"
-	data-reset-forms="true"
+<Dialog
+	id={'assessor-dialog'}
+	title={'Assign Assessors'}
+	resetForms={true}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Select Assessor Dialog"
-			><IconXmarkBig /></button
-		>
-		<h2
-			id="assessor-dialog_heading"
-			class="heading"
-			data-default-text="Assign Assessors"
-		>
-			Assign Assessors
-		</h2>
-	</div>
-
-	<!-- <div
-		class="callout"
-		data-style="solid"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="blue"
-	>
-		<div class="wrapper">
-			<div class="icon-container">
-				<IconInfo />
-			</div>
-			<div class="text-container">
-				
-			</div>
-		</div>
-	</div> -->
-
-	<form>
-		<fieldset class="assessors">
-			<label for="assessor-dialog_assessor-input">Assessors</label>
-			<p class="instructions">
-				Optional. Add the names of the people collaborating on this assessment.
-			</p>
-			<div class="input-container">
-				<input
-					id="assessor-dialog_assessor-input"
-					class="assessor"
-					type="text"
-					placeholder="Enter a name..."
-					data-focus-start
-				/>
-				<button
-					class="add-assessor"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconCross />
-						<span class="label-container">
-							<span class="label">Add</span>
+	<Fragment slot="content">
+		<form>
+			<fieldset class="assessors">
+				<label for="assessor-dialog_assessor-input">Assessors</label>
+				<p class="instructions">
+					Optional. Add the names of the people collaborating on this assessment.
+				</p>
+				<div class="input-container">
+					<input
+						id="assessor-dialog_assessor-input"
+						class="assessor"
+						type="text"
+						placeholder="Enter a name..."
+						data-focus-start
+					/>
+					<button
+						class="add-assessor"
+						type="button"
+					>
+						<span class="icon-and-label-container">
+							<IconCross />
+							<span class="label-container">
+								<span class="label">Add</span>
+							</span>
 						</span>
-					</span>
-				</button>
-			</div>
-			<ul
-				class="assessors-list field-values-list"
-				data-field="assessors"
+					</button>
+				</div>
+				<ul
+					class="assessors-list field-values-list"
+					data-field="assessors"
+					hidden
+				>
+					<template>
+						<li>
+							<!-- <span class="group">Assessor</span> -->
+							<span
+								class="title"
+								data-field-value
+							></span>
+							<button
+								class="clear remove-assessor"
+								type="button"
+								aria-label="Remove Assessor"
+							>
+								<IconXmark16 />
+							</button>
+						</li>
+					</template>
+				</ul>
+			</fieldset>
+
+			<fieldset
+				class="active-assessor"
 				hidden
 			>
-				<template>
-					<li>
-						<!-- <span class="group">Assessor</span> -->
-						<span
-							class="title"
-							data-field-value
-						></span>
-						<button
-							class="clear remove-assessor"
-							type="button"
-							aria-label="Remove Assessor"
-						>
-							<IconXmark16 />
-						</button>
-					</li>
-				</template>
-			</ul>
-		</fieldset>
+				<label for="assessor-dialog_active-assessor-select">Active Assessor</label>
+				<p class="instructions">
+					Select the person currently making changes to this assessment.
+				</p>
+				<p class="instructions">
+					Changes will be tagged to the active assessor, if there is one. You can view
+					this assessment's most recent changes in the <button
+						class="open-dialog"
+						data-dialog="change-history-dialog"
+						type="button"
+						data-style-as="link"
+						>Change History Dialog</button
+					>.
+				</p>
+				<div class="select-container">
+					<select
+						name="active-assessor"
+						id="assessor-dialog_active-assessor-select"
+					>
+						<option value="">Select the active assessor...</option>
+					</select>
+					<IconCaretDown />
+				</div>
+			</fieldset>
 
-		<fieldset
-			class="active-assessor"
-			hidden
-		>
-			<label for="assessor-dialog_active-assessor-select">Active Assessor</label>
-			<p class="instructions">
-				Select the person currently making changes to this assessment.
-			</p>
-			<p class="instructions">
-				Changes will be tagged to the active assessor, if there is one. You can view this
-				assessment's most recent changes in the <button
-					class="open-dialog"
-					data-dialog="change-history-dialog"
+			<div class="button-group">
+				<button
+					class="close-dialog"
 					type="button"
-					data-style-as="link"
-					>Change History Dialog</button
-				>.
-			</p>
-			<div class="select-container">
-				<select
-					name="active-assessor"
-					id="assessor-dialog_active-assessor-select"
+					data-size="large"
+					data-style="outline"
+					data-restrict-context="setup"
+					>Skip</button
 				>
-					<option value="">Select the active assessor...</option>
-				</select>
-				<IconCaretDown />
+				<button
+					class="close-dialog"
+					type="button"
+					data-size="large"
+					data-style="outline"
+					data-restrict-context="configure"
+					>Cancel</button
+				>
+				<button
+					class="save"
+					type="button"
+					data-size="large"
+					data-style="solid"
+					data-toast-success="assessor-dialog_save-toast_success"
+					data-toast-failure="assessor-dialog_save-toast_failure"
+					disabled
+					>Save</button
+				>
 			</div>
-		</fieldset>
+		</form>
+	</Fragment>
 
-		<div class="button-group">
-			<button
-				class="close-dialog"
-				type="button"
-				data-size="large"
-				data-style="outline"
-				data-restrict-context="setup"
-				>Skip</button
-			>
-			<button
-				class="close-dialog"
-				type="button"
-				data-size="large"
-				data-style="outline"
-				data-restrict-context="configure"
-				>Cancel</button
-			>
-			<button
-				class="save"
-				type="button"
-				data-size="large"
-				data-style="solid"
-				data-toast-success="assessor-dialog_save-toast_success"
-				data-toast-failure="assessor-dialog_save-toast_failure"
-				disabled
-				>Save</button
-			>
-		</div>
-	</form>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<Toast
 			id={'edit-assessment-properties-dialog_create-toast_success'}
 			message={`Assessment created!`}
@@ -198,8 +167,8 @@ import IconInfo from '../icons/IconInfo_24.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
 <script>
 	//

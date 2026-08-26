@@ -1,94 +1,83 @@
 ---
+import Dialog from 'src/components/dialogs/Dialog.astro';
+import Toast from 'src/components/Toast.astro';
+
 import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import IconCopy from 'src/components/icons/IconCopy_20.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
-import Toast from 'src/components/Toast.astro';
 import IconCheckmark from '../icons/IconCheckmark_12.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 ---
 
-<dialog
-	id="share-assessment-dialog"
-	aria-describedby="share-assessment-dialog_heading"
+<Dialog
+	id={'share-assessment-dialog'}
+	title={'Share Assessment'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Share Assessment Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="share-assessment-dialog_heading"
-			class="heading"
-		>
-			Share Assessment
-		</h2>
-	</div>
-
-	<p class="instructions">
-		Copy and share this save code to collaborate on this assessment. The collaborator can use
-		the save code to import the assessment in the <button
-			class="open-dialog"
-			data-dialog="manage-assessments-dialog"
-			type="button"
-			data-style-as="link"
-			>Manage Assessments Dialog
-		</button> and continue working on it.
-	</p>
-
-	<div
-		class="callout"
-		data-style="solid"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="yellow"
-	>
-		<div class="wrapper">
-			<div class="icon-container">
-				<IconWarningBig />
-			</div>
-			<div class="text-container">
-				<p>
-					The information stored in this code represents a snapshot of this assessment as
-					it is now. <strong
-						>It will not automatically update if any changes are made after copying it.</strong
-					>
-				</p>
-			</div>
-		</div>
-	</div>
-
-	<section>
-		<h3>Save Code</h3>
-		<div
-			class="code-container"
-			data-style-as="input-container"
-		>
-			<div
-				class="url"
-				data-style-as="input"
-			>
-				<span data-field="exportCode"></span>
-			</div>
-			<button
-				class="copy-code"
+	<Fragment slot="content">
+		<p class="instructions">
+			Copy and share this save code to collaborate on this assessment. The collaborator can
+			use the save code to import the assessment in the <button
+				class="open-dialog"
+				data-dialog="manage-assessments-dialog"
 				type="button"
-				aria-label="Copy assessment code to clipboard"
-				data-toast-success="share-assessment-dialog_copy-code-toast_success"
-				data-toast-failure="share-assessment-dialog_copy-code-toast_failure"
-			>
-				<span class="icon-and-label-container">
-					<IconCopy />
-					<span class="label-container">
-						<span class="label">Copy</span>
-					</span>
-				</span>
-			</button>
-		</div>
-	</section>
+				data-style-as="link"
+				>Manage Assessments Dialog
+			</button> and continue working on it.
+		</p>
 
-	<div class="toast-group">
+		<div
+			class="callout"
+			data-style="solid"
+			data-vibrancy="vivid"
+			data-fit="compact"
+			data-theme="yellow"
+		>
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>
+						The information stored in this code represents a snapshot of this assessment
+						as it is now. <strong
+							>It will not automatically update if any changes are made after copying
+							it.</strong
+						>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<section>
+			<h3>Save Code</h3>
+			<div
+				class="code-container"
+				data-style-as="input-container"
+			>
+				<div
+					class="url"
+					data-style-as="input"
+				>
+					<span data-field="exportCode"></span>
+				</div>
+				<button
+					class="copy-code"
+					type="button"
+					aria-label="Copy assessment code to clipboard"
+					data-toast-success="share-assessment-dialog_copy-code-toast_success"
+					data-toast-failure="share-assessment-dialog_copy-code-toast_failure"
+				>
+					<span class="icon-and-label-container">
+						<IconCopy />
+						<span class="label-container">
+							<span class="label">Copy</span>
+						</span>
+					</span>
+				</button>
+			</div>
+		</section>
+	</Fragment>
+
+	<Fragment slot="toasts">
 		<Toast
 			id={'share-assessment-dialog_copy-code-toast_success'}
 			message={'Export code copied to the clipboard.'}
@@ -105,108 +94,57 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
-<dialog
-	id="download-assessment-dialog"
-	aria-describedby="download-assessment-dialog_heading"
+<Dialog
+	id={'download-assessment-dialog'}
+	title={'Download Assessment'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Download Assessment Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="download-assessment-dialog_heading"
-			class="heading"
-			data-default-text="Download Assessment"
-		>
-			Download Assessment
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<p class="instructions">
+			Download a copy of this assessment to backup your work. You can use this file to restore
+			the assessment in the <button
+				class="open-dialog"
+				data-dialog="manage-assessments-dialog"
+				type="button"
+				data-style-as="link"
+				>Manage Assessments Dialog
+			</button> on this device or another.
+		</p>
 
-	<!-- <section class="edit-status">
-		<h3>Update Status Before Export</h3>
-		<p
-			id="download-assessment-dialog_edit-status_in-progress-instructions"
-			class="instructions"
+		<div
+			class="callout"
+			data-style="solid"
+			data-vibrancy="vivid"
+			data-fit="compact"
+			data-theme="yellow"
 		>
-			This assessment is marked as <strong>In Progress</strong>. Mark it as <strong
-				>Complete</strong
-			> before exporting?
-		</p>
-		<p
-			id="download-assessment-dialog_edit-status_complete-instructions"
-			class="instructions"
-			hidden
-		>
-			This assessment is marked as <strong>Complete</strong>. Mark it as <strong
-				>In Progress</strong
-			> before exporting?
-		</p>
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>Editing backup files can break formatting and prevent importing.</p>
+				</div>
+			</div>
+		</div>
 
 		<div class="button-group">
 			<button
-				class="change-status"
+				class="download-assessment download-file"
 				type="button"
 				data-style="solid"
 				data-size="large"
-				data-toast-success="download-assessment-dialog_change-status-toast_success"
-				data-toast-failure="download-assessment-dialog_change-status-toast_failure"
-				aria-describedby="download-assessment-dialog_edit-status_in-progress-instructions"
-				data-focus-start
-				>Mark as Complete</button
+				aria-label="Download assessment data as CSV file"
+				data-toast-success="download-assessment-dialog_export-file-toast_success"
+				data-toast-failure="download-assessment-dialog_export-file-toast_failure"
+				>Download File</button
 			>
 		</div>
-	</section> -->
-	<!-- 
-	<hr class="group" /> -->
+	</Fragment>
 
-	<p class="instructions">
-		Download a copy of this assessment to backup your work. You can use this file to restore the
-		assessment in the <button
-			class="open-dialog"
-			data-dialog="manage-assessments-dialog"
-			type="button"
-			data-style-as="link"
-			>Manage Assessments Dialog
-		</button> on this device or another.
-	</p>
-
-	<div
-		class="callout"
-		data-style="solid"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="yellow"
-	>
-		<div class="wrapper">
-			<div class="icon-container">
-				<IconWarningBig />
-			</div>
-			<div class="text-container">
-				<p>Editing backup files can break formatting and prevent importing.</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="button-group">
-		<button
-			class="download-assessment download-file"
-			type="button"
-			data-style="solid"
-			data-size="large"
-			aria-label="Download assessment data as CSV file"
-			data-toast-success="download-assessment-dialog_export-file-toast_success"
-			data-toast-failure="download-assessment-dialog_export-file-toast_failure"
-			>Download File</button
-		>
-	</div>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<Toast
 			id={'download-assessment-dialog_change-status-toast_success'}
 			message={`Status change saved.`}
@@ -240,66 +178,51 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
-<dialog
-	id="backup-warning-dialog"
-	aria-describedby="backup-warning-dialog_heading"
+<Dialog
+	id={'backup-warning-dialog'}
+	title={'Backup Your Work?'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Warning Dialog"
-			data-toast-success="backup-warning-dialog_close-toast_success"
-			data-toast-failure="backup-warning-dialog_close-toast_failure"
-			><IconXmark /></button
-		>
-		<h2
-			id="backup-warning-dialog_heading"
-			class="heading"
-		>
-			Backup Your Work?
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<p class="instructions">
+			Your changes are saved in the browser only. <span
+				class="field-container"
+				hidden
+				><strong><span data-field="exportStatus"></span></strong></span
+			>
+		</p>
+		<p class="instructions">
+			Remember to download a backup of your assessment regularly to keep your data safe and
+			restore it if needed.
+		</p>
 
-	<p class="instructions">
-		Your changes are saved in the browser only. <span
-			class="field-container"
-			hidden
-			><strong><span data-field="exportStatus"></span></strong></span
-		>
-	</p>
-	<p class="instructions">
-		Remember to download a backup of your assessment regularly to keep your data safe and
-		restore it if needed.
-	</p>
+		<p class="instructions">Would you like to download a backup before you stop editing?</p>
 
-	<p class="instructions">Would you like to download a backup before you stop editing?</p>
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-toast-success="backup-warning-dialog_close-toast_success"
+				data-toast-failure="backup-warning-dialog_close-toast_failure"
+				data-focus-start
+				>Continue Without Downloading</button
+			>
+			<button
+				class="open-dialog"
+				data-dialog="download-assessment-dialog"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				>Download Backup</button
+			>
+		</div>
+	</Fragment>
 
-	<div class="button-group">
-		<button
-			class="close-dialog"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-toast-success="backup-warning-dialog_close-toast_success"
-			data-toast-failure="backup-warning-dialog_close-toast_failure"
-			data-focus-start
-			>Continue Without Downloading</button
-		>
-		<button
-			class="open-dialog"
-			data-dialog="download-assessment-dialog"
-			type="button"
-			data-size="large"
-			data-style="solid"
-			>Download Backup</button
-		>
-	</div>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<Toast
 			id={'edit-status-dialog_change-status-and-warn-toast_success'}
 			message={`Status change saved.`}
@@ -317,8 +240,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
 <script>
 	//

@@ -1,83 +1,69 @@
 ---
-import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import Dialog from 'src/components/dialogs/Dialog.astro';
 import Toast from 'src/components/Toast.astro';
+
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 ---
 
-<dialog
-	id="edit-status-dialog"
-	aria-describedby="edit-status-dialog_heading"
-	data-context="configure"
+<Dialog
+	id={'edit-status-dialog'}
+	title={'Update Assessment Status'}
+	context={'configure'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Warning Dialog"
-			><IconXmark /></button
+	<Fragment slot="content">
+		<p
+			id="edit-status-dialog_in-progress-instructions"
+			class="instructions"
 		>
-		<h2
-			id="edit-status-dialog_heading"
-			class="heading"
-			data-default-text="Update Assessment Status"
+			This assessment is marked as <strong>In Progress</strong>. Mark it as <strong
+				>Complete</strong
+			> to lock editing and make it available on the Report page.
+		</p>
+		<p
+			id="edit-status-dialog_complete-instructions"
+			class="instructions"
+			hidden
 		>
-			Update Assessment Status
-		</h2>
-	</div>
+			This assessment is marked as <strong>Complete</strong>. Mark it as <strong
+				>In Progress</strong
+			> to unlock editing.
+		</p>
 
-	<p
-		id="edit-status-dialog_in-progress-instructions"
-		class="instructions"
-	>
-		This assessment is marked as <strong>In Progress</strong>. Mark it as <strong
-			>Complete</strong
-		> to lock editing and make it available on the Report page.
-	</p>
-	<p
-		id="edit-status-dialog_complete-instructions"
-		class="instructions"
-		hidden
-	>
-		This assessment is marked as <strong>Complete</strong>. Mark it as <strong
-			>In Progress</strong
-		> to unlock editing.
-	</p>
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-focus-start
+				data-restrict-context="configure"
+			>
+				Cancel
+			</button>
+			<button
+				class="skip"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-focus-start
+				data-restrict-context="close"
+			>
+				Skip
+			</button>
+			<button
+				class="change-status"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-toast-success="edit-status-dialog_change-status-toast_success"
+				data-toast-failure="edit-status-dialog_change-status-toast_failure"
+				aria-describedby="edit-status-dialog_in-progress-instructions"
+				>Mark as Complete</button
+			>
+		</div>
+	</Fragment>
 
-	<div class="button-group">
-		<button
-			class="close-dialog"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-focus-start
-			data-restrict-context="configure"
-		>
-			Cancel
-		</button>
-		<button
-			class="skip"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-focus-start
-			span data-restrict-context="close"
-		>
-			Skip
-		</button>
-		<button
-			class="change-status"
-			type="button"
-			data-style="solid"
-			data-size="large"
-			data-toast-success="edit-status-dialog_change-status-toast_success"
-			data-toast-failure="edit-status-dialog_change-status-toast_failure"
-			aria-describedby="edit-status-dialog_in-progress-instructions"
-			>Mark as Complete</button
-		>
-	</div>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<!-- Success Toast located in Assessment Dialogs -->
 		<Toast
 			id={'edit-status-dialog_change-status-toast_failure'}
@@ -87,72 +73,57 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
-<dialog
-	id="status-warning-dialog"
-	aria-describedby="status-warning-dialog_heading"
+<Dialog
+	id={'status-warning-dialog'}
+	title={'Edit or Duplicate Assessment?'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Warning Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="status-warning-dialog_heading"
-			class="heading"
-			data-default-text="Edit or Duplicate Assessment?"
-		>
-			Edit or Duplicate Assessment?
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<p class="instructions">
+			The <span data-field="reportingYear"></span> assessment for <span data-field="school"
+			></span> is marked as <strong>Complete</strong>. To make changes, its status must be set
+			to <strong>In Progress</strong>.
+		</p>
+		<p class="instructions">
+			Select <strong>Edit</strong> to change this assessment's status and make updates, or <strong
+				>Duplicate</strong
+			> to copy it into a new reporting year.
+		</p>
 
-	<p class="instructions">
-		The <span data-field="reportingYear"></span> assessment for <span data-field="school"
-		></span> is marked as <strong>Complete</strong>. To make changes, its status must be set to <strong
-			>In Progress</strong
-		>.
-	</p>
-	<p class="instructions">
-		Select <strong>Edit</strong> to change this assessment's status and make updates, or <strong
-			>Duplicate</strong
-		> to copy it into a new reporting year.
-	</p>
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-focus-start
+				>Cancel</button
+			>
+			<button
+				class="change-status"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-toast-success="status-warning-dialog_change-status-toast_success"
+				data-toast-failure="status-warning-dialog_change-status-toast_failure"
+				>Edit</button
+			>
+			<button
+				class="open-dialog"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-dialog="edit-assessment-properties-dialog"
+				data-dialog-context="duplicate"
+				data-dialog-heading="Duplicate Assessment"
+				>Duplicate</button
+			>
+		</div>
+	</Fragment>
 
-	<div class="button-group">
-		<button
-			class="close-dialog"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-focus-start
-			>Cancel</button
-		>
-		<button
-			class="change-status"
-			type="button"
-			data-style="solid"
-			data-size="large"
-			data-toast-success="status-warning-dialog_change-status-toast_success"
-			data-toast-failure="status-warning-dialog_change-status-toast_failure"
-			>Edit</button
-		>
-		<button
-			class="open-dialog"
-			type="button"
-			data-style="solid"
-			data-size="large"
-			data-dialog="edit-assessment-properties-dialog"
-			data-dialog-context="duplicate"
-			data-dialog-heading="Duplicate Assessment"
-			>Duplicate</button
-		>
-	</div>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<!-- Success Toast located in Assessor Dialogs -->
 		<Toast
 			id={'status-warning-dialog_change-status-toast_failure'}
@@ -162,8 +133,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
 <script>
 	//
@@ -293,6 +264,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						});
 						dialogControl.open({
 							dialogId: 'backup-warning-dialog',
+							noBack: true,
 						});
 					} else {
 						try {
@@ -396,6 +368,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					dialogId: 'assessor-dialog',
 					headingText: 'Select Active Assessor',
 					context: 'setup',
+					noBack: true,
 				});
 			} catch (error) {
 				console.error(error);

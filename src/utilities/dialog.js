@@ -5,11 +5,76 @@ import { emitEvent, stopVideo } from './helpers';
 let dialogControl = (() => {
 	let scrollY = 0;
 
-	let open = ({ dialogId, headingText = null, context = null, targetId = null }) => {
+	let historyStack = [];
+
+	let captureState = (dialog, target) => {
+		if (!dialog) return null;
+
+		let searchListItem = null;
+		console.log(dialog);
+		if (dialog.matches('#search-dialog')) {
+			searchListItem = target;
+			console.log(searchListItem);
+		}
+
+		return {
+			dialogId: dialog.id,
+			context: dialog.getAttribute('data-context'),
+			targetId: dialog.getAttribute('data-target-id'),
+			headingText: dialog.querySelector('h2')?.textContent ?? null,
+			scrollTop: dialog.scrollTop,
+			searchListItem,
+		};
+	};
+
+	let resetDialogState = (dialog) => {
+		dialog.scrollTo(0, 0);
+		dialog.removeAttribute('data-context');
+		dialog.removeAttribute('data-target-id');
+		dialog.removeAttribute('data-heading');
+
+		let resetForms = dialog.getAttribute('data-reset-forms') === 'true';
+		if (resetForms) {
+			let forms = dialog.querySelectorAll('form');
+			for (let form of forms) {
+				resetForm({ form });
+			}
+		}
+	};
+
+	let open = ({
+		target = null,
+		dialogId,
+		headingText = null,
+		context = null,
+		targetId = null,
+		isBack = false,
+		noBack = false,
+	}) => {
 		let activeDialog = document.querySelector('dialog[open]');
 		let targetDialog = document.querySelector(`#${dialogId}`);
 		if (!targetDialog) return;
-		if (activeDialog) close(activeDialog);
+
+		// 1. Manage navigation history
+		if (!isBack) {
+			if (activeDialog) {
+				if (noBack) {
+					// Close active dialog and clear history
+					historyStack = [];
+					close(activeDialog, true, true);
+				} else {
+					// Save current dialog state onto history stack before opening the next
+					let state = captureState(activeDialog, target);
+					historyStack.push(state);
+					// Close active dialog without clearing state (preserving state in history)
+					close(activeDialog, true, false);
+				}
+			} else {
+				historyStack = [];
+			}
+		}
+
+		// 2. Set attributes and heading
 		if (context) targetDialog.setAttribute('data-context', context);
 		if (targetId) targetDialog.setAttribute('data-target-id', targetId);
 		let heading = targetDialog.querySelector('h2');
@@ -19,51 +84,104 @@ let dialogControl = (() => {
 			headingText = headingText ? headingText.trim() : defaultText;
 			if (headingText !== heading.textContent) heading.textContent = headingText;
 		}
-		// Save scroll position
-		scrollY = window.scrollY;
-		// Lock background scroll
-		document.body.style.position = 'fixed';
-		document.body.style.top = `-${scrollY}px`;
+
+		// 3. Body scroll lock (only lock when opening the initial dialog)
+		if (!activeDialog) {
+			scrollY = window.scrollY;
+			document.body.style.position = 'fixed';
+			document.body.style.top = `-${scrollY}px`;
+		}
 
 		targetDialog.showModal();
+
+		// 4. Update back button
+		let backBtn = targetDialog.querySelector('button.back-dialog');
+		if (backBtn) {
+			if (historyStack.length > 0) backBtn.removeAttribute('hidden', '');
+			else backBtn.setAttribute('hidden', '');
+		}
+
 		let focusStart = targetDialog.querySelector('[data-focus-start]');
 		if (focusStart) focusStart.focus();
+
 		emitEvent({
 			target: targetDialog,
 			name: 'dialogOpen',
 			detail: {
 				context,
+				isBack,
 			},
 		});
 	};
 
-	let close = (target) => {
+	let back = () => {
+		if (historyStack.length === 0) return;
+
+		let previousState = historyStack.pop();
+		let activeDialog = document.querySelector('dialog[open]');
+
+		if (activeDialog) {
+			// Close active dialog and reset its state
+			close(activeDialog);
+		}
+
+		// Reopen previous dialog, restoring saved metadata
+		open({
+			dialogId: previousState.dialogId,
+			headingText: previousState.headingText,
+			context: previousState.context,
+			targetId: previousState.targetId,
+			isBack: true,
+		});
+
+		// Restore saved scroll position inside the dialog
+		let restoredDialog = document.querySelector(`#${previousState.dialogId}`);
+		if (restoredDialog) {
+			restoredDialog.scrollTop = previousState.scrollTop;
+			if (restoredDialog.matches('#search-dialog')) {
+				console.log(previousState);
+				let searchInput = restoredDialog.querySelector('form fieldset.search input');
+				searchInput.focus();
+				searchInput.setAttribute(
+					'aria-activedescendant',
+					previousState.searchListItem.closest('li').id,
+				);
+				previousState.searchListItem.setAttribute('aria-selected', 'true');
+			}
+		}
+	};
+
+	let close = (target, preserveState = false, isFullClose = true) => {
 		let dialog = target.closest('dialog');
 		if (!dialog) return;
+
 		stopVideo(dialog);
-		dialog.removeAttribute('data-context');
-		dialog.removeAttribute('data-target-id');
-		dialog.removeAttribute('data-heading');
-		// Disable smooth scroll
-		document.documentElement.style.scrollBehavior = 'auto';
-		// Unlock background scroll
-		document.body.style.position = '';
-		document.body.style.top = '';
+
 		// Close dialog
-		dialog.scrollTo(0, 0);
 		dialog.close();
-		// Restore scroll
-		window.scrollTo(0, scrollY);
-		// Reset scroll behaviour
-		requestAnimationFrame(() => {
-			document.documentElement.style.scrollBehavior = '';
-		});
-		let resetForms = dialog.getAttribute('data-reset-forms') === 'true' ?? false;
-		if (resetForms) {
-			let forms = dialog.querySelectorAll('form');
-			for (let form of forms) {
-				resetForm({ form });
+
+		if (!preserveState) {
+			resetDialogState(dialog);
+		}
+
+		if (isFullClose) {
+			// Clear remaining history stack
+			while (historyStack.length > 0) {
+				let prev = historyStack.pop();
+				let prevDialog = document.querySelector(`#${prev.dialogId}`);
+				if (prevDialog) resetDialogState(prevDialog);
 			}
+
+			// Restore body scroll
+			document.documentElement.style.scrollBehavior = 'auto';
+			document.body.style.position = '';
+			document.body.style.top = '';
+
+			window.scrollTo(0, scrollY);
+
+			requestAnimationFrame(() => {
+				document.documentElement.style.scrollBehavior = '';
+			});
 		}
 	};
 
@@ -76,12 +194,17 @@ let dialogControl = (() => {
 			let headingText = openDialogBtn.getAttribute('data-dialog-heading');
 			let context = openDialogBtn.getAttribute('data-dialog-context');
 			let targetId = openDialogBtn.getAttribute('data-dialog-target-id');
+			let noBack = openDialogBtn.hasAttribute('data-dialog-no-back');
 			open({
+				target,
 				dialogId,
 				headingText,
 				context,
 				targetId,
+				noBack,
 			});
+		} else if (target.matches('dialog button.back-dialog')) {
+			back();
 		} else if (target.matches('dialog button.close-dialog')) {
 			close(target);
 		} else if (target.matches('html')) {
@@ -104,7 +227,7 @@ let dialogControl = (() => {
 		});
 	};
 
-	return { init, open, close };
+	return { init, open, back, close, history };
 })();
 
 export { dialogControl };

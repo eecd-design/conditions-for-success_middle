@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-
 import { findObjectByKey } from 'src/utilities/helpers';
 
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
+import Dialog from 'src/components/dialogs/Dialog.astro';
+import LinksListItem from '../LinksListItem.astro';
+
 import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
 import IconSearch from 'src/components/icons/IconSearch_20.astro';
-import LinksListItem from '../LinksListItem.astro';
 
 let searchList = [];
 let itemIndex = 1;
@@ -78,156 +78,110 @@ for (let training of allTraining) {
 }
 ---
 
-<dialog
-	id="search-dialog"
-	aria-labelledby="search-dialog_heading"
-	data-reset-forms="true"
+<Dialog
+	id={'search-dialog'}
+	title={'Search'}
+	resetForms={true}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Search Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="search-dialog_heading"
-			class="heading"
-			data-default-text="Search"
-		>
-			Search
-		</h2>
-	</div>
-
-	<form
-		id="site-contents-list_primary-controls"
-		data-list="site-contents-list"
-		role="search"
-	>
-		<fieldset class="search">
-			<p
-				id="search-dialog_search-input_help"
-				class="instructions"
-			>
-				Search for <strong>Resources</strong> and <strong>Training</strong> by entering its title,
-				or search for continuum <strong>Indicators</strong>, <strong>Components</strong>,
-				and
-				<strong> Considerations</strong> by entering its continuum number tag (e.g., 1.0, 2.1,
-				3.1.1).
-			</p>
-			<div class="input-container">
-				<input
-					id="search-dialog_search-input"
-					name="search"
-					type="text"
-					role="combobox"
-					autocomplete="off"
-					aria-autocomplete="list"
-					aria-expanded="false"
-					aria-controls="site-contents-list"
-					aria-activedescendant=""
-					placeholder="Enter search term..."
-					aria-labelledby="search-dialog_heading"
-					aria-describedby="search-dialog_search-input_help, site-contents-list_error-status, site-contents-list_filter-status"
-					data-focus-start
-				/>
-				<IconSearch />
-			</div>
-		</fieldset>
-	</form>
-
-	<div class="list-container">
-		<p
-			id="site-contents-list_error-status"
-			class="error-status"
-			role="status"
-			hidden
-		>
-			<IconWarningSmall />
-			<span>There are no results that match the search term.</span>
-		</p>
-		<p
-			id="site-contents-list_filter-status"
-			class="filter-status"
-			role="status"
-			aria-live="polite"
-			hidden
-		>
-		</p>
-
-		<ul
-			id="site-contents-list"
-			class="links-list"
-			data-layout="list-compact"
-			data-style="divided"
-			data-content="mixed"
-			role="listbox"
-			data-search-control="site-contents-list_primary-controls"
-			data-default-item-visibility="hidden"
-			data-list-item-categories='["indicator", "component", "consideration", "resource", "training"]'
-			hidden
-		>
-			{
-				searchList.map((item, index) => (
-					<LinksListItem
-						itemData={item}
-						index={index}
-						listName={'site-content-list'}
-						itemHiddenByDefault={true}
-						listLocation={'searchDialog'}
-					/>
-				))
-			}
-		</ul>
-
-		<button
-			class="show-more"
-			type="button"
+	<Fragment slot="content">
+		<form
+			id="site-contents-list_primary-controls"
 			data-list="site-contents-list"
-			data-style="solid"
-			data-size="large"
-			hidden
+			role="search"
 		>
-			Show More Results
-		</button>
-	</div>
-</dialog>
+			<fieldset class="search">
+				<p
+					id="search-dialog_search-input_help"
+					class="instructions"
+				>
+					Search for <strong>Resources</strong> and <strong>Training</strong> by entering its
+					title, or search for continuum <strong>Indicators</strong>, <strong
+						>Components</strong
+					>, and
+					<strong> Considerations</strong> by entering its continuum number tag (e.g., 1.0,
+					2.1, 3.1.1).
+				</p>
+				<div class="input-container">
+					<input
+						id="search-dialog_search-input"
+						name="search"
+						type="text"
+						role="combobox"
+						autocomplete="off"
+						aria-autocomplete="list"
+						aria-expanded="false"
+						aria-controls="site-contents-list"
+						aria-activedescendant=""
+						placeholder="Enter search term..."
+						aria-labelledby="search-dialog_heading"
+						aria-describedby="search-dialog_search-input_help, site-contents-list_error-status, site-contents-list_filter-status"
+						data-focus-start
+					/>
+					<IconSearch />
+				</div>
+			</fieldset>
+		</form>
+
+		<div class="list-container">
+			<p
+				id="site-contents-list_error-status"
+				class="error-status"
+				role="status"
+				hidden
+			>
+				<IconWarningSmall />
+				<span>There are no results that match the search term.</span>
+			</p>
+			<p
+				id="site-contents-list_filter-status"
+				class="filter-status"
+				role="status"
+				aria-live="polite"
+				hidden
+			>
+			</p>
+
+			<ul
+				id="site-contents-list"
+				class="links-list"
+				data-layout="list-compact"
+				data-style="divided"
+				data-content="mixed"
+				role="listbox"
+				data-search-control="site-contents-list_primary-controls"
+				data-default-item-visibility="hidden"
+				data-list-item-categories='["indicator", "component", "consideration", "resource", "training"]'
+				hidden
+			>
+				{
+					searchList.map((item, index) => (
+						<LinksListItem
+							itemData={item}
+							index={index}
+							listName={'site-content-list'}
+							itemHiddenByDefault={true}
+							listLocation={'searchDialog'}
+						/>
+					))
+				}
+			</ul>
+
+			<button
+				class="show-more"
+				type="button"
+				data-list="site-contents-list"
+				data-style="solid"
+				data-size="large"
+				hidden
+			>
+				Show More Results
+			</button>
+		</div>
+	</Fragment>
+</Dialog>
 
 <style is:global>
 	#search-dialog {
 		margin-top: var(--space-xl);
 	}
 </style>
-
-<script>
-	import { eventControl } from 'src/utilities/event';
-
-	let onDialogOpen = (event) => {
-		let dialog = event.target as HTMLDialogElement;
-
-		if (dialog.open) {
-			let context = dialog.getAttribute('data-context');
-
-			if (context === 'last-search') {
-				let form = dialog.querySelector('form');
-				let listId = form.getAttribute('data-list');
-				let list = document.querySelector(`#${listId}`);
-
-				if (list) {
-					let lastSearch = list._state.search.last;
-					let input = form.querySelector('input[name="search"]');
-					if (input) {
-						input.value = lastSearch;
-						let inputEvent = new Event('input', { bubbles: true, cancelable: true });
-						input.dispatchEvent(inputEvent);
-					}
-				}
-			}
-		}
-	};
-	eventControl.add({
-		selector: '#search-dialog',
-		eventType: 'dialogOpen',
-		fn: onDialogOpen,
-	});
-</script>

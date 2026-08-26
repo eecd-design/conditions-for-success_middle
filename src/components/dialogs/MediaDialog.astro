@@ -1,70 +1,80 @@
 ---
-import Accordion from 'src/components/Accordion.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
-import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
 import { Image } from 'astro:assets';
+
+import Dialog from 'src/components/dialogs/Dialog.astro';
+import Accordion from 'src/components/Accordion.astro';
+
+import IconTranscript from 'src/components/icons/IconTranscript_24.astro';
+
 import videoPoster from 'src/images/video-poster.png';
 ---
 
-<dialog
-	id="media-dialog"
-	class="media"
-	aria-labelledby="media-dialog_heading"
+<Dialog
+	id={'media-dialog'}
+	title={'Media Resource'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Media Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="media-dialog_heading"
-			class="heading"
-			data-default-text="Media Resource"
-		>
-			Media Resource
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<div class="media-container">
+			<video
+				controls
+				poster={videoPoster.src}
+				tabindex="0"
+				hidden
+			></video>
+			<audio
+				controls
+				src=""
+				tabindex="0"
+				hidden
+			></audio>
+			<iframe
+				src=""
+				title=""
+				frameborder="0"
+				referrerpolicy="strict-origin-when-cross-origin"
+				allowfullscreen
+				tabindex="0"
+				hidden
+			></iframe>
+		</div>
 
-	<div class="media-container">
-		<video
-			controls
-			poster={videoPoster.src}
-			tabindex="0"
+		<div
+			class="transcript accordion-group"
 			hidden
-		></video>
-		<audio
-			controls
-			src=""
-			tabindex="0"
-			hidden
-		></audio>
-		<iframe
-			src=""
-			title=""
-			frameborder="0"
-			referrerpolicy="strict-origin-when-cross-origin"
-			allowfullscreen
-			tabindex="0"
-			hidden
-		></iframe>
-	</div>
-
-	<div
-		class="transcript accordion-group"
-		hidden
-	>
-		<Accordion
-			title={'Transcript'}
-			headingLevel="3"
-			dataset={[{ key: 'style', value: 'flat' }]}
 		>
-			<IconTranscript slot="button-icon" />
-			<p>Transcript goes here...</p>
-		</Accordion>
-	</div>
-</dialog>
+			<Accordion
+				title={'Transcript'}
+				headingLevel="3"
+				dataset={[{ key: 'style', value: 'flat' }]}
+			>
+				<IconTranscript slot="button-icon" />
+				<p>Transcript goes here...</p>
+			</Accordion>
+		</div>
+	</Fragment>
+</Dialog>
+
+<style is:global>
+	#media-dialog {
+		width: min(100%, 800px);
+		overflow: hidden;
+
+		&[open] {
+			display: grid;
+			grid-template-rows: auto 1fr auto;
+		}
+
+		& .media-container {
+			flex: 1;
+			min-height: 0;
+			width: 100%;
+		}
+
+		& video {
+			height: 100%;
+		}
+	}
+</style>
 
 <script>
 	//
@@ -213,7 +223,7 @@ import videoPoster from 'src/images/video-poster.png';
 			let context = dialog?.getAttribute('data-context');
 
 			if (context && context === 'from-search-dialog') {
-				dialogControl.open({ dialogId: 'search-dialog', context: 'last-search' });
+				dialogControl.open({ dialogId: 'search-dialog' });
 			}
 		}
 	};

@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
+
+import Dialog from 'src/components/dialogs/Dialog.astro';
 import Toast from 'src/components/Toast.astro';
-import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
+
 import IconCheckmark from '../icons/IconCheckmark_8.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
@@ -11,205 +13,180 @@ let allIndicators = await getCollection('indicators');
 let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.tag));
 ---
 
-<dialog
-	id="report-settings-dialog"
-	aria-describedby="report-settings-dialog_heading"
-	data-reset-forms="true"
+<Dialog
+	id={'report-settings-dialog'}
+	title={'Report Settings'}
+	resetForms={true}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Report Settings Dialog"
-			><IconXmarkBig /></button
-		>
-		<h2
-			id="report-settings-dialog_heading"
-			class="heading"
-			data-default-text="Report Settings"
-		>
-			Report Settings
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<p class="instructions">
+			Select the indicators you would like to include in your report. These settings apply to
+			both the digital and PDF versions.
+		</p>
 
-	<p class="instructions">
-		Select the indicators you would like to include in your report. These settings apply to both
-		the digital and PDF versions.
-	</p>
-
-	<form>
-		<fieldset
-			class="indicators"
-			aria-labelledby="report-settings-dialog_indicators-fieldset-heading"
-		>
-			<h3
-				id="report-settings-dialog_indicators-fieldset-heading"
-				data-style-as="label"
+		<form>
+			<fieldset
+				class="indicators"
+				aria-labelledby="report-settings-dialog_indicators-fieldset-heading"
 			>
-				Included Indicators
-			</h3>
+				<h3
+					id="report-settings-dialog_indicators-fieldset-heading"
+					data-style-as="label"
+				>
+					Included Indicators
+				</h3>
+				<div class="button-group">
+					<button
+						class="select"
+						type="button"
+						value="all"
+						data-size="small"
+						data-focus-start
+						>Select All</button
+					>
+					<button
+						class="select"
+						type="button"
+						value="assessed"
+						data-size="small"
+						>Select Assessed*</button
+					>
+				</div>
+
+				<div class="elem-group">
+					<div class="wrapper">
+						{
+							indicators.map((indicator) => (
+								<label>
+									<input
+										type="checkbox"
+										name="reportIncludedIndicators"
+										value={indicator.data.tag}
+										checked
+									/>
+									<IconCheckmark />
+									<span class="text-container">
+										<span
+											class="tag"
+											data-theme={indicator.data.colour}
+											data-vibrancy="vivid"
+										>
+											{indicator.data.tag}
+										</span>
+										<span class="text">{indicator.data.title}</span>
+									</span>
+								</label>
+							))
+						}
+					</div>
+				</div>
+			</fieldset>
+
+			<p class="instructions">
+				*Assessed indicators have at least one consideration estalished.
+			</p>
+
 			<div class="button-group">
 				<button
-					class="select"
+					class="close-dialog"
 					type="button"
-					value="all"
-					data-size="small"
-					data-focus-start
-					>Select All</button
+					data-size="large"
+					data-style="outline"
+					>Cancel</button
 				>
 				<button
-					class="select"
+					class="save"
 					type="button"
-					value="assessed"
-					data-size="small"
-					>Select Assessed*</button
+					data-size="large"
+					data-style="solid"
+					data-toast-success="report-settings-dialog_save-toast_success"
+					data-toast-failure="report-settings-dialog_save-toast_failure"
+					disabled
+					>Save</button
 				>
 			</div>
+		</form>
+	</Fragment>
 
-			<div class="elem-group">
-				<div class="wrapper">
-					{
-						indicators.map((indicator) => (
-							<label>
-								<input
-									type="checkbox"
-									name="reportIncludedIndicators"
-									value={indicator.data.tag}
-									checked
-								/>
-								<IconCheckmark />
-								<span class="text-container">
-									<span
-										class="tag"
-										data-theme={indicator.data.colour}
-										data-vibrancy="vivid"
-									>
-										{indicator.data.tag}
-									</span>
-									<span class="text">{indicator.data.title}</span>
-								</span>
-							</label>
-						))
-					}
-				</div>
+	<Fragment slot="toasts">
+		<!-- Save Toast located in Report page -->
+		<Toast
+			id={'report-settings-dialog_save-toast_failure'}
+			message={`Unable to save report settings. Please reload the page to try again.`}
+			colour={'red'}
+			type={'failure'}
+		>
+			<IconXmarkInCircle slot={'icon'} />
+		</Toast>
+	</Fragment>
+</Dialog>
+
+<Dialog
+	id={'report-download-dialog'}
+	title={'Download Report'}
+>
+	<Fragment slot="content">
+		<p class="instructions">
+			The assessment report is available in two formats: <strong>PDF</strong> and <strong
+				>Spreadsheet</strong
+			>.
+		</p>
+		<p class="instructions">
+			Download the <strong>PDF</strong> version for a printable report with pre-built charts, or
+			download the <strong>Spreadsheet</strong> version to build your own data visualizations, compare
+			results year over year, or share with school, district, or department leadership.
+		</p>
+
+		<div
+			id="pdf-export-progress-container"
+			role="status"
+			aria-live="polite"
+			aria-atomic="true"
+			data-theme="blue"
+			data-vibrancy="vivid"
+			hidden
+		>
+			<div
+				class="text-container"
+				data-field="pdfExportMessage"
+			>
+				Preparing report for download.
 			</div>
-		</fieldset>
-
-		<p class="instructions">*Assessed indicators have at least one consideration estalished.</p>
+			<div
+				class="progress-bar-container"
+				role="progressbar"
+				aria-valuemin="0"
+				aria-valuemax="100"
+				aria-valuenow="0"
+			>
+				<div data-role="bar"></div>
+			</div>
+		</div>
 
 		<div class="button-group">
 			<button
-				class="close-dialog"
-				type="button"
-				data-size="large"
-				data-style="outline"
-				>Cancel</button
-			>
-			<button
-				class="save"
+				class="download-pdf"
 				type="button"
 				data-size="large"
 				data-style="solid"
-				data-toast-success="report-settings-dialog_save-toast_success"
-				data-toast-failure="report-settings-dialog_save-toast_failure"
-				disabled
-				>Save</button
+				data-focus-start
+				data-toast-success="report-download-dialog_download-toast_success"
+				data-toast-failure="report-download-dialog_download-toast_failure"
+				>Download PDF</button
+			>
+			<button
+				class="download-csv"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				data-toast-success="report-download-dialog_download-toast_success"
+				data-toast-failure="report-download-dialog_download-toast_failure"
+				>Download Spreadsheet</button
 			>
 		</div>
-	</form>
+	</Fragment>
 
-	<!-- Save Toast located in Report page -->
-	<Toast
-		id={'report-settings-dialog_save-toast_failure'}
-		message={`Unable to save report settings. Please reload the page to try again.`}
-		colour={'red'}
-		type={'failure'}
-	>
-		<IconXmarkInCircle slot={'icon'} />
-	</Toast>
-</dialog>
-
-<dialog
-	id="report-download-dialog"
-	aria-describedby="report-download-dialog_heading"
->
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Download Report Dialog"
-			><IconXmarkBig /></button
-		>
-		<h2
-			id="report-download-dialog_heading"
-			class="heading"
-			data-default-text="Download Report"
-		>
-			Download Report
-		</h2>
-	</div>
-
-	<p class="instructions">
-		The assessment report is available in two formats: <strong>PDF</strong> and <strong
-			>Spreadsheet</strong
-		>.
-	</p>
-	<p class="instructions">
-		Download the <strong>PDF</strong> version for a printable report with pre-built charts, or download
-		the <strong>Spreadsheet</strong> version to build your own data visualizations, compare results
-		year over year, or share with school, district, or department leadership.
-	</p>
-
-	<div
-		id="pdf-export-progress-container"
-		role="status"
-		aria-live="polite"
-		aria-atomic="true"
-		data-theme="blue"
-		data-vibrancy="vivid"
-		hidden
-	>
-		<div
-			class="text-container"
-			data-field="pdfExportMessage"
-		>
-			Preparing report for download.
-		</div>
-		<div
-			class="progress-bar-container"
-			role="progressbar"
-			aria-valuemin="0"
-			aria-valuemax="100"
-			aria-valuenow="0"
-		>
-			<div data-role="bar"></div>
-		</div>
-	</div>
-
-	<div class="button-group">
-		<button
-			class="download-pdf"
-			type="button"
-			data-size="large"
-			data-style="solid"
-			data-focus-start
-			data-toast-success="report-download-dialog_download-toast_success"
-			data-toast-failure="report-download-dialog_download-toast_failure"
-			>Download PDF</button
-		>
-		<button
-			class="download-csv"
-			type="button"
-			data-size="large"
-			data-style="solid"
-			data-toast-success="report-download-dialog_download-toast_success"
-			data-toast-failure="report-download-dialog_download-toast_failure"
-			>Download Spreadsheet</button
-		>
-	</div>
-
-	<!-- Save Toast located in Report page -->
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<Toast
 			id={'report-download-dialog_download-toast_success'}
 			message={`Report downloaded.`}
@@ -226,8 +203,8 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
 <style is:global>
 	fieldset.indicators .elem-group {
