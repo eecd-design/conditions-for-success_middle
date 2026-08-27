@@ -855,6 +855,11 @@ p {
 	line-height: 1.6;
 }
 
+p.metadata {
+	font-size: var(--font-size-xs);
+	color: var(--colour-txt-on-subtle-2);
+}
+
 :is(ul, ol) > :first-child {
 	margin-top: 0 !important;
 }
@@ -959,6 +964,21 @@ p {
 
 		&:has(.icon) {
 			padding: var(--space-2xs) var(--space-sm);
+		}
+
+		&:has(.icon-and-label-container) {
+			--container-gap: var(--space-xs);
+			--icon-size: 1.25rem;
+			--label-size: var(--font-size-xs);
+
+			&:is(:hover, :focus-visible) {
+				--icon-colour: var(--colour-txt-on-bold-1);
+				--label-colour: var(--colour-txt-on-bold-1);
+
+				& small {
+					color: var(--label-colour);
+				}
+			}
 		}
 	}
 
@@ -1641,6 +1661,26 @@ nav a {
 	}
 }
 
+:is(h3, [data-style-as='h3']):has(.tag) {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: var(--space-xs);
+	align-items: center;
+
+	& .tag {
+		display: flex;
+		align-items: center;
+		height: 1.625rem;
+		padding: 0 var(--space-2xs);
+		margin: var(--space-4xs) 0;
+		background-color: var(--colour-bkg-surface-subtle-1-accent);
+		border-radius: var(--brd-radius-small);
+		font-size: var(--font-size-xs);
+		line-height: 1;
+		color: var(--colour-txt-on-subtle-1-accent);
+	}
+}
+
 :is(h3, [data-style-as='h3']):has(> .icon) {
 	--icon-colour: var(--colour-txt-on-subtle-1-accent);
 	--icon-size: 1.5rem;
@@ -2211,19 +2251,10 @@ ul.field-values-list {
 
 			& :is(button:not([data-style-as='link']), [data-style-as='button']) {
 				--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
-				--container-gap: var(--space-xs);
-				--icon-size: 1.25rem;
-				--label-size: var(--font-size-xs);
 
 				&:is(:hover, :focus-visible) {
 					--button-bkg-colour: transparent;
 					--button-boxshadow-colour: var(--colour-brd-faint);
-					--icon-colour: var(--colour-txt-on-bold-1);
-					--label-colour: var(--colour-txt-on-bold-1);
-
-					& small {
-						color: var(--label-colour);
-					}
 				}
 			}
 		}

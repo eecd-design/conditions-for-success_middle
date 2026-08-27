@@ -1,12 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Accordion from 'src/components/Accordion.astro';
 import AccordionGroup from 'src/components/AccordionGroup.astro';
-import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
 import PageNav from 'src/components/PageNav.astro';
+import IconDownload from 'src/components/icons/IconDownload_20.astro';
+
+import { getResourcePath } from 'src/utilities/helpers';
 
 let guideList = [];
 let guideIndex = 1;
@@ -69,6 +71,11 @@ let onPageSection = {
 			dataset: [{ key: 'icon-on-hover', value: '' }],
 		},
 		{
+			url: `${path}#continuum-versions`,
+			text: 'Continuum Versions',
+			dataset: [{ key: 'icon-on-hover', value: '' }],
+		},
+		{
 			url: `${path}#contact`,
 			text: 'Contact',
 			dataset: [{ key: 'icon-on-hover', value: '' }],
@@ -77,6 +84,18 @@ let onPageSection = {
 };
 
 navSections.push(onPageSection);
+
+let continuums10Resource = await getEntry('resources', 'nb-middle-school-developmental-continuums');
+let continuums10ResourceData = JSON.parse(JSON.stringify(continuums10Resource.data));
+continuums10ResourceData.slug = continuums10Resource.id;
+continuums10ResourceData.category = 'resource';
+let continuums10ResourcePath = getResourcePath(continuums10ResourceData);
+
+let continuums20Resource = await getEntry('resources', 'nb-middle-school-developmental-continuums');
+let continuums20ResourceData = JSON.parse(JSON.stringify(continuums20Resource.data));
+continuums20ResourceData.slug = continuums20Resource.id;
+continuums20ResourceData.category = 'resource';
+let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 ---
 
 <BaseLayout
@@ -153,6 +172,67 @@ navSections.push(onPageSection);
 
 		<hr class="section" />
 
+		<h2 id="continuum-versions">Continuum Versions</h2>
+
+		<h3>
+			Continuum 2.0 <span
+				class="tag"
+				data-theme="blue"
+				data-vibrancy="vivid"
+				>Current</span
+			>
+		</h3>
+		<p class="metadata">Release Date: October 2026</p>
+
+		<p>
+			Version 2.0 includes important changes to the structure and content of the continuums.
+			For a full list of changes, <a href={`${path}continuum-20/`}>
+				view the 2.0 change log.</a
+			>
+		</p>
+
+		<p>
+			<a
+				href={continuums10ResourcePath}
+				data-style-as="button"
+				data-style="solid"
+				data-size="large"
+			>
+				<span class="icon-and-label-container">
+					<IconDownload />
+					<span class="label-container">
+						<span class="label">
+							<span>Conditions for Success Developmental Continuums (2.0)</span>
+						</span>
+					</span>
+				</span>
+			</a>
+		</p>
+
+		<h3>Continuum 1.0</h3>
+
+		<p class="metadata">Release Date: November 2025</p>
+
+		<p>
+			<a
+				href={continuums10ResourcePath}
+				data-style-as="button"
+				data-style="solid"
+				data-size="large"
+			>
+				<span class="icon-and-label-container">
+					<IconDownload />
+					<span class="label-container">
+						<span class="label">
+							<span>Conditions for Success Developmental Continuums (1.0)</span>
+						</span>
+					</span>
+				</span>
+			</a>
+		</p>
+
+		<hr class="section" />
+
 		<h2 id="contact">Contact</h2>
 
 		<p>
@@ -162,3 +242,12 @@ navSections.push(onPageSection);
 		</p>
 	</div>
 </BaseLayout>
+
+<style is:global>
+	main.support {
+		& h3:has(+ .metadata) {
+			margin-top: var(--space-lg);
+			margin-bottom: var(--space-2xs);
+		}
+	}
+</style>
