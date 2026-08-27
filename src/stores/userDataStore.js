@@ -12,9 +12,11 @@ import {
 	normalizeImportedDate,
 	toKebabCase,
 } from 'src/utilities/helpers.js';
+import { eventControl } from 'src/utilities/event';
+import { continuumChanges } from 'src/pages/data/continuum-changes';
+
 import Papa from 'papaparse';
 import LZString from 'lz-string'; // LZString is used to compress data into the exportcode
-import { eventControl } from 'src/utilities/event';
 
 //
 // Variables
@@ -22,7 +24,7 @@ import { eventControl } from 'src/utilities/event';
 
 let key = 'user';
 
-let currentContinuumVersion = '1.0';
+let currentContinuumVersion = '2.0';
 let currentPreferencesSchemaVersion = '1.0';
 let currentStateSchemaVersion = '1.0';
 let currentAssessmentSchemaVersion = '1.0';
@@ -619,62 +621,35 @@ let updateContinuumCompletion = async ({
 let convertConsiderations = (assessment) => {
 	let { continuumVersion, considerationsEstablished } = assessment;
 
-	let converter = null;
+	if (continuumVersion === '1.0') {
+		let changesByOldTag = new Map();
+		for (let change of continuumChanges.v2) {
+			if (change.transformation && change.oldTag !== null) {
+				changesByOldTag.set(change.oldTag, change.transformation);
+			}
+		}
 
-	let convertToVersion2_0 = {
-		from1_0: {
-			1.1: {
-				changeType: 'transform',
-				changeFn: () => {
-					return ['1.2'];
-				},
-			},
-			1.2: {
-				changeType: 'delete',
-				changeFn: () => {
-					return [];
-				},
-			},
-			1.3: {
-				changeType: 'split',
-				changeFn: () => {
-					return ['1.3', '1.4'];
-				},
-			},
-			// Does completing one count as completing the new?
-			1.5: {
-				changeType: 'combine',
-				changeFn: () => {
-					return ['1.5'];
-				},
-			},
-			1.6: {
-				changeType: 'combine',
-				changeFn: () => {
-					return ['1.5'];
-				},
-			},
-		},
-	};
+		let converted = [];
+		let log = [];
+		for (let tag of considerationsEstablished) {
+			let transformation = changesByOldTag.get(tag);
+			if (!transformation) {
+				converted.push(tag);
+				continue;
+			}
+			converted.push(...transformation.to);
+			log.push({
+				oldTag: tag,
+				changeType: transformation.type,
+			});
+		}
 
-	if (continuumVersion === '1.0' && currentContinuumVersion === '2.0') {
-		converter = convertToVersion2_0.from1_0;
+		// Ensure unique values (due to combine change type duplicates)
+		return {
+			result: [...new Set(converted)],
+			log,
+		};
 	}
-
-	if (!converter) {
-		console.error('Aborted consideration conversion. No map available');
-		return [];
-	}
-
-	let convertedConsiderations = [];
-	for (let consideration of considerationsEstablished) {
-		convertConsiderations.push(...converter[consideration]);
-	}
-
-	// Ensure unique values (due to combine change type duplicates)
-	convertedConsiderations = [...new Set(convertedConsiderations)];
-
-	return convertedConsiderations;
 };
 
 //

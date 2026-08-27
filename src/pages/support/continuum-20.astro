@@ -1,0 +1,226 @@
+---
+import BaseLayout from 'src/layouts/BaseLayout.astro';
+import { continuumChanges } from '../data/continuum-changes';
+import { toTitleCase } from 'src/utilities/helpers';
+
+let edited = continuumChanges.v2.filter((change) => change.edited);
+let reordered = continuumChanges.v2.filter((change) => change.transformation?.type === 'reordered');
+let combined = continuumChanges.v2.filter((change) => change.transformation?.type === 'combined');
+let added = continuumChanges.v2.filter((change) => change.transformation?.type === 'added');
+let deleted = continuumChanges.v2.filter((change) => change.transformation?.type === 'deleted');
+---
+
+<BaseLayout
+	pageTitle={'Continuum 2.0'}
+	pageType={'changes'}
+>
+	<div class="content">
+		<h1
+			id="main-heading"
+			tabindex="-1"
+		>
+			Continuum 2.0
+		</h1>
+
+		<p>
+			Version 2.0 of the Conditions for Success Continuum was released October 2026. The
+			following changes were made:
+		</p>
+
+		<ul>
+			<li><strong>{edited.length}</strong> Considerations were edited.</li>
+			<li><strong>{reordered.length}</strong> Considerations were reordered.</li>
+			<li><strong>{combined.length}</strong> Considerations were combined.</li>
+			<li><strong>{added.length}</strong> Considerations were added.</li>
+			<li><strong>{deleted.length}</strong> Considerations were deleted.</li>
+		</ul>
+
+		<!-- <hr class="section" /> -->
+
+		<h2>Change Log</h2>
+
+		<table
+			data-theme="blue"
+			data-vibrancy="vivid"
+		>
+			<thead>
+				<tr>
+					<th scope="col">Version 1.0</th>
+					<th scope="col">Version 2.0</th>
+					<th scope="col">Changes</th>
+					<th scope="col">Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					continuumChanges.v2
+						.filter((change) => change.transformation || change.edited)
+						.map((change) => {
+							let oldTag = change.oldTag;
+							let newTag;
+							if (change.transformation) {
+								if (change.transformation.type === 'deleted') newTag = null;
+								else newTag = change.transformation.to;
+							} else {
+								newTag = oldTag;
+							}
+
+							let transformationText = {
+								deleted: () => {
+									return 'was removed';
+								},
+								reordered: (newTag) => {
+									return `is now ${newTag}`;
+								},
+								combined: (newTag) => {
+									return `was combined into ${newTag}`;
+								},
+								split: (newTag) => {
+									return `was split into ${newTag}`;
+								},
+								added: () => {
+									return 'was added';
+								},
+							};
+
+							let details = [];
+							if (change.transformation) {
+								if (change.transformation.type === 'added') {
+									details.push(
+										`${newTag} ${transformationText[change.transformation.type]()}.`,
+									);
+								} else {
+									details.push(
+										`${oldTag} ${transformationText[change.transformation.type](newTag)}.`,
+									);
+								}
+							}
+
+							if (change.edited) {
+								details.push('Text was edited.');
+							}
+
+							let changes = [];
+							if (change.transformation)
+								changes.push(toTitleCase(change.transformation.type));
+							if (change.edited) changes.push('Edited');
+
+							return (
+								<tr>
+									<td>
+										{oldTag ? (
+											oldTag
+										) : (
+											<>
+												<span aria-hidden="true">—</span>
+												<span data-screen-reader>N/A</span>
+											</>
+										)}
+									</td>
+									<td>
+										{newTag ? (
+											newTag
+										) : (
+											<>
+												<span aria-hidden="true">—</span>
+												<span data-screen-reader>N/A</span>
+											</>
+										)}
+									</td>
+									<td>{changes.join(', ')}</td>
+									<td>{details.join(' ')}</td>
+								</tr>
+							);
+						})
+				}
+			</tbody>
+		</table>
+	</div>
+</BaseLayout>
+
+<style>
+	table {
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		margin: var(--space-base) 0 var(--space-2xl);
+
+		/* Cell Defaults */
+
+		& :is(th, td) {
+			padding: var(--space-2xs) var(--space-sm);
+			font-size: var(--font-size-xs);
+			color: var(--colour-txt-on-subtle-1);
+			text-align: left;
+		}
+
+		& th {
+			font-weight: 600;
+			font-size: var(--font-size-sm);
+			padding: var(--space-2xs) var(--space-sm);
+		}
+
+		/* Table Head */
+
+		& thead {
+			& th {
+				border-bottom: 1px solid var(--colour-brd-bold);
+				border-right: 1px dashed var(--colour-brd-mid);
+			}
+
+			& tr th:nth-of-type(1) {
+				width: 15%;
+			}
+
+			& tr th:nth-of-type(2) {
+				border-top: 1px solid var(--colour-brd-bold-accent);
+				border-color: var(--colour-brd-bold-accent);
+				background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
+				width: 15%;
+			}
+
+			& tr th:last-of-type {
+				border-right: none;
+				width: 45%;
+			}
+		}
+
+		/* Table Body */
+
+		& tbody {
+			& tr {
+				& td {
+					border-right: 1px dashed var(--colour-brd-mid);
+					border-bottom: 1px solid var(--colour-brd-mid);
+					line-height: 1;
+
+					&:first-of-type {
+						border-left: 1px solid var(--colour-brd-bold);
+						border-right-color: var(--colour-brd-bold-accent);
+					}
+
+					&:nth-of-type(2) {
+						background-color: var(--colour-bkg-surface-subtle-1-accent);
+						border-color: var(--colour-brd-bold-accent);
+					}
+
+					&:last-of-type {
+						border-right: 1px solid var(--colour-brd-bold);
+					}
+				}
+
+				&:nth-of-type(even) {
+					background-color: var(--colour-bkg-canvas-subtle-2);
+
+					& td:nth-of-type(2) {
+						background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
+					}
+				}
+
+				&:last-of-type td {
+					border-bottom: 1px solid var(--colour-brd-bold);
+				}
+			}
+		}
+	}
+</style>
