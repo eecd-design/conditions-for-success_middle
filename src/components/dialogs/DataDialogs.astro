@@ -1,0 +1,120 @@
+---
+import Dialog from 'src/components/dialogs/Dialog.astro';
+---
+
+<Dialog
+	id={'continuum-update-dialog'}
+	title={'Continuum Update'}
+>
+	<Fragment slot="content">
+		<p>
+			The assessment(s) you have saved in the browser have been updated to the newest version
+			of the continuums (<span data-field="continuumVersion"></span>). Please note that this
+			update includes text changes, additions, deletions, and the reordering of components and
+			considerations. The numbering of certain components and considerations have changed as a
+			result.
+		</p>
+		<p>No additional action is required.</p>
+		<p>
+			For a full list of changes, <a
+				class="change-log-link"
+				href={`./support/`}
+				>view the continuums <span data-field="continuumVersion"></span> change log</a
+			>.
+		</p>
+
+		<div class="button-group">
+			<button
+				class="close"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-focus-start
+			>
+				Dismiss
+			</button>
+		</div>
+	</Fragment>
+</Dialog>
+
+<script>
+	//
+	// Imports
+	//
+
+	import {
+		checkForChanges,
+		createAssessment,
+		updateChangeLog,
+		getActiveAssessmentData,
+		getAssessmentData,
+		getAssessmentDate,
+		getStatusColour,
+		setAssessment,
+		subscribe,
+		getUserData,
+		duplicateAssessment,
+	} from 'src/stores/userDataStore';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { eventControl } from 'src/utilities/event';
+
+	let updateContinuumUpdateDialog = (data: UserData, changes) => {
+		let dialog = document.querySelector('#continuum-update-dialog') as HTMLDialogElement;
+		if (!dialog) return;
+
+		let stateTriggerKeys = ['currentContinuumVersion'];
+		let assessmentTriggerKeys = [];
+		if (
+			!changes.initiating &&
+			!(
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+			)
+		)
+			return;
+
+		let fields = dialog.querySelectorAll('data-field');
+
+		for (let field of fields) {
+			field.textContent = data.uiState.currentContinuumVersion;
+		}
+
+		let changeLogLink = dialog.querySelector('.change-log-link') as HTMLAnchorElement;
+		if (changeLogLink)
+			changeLogLink.href = `./support/continuum-${data.uiState.currentContinuumVersion.replaceAll('.', '')}/`;
+	};
+
+	//
+	// Inits
+	//
+
+	subscribe(updateContinuumUpdateDialog);
+
+	//
+	// Event Listeners
+	//
+
+	let onClick = (event) => {
+		let debug = false;
+
+		let target = event.target as HTMLButtonElement;
+
+		let dialog = target.closest('dialog');
+		if (!dialog) return;
+
+		if (target.matches('.close')) {
+			if (dialog.dataset.context === 'import') {
+				dialogControl.open({
+					dialogId: 'manage-assessments-dialog',
+					noBack: true,
+				});
+			}
+		}
+	};
+	eventControl.add({
+		selector: '#continuum-update-dialog',
+		eventType: 'click',
+		fn: onClick,
+	});
+</script>

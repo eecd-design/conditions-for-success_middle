@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 
 import Header from '../components/Header.astro';
+import DataDialogs from 'src/components/dialogs/DataDialogs.astro';
 
 import '../styles/normalize.css';
 import '../styles/global.css';
@@ -45,6 +46,12 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			applyInitialTheme(data);
 		</script>
 
+		<!-- Progressive Enhancement Handlers (not for view transition) -->
+		<script is:inline>
+			let html = document.documentElement;
+			html.dataset.js = '';
+		</script>
+
 		<!-- Set relative path root to '/conditions-for-success/' -->
 		<base href={Astro.url.origin + import.meta.env.BASE_URL} />
 
@@ -64,12 +71,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		/>
 		<!-- <meta name="color-scheme" content="dark light" /> -->
 		<title>{pageTitle}</title>
-
-		<!-- Progressive Enhancement Handlers (not for view transition) -->
-		<script is:inline>
-			let html = document.documentElement;
-			html.dataset.js = '';
-		</script>
 
 		<!-- Public Sans Font ~ Google Fonts -->
 		<link
@@ -105,6 +106,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			>
 		</div>
 		<Header />
+		<DataDialogs />
 		<main
 			class:list={[pageType]}
 			data-mode="reading"
@@ -349,9 +351,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			// Handle search queries
 			let query = new URLSearchParams(window.location.search);
-			
+
 			if (debug) console.log('Query: ', query);
-						
+
 			let dialog = query.get('dialog');
 			if (dialog) {
 				let dialogId;

@@ -13,6 +13,7 @@ import {
 	toKebabCase,
 } from 'src/utilities/helpers.js';
 import { eventControl } from 'src/utilities/event';
+import { dialogControl } from 'src/utilities/dialog';
 import { continuumChanges } from 'src/pages/data/continuum-changes';
 
 import Papa from 'papaparse';
@@ -295,7 +296,7 @@ let createAssessment = (values) => {
 		reportingYear,
 		school,
 		status: 'In Progress',
-		schemaVersion: '1.0',
+		schemaVersion: currentAssessmentSchemaVersion,
 		unexportedChanges: true,
 	};
 
@@ -363,9 +364,6 @@ let generateContinuumCompletion = async (assessment) => {
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
 		return continuumCompletion;
-	} else if (continuumVersion !== currentContinuumVersion) {
-		continuumCompletion = {};
-		considerationsEstablished = convertConsiderations(assessment);
 	} else {
 		continuumCompletion = {};
 	}
@@ -407,38 +405,12 @@ let generateContinuumCompletion = async (assessment) => {
 		});
 	}
 
-	updateContinuumVersion(assessment);
-
 	return continuumCompletion;
 };
 
 //
 // Methods (Updaters)
 //
-
-let updateSchema = (oldData, schema) => {
-	// Create a new object based on the schema
-	let updated = { ...schema };
-
-	for (let key in schema) {
-		if (oldData && Object.hasOwn(oldData, key)) {
-			if (
-				typeof schema[key] === 'object' &&
-				!Array.isArray(schema[key]) &&
-				schema[key] !== null
-			) {
-				// Recursively update nested objects
-				updated[key] = updateSchema(oldData[key], schema[key]);
-			} else {
-				// Use existing value when it matches type
-				let sameType = typeof oldData[key] === typeof schema[key];
-				updated[key] = sameType ? oldData[key] : schema[key];
-			}
-		}
-	}
-
-	return updated;
-};
 
 let updateChangeLog = ({ changeLog, assessor = getActiveAssessor(), message }) => {
 	if (!changeLog || !message) {
@@ -541,84 +513,112 @@ let updateContinuumCompletion = async ({
 }) => {
 	if (!assessment || !consideration || !/^\d+\.\d+\.\d+$/.test(consideration)) return;
 
-	let { continuumCompletion, continuumVersion } = assessment;
+	let { continuumCompletion } = assessment;
 
-	if (continuumVersion !== currentContinuumVersion) {
-		return generateContinuumCompletion(assessment);
-	} else {
-		let count = await userDataStore.getConsiderationCount();
+	let count = await userDataStore.getConsiderationCount();
 
-		if (!count || !count[consideration]) return;
+	if (!count || !count[consideration]) return;
 
-		// Get the connections
-		let phase = count[consideration].phase;
-		let indicator = count[consideration].indicator;
-		let component = count[consideration].component;
+	// Get the connections
+	let phase = count[consideration].phase;
+	let indicator = count[consideration].indicator;
+	let component = count[consideration].component;
 
-		if (!continuumCompletion) return;
+	if (!continuumCompletion) return;
 
-		updateContinuumCompletionEntry({
-			count,
-			continuumCompletion,
-			key: 'continuum',
-			scope: 'continuum',
-			phase,
-			operation,
-		});
-		updateContinuumCompletionEntry({
-			count,
-			continuumCompletion,
-			key: indicator,
-			scope: indicator,
-			phase,
-			operation,
-		});
-		updateContinuumCompletionEntry({
-			count,
-			continuumCompletion,
-			key: component,
-			scope: component,
-			phase,
-			operation,
-		});
+	updateContinuumCompletionEntry({
+		count,
+		continuumCompletion,
+		key: 'continuum',
+		scope: 'continuum',
+		phase,
+		operation,
+	});
+	updateContinuumCompletionEntry({
+		count,
+		continuumCompletion,
+		key: indicator,
+		scope: indicator,
+		phase,
+		operation,
+	});
+	updateContinuumCompletionEntry({
+		count,
+		continuumCompletion,
+		key: component,
+		scope: component,
+		phase,
+		operation,
+	});
 
-		let notify = false;
+	let notify = false;
 
-		let hasUnassessed = false;
-		let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
-		let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
-		let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
+	let hasUnassessed = false;
+	let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
+	let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
+	let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
 
-		switch (phase) {
-			case 'implementing':
-				if (initiatingIsUnassessed) hasUnassessed = true;
-				break;
-			case 'developing':
-				if (initiatingIsUnassessed || implementingIsUnassessed) hasUnassessed = true;
-				break;
-			case 'sustaining':
-				if (initiatingIsUnassessed || implementingIsUnassessed || developingIsUnassessed)
-					hasUnassessed = true;
-				break;
-		}
-
-		// Only remind once per component (resets on import)
-		if (hasUnassessed && !continuumCompletion[component].reminded) {
-			notify = true;
-			continuumCompletion[component].reminded = true;
-		}
-
-		return {
-			entries: continuumCompletion,
-			notify,
-		};
+	switch (phase) {
+		case 'implementing':
+			if (initiatingIsUnassessed) hasUnassessed = true;
+			break;
+		case 'developing':
+			if (initiatingIsUnassessed || implementingIsUnassessed) hasUnassessed = true;
+			break;
+		case 'sustaining':
+			if (initiatingIsUnassessed || implementingIsUnassessed || developingIsUnassessed)
+				hasUnassessed = true;
+			break;
 	}
+
+	// Only remind once per component (resets on import)
+	if (hasUnassessed && !continuumCompletion[component].reminded) {
+		notify = true;
+		continuumCompletion[component].reminded = true;
+	}
+
+	return {
+		entries: continuumCompletion,
+		notify,
+	};
+};
+
+//
+// Methods (Upgraders)
+//
+
+let upgradeSchema = (oldData, schema) => {
+	// Create a new object based on the schema
+	let upgraded = { ...schema };
+
+	for (let key in schema) {
+		if (oldData && Object.hasOwn(oldData, key)) {
+			if (
+				typeof schema[key] === 'object' &&
+				!Array.isArray(schema[key]) &&
+				schema[key] !== null
+			) {
+				// Recursively update nested objects
+				upgraded[key] = upgradeSchema(oldData[key], schema[key]);
+			} else {
+				// Use existing value when it matches type
+				let sameType = typeof oldData[key] === typeof schema[key];
+				upgraded[key] = sameType ? oldData[key] : schema[key];
+			}
+		}
+	}
+
+	return upgraded;
 };
 
 let convertConsiderations = (assessment) => {
+	let debug = true;
+
 	let { continuumVersion, considerationsEstablished } = assessment;
 
 	if (continuumVersion === '1.0') {
+		if (debug) console.log('Converting Consideration from 1.0 to 2.0');
+
 		let changesByOldTag = new Map();
 		for (let change of continuumChanges.v2) {
 			if (change.transformation && change.oldTag !== null) {
@@ -641,12 +641,393 @@ let convertConsiderations = (assessment) => {
 			});
 		}
 
+		if (debug) console.log('Converted Considerations Array', converted);
+
 		// Ensure unique values (due to combine change type duplicates)
-		return {
-			result: [...new Set(converted)],
-			log,
-		};
+		assessment.considerationsEstablished = [...new Set(converted)];
+
+		return log;
 	}
+};
+
+let upgradeAssessments = async (assessments, context) => {
+	let debug = true;
+
+	let outOfDate = false;
+	for (let assessment of assessments) {
+		if (debug) console.log('Pre-upgrade', structuredClone(assessment));
+
+		if (assessment.continuumVersion !== currentContinuumVersion) {
+			convertConsiderations(assessment);
+			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
+			updateContinuumVersion(assessment);
+
+			outOfDate = true;
+
+			if (debug) console.log('Post-upgrade', assessment);
+		}
+	}
+
+	if (outOfDate) {
+		dialogControl.open({
+			dialogId: 'continuum-update-dialog',
+			context,
+		});
+		return { upgraded: true };
+	} else {
+		return { upgraded: false };
+	}
+};
+
+let upgradeUserData = async (data) => {
+	// data = {
+	// 	uiPreferences: {
+	// 		resourcePageSort: 'date',
+	// 		resourcePageLayout: 'compact',
+	// 		reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
+	// 		theme: 'light',
+	// 		schemaVersion: '1.0',
+	// 	},
+	// 	uiState: {
+	// 		activeAssessmentId: 2,
+	// 		activeReportId: 2,
+	// 		currentContinuumVersion: '1.0',
+	// 		lastModifiedPage: {
+	// 			title: 'Relationships',
+	// 			path: '/conditions-for-success/big-seven/relationships/',
+	// 		},
+	// 		lastVisitedPage: {
+	// 			title: 'Access and Equity',
+	// 			path: '/conditions-for-success/big-seven/access-and-equity/',
+	// 		},
+	// 		announcementSession: { views: 5, lastSeen: 1787140204866 },
+	// 		mode: 'assessment',
+	// 		onboardingCompleted: false,
+	// 		schemaVersion: '1.0',
+	// 	},
+	// 	assessments: [
+	// 		{
+	// 			activeAssessor: null,
+	// 			assessors: [],
+	// 			changeLog: [
+	// 				{
+	// 					date: 1782397142193,
+	// 					assessor: null,
+	// 					message: 'marked 2.2.1 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397142651,
+	// 					assessor: null,
+	// 					message: 'marked 2.2.2 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397143345,
+	// 					assessor: null,
+	// 					message: 'marked 2.2.3 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397146825,
+	// 					assessor: null,
+	// 					message: 'marked 2.2.5 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397147681,
+	// 					assessor: null,
+	// 					message: 'marked 2.2.6 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397150193,
+	// 					assessor: null,
+	// 					message: 'marked 2.3.9 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397151643,
+	// 					assessor: null,
+	// 					message: 'marked 2.3.10 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397152443,
+	// 					assessor: null,
+	// 					message: 'marked 2.3.11 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397153260,
+	// 					assessor: null,
+	// 					message: 'marked 2.3.12 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397156825,
+	// 					assessor: null,
+	// 					message: 'marked 2.4.1 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397157410,
+	// 					assessor: null,
+	// 					message: 'marked 2.4.2 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397158138,
+	// 					assessor: null,
+	// 					message: 'marked 2.4.3 as established.',
+	// 				},
+	// 				{
+	// 					date: 1782397491507,
+	// 					assessor: null,
+	// 					message: 'updated assessment status to completed.',
+	// 				},
+	// 				{
+	// 					date: 1784743246748,
+	// 					assessor: null,
+	// 					message: 'marked 3.1.1 as established.',
+	// 				},
+	// 				{
+	// 					date: 1784743676508,
+	// 					assessor: null,
+	// 					message: 'updated assessment status to complete.',
+	// 				},
+	// 				{
+	// 					date: 1784743679588,
+	// 					assessor: null,
+	// 					message: 'marked 3.1.2 as established.',
+	// 				},
+	// 				{
+	// 					date: 1784743753779,
+	// 					assessor: null,
+	// 					message: 'marked 3.1.9 as established.',
+	// 				},
+	// 				{
+	// 					date: 1784743770645,
+	// 					assessor: null,
+	// 					message: 'marked 3.1.10 as established.',
+	// 				},
+	// 				{
+	// 					date: 1784743774121,
+	// 					assessor: null,
+	// 					message: 'marked 3.1.10 as not established.',
+	// 				},
+	// 				{
+	// 					date: 1784743825655,
+	// 					assessor: null,
+	// 					message: 'marked 3.1.10 as established.',
+	// 				},
+	// 			],
+	// 			continuumCompletion: {
+	// 				2: {
+	// 					count: 18,
+	// 					initiatingCount: 9,
+	// 					implementingCount: 5,
+	// 					developingCount: 4,
+	// 					sustainingCount: 0,
+	// 					total: 110,
+	// 					initiatingTotal: 25,
+	// 					implementingTotal: 28,
+	// 					developingTotal: 27,
+	// 					sustainingTotal: 30,
+	// 					ratio: 0.16363636363636364,
+	// 					initiatingRatio: 0.36,
+	// 					implementingRatio: 0.17857142857142858,
+	// 					developingRatio: 0.14814814814814814,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Initiating',
+	// 				},
+	// 				3: {
+	// 					count: 4,
+	// 					initiatingCount: 2,
+	// 					implementingCount: 0,
+	// 					developingCount: 2,
+	// 					sustainingCount: 0,
+	// 					total: 59,
+	// 					initiatingTotal: 15,
+	// 					implementingTotal: 15,
+	// 					developingTotal: 15,
+	// 					sustainingTotal: 14,
+	// 					ratio: 0.06779661016949153,
+	// 					initiatingRatio: 0.13333333333333333,
+	// 					implementingRatio: 0,
+	// 					developingRatio: 0.13333333333333333,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Initiating',
+	// 				},
+	// 				continuum: {
+	// 					count: 22,
+	// 					initiatingCount: 11,
+	// 					implementingCount: 5,
+	// 					developingCount: 6,
+	// 					sustainingCount: 0,
+	// 					total: 405,
+	// 					initiatingTotal: 97,
+	// 					implementingTotal: 103,
+	// 					developingTotal: 103,
+	// 					sustainingTotal: 102,
+	// 					ratio: 0.05432098765432099,
+	// 					initiatingRatio: 0.1134020618556701,
+	// 					implementingRatio: 0.04854368932038835,
+	// 					developingRatio: 0.05825242718446602,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Initiating',
+	// 				},
+	// 				2.1: {
+	// 					count: 6,
+	// 					initiatingCount: 3,
+	// 					implementingCount: 3,
+	// 					developingCount: 0,
+	// 					sustainingCount: 0,
+	// 					total: 12,
+	// 					initiatingTotal: 3,
+	// 					implementingTotal: 3,
+	// 					developingTotal: 3,
+	// 					sustainingTotal: 3,
+	// 					ratio: 0.5,
+	// 					initiatingRatio: 1,
+	// 					implementingRatio: 1,
+	// 					developingRatio: 0,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Developing',
+	// 				},
+	// 				2.2: {
+	// 					count: 5,
+	// 					initiatingCount: 3,
+	// 					implementingCount: 2,
+	// 					developingCount: 0,
+	// 					sustainingCount: 0,
+	// 					total: 12,
+	// 					initiatingTotal: 3,
+	// 					implementingTotal: 3,
+	// 					developingTotal: 3,
+	// 					sustainingTotal: 3,
+	// 					ratio: 0.4166666666666667,
+	// 					initiatingRatio: 1,
+	// 					implementingRatio: 0.6666666666666666,
+	// 					developingRatio: 0,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Implementing',
+	// 				},
+	// 				2.3: {
+	// 					count: 4,
+	// 					initiatingCount: 0,
+	// 					implementingCount: 0,
+	// 					developingCount: 4,
+	// 					sustainingCount: 0,
+	// 					total: 16,
+	// 					initiatingTotal: 4,
+	// 					implementingTotal: 4,
+	// 					developingTotal: 4,
+	// 					sustainingTotal: 4,
+	// 					ratio: 0.25,
+	// 					initiatingRatio: 0,
+	// 					implementingRatio: 0,
+	// 					developingRatio: 1,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Initiating',
+	// 				},
+	// 				2.4: {
+	// 					count: 3,
+	// 					initiatingCount: 3,
+	// 					implementingCount: 0,
+	// 					developingCount: 0,
+	// 					sustainingCount: 0,
+	// 					total: 13,
+	// 					initiatingTotal: 3,
+	// 					implementingTotal: 3,
+	// 					developingTotal: 3,
+	// 					sustainingTotal: 4,
+	// 					ratio: 0.23076923076923078,
+	// 					initiatingRatio: 1,
+	// 					implementingRatio: 0,
+	// 					developingRatio: 0,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Implementing',
+	// 				},
+	// 				3.1: {
+	// 					count: 4,
+	// 					initiatingCount: 2,
+	// 					implementingCount: 0,
+	// 					developingCount: 2,
+	// 					sustainingCount: 0,
+	// 					total: 16,
+	// 					initiatingTotal: 4,
+	// 					implementingTotal: 4,
+	// 					developingTotal: 4,
+	// 					sustainingTotal: 4,
+	// 					ratio: 0.25,
+	// 					initiatingRatio: 0.5,
+	// 					implementingRatio: 0,
+	// 					developingRatio: 0.5,
+	// 					sustainingRatio: 0,
+	// 					phase: 'Initiating',
+	// 				},
+	// 			},
+	// 			considerationsEstablished: ['1.5.4', '1.5.5', '2.7.14', '2.7.15', '2.7.16'],
+	// 			continuumVersion: '1.0',
+	// 			dateCompleted: 1784743676508,
+	// 			dateCreated: 1781895178989,
+	// 			dateExported: 1782395151341,
+	// 			dateModified: 1784743825655,
+	// 			district: 'ASD-N',
+	// 			id: 2,
+	// 			lastModifiedBy: null,
+	// 			reportingYear: '2032',
+	// 			school: 'North & South Esk Elementary School',
+	// 			status: 'Complete',
+	// 			schemaVersion: '1.0',
+	// 			unexportedChanges: true,
+	// 		},
+	// 		{
+	// 			activeAssessor: null,
+	// 			assessors: [],
+	// 			changeLog: [
+	// 				{ date: 1768400811747, assessor: null, message: 'Assessment created.' },
+	// 				{
+	// 					date: 1779280778937,
+	// 					assessor: null,
+	// 					message: 'updated assessment status to completed.',
+	// 				},
+	// 				{
+	// 					date: 1781024698387,
+	// 					assessor: null,
+	// 					message: 'updated assessment status to completed.',
+	// 				},
+	// 			],
+	// 			considerationsEstablished: ['1.5.4'],
+	// 			continuumVersion: '1.0',
+	// 			dateCompleted: null,
+	// 			dateCreated: 1768400811747,
+	// 			dateExported: null,
+	// 			dateModified: 1768400811747,
+	// 			district: 'ASD-N',
+	// 			id: 1,
+	// 			lastModifiedBy: null,
+	// 			reportingYear: '2023',
+	// 			school: 'Nelson Rural School',
+	// 			status: 'In Progress',
+	// 			schemaVersion: '1.0',
+	// 			unexportedChanges: false,
+	// 			continuumCompletion: {},
+	// 		},
+	// 	],
+	// };
+
+	let upgraded = false;
+
+	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
+		console.warn('User preferences schema is out of date.');
+		data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
+		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
+		upgraded = true;
+	}
+
+	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
+		console.warn('User state schema is out of date.');
+		data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
+		data.uiState.schemaVersion = currentStateSchemaVersion;
+		upgraded = true;
+	}
+
+	let upgradeAssessmentsResult = await upgradeAssessments(data.assessments, 'load');
+
+	if (upgradeAssessmentsResult.upgraded) upgraded = true;
+
+	if (upgraded) setUserData(data);
 };
 
 //
@@ -898,6 +1279,8 @@ let importAssessment = (file) => {
 				}));
 			}
 
+			upgradeAssessments([assessment], 'import');
+
 			resolve(assessment);
 		};
 
@@ -968,6 +1351,7 @@ let notify = (changes) => {
  * Save to localStorage
  */
 let save = () => {
+	console.log('Saving to local storage', data);
 	localStorage.setItem(key, JSON.stringify(data));
 };
 
@@ -995,38 +1379,10 @@ let subscribe = (fn) => {
 // Inits
 //
 
-/**
- * Load from localStorage
- */
-try {
-	let raw = localStorage.getItem(key);
-	if (raw) data = JSON.parse(raw);
-
-	// console.log('User data before schema check', structuredClone(data));
-
-	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
-		console.warn('User preferences schema is out of date.');
-		data.uiPreferences = updateSchema(data.uiPreferences, userSchema.uiPreferences);
-		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
-	}
-
-	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
-		console.warn('User state schema is out of date.');
-		data.uiState = updateSchema(data.uiState, userSchema.uiState);
-		data.uiState.schemaVersion = currentStateSchemaVersion;
-	}
-
-	// console.log('User data after schema check', data);
-} catch (err) {
-	console.warn('Failed to load user data:', err);
-	localStorage.removeItem(key);
-}
-
 let userDataStore = (() => {
 	let considerationCountPromise = null;
 
 	let init = () => {
-		// console.log('Initiating User Data Store');
 		if (!considerationCountPromise) {
 			considerationCountPromise = fetch('./data/consideration-count.json')
 				.then((res) => res.json())
@@ -1035,6 +1391,7 @@ let userDataStore = (() => {
 					return null;
 				});
 		}
+
 		save();
 		let changes = {
 			initiating: true,
@@ -1044,8 +1401,27 @@ let userDataStore = (() => {
 
 	let getConsiderationCount = () => considerationCountPromise;
 
-	return { init, getConsiderationCount };
+	let load = async () => {
+		let debug = true;
+
+		try {
+			let raw = localStorage.getItem(key);
+			if (raw) {
+				data = JSON.parse(raw);
+				if (debug) console.log('User data from local storage', data);
+			} else {
+				if (debug) console.log('No user data found in local storage, using default', data);
+			}
+		} catch (err) {
+			console.warn('Failed to load user data:', err);
+			localStorage.removeItem(key);
+		}
+	};
+
+	return { init, load, getConsiderationCount };
 })();
+
+userDataStore.load();
 
 userDataStore.init();
 eventControl.add({
@@ -1053,6 +1429,8 @@ eventControl.add({
 	eventType: 'astro:after-swap',
 	fn: userDataStore.init,
 });
+
+upgradeUserData(data);
 
 //
 // Exports
