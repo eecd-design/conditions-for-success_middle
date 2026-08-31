@@ -409,34 +409,11 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Event Listeners
 	//
 
-	let onExportAssessmentClick = async (event) => {
+	let onDownloadAssessmentClick = async (event) => {
 		let target = event.target as HTMLButtonElement;
 
 		let dialog = target.closest('dialog');
 		if (!dialog) return;
-
-		if (target.matches('button.change-status')) {
-			try {
-				let assessment = getActiveAssessmentData();
-
-				let { status } = assessment;
-				let newStatus = status === 'In Progress' ? 'Complete' : 'In Progress';
-
-				setAssessment({
-					status: newStatus,
-					dateModified: Date.now(),
-					changeLog: updateChangeLog({
-						changeLog: assessment.changeLog,
-						message: `updated assessment status to ${newStatus.toLowerCase()}.`,
-					}),
-				});
-
-				toastControl.show({ target, type: 'success' });
-			} catch (error) {
-				console.error(error);
-				toastControl.show({ target, type: 'failure' });
-			}
-		}
 
 		if (target.matches('button.download-file')) {
 			try {
@@ -453,6 +430,18 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				toastControl.show({ target, type: 'failure' });
 			}
 		}
+	};
+	eventControl.add({
+		selector: '#download-assessment-dialog',
+		eventType: 'click',
+		fn: onDownloadAssessmentClick,
+	});
+
+	let onShareAssessmentClick = async (event) => {
+		let target = event.target as HTMLButtonElement;
+
+		let dialog = target.closest('dialog');
+		if (!dialog) return;
 
 		if (target.matches('button.copy-code')) {
 			try {
@@ -468,9 +457,9 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		}
 	};
 	eventControl.add({
-		selector: '#download-assessment-dialog',
+		selector: '#share-assessment-dialog',
 		eventType: 'click',
-		fn: onExportAssessmentClick,
+		fn: onShareAssessmentClick,
 	});
 
 	let onExportWarningClick = (event) => {
