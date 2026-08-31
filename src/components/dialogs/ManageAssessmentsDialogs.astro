@@ -92,6 +92,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 								data-field="banner"
 								hidden
 							>
+								Open
 							</div>
 							<div class="wrapper">
 								<div class="metadata-container">
@@ -692,7 +693,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		if (active) {
 			banner.removeAttribute('hidden');
 			banner.setAttribute('data-theme', getStatusColour(assessment));
-			banner.textContent = status === 'In Progress' ? 'Editing' : 'Reviewing';
 		}
 
 		// Set title text
