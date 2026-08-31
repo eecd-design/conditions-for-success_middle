@@ -11,17 +11,13 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	context={'configure'}
 >
 	<Fragment slot="content">
-		<p
-			id="edit-status-dialog_in-progress-instructions"
-			class="instructions"
-		>
+		<p id="edit-status-dialog_in-progress-instructions">
 			This assessment is marked as <strong>In Progress</strong>. Mark it as <strong
 				>Complete</strong
 			> to lock editing and make it available on the Report page.
 		</p>
 		<p
 			id="edit-status-dialog_complete-instructions"
-			class="instructions"
 			hidden
 		>
 			This assessment is marked as <strong>Complete</strong>. Mark it as <strong
@@ -81,12 +77,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	title={'Edit or Duplicate Assessment?'}
 >
 	<Fragment slot="content">
-		<p class="instructions">
+		<p>
 			The <span data-field="reportingYear"></span> assessment for <span data-field="school"
 			></span> is marked as <strong>Complete</strong>. To make changes, its status must be set
 			to <strong>In Progress</strong>.
 		</p>
-		<p class="instructions">
+		<p>
 			Select <strong>Edit</strong> to change this assessment's status and make updates, or <strong
 				>Duplicate</strong
 			> to copy it into a new reporting year.

@@ -149,14 +149,19 @@ if (dataset) {
 			}
 		}
 
-		& .instructions {
-			font-size: var(--font-size-xs);
-			line-height: 1.4;
-			margin: 0 0 var(--space-xs);
-			color: var(--colour-txt-on-subtle-2);
+		& :not(.callout *) {
+			&:where(p, li) {
+				font-size: var(--font-size-xs);
+				line-height: 1.4;
+				color: var(--colour-txt-on-subtle-2);
+				margin: 0 0 var(--space-xs);
+			}
 
-			:is(a, [data-style-as='link']) {
+			&:where(a, [data-style-as='link']) {
 				--link-colour: var(--colour-txt-on-subtle-2);
+				font-size: var(--font-size-xs);
+
+				color: var(--colour-txt-on-subtle-2);
 			}
 		}
 
