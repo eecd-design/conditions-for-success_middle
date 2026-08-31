@@ -148,7 +148,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 							alt="Government of New Brunswick Logo"
 						/>
 						<small class="copyright"
-							>Copyright © <span id="copyrightYear">2025</span> Government of New Brunswick.
+							>Copyright © <span id="copyrightYear">2026</span> Government of New Brunswick.
 							All Rights Reserved.</small
 						>
 					</div>
@@ -176,6 +176,11 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			if (field) field.textContent = String(new Date().getFullYear());
 		};
 		updateCopyright();
+		eventControl.add({
+			elem: document,
+			eventType: 'astro:after-swap',
+			fn: updateCopyright,
+		});
 
 		let updateContinuumVersion = (data: UserData, changes) => {
 			let triggerKeys = ['currentContinuumVersion'];
