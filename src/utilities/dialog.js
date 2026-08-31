@@ -1,5 +1,4 @@
 import { eventControl } from './event';
-import { resetForm } from './form';
 import { emitEvent, stopVideo } from './helpers';
 
 let dialogControl = (() => {
@@ -27,7 +26,7 @@ let dialogControl = (() => {
 		};
 	};
 
-	let resetDialogState = (dialog) => {
+	let resetDialogState = async (dialog) => {
 		dialog.scrollTo(0, 0);
 		dialog.removeAttribute('data-context');
 		dialog.removeAttribute('data-target-id');
@@ -35,6 +34,8 @@ let dialogControl = (() => {
 
 		let resetForms = dialog.getAttribute('data-reset-forms') === 'true';
 		if (resetForms) {
+			// Lazy load to prevent circular initialization with userDataStore.js
+			let { resetForm } = await import('./form');
 			let forms = dialog.querySelectorAll('form');
 			for (let form of forms) {
 				resetForm({ form });
@@ -227,7 +228,7 @@ let dialogControl = (() => {
 		});
 	};
 
-	return { init, open, back, close, history };
+	return { init, open, back, close };
 })();
 
 export { dialogControl };
