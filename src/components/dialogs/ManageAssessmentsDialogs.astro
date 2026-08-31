@@ -971,6 +971,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	//
 
 	let onOpenAssessmentClick = (event) => {
+		let debug = false;
+
 		let target = event.target as HTMLButtonElement;
 
 		let dialog = target.closest('dialog');
@@ -1065,6 +1067,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	});
 
 	let onOpenAssessmentChange = async (event) => {
+		let debug = false;
+
 		let target = event.target as any;
 
 		let dialog = target.closest('dialog');
