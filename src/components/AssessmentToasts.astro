@@ -6,6 +6,17 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 ---
 
 <Fragment slot="toast-group">
+	<!-- Manage Assessments -->
+	<Toast
+		id={'manage-assessments-dialog_open-complete-toast_success'}
+		message={`Assessment opened!`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
+	</Toast>
+
+	<!-- Edit Assessments -->
 	<Toast
 		id={'edit-assessment-properties-dialog_save-toast_success'}
 		message={`Save successful!`}
@@ -14,6 +25,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconCheckmark slot={'icon'} />
 	</Toast>
+
+	<!-- Assessors -->
 	<Toast
 		id={'assessor-dialog_save-toast_success'}
 		message={`Save successful!`}
@@ -22,6 +35,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconCheckmark slot={'icon'} />
 	</Toast>
+
+	<!-- Status -->
 	<Toast
 		id={'edit-status-dialog_change-status-toast_success'}
 		message={`Save successful!`}
@@ -46,6 +61,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconCheckmark slot={'icon'} />
 	</Toast>
+
+	<!-- Close -->
 	<Toast
 		id={'backup-warning-dialog_close-toast_success'}
 		message={`Assessment closed.`}
@@ -69,6 +86,16 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		type={'failure'}
 	>
 		<IconXmarkInCircle slot={'icon'} />
+	</Toast>
+
+	<!-- Report Settings -->
+	<Toast
+		id={'report-settings-dialog_save-toast_success'}
+		message={`Report settings saved!`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
 	</Toast>
 
 	<!-- Data Entry -->
