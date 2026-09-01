@@ -214,22 +214,4 @@ import videoPoster from 'src/images/video-poster.png';
 		eventType: 'click',
 		fn: onLaunchClick,
 	});
-
-	let onCloseClick = (event) => {
-		let target = event.target;
-
-		if (target.matches('button.close-dialog')) {
-			let dialog = target.closest('dialog');
-			let context = dialog?.getAttribute('data-context');
-
-			if (context && context === 'from-search-dialog') {
-				dialogControl.open({ dialogId: 'search-dialog' });
-			}
-		}
-	};
-	eventControl.add({
-		selector: `#media-dialog`,
-		eventType: 'click',
-		fn: onCloseClick,
-	});
 </script>
