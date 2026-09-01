@@ -350,7 +350,6 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 			>
 				<!-- View Report Link -->
 				<a
-					class="open-dialog"
 					data-style-as="button"
 					href="./report/"
 					aria-label="View Report"
@@ -369,7 +368,7 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 
 				<!-- View Assessment Link -->
 				<a
-					class="open-dialog"
+					class="view-assessment"
 					data-style-as="button"
 					href="./big-seven/"
 					aria-label="View Assessment"
@@ -550,7 +549,7 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 						<span class="icon-and-label-container">
 							<IconMore />
 							<span class="label-container">
-								<span class="label">More Options</span>
+								<span class="label">More</span>
 							</span>
 						</span>
 						<span class="tooltip">More Options</span>
@@ -882,7 +881,7 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 				flex-grow: 1;
 			}
 
-			main.report[data-status='in-progress'] & .view-group {
+			main.report[data-status='in-progress'] & .file-group {
 				flex-grow: 1;
 			}
 
@@ -1120,7 +1119,7 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 			let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
 			if (!toolbar) return;
 
-			let stateTriggerKeys = ['activeAssessmentId'];
+			let stateTriggerKeys = ['activeAssessmentId', 'lastModifiedPage'];
 			let assessmentTriggerKeys = [
 				'status',
 				'reportingYear',
@@ -1148,6 +1147,9 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 			let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 			let assessorField = toolbar?.querySelector('[data-field="activeAssessor"]');
 			let duplicateBtn = toolbar?.querySelector('[data-dialog-context="duplicate"]');
+			let viewAssessmentLink = toolbar?.querySelector(
+				'a.view-assessment',
+			) as HTMLAnchorElement;
 
 			if (!assessment) return;
 
@@ -1208,6 +1210,12 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 			// 5. Update the duplicate btn target id
 			if (duplicateBtn) {
 				duplicateBtn.setAttribute('data-dialog-target-id', assessment.id);
+			}
+
+			// 6. Update the view assessment path
+			if (viewAssessmentLink) {
+				viewAssessmentLink.href =
+					data.uiState.lastModifiedPage?.path ?? './big-seven/leadership-and-teaming/';
 			}
 		};
 
