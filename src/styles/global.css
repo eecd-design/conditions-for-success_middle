@@ -99,7 +99,9 @@
 	--red-muted-800: #79242f;
 	--red-vivid-75: #fedcdc;
 	--red-vivid-100: #fcbdbf;
+	--red-vivid-300: #f06674;
 	--red-vivid-400: #c54d5a;
+	--red-vivid-500: #992337;
 
 	/* orange */
 	--orange-muted-50: #faf2ee;
@@ -114,7 +116,9 @@
 	--orange-muted-800: #732d00;
 	--orange-vivid-75: #fcded1;
 	--orange-vivid-100: #ffc0a3;
+	--orange-vivid-300: #e87538;
 	--orange-vivid-400: #bd5a25;
+	--orange-vivid-500: #8c3a06;
 
 	/* yellow */
 	--yellow-muted-50: #f6f3ec;
@@ -129,7 +133,9 @@
 	--yellow-muted-800: #574005;
 	--yellow-vivid-75: #f8e3b7;
 	--yellow-vivid-100: #eccc8a;
+	--yellow-vivid-300: #c19102;
 	--yellow-vivid-400: #a07803;
+	--yellow-vivid-500: #6d5208;
 
 	/* green */
 	--green-muted-50: #f0f5ef;
@@ -144,7 +150,9 @@
 	--green-muted-800: #254b14;
 	--green-vivid-75: #d7edd0;
 	--green-vivid-100: #b6dea7;
+	--green-vivid-300: #64b041;
 	--green-vivid-400: #4d8238;
+	--green-vivid-500: #31651a;
 
 	/* teal */
 	--teal-muted-50: #ecf5f8;
@@ -159,7 +167,9 @@
 	--teal-muted-800: #034956;
 	--teal-vivid-75: #c8edf6;
 	--teal-vivid-100: #9fdceb;
+	--teal-vivid-300: #20abc6;
 	--teal-vivid-400: #128196;
+	--teal-vivid-500: #016172;
 
 	/* blue */
 	--blue-muted-50: #f0f4fa;
@@ -174,7 +184,9 @@
 	--blue-muted-800: #264272;
 	--blue-vivid-75: #d9e6fd;
 	--blue-vivid-100: #b6d1fe;
+	--blue-vivid-300: #6a99ea;
 	--blue-vivid-400: #4875c2;
+	--blue-vivid-500: #29549d;
 
 	/* purple */
 	--purple-muted-50: #f4f2fa;
@@ -189,7 +201,9 @@
 	--purple-muted-800: #473c68;
 	--purple-vivid-75: #e6e1fd;
 	--purple-vivid-100: #d2c7fd;
+	--purple-vivid-300: #a084ef;
 	--purple-vivid-400: #7e6ab8;
+	--purple-vivid-500: #5c4791;
 
 	/* gray */
 	--gray-muted-0: #ffffff;
@@ -208,7 +222,9 @@
 	--gray-muted-900: #061223;
 	--gray-vivid-75: #dce6f5;
 	--gray-vivid-100: #c3d1e6;
+	--gray-vivid-300: #8b9bb3;
 	--gray-vivid-400: #667890;
+	--gray-vivid-500: #47586f;
 }
 
 /*
@@ -342,7 +358,7 @@
 	}
 
 	& [data-theme='red']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--red-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--red-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--red-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--gray-muted-75);
@@ -356,7 +372,7 @@
 		--colour-brd-bold-accent: var(--red-muted-75);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--red-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--red-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--red-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--red-vivid-100);
 
@@ -366,7 +382,7 @@
 	}
 
 	[data-theme='orange']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--orange-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--orange-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--orange-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--gray-muted-75);
@@ -380,7 +396,7 @@
 		--colour-brd-bold-accent: var(--orange-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--orange-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--orange-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--orange-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--orange-vivid-100);
 
@@ -390,7 +406,7 @@
 	}
 
 	& [data-theme='yellow']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--yellow-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--yellow-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--yellow-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--yellow-muted-75);
@@ -404,7 +420,7 @@
 		--colour-brd-bold-accent: var(--yellow-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--yellow-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--yellow-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--yellow-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--yellow-vivid-100);
 
@@ -414,7 +430,7 @@
 	}
 
 	& [data-theme='green']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--green-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--green-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--green-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--green-muted-75);
@@ -428,7 +444,7 @@
 		--colour-brd-bold-accent: var(--green-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--green-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--green-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--green-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--green-vivid-100);
 
@@ -438,21 +454,21 @@
 	}
 
 	& [data-theme='teal']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--teal-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--teal-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--teal-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--teal-muted-75);
 
-		--colour-txt-on-subtle-1-accent: var(--teal-muted-50);
-		--colour-txt-on-subtle-2-accent: var(--teal-muted-0);
-		--colour-txt-on-subtle-1-accent-hover: var(--teal-muted-50);
+		--colour-txt-on-subtle-1-accent: var(--gray-muted-50);
+		--colour-txt-on-subtle-2-accent: var(--gray-muted-0);
+		--colour-txt-on-subtle-1-accent-hover: var(--gray-muted-50);
 
 		--colour-brd-subtle-accent: var(--teal-muted-400);
 		--colour-brd-mid-accent: var(--teal-muted-300);
 		--colour-brd-bold-accent: var(--teal-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--teal-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--teal-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--teal-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--teal-vivid-100);
 
@@ -462,7 +478,7 @@
 	}
 
 	& [data-theme='blue']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--blue-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--blue-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--blue-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--blue-muted-75);
@@ -476,7 +492,7 @@
 		--colour-brd-bold-accent: var(--blue-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--blue-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--blue-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--blue-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--blue-vivid-100);
 
@@ -486,21 +502,21 @@
 	}
 
 	& [data-theme='purple']:not([data-theme-fixed], [data-theme-fixed] *) {
-		--colour-bkg-surface-subtle-1-accent: var(--purple-muted-400);
+		--colour-bkg-surface-subtle-1-accent: var(--purple-muted-500);
 		--colour-bkg-surface-subtle-1-accent-hover: var(--purple-muted-400);
 
 		--colour-bkg-surface-bold-1-accent: var(--purple-muted-75);
 
-		--colour-txt-on-subtle-1-accent: var(--purple-muted-50);
-		--colour-txt-on-subtle-2-accent: var(--purple-muted-0);
-		--colour-txt-on-subtle-1-accent-hover: var(--purple-muted-50);
+		--colour-txt-on-subtle-1-accent: var(--gray-muted-50);
+		--colour-txt-on-subtle-2-accent: var(--gray-muted-0);
+		--colour-txt-on-subtle-1-accent-hover: var(--gray-muted-50);
 
 		--colour-brd-subtle-accent: var(--purple-muted-400);
 		--colour-brd-mid-accent: var(--purple-muted-300);
 		--colour-brd-bold-accent: var(--purple-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--purple-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--purple-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--purple-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--purple-vivid-100);
 
@@ -524,7 +540,7 @@
 		--colour-brd-bold-accent: var(--gray-muted-100);
 
 		&[data-vibrancy='vivid'] {
-			--colour-bkg-surface-subtle-1-accent: var(--gray-vivid-400);
+			--colour-bkg-surface-subtle-1-accent: var(--gray-vivid-500);
 			--colour-bkg-surface-subtle-1-accent-hover: var(--gray-vivid-400);
 			--colour-bkg-surface-bold-1-accent: var(--gray-vivid-100);
 
