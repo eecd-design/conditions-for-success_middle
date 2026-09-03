@@ -1402,14 +1402,16 @@ main {
 
 		& > .right-aside {
 			grid-area: right-aside;
-
-			@container main (width < 1112px) {
-				display: none;
-			}
 		}
 
 		& > .left-aside {
 			grid-area: left-aside;
+
+			&:not([data-style]) {
+				@container main (width < 1180px) {
+					display: none;
+				}
+			}
 		}
 
 		& > .content {
@@ -1422,6 +1424,8 @@ main {
 		}
 	}
 
+	/* No asides */
+
 	&:not(:has(.left-aside)):not(:has(.right-aside)) > .wrapper {
 		--aside-width: 0;
 
@@ -1430,6 +1434,8 @@ main {
 			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
 		}
 	}
+
+	/* Right aside only */
 
 	&:not(:has(.left-aside)):has(.right-aside) > .wrapper {
 		@container main (width < 1584px) {
@@ -1447,7 +1453,30 @@ main {
 		}
 	}
 
-	&:not(:has(.right-aside)):has(.left-aside) > .wrapper {
+	/* Left aside only - padded (e.g., /Big-Seven/) */
+
+	&:not(:has(.right-aside)):has(.left-aside:not([data-style])) > .wrapper {
+		--aside-max-width: 400px;
+
+		@container main (width >= 1180px) and (width < 1920px) {
+			--aside-min-width: 260px;
+			--aside-right-width: 0;
+			--aside-gap-right: 0;
+			--wrapper-left-margin: var(--space-2xl);
+			--wrapper-max-margin: 1fr;
+		}
+
+		@container main (width < 1180px) {
+			--wrapper-min-margin: var(--space-2xl);
+			--content-width: min(900px, calc(100% - (2 * var(--wrapper-min-margin))));
+			--aside-width: 0;
+			--aside-gap: 0;
+		}
+	}
+
+	/* Left aside only - panel (e.g., /Resources/)*/
+
+	&:not(:has(.right-aside)):has(.left-aside[data-style='panel']) > .wrapper {
 		--content-min-width: 800px;
 		--aside-min-width: 320px;
 
@@ -1466,6 +1495,8 @@ main {
 			--aside-gap: 0;
 		}
 	}
+
+	/* Both asides */
 
 	&:has(.right-aside):has(.left-aside) > .wrapper {
 		--aside-gap-left: var(--space-4xl);
