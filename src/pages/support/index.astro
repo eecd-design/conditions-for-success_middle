@@ -85,7 +85,10 @@ let onPageSection = {
 
 navSections.push(onPageSection);
 
-let continuums10Resource = await getEntry('resources', 'nb-middle-school-developmental-continuums');
+let continuums10Resource = await getEntry(
+	'resources',
+	'nb-middle-school-developmental-continuums-v1-0',
+);
 let continuums10ResourceData = JSON.parse(JSON.stringify(continuums10Resource.data));
 continuums10ResourceData.slug = continuums10Resource.id;
 continuums10ResourceData.category = 'resource';
@@ -193,7 +196,7 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 
 		<p>
 			<a
-				href={continuums10ResourcePath}
+				href={continuums20ResourcePath}
 				data-style-as="button"
 				data-style="solid"
 				data-size="large"
