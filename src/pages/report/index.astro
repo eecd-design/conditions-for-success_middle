@@ -661,6 +661,7 @@ navSections.push(onPageSection);
 		let onPageNav = document.querySelector('nav.on-page');
 
 		let reportHeading = document.querySelector('h1');
+		let reportHeadingSubtitle = reportHeading?.querySelector('.subtitle');
 		let reportHeadingSchool = reportHeading?.querySelector('[data-field="reportSchool"]');
 		let reportHeadingYear = reportHeading?.querySelector('[data-field="reportYear"]');
 
@@ -670,7 +671,7 @@ navSections.push(onPageSection);
 
 		if (!data.uiState.activeAssessmentId) {
 			main.setAttribute('data-report', 'inactive');
-			reportHeadingSchool.textContent = 'Report';
+			reportHeadingSubtitle.setAttribute('hidden', '');
 		} else {
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
@@ -691,6 +692,8 @@ navSections.push(onPageSection);
 
 			reportHeadingSchool.textContent = assessment.school;
 			reportHeadingYear.textContent = assessment.reportingYear;
+			reportHeadingSubtitle.removeAttribute('hidden');
+
 			reportWelcomeSchool.textContent = assessment.school;
 			reportWelcomeYear.textContent = assessment.reportingYear;
 
