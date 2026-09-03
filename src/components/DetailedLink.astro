@@ -93,13 +93,14 @@ if (category === 'resource') {
 let isLocation = !['resource', 'guides'].includes(category);
 let isExternal = external && external.discriminant;
 let isMedia = ['video', 'audio'].includes(type);
+let isTraining = category === 'training';
 let isFile = ['document', 'presentation', 'image'].includes(type);
 
 // If resource is a video or internal audio, open it in a dialog
 let opensDialog = false;
 if (!isLocation) opensDialog = linkAction === 'dialog';
 
-let opensInNewTab = !isMedia && (isExternal || isFile);
+let opensInNewTab = !isTraining && !isMedia && (isExternal || isFile);
 
 let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
