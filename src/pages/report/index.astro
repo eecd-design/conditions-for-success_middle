@@ -15,6 +15,7 @@ import PageNav from 'src/components/PageNav.astro';
 import gnbLogo from 'src/images/gnb-logo-colour.png';
 import AssessmentDialogs from 'src/components/dialogs/AssessmentDialogs.astro';
 import AssessmentToasts from 'src/components/AssessmentToasts.astro';
+import BarChart from 'src/components/charts/BarChart.astro';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -213,13 +214,13 @@ navSections.push(onPageSection);
 				data-include="true"
 			>
 				<h2 id="overview">Overview</h2>
-				<!-- <h3>Continuum Progress</h3>
-				<ProgressChart/> -->
 				<h3>Indicator Progress</h3>
 				<MatrixChart
 					entries={indicators}
 					scope={'Indicators'}
 				/>
+				<h3>Component Progress</h3>
+				<BarChart />
 			</section>
 
 			{
@@ -259,34 +260,6 @@ navSections.push(onPageSection);
 					);
 				})
 			}
-
-			<section
-				class="summary"
-				data-include="true"
-				hidden
-			>
-				<h2 id="summary">Summary</h2>
-				<!-- <h3>Component Progress</h3> -->
-				<MatrixChart
-					entries={components.filter((component) => Number(component.data.tag) < 6)}
-					scope={'Components'}
-					fit={'compact'}
-				/>
-			</section>
-
-			<section
-				class="summary"
-				data-include="true"
-				hidden
-			>
-				<h2 id="summary">Summary (Continued)</h2>
-				<!-- <h3>Component Progress</h3> -->
-				<MatrixChart
-					entries={components.filter((component) => Number(component.data.tag) >= 6)}
-					scope={'Components'}
-					fit={'compact'}
-				/>
-			</section>
 		</div>
 
 		<div
@@ -333,12 +306,38 @@ navSections.push(onPageSection);
 				data-include="true"
 			>
 				<h2 id="overview">Overview</h2>
-				<!-- <h3>Continuum Progress</h3>
-				<ProgressChart/> -->
 				<h3>Indicator Progress</h3>
 				<MatrixChart
 					entries={indicators}
 					scope={'Indicators'}
+				/>
+				<h3>Component Progress</h3>
+				<BarChart />
+			</section>
+
+			<section
+				class="snapshot"
+				data-include="true"
+			>
+				<h2 id="snapshot">Continuum Snapshot</h2>
+				<!-- <h3>Component Progress</h3> -->
+				<MatrixChart
+					entries={components.filter((component) => Number(component.data.tag) < 6)}
+					scope={'Components'}
+					fit={'compact'}
+				/>
+			</section>
+
+			<section
+				class="snapshot"
+				data-include="true"
+			>
+				<h2 id="snapshot">Continuum Snapshot (Continued)</h2>
+				<!-- <h3>Component Progress</h3> -->
+				<MatrixChart
+					entries={components.filter((component) => Number(component.data.tag) >= 6)}
+					scope={'Components'}
+					fit={'compact'}
 				/>
 			</section>
 
@@ -372,32 +371,6 @@ navSections.push(onPageSection);
 					);
 				})
 			}
-
-			<section
-				class="summary"
-				data-include="true"
-			>
-				<h2 id="summary">Summary</h2>
-				<!-- <h3>Component Progress</h3> -->
-				<MatrixChart
-					entries={components.filter((component) => Number(component.data.tag) < 6)}
-					scope={'Components'}
-					fit={'compact'}
-				/>
-			</section>
-
-			<section
-				class="summary"
-				data-include="true"
-			>
-				<h2 id="summary">Summary (Continued)</h2>
-				<!-- <h3>Component Progress</h3> -->
-				<MatrixChart
-					entries={components.filter((component) => Number(component.data.tag) >= 6)}
-					scope={'Components'}
-					fit={'compact'}
-				/>
-			</section>
 		</div>
 	</div>
 </BaseLayout>
@@ -759,7 +732,6 @@ navSections.push(onPageSection);
 				}
 
 				let matrixCharts = section.querySelectorAll('.matrix');
-
 				for (let matrix of matrixCharts) {
 					let matrixChartScope = matrix.getAttribute('data-scope');
 					let matrixChartRows = matrix.querySelectorAll('tr');
@@ -782,6 +754,39 @@ navSections.push(onPageSection);
 						let matrixSimPhaseField =
 							matrixSimRow.querySelector('[data-field="phase"]');
 						matrixSimPhaseField.textContent = subScopeCompletion.phase;
+					}
+				}
+
+				let barChart = section.querySelector('.bar');
+				let barSimplified = section.querySelector('.bar-simplified');
+				if (barChart) {
+					let barChartSegments = barChart.querySelectorAll(
+						'.segment-container',
+					) as NodeListOf<HTMLElement>;
+					let barSimDetails = barSimplified.querySelectorAll('p');
+
+					for (let [index, segment] of Object.entries(barChartSegments)) {
+						let phase = segment.getAttribute('data-phase');
+
+						let countField = segment.querySelector('[data-field="count"]');
+						let barSimCountField =
+							barSimDetails[index].querySelector('[data-field="count"]');
+
+						countField.textContent = mainScopeCompletion
+							? mainScopeCompletion[`${phase}Components`]
+							: 0;
+						barSimCountField.textContent = mainScopeCompletion
+							? mainScopeCompletion[`${phase}Components`]
+							: 0;
+
+						segment.style.setProperty(
+							'--total',
+							mainScopeCompletion ? mainScopeCompletion[`components`] : 0,
+						);
+						segment.style.setProperty(
+							'--count',
+							mainScopeCompletion ? mainScopeCompletion[`${phase}Components`] : 0,
+						);
 					}
 				}
 

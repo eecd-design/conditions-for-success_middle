@@ -436,7 +436,7 @@ let updateContinuumVersion = (assessment) => {
 	assessment.continuumVersion = currentContinuumVersion;
 };
 
-let updateContinuumCompletionEntry = async ({
+let updateContinuumCompletionEntry = ({
 	count,
 	continuumCompletion,
 	key,
@@ -446,27 +446,40 @@ let updateContinuumCompletionEntry = async ({
 }) => {
 	if (!count[scope]) return;
 
-	let entry = continuumCompletion[key] ?? {
-		count: 0,
-		initiatingCount: 0,
-		implementingCount: 0,
-		developingCount: 0,
-		sustainingCount: 0,
+	let entry = continuumCompletion[key];
+	if (!entry) {
+		entry = {
+			type: count[scope].type,
 
-		total: count[scope].total ?? 0,
-		initiatingTotal: count[scope].initiating ?? 0,
-		implementingTotal: count[scope].implementing ?? 0,
-		developingTotal: count[scope].developing ?? 0,
-		sustainingTotal: count[scope].sustaining ?? 0,
+			count: 0,
+			initiatingCount: 0,
+			implementingCount: 0,
+			developingCount: 0,
+			sustainingCount: 0,
 
-		ratio: 0,
-		initiatingRatio: 0,
-		implementingRatio: 0,
-		developingRatio: 0,
-		sustainingRatio: 0,
+			total: count[scope].total ?? 0,
+			initiatingTotal: count[scope].initiating ?? 0,
+			implementingTotal: count[scope].implementing ?? 0,
+			developingTotal: count[scope].developing ?? 0,
+			sustainingTotal: count[scope].sustaining ?? 0,
 
-		phase: 'Initiating',
-	};
+			ratio: 0,
+			initiatingRatio: 0,
+			implementingRatio: 0,
+			developingRatio: 0,
+			sustainingRatio: 0,
+
+			phase: 'Initiating',
+		};
+
+		if (['continuum', 'indicator'].includes(count[scope].type)) {
+			entry.components = count[scope].components;
+			entry.initiatingComponents = count[scope].components;
+			entry.implementingComponents = 0;
+			entry.developingComponents = 0;
+			entry.sustainingComponents = 0;
+		}
+	}
 
 	let phaseCountKey = `${phase}Count`;
 	let phaseRatioKey = `${phase}Ratio`;
@@ -481,6 +494,10 @@ let updateContinuumCompletionEntry = async ({
 
 	entry.ratio = count[scope].total ? entry.count / count[scope].total : 0;
 	entry[phaseRatioKey] = count[scope][phase] ? entry[phaseCountKey] / count[scope][phase] : 0;
+
+	// Todo: Need a way to pass the phase up to the indicator and continuum for components
+
+	let oldPhase = entry.phase;
 
 	if (
 		(entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) ||
@@ -501,6 +518,21 @@ let updateContinuumCompletionEntry = async ({
 		}
 	} else {
 		entry.phase = 'Initiating';
+	}
+
+	// Component moved up a phase
+	console.log(oldPhase, entry.phase);
+	if (entry.type === 'component' && oldPhase !== entry.phase) {
+		continuumCompletion.continuum[`${oldPhase.toLowerCase()}Components`] = Math.max(
+			0,
+			continuumCompletion.continuum[`${oldPhase.toLowerCase()}Components`] - 1,
+		);
+		continuumCompletion.continuum[`${entry.phase.toLowerCase()}Components`] += 1;
+		continuumCompletion[`${scope[0]}`][`${oldPhase.toLowerCase()}Components`] = Math.max(
+			0,
+			continuumCompletion[`${scope[0]}`][`${oldPhase.toLowerCase()}Components`] - 1,
+		);
+		continuumCompletion[`${scope[0]}`][`${entry.phase.toLowerCase()}Components`] += 1;
 	}
 
 	continuumCompletion[key] = entry;

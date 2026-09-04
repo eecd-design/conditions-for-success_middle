@@ -1,0 +1,243 @@
+---
+import IconTrowel24 from 'src/components/icons/IconTrowel_24.astro';
+import IconSeed24 from 'src/components/icons/IconSeed_24.astro';
+import IconSapling24 from 'src/components/icons/IconSapling_24.astro';
+import IconWateringCan24 from 'src/components/icons/IconWateringCan_24.astro';
+
+let { colour } = Astro.props;
+---
+
+<div
+	class="chart-container bar"
+	aria-hidden="true"
+>
+	<div
+		class="segment-container"
+		data-phase="initiating"
+		data-theme="red"
+		data-vibrancy="vivid"
+	>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+			</span>
+			<span>Components</span>
+		</div>
+		<div class="block-container">
+			<IconTrowel24 />
+			<div class="block">
+				<IconTrowel24 />
+			</div>
+		</div>
+		<div class="title-container">
+			<span class="title">Initiating</span>
+		</div>
+	</div>
+	<div
+		class="segment-container"
+		data-phase="implementing"
+		data-theme="yellow"
+		data-vibrancy="vivid"
+	>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+			</span>
+			<span>Components</span>
+		</div>
+		<div class="block-container">
+			<IconSeed24 />
+			<div class="block">
+				<IconSeed24 />
+			</div>
+		</div>
+		<div class="title-container">
+			<span class="title">Implementing</span>
+		</div>
+	</div>
+	<div
+		class="segment-container"
+		data-phase="developing"
+		data-theme="green"
+		data-vibrancy="vivid"
+	>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+			</span>
+			<span>Components</span>
+		</div>
+		<div class="block-container">
+			<IconSapling24 />
+			<div class="block">
+				<IconSapling24 />
+			</div>
+		</div>
+		<div class="title-container">
+			<span class="title">Developing</span>
+		</div>
+	</div>
+	<div
+		class="segment-container"
+		data-phase="sustaining"
+		data-theme="blue"
+		data-vibrancy="vivid"
+	>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+			</span>
+			<span>Components</span>
+		</div>
+		<div class="block-container">
+			<IconWateringCan24 />
+			<div class="block">
+				<IconWateringCan24 />
+			</div>
+		</div>
+		<div class="title-container">
+			<span class="title">Sustaining</span>
+		</div>
+	</div>
+</div>
+
+<div
+	class="bar-simplified"
+	data-screen-reader
+>
+	<p data-phase="initiating">
+		<span data-field="count"></span> components are currently initiating.
+	</p>
+	<p data-phase="implementing">
+		<span data-field="count"></span> components are currently implementing.
+	</p>
+	<p data-phase="developing">
+		<span data-field="count"></span> components are currently developing.
+	</p>
+	<p data-phase="sustaining">
+		<span data-field="count"></span> components are currently sustaining.
+	</p>
+</div>
+
+<style is:global>
+	/* 
+	// Bar Chart
+	*/
+
+	.chart-container.bar {
+		--chart-scale: 1;
+
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		align-items: end;
+		gap: calc(var(--space-sm) * var(--chart-scale));
+		margin: var(--space-xl) 0;
+
+		& .segment-container {
+			--total: 0;
+			--count: 0;
+			--barMaxHeight: 200px;
+
+			display: flex;
+			flex-flow: column nowrap;
+			gap: calc(var(--space-sm) * var(--chart-scale));
+			position: relative;
+
+			/* Block */
+
+			& .block-container {
+				--icon-size: calc(2.5rem * var(--chart-scale));
+				--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: end;
+				background-color: var(
+					--colour-bkg-surface-subtle-1-accent,
+					var(--colour-bkg-surface-subtle-1)
+				);
+				border-radius: var(--brd-radius-normal);
+				height: var(--barMaxHeight);
+				overflow: hidden;
+				position: relative;
+
+				& .icon {
+					position: absolute;
+					bottom: calc((var(--barMaxHeight) / 2) - (var(--icon-size) / 2));
+					left: calc((100% / 2) - (var(--icon-size) / 2));
+				}
+
+				& > .icon {
+					opacity: 0.75;
+				}
+
+				.block {
+					--icon-colour: var(--colour-txt-on-bold-1);
+
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					height: calc(
+						((var(--count) / var(--total)) * var(--barMaxHeight)) * var(--chart-scale)
+					);
+					background-color: var(
+						--colour-bkg-surface-bold-1-accent,
+						var(--colour-bkg-surface-bold-2)
+					);
+					overflow: hidden;
+					position: relative;
+					box-shadow: 0 0 0 2px var(--colour-bkg-surface-subtle-1-accent);
+
+					&::after {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 2px;
+						background-color: var(--colour-brd-bold-accent);
+						z-index: 1;
+					}
+				}
+			}
+
+			/* Title */
+
+			& .title-container {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				justify-content: end;
+				gap: calc(var(--space-2xs) * var(--chart-scale));
+				flex-grow: 1;
+
+				& .title {
+					font-size: calc(var(--font-size-sm) * var(--chart-scale));
+					font-weight: 500;
+				}
+			}
+
+			/* Value */
+
+			& .value-container {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				gap: calc(var(--space-3xs) * var(--chart-scale));
+				flex-grow: 1;
+				padding: 0 var(--space-xs);
+				font-size: calc(var(--font-size-sm) * var(--chart-scale));
+				text-align: center;
+
+				& .count {
+					font-size: calc(var(--font-size-lg) * var(--chart-scale));
+					font-weight: 600;
+				}
+			}
+		}
+
+		#print-report-container & {
+			--chart-scale: 0.75;
+		}
+	}
+</style>
