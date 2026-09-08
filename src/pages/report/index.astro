@@ -311,7 +311,7 @@ navSections.push(onPageSection);
 					entries={indicators}
 					scope={'Indicators'}
 				/>
-				<h3>Component Progress</h3>
+				<h3>Component Distribution</h3>
 				<BarChart />
 			</section>
 
@@ -319,8 +319,7 @@ navSections.push(onPageSection);
 				class="snapshot"
 				data-include="true"
 			>
-				<h2 id="snapshot">Continuum Snapshot</h2>
-				<!-- <h3>Component Progress</h3> -->
+				<h3>Component Progress</h3>
 				<MatrixChart
 					entries={components.filter((component) => Number(component.data.tag) < 6)}
 					scope={'Components'}
@@ -332,8 +331,7 @@ navSections.push(onPageSection);
 				class="snapshot"
 				data-include="true"
 			>
-				<h2 id="snapshot">Continuum Snapshot (Continued)</h2>
-				<!-- <h3>Component Progress</h3> -->
+				<h3>Component Progress (Continued)</h3>
 				<MatrixChart
 					entries={components.filter((component) => Number(component.data.tag) >= 6)}
 					scope={'Components'}
@@ -769,14 +767,23 @@ navSections.push(onPageSection);
 						let phase = segment.getAttribute('data-phase');
 
 						let countField = segment.querySelector('[data-field="count"]');
+						let totalField = segment.querySelector('[data-field="total"]');
 						let barSimCountField =
 							barSimDetails[index].querySelector('[data-field="count"]');
+						let barSimTotalField =
+							barSimDetails[index].querySelector('[data-field="total"]');
 
 						countField.textContent = mainScopeCompletion
 							? mainScopeCompletion[`${phase}Components`]
 							: 0;
+						totalField.textContent = mainScopeCompletion
+							? mainScopeCompletion[`components`]
+							: 0;
 						barSimCountField.textContent = mainScopeCompletion
 							? mainScopeCompletion[`${phase}Components`]
+							: 0;
+						barSimTotalField.textContent = mainScopeCompletion
+							? mainScopeCompletion[`components`]
 							: 0;
 
 						segment.style.setProperty(

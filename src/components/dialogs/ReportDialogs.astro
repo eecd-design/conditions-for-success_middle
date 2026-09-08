@@ -594,33 +594,30 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			currentYPosition = margin - 16; // Account for section heading line height padding
 
 			// Add the page heading
-			let sectionHeading = section.querySelector('h2').textContent.trim();
-			if (isSnapshot) {
-				pdf.setFont('Public Sans', 'normal');
-				pdf.setFontSize(18);
-			} else {
+			if (!isSnapshot) {
+				let sectionHeading = section.querySelector('h2').textContent.trim();
 				pdf.setFont('Aesthet Nova', 'bold');
 				pdf.setFontSize(24);
+				currentYPosition = addWrappedText(
+					pdf,
+					sectionHeading,
+					margin,
+					currentYPosition,
+					pageWidth,
+				);
+				currentYPosition += 18;
 			}
-			currentYPosition = addWrappedText(
-				pdf,
-				sectionHeading,
-				margin,
-				currentYPosition,
-				pageWidth,
-			);
-
-			currentYPosition += 18;
 
 			// Add the charts and their accompanying headings
 			pdf.setFont('Public Sans', 'normal');
 			pdf.setFontSize(18);
 
 			if (charts.progress) {
-				let chartHeading1 = 'Overall Progress';
+				let chartHeading = section.querySelector('h3:has(+ .progress)').textContent.trim();
+				// let chartHeading1 = 'Overall Progress';
 				currentYPosition = addWrappedText(
 					pdf,
-					chartHeading1,
+					chartHeading,
 					margin,
 					currentYPosition,
 					pageWidth,
@@ -645,17 +642,16 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			}
 
 			if (charts.matrix) {
-				if (!isSnapshot) {
-					let chartHeading2 = `${i === 1 ? 'Indicator' : 'Component'} Progress`;
-					currentYPosition = addWrappedText(
-						pdf,
-						chartHeading2,
-						margin,
-						currentYPosition,
-						pageWidth,
-					);
-					currentYPosition += 24;
-				}
+				let chartHeading = section.querySelector('h3:has(+ .matrix)').textContent.trim();
+				// let chartHeading2 = `${i === 1 ? 'Indicator' : 'Component'} Progress`;
+				currentYPosition = addWrappedText(
+					pdf,
+					chartHeading,
+					margin,
+					currentYPosition,
+					pageWidth,
+				);
+				currentYPosition += 24;
 
 				let matrixChartImgProps = pdf.getImageProperties(charts.matrix);
 				let matrixChartImgHeight =
@@ -674,10 +670,11 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			}
 
 			if (charts.bar) {
-				let chartHeading1 = 'Component Progress';
+				let chartHeading = section.querySelector('h3:has(+ .bar)').textContent.trim();
+				// let chartHeading1 = 'Component Distribution';
 				currentYPosition = addWrappedText(
 					pdf,
-					chartHeading1,
+					chartHeading,
 					margin,
 					currentYPosition,
 					pageWidth,

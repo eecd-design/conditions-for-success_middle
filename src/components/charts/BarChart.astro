@@ -14,67 +14,83 @@ let { colour } = Astro.props;
 	<div
 		class="segment-container"
 		data-phase="initiating"
-		data-theme="red"
+		data-theme="blue"
 		data-vibrancy="vivid"
 	>
-		<div class="value-container">
-			<span class="count">
-				<span data-field="count">0</span>
-			</span>
-			<span>Components</span>
+		<div class="title-container">
+			<span class="title">Initiating</span>
 		</div>
 		<div class="block-container">
 			<IconTrowel24 />
-			<div class="block">
-				<IconTrowel24 />
-			</div>
+			<div class="gridlines"></div>
+			<div class="block"></div>
 		</div>
-		<div class="title-container">
-			<span class="title">Initiating</span>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+				<span> / </span>
+				<span
+					class="total"
+					data-field="total"
+					>0</span
+				>
+			</span>
+			<span>Components</span>
 		</div>
 	</div>
 	<div
 		class="segment-container"
 		data-phase="implementing"
-		data-theme="yellow"
+		data-theme="blue"
 		data-vibrancy="vivid"
 	>
-		<div class="value-container">
-			<span class="count">
-				<span data-field="count">0</span>
-			</span>
-			<span>Components</span>
+		<div class="title-container">
+			<span class="title">Implementing</span>
 		</div>
 		<div class="block-container">
 			<IconSeed24 />
-			<div class="block">
-				<IconSeed24 />
-			</div>
+			<div class="gridlines"></div>
+			<div class="block"></div>
 		</div>
-		<div class="title-container">
-			<span class="title">Implementing</span>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+				<span> / </span>
+				<span
+					class="total"
+					data-field="total"
+				>
+					0</span
+				>
+			</span>
+			<span>Components</span>
 		</div>
 	</div>
 	<div
 		class="segment-container"
 		data-phase="developing"
-		data-theme="green"
+		data-theme="blue"
 		data-vibrancy="vivid"
 	>
-		<div class="value-container">
-			<span class="count">
-				<span data-field="count">0</span>
-			</span>
-			<span>Components</span>
+		<div class="title-container">
+			<span class="title">Developing</span>
 		</div>
 		<div class="block-container">
 			<IconSapling24 />
-			<div class="block">
-				<IconSapling24 />
-			</div>
+			<div class="gridlines"></div>
+			<div class="block"></div>
 		</div>
-		<div class="title-container">
-			<span class="title">Developing</span>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+				<span> / </span>
+				<span
+					class="total"
+					data-field="total"
+					>0</span
+				>
+			</span>
+			<span>Components</span>
 		</div>
 	</div>
 	<div
@@ -83,20 +99,25 @@ let { colour } = Astro.props;
 		data-theme="blue"
 		data-vibrancy="vivid"
 	>
-		<div class="value-container">
-			<span class="count">
-				<span data-field="count">0</span>
-			</span>
-			<span>Components</span>
+		<div class="title-container">
+			<span class="title">Sustaining</span>
 		</div>
 		<div class="block-container">
 			<IconWateringCan24 />
-			<div class="block">
-				<IconWateringCan24 />
-			</div>
+			<div class="gridlines"></div>
+			<div class="block"></div>
 		</div>
-		<div class="title-container">
-			<span class="title">Sustaining</span>
+		<div class="value-container">
+			<span class="count">
+				<span data-field="count">0</span>
+				<span> / </span>
+				<span
+					class="total"
+					data-field="total"
+					>0</span
+				>
+			</span>
+			<span>Components</span>
 		</div>
 	</div>
 </div>
@@ -106,16 +127,20 @@ let { colour } = Astro.props;
 	data-screen-reader
 >
 	<p data-phase="initiating">
-		<span data-field="count"></span> components are currently initiating.
+		<span data-field="count"></span> out of <span data-field="total"></span> components are currently
+		initiating.
 	</p>
 	<p data-phase="implementing">
-		<span data-field="count"></span> components are currently implementing.
+		<span data-field="count"></span> out of <span data-field="total"></span> components are currently
+		implementing.
 	</p>
 	<p data-phase="developing">
-		<span data-field="count"></span> components are currently developing.
+		<span data-field="count"></span> out of <span data-field="total"></span> components are currently
+		developing.
 	</p>
 	<p data-phase="sustaining">
-		<span data-field="count"></span> components are currently sustaining.
+		<span data-field="count"></span> out of <span data-field="total"></span> components are currently
+		sustaining.
 	</p>
 </div>
 
@@ -130,16 +155,16 @@ let { colour } = Astro.props;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 		align-items: end;
-		gap: calc(var(--space-sm) * var(--chart-scale));
 		margin: var(--space-xl) 0;
 
 		& .segment-container {
 			--total: 0;
 			--count: 0;
-			--barMaxHeight: 200px;
+			--bar-max-height: 200px;
 
 			display: flex;
 			flex-flow: column nowrap;
+			align-items: center;
 			gap: calc(var(--space-sm) * var(--chart-scale));
 			position: relative;
 
@@ -148,27 +173,55 @@ let { colour } = Astro.props;
 			& .block-container {
 				--icon-size: calc(2.5rem * var(--chart-scale));
 				--icon-colour: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
+				--container-gap: calc(var(--space-xs) * var(--chart-scale));
 
 				display: flex;
 				flex-flow: column nowrap;
+				flex-grow: 1;
 				justify-content: end;
-				background-color: var(
-					--colour-bkg-surface-subtle-1-accent,
-					var(--colour-bkg-surface-subtle-1)
+				align-items: center;
+				gap: var(--container-gap);
+				width: 100%;
+				max-height: calc(
+					(var(--bar-max-height) * var(--chart-scale)) + var(--icon-size) +
+						var(--container-gap) + 1px
 				);
-				border-radius: var(--brd-radius-normal);
-				height: var(--barMaxHeight);
+				min-height: calc(
+					(var(--bar-max-height) * var(--chart-scale)) + var(--container-gap) + 1px
+				);
+
+				border-bottom: 1px solid var(--colour-brd-bold);
 				overflow: hidden;
 				position: relative;
 
-				& .icon {
+				& .gridlines {
+					--grid-step: 5;
+					--grid-size: calc(100% / (var(--total) / var(--grid-step)));
+
+					height: calc((var(--bar-max-height)) * var(--chart-scale));
+					width: 100%;
 					position: absolute;
-					bottom: calc((var(--barMaxHeight) / 2) - (var(--icon-size) / 2));
-					left: calc((100% / 2) - (var(--icon-size) / 2));
+					bottom: 0;
+					background-image: linear-gradient(
+						to bottom,
+						var(--colour-brd-subtle) 1px,
+						transparent 1px
+					);
+					background-size: 100% var(--grid-size);
+					background-position: var(--grid-size) left;
+					z-index: 0;
 				}
 
-				& > .icon {
-					opacity: 0.75;
+				& .icon {
+					width: var(--icon-size);
+					z-index: 1;
+					overflow: visible;
+
+					stroke: var(--colour-bkg-canvas-subtle-1);
+					stroke-width: var(--space-2xs);
+					stroke-linejoin: round;
+					paint-order: stroke fill;
+					vector-effect: non-scaling-stroke;
 				}
 
 				.block {
@@ -178,26 +231,16 @@ let { colour } = Astro.props;
 					align-items: center;
 					justify-content: center;
 					height: calc(
-						((var(--count) / var(--total)) * var(--barMaxHeight)) * var(--chart-scale)
+						((var(--count) / var(--total)) * var(--bar-max-height)) * var(--chart-scale)
 					);
+					width: min(100%, 140px);
 					background-color: var(
 						--colour-bkg-surface-bold-1-accent,
 						var(--colour-bkg-surface-bold-2)
 					);
+					border-radius: var(--brd-radius-normal) var(--brd-radius-normal) 0 0;
 					overflow: hidden;
-					position: relative;
-					box-shadow: 0 0 0 2px var(--colour-bkg-surface-subtle-1-accent);
-
-					&::after {
-						content: '';
-						position: absolute;
-						top: 0;
-						left: 0;
-						width: 100%;
-						height: 2px;
-						background-color: var(--colour-brd-bold-accent);
-						z-index: 1;
-					}
+					z-index: 2;
 				}
 			}
 
@@ -226,11 +269,12 @@ let { colour } = Astro.props;
 				gap: calc(var(--space-3xs) * var(--chart-scale));
 				flex-grow: 1;
 				padding: 0 var(--space-xs);
-				font-size: calc(var(--font-size-sm) * var(--chart-scale));
+				font-size: calc(var(--font-size-xs) * var(--chart-scale));
 				text-align: center;
+				color: var(--colour-txt-on-subtle-2);
 
 				& .count {
-					font-size: calc(var(--font-size-lg) * var(--chart-scale));
+					font-size: calc(var(--font-size-sm) * var(--chart-scale));
 					font-weight: 600;
 				}
 			}
