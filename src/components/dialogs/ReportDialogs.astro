@@ -527,42 +527,61 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 		let canvases = await Promise.all(
 			sections.map(async (section) => {
-				let progressChartElem = section.querySelector('.progress') as HTMLElement;
-				let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
-				let barChartElem = section.querySelector('.bar') as HTMLElement;
+				let chartElems = section.querySelectorAll(
+					'.chart-container',
+				) as NodeListOf<HTMLElement>;
 
-				let progressPromise = null;
-				if (progressChartElem) {
-					progressPromise = snapdom.toCanvas(progressChartElem, {
-						scale: 3,
-						embedFonts: true,
-						backgroundColor: '#ffffff',
+				let chartPromises = [];
+
+				for (let elem of chartElems) {
+					chartPromises.push({
+						elem,
+						canvas: await snapdom.toCanvas(elem, {
+							scale: 3,
+							embedFonts: true,
+							backgroundColor: '#ffffff',
+						}),
 					});
 				}
 
-				let matrixPromise = null;
-				if (matrixChartElem) {
-					matrixPromise = snapdom.toCanvas(matrixChartElem, {
-						scale: 3,
-						embedFonts: true,
-						backgroundColor: '#ffffff',
-					});
-				}
+				return chartPromises;
 
-				let barPromise = null;
-				if (barChartElem) {
-					barPromise = snapdom.toCanvas(barChartElem, {
-						scale: 3,
-						embedFonts: true,
-						backgroundColor: '#ffffff',
-					});
-				}
+				// let progressChartElem = section.querySelector('.progress') as HTMLElement;
+				// let matrixChartElem = section.querySelector('.matrix') as HTMLElement;
+				// let barChartElem = section.querySelector('.bar') as HTMLElement;
 
-				return {
-					progress: progressPromise ? await progressPromise : null,
-					matrix: matrixPromise ? await matrixPromise : null,
-					bar: barPromise ? await barPromise : null,
-				};
+				// let progressPromise = null;
+				// if (progressChartElem) {
+				// 	progressPromise = snapdom.toCanvas(progressChartElem, {
+				// 		scale: 3,
+				// 		embedFonts: true,
+				// 		backgroundColor: '#ffffff',
+				// 	});
+				// }
+
+				// let matrixPromise = null;
+				// if (matrixChartElem) {
+				// 	matrixPromise = snapdom.toCanvas(matrixChartElem, {
+				// 		scale: 3,
+				// 		embedFonts: true,
+				// 		backgroundColor: '#ffffff',
+				// 	});
+				// }
+
+				// let barPromise = null;
+				// if (barChartElem) {
+				// 	barPromise = snapdom.toCanvas(barChartElem, {
+				// 		scale: 3,
+				// 		embedFonts: true,
+				// 		backgroundColor: '#ffffff',
+				// 	});
+				// }
+
+				// return {
+				// 	progress: progressPromise ? await progressPromise : null,
+				// 	matrix: matrixPromise ? await matrixPromise : null,
+				// 	bar: barPromise ? await barPromise : null,
+				// };
 			}),
 		);
 
@@ -583,8 +602,6 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			let charts = canvases[i];
 
 			let isCover = section.matches('.cover');
-			let isSnapshot = section.matches('.snapshot');
-
 			if (isCover) continue;
 
 			pdf.addPage();
@@ -593,14 +610,15 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 
 			currentYPosition = margin - 16; // Account for section heading line height padding
 
+			let sectionHeading = section.querySelector('h2');
+
 			// Add the page heading
-			if (!isSnapshot) {
-				let sectionHeading = section.querySelector('h2').textContent.trim();
+			if (sectionHeading) {
 				pdf.setFont('Aesthet Nova', 'bold');
 				pdf.setFontSize(24);
 				currentYPosition = addWrappedText(
 					pdf,
-					sectionHeading,
+					sectionHeading.textContent.trim(),
 					margin,
 					currentYPosition,
 					pageWidth,
@@ -612,81 +630,33 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 			pdf.setFont('Public Sans', 'normal');
 			pdf.setFontSize(18);
 
-			if (charts.progress) {
-				let chartHeading = section.querySelector('h3:has(+ .progress)').textContent.trim();
-				// let chartHeading1 = 'Overall Progress';
-				currentYPosition = addWrappedText(
-					pdf,
-					chartHeading,
-					margin,
-					currentYPosition,
-					pageWidth,
-				);
+			for (let chart of charts) {
+				let { elem, canvas } = chart;
 
-				currentYPosition += 24;
+				let chartHeading = null;
+				if (elem.previousElementSibling.matches('h3')) {
+					chartHeading = elem.previousElementSibling;
+				}
 
-				let progressChartImgProps = pdf.getImageProperties(charts.progress);
-				let progressChartImgHeight =
-					(progressChartImgProps.height * imgWidth) / progressChartImgProps.width;
+				if (chartHeading) {
+					currentYPosition = addWrappedText(
+						pdf,
+						chartHeading.textContent.trim(),
+						margin,
+						currentYPosition,
+						pageWidth,
+					);
 
-				pdf.addImage(
-					charts.progress,
-					margin,
-					currentYPosition,
-					imgWidth,
-					progressChartImgHeight,
-				);
-				currentYPosition += progressChartImgHeight;
+					currentYPosition += 24;
+				}
 
-				currentYPosition += 12;
-			}
+				let chartImgProps = pdf.getImageProperties(canvas);
+				let chartImgHeight = (chartImgProps.height * imgWidth) / chartImgProps.width;
 
-			if (charts.matrix) {
-				let chartHeading = section.querySelector('h3:has(+ .matrix)').textContent.trim();
-				// let chartHeading2 = `${i === 1 ? 'Indicator' : 'Component'} Progress`;
-				currentYPosition = addWrappedText(
-					pdf,
-					chartHeading,
-					margin,
-					currentYPosition,
-					pageWidth,
-				);
-				currentYPosition += 24;
+				pdf.addImage(canvas, margin, currentYPosition, imgWidth, chartImgHeight);
+				currentYPosition += chartImgHeight;
 
-				let matrixChartImgProps = pdf.getImageProperties(charts.matrix);
-				let matrixChartImgHeight =
-					(matrixChartImgProps.height * imgWidth) / matrixChartImgProps.width;
-
-				pdf.addImage(
-					charts.matrix,
-					margin,
-					currentYPosition,
-					imgWidth,
-					matrixChartImgHeight,
-				);
-				currentYPosition += matrixChartImgHeight;
-
-				currentYPosition += 36;
-			}
-
-			if (charts.bar) {
-				let chartHeading = section.querySelector('h3:has(+ .bar)').textContent.trim();
-				// let chartHeading1 = 'Component Distribution';
-				currentYPosition = addWrappedText(
-					pdf,
-					chartHeading,
-					margin,
-					currentYPosition,
-					pageWidth,
-				);
-
-				currentYPosition += 24;
-
-				let barChartImgProps = pdf.getImageProperties(charts.bar);
-				let barChartImgHeight =
-					(barChartImgProps.height * imgWidth) / barChartImgProps.width;
-
-				pdf.addImage(charts.bar, margin, currentYPosition, imgWidth, barChartImgHeight);
+				currentYPosition += elem.matches('.progress') ? 12 : 36;
 			}
 
 			// Add the page footer
