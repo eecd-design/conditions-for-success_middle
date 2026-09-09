@@ -1,5 +1,6 @@
 ---
 import Dialog from 'src/components/dialogs/Dialog.astro';
+import IconExternal16 from '../icons/IconExternal_16.astro';
 ---
 
 <Dialog
@@ -8,19 +9,25 @@ import Dialog from 'src/components/dialogs/Dialog.astro';
 >
 	<Fragment slot="content">
 		<p>
-			The assessment(s) you have saved in the browser have been updated to the newest version
-			of the continuums (<span data-field="continuumVersion"></span>). Please note that this
-			update includes text changes, additions, deletions, and the reordering of components and
-			considerations. The numbering of certain components and considerations have changed as a
-			result.
+			<span data-restrict-context="load">The assessments saved in the browser have</span><span
+				data-restrict-context="import">The imported assessment has</span
+			> been updated to the newest version of the continuum (<span
+				data-field="continuumVersion"></span>). Please note that this update includes text
+			changes, additions, deletions, and the reordering of components and considerations. The
+			numbering of certain components and considerations have changed as a result.
 		</p>
 		<p>No additional action is required.</p>
 		<p>
 			For a full list of changes, <a
 				class="change-log-link"
 				href={`./support/`}
-				>view the continuums <span data-field="continuumVersion"></span> change log</a
-			>.
+				target="_blank"
+				rel="noopener"
+			>
+				view the Continuum <span data-field="continuumVersion"></span> Change Log
+				<IconExternal16 />
+				<span data-screen-reader> (opens in a new tab)</span>
+			</a>.
 		</p>
 
 		<div class="button-group">
@@ -36,6 +43,25 @@ import Dialog from 'src/components/dialogs/Dialog.astro';
 		</div>
 	</Fragment>
 </Dialog>
+
+<style is:global>
+	#continuum-update-dialog {
+		& .change-log-link {
+			--icon-size: 0.875rem;
+			--icon-colour: var(--colour-txt-on-subtle-2);
+			& .icon {
+				margin-left: var(--space-3xs);
+			}
+		}
+
+		&:not([data-context='load']) [data-restrict-context='load'] {
+			display: none !important;
+		}
+		&:not([data-context='import']) [data-restrict-context='import'] {
+			display: none !important;
+		}
+	}
+</style>
 
 <script>
 	//
