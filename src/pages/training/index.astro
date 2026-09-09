@@ -27,11 +27,14 @@ for (let training of allTraining) {
 	itemIndex += 1;
 }
 
-searchList.sort((a, b) => {
-	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
-	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
-});
-
+searchList
+	.sort((a, b) => {
+		let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
+		return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
+	})
+	.sort((a, b) => {
+		return a.order - b.order;
+	});
 ---
 
 <BaseLayout

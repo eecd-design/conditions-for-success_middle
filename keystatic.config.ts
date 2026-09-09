@@ -543,6 +543,15 @@ export default config({
 					description: 'Defaults to today’s date.',
 					defaultValue: { kind: 'today' },
 				}),
+				order: fields.number({
+					label: 'Training Order',
+					description:
+						'Enter which position the training should appear in the group, number one being the first item of the group.',
+					step: 1,
+					validation: {
+						min: 1,
+					},
+				}),
 				dateStart: fields.date({
 					label: 'Training Start Date',
 				}),
