@@ -444,7 +444,6 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 					data-collapsible="icon"
 					data-theme="purple"
 					data-restrict-assessor="true"
-					data-restrict-breakpoint-big-seven-min="4"
 				>
 					<span
 						class="label-container"
@@ -977,13 +976,6 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 				&.item {
 					--separator-long-edge-dimension: 1.75rem;
 				}
-
-				main:not([data-assessor='true'])
-					&:has(+ .user-group .field-container [data-field='activeAssessor']) {
-					@container main (width < 1200px ) {
-						display: none !important;
-					}
-				}
 			}
 
 			main:not(.big-seven) & [data-restrict-context='big-seven'] {
@@ -1048,6 +1040,18 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 				}
 			}
 
+			main.big-seven:not([data-assessor='true']) & .user-group {
+				@container main (width < 1200px) {
+					display: none !important;
+				}
+			}
+
+			main.big-seven:not([data-assessor='true']) & .separator:has(+ .user-group) {
+				@container main (width < 1200px ) {
+					display: none !important;
+				}
+			}
+
 			/* Fourth breakpoint, third batch in more (manage ass. and new ass.) */
 			main.big-seven & [data-restrict-breakpoint-big-seven-max='4'] {
 				@container main (width >= 1040px ) {
@@ -1062,8 +1066,8 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 			}
 
 			/* 
-		// Report Breakpoints
-		*/
+			// Report Breakpoints
+			*/
 
 			main.report & [data-restrict-breakpoint-report-max='1'] {
 				@container main (width >= 950px) {
@@ -1072,6 +1076,18 @@ import IconBack from './icons/IconArrowLeft_20.astro';
 			}
 			main.report & [data-restrict-breakpoint-report-min='1'] {
 				@container main (width < 950px) {
+					display: none !important;
+				}
+			}
+
+			main.report:not([data-assessor='true']) & .user-group {
+				@container main (width < 950px) {
+					display: none !important;
+				}
+			}
+
+			main.report:not([data-assessor='true']) & .separator:has(+ .user-group) {
+				@container main (width < 950px ) {
 					display: none !important;
 				}
 			}
