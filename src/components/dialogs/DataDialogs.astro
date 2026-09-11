@@ -1,5 +1,6 @@
 ---
 import Dialog from 'src/components/dialogs/Dialog.astro';
+import Toast from '../Toast.astro';
 import IconExternal16 from '../icons/IconExternal_16.astro';
 ---
 
@@ -44,6 +45,43 @@ import IconExternal16 from '../icons/IconExternal_16.astro';
 	</Fragment>
 </Dialog>
 
+<Dialog
+	id={'data-deletion-confirmation-dialog'}
+	title={'Delete Saved Data'}
+>
+	<Fragment slot="content">
+		<p>Are you sure you want to delete your saved data? This action cannot be undone.</p>
+
+		<div class="button-group">
+			<button
+				class="close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				>Cancel</button
+			>
+			<button
+				class="delete"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				data-toast-success="data-deletion-confirmation-dialog_delete-toast_success"
+				data-toast-failure="data-deletion-confirmation-dialog_delete-toast_failure"
+				>Delete</button
+			>
+		</div>
+	</Fragment>
+
+	<Fragment slot="toasts">
+		<Toast
+			id={'data-deletion-confirmation-dialog_delete-toast_failure'}
+			message={`Unable to delete saved data. Please reload the page to try again.`}
+			colour={'red'}
+			type={'failure'}
+		/>
+	</Fragment>
+</Dialog>
+
 <style is:global>
 	#continuum-update-dialog {
 		& .change-log-link {
@@ -68,21 +106,10 @@ import IconExternal16 from '../icons/IconExternal_16.astro';
 	// Imports
 	//
 
-	import {
-		checkForChanges,
-		createAssessment,
-		updateChangeLog,
-		getActiveAssessmentData,
-		getAssessmentData,
-		getAssessmentDate,
-		getStatusColour,
-		setAssessment,
-		subscribe,
-		getUserData,
-		duplicateAssessment,
-	} from 'src/stores/userDataStore';
+	import { subscribe, deleteUserData } from 'src/stores/userDataStore';
 	import { dialogControl } from 'src/utilities/dialog';
 	import { eventControl } from 'src/utilities/event';
+	import { toastControl } from 'src/utilities/toast';
 
 	let updateContinuumUpdateDialog = (data: UserData, changes) => {
 		let dialog = document.querySelector('#continuum-update-dialog') as HTMLDialogElement;
@@ -121,7 +148,7 @@ import IconExternal16 from '../icons/IconExternal_16.astro';
 	// Event Listeners
 	//
 
-	let onClick = (event) => {
+	let onContinuumUpdateDialogClick = (event) => {
 		let debug = false;
 
 		let target = event.target as HTMLButtonElement;
@@ -141,6 +168,33 @@ import IconExternal16 from '../icons/IconExternal_16.astro';
 	eventControl.add({
 		selector: '#continuum-update-dialog',
 		eventType: 'click',
-		fn: onClick,
+		fn: onContinuumUpdateDialogClick,
+	});
+
+	let onDeleteDataDialogClick = (event) => {
+		let debug = false;
+
+		let target = event.target as HTMLButtonElement;
+
+		let dialog = target.closest('dialog');
+		if (!dialog) return;
+
+		if (target.matches('.delete')) {
+			try {
+				deleteUserData();
+
+				toastControl.show({ target, type: 'success' });
+
+				dialogControl.close(dialog);
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+	};
+	eventControl.add({
+		selector: '#data-deletion-confirmation-dialog',
+		eventType: 'click',
+		fn: onDeleteDataDialogClick,
 	});
 </script>

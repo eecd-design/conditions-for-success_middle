@@ -7,6 +7,8 @@ import AccordionGroup from 'src/components/AccordionGroup.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
 import PageNav from 'src/components/PageNav.astro';
 import IconDownload from 'src/components/icons/IconDownload_20.astro';
+import IconWrench from 'src/components/icons/IconWrench_20.astro';
+import IconTrash from 'src/components/icons/IconTrash_20.astro';
 
 import { getResourcePath } from 'src/utilities/helpers';
 
@@ -242,6 +244,66 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 
 		<hr class="section" />
 
+		<h2 id="data">Data Management</h2>
+
+		<h3>Repair Saved Data</h3>
+		<p>
+			Solve performance issues or visual glitches caused by outdated system settings. <strong
+				>This will not delete or change any of your saved assessments or reports.</strong
+			>
+		</p>
+		<div class="button-group">
+			<button
+				class="repair-data"
+				type="button"
+				data-style="solid"
+				data-size="large"
+				data-toast-success="support_data-repair-toast_success"
+				data-toast-failure="support_data-repair-toast_failure"
+			>
+				<span class="icon-and-label-container">
+					<IconWrench />
+					<span class="label-container">
+						<span class="label">
+							<span>Repair Saved Data</span>
+						</span>
+					</span>
+				</span>
+			</button>
+		</div>
+
+		<div
+			class="danger-zone"
+			data-theme="red"
+			data-vibrancy="vivid"
+		>
+			<h3>Delete Saved Data</h3>
+			<p>
+				Permanently remove all data saved in this browser, including assessments, reports,
+				and site preferences. <strong>This action cannot be undone.</strong> Please download backup
+				files before proceeding.
+			</p>
+			<div class="button-group">
+				<button
+					class="delete-data"
+					type="button"
+					data-style="solid"
+					data-size="large"
+				>
+					<span class="icon-and-label-container">
+						<IconTrash />
+						<span class="label-container">
+							<span class="label">
+								<span>Delete Saved Data</span>
+							</span>
+						</span>
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<hr class="section" />
+
 		<h2 id="contact">Contact</h2>
 
 		<p>
@@ -256,9 +318,59 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 
 <style is:global>
 	main.support {
-		& h3:has(+ .metadata) {
-			margin-top: var(--space-lg);
-			margin-bottom: var(--space-2xs);
+		& .content {
+			& h3:has(+ .metadata) {
+				margin-top: var(--space-lg);
+				margin-bottom: var(--space-2xs);
+			}
+
+			.button-group {
+				margin: var(--space-lg) 0 var(--space-2xl);
+
+				& button.delete-data {
+					&:is(:hover, :focus-visible) {
+						--button-bkg-colour: var(--colour-bkg-surface-bold-error);
+					}
+				}
+			}
+
+			.danger-zone {
+				padding: var(--space-lg);
+				border: 2px solid var(--colour-brd-bold-accent, var(--colour-brd-bold));
+				border-radius: var(--brd-radius-normal);
+			}
 		}
 	}
 </style>
+
+<script>
+	import { repairUserData } from 'src/stores/userDataStore';
+	import { eventControl } from 'src/utilities/event';
+	import { dialogControl } from 'src/utilities/dialog';
+	import { toastControl } from 'src/utilities/toast';
+
+	let onClick = () => {
+		let target = event.target as HTMLButtonElement;
+
+		if (target.matches('button.repair-data')) {
+			try {
+				repairUserData();
+				toastControl.show({ target, type: 'success' });
+			} catch (error) {
+				console.error(error);
+				toastControl.show({ target, type: 'failure' });
+			}
+		}
+
+		if (target.matches('button.delete-data')) {
+			dialogControl.open({
+				dialogId: 'data-deletion-confirmation-dialog',
+			});
+		}
+	};
+	eventControl.add({
+		elem: document,
+		eventType: 'click',
+		fn: onClick,
+	});
+</script>

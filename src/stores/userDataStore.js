@@ -65,6 +65,27 @@ let userSchema = {
 	assessments: [],
 };
 
+let assessmentSchema = {
+	activeAssessor: null,
+	assessors: [],
+	changeLog: [],
+	continuumCompletion: {},
+	considerationsEstablished: [],
+	continuumVersion: currentContinuumVersion,
+	dateCompleted: null,
+	dateCreated: null,
+	dateExported: null,
+	dateModified: null,
+	district: null,
+	id: null,
+	lastModifiedBy: null,
+	reportingYear: null,
+	school: null,
+	status: 'In Progress',
+	schemaVersion: currentAssessmentSchemaVersion,
+	unexportedChanges: true,
+};
+
 let data = structuredClone(userSchema);
 
 let subscribers = [];
@@ -273,32 +294,19 @@ let createAssessment = (values) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
 
-	let assessment = {
-		activeAssessor: null,
-		assessors: [],
-		changeLog: [
-			{
-				date: Date.now(),
-				assessor: null,
-				message: 'Assessment created.',
-			},
-		],
-		continuumCompletion: {},
-		considerationsEstablished: [],
-		continuumVersion: currentContinuumVersion,
-		dateCompleted: null,
-		dateCreated: Date.now(),
-		dateExported: null,
-		dateModified: Date.now(),
-		district,
-		id,
-		lastModifiedBy: null,
-		reportingYear,
-		school,
-		status: 'In Progress',
-		schemaVersion: currentAssessmentSchemaVersion,
-		unexportedChanges: true,
-	};
+	let assessment = structuredClone(assessmentSchema);
+
+	assessment.dateCreated = Date.now();
+	assessment.dateModified = Date.now();
+	assessment.district = district;
+	((assessment.id = id),
+		assessment.changeLog.push({
+			date: Date.now(),
+			assessor: null,
+			message: 'Assessment created.',
+		}));
+	assessment.reportingYear = reportingYear;
+	assessment.school = school;
 
 	setState({
 		activeAssessmentId: id,
@@ -312,32 +320,21 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
 
-	let newAssessment = {
-		activeAssessor: null,
-		assessors: oldAssessment.assessors,
-		changeLog: [
-			{
-				date: Date.now(),
-				assessor: null,
-				message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
-			},
-		],
-		considerationsEstablished: oldAssessment.considerationsEstablished,
-		continuumVersion: currentContinuumVersion,
-		dateCompleted: null,
-		dateCreated: Date.now(),
-		dateExported: null,
-		dateModified: Date.now(),
-		district: oldAssessment.district,
-		id,
-		lastModifiedBy: null,
-		reportingYear: newReportingYear,
-		school: oldAssessment.school,
-		status: 'In Progress',
-		schemaVersion: '1.0',
-		unexportedChanges: true,
-	};
+	let newAssessment = structuredClone(assessmentSchema);
 
+	newAssessment.assessors = oldAssessment.assessors;
+	newAssessment.changeLog.push({
+		date: Date.now(),
+		assessor: null,
+		message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
+	});
+	newAssessment.considerationsEstablished = oldAssessment.considerationsEstablished;
+	newAssessment.dateCreated = Date.now();
+	newAssessment.dateModified = Date.now();
+	newAssessment.district = oldAssessment.district;
+	newAssessment.id = id;
+	newAssessment.reportingYear = newReportingYear;
+	newAssessment.school = oldAssessment.school;
 	newAssessment.continuumCompletion = await generateContinuumCompletion(newAssessment);
 
 	setState({
@@ -1044,15 +1041,21 @@ let upgradeUserData = async (data) => {
 	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
 		console.warn('User preferences schema is out of date.');
 		data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
-		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
 		upgraded = true;
 	}
 
 	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
 		console.warn('User state schema is out of date.');
 		data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
-		data.uiState.schemaVersion = currentStateSchemaVersion;
 		upgraded = true;
+	}
+
+	for (let assessment of data.assessments) {
+		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
+			console.warn('Assessment schema is out of date.');
+			assessment = upgradeSchema(assessment, assessmentSchema);
+			upgraded = true;
+		}
 	}
 
 	let upgradeAssessmentsResult = await upgradeAssessments(data.assessments, 'load');
@@ -1060,6 +1063,21 @@ let upgradeUserData = async (data) => {
 	if (upgradeAssessmentsResult.upgraded) upgraded = true;
 
 	if (upgraded) setUserData(data);
+};
+
+let repairUserData = async () => {
+	let debug = true;
+	if (debug) console.log('Pre-repair', structuredClone(data));
+
+	data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
+	data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
+	for (let assessment of data.assessments) {
+		assessment = upgradeSchema(assessment, assessmentSchema);
+	}
+	await upgradeAssessments(data.assessments, 'load');
+	setUserData(data);
+
+	if (debug) console.log('Post-repair', structuredClone(data));
 };
 
 //
@@ -1181,6 +1199,15 @@ let deleteAssessment = (id) => {
 
 let deleteImportConflictData = () => (importConflictData = null);
 
+let deleteUserData = () => {
+	data = structuredClone(userSchema);
+	save();
+	let changes = {
+		initiating: true,
+	};
+	notify(changes);
+};
+
 //
 // Methods (Import/Export)
 //
@@ -1270,37 +1297,34 @@ let importAssessment = (file) => {
 			}
 
 			let mainRow = mainResult.data[0]; // Only one row expected
-			let assessment = {
-				activeAssessor: null,
-				assessors: mainRow['Assessors']
-					? mainRow['Assessors'].split(',').map((s) => s.trim())
-					: [],
-				changeLog: [],
-				considerationsEstablished: mainRow['Considerations Established']
-					? mainRow['Considerations Established'].split(',').map((s) => s.trim())
-					: [],
-				continuumVersion: mainRow['Continuum Version'] || '',
-				dateCompleted: mainRow['Date Completed']
-					? normalizeImportedDate(mainRow['Date Completed'])
-					: null,
-				dateCreated: mainRow['Date Created']
-					? normalizeImportedDate(mainRow['Date Created'])
-					: null,
-				dateExported: mainRow['Date Exported']
-					? normalizeImportedDate(mainRow['Date Exported'])
-					: null,
-				dateModified: mainRow['Date Modified']
-					? normalizeImportedDate(mainRow['Date Modified'])
-					: null,
-				district: mainRow['District'] || '',
-				id: Number(mainRow['Id']) || 1,
-				lastModifiedBy: mainRow['Last Modified By'] || null,
-				reportingYear: mainRow['Reporting Year'] || '',
-				school: mainRow['School'] || '',
-				status: mainRow['Status'] || 'In Progress',
-				schemaVersion: mainRow['Schema Version'] || '',
-				unexportedChanges: false,
-			};
+
+			let assessment = structuredClone(assessmentSchema);
+
+			assessment.assessors = mainRow['Assessors']
+				? mainRow['Assessors'].split(',').map((s) => s.trim())
+				: [];
+			assessment.considerationsEstablished = mainRow['Considerations Established']
+				? mainRow['Considerations Established'].split(',').map((s) => s.trim())
+				: [];
+			assessment.continuumVersion = mainRow['Continuum Version'] || '';
+			assessment.dateCompleted = mainRow['Date Completed']
+				? normalizeImportedDate(mainRow['Date Completed'])
+				: null;
+			assessment.dateCreated = mainRow['Date Created']
+				? normalizeImportedDate(mainRow['Date Created'])
+				: null;
+			assessment.dateExported = mainRow['Date Exported']
+				? normalizeImportedDate(mainRow['Date Exported'])
+				: null;
+			assessment.dateModified = mainRow['Date Modified']
+				? normalizeImportedDate(mainRow['Date Modified'])
+				: null;
+			assessment.district = mainRow['District'] || '';
+			assessment.id = Number(mainRow['Id']) || 1;
+			assessment.lastModifiedBy = mainRow['Last Modified By'] || null;
+			assessment.reportingYear = mainRow['Reporting Year'] || '';
+			assessment.school = mainRow['School'] || '';
+			assessment.status = mainRow['Status'] || 'In Progress';
 
 			// Parse change log rows
 			if (logResult.data && logResult.data.length) {
@@ -1481,6 +1505,8 @@ export {
 	getExportStatus,
 	getStatusColour,
 	getUserData,
+	repairUserData,
+	deleteUserData,
 	getImportConflictData,
 	subscribe,
 	setPreferences,

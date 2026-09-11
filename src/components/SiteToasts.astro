@@ -107,4 +107,32 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconWarning slot={'icon'} />
 	</Toast>
+
+	<!-- Repair Saved Data -->
+	<Toast
+		id={'support_data-repair-toast_success'}
+		message={`Saved data repaired.`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
+	</Toast>
+	<Toast
+		id={'support_data-repair-toast_failure'}
+		message={`Unable to repaire saved data. Please reload the page to try again.`}
+		colour={'red'}
+		type={'failure'}
+	>
+		<IconXmarkInCircle slot={'icon'} />
+	</Toast>
+
+	<!-- Delete Saved Data -->
+	<Toast
+		id={'data-deletion-confirmation-dialog_delete-toast_success'}
+		message={`Saved data deleted.`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
+	</Toast>
 </Fragment>

@@ -9,6 +9,7 @@ import '../styles/global.css';
 
 import { Image } from 'astro:assets';
 import GNBLogo from '../images/gnb-logo-reverse.png';
+import SiteToasts from 'src/components/SiteToasts.astro';
 
 let path = Astro.url.pathname;
 
@@ -115,7 +116,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		>
 			<div class="wrapper">
 				<div class="toast-group">
-					<slot name="toast-group" />
+					<SiteToasts />
 				</div>
 				<slot />
 			</div>
