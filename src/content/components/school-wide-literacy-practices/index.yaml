@@ -47,7 +47,7 @@ initiating:
       title: >-
         Learners rely heavily on educator support to access texts, participate
         in discussions, and communicate understanding.
-      compass: false
+      compass: true
       categories: []
 implementing:
   considerations:
@@ -90,13 +90,13 @@ implementing:
       title: >-
         Educators use formative assessment and provide feedback to support
         learner growth in reading, writing, speaking, and listening.
-      compass: false
+      compass: true
       categories: []
     - tag: 6.2.14
       title: >-
         Learners begin applying literacy routines and strategies with guidance
         and support across learning areas.
-      compass: false
+      compass: true
       categories: []
 developing:
   considerations:
@@ -142,7 +142,7 @@ developing:
       title: >-
         Learners increasingly take ownership of literacy practices and apply
         strategies independently in different contexts.
-      compass: false
+      compass: true
       categories: []
 sustaining:
   considerations:
