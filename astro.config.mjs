@@ -7,7 +7,8 @@ import keystatic from '@keystatic/astro';
 
 import netlify from '@astrojs/netlify';
 
-let isDev = process.env.NETLIFY === 'true';
+// Either netlify or local server (npx astro dev)
+let isDev = process.env.NETLIFY === 'true' || import.meta.env.DEV;
 let devSite = 'https://middle-success.netlify.app/';
 
 // https://astro.build/config

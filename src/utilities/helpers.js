@@ -375,8 +375,8 @@ let getResourcePath = (resource) => {
 		// Default relative path for the production site
 		let path = `./assets/${subfolder}/${slug}.${fileType}`;
 
-		// Absolute path for development site
-		if (import.meta.env.NETLIFY === 'true') {
+		// Absolute path for netlify development site and local server
+		if (import.meta.env.NETLIFY === 'true' || import.meta.env.DEV) {
 			path = `https://middle.nbed.ca/conditions-for-success/assets/${subfolder}/${slug}.${fileType}`;
 		}
 
