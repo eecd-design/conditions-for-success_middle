@@ -7,8 +7,8 @@ import keystatic from '@keystatic/astro';
 
 import netlify from '@astrojs/netlify';
 
-let isProd = process.env.CONTEXT === 'production';
-let prodSite = 'https://middle-success.netlify.app/';
+let isDev = process.env.NETLIFY === 'true';
+let devSite = 'https://middle-success.netlify.app/';
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,11 +18,7 @@ export default defineConfig({
 		imageCDN: false,
 	}),
 
-	// ↓ Test Only Setting ↓
-	site: isProd ? prodSite : process.env.DEPLOY_PRIME_URL || prodSite,
-
-	// ↓ Build Only Setting ↓
-	// site: 'https://middle.nbed.ca',
-	// base: '/conditions-for-success/',
-	// output: 'static',
+	site: isDev ? process.env.DEPLOY_PRIME_URL || devSite : 'https://middle.nbed.ca',
+	base: isDev ? '/' : '/conditions-for-success/',
+	output: isDev ? 'server' : 'static',
 });
