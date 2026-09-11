@@ -98,7 +98,7 @@ implementing:
         With guidance, learners begin using familiar numeracy strategies in
         different subjects and contexts—for example, reading a graph, estimating
         a measurement, or comparing numerical information.
-      compass: false
+      compass: true
       categories: []
 developing:
   considerations:
