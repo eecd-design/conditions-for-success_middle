@@ -146,7 +146,7 @@ developing:
       title: >-
         Learners increasingly choose strategies and apply numeracy in different
         contexts with growing independence.
-      compass: false
+      compass: true
       categories: []
 sustaining:
   considerations:
