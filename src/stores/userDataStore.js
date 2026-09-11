@@ -627,6 +627,7 @@ let upgradeSchema = (oldData, schema) => {
 		return upgraded;
 	}
 
+	// Only keys included in the newest version of the schema are kept
 	for (let key in schema) {
 		if (Object.hasOwn(oldData, key)) {
 			let schemaVal = schema[key];
@@ -644,12 +645,15 @@ let upgradeSchema = (oldData, schema) => {
 				let isSchemaNull = schemaVal === null;
 				let sameType = typeof oldVal === typeof schemaVal;
 
+				// Otherwise use the default schema value
 				if (isSchemaNull || sameType) {
 					upgraded[key] = oldVal;
 				}
 			}
 		}
 	}
+
+	upgraded.schemaVersion = schema.schemaVersion;
 
 	if (debug) console.log('Post schema upgrade', structuredClone(upgraded));
 
@@ -735,14 +739,12 @@ let upgradeUserData = async (data) => {
 	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
 		console.warn('User preferences schema is out of date.');
 		data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
-		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
 		upgraded = true;
 	}
 
 	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
 		console.warn('User state schema is out of date.');
 		data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
-		data.uiState.schemaVersion = currentStateSchemaVersion;
 		upgraded = true;
 	}
 
@@ -750,7 +752,6 @@ let upgradeUserData = async (data) => {
 		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
 			console.warn('Assessment schema is out of date.');
 			assessment = upgradeSchema(assessment, assessmentSchema);
-			assessment.schemaVersion = currentAssessmentSchemaVersion;
 			upgraded = true;
 		}
 	}
@@ -767,12 +768,9 @@ let repairUserData = async () => {
 	if (debug) console.log('Pre-repair', structuredClone(data));
 
 	data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
-	data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
 	data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
-	data.uiState.schemaVersion = currentStateSchemaVersion;
 	for (let assessment of data.assessments) {
 		assessment = upgradeSchema(assessment, assessmentSchema);
-		assessment.schemaVersion = currentAssessmentSchemaVersion;
 	}
 	await upgradeAssessments(data, 'load');
 	setUserData(data);
