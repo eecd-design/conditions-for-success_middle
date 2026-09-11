@@ -115,7 +115,7 @@ import IconExternal16 from '../icons/IconExternal_16.astro';
 		let dialog = document.querySelector('#continuum-update-dialog') as HTMLDialogElement;
 		if (!dialog) return;
 
-		let stateTriggerKeys = ['currentContinuumVersion'];
+		let stateTriggerKeys = ['continuumVersion'];
 		let assessmentTriggerKeys = [];
 		if (
 			!changes.initiating &&
@@ -130,12 +130,12 @@ import IconExternal16 from '../icons/IconExternal_16.astro';
 		let fields = dialog.querySelectorAll('data-field');
 
 		for (let field of fields) {
-			field.textContent = data.uiState.currentContinuumVersion;
+			field.textContent = data.uiState.continuumVersion;
 		}
 
 		let changeLogLink = dialog.querySelector('.change-log-link') as HTMLAnchorElement;
 		if (changeLogLink)
-			changeLogLink.href = `./support/continuum-${data.uiState.currentContinuumVersion.replaceAll('.', '')}/`;
+			changeLogLink.href = `./support/continuum-${data.uiState.continuumVersion.replaceAll('.', '')}/`;
 	};
 
 	//

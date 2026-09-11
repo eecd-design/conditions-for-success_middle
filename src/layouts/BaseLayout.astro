@@ -183,14 +183,14 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		});
 
 		let updateContinuumVersion = (data: UserData, changes) => {
-			let triggerKeys = ['currentContinuumVersion'];
+			let triggerKeys = ['continuumVersion'];
 			if (
 				!changes.initiating &&
 				!(changes.uiState && triggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 				return;
 
-			let continuumVersion = data.uiState.currentContinuumVersion;
+			let continuumVersion = data.uiState.continuumVersion;
 
 			// 1. Site footer
 			let fields = document.querySelectorAll(`[data-field="continuumVersion"]`);

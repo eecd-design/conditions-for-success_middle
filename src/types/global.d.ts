@@ -6,35 +6,36 @@ declare global {
 	};
 
 	type Preferences = {
-		schemaVersion: string;
-		theme: string;
 		reportIncludedIndicators: string[];
 		resourcePageSort: string;
 		resourcePageLayout: string;
+		theme: string;
+		schemaVersion: string;
 	};
 
 	type State = {
-		schemaVersion: string;
 		activeAssessmentId: number;
-		currentContinuumVersion: string;
+		announcementSession: AnnoucementSession;
+		continuumVersion: string;
+		latestResourceTimestamp: number;
 		lastModifiedPage: Page;
 		lastVisitedPage: Page;
 		mode: string;
 		onboardingCompleted: boolean;
+		schemaVersion: string;
 	};
 
 	type Assessment = {
-		schemaVersion: string;
 		activeAssessor: string;
 		assessors: string[];
 		changeLog: ChangeLogItem[];
 		continuumCompletion: {};
 		considerationsEstablished: string[];
 		continuumVersion: string;
+		dateCompleted: number;
 		dateCreated: number;
 		dateExported: number;
 		dateModified: number;
-		dateCompleted: number;
 		district: string;
 		id: number;
 		lastModifiedBy: string;
@@ -42,6 +43,7 @@ declare global {
 		school: string;
 		status: string;
 		unexportedChanges: boolean;
+		schemaVersion: string;
 	};
 
 	type ChangeLogItem = {
@@ -53,6 +55,11 @@ declare global {
 	type Page = {
 		path: string;
 		title: string;
+	};
+
+	type AnnoucementSession = {
+		lastSeen: number;
+		views: number;
 	};
 }
 

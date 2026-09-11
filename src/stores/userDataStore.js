@@ -40,7 +40,16 @@ let userSchema = {
 	},
 	uiState: {
 		activeAssessmentId: null,
-		currentContinuumVersion,
+		announcementSession: {
+			views: 0,
+			lastSeen: null,
+		},
+		continuumVersion: currentContinuumVersion,
+		latestResourceTimestamp:
+			Number(
+				document.querySelector('header .site-announcement-container')?.dataset
+					.mostRecentTimestamp,
+			) ?? null,
 		lastModifiedPage: null,
 		lastVisitedPage:
 			typeof window !== 'undefined'
@@ -49,15 +58,6 @@ let userSchema = {
 						path: window.location.pathname,
 					}
 				: null,
-		latestResourceTimestamp:
-			Number(
-				document.querySelector('header .site-announcement-container')?.dataset
-					.mostRecentTimestamp,
-			) ?? null,
-		announcementSession: {
-			views: 0,
-			lastSeen: null,
-		},
 		mode: 'reading',
 		onboardingCompleted: false,
 		schemaVersion: currentStateSchemaVersion,
@@ -82,8 +82,8 @@ let assessmentSchema = {
 	reportingYear: null,
 	school: null,
 	status: 'In Progress',
-	schemaVersion: currentAssessmentSchemaVersion,
 	unexportedChanges: true,
+	schemaVersion: currentAssessmentSchemaVersion,
 };
 
 let data = structuredClone(userSchema);
@@ -429,10 +429,6 @@ let updateChangeLog = ({ changeLog, assessor = getActiveAssessor(), message }) =
 	return changeLog;
 };
 
-let updateContinuumVersion = (assessment) => {
-	assessment.continuumVersion = currentContinuumVersion;
-};
-
 let updateContinuumCompletionEntry = ({
 	count,
 	continuumCompletion,
@@ -518,7 +514,6 @@ let updateContinuumCompletionEntry = ({
 	}
 
 	// Component moved up a phase
-	console.log(oldPhase, entry.phase);
 	if (entry.type === 'component' && oldPhase !== entry.phase) {
 		continuumCompletion.continuum[`${oldPhase.toLowerCase()}Components`] = Math.max(
 			0,
@@ -617,31 +612,49 @@ let updateContinuumCompletion = async ({
 //
 
 let upgradeSchema = (oldData, schema) => {
+	let debug = true;
+
+	if (debug) console.log('Pre schema upgrade', structuredClone(oldData));
+
 	// Create a new object based on the schema
 	let upgraded = { ...schema };
 
+	// If oldData isn't a valid object, return the schema clone directly
+	if (!oldData || typeof oldData !== 'object' || Array.isArray(oldData)) {
+		return upgraded;
+	}
+
 	for (let key in schema) {
-		if (oldData && Object.hasOwn(oldData, key)) {
-			if (
-				typeof schema[key] === 'object' &&
-				!Array.isArray(schema[key]) &&
-				schema[key] !== null
-			) {
-				// Recursively update nested objects
-				upgraded[key] = upgradeSchema(oldData[key], schema[key]);
-			} else {
-				// Use existing value when it matches type
-				let sameType = typeof oldData[key] === typeof schema[key];
-				upgraded[key] = sameType ? oldData[key] : schema[key];
+		if (Object.hasOwn(oldData, key)) {
+			let schemaVal = schema[key];
+			let oldVal = oldData[key];
+
+			let isSchemaObj =
+				typeof schemaVal === 'object' && schemaVal !== null && !Array.isArray(schemaVal);
+			let isOldObj = typeof oldVal === 'object' && oldVal !== null && !Array.isArray(oldVal);
+
+			if (isSchemaObj) {
+				// Recursively update nested plain objects
+				upgraded[key] = upgradeSchema(oldVal, schemaVal);
+			} else if (oldVal !== undefined) {
+				// Keep old value if schema default is null OR types match
+				let isSchemaNull = schemaVal === null;
+				let sameType = typeof oldVal === typeof schemaVal;
+
+				if (isSchemaNull || sameType) {
+					upgraded[key] = oldVal;
+				}
 			}
 		}
 	}
+
+	if (debug) console.log('Post schema upgrade', structuredClone(upgraded));
 
 	return upgraded;
 };
 
 let convertConsiderations = (assessment) => {
-	let debug = true;
+	let debug = false;
 
 	let { continuumVersion, considerationsEstablished } = assessment;
 
@@ -679,17 +692,17 @@ let convertConsiderations = (assessment) => {
 	}
 };
 
-let upgradeAssessments = async (assessments, context) => {
+let upgradeAssessments = async (data, context) => {
 	let debug = true;
 
 	let outOfDate = false;
-	for (let assessment of assessments) {
+	for (let assessment of data.assessments) {
 		if (debug) console.log('Pre-upgrade', structuredClone(assessment));
 
 		if (assessment.continuumVersion !== currentContinuumVersion) {
 			convertConsiderations(assessment);
 			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
-			updateContinuumVersion(assessment);
+			assessment.continuumVersion = currentContinuumVersion;
 
 			outOfDate = true;
 
@@ -698,6 +711,7 @@ let upgradeAssessments = async (assessments, context) => {
 	}
 
 	if (outOfDate) {
+		data.uiState.continuumVersion = currentContinuumVersion;
 		dialogControl.open({
 			dialogId: 'continuum-update-dialog',
 			context,
@@ -1041,12 +1055,14 @@ let upgradeUserData = async (data) => {
 	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
 		console.warn('User preferences schema is out of date.');
 		data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
+		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
 		upgraded = true;
 	}
 
 	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
 		console.warn('User state schema is out of date.');
 		data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
+		data.uiState.schemaVersion = currentStateSchemaVersion;
 		upgraded = true;
 	}
 
@@ -1054,11 +1070,12 @@ let upgradeUserData = async (data) => {
 		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
 			console.warn('Assessment schema is out of date.');
 			assessment = upgradeSchema(assessment, assessmentSchema);
+			assessment.schemaVersion = currentAssessmentSchemaVersion;
 			upgraded = true;
 		}
 	}
 
-	let upgradeAssessmentsResult = await upgradeAssessments(data.assessments, 'load');
+	let upgradeAssessmentsResult = await upgradeAssessments(data, 'load');
 
 	if (upgradeAssessmentsResult.upgraded) upgraded = true;
 
@@ -1066,15 +1083,18 @@ let upgradeUserData = async (data) => {
 };
 
 let repairUserData = async () => {
-	let debug = true;
+	let debug = false;
 	if (debug) console.log('Pre-repair', structuredClone(data));
 
 	data.uiPreferences = upgradeSchema(data.uiPreferences, userSchema.uiPreferences);
+	data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
 	data.uiState = upgradeSchema(data.uiState, userSchema.uiState);
+	data.uiState.schemaVersion = currentStateSchemaVersion;
 	for (let assessment of data.assessments) {
 		assessment = upgradeSchema(assessment, assessmentSchema);
+		assessment.schemaVersion = currentAssessmentSchemaVersion;
 	}
-	await upgradeAssessments(data.assessments, 'load');
+	await upgradeAssessments(data, 'load');
 	setUserData(data);
 
 	if (debug) console.log('Post-repair', structuredClone(data));
@@ -1335,7 +1355,7 @@ let importAssessment = (file) => {
 				}));
 			}
 
-			upgradeAssessments([assessment], 'import');
+			upgradeAssessments({ assessments: [assessment] }, 'import');
 
 			resolve(assessment);
 		};
@@ -1407,7 +1427,7 @@ let notify = (changes) => {
  * Save to localStorage
  */
 let save = () => {
-	console.log('Saving to local storage', data);
+	// console.log('Saving to local storage', data);
 	localStorage.setItem(key, JSON.stringify(data));
 };
 
@@ -1458,7 +1478,7 @@ let userDataStore = (() => {
 	let getConsiderationCount = () => considerationCountPromise;
 
 	let load = async () => {
-		let debug = true;
+		let debug = false;
 
 		try {
 			let raw = localStorage.getItem(key);
