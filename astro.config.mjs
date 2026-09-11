@@ -20,5 +20,4 @@ export default defineConfig({
 
 	site: isDev ? process.env.DEPLOY_PRIME_URL || devSite : 'https://middle.nbed.ca',
 	base: isDev ? '/' : '/conditions-for-success/',
-	output: isDev ? 'server' : 'static',
 });
