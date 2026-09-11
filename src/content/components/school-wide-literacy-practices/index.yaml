@@ -182,12 +182,12 @@ sustaining:
       title: >-
         Learners independently use feedback, reflection, and goal-setting to
         monitor growth and continuously improve literacy skills.
-      compass: false
+      compass: true
       categories: []
     - tag: 6.2.28
       title: >-
         Learners independently transfer literacy skills, strategies, and habits
         of thinking across disciplines, tasks, and authentic real-world
         situations.
-      compass: false
+      compass: true
       categories: []
