@@ -699,11 +699,11 @@ let convertConsiderations = (assessment) => {
 	}
 };
 
-let upgradeAssessments = async (data, context) => {
+let upgradeAssessments = async (assessments, context) => {
 	let debug = true;
 
 	let outOfDate = false;
-	for (let assessment of data.assessments) {
+	for (let assessment of assessments) {
 		if (debug) console.log('Pre-upgrade', structuredClone(assessment));
 
 		if (assessment.continuumVersion !== currentContinuumVersion) {
@@ -718,7 +718,6 @@ let upgradeAssessments = async (data, context) => {
 	}
 
 	if (outOfDate) {
-		data.uiState.continuumVersion = currentContinuumVersion;
 		dialogControl.open({
 			dialogId: 'continuum-update-dialog',
 			context,
@@ -735,6 +734,8 @@ let upgradeUserData = async (data) => {
 	if (debug) data = sampleUserDataVersionOne;
 
 	let upgraded = false;
+
+	// 1. Ensure schemas are up to date
 
 	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
 		console.warn('User preferences schema is out of date.');
@@ -756,9 +757,19 @@ let upgradeUserData = async (data) => {
 		}
 	}
 
+	// 2. Ensure continuum version is up to date
+
+	if (data.uiState.continuumVersion !== currentStateSchemaVersion) {
+		console.warn('User state continuum version is out of date.');
+		data.uiState.continuumVersion = currentContinuumVersion;
+		upgraded = true;
+	}
+
 	let upgradeAssessmentsResult = await upgradeAssessments(data, 'load');
 
 	if (upgradeAssessmentsResult.upgraded) upgraded = true;
+
+	// 3. Save changes
 
 	if (upgraded) setUserData(data);
 };
@@ -1033,7 +1044,7 @@ let importAssessment = (file) => {
 				}));
 			}
 
-			upgradeAssessments({ assessments: [assessment] }, 'import');
+			upgradeAssessments([assessment], 'import');
 
 			resolve(assessment);
 		};
