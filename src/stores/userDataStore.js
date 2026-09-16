@@ -72,7 +72,7 @@ let assessmentSchema = {
 	activeAssessor: null,
 	assessors: [],
 	changeLog: [],
-	continuumCompletion: {},
+	continuumCompletion: null,
 	considerationsEstablished: [],
 	continuumVersion: currentContinuumVersion,
 	dateCompleted: null,
@@ -356,6 +356,8 @@ let setImportConflictData = ({ importedAssessment, localAssessment }) => {
 };
 
 let generateContinuumCompletion = async (assessment) => {
+	let debug = false;
+
 	if (!assessment) return;
 
 	let { considerationsEstablished, continuumCompletion, continuumVersion } = assessment;
@@ -363,8 +365,16 @@ let generateContinuumCompletion = async (assessment) => {
 	if (considerationsEstablished.length === 0) return {};
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
+		if (debug)
+			console.log(
+				'Continuum completion is present and continuum version matches current. Returning existing completion.',
+			);
 		return continuumCompletion;
 	} else {
+		if (debug)
+			console.log(
+				'Continuum completion is missing or continuum version does not match current. Generating new completion.',
+			);
 		continuumCompletion = {};
 	}
 
@@ -615,7 +625,7 @@ let updateContinuumCompletion = async ({
 //
 
 let upgradeSchema = (oldData, schema) => {
-	let debug = true;
+	let debug = false;
 
 	if (debug) console.log('Pre schema upgrade', structuredClone(oldData));
 
@@ -706,7 +716,14 @@ let upgradeAssessments = async (assessments, context) => {
 	for (let assessment of assessments) {
 		if (debug) console.log('Pre-upgrade', structuredClone(assessment));
 
+		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
+			if (debug) console.warn('Assessment schema is out of date.');
+			assessment = upgradeSchema(assessment, assessmentSchema);
+			upgraded = true;
+		}
+
 		if (assessment.continuumVersion !== currentContinuumVersion) {
+			if (debug) console.warn('Assessment continuum version is out of date.');
 			convertConsiderations(assessment);
 			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
 			assessment.continuumVersion = currentContinuumVersion;
@@ -749,14 +766,6 @@ let upgradeUserData = async (data) => {
 		upgraded = true;
 	}
 
-	for (let assessment of data.assessments) {
-		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
-			console.warn('Assessment schema is out of date.');
-			assessment = upgradeSchema(assessment, assessmentSchema);
-			upgraded = true;
-		}
-	}
-
 	// 2. Ensure continuum version is up to date
 
 	if (data.uiState.continuumVersion !== currentStateSchemaVersion) {
@@ -765,8 +774,9 @@ let upgradeUserData = async (data) => {
 		upgraded = true;
 	}
 
-	let upgradeAssessmentsResult = await upgradeAssessments(data.assessments, 'load');
+	// 3. Ensure assessments are up to date
 
+	let upgradeAssessmentsResult = await upgradeAssessments(data.assessments, 'load');
 	if (upgradeAssessmentsResult.upgraded) upgraded = true;
 
 	// 3. Save changes

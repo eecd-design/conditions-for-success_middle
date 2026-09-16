@@ -789,7 +789,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		// Add missing keys and default values
 		importedAssessment.activeAssessor = null;
 		importedAssessment.unexportedChanges = false;
-		if (importedAssessment.continuumCompletion === undefined) {
+		if (!importedAssessment.continuumCompletion) {
 			importedAssessment.continuumCompletion =
 				await generateContinuumCompletion(importedAssessment);
 		}
@@ -1179,7 +1179,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				// Add missing keys and default values
 				importedAssessment.activeAssessor = null;
 				importedAssessment.unexportedChanges = false;
-				if (importedAssessment.continuumCompletion === undefined) {
+				if (!importedAssessment.continuumCompletion) {
 					importedAssessment.continuumCompletion =
 						await generateContinuumCompletion(importedAssessment);
 				}
