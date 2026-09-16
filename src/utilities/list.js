@@ -524,7 +524,7 @@ let ensureListState = (list) => {
 			},
 		};
 	}
-	return list._controls;
+	return list._state;
 };
 
 let debounce = (fn, delay = 300) => {
@@ -910,7 +910,7 @@ let search = (() => {
 
 			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
 				event.preventDefault();
-				let numOfMatches = list._state.matches.length;
+				let numOfMatches = list._state.matches.list.length;
 				if (numOfMatches === 0) return;
 
 				let currentItemId = target.getAttribute('aria-activedescendant');

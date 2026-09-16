@@ -243,7 +243,7 @@ let stringToBoolean = function (str) {
 let toCamelCase = function (str) {
 	if (!str) return '';
 	// Normalize separators and spaces
-	str = str.replace(/[_-\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
+	str = str.replace(/[_\-\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
 	// Lowercase first character
 	return str.charAt(0).toLowerCase() + str.slice(1);
 };
