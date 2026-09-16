@@ -28,7 +28,6 @@ import videoPoster from 'src/images/video-poster.png';
 				hidden
 			></audio>
 			<iframe
-				src=""
 				title=""
 				frameborder="0"
 				referrerpolicy="strict-origin-when-cross-origin"
@@ -174,6 +173,7 @@ import videoPoster from 'src/images/video-poster.png';
 				iframe.setAttribute('title', mediaTitle);
 				iframe.removeAttribute('hidden');
 			} else {
+				iframe.removeAttribute('src');
 				video.removeAttribute('hidden');
 				video.src = mediaSrc;
 
