@@ -1,3 +1,6 @@
+const STORE_INSTANCE_ID = Math.random();
+console.log('userDataStore loaded! ID:', STORE_INSTANCE_ID);
+
 //
 // Imports
 //
@@ -11,7 +14,7 @@ import {
 	isEqual,
 	normalizeImportedDate,
 	toKebabCase,
-} from 'src/utilities/helpers.js';
+} from 'src/utilities/helpers';
 import { eventControl } from 'src/utilities/event';
 import { dialogControl } from 'src/utilities/dialog';
 import { continuumChanges } from 'src/pages/data/continuum-changes';
@@ -145,6 +148,8 @@ let getActiveAssessor = (assessment = getActiveAssessmentData()) => {
 };
 
 let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true }) => {
+	if (!assessment) return;
+
 	let { unexportedChanges, dateExported } = assessment;
 
 	if (unexportedChanges) {
@@ -712,33 +717,42 @@ let convertConsiderations = (assessment) => {
 let upgradeAssessments = async (assessments, context) => {
 	let debug = true;
 
-	let outOfDate = false;
-	for (let assessment of assessments) {
-		if (debug) console.log('Pre-upgrade', structuredClone(assessment));
+	if (debug) console.log(`Upgrading assessment. Context is ${context}.`);
+
+	let schemaOutOfDate = false;
+	let continuumOutOfDate = false;
+	for (let i = 0; i < assessments.length; i++) {
+		let assessment = assessments[i];
+
+		if (debug) console.log('Pre assessment upgrade', structuredClone(assessment));
 
 		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
 			if (debug) console.warn('Assessment schema is out of date.');
 			assessment = upgradeSchema(assessment, assessmentSchema);
-			upgraded = true;
+			assessments[i] = assessment;
+			schemaOutOfDate = true;
 		}
 
 		if (assessment.continuumVersion !== currentContinuumVersion) {
 			if (debug) console.warn('Assessment continuum version is out of date.');
+
 			convertConsiderations(assessment);
 			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
 			assessment.continuumVersion = currentContinuumVersion;
+			continuumOutOfDate = true;
 
-			outOfDate = true;
-
-			if (debug) console.log('Post-upgrade', assessment);
+			if (debug) console.log('Post assessment upgrade', assessment);
 		}
 	}
 
-	if (outOfDate) {
+	if (continuumOutOfDate) {
 		dialogControl.open({
 			dialogId: 'continuum-update-dialog',
 			context,
 		});
+	}
+
+	if (schemaOutOfDate || continuumOutOfDate) {
 		return { upgraded: true };
 	} else {
 		return { upgraded: false };
@@ -1156,6 +1170,7 @@ let subscribe = (fn) => {
 
 let userDataStore = (() => {
 	let considerationCountPromise = null;
+	let loaded = false;
 
 	let init = () => {
 		if (!considerationCountPromise) {
@@ -1177,13 +1192,19 @@ let userDataStore = (() => {
 	let getConsiderationCount = () => considerationCountPromise;
 
 	let load = async () => {
-		let debug = false;
+		let debug = true;
+
+		if (debug) console.log('Loading user data from local storage');
+
+		if (loaded) return;
+		loaded = true;
 
 		try {
 			let raw = localStorage.getItem(key);
 			if (raw) {
 				data = JSON.parse(raw);
-				if (debug) console.log('User data from local storage', data);
+				if (debug) console.log('User data from local storage', structuredClone(data));
+				upgradeUserData(data);
 			} else {
 				if (debug) console.log('No user data found in local storage, using default', data);
 			}
@@ -1197,15 +1218,12 @@ let userDataStore = (() => {
 })();
 
 userDataStore.load();
-
 userDataStore.init();
 eventControl.add({
 	elem: document,
 	eventType: 'astro:after-swap',
 	fn: userDataStore.init,
 });
-
-upgradeUserData(data);
 
 //
 // Exports
