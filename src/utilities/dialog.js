@@ -26,6 +26,7 @@ let dialogControl = (() => {
 	};
 
 	let resetDialogState = (dialog) => {
+		console.log('Reseting Dialog State');
 		dialog.scrollTo(0, 0);
 		dialog.removeAttribute('data-context');
 		dialog.removeAttribute('data-target-id');
@@ -33,6 +34,7 @@ let dialogControl = (() => {
 
 		let resetForms = dialog.getAttribute('data-reset-forms') === 'true';
 		if (resetForms) {
+			console.log('Reseting Dialog Forms');
 			let forms = dialog.querySelectorAll('form');
 			for (let form of forms) {
 				resetForm({ form });

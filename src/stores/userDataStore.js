@@ -1,6 +1,3 @@
-const STORE_INSTANCE_ID = Math.random();
-console.log('userDataStore loaded! ID:', STORE_INSTANCE_ID);
-
 //
 // Imports
 //
@@ -715,7 +712,7 @@ let convertConsiderations = (assessment) => {
 };
 
 let upgradeAssessments = async (assessments, context) => {
-	let debug = true;
+	let debug = false;
 
 	if (debug) console.log(`Upgrading assessment. Context is ${context}.`);
 
@@ -1170,7 +1167,6 @@ let subscribe = (fn) => {
 
 let userDataStore = (() => {
 	let considerationCountPromise = null;
-	let loaded = false;
 
 	let init = () => {
 		if (!considerationCountPromise) {
@@ -1192,12 +1188,9 @@ let userDataStore = (() => {
 	let getConsiderationCount = () => considerationCountPromise;
 
 	let load = async () => {
-		let debug = true;
+		let debug = false;
 
 		if (debug) console.log('Loading user data from local storage');
-
-		if (loaded) return;
-		loaded = true;
 
 		try {
 			let raw = localStorage.getItem(key);
