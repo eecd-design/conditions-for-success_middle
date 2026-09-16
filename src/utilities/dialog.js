@@ -1,5 +1,6 @@
-import { eventControl } from './event';
-import { emitEvent, stopVideo } from './helpers';
+import { eventControl } from 'src/utilities/event';
+import { resetForm } from 'src/utilities/form';
+import { emitEvent, stopVideo } from 'src/utilities/helpers';
 
 let dialogControl = (() => {
 	let scrollY = 0;
@@ -10,10 +11,8 @@ let dialogControl = (() => {
 		if (!dialog) return null;
 
 		let searchListItem = null;
-		console.log(dialog);
 		if (dialog.matches('#search-dialog')) {
 			searchListItem = target;
-			console.log(searchListItem);
 		}
 
 		return {
@@ -26,7 +25,7 @@ let dialogControl = (() => {
 		};
 	};
 
-	let resetDialogState = async (dialog) => {
+	let resetDialogState = (dialog) => {
 		dialog.scrollTo(0, 0);
 		dialog.removeAttribute('data-context');
 		dialog.removeAttribute('data-target-id');
@@ -34,8 +33,6 @@ let dialogControl = (() => {
 
 		let resetForms = dialog.getAttribute('data-reset-forms') === 'true';
 		if (resetForms) {
-			// Lazy load to prevent circular initialization with userDataStore.js
-			let { resetForm } = await import('./form');
 			let forms = dialog.querySelectorAll('form');
 			for (let form of forms) {
 				resetForm({ form });
@@ -123,7 +120,7 @@ let dialogControl = (() => {
 
 		if (activeDialog) {
 			// Close active dialog and reset its state
-			close(activeDialog);
+			close(activeDialog, false, false);
 		}
 
 		// Reopen previous dialog, restoring saved metadata
@@ -140,7 +137,6 @@ let dialogControl = (() => {
 		if (restoredDialog) {
 			restoredDialog.scrollTop = previousState.scrollTop;
 			if (restoredDialog.matches('#search-dialog')) {
-				console.log(previousState);
 				let searchInput = restoredDialog.querySelector('form fieldset.search input');
 				searchInput.focus();
 				searchInput.setAttribute(
