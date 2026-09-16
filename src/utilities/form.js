@@ -1,5 +1,4 @@
-import { getUserData } from 'src/stores/userDataStore';
-import { toCamelCase } from './helpers';
+import { toCamelCase } from 'src/utilities/helpers';
 
 let getFormValues = (form) => {
 	let result = {};
@@ -92,7 +91,7 @@ let resetForm = ({ form, resetType = 'soft' }) => {
 	}
 };
 
-let validateField = ({ field, form, touchedFormFields }) => {
+let validateField = ({ field, form, touchedFormFields, userData = null }) => {
 	// Clear previous custom validity
 	field.setCustomValidity('');
 
@@ -122,8 +121,8 @@ let validateField = ({ field, form, touchedFormFields }) => {
 			return;
 		}
 
-		let userData = getUserData();
-		let schoolYearConflict = userData.assessments.some(
+		let assessments = userData?.assessments ?? [];
+		let schoolYearConflict = assessments.some(
 			(a) => a.school === schoolField.value && a.reportingYear === field.value,
 		);
 		if (schoolYearConflict) {
@@ -160,13 +159,13 @@ let validateField = ({ field, form, touchedFormFields }) => {
 	}
 };
 
-let validateForm = ({ form, touchedFormFields }) => {
+let validateForm = ({ form, touchedFormFields, userData = null }) => {
 	let firstInvalid = null;
 
 	// Validate every field in the form
 	let fields = form.querySelectorAll('input[required], select[required]');
 	for (let field of fields) {
-		validateField({ field, form, touchedFormFields });
+		validateField({ field, form, touchedFormFields, userData });
 
 		// Store the first invalid field
 		if (!field.validity.valid && !firstInvalid) {
