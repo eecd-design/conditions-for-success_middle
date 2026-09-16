@@ -765,7 +765,7 @@ let upgradeUserData = async (data) => {
 		upgraded = true;
 	}
 
-	let upgradeAssessmentsResult = await upgradeAssessments(data, 'load');
+	let upgradeAssessmentsResult = await upgradeAssessments(data.assessments, 'load');
 
 	if (upgradeAssessmentsResult.upgraded) upgraded = true;
 
