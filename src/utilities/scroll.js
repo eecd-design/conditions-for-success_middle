@@ -1,6 +1,5 @@
-import { getUserData } from 'src/stores/userDataStore';
-import { eventControl } from './event';
-import { dialogControl } from './dialog';
+import { eventControl } from 'src/utilities/event';
+import { dialogControl } from 'src/utilities/dialog';
 
 let scrollControl = (() => {
 	/**

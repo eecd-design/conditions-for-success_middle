@@ -523,7 +523,7 @@ let schoolList = {
 		duplicateAssessment,
 	} from 'src/stores/userDataStore';
 	import { getFormValues, resetForm, validateForm, validateField } from 'src/utilities/form';
-	import { joinWithAnd, toTitleCase } from 'src/utilities/helpers.js';
+	import { joinWithAnd, toTitleCase } from 'src/utilities/helpers';
 	import { dialogControl } from 'src/utilities/dialog';
 	import { toastControl } from 'src/utilities/toast';
 	import { eventControl } from 'src/utilities/event';
@@ -1005,6 +1005,7 @@ let schoolList = {
 					field: target,
 					form,
 					touchedFormFields,
+					userData: getUserData(),
 				});
 			}
 		}
@@ -1025,6 +1026,7 @@ let schoolList = {
 					field: target,
 					form,
 					touchedFormFields,
+					userData: getUserData(),
 				});
 			}
 		}
@@ -1067,6 +1069,7 @@ let schoolList = {
 				field: target,
 				form,
 				touchedFormFields,
+				userData: getUserData(),
 			});
 		}
 

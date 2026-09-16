@@ -1,15 +1,15 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-
-import Header from '../components/Header.astro';
-import DataDialogs from 'src/components/dialogs/DataDialogs.astro';
-
-import '../styles/normalize.css';
-import '../styles/global.css';
-
 import { Image } from 'astro:assets';
-import GNBLogo from '../images/gnb-logo-reverse.png';
+
+import Header from 'src/components/Header.astro';
+import DataDialogs from 'src/components/dialogs/DataDialogs.astro';
 import SiteToasts from 'src/components/SiteToasts.astro';
+
+import 'src/styles/normalize.css';
+import 'src/styles/global.css';
+
+import GNBLogo from 'src/images/gnb-logo-reverse.png';
 
 let path = Astro.url.pathname;
 
@@ -160,7 +160,12 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		// Imports
 		//
 
-		import { getActiveAssessmentData, setState, subscribe } from 'src/stores/userDataStore';
+		import {
+			getActiveAssessmentData,
+			setState,
+			subscribe,
+			userDataStore,
+		} from 'src/stores/userDataStore';
 		import { scrollIntoView } from 'src/utilities/helpers';
 		import { dialogControl } from 'src/utilities/dialog';
 		import { scrollControl } from 'src/utilities/scroll';

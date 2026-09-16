@@ -1,18 +1,18 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 
-import Accordion from '../components/Accordion.astro';
-import AccordionGroup from '../components/AccordionGroup.astro';
-import DetailedLink from '../components/DetailedLink.astro';
-import LinkListItem from '../components/LinksListItem.astro';
+import Accordion from 'src/components/Accordion.astro';
+import AccordionGroup from 'src/components/AccordionGroup.astro';
+import DetailedLink from 'src/components/DetailedLink.astro';
+import LinkListItem from 'src/components/LinksListItem.astro';
 
-import PhaseIcons from './icons/PhaseIcons.astro';
-import IconFlag from './icons/IconFlag_24.astro';
-import IconFocus from './icons/IconTarget_20.astro';
-import IconCompass from './icons/IconCompass_14.astro';
-import IconCheckmark from './icons/IconCheckmark_12.astro';
-import IconCaretDown14 from './icons/IconCaretDown_14.astro';
-import IconArrowUp from './icons/IconArrowUp_16.astro';
+import PhaseIcons from 'src/components/icons/PhaseIcons.astro';
+import IconFlag from 'src/components/icons/IconFlag_24.astro';
+import IconFocus from 'src/components/icons/IconTarget_20.astro';
+import IconCompass from 'src/components/icons/IconCompass_14.astro';
+import IconCheckmark from 'src/components/icons/IconCheckmark_12.astro';
+import IconCaretDown14 from 'src/components/icons/IconCaretDown_14.astro';
+import IconArrowUp from 'src/components/icons/IconArrowUp_16.astro';
 
 const { entry } = Astro.props;
 let path = Astro.url.pathname;
@@ -658,7 +658,7 @@ let phases = [
 		subscribe,
 		setAssessment,
 		updateContinuumCompletion,
-	} from 'src/stores/userDataStore.js';
+	} from 'src/stores/userDataStore';
 	import { eventControl } from 'src/utilities/event';
 	import { toastControl } from 'src/utilities/toast';
 	import { dialogControl } from 'src/utilities/dialog';

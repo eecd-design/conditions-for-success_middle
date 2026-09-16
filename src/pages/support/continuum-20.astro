@@ -1,6 +1,6 @@
 ---
 import BaseLayout from 'src/layouts/BaseLayout.astro';
-import { continuumChanges } from '../data/continuum-changes';
+import { continuumChanges } from 'src/pages/data/continuum-changes';
 import { toTitleCase } from 'src/utilities/helpers';
 
 let edited = continuumChanges.v2.filter((change) => change.edited);

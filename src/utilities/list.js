@@ -1,6 +1,6 @@
 import { setPreferences } from 'src/stores/userDataStore';
-import { emitEvent, scrollIntoView, toTitleCase } from './helpers';
-import { eventControl } from './event';
+import { emitEvent, scrollIntoView, toTitleCase } from 'src/utilities/helpers';
+import { eventControl } from 'src/utilities/event';
 
 //
 // Shared Methods
