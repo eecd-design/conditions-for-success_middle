@@ -127,7 +127,7 @@ import IconExternal16 from 'src/components/icons/IconExternal_16.astro';
 		)
 			return;
 
-		let fields = dialog.querySelectorAll('data-field');
+		let fields = dialog.querySelectorAll('[data-field]');
 
 		for (let field of fields) {
 			field.textContent = data.uiState.continuumVersion;
@@ -162,6 +162,8 @@ import IconExternal16 from 'src/components/icons/IconExternal_16.astro';
 					dialogId: 'manage-assessments-dialog',
 					noBack: true,
 				});
+			} else {
+				dialogControl.close(dialog);
 			}
 		}
 	};

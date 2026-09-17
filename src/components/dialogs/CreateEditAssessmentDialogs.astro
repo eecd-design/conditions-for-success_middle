@@ -798,6 +798,8 @@ let schoolList = {
 		if (context === 'duplicate') {
 			let targetAssessment = assessment;
 			if (targetId) targetAssessment = getAssessmentData(targetId);
+			if (!targetAssessment) return;
+
 			revealSchoolOptionGroup(districtSelect, targetAssessment.district);
 			updateFieldsFromAssessmentData({
 				assessment: targetAssessment,
