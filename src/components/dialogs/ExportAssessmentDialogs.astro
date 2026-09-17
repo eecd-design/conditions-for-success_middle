@@ -254,7 +254,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		getAssessmentDate,
 		setState,
 		setAssessment,
-		exportAssessment,
+		exportAssessmentFile,
 		subscribe,
 		getExportStatus,
 		updateChangeLog,
@@ -417,7 +417,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		if (target.matches('button.download-file')) {
 			try {
-				exportAssessment(getActiveAssessmentData());
+				exportAssessmentFile(getActiveAssessmentData());
 
 				setAssessment({
 					unexportedChanges: false,

@@ -356,6 +356,10 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 										<dt>Last Modified By:</dt>
 										<dd data-field="lastModifiedBy"></dd>
 									</div>
+									<div class="detail-container">
+										<dt>Continuum Version:</dt>
+										<dd data-field="continuumVersion"></dd>
+									</div>
 								</dl>
 							</div>
 						</div>
@@ -395,6 +399,10 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 									<div class="detail-container">
 										<dt>Last Modified By:</dt>
 										<dd data-field="lastModifiedBy"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Continuum Version:</dt>
+										<dd data-field="continuumVersion"></dd>
 									</div>
 								</dl>
 							</div>
@@ -643,18 +651,15 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		setState,
 		setAssessment,
 		setPreferences,
-		importAssessment,
+		readAssessmentFile,
 		subscribe,
 		decompressData,
 		updateChangeLog,
 		getAssessmentData,
 		getActiveAssessmentData,
-		findAssessmentConflicts,
-		setImportConflictData,
-		getImportConflictData,
 		deleteAssessment,
-		generateContinuumCompletion,
-		deleteImportConflictData,
+		checkImportedAssessment,
+		resolveImportedAssessment,
 	} from 'src/stores/userDataStore';
 	import { dialogControl } from 'src/utilities/dialog';
 	import { toastControl } from 'src/utilities/toast';
@@ -742,65 +747,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		return card;
 	};
 
-	let handleAssessmentImport = async (importedAssessment) => {
-		let debug = false;
-
-		let userData = getUserData();
-		let localAssessments = userData.assessments;
-
-		// Compare imported assessment to saved assessment to identify conflicts
-		let { idConflict, schoolYearConflict } = findAssessmentConflicts({
-			importedAssessment,
-			localAssessments,
-		});
-
-		// If there's a school/year conflict, open import conflict dialog
-		if (schoolYearConflict) {
-			if (debug) console.log('School/Year Conflict Detected');
-
-			setImportConflictData({
-				importedAssessment,
-				localAssessment: schoolYearConflict,
-			});
-
-			updateImportConflictDialog({
-				importedAssessment,
-				localAssessment: schoolYearConflict,
-			});
-
-			dialogControl.open({
-				dialogId: 'import-conflict-dialog',
-			});
-
-			return false;
-		}
-
-		// If there's an id conflict (but no school/year conflict), assign assessment a new id
-		if (idConflict) {
-			if (debug) console.log('ID Conflict Detected');
-
-			let ids = localAssessments.map((a) => a.id).filter(Boolean);
-			let newId = ids.length ? Math.max(...ids) + 1 : 1;
-			importedAssessment.id = newId;
-		}
-
-		// Add missing keys and default values
-		importedAssessment.activeAssessor = null;
-		importedAssessment.unexportedChanges = false;
-		if (!importedAssessment.continuumCompletion) {
-			importedAssessment.continuumCompletion =
-				await generateContinuumCompletion(importedAssessment);
-		}
-
-		// Save assessment to user data
-		setAssessment(importedAssessment);
-
-		// Clear out the import conflict data cache
-		deleteImportConflictData();
-
-		return true;
-	};
-
 	//
 	// DOM Updates
 	//
@@ -884,7 +830,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let importedCard = dialog.querySelector('.conflicting-assessments .imported');
 		let highlightTemplate = dialog.querySelector('template.highlight') as HTMLTemplateElement;
 
-		let metadataKeys = ['school', 'status', 'reportingYear', 'dateModified', 'lastModifiedBy'];
+		let metadataKeys = [
+			'school',
+			'status',
+			'reportingYear',
+			'dateModified',
+			'lastModifiedBy',
+			'continuumVersion',
+		];
 
 		/**
 		 * Compare two objects with the same schema and return keys with mismatched values.
@@ -967,7 +920,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Event Listeners
 	//
 
-	let onOpenAssessmentClick = (event) => {
+	let onOpenAssessmentClick = async (event) => {
 		let debug = false;
 
 		let target = event.target as HTMLButtonElement;
@@ -1050,9 +1003,34 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						JSON.parse(JSON.stringify(importedAssessment)),
 					);
 
-				let importResult = handleAssessmentImport(importedAssessment);
+				let checkResult = checkImportedAssessment(importedAssessment);
 
-				if (importResult) toastControl.show({ target, type: 'success' });
+				if (checkResult.schoolYearConflict.found) {
+					updateImportConflictDialog({
+						importedAssessment,
+						localAssessment: checkResult.schoolYearConflict.localAssessment,
+					});
+
+					dialogControl.open({
+						dialogId: 'import-conflict-dialog',
+					});
+				} else {
+					let { continuumsUpgraded } = await resolveImportedAssessment();
+
+					if (continuumsUpgraded) {
+						dialogControl.open({
+							dialogId: 'continuum-update-dialog',
+							context: 'import',
+							noBack: true,
+						});
+					} else {
+						dialogControl.open({
+							dialogId: 'manage-assessments-dialog',
+							noBack: true,
+						});
+					}
+					toastControl.show({ target, type: 'success' });
+				}
 			} catch (error) {
 				console.error(error);
 				if (error.cause === 'JSON') {
@@ -1091,7 +1069,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			if (!file) return;
 
 			try {
-				let importedAssessment = await importAssessment(file);
+				let importedAssessment = await readAssessmentFile(file);
 
 				if (debug)
 					console.log(
@@ -1099,9 +1077,34 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						JSON.parse(JSON.stringify(importedAssessment)),
 					);
 
-				let importResult = handleAssessmentImport(importedAssessment);
+				let checkResult = checkImportedAssessment(importedAssessment);
 
-				if (importResult) toastControl.show({ target, type: 'success' });
+				if (checkResult.schoolYearConflict.found) {
+					updateImportConflictDialog({
+						importedAssessment,
+						localAssessment: checkResult.schoolYearConflict.localAssessment,
+					});
+
+					dialogControl.open({
+						dialogId: 'import-conflict-dialog',
+					});
+				} else {
+					let { continuumsUpgraded } = await resolveImportedAssessment();
+
+					if (continuumsUpgraded) {
+						dialogControl.open({
+							dialogId: 'continuum-update-dialog',
+							context: 'import',
+							noBack: true,
+						});
+					} else {
+						dialogControl.open({
+							dialogId: 'manage-assessments-dialog',
+							noBack: true,
+						});
+					}
+					toastControl.show({ target, type: 'success' });
+				}
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });
@@ -1166,34 +1169,22 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		if (target.matches('button.overwrite')) {
 			try {
-				let { importedAssessment, localAssessment } = getImportConflictData();
-				if (!importedAssessment || !localAssessment) return;
+				let { continuumsUpgraded } = await resolveImportedAssessment();
 
-				// Make sure the ids match
-				importedAssessment.id = localAssessment.id;
-
-				deleteAssessment(localAssessment.id);
-
-				// Add missing keys and default values
-				importedAssessment.activeAssessor = null;
-				importedAssessment.unexportedChanges = false;
-				if (!importedAssessment.continuumCompletion) {
-					importedAssessment.continuumCompletion =
-						await generateContinuumCompletion(importedAssessment);
+				if (continuumsUpgraded) {
+					dialogControl.open({
+						dialogId: 'continuum-update-dialog',
+						context: 'import',
+						noBack: true,
+					});
+				} else {
+					dialogControl.open({
+						dialogId: 'manage-assessments-dialog',
+						noBack: true,
+					});
 				}
 
-				// Save assessment to user data
-				setAssessment(importedAssessment);
-
-				// Clear out the import conflict data cache
-				deleteImportConflictData();
-
 				toastControl.show({ target, type: 'success' });
-
-				dialogControl.open({
-					dialogId: 'manage-assessments-dialog',
-					noBack: true,
-				});
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });
@@ -1201,7 +1192,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		}
 
 		if (target.matches('button.keep')) {
-			deleteImportConflictData();
+			await resolveImportedAssessment(false);
+
+			dialogControl.open({
+				dialogId: 'manage-assessments-dialog',
+				noBack: true,
+			});
 		}
 	};
 	eventControl.add({
