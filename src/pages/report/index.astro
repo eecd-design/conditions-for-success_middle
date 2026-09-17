@@ -15,6 +15,7 @@ import PageNav from 'src/components/PageNav.astro';
 import gnbLogo from 'src/images/gnb-logo-colour.png';
 import AssessmentDialogs from 'src/components/dialogs/AssessmentDialogs.astro';
 import BarChart from 'src/components/charts/BarChart.astro';
+import IconAssessment20 from 'src/components/icons/IconAssessment_20.astro';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -139,6 +140,11 @@ navSections.push(onPageSection);
 			<div class="wrapper">
 				<div data-restrict-mode="reading">
 					<p>To view a report, open an assessment.</p>
+					<p>
+						To create an assessment, navigate to any of <a href="./big-seven/"
+							>The Big Seven</a
+						> pages.
+					</p>
 					<div class="button-group">
 						<button
 							class="open-dialog"
@@ -151,10 +157,23 @@ navSections.push(onPageSection);
 							<span class="icon-and-label-container">
 								<IconFolder20 />
 								<span class="label-container">
-									<span class="label">Open</span>
+									<span class="label">Open Assessment</span>
 								</span>
 							</span>
 						</button>
+						<a
+							data-style-as="button"
+							href="./big-seven/"
+							data-style="solid"
+							data-size="large"
+						>
+							<span class="icon-and-label-container">
+								<IconAssessment20 />
+								<span class="label-container">
+									<span class="label">View The Big Seven</span>
+								</span>
+							</span>
+						</a>
 					</div>
 				</div>
 
