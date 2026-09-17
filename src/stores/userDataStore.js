@@ -11,6 +11,7 @@ import {
 	isEqual,
 	normalizeImportedDate,
 	toKebabCase,
+	sanitizeHTML,
 } from 'src/utilities/helpers';
 import { eventControl } from 'src/utilities/event';
 import { dialogControl } from 'src/utilities/dialog';
@@ -1103,6 +1104,22 @@ let readAssessmentFile = (file) => {
 	});
 };
 
+let readAssessmentCode = (code) => {
+	let sanitizedCode = sanitizeHTML(code);
+
+	if (sanitizedCode.length === 0) {
+		throw new Error('Import code is empty');
+	}
+
+	let importedAssessment = decompressData(code);
+
+	// Reset certain assessment settings
+	importedAssessment.activeAssessor = null;
+	importedAssessment.unexportedChanges = false;
+
+	return importedAssessment;
+};
+
 let checkImportedAssessment = (importedAssessment) => {
 	let debug = false;
 
@@ -1369,6 +1386,7 @@ export {
 	deleteAssessment,
 	exportAssessmentFile,
 	readAssessmentFile,
+	readAssessmentCode,
 	updateChangeLog,
 	updateContinuumCompletion,
 	generateContinuumCompletion,

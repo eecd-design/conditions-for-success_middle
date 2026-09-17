@@ -637,12 +637,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Imports
 	//
 
-	import {
-		findIndexByKey,
-		findObjectByKey,
-		formatDateAsHTML,
-		sanitizeHTML,
-	} from 'src/utilities/helpers';
+	import { findIndexByKey, findObjectByKey, formatDateAsHTML } from 'src/utilities/helpers';
 	import {
 		getUserData,
 		getAssessmentName,
@@ -653,13 +648,13 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		setPreferences,
 		readAssessmentFile,
 		subscribe,
-		decompressData,
 		updateChangeLog,
 		getAssessmentData,
 		getActiveAssessmentData,
 		deleteAssessment,
 		checkImportedAssessment,
 		resolveImportedAssessment,
+		readAssessmentCode,
 	} from 'src/stores/userDataStore';
 	import { dialogControl } from 'src/utilities/dialog';
 	import { toastControl } from 'src/utilities/toast';
@@ -989,13 +984,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			try {
 				let codeInput = target.closest('fieldset').querySelector('input');
 
-				let importedCode = sanitizeHTML(codeInput.value);
-
-				if (importedCode.length === 0) {
-					throw new Error('Import code is empty');
-				}
-
-				let importedAssessment = decompressData(importedCode);
+				let importedAssessment = readAssessmentCode(codeInput.value);
 
 				if (debug)
 					console.log(
