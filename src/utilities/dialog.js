@@ -61,7 +61,7 @@ let dialogControl = (() => {
 				if (noBack) {
 					// Close active dialog and clear history
 					historyStack = [];
-					close(activeDialog, true, true);
+					close(activeDialog, false, true);
 				} else {
 					// Save current dialog state onto history stack before opening the next
 					let state = captureState(activeDialog, target);
