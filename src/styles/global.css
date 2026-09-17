@@ -2228,6 +2228,10 @@ ul.field-values-list {
 		border-radius: var(--brd-radius-normal);
 	}
 
+	& :where(p, li, a) {
+		color: var(--callout-txt-colour, inherit);
+	}
+
 	/* 
 	// Callout: Space Options
 	*/

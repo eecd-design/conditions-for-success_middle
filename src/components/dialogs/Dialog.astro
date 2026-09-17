@@ -149,20 +149,18 @@ if (dataset) {
 			}
 		}
 
-		& :not(.callout *) {
-			&:where(p, li) {
-				font-size: var(--font-size-xs);
-				line-height: 1.4;
-				color: var(--colour-txt-on-subtle-2);
-				margin: 0 0 var(--space-xs);
-			}
+		& p,
+		li,
+		a,
+		[data-style-as='link'] {
+			--link-colour: var(--colour-txt-on-subtle-2);
+			font-size: var(--font-size-xs);
+			line-height: 1.4;
+		}
 
-			&:where(a, [data-style-as='link']) {
-				--link-colour: var(--colour-txt-on-subtle-2);
-				font-size: var(--font-size-xs);
-
-				color: var(--colour-txt-on-subtle-2);
-			}
+		& p {
+			color: var(--colour-txt-on-subtle-2);
+			margin: 0 0 var(--space-xs);
 		}
 
 		& .callout {
