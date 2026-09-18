@@ -1365,12 +1365,14 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 		let onDocumentClick = (event) => {
 			let target = event.target as any;
 
-			let buttonContainer = document.querySelector(
+			let buttonContainers = document.querySelectorAll(
 				'#assessment-controls .button-container:has(.subgroup)',
 			);
-			if (buttonContainer && !buttonContainer.contains(target)) {
-				let btn = buttonContainer.querySelector('.subgroup-toggle');
-				btn.setAttribute('aria-expanded', 'false');
+			for (let buttonContainer of buttonContainers) {
+				if (buttonContainer && !buttonContainer.contains(target)) {
+					let btn = buttonContainer.querySelector('.subgroup-toggle');
+					btn.setAttribute('aria-expanded', 'false');
+				}
 			}
 		};
 		eventControl.add({
@@ -1398,20 +1400,6 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 			selector: '#assessment-controls',
 			eventType: 'focusout',
 			fn: onFocusout,
-		});
-
-		let onFocus = (event) => {};
-		eventControl.add({
-			selector: '#assessment-controls',
-			eventType: 'focus',
-			fn: onFocus,
-		});
-
-		let onBlur = (event) => {};
-		eventControl.add({
-			selector: '#assessment-controls',
-			eventType: 'blur',
-			fn: onBlur,
 		});
 	</script>
 </section>
