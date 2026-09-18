@@ -635,27 +635,27 @@ let mostRecentResourceTimestamp = Math.max(
 				&.theme {
 					padding: var(--space-2xs) var(--space-xs);
 
-					& .icon.dark {
+					& .icon.light {
 						display: none;
 					}
 
 					:root[data-theme='light'] & {
 						& .icon.light {
-							display: block;
+							display: none;
 						}
 
 						& .icon.dark {
-							display: none;
+							display: block;
 						}
 					}
 
 					:root[data-theme='dark'] & {
 						& .icon.light {
-							display: none;
+							display: block;
 						}
 
 						& .icon.dark {
-							display: block;
+							display: none;
 						}
 					}
 				}
