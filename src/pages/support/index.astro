@@ -201,7 +201,10 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 			>
 		</p>
 
-		<p>
+		<div
+			class="button-group"
+			data-spacing="large"
+		>
 			<a
 				href={continuums20ResourcePath}
 				data-style-as="button"
@@ -220,13 +223,16 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 					</span>
 				</span>
 			</a>
-		</p>
+		</div>
 
 		<h3>Continuums 1.0</h3>
 
 		<p class="metadata">Release Date: November 2025</p>
 
-		<p>
+		<div
+			class="button-group"
+			data-spacing="large"
+		>
 			<a
 				href={continuums10ResourcePath}
 				data-style-as="button"
@@ -245,7 +251,7 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 					</span>
 				</span>
 			</a>
-		</p>
+		</div>
 
 		<hr class="section" />
 
@@ -257,7 +263,10 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 				>This will not delete or change any of your saved assessments or reports.</strong
 			>
 		</p>
-		<div class="button-group">
+		<div
+			class="button-group"
+			data-spacing="large"
+		>
 			<button
 				class="repair-data"
 				type="button"
@@ -288,7 +297,10 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 				and site preferences. <strong>This action cannot be undone.</strong> Please download backup
 				files before proceeding.
 			</p>
-			<div class="button-group">
+			<div
+				class="button-group"
+				data-spacing="large"
+			>
 				<button
 					class="delete-data"
 					type="button"
@@ -326,13 +338,9 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 				margin-bottom: var(--space-2xs);
 			}
 
-			.button-group {
-				margin: var(--space-lg) 0 var(--space-2xl);
-
-				& button.delete-data {
-					&:is(:hover, :focus-visible) {
-						--button-bkg-colour: var(--colour-bkg-surface-bold-error);
-					}
+			& button.delete-data {
+				&:is(:hover, :focus-visible) {
+					--button-bkg-colour: var(--colour-bkg-surface-bold-error);
 				}
 			}
 

@@ -895,9 +895,15 @@ p.metadata {
 	flex-flow: row nowrap;
 	align-items: center;
 	gap: var(--group-gap, var(--space-sm));
+	margin: var(--group-margin-top, 0) 0 var(--group-margin-bottom, 0);
 
 	&[data-fit='compact'] {
 		--group-gap: var(--space-2xs);
+	}
+
+	&[data-spacing='large'] {
+		--group-margin-top: var(--space-lg);
+		--group-margin-bottom: var(--space-2xl);
 	}
 
 	& > * {
