@@ -107,7 +107,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				>Edit</button
 			>
 			<button
-				class="open-dialog"
+				class="open-dialog duplicate"
 				type="button"
 				data-style="solid"
 				data-size="large"
@@ -218,6 +218,9 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			let targetValue = field.dataset.field;
 			field.textContent = assessment[targetValue];
 		}
+
+		let duplicateBtn = dialog.querySelector('button.duplicate');
+		duplicateBtn.setAttribute('data-dialog-target-id', `${assessment.id}`);
 	};
 
 	//
