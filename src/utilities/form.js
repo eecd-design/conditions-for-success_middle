@@ -85,6 +85,9 @@ let resetForm = ({ form, resetType = 'soft' }) => {
 		// Reset aria-invalid
 		field.removeAttribute('aria-invalid');
 
+		// Reset custom validity
+		field.setCustomValidity('');
+
 		// Reset to default enabled status
 		let disabledByDefault = field.hasAttribute('data-disabled-by-default');
 		field.disabled = disabledByDefault;
@@ -110,21 +113,21 @@ let validateField = ({ field, form, touchedFormFields, userData = null }) => {
 	// Cross-field check for reporting year
 	if (field.name === 'reportingYear') {
 		let schoolField = form.querySelector('select[name="school"]');
+		let schoolYearConflict = false;
 
-		// If school is empty, skip conflict check
-		if (!schoolField.value) {
+		if (schoolField?.value) {
+			let assessments = userData?.assessments ?? [];
+			schoolYearConflict = assessments.some(
+				(a) => a.school === schoolField.value && a.reportingYear === field.value,
+			);
+		} else if (!schoolField?.value) {
 			// Reset error if no school is selected
 			field.setCustomValidity('');
 			error.querySelector('span').textContent = '';
 			error.setAttribute('hidden', '');
 			field.removeAttribute('aria-invalid');
-			return;
 		}
 
-		let assessments = userData?.assessments ?? [];
-		let schoolYearConflict = assessments.some(
-			(a) => a.school === schoolField.value && a.reportingYear === field.value,
-		);
 		if (schoolYearConflict) {
 			message = `An assessment for this school and year is already saved in your browser. To view it, open the 'Manage Assessments' dialog from the toolbar.`;
 		}

@@ -850,7 +850,9 @@ let schoolList = {
 			let fields = form.querySelectorAll('input[required], select[required]');
 			for (let field of fields) touchedFormFields.add(field);
 
-			let formValidity = validateForm({ form, touchedFormFields });
+			let userData = getUserData();
+
+			let formValidity = validateForm({ form, touchedFormFields, userData });
 			if (!formValidity) return;
 
 			try {
@@ -890,7 +892,9 @@ let schoolList = {
 			let fields = form.querySelectorAll('input[required], select[required]');
 			for (let field of fields) touchedFormFields.add(field);
 
-			let formValidity = validateForm({ form, touchedFormFields });
+			let userData = getUserData();
+
+			let formValidity = validateForm({ form, touchedFormFields, userData });
 			if (!formValidity) return;
 
 			try {
@@ -926,7 +930,9 @@ let schoolList = {
 			let inputs = form.querySelectorAll('input[required], select[required]');
 			for (let input of inputs) touchedFormFields.add(input);
 
-			let formValidity = validateForm({ form, touchedFormFields });
+			let userData = getUserData();
+
+			let formValidity = validateForm({ form, touchedFormFields, userData });
 			if (!formValidity) return;
 
 			try {
