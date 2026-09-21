@@ -244,12 +244,33 @@ let dialogControl = (() => {
 		}
 	};
 
+	let onResize = (event) => {
+		let dialog = document.querySelector('dialog[open]');
+		if (!dialog) return;
+
+		console.log('Dialog Open: Visual Viewport Resize Event');
+
+		const originalDisplay = dialog.style.display;
+		dialog.style.display = 'none';
+
+		void dialog.offsetHeight;
+
+		dialog.style.display = originalDisplay;
+	};
+
 	let init = () => {
 		eventControl.add({
 			elem: document,
 			eventType: 'click',
 			fn: onClick,
 		});
+		if (window.visualViewport) {
+			eventControl.add({
+				elem: window.visualViewport,
+				eventType: 'resize',
+				fn: onResize,
+			});
+		}
 	};
 
 	return { init, open, back, close };
