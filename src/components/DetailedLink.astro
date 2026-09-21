@@ -389,6 +389,10 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				font-weight: 600;
 				color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
 
+				:root[data-theme='dark'] & {
+					color: var(--colour-txt-on-subtle-2);
+				}
+
 				&.simple {
 					display: none;
 				}
@@ -410,6 +414,14 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 		*/
 
 		&:is(:hover, :focus-visible) {
+			& .text-container {
+				& .label {
+					:root[data-theme='dark'] & {
+						color: var(--colour-txt-on-subtle-1);
+					}
+				}
+			}
+
 			& .icon.destination {
 				@media (hover: hover) {
 					opacity: 1;
