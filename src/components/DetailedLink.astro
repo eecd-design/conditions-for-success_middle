@@ -92,7 +92,7 @@ if (category === 'resource') {
 
 let isLocation = !['resource', 'guides'].includes(category);
 let isExternal = external && external.discriminant;
-let isMedia = ['video', 'audio'].includes(type);
+let isVideo = ['video', 'webinar'].includes(type);
 let isTraining = category === 'training';
 let isFile = ['document', 'presentation', 'image'].includes(type);
 
@@ -100,7 +100,7 @@ let isFile = ['document', 'presentation', 'image'].includes(type);
 let opensDialog = false;
 if (!isLocation) opensDialog = linkAction === 'dialog';
 
-let opensInNewTab = !isTraining && !isMedia && (isExternal || isFile);
+let opensInNewTab = !isTraining && !isVideo && (isExternal || isFile);
 
 let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
