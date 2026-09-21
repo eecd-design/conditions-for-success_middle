@@ -35,6 +35,12 @@ let allResources = await getCollection('resources', ({ data }) => {
 let mostRecentResourceTimestamp = Math.max(
 	...allResources.map((resource) => resource.data.dateAdded.getTime()),
 );
+
+// Default relative path for the production site
+let welcomeVideoPath =
+	import.meta.env.NETLIFY === 'true' || import.meta.env.DEV
+		? `https://middle.nbed.ca/conditions-for-success/assets/media/welcome.mp4`
+		: `./assets/media/welcome.mp4`;
 ---
 
 <header
@@ -254,7 +260,7 @@ let mostRecentResourceTimestamp = Math.max(
 							data-dialog="media-dialog"
 							data-dialog-heading="Welcome to the Conditions for Success Website!"
 							data-media-type="video"
-							data-media-src={`./assets/media/welcome.mp4`}
+							data-media-src={welcomeVideoPath}
 							data-media-external="false"
 							type="button"
 						>
