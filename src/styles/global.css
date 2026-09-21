@@ -311,7 +311,7 @@
 
 	--colour-txt-on-subtle-1: var(--gray-muted-50);
 	--colour-txt-on-subtle-2: var(--gray-muted-150);
-	--colour-txt-on-subtle-error: var(--red-vivid-400);
+	--colour-txt-on-subtle-error: var(--red-vivid-100);
 	--colour-txt-on-bold-1: var(--gray-muted-800);
 	--colour-txt-on-bold-2: var(--gray-muted-500);
 
@@ -347,7 +347,7 @@
 
 		--colour-txt-on-subtle-1: var(--gray-muted-800);
 		--colour-txt-on-subtle-2: var(--gray-muted-500);
-		--colour-txt-on-subtle-error: var(--red-vivid-400);
+		--colour-txt-on-subtle-error: var(--red-vivid-100);
 		--colour-txt-on-bold-1: var(--gray-muted-0);
 		--colour-txt-on-bold-2: var(--gray-muted-100);
 

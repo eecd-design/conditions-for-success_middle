@@ -520,6 +520,10 @@ let phases = [
 					& .label-container {
 						min-height: 1.5rem;
 						line-height: 1;
+
+						:root[data-theme='dark'] & {
+							border: 2px solid var(--colour-brd-mid-accent, var(--colour-brd-mid));
+						}
 					}
 				}
 
