@@ -679,6 +679,8 @@ navSections.push(onPageSection);
 			reportWelcomeSchool.textContent = assessment.school;
 			reportWelcomeYear.textContent = assessment.reportingYear;
 
+			let count = await userDataStore.getConsiderationCount();
+
 			for (let section of sections) {
 				let mainScopeTag = section.getAttribute('data-tag');
 				let mainScopeCompletion =
@@ -718,26 +720,22 @@ navSections.push(onPageSection);
 							progressSimDetails[index].querySelector('[data-field="total"]');
 
 						let phaseTotal;
-						if (!mainScopeCompletion) {
-							let count = await userDataStore.getConsiderationCount();
+						let phaseCount;
+						if (mainScopeCompletion) {
+							phaseTotal = mainScopeCompletion[`${phase}Total`];
+							phaseCount = mainScopeCompletion[`${phase}Count`];
+						} else {
 							phaseTotal =
 								mainScopeTag === '0'
 									? count.continuum[phase]
 									: count[mainScopeTag][phase];
+							phaseCount = 0;
 						}
 
-						countField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`${phase}Count`]
-							: 0;
-						totalField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`${phase}Total`]
-							: phaseTotal;
-						progressSimCountField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`${phase}Count`]
-							: 0;
-						progressSimTotalField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`${phase}Total`]
-							: phaseTotal;
+						totalField.textContent = phaseTotal;
+						countField.textContent = phaseCount;
+						progressSimTotalField.textContent = phaseTotal;
+						progressSimCountField.textContent = phaseCount;
 					}
 				}
 
@@ -785,27 +783,26 @@ navSections.push(onPageSection);
 						let barSimTotalField =
 							barSimDetails[index].querySelector('[data-field="total"]');
 
-						countField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`${phase}Components`]
-							: 0;
-						totalField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`components`]
-							: 0;
-						barSimCountField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`${phase}Components`]
-							: 0;
-						barSimTotalField.textContent = mainScopeCompletion
-							? mainScopeCompletion[`components`]
-							: 0;
+						let phaseTotal;
+						let phaseCount;
+						if (mainScopeCompletion) {
+							phaseTotal = mainScopeCompletion[`components`];
+							phaseCount = mainScopeCompletion[`${phase}Components`];
+						} else {
+							phaseTotal =
+								mainScopeTag === '0'
+									? count.continuum.components
+									: count[mainScopeTag].components;
+							phaseCount = phase === 'initiating' ? phaseTotal : 0;
+						}
 
-						segment.style.setProperty(
-							'--total',
-							mainScopeCompletion ? mainScopeCompletion[`components`] : 0,
-						);
-						segment.style.setProperty(
-							'--count',
-							mainScopeCompletion ? mainScopeCompletion[`${phase}Components`] : 0,
-						);
+						totalField.textContent = phaseTotal;
+						countField.textContent = phaseCount;
+						barSimTotalField.textContent = phaseTotal;
+						barSimCountField.textContent = phaseCount;
+
+						segment.style.setProperty('--total', phaseTotal);
+						segment.style.setProperty('--count', phaseCount);
 					}
 				}
 
