@@ -1041,6 +1041,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	});
 
 	let toggleFiltersContainer = (event, init = false) => {
+		let debug = true;
+
 		let primaryControls = document.querySelector('#resources-list-primary-controls');
 		if (!primaryControls) return;
 
@@ -1057,6 +1059,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		if (event.matches) {
 			// Switch drawer to modal
 			if (secondaryControls.parentElement === filtersDialog) return;
+			if (debug)
+				console.log('Device screen is smaller that breakpoint, switching drawer to modal.');
 			filtersDialog.append(secondaryControls);
 			filtersAside.parentElement.setAttribute('hidden', '');
 			if (isExpanded) {
@@ -1069,6 +1073,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		else if (!event.matches && !init) {
 			// Switch modal to drawer
 			if (secondaryControls.parentElement === filtersAside) return;
+			if (debug)
+				console.log('Device screen is large than breakpoint, switching modal to drawer.');
 			filtersAside.append(secondaryControls);
 			filtersAside.parentElement.removeAttribute('hidden');
 			if (isExpanded) {
@@ -1123,6 +1129,11 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	eventControl.add({
 		elem: document,
 		eventType: 'DOMContentLoaded',
+		fn: onPageLoad,
+	});
+	eventControl.add({
+		elem: document,
+		eventType: 'astro:after-swap',
 		fn: onPageLoad,
 	});
 </script>
