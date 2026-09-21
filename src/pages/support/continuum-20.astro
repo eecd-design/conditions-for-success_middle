@@ -39,186 +39,203 @@ let deleted = continuumChanges.v2.filter((change) => change.transformation?.type
 
 		<h2>Change Log</h2>
 
-		<table
-			data-theme="blue"
-			data-vibrancy="vivid"
-		>
-			<thead>
-				<tr>
-					<th scope="col">Version 1.0</th>
-					<th scope="col">Version 2.0</th>
-					<th scope="col">Changes</th>
-					<th scope="col">Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				{
-					continuumChanges.v2
-						.filter((change) => change.transformation || change.edited)
-						.map((change) => {
-							let oldTag = change.oldTag;
-							let newTag;
-							if (change.transformation) {
-								if (change.transformation.type === 'deleted') newTag = null;
-								else newTag = change.transformation.to;
-							} else {
-								newTag = oldTag;
-							}
-
-							let transformationText = {
-								deleted: () => {
-									return 'was removed';
-								},
-								reordered: (newTag) => {
-									return `is now ${newTag}`;
-								},
-								combined: (newTag) => {
-									return `was combined into ${newTag}`;
-								},
-								split: (newTag) => {
-									return `was split into ${newTag}`;
-								},
-								added: () => {
-									return 'was added';
-								},
-							};
-
-							let details = [];
-							if (change.transformation) {
-								if (change.transformation.type === 'added') {
-									details.push(
-										`${newTag} ${transformationText[change.transformation.type]()}.`,
-									);
+		<div class="table-container">
+			<table
+				data-theme="blue"
+				data-vibrancy="vivid"
+			>
+				<thead>
+					<tr>
+						<th scope="col">Version 1.0</th>
+						<th scope="col">Version 2.0</th>
+						<th scope="col">Changes</th>
+						<th scope="col">Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						continuumChanges.v2
+							.filter((change) => change.transformation || change.edited)
+							.map((change) => {
+								let oldTag = change.oldTag;
+								let newTag;
+								if (change.transformation) {
+									if (change.transformation.type === 'deleted') newTag = null;
+									else newTag = change.transformation.to;
 								} else {
-									details.push(
-										`${oldTag} ${transformationText[change.transformation.type](newTag)}.`,
-									);
+									newTag = oldTag;
 								}
-							}
 
-							if (change.edited) {
-								details.push('Text was edited.');
-							}
+								let transformationText = {
+									deleted: () => {
+										return 'was removed';
+									},
+									reordered: (newTag) => {
+										return `is now ${newTag}`;
+									},
+									combined: (newTag) => {
+										return `was combined into ${newTag}`;
+									},
+									split: (newTag) => {
+										return `was split into ${newTag}`;
+									},
+									added: () => {
+										return 'was added';
+									},
+								};
 
-							let changes = [];
-							if (change.transformation)
-								changes.push(toTitleCase(change.transformation.type));
-							if (change.edited) changes.push('Edited');
+								let details = [];
+								if (change.transformation) {
+									if (change.transformation.type === 'added') {
+										details.push(
+											`${newTag} ${transformationText[change.transformation.type]()}.`,
+										);
+									} else {
+										details.push(
+											`${oldTag} ${transformationText[change.transformation.type](newTag)}.`,
+										);
+									}
+								}
 
-							return (
-								<tr>
-									<td>
-										{oldTag ? (
-											oldTag
-										) : (
-											<>
-												<span aria-hidden="true">—</span>
-												<span data-screen-reader>N/A</span>
-											</>
-										)}
-									</td>
-									<td>
-										{newTag ? (
-											newTag
-										) : (
-											<>
-												<span aria-hidden="true">—</span>
-												<span data-screen-reader>N/A</span>
-											</>
-										)}
-									</td>
-									<td>{changes.join(', ')}</td>
-									<td>{details.join(' ')}</td>
-								</tr>
-							);
-						})
-				}
-			</tbody>
-		</table>
+								if (change.edited) {
+									details.push('Text was edited.');
+								}
+
+								let changes = [];
+								if (change.transformation)
+									changes.push(toTitleCase(change.transformation.type));
+								if (change.edited) changes.push('Edited');
+
+								return (
+									<tr>
+										<td>
+											{oldTag ? (
+												oldTag
+											) : (
+												<>
+													<span aria-hidden="true">—</span>
+													<span data-screen-reader>N/A</span>
+												</>
+											)}
+										</td>
+										<td>
+											{newTag ? (
+												newTag
+											) : (
+												<>
+													<span aria-hidden="true">—</span>
+													<span data-screen-reader>N/A</span>
+												</>
+											)}
+										</td>
+										<td>{changes.join(', ')}</td>
+										<td>{details.join(' ')}</td>
+									</tr>
+								);
+							})
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </BaseLayout>
 
 <style>
-	table {
-		width: 100%;
-		table-layout: fixed;
-		border-collapse: collapse;
-		margin: var(--space-base) 0 var(--space-2xl);
+	.table-container {
+		max-width: 100%;
+		overflow-x: scroll;
 
-		/* Cell Defaults */
+		table {
+			/* width: 100%; */
+			table-layout: fixed;
+			border-collapse: collapse;
+			margin: var(--space-base) 0 var(--space-2xl);
 
-		& :is(th, td) {
-			padding: var(--space-2xs) var(--space-sm);
-			font-size: var(--font-size-xs);
-			color: var(--colour-txt-on-subtle-1);
-			text-align: left;
-		}
+			/* Cell Defaults */
 
-		& th {
-			font-weight: 600;
-			font-size: var(--font-size-sm);
-			padding: var(--space-2xs) var(--space-sm);
-		}
+			& :is(th, td) {
+				padding: var(--space-2xs) var(--space-sm);
+				font-size: var(--font-size-xs);
+				color: var(--colour-txt-on-subtle-1);
+				text-align: left;
 
-		/* Table Head */
+				@container main (width < 540px) {
+					padding: var(--space-3xs) var(--space-2xs);
+					font-size: var(--font-size-2xs);
+				}
+			}
 
-		& thead {
 			& th {
-				border-bottom: 1px solid var(--colour-brd-bold);
-				border-right: 1px dashed var(--colour-brd-mid);
-			}
+				font-weight: 600;
+				font-size: var(--font-size-sm);
+				padding: var(--space-2xs) var(--space-sm);
 
-			& tr th:nth-of-type(1) {
-				width: 15%;
-			}
-
-			& tr th:nth-of-type(2) {
-				border-top: 1px solid var(--colour-brd-bold-accent);
-				border-color: var(--colour-brd-bold-accent);
-				background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
-				width: 15%;
-			}
-
-			& tr th:last-of-type {
-				border-right: none;
-				width: 45%;
-			}
-		}
-
-		/* Table Body */
-
-		& tbody {
-			& tr {
-				& td {
-					border-right: 1px dashed var(--colour-brd-mid);
-					border-bottom: 1px solid var(--colour-brd-mid);
-					line-height: 1;
-
-					&:first-of-type {
-						border-left: 1px solid var(--colour-brd-bold);
-						border-right-color: var(--colour-brd-bold-accent);
-					}
-
-					&:nth-of-type(2) {
-						background-color: var(--colour-bkg-surface-subtle-1-accent);
-						border-color: var(--colour-brd-bold-accent);
-					}
-
-					&:last-of-type {
-						border-right: 1px solid var(--colour-brd-bold);
-					}
+				@container main (width < 540px) {
+					padding: var(--space-3xs) var(--space-2xs);
+					font-size: var(--font-size-2xs);
 				}
+			}
 
-				&:nth-of-type(even) {
-					background-color: var(--colour-bkg-canvas-subtle-2);
+			/* Table Head */
 
-					& td:nth-of-type(2) {
-						background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
-					}
-				}
-
-				&:last-of-type td {
+			& thead {
+				& th {
 					border-bottom: 1px solid var(--colour-brd-bold);
+					border-right: 1px dashed var(--colour-brd-mid);
+				}
+
+				& tr th:nth-of-type(1) {
+					width: 15%;
+				}
+
+				& tr th:nth-of-type(2) {
+					border-top: 1px solid var(--colour-brd-bold-accent);
+					border-color: var(--colour-brd-bold-accent);
+					background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
+					width: 15%;
+				}
+
+				& tr th:last-of-type {
+					border-right: none;
+					width: 45%;
+				}
+			}
+
+			/* Table Body */
+
+			& tbody {
+				& tr {
+					& td {
+						border-right: 1px dashed var(--colour-brd-mid);
+						border-bottom: 1px solid var(--colour-brd-mid);
+						line-height: 1;
+
+						&:first-of-type {
+							border-left: 1px solid var(--colour-brd-bold);
+							border-right-color: var(--colour-brd-bold-accent);
+						}
+
+						&:nth-of-type(2) {
+							background-color: var(--colour-bkg-surface-subtle-1-accent);
+							border-color: var(--colour-brd-bold-accent);
+						}
+
+						&:last-of-type {
+							border-right: 1px solid var(--colour-brd-bold);
+						}
+					}
+
+					&:nth-of-type(even) {
+						background-color: var(--colour-bkg-canvas-subtle-2);
+
+						& td:nth-of-type(2) {
+							background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
+						}
+					}
+
+					&:last-of-type td {
+						border-bottom: 1px solid var(--colour-brd-bold);
+					}
 				}
 			}
 		}
