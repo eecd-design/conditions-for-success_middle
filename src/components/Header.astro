@@ -955,7 +955,7 @@ let welcomeVideoPath =
 			let subnavContainer = target.closest('.subnav-container');
 			if (subnavContainer && subnavContainer.contains(next)) return;
 			let btn = subnavContainer.querySelector('button.subnav-toggle');
-			btn.setAttribute('aria-expanded', 'false');
+			if (btn) btn.setAttribute('aria-expanded', 'false');
 		}
 	};
 	eventControl.add({
