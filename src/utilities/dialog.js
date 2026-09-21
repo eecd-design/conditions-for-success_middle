@@ -38,6 +38,34 @@ let dialogControl = (() => {
 				resetForm({ form });
 			}
 		}
+
+		if (dialog.matches('#media-dialog')) {
+			let video = dialog.querySelector('video');
+			let iframe = dialog.querySelector('iframe');
+			let audio = dialog.querySelector('audio');
+			let transcriptAccordion = dialog.querySelector('.transcript');
+
+			// Reset source
+			video.src = '';
+			iframe.removeAttribute('src');
+			audio.src = '';
+
+			// Reset visibility
+			video.setAttribute('hidden', '');
+			iframe.setAttribute('hidden', '');
+			audio.setAttribute('hidden', '');
+			transcriptAccordion.setAttribute('hidden', '');
+
+			// Disable old tracks
+			for (let track of video.textTracks) {
+				track.mode = 'disabled';
+			}
+
+			// Remove old tracks
+			for (let track of video.querySelectorAll('track')) {
+				track.remove();
+			}
+		}
 	};
 
 	let open = ({

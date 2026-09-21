@@ -147,12 +147,6 @@ import videoPoster from 'src/images/video-poster.png';
 		let audio = mediaDialog.querySelector('audio');
 		let transcriptAccordion = mediaDialog.querySelector('.transcript');
 
-		// Reset visibility
-		video.setAttribute('hidden', '');
-		iframe.setAttribute('hidden', '');
-		audio.setAttribute('hidden', '');
-		transcriptAccordion.setAttribute('hidden', '');
-
 		// Get the media data from the button
 		let mediaType = target.getAttribute('data-media-type');
 		let mediaExternal = target.getAttribute('data-media-external')
@@ -173,19 +167,8 @@ import videoPoster from 'src/images/video-poster.png';
 				iframe.setAttribute('title', mediaTitle);
 				iframe.removeAttribute('hidden');
 			} else {
-				iframe.removeAttribute('src');
-				video.removeAttribute('hidden');
 				video.src = mediaSrc;
-
-				// Disable old tracks
-				for (let track of video.textTracks) {
-					track.mode = 'disabled';
-				}
-
-				// Remove old tracks
-				for (let track of video.querySelectorAll('track')) {
-					track.remove();
-				}
+				video.removeAttribute('hidden');
 
 				// Create new track
 				let newTrack = document.createElement('track');
@@ -201,6 +184,7 @@ import videoPoster from 'src/images/video-poster.png';
 		} else if (mediaType === 'audio') {
 			audio.setAttribute('src', mediaSrc);
 			audio.removeAttribute('hidden');
+
 			transcriptAccordion.removeAttribute('hidden');
 			let transcriptPanel = transcriptAccordion.querySelector('.panel > .content');
 			transcriptPanel.innerHTML = '<p>Updated transcript...</p>';
