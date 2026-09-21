@@ -298,6 +298,33 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			}
 		};
 
+		let updateReport = (data: UserData, changes) => {
+			let stateTriggerKeys = ['activeAssessmentId'];
+			let assessmentTriggerKeys = ['status'];
+			if (
+				!changes.initiating &&
+				!(
+					(changes.assessments &&
+						assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+					(changes.uiState &&
+						stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+				)
+			)
+				return;
+
+			let assessment = getActiveAssessmentData();
+
+			// Get the main
+			let main = document.querySelector('main');
+
+			// Update the assessor
+			if (assessment && assessment.status === 'Complete') {
+				main.setAttribute('data-report', 'active');
+			} else {
+				main.setAttribute('data-report', 'inactive');
+			}
+		};
+
 		//
 		// Methods
 		//
@@ -311,6 +338,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		subscribe(updateMode);
 		subscribe(updateStatus);
 		subscribe(updateAssessor);
+		subscribe(updateReport);
 
 		dialogControl.init();
 		eventControl.add({

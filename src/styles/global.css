@@ -1400,7 +1400,7 @@ main {
 			'. left-aside . content . right-aside .';
 		justify-content: center;
 		position: relative;
-		transition: grid-template-columns var(--transition-ease-medium);
+		/* transition: grid-template-columns var(--transition-ease-medium); */
 
 		@container main (width < 720px) {
 			--wrapper-min-margin: var(--space-xl) !important;
@@ -1432,8 +1432,10 @@ main {
 
 	/* No asides */
 
-	&:not(:has(.left-aside)):not(:has(.right-aside)) > .wrapper {
+	&:not(:has(.left-aside)):not(:has(.right-aside)) > .wrapper,
+	&.report[data-report='inactive'] > .wrapper {
 		--aside-width: 0;
+		--aside-gap: 0;
 
 		@container main (width < 1112px) {
 			--wrapper-min-margin: var(--space-2xl);
@@ -1459,9 +1461,12 @@ main {
 		}
 	}
 
-	/* Left aside only - padded (e.g., /Big-Seven/) */
+	/* Left aside only - padded (e.g., /Big-Seven/, /Report/, /Training/, /Support/) */
 
-	&:not(:has(.right-aside)):has(.left-aside:not([data-style])) > .wrapper {
+	&:not(.report[data-report='inactive']):not(:has(.right-aside)):has(
+			.left-aside:not([data-style])
+		)
+		> .wrapper {
 		--aside-max-width: 400px;
 
 		@container main (width >= 1180px) and (width < 1920px) {
@@ -3149,6 +3154,7 @@ span.highlight {
 	}
 }
 
-[data-theme-switching] * {
+[data-theme-switching] *,
+[data-layout-switching] * {
 	transition: none !important;
 }

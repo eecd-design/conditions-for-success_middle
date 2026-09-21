@@ -655,13 +655,10 @@ navSections.push(onPageSection);
 		let reportWelcomeYear = reportWelcome?.querySelector('[data-field="reportYear"]');
 
 		if (!data.uiState.activeAssessmentId) {
-			main.setAttribute('data-report', 'inactive');
 			reportHeadingSubtitle.setAttribute('hidden', '');
 		} else {
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
-
-			main.setAttribute('data-report', 'active');
 
 			let onPageNavLinks = onPageNav.querySelectorAll('a');
 			for (let link of onPageNavLinks) {
