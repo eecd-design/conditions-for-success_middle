@@ -248,8 +248,6 @@ let dialogControl = (() => {
 		let dialog = document.querySelector('dialog[open]');
 		if (!dialog) return;
 
-		console.log('Dialog Open: Visual Viewport Resize Event');
-
 		const originalDisplay = dialog.style.display;
 		dialog.style.display = 'none';
 
