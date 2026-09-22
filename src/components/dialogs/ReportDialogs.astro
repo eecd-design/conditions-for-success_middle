@@ -6,6 +6,7 @@ import Toast from 'src/components/Toast.astro';
 
 import IconCheckmark from 'src/components/icons/IconCheckmark_8.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
+import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -132,8 +133,29 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 		<p>
 			Download the <strong>PDF</strong> version for a printable report with pre-built charts, or
 			download the <strong>Spreadsheet</strong> version to build your own data visualizations, compare
-			results year over year, or share with school, district, or department leadership.
+			results year over year, or share progress with school, district, or department leadership.
 		</p>
+
+		<div
+			class="callout"
+			data-style="solid"
+			data-vibrancy="vivid"
+			data-fit="compact"
+			data-theme="yellow"
+		>
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>
+						The <strong>Spreadsheet</strong> version of the report is not the same as the
+						assessment <strong>Backup File</strong> and cannot be used to restore or share
+						an assessment.
+					</p>
+				</div>
+			</div>
+		</div>
 
 		<div
 			id="pdf-export-progress-container"
