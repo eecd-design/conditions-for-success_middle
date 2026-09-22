@@ -309,7 +309,7 @@ let createAssessment = (values) => {
 		assessment.changeLog.push({
 			date: Date.now(),
 			assessor: null,
-			message: 'Assessment created.',
+			message: 'created new assessment.',
 		}));
 	assessment.reportingYear = reportingYear;
 	assessment.school = school;
@@ -332,7 +332,7 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 	newAssessment.changeLog.push({
 		date: Date.now(),
 		assessor: null,
-		message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
+		message: `duplicated ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
 	});
 	newAssessment.considerationsEstablished = oldAssessment.considerationsEstablished;
 	newAssessment.dateCreated = Date.now();
@@ -341,7 +341,7 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 	newAssessment.id = id;
 	newAssessment.reportingYear = newReportingYear;
 	newAssessment.school = oldAssessment.school;
-	newAssessment.continuumCompletion = await generateContinuumCompletion(newAssessment);
+	newAssessment.continuumCompletion = await generateContinuumCompletion(oldAssessment);
 
 	setState({
 		activeAssessmentId: id,
@@ -359,7 +359,7 @@ let setImportConflictData = ({ importedAssessment, checkResult }) => {
 };
 
 let generateContinuumCompletion = async (assessment) => {
-	let debug = false;
+	let debug = true;
 
 	if (!assessment) return;
 
@@ -368,10 +368,12 @@ let generateContinuumCompletion = async (assessment) => {
 	if (considerationsEstablished.length === 0) return {};
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
-		if (debug)
+		if (debug) {
 			console.log(
 				'Continuum completion is present and continuum version matches current. Returning existing completion.',
 			);
+			console.log(continuumCompletion);
+		}
 		return continuumCompletion;
 	} else {
 		if (debug)
@@ -597,6 +599,9 @@ let updateContinuumCompletion = async ({
 	let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
 	let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
 	let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
+
+	console.log(continuumCompletion[component]);
+	console.log(initiatingIsUnassessed, implementingIsUnassessed, developingIsUnassessed);
 
 	switch (phase) {
 		case 'implementing':
