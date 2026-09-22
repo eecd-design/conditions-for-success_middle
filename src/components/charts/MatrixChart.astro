@@ -300,6 +300,15 @@ let { entries, fit = 'normal', colour } = Astro.props;
 
 		#print-report-container & {
 			--chart-scale: 0.75;
+			table-layout: fixed;
+
+			/* Extra padding to compensate for Firefox snapdom bottom clipping bug */
+			&::after {
+				content: '';
+				display: block;
+				height: 8px;
+				width: 100%;
+			}
 		}
 	}
 </style>

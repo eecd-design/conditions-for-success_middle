@@ -4,7 +4,7 @@ import IconSeed24 from 'src/components/icons/IconSeed_24.astro';
 import IconSapling24 from 'src/components/icons/IconSapling_24.astro';
 import IconWateringCan24 from 'src/components/icons/IconWateringCan_24.astro';
 
-let { colour } = Astro.props;
+let { colour, numGridlines = 0 } = Astro.props;
 ---
 
 <div
@@ -22,7 +22,18 @@ let { colour } = Astro.props;
 		</div>
 		<div class="block-container">
 			<IconTrowel24 />
-			<div class="gridlines"></div>
+			{
+				numGridlines !== 0 && (
+					<div
+						class="gridlines"
+						style={`--grid-step: ${numGridlines}`}
+					>
+						{[...Array(numGridlines)].map((line) => (
+							<div class="line" />
+						))}
+					</div>
+				)
+			}
 			<div class="block"></div>
 		</div>
 		<div class="value-container">
@@ -49,7 +60,18 @@ let { colour } = Astro.props;
 		</div>
 		<div class="block-container">
 			<IconSeed24 />
-			<div class="gridlines"></div>
+			{
+				numGridlines !== 0 && (
+					<div
+						class="gridlines"
+						style={`--grid-step: ${numGridlines}`}
+					>
+						{[...Array(numGridlines)].map((line) => (
+							<div class="line" />
+						))}
+					</div>
+				)
+			}
 			<div class="block"></div>
 		</div>
 		<div class="value-container">
@@ -77,7 +99,18 @@ let { colour } = Astro.props;
 		</div>
 		<div class="block-container">
 			<IconSapling24 />
-			<div class="gridlines"></div>
+			{
+				numGridlines !== 0 && (
+					<div
+						class="gridlines"
+						style={`--grid-step: ${numGridlines}`}
+					>
+						{[...Array(numGridlines)].map((line) => (
+							<div class="line" />
+						))}
+					</div>
+				)
+			}
 			<div class="block"></div>
 		</div>
 		<div class="value-container">
@@ -104,7 +137,18 @@ let { colour } = Astro.props;
 		</div>
 		<div class="block-container">
 			<IconWateringCan24 />
-			<div class="gridlines"></div>
+			{
+				numGridlines !== 0 && (
+					<div
+						class="gridlines"
+						style={`--grid-step: ${numGridlines}`}
+					>
+						{[...Array(numGridlines)].map((line) => (
+							<div class="line" />
+						))}
+					</div>
+				)
+			}
 			<div class="block"></div>
 		</div>
 		<div class="value-container">
@@ -202,14 +246,14 @@ let { colour } = Astro.props;
 					width: 100%;
 					position: absolute;
 					bottom: 0;
-					background-image: linear-gradient(
-						to bottom,
-						var(--colour-brd-subtle) 1px,
-						transparent 1px
-					);
-					background-size: 100% var(--grid-size);
-					background-position: var(--grid-size) left;
 					z-index: 0;
+
+					& .line {
+						height: 1px;
+						background-color: var(--colour-brd-subtle);
+						width: 100%;
+						margin-bottom: var(--grid-size);
+					}
 				}
 
 				& .icon {
