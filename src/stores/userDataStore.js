@@ -753,7 +753,12 @@ let upgradeAssessmentContinuums = async (assessments, context) => {
 
 			convertConsiderations(assessment);
 			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
+			assessment.changeLog = updateChangeLog({
+				changeLog: assessment.changeLog,
+				message: `updated assessment (${assessment.continuumVersion}) to version ${currentContinuumVersion} of the continuums.`,
+			});
 			assessment.continuumVersion = currentContinuumVersion;
+
 			upgraded = true;
 		}
 
