@@ -93,7 +93,7 @@ if (dataset) {
 						}
 					}
 
-					&:focus-visible {
+					&:is(:active, :focus-visible) {
 						--button-bkg-colour: var(--colour-bkg-canvas-subtle-1);
 						--icon-colour: var(--colour-txt-on-subtle-1);
 					}
