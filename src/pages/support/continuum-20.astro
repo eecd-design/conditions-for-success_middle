@@ -142,12 +142,10 @@ let deleted = continuumChanges.v2.filter((change) => change.transformation?.type
 
 <style>
 	.table-container {
-		max-width: 100%;
-		overflow-x: scroll;
+		overflow-x: auto;
 
 		table {
-			/* width: 100%; */
-			table-layout: fixed;
+			width: 100%;
 			border-collapse: collapse;
 			margin: var(--space-base) 0 var(--space-2xl);
 
