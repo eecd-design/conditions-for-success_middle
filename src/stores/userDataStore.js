@@ -12,6 +12,8 @@ import {
 	normalizeImportedDate,
 	toKebabCase,
 	sanitizeHTML,
+	getTime,
+	getTimeDifference,
 } from 'src/utilities/helpers';
 import { eventControl } from 'src/utilities/event';
 import { dialogControl } from 'src/utilities/dialog';
@@ -883,6 +885,8 @@ let checkForChanges = ({ data, update }) => {
 };
 
 let checkAnnouncementSession = () => {
+	let debug = true;
+
 	let announcementSession = data.uiState.announcementSession ?? {
 		views: 0,
 		lastSeen: null,
@@ -892,10 +896,28 @@ let checkAnnouncementSession = () => {
 	let { latestResourceTimestamp } = data.uiState;
 
 	let sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
-	let recencyTimeout = 30 * 24 * 60 * 60 * 1000; // 30 days
+	let recencyTimeout = 12 * 30 * 24 * 60 * 60 * 1000; // 30 days
 	let now = Date.now();
 
 	let showAnnouncement = false;
+
+	if (debug) {
+		console.log(
+			`${getTimeDifference(now, latestResourceTimestamp)} since latest resource was added.`,
+		);
+
+		console.log(
+			now - latestResourceTimestamp > recencyTimeout
+				? `Latest resource addition is outside of the recency timeout window (${getTime(recencyTimeout)}).`
+				: `Latest resource addition is within the recency timeout window (${getTime(recencyTimeout)}).`,
+		);
+
+		console.log(
+			!lastSeen || now - lastSeen > sessionTimeout
+				? `User has not seen the announcement for at least the session timeout (${getTime(sessionTimeout)}).`
+				: `User has seen the announcement within the session timeout window (${getTime(sessionTimeout)}).`,
+		);
+	}
 
 	// Check if it's been over a month since the most recent resource was added
 	if (!latestResourceTimestamp || now - latestResourceTimestamp > recencyTimeout) {
