@@ -30,17 +30,18 @@ const { id, message, colour, type } = Astro.props;
 		right: 0;
 		z-index: 12;
 		pointer-events: none;
-	}
 
-	main.big-seven[data-mode='assessment'] .toast-group {
-		padding-top: var(--space-base);
-		top: 3.75rem;
-	}
+		main.big-seven[data-mode='assessment'] &,
+		main.report[data-mode='assessment'] & {
+			padding-top: var(--space-base);
+			top: 3.75rem;
+		}
 
-	dialog .toast-group {
-		top: unset !important;
-		bottom: var(--space-xl);
-		padding: 0 !important;
+		dialog & {
+			top: unset !important;
+			bottom: var(--space-xl);
+			padding: 0 !important;
+		}
 	}
 
 	.toast-container {
@@ -56,39 +57,39 @@ const { id, message, colour, type } = Astro.props;
 		transition:
 			opacity var(--transition-linear-fast),
 			translate var(--transition-ease-fast);
-	}
 
-	dialog .toast-container {
-		translate: 0px 0.25rem;
-	}
+		dialog & {
+			translate: 0px 0.25rem;
+		}
 
-	.toast-container[open] {
-		opacity: 1;
-		translate: 0px 0px !important;
-		transition:
-			opacity var(--transition-linear-medium),
-			translate var(--transition-ease-slow);
-	}
+		&[open] {
+			opacity: 1;
+			translate: 0px 0px !important;
+			transition:
+				opacity var(--transition-linear-medium),
+				translate var(--transition-ease-slow);
+		}
 
-	.toast {
-		--icon-size: 0.75rem;
-		--icon-colour: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-		gap: var(--space-xs);
-		padding: var(--space-2xs) var(--space-sm);
-		min-height: 3rem;
-		background-color: var(
-			--colour-bkg-surface-subtle-1-accent,
-			var(--colour-bkg-surface-subtle-1)
-		);
-		border-radius: var(--brd-radius-normal);
-		font-size: var(--font-size-2xs);
-		box-shadow: var(--box-shadow);
-	}
+		& .toast {
+			--icon-size: 0.75rem;
+			--icon-colour: var(--colour-txt-on-subtle-1-accent, var(--colour-txt-on-subtle-1));
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			gap: var(--space-xs);
+			padding: var(--space-2xs) var(--space-sm);
+			min-height: 3rem;
+			background-color: var(
+				--colour-bkg-surface-subtle-1-accent,
+				var(--colour-bkg-surface-subtle-1)
+			);
+			border-radius: var(--brd-radius-normal);
+			font-size: var(--font-size-2xs);
+			box-shadow: var(--box-shadow);
 
-	.toast:is([data-type='failure'], [data-type='reminder']) {
-		--icon-size: 1rem;
+			&:is([data-type='failure'], [data-type='reminder']) {
+				--icon-size: 1rem;
+			}
+		}
 	}
 </style>
