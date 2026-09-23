@@ -275,32 +275,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// DOM Updates
 	//
 
-	/**
-	 * Update the manage-assessments dialog UI from stored assessment data
-	 * @param data
-	 */
-	let updateDownloadAssessmentDialog = (data: UserData, changes) => {
-		let dialog = document.querySelector('#download-assessment-dialog') as HTMLDialogElement;
-		if (!dialog) return;
-
-		let stateTriggerKeys = ['activeAssessmentId'];
-		if (
-			!changes.initiating &&
-			!(
-				changes.assessments ||
-				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
-			)
-		)
-			return;
-
-		if (!changes.initiating && !changes.assessments) return;
-
-		// let assessment = getActiveAssessmentData();
-		// if (!assessment) return;
-
-		// editStatusSection({ dialog, status: assessment.status });
-	};
-
 	let updateShareAssessmentDialog = (data: UserData, changes) => {
 		let dialog = document.querySelector('#share-assessment-dialog') as HTMLDialogElement;
 		if (!dialog) return;
@@ -314,8 +288,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			)
 		)
 			return;
-
-		if (!changes.initiating && !changes.assessments) return;
 
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
@@ -334,31 +306,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		} else {
 			exportCodeSection.setAttribute('hidden', '');
 		}
-	};
-
-	let editStatusSection = ({ dialog, status }) => {
-		if (!dialog || !status) return;
-
-		let isComplete = status === 'Complete';
-
-		let completeInstructions = dialog.querySelector(
-			'#download-assessment-dialog_edit-status_complete-instructions',
-		);
-		let inProgressInstructions = dialog.querySelector(
-			'#download-assessment-dialog_edit-status_in-progress-instructions',
-		);
-		completeInstructions.toggleAttribute('hidden', !isComplete);
-		inProgressInstructions.toggleAttribute('hidden', isComplete);
-
-		let btn = dialog.querySelector('section.edit-status button.change-status');
-
-		btn.textContent = isComplete ? 'Mark as In Progress' : 'Mark as Complete';
-		btn.setAttribute(
-			'aria-describedby',
-			isComplete
-				? 'download-assessment-dialog_edit-status_complete-instructions'
-				: 'download-assessment-dialog_edit-status_in-progress-instructions',
-		);
 	};
 
 	let updateExportWarningDialog = (data: UserData, changes) => {
@@ -401,7 +348,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Inits
 	//
 
-	// subscribe(updateDownloadAssessmentDialog);
 	subscribe(updateShareAssessmentDialog);
 	subscribe(updateExportWarningDialog);
 
