@@ -20,7 +20,10 @@ let { colour, numGridlines = 0 } = Astro.props;
 		<div class="title-container">
 			<span class="title">Initiating</span>
 		</div>
-		<div class="block-container">
+		<div
+			class="block-container"
+			aria-hidden="true"
+		>
 			<IconTrowel24 />
 			{
 				numGridlines !== 0 && (
@@ -58,7 +61,10 @@ let { colour, numGridlines = 0 } = Astro.props;
 		<div class="title-container">
 			<span class="title">Implementing</span>
 		</div>
-		<div class="block-container">
+		<div
+			class="block-container"
+			aria-hidden="true"
+		>
 			<IconSeed24 />
 			{
 				numGridlines !== 0 && (
@@ -97,7 +103,10 @@ let { colour, numGridlines = 0 } = Astro.props;
 		<div class="title-container">
 			<span class="title">Developing</span>
 		</div>
-		<div class="block-container">
+		<div
+			class="block-container"
+			aria-hidden="true"
+		>
 			<IconSapling24 />
 			{
 				numGridlines !== 0 && (
@@ -135,7 +144,10 @@ let { colour, numGridlines = 0 } = Astro.props;
 		<div class="title-container">
 			<span class="title">Sustaining</span>
 		</div>
-		<div class="block-container">
+		<div
+			class="block-container"
+			aria-hidden="true"
+		>
 			<IconWateringCan24 />
 			{
 				numGridlines !== 0 && (
