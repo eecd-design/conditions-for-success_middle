@@ -227,34 +227,39 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 </Dialog>
 
 <style is:global>
-	fieldset.indicators .elem-group {
-		--group-gap: 0;
-		--group-margin: 0;
-	}
+	fieldset.indicators {
+		& .button-group {
+			--group-gap: var(--space-2xs);
+			margin: var(--space-xs) 0;
+		}
 
-	fieldset.indicators .button-group {
-		--group-gap: var(--space-2xs);
-		margin: var(--space-xs) 0;
-	}
+		& .elem-group {
+			--group-gap: 0;
+			--group-margin: 0;
+		}
 
-	fieldset.indicators label:has(input[type='checkbox']) {
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--brd-radius-small);
-		width: fit-content;
-	}
+		& label:has(input[type='checkbox']) {
+			padding: var(--space-2xs) var(--space-xs);
+			border-radius: var(--brd-radius-small);
+			width: fit-content;
 
-	fieldset.indicators label:has(input[type='checkbox']:is(:hover, :focus-visible)) {
-		background-color: var(--colour-bkg-surface-subtle-1);
-	}
+			& .icon.checkmark {
+				top: 0.75rem;
+				left: 1rem;
+			}
+		}
 
-	fieldset.indicators label:has(input[type='checkbox']:focus-visible) {
-		outline: var(--colour-focus-ring) solid 2px;
-		outline-offset: 3px;
-	}
+		@media (hover: hover) {
+			& label:has(input[type='checkbox']:hover) {
+				background-color: var(--colour-bkg-surface-subtle-1);
+			}
+		}
 
-	fieldset.indicators label:has(input[type='checkbox']) .icon.checkmark {
-		top: 0.75rem;
-		left: 1rem;
+		& label:has(input[type='checkbox']:focus-visible) {
+			background-color: var(--colour-bkg-surface-subtle-1);
+			outline: var(--colour-focus-ring) solid 2px;
+			outline-offset: 3px;
+		}
 	}
 </style>
 

@@ -150,12 +150,23 @@ let IconCaret = caretIcons[caretIconSize];
 
 					/* States */
 
-					&:is(:hover, :focus-visible) {
+					@media (hover: hover) {
+						&:hover {
+							--button-bkg-colour: transparent;
+							--button-txt-colour: var(--button-txt-colour);
+						}
+
+						&:not([aria-expanded='true']):hover {
+							--button-boxshadow-colour: var(--default-button-boxshadow-hover);
+						}
+					}
+
+					&:focus-visible {
 						--button-bkg-colour: transparent;
 						--button-txt-colour: var(--button-txt-colour);
 					}
 
-					&:not([aria-expanded='true']):is(:hover, :focus-visible) {
+					&:not([aria-expanded='true']):focus-visible {
 						--button-boxshadow-colour: var(--default-button-boxshadow-hover);
 					}
 
@@ -246,12 +257,23 @@ let IconCaret = caretIcons[caretIconSize];
 					min-height: auto;
 					padding: var(--space-xs);
 
-					&:is(:hover, :focus-visible),
-					&[aria-expanded='true']:is(:hover, :focus-visible) {
+					@media (hover: hover) {
+						&:hover,
+						&[aria-expanded='true']:hover {
+							--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+						}
+
+						&:not([aria-expanded='true']):hover {
+							--button-boxshadow-colour: transparent;
+						}
+					}
+
+					&:focus-visible,
+					&[aria-expanded='true']:focus-visible {
 						--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 					}
 
-					&:not([aria-expanded='true']):is(:hover, :focus-visible) {
+					&:not([aria-expanded='true']):focus-visible {
 						--button-boxshadow-colour: transparent;
 					}
 

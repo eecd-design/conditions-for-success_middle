@@ -643,7 +643,13 @@ let types = [...allTypes].sort((a: string, b: string) => {
 				--icon-size: 1.25rem;
 				margin: 0;
 
-				&:is(:hover, :focus-visible),
+				@media (hover: hover) {
+					&:hover {
+						--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+					}
+				}
+
+				&:focus-visible,
 				&:has(input:focus-visible) {
 					--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 				}
@@ -744,11 +750,14 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					}
 				}
 
-				&:has(input[type='checkbox']:is(:hover, :focus-visible)) {
-					background-color: var(--colour-bkg-surface-subtle-1);
+				@media (hover: hover) {
+					&:has(input[type='checkbox']:hover) {
+						background-color: var(--colour-bkg-surface-subtle-1);
+					}
 				}
 
 				&:has(input[type='checkbox']:focus-visible) {
+					background-color: var(--colour-bkg-surface-subtle-1);
 					outline: var(--colour-focus-ring) solid 2px;
 					outline-offset: 3px;
 				}
@@ -813,10 +822,14 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					font-size: var(--font-size-2xs);
 					height: 2rem;
 
-					&:not(:is([aria-pressed='true'], [aria-expanded='true'])):is(
-							:hover,
-							:focus-visible
-						) {
+					@media (hover: hover) {
+						&:not(:is([aria-pressed='true'], [aria-expanded='true'])):hover {
+							--button-bkg-colour: transparent;
+							--button-boxshadow-colour: var(--colour-brd-subtle);
+						}
+					}
+
+					&:not(:is([aria-pressed='true'], [aria-expanded='true'])):focus-visible {
 						--button-bkg-colour: transparent;
 						--button-boxshadow-colour: var(--colour-brd-subtle);
 					}

@@ -84,9 +84,20 @@ if (dataset) {
 			);
 			color: var(--dialog-txt-colour);
 
-			& button.close-dialog:has(.icon:only-child):is(:hover, :focus-visible) {
-				--button-bkg-colour: var(--colour-bkg-canvas-subtle-1);
-				--icon-colour: var(--colour-txt-on-subtle-1);
+			& .dialog-controls.button-group {
+				& button:is(.close-dialog, .back-dialog) {
+					@media (hover: hover) {
+						&:hover {
+							--button-bkg-colour: var(--colour-bkg-canvas-subtle-1);
+							--icon-colour: var(--colour-txt-on-subtle-1);
+						}
+					}
+
+					&:focus-visible {
+						--button-bkg-colour: var(--colour-bkg-canvas-subtle-1);
+						--icon-colour: var(--colour-txt-on-subtle-1);
+					}
+				}
 			}
 		}
 
@@ -117,7 +128,14 @@ if (dataset) {
 				--icon-colour: var(--dialog-txt-colour, inherit);
 				min-width: 2.25rem;
 
-				&:is(:hover, :focus-visible) {
+				@media (hover: hover) {
+					&:hover {
+						--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+						--icon-colour: var(--colour-txt-on-bold-1);
+					}
+				}
+
+				&:focus-visible {
 					--button-bkg-colour: var(--colour-bkg-surface-bold-2);
 					--icon-colour: var(--colour-txt-on-bold-1);
 				}

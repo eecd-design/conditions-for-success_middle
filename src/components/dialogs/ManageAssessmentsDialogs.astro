@@ -549,7 +549,13 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						color: var(--colour-txt-on-bold-1);
 					}
 
-					& button.delete:is(:hover, :focus-visible) {
+					@media (hover: hover) {
+						& button.delete:hover {
+							--button-bkg-colour: var(--colour-bkg-surface-bold-error);
+						}
+					}
+
+					& button.delete:focus-visible {
 						--button-bkg-colour: var(--colour-bkg-surface-bold-error);
 					}
 				}
@@ -573,7 +579,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 							color: var(--colour-txt-on-subtle-1);
 						}
 
-						& button.delete:is(:hover, :focus-visible) {
+						@media (hover: hover) {
+							& button.delete:hover {
+								--button-bkg-colour: var(--colour-bkg-surface-subtle-error);
+								--button-txt-colour: var(--colour-txt-on-subtle-1);
+							}
+						}
+
+						& button.delete:focus-visible {
 							--button-bkg-colour: var(--colour-bkg-surface-subtle-error);
 							--button-txt-colour: var(--colour-txt-on-subtle-1);
 						}
@@ -592,7 +605,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	*/
 
 	#import-conflict-dialog {
-		&:has(button.overwrite:hover) .card.imported {
+		&:has(button.overwrite:is(:hover, :focus-visible)) .card.imported {
 			--card-boxshadow-colour: var(--colour-brd-bold);
 			--card-boxshadow-width: 3px;
 
@@ -603,7 +616,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			}
 		}
 
-		&:has(button.keep:hover) .card.local {
+		&:has(button.keep:is(:hover, :focus-visible)) .card.local {
 			--card-boxshadow-colour: var(--colour-brd-bold);
 			--card-boxshadow-width: 3px;
 

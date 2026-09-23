@@ -432,38 +432,17 @@ navSections.push(onPageSection);
 				--label-size: var(--font-size-xs);
 				--icon-size: 1.25rem;
 
-				&:is(:hover, :focus-visible) {
+				@media (hover: hover) {
+					&:hover {
+						--label-colour: var(--colour-txt-on-bold-1);
+						--icon-colour: var(--colour-txt-on-bold-1);
+					}
+				}
+
+				&:focus-visible {
 					--label-colour: var(--colour-txt-on-bold-1);
 					--icon-colour: var(--colour-txt-on-bold-1);
 				}
-			}
-		}
-
-		& #report-controls {
-			--group-gap: var(--space-2xs);
-			display: inline-flex;
-			flex-flow: row wrap;
-			align-items: center;
-			gap: var(--space-2xs);
-			min-height: 3.25rem;
-			padding: var(--space-2xs);
-			margin: var(--space-sm) 0 0;
-			background-color: var(--colour-bkg-surface-subtle-1);
-			border-radius: var(--brd-radius-normal);
-
-			& :is(button, [data-style-as='button']) {
-				--icon-size: 1.25rem;
-				--button-bkg-colour: transparent;
-
-				&:is(:hover, :focus-visible) {
-					--icon-colour: var(--colour-txt-on-bold-1);
-					--label-colour: var(--colour-txt-on-bold-1);
-					--button-bkg-colour: var(--colour-bkg-surface-bold-1);
-				}
-			}
-
-			& .separator.item {
-				--separator-long-edge-dimension: 1.75rem;
 			}
 		}
 

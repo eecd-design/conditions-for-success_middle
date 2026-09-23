@@ -917,14 +917,32 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 					--icon-size: 1.25rem;
 					--button-bkg-colour: transparent;
 
-					&:is(:hover, :focus-visible, [aria-expanded='true']) {
+					@media (hover: hover) {
+						&:hover {
+							--icon-colour: var(--colour-txt-on-bold-1);
+							--label-colour: var(--colour-txt-on-bold-1);
+							--button-bkg-colour: var(--colour-bkg-surface-bold-1);
+						}
+					}
+
+					&:is(:focus-visible, [aria-expanded='true']) {
 						--icon-colour: var(--colour-txt-on-bold-1);
 						--label-colour: var(--colour-txt-on-bold-1);
 						--button-bkg-colour: var(--colour-bkg-surface-bold-1);
 					}
 				}
 
-				&:not([aria-expanded='true']):is(:hover, :focus-visible) {
+				@media (hover: hover) {
+					&:not([aria-expanded='true']):hover {
+						& .tooltip {
+							opacity: 1;
+							visibility: visible;
+							transition: opacity var(--transition-linear-fast) 750ms;
+						}
+					}
+				}
+
+				&:not([aria-expanded='true']):focus-visible {
 					& .tooltip {
 						opacity: 1;
 						visibility: visible;

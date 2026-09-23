@@ -952,7 +952,14 @@ p.metadata {
 
 	/* States */
 
-	&:is(:hover, :focus-visible) {
+	@media (hover: hover) {
+		&:hover {
+			--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+			--button-txt-colour: var(--colour-txt-on-bold-1);
+		}
+	}
+
+	&:focus-visible {
 		--button-bkg-colour: var(--colour-bkg-surface-bold-2);
 		--button-txt-colour: var(--colour-txt-on-bold-1);
 	}
@@ -993,7 +1000,18 @@ p.metadata {
 			--icon-size: 1.25rem;
 			--label-size: var(--font-size-xs);
 
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					--icon-colour: var(--colour-txt-on-bold-1);
+					--label-colour: var(--colour-txt-on-bold-1);
+
+					& small {
+						color: var(--label-colour);
+					}
+				}
+			}
+
+			&:focus-visible {
 				--icon-colour: var(--colour-txt-on-bold-1);
 				--label-colour: var(--colour-txt-on-bold-1);
 
@@ -1010,7 +1028,14 @@ p.metadata {
 		--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 	}
 
-	&[data-style='solid']:is(:hover, :focus-visible) {
+	@media (hover: hover) {
+		&[data-style='solid']:hover {
+			--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+			--button-txt-colour: var(--colour-txt-on-bold-1);
+		}
+	}
+
+	&[data-style='solid']:focus-visible {
 		--button-bkg-colour: var(--colour-bkg-surface-bold-2);
 		--button-txt-colour: var(--colour-txt-on-bold-1);
 	}
@@ -1021,7 +1046,15 @@ p.metadata {
 		--button-boxshadow-colour: var(--colour-brd-subtle);
 	}
 
-	&[data-style='outline']:is(:hover, :focus-visible) {
+	@media (hover: hover) {
+		&[data-style='outline']:hover {
+			--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+			--button-txt-colour: var(--colour-txt-on-bold-1);
+			--button-boxshadow-colour: transparent;
+		}
+	}
+
+	&[data-style='outline']:focus-visible {
 		--button-bkg-colour: var(--colour-bkg-surface-bold-2);
 		--button-txt-colour: var(--colour-txt-on-bold-1);
 		--button-boxshadow-colour: transparent;
@@ -1045,7 +1078,18 @@ p.metadata {
 		}
 	}
 
-	&[data-style='solid-outline']:is(:hover, :focus-visible) {
+	@media (hover: hover) {
+		&[data-style='solid-outline']:hover {
+			--button-bkg-colour: var(
+				--colour-bkg-surface-bold-1-accent,
+				var(--colour-bkg-surface-bold-1)
+			);
+			--label-colour: var(--colour-txt-on-bold-1);
+			--icon-colour: var(--colour-txt-on-bold-1);
+		}
+	}
+
+	&[data-style='solid-outline']:focus-visible {
 		--button-bkg-colour: var(
 			--colour-bkg-surface-bold-1-accent,
 			var(--colour-bkg-surface-bold-1)
@@ -1083,7 +1127,14 @@ p.metadata {
 			scale var(--transition-ease-medium);
 	}
 
-	&:is(:hover, :focus-visible) img {
+	@media (hover: hover) {
+		&:hover img {
+			opacity: 0.4;
+			scale: 1.025;
+		}
+	}
+
+	&:focus-visible img {
 		opacity: 0.4;
 		scale: 1.025;
 	}
@@ -1105,7 +1156,13 @@ p.metadata {
 		transition: scale var(--transition-ease-medium);
 	}
 
-	&:is(:hover, :focus-visible) .icon-container {
+	@media (hover: hover) {
+		&:hover .icon-container {
+			scale: 1.0675;
+		}
+	}
+
+	&:focus-visible .icon-container {
 		scale: 1.0675;
 	}
 }
@@ -1135,7 +1192,13 @@ p.metadata {
 	/* ↓ Forces Safari to render proper underline transition */
 	translate: 0 0 0;
 
-	&:is(:hover, :focus-visible) {
+	@media (hover: hover) {
+		&:hover {
+			--link-underline-colour: transparent;
+		}
+	}
+
+	&:focus-visible {
 		--link-underline-colour: transparent;
 	}
 
@@ -1160,7 +1223,13 @@ p.metadata {
 			translate: 0;
 		}
 
-		&:is(:hover, :focus-visible) .icon.destination.arrow.left {
+		@media (hover: hover) {
+			&:hover .icon.destination.arrow.left {
+				translate: -0.25rem;
+			}
+		}
+
+		&:focus-visible .icon.destination.arrow.left {
 			translate: -0.25rem;
 		}
 
@@ -1184,7 +1253,17 @@ p.metadata {
 				translate: 0px -0.25rem;
 			}
 
-			&:is(:hover, :focus-visible) .icon.destination.arrow {
+			@media (hover: hover) {
+				&:hover .icon.destination.arrow {
+					opacity: 1;
+					translate: 0 !important;
+					transition:
+						opacity var(--transition-linear-medium) 0.1s,
+						translate var(--transition-ease-medium) 0.1s;
+				}
+			}
+
+			&:focus-visible .icon.destination.arrow {
 				opacity: 1;
 				translate: 0 !important;
 				transition:
@@ -1783,6 +1862,7 @@ form {
 		font-size: var(--font-size-base);
 		font-weight: 600;
 		margin: 0 0 var(--space-2xs);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	& :is(legend, [data-style-as='legend'])[data-style='small'] {
@@ -1851,7 +1931,13 @@ label:has(input[type='checkbox']) {
 		border: 2px solid var(--colour-brd-bold);
 	}
 
-	&:has(input:is(:hover, :focus-visible, :checked))::before {
+	@media (hover: hover) {
+		&:has(input:hover)::before {
+			border-color: var(--colour-brd-bold-accent, var(--colour-brd-bold));
+		}
+	}
+
+	&:has(input:is(:focus-visible, :checked))::before {
 		border-color: var(--colour-brd-bold-accent, var(--colour-brd-bold));
 	}
 
@@ -1895,7 +1981,14 @@ label:has(input[type='checkbox']) {
 		}
 	}
 
-	&:has(input):is(:hover, :focus-visible) .text-container .tag,
+	@media (hover: hover) {
+		&:has(input):hover .text-container .tag {
+			background-color: var(--colour-bkg-surface-bold-2);
+			color: var(--colour-txt-on-bold-1);
+		}
+	}
+
+	&:has(input):focus-visible .text-container .tag,
 	&:has(input:focus-visible) .text-container .tag {
 		background-color: var(--colour-bkg-surface-bold-2);
 		color: var(--colour-txt-on-bold-1);
@@ -1970,7 +2063,14 @@ input[type='text']::placeholder {
 	margin-right: var(--space-2xs);
 	flex-shrink: 0;
 
-	&:is(:hover, :focus-visible) {
+	@media (hover: hover) {
+		&:hover {
+			--icon-colour: var(--colour-txt-on-bold-1);
+			--label-colour: var(--colour-txt-on-bold-1);
+		}
+	}
+
+	&:focus-visible {
 		--icon-colour: var(--colour-txt-on-bold-1);
 		--label-colour: var(--colour-txt-on-bold-1);
 	}
@@ -2001,12 +2101,6 @@ input[type='text']::placeholder {
 		& option {
 			:root[data-theme='dark'] & {
 				color: var(--colour-txt-on-subtle-1) !important;
-				/* background-color: var(--colour-bkg-surface-subtle-1) !important; */
-			}
-
-			&:is(:hover, :focus-visible) {
-				color: pink;
-				background-color: pink;
 			}
 		}
 
@@ -2093,7 +2187,13 @@ ul.field-values-list {
 		padding: 0 0 0 var(--space-2xs);
 		transition: background-color var(--transition-linear-fast);
 
-		&:has(button.clear:is(:hover, :focus-visible)) {
+		@media (hover: hover) {
+			&:has(button.clear:hover) {
+				background-color: var(--colour-bkg-surface-subtle-1-hover);
+			}
+		}
+
+		&:has(button.clear:focus-visible) {
 			background-color: var(--colour-bkg-surface-subtle-1-hover);
 		}
 
@@ -2122,7 +2222,15 @@ ul.field-values-list {
 			border-radius: 0 var(--brd-radius-small) var(--brd-radius-small) 0;
 			border-left: 1px solid var(--colour-brd-subtle);
 
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					--button-bkg-colour: var(--colour-bkg-surface-bold-1);
+					--icon-colour: var(--colour-txt-on-bold-1);
+					border-color: var(--button-bkg-colour);
+				}
+			}
+
+			&:focus-visible {
 				--button-bkg-colour: var(--colour-bkg-surface-bold-1);
 				--icon-colour: var(--colour-txt-on-bold-1);
 				border-color: var(--button-bkg-colour);
@@ -2314,7 +2422,14 @@ ul.field-values-list {
 			& :is(button:not([data-style-as='link']), [data-style-as='button']) {
 				--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 
-				&:is(:hover, :focus-visible) {
+				@media (hover: hover) {
+					&:hover {
+						--button-bkg-colour: transparent;
+						--button-boxshadow-colour: var(--colour-brd-faint);
+					}
+				}
+
+				&:focus-visible {
 					--button-bkg-colour: transparent;
 					--button-boxshadow-colour: var(--colour-brd-faint);
 				}
@@ -2484,7 +2599,20 @@ ul.field-values-list {
 		box-shadow var(--transition-linear-fast),
 		opacity var(--transition-linear-medium);
 
-	&:has(button:is(:hover, :focus-visible)) {
+	@media (hover: hover) {
+		&:has(button:hover) {
+			--card-boxshadow-colour: var(--colour-brd-mid);
+			--card-boxshadow-width: 2px;
+
+			& .banner {
+				border-top-color: var(--card-boxshadow-colour);
+				border-left-color: var(--card-boxshadow-colour);
+				border-right-color: var(--card-boxshadow-colour);
+			}
+		}
+	}
+
+	&:has(button:focus-visible) {
 		--card-boxshadow-colour: var(--colour-brd-mid);
 		--card-boxshadow-width: 2px;
 
@@ -2730,6 +2858,7 @@ details {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	-webkit-tap-highlight-color: transparent;
 
 	&[open] {
 		& summary {
@@ -2780,7 +2909,14 @@ details {
 			background-color var(--transition-linear-fast),
 			padding var(--transition-ease-medium);
 
-		&:is(:hover, :focus-visible) {
+		@media (hover: hover) {
+			&:hover {
+				background-color: var(--default-button-bkg-hover);
+				padding: var(--space-3xs) var(--space-sm);
+			}
+		}
+
+		&:focus-visible {
 			background-color: var(--default-button-bkg-hover);
 			padding: var(--space-3xs) var(--space-sm);
 		}
@@ -2936,8 +3072,10 @@ details {
 			transition: background-color var(--transition-linear-fast);
 		}
 
-		&:is(:hover, :focus-visible) {
-			padding-right: var(--container-padding, 0);
+		@media (hover: hover) {
+			&:is(:hover, :focus-visible) {
+				padding-right: var(--container-padding, 0);
+			}
 		}
 	}
 
@@ -2964,12 +3102,14 @@ details {
 			}
 		}
 
-		&:is(:hover, :focus-visible) .label-container {
-			grid-template-columns: 1fr;
-			opacity: 1;
+		@media (hover: hover) {
+			&:is(:hover, :focus-visible) .label-container {
+				grid-template-columns: 1fr;
+				opacity: 1;
 
-			& .label {
-				padding-left: var(--space-2xs);
+				& .label {
+					padding-left: var(--space-2xs);
+				}
 			}
 		}
 	}
@@ -2999,14 +3139,16 @@ details {
 			}
 		}
 
-		&:is(:hover, :focus-visible) .icon-container {
-			width: var(--icon-size);
-			margin-left: var(--container-padding);
-			opacity: 1;
+		@media (hover: hover) {
+			&:is(:hover, :focus-visible) .icon-container {
+				width: var(--icon-size);
+				margin-left: var(--container-padding);
+				opacity: 1;
 
-			& .icon {
-				display: inline-block;
-				flex-shrink: 0;
+				& .icon {
+					display: inline-block;
+					flex-shrink: 0;
+				}
 			}
 		}
 	}

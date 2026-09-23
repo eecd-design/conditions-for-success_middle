@@ -614,7 +614,19 @@ let phases = [
 								}
 							}
 
-							&:has(input[type='checkbox']:not(:checked):is(:hover, :focus-visible)) {
+							@media (hover: hover) {
+								&:has(input[type='checkbox']:not(:checked):hover) {
+									background-color: var(
+										--colour-bkg-surface-subtle-1-accent-hover
+									);
+
+									& .tag {
+										color: var(--colour-txt-on-subtle-1-accent-hover);
+									}
+								}
+							}
+
+							&:has(input[type='checkbox']:not(:checked):focus-visible) {
 								background-color: var(--colour-bkg-surface-subtle-1-accent-hover);
 
 								& .tag {

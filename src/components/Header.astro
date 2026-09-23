@@ -484,7 +484,16 @@ let welcomeVideoPath =
 
 			font-size: var(--font-size-sm);
 
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+					--icon-colour: var(--colour-txt-on-subtle-1);
+					--label-colour: var(--colour-txt-on-subtle-1);
+					--button-txt-colour: var(--colour-txt-on-subtle-1);
+				}
+			}
+
+			&:focus-visible {
 				--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 				--icon-colour: var(--colour-txt-on-subtle-1);
 				--label-colour: var(--colour-txt-on-subtle-1);

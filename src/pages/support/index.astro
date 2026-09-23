@@ -339,7 +339,13 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 			}
 
 			& button.delete-data {
-				&:is(:hover, :focus-visible) {
+				@media (hover: hover) {
+					&:hover {
+						--button-bkg-colour: var(--colour-bkg-surface-bold-error);
+					}
+				}
+
+				&:focus-visible {
 					--button-bkg-colour: var(--colour-bkg-surface-bold-error);
 				}
 			}

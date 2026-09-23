@@ -445,7 +445,15 @@ let schoolList = {
 			& :is(button, [data-style-as='button']) {
 				--icon-size: 0.875rem;
 
-				&:is(:hover, :focus-visible) {
+				@media (hover: hover) {
+					&:hover {
+						--icon-colour: var(--colour-txt-on-bold-1);
+						--label-colour: var(--colour-txt-on-bold-1);
+						--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+					}
+				}
+
+				&:focus-visible {
 					--icon-colour: var(--colour-txt-on-bold-1);
 					--label-colour: var(--colour-txt-on-bold-1);
 					--button-bkg-colour: var(--colour-bkg-surface-bold-2);

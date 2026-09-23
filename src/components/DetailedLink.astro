@@ -413,17 +413,19 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 		// State Styles
 		*/
 
-		&:is(:hover, :focus-visible) {
-			& .text-container {
-				& .label {
-					:root[data-theme='dark'] & {
-						color: var(--colour-txt-on-subtle-1);
+		@media (hover: hover) {
+			&:hover {
+				& .text-container {
+					& .label {
+						:root[data-theme='dark'] & {
+							color: var(--colour-txt-on-subtle-1);
+						}
 					}
 				}
 			}
 
-			& .icon.destination {
-				@media (hover: hover) {
+			&:is(:hover, :focus-visible) {
+				& .icon.destination {
 					opacity: 1;
 					scale: 100%;
 					transition:
@@ -433,12 +435,56 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 			}
 		}
 
+		&:focus-visible {
+			& .text-container {
+				& .label {
+					:root[data-theme='dark'] & {
+						color: var(--colour-txt-on-subtle-1);
+					}
+				}
+			}
+		}
+
 		/*
 		// Layout Styles
 		*/
 
 		[data-layout^='list-'] & {
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					--link-bkg-colour: var(
+						--colour-bkg-surface-subtle-1-accent,
+						var(--colour-bkg-surface-subtle-1)
+					);
+					--link-brd-colour: var(--colour-brd-mid-accent, var(--colour-brd-mid));
+					--link-txt-colour: var(
+						--colour-txt-on-subtle-1-accent,
+						var(--colour-txt-on-subtle-1)
+					);
+
+					& .text-container {
+						& .date {
+							color: var(--colour-txt-on-subtle-1);
+						}
+
+						& .tags-list li {
+							background-color: var(--colour-bkg-surface-bold-2);
+							color: var(--colour-txt-on-bold-1);
+						}
+
+						& .description {
+							color: var(--colour-txt-on-subtle-1);
+						}
+
+						& span.highlight {
+							--highlight-surface-colour: transparent;
+							--highlight-txt-colour: var(--colour-txt-on-subtle-1);
+						}
+					}
+				}
+			}
+
+			&:focus-visible {
 				--link-bkg-colour: var(
 					--colour-bkg-surface-subtle-1-accent,
 					var(--colour-bkg-surface-subtle-1)
@@ -595,23 +641,29 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				}
 			}
 
-			&:is(:hover, :focus-visible) {
-				& .banner {
-					border-top-color: var(--card-boxshadow-colour);
-					border-left-color: var(--card-boxshadow-colour);
-					border-right-color: var(--card-boxshadow-colour);
-				}
-			}
+			@media (hover: hover) {
+				&:hover {
+					--card-boxshadow-colour: var(--colour-brd-mid);
+					--card-boxshadow-width: 2px;
 
-			&:hover {
-				--card-boxshadow-colour: var(--colour-brd-mid);
-				--card-boxshadow-width: 2px;
+					& .banner {
+						border-top-color: var(--card-boxshadow-colour);
+						border-left-color: var(--card-boxshadow-colour);
+						border-right-color: var(--card-boxshadow-colour);
+					}
+				}
 			}
 
 			&:focus-visible {
 				--card-boxshadow-colour: var(--colour-brd-bold);
 				--card-boxshadow-width: 3px;
 				outline: none;
+
+				& .banner {
+					border-top-color: var(--card-boxshadow-colour);
+					border-left-color: var(--card-boxshadow-colour);
+					border-right-color: var(--card-boxshadow-colour);
+				}
 			}
 
 			/* Coming Soon Placeholder Card */
@@ -642,7 +694,14 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				--link-boxshadow-colour: var(--colour-brd-mid-accent);
 			}
 
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					background-color: transparent;
+					box-shadow: inset 0 0 0 2px var(--link-boxshadow-colour);
+				}
+			}
+
+			&:focus-visible {
 				background-color: transparent;
 				box-shadow: inset 0 0 0 2px var(--link-boxshadow-colour);
 			}
