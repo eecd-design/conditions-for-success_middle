@@ -895,11 +895,11 @@ let checkAnnouncementSession = () => {
 	let { views, lastSeen } = announcementSession;
 	let { latestResourceTimestamp } = data.uiState;
 
-	let sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
-	let recencyTimeout = 12 * 30 * 24 * 60 * 60 * 1000; // 30 days
+	let recencyTimeout = 90 * 24 * 60 * 60 * 1000; // 90 days
 	let now = Date.now();
+	let maxViews = 3;
 
-	let showAnnouncement = false;
+	let showAnnouncement;
 
 	if (debug) {
 		console.log(
@@ -911,33 +911,35 @@ let checkAnnouncementSession = () => {
 				? `Latest resource addition is outside of the recency timeout window (${getTime(recencyTimeout)}).`
 				: `Latest resource addition is within the recency timeout window (${getTime(recencyTimeout)}).`,
 		);
-
-		console.log(
-			!lastSeen || now - lastSeen > sessionTimeout
-				? `User has not seen the announcement for at least the session timeout (${getTime(sessionTimeout)}).`
-				: `User has seen the announcement within the session timeout window (${getTime(sessionTimeout)}).`,
-		);
 	}
 
-	// Check if it's been over a month since the most recent resource was added
-	if (!latestResourceTimestamp || now - latestResourceTimestamp > recencyTimeout) {
+	if (latestResourceTimestamp) {
+		// Check if the most recently added resource is still considered recent
+		if (now - latestResourceTimestamp < recencyTimeout) {
+			// Check if the user has not seen the announcement for the latest resource
+			if (!lastSeen || lastSeen < latestResourceTimestamp) {
+				// Reset session
+				views = 0;
+				lastSeen = latestResourceTimestamp;
+			}
+
+			if (views < maxViews) {
+				views = (views || 0) + 1;
+				showAnnouncement = true;
+			} else {
+				showAnnouncement = false;
+			}
+		} else {
+			// Reset session
+			views = 0;
+			lastSeen = null;
+			showAnnouncement = false;
+		}
+	} else {
 		// Reset session
 		views = 0;
 		lastSeen = null;
-	} else {
-		// Check if it's been over 24 hours since the user has accessed the site
-		if (!lastSeen || now - lastSeen > sessionTimeout) {
-			// Reset session
-			views = 0;
-		}
-
-		// Keep track of announcement views
-		views = (views || 0) + 1;
-
-		lastSeen = now;
-
-		// Show for the first 3 page views
-		showAnnouncement = views <= 3;
+		showAnnouncement = false;
 	}
 
 	setState({

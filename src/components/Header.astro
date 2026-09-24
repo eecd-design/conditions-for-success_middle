@@ -896,7 +896,8 @@ let welcomeVideoPath =
 			subscribe(updateLaunchpad);
 		}
 
-		if (path.includes('/big-seven/')) {
+		let announcementPathSegments = ['/big-seven/', '/support/', '/training/'];
+		if (announcementPathSegments.some((segment) => path.includes(segment))) {
 			let showAnnouncement = checkAnnouncementSession();
 			let announcementContainer = document.querySelector('.site-announcement-container');
 			announcementContainer.toggleAttribute('hidden', !showAnnouncement);
