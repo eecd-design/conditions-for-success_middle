@@ -11,7 +11,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 <Dialog
 	id={'assessor-dialog'}
-	title={'Assign Assessors'}
+	title={'Manage Assessors'}
 	resetForms={true}
 >
 	<Fragment slot="content">
@@ -114,7 +114,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					data-style="solid"
 					data-toast-success="assessor-dialog_save-toast_success"
 					data-toast-failure="assessor-dialog_save-toast_failure"
-					disabled
 					>Save</button
 				>
 			</div>
@@ -357,11 +356,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		if (!dialog) return;
 
 		let form = dialog.querySelector('form') as HTMLFormElement;
-		let saveBtn = dialog.querySelector('button.save') as HTMLButtonElement;
-
-		if (target.matches('button.close-dialog')) {
-			saveBtn.setAttribute('disabled', '');
-		}
 
 		if (target.matches('button.add-assessor')) {
 			addAssessorToList(target, dialog);
@@ -372,7 +366,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				assessors: values.assessors,
 				activeAssessor,
 			});
-			saveBtn.removeAttribute('disabled');
 		}
 
 		if (target.matches('button.remove-assessor')) {
@@ -384,7 +377,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				assessors: values.assessors,
 				activeAssessor,
 			});
-			saveBtn.removeAttribute('disabled');
 		}
 
 		if (target.matches('button.save')) {
@@ -400,54 +392,53 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					update: values,
 				});
 
-				if (!check) return;
+				if (check) {
+					let update = check.changedValues;
 
-				let update = check.changedValues;
+					if (update.assessors) {
+						update.unexportedChanges = true;
+						update.dateModified = Date.now();
 
-				if (update.assessors) {
-					update.unexportedChanges = true;
-					update.dateModified = Date.now();
+						let message;
 
-					let message;
+						for (let entry of check.updatedKeys) {
+							if (entry.changes) {
+								let parts = [];
 
-					for (let entry of check.updatedKeys) {
-						if (entry.changes) {
-							let parts = [];
+								let lastAction;
 
-							let lastAction;
+								for (let change of entry.changes) {
+									if (!change.value || !change.value.length) continue;
+									let values = Array.isArray(change.value)
+										? change.value.join(', ')
+										: change.value;
+									parts.push(`${change.type} ${values}`);
+									lastAction = change.type;
+								}
 
-							for (let change of entry.changes) {
-								if (!change.value || !change.value.length) continue;
-								let values = Array.isArray(change.value)
-									? change.value.join(', ')
-									: change.value;
-								parts.push(`${change.type} ${values}`);
-								lastAction = change.type;
-							}
-
-							if (parts.length) {
-								message = `${parts.join(', and ')} ${lastAction === 'added' ? 'to' : 'from'} the assessor list.`;
+								if (parts.length) {
+									message = `${parts.join(', and ')} ${lastAction === 'added' ? 'to' : 'from'} the assessor list.`;
+								}
 							}
 						}
+
+						update.changeLog = updateChangeLog({
+							changeLog: assessment.changeLog,
+							message,
+						});
 					}
 
-					update.changeLog = updateChangeLog({
-						changeLog: assessment.changeLog,
-						message,
-					});
-				}
+					// If the active assessor is set to none
+					if (update.activeAssessor === '') {
+						update.activeAssessor = null;
+					}
 
-				// If the active assessor is set to none
-				if (update.activeAssessor === '') {
-					update.activeAssessor = null;
+					setAssessment(update);
 				}
-
-				setAssessment(update);
 
 				toastControl.show({ target, type: 'success' });
 
 				dialogControl.close(target);
-				saveBtn.setAttribute('disabled', '');
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });
@@ -468,7 +459,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			if (!dialog) return;
 
 			let form = dialog.querySelector('form') as HTMLFormElement;
-			let saveBtn = dialog.querySelector('button.save') as HTMLButtonElement;
 
 			if (target.matches(`input.assessor`)) {
 				event.preventDefault();
@@ -480,7 +470,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					assessors: values.assessors,
 					activeAssessor,
 				});
-				saveBtn.removeAttribute('disabled');
 			}
 		}
 	};
@@ -488,23 +477,5 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		selector: '#assessor-dialog',
 		eventType: 'keydown',
 		fn: onKeydown,
-	});
-
-	let onChange = (event) => {
-		let target = event.target as HTMLInputElement | HTMLSelectElement;
-
-		let dialog = target.closest('dialog') as HTMLDialogElement;
-		if (!dialog) return;
-
-		let saveBtn = dialog.querySelector('button.save') as HTMLButtonElement;
-
-		if (target.matches(`select[name="active-assessor"]`)) {
-			saveBtn.removeAttribute('disabled');
-		}
-	};
-	eventControl.add({
-		selector: '#assessor-dialog',
-		eventType: 'change',
-		fn: onChange,
 	});
 </script>

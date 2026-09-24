@@ -445,7 +445,7 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 					type="button"
 					class="open-dialog field-container icon-and-label-container"
 					data-dialog="assessor-dialog"
-					data-dialog-heading="Select Active Assessor"
+					data-dialog-context="configure"
 					aria-label="Change Active Assessor"
 					data-style="solid-outline"
 					data-vibrancy="vivid"
@@ -486,33 +486,6 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 				data-restrict-breakpoint-big-seven-min="2"
 				data-restrict-breakpoint-report-min="1"
 			>
-				<!-- Start Editing Button -->
-				<!-- <button
-					class="open-dialog"
-					data-dialog="status-warning-dialog"
-					aria-label="Edit Completed Assessment"
-					type="button"
-					data-restrict-status="complete"
-					data-restrict-context="big-seven"
-				>
-					<span class="icon-and-label-container">
-						<IconEdit />
-						<span class="label-container">
-							<span class="label">Edit</span>
-						</span>
-					</span>
-					<span class="tooltip">Edit Assessment</span>
-				</button> -->
-
-				<!-- <div
-					class="separator item"
-					data-orientation="vertical"
-					data-restrict-status="complete"
-					data-restrict-context="big-seven"
-					aria-hidden="true"
-				>
-				</div> -->
-
 				<!-- Close Button -->
 				<button
 					class="close"
@@ -687,7 +660,6 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 							<button
 								class="open-dialog"
 								data-dialog="assessor-dialog"
-								data-dialog-heading="Manage Assessors"
 								data-dialog-context="configure"
 								type="button"
 								aria-label="Manage Assessors"
