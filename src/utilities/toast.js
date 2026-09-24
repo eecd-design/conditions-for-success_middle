@@ -2,8 +2,23 @@ let toastControl = (() => {
 	const toastTimers = new WeakMap();
 	const activeToasts = new Set();
 
-	let show = ({ target = null, type = null, selector = null, duration = null }) => {
+	let show = ({
+		context = null,
+		target = null,
+		type = null,
+		selector = null,
+		duration = null,
+	}) => {
 		let toast;
+		let scope;
+
+		if (context === 'dialog') {
+			scope = document.querySelector('dialog[open]');
+		} else {
+			scope = document;
+		}
+
+		console.log(scope);
 
 		if (!selector && !target) {
 			console.error('Toast creation aborted. No selector or target to build from.');
@@ -11,9 +26,9 @@ let toastControl = (() => {
 		}
 
 		if (!selector) {
-			toast = document.querySelector(`#${target.getAttribute(`data-toast-${type}`)}`);
+			toast = scope.querySelector(`#${target.getAttribute(`data-toast-${type}`)}`);
 		} else {
-			toast = document.querySelector(`#${selector}`);
+			toast = scope.querySelector(`#${selector}`);
 		}
 		if (!toast) return;
 

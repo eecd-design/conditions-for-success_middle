@@ -297,8 +297,18 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						}
 					}
 				} else {
-					toastControl.show({ target, type: 'success' });
-					dialogControl.close(dialog);
+					if (newStatus === 'In Progress') {
+						dialogControl.open({
+							dialogId: 'assessor-dialog',
+							headingText: 'Select Active Assessor',
+							context: 'setup',
+							noBack: true,
+						});
+						toastControl.show({ context: 'dialog', target, type: 'success' });
+					} else {
+						dialogControl.close(dialog);
+						toastControl.show({ target, type: 'success' });
+					}
 				}
 			} catch (error) {
 				console.error(error);
