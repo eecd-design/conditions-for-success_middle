@@ -61,7 +61,7 @@ developing:
     - tag: 2.6.8
       title: >-
         Learners frequently select from multiple pathways (e.g., learning
-        centers, interactive tasks, peer teaching) that address their readiness,
+        centres, interactive tasks, peer teaching) that address their readiness,
         interests, etc.
       compass: true
       categories: []
