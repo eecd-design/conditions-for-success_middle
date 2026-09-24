@@ -9,6 +9,7 @@ import PageNav from 'src/components/PageNav.astro';
 import IconDownload from 'src/components/icons/IconDownload_20.astro';
 import IconWrench from 'src/components/icons/IconWrench_20.astro';
 import IconTrash from 'src/components/icons/IconTrash_20.astro';
+import IconArrowUp from 'src/components/icons/IconArrowUp_16.astro';
 
 import { getResourcePath } from 'src/utilities/helpers';
 
@@ -180,6 +181,20 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 			}
 		</AccordionGroup>
 
+		<div class="link-container">
+			<a
+				class="top-link"
+				href={`${path}#top`}
+			>
+				<span class="icon-and-label-container">
+					<IconArrowUp classes={['destination']} />
+					<span class="label-container">
+						<span class="label">Back To Top</span>
+					</span>
+				</span>
+			</a>
+		</div>
+
 		<hr class="section" />
 
 		<h2 id="continuum-versions">Continuum Versions</h2>
@@ -327,6 +342,20 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 			<strong>NB Middle Level Information</strong><br />
 			<a href="mailto:middle.info@gnb.ca">middle.info@gnb.ca </a>
 		</p>
+
+		<div class="link-container">
+			<a
+				class="top-link"
+				href={`${path}#top`}
+			>
+				<span class="icon-and-label-container">
+					<IconArrowUp classes={['destination']} />
+					<span class="label-container">
+						<span class="label">Back To Top</span>
+					</span>
+				</span>
+			</a>
+		</div>
 	</div>
 </BaseLayout>
 

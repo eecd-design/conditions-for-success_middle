@@ -6,6 +6,7 @@ import { getResourcePath, toTitleCase } from 'src/utilities/helpers';
 import BaseLayout from 'src/layouts/BaseLayout.astro';
 import PageNav from 'src/components/PageNav.astro';
 import ResourceIcons from 'src/components/icons/ResourceIcons.astro';
+import IconArrowUp from 'src/components/icons/IconArrowUp_16.astro';
 
 import IconArrowLeft16 from 'src/components/icons/IconArrowLeft_16.astro';
 
@@ -203,12 +204,28 @@ let interactiveWrapperAttrs = opensDialog
 
 		{pageContent && <pageContent.Content />}
 
+		<div class="link-container">
+			<a
+				class="top-link"
+				href={`${pagePath}#top`}
+			>
+				<span class="icon-and-label-container">
+					<IconArrowUp classes={['destination']} />
+					<span class="label-container">
+						<span class="label">Back To Top</span>
+					</span>
+				</span>
+			</a>
+		</div>
+
 		<hr class="section" />
 
-		<InteractiveWrapper {...interactiveWrapperAttrs}>
-			{launchText}
-			{opensInNewTab && <span data-screen-reader>(opens in a new tab)</span>}
-		</InteractiveWrapper>
+		<div class="link-container">
+			<InteractiveWrapper {...interactiveWrapperAttrs}>
+				{launchText}
+				{opensInNewTab && <span data-screen-reader>(opens in a new tab)</span>}
+			</InteractiveWrapper>
+		</div>
 	</div>
 </BaseLayout>
 

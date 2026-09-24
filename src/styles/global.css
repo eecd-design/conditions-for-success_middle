@@ -1273,6 +1273,14 @@ p.metadata {
 			}
 		}
 	}
+
+	&.top-link {
+		--label-size: var(--font-size-xs);
+		--label-colour: var(--colour-txt-on-subtle-2);
+		--link-colour: var(--label-colour);
+		display: block;
+		width: fit-content;
+	}
 }
 
 /* SECTION LINK LIST */
