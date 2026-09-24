@@ -8,7 +8,8 @@ import IconAssessor from 'src/components/icons/IconAssessor_20.astro';
 import IconCopy from 'src/components/icons/IconCopy_20.astro';
 import IconBlank from 'src/components/icons/IconBlank_20.astro';
 import IconTest from 'src/components/icons/IconTest_20.astro';
-import IconAssessment from 'src/components/icons/IconAssessment_20.astro';
+import IconChecklist from 'src/components/icons/IconChecklist_20.astro';
+import IconChecklistPen from 'src/components/icons/IconChecklistPen_20.astro';
 import IconDownload from 'src/components/icons/IconDownload_20.astro';
 import IconCog from 'src/components/icons/IconCog_20.astro';
 import IconChart from 'src/components/icons/IconChart_20.astro';
@@ -54,7 +55,14 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 			>
 				<!-- Assessment Title -->
 				<div class="field-container icon-and-label-container">
-					<IconAssessment data-restrict-context="big-seven" />
+					<IconChecklist
+						data-restrict-context="big-seven"
+						data-restrict-status="complete"
+					/>
+					<IconChecklistPen
+						data-restrict-context="big-seven"
+						data-restrict-status="in-progress"
+					/>
 					<IconChart data-restrict-context="report" />
 					<span
 						class="label-container"
@@ -215,7 +223,7 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 					data-restrict-mode="reading"
 				>
 					<span class="icon-and-label-container">
-						<IconAssessment />
+						<IconChecklist />
 						<span class="label-container">
 							<span class="label">The Big Seven</span>
 						</span>
@@ -402,7 +410,7 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 					data-restrict-breakpoint-big-seven-min="2"
 				>
 					<span class="icon-and-label-container">
-						<IconAssessment />
+						<IconChecklist />
 						<span class="label-container">
 							<span class="label">Assessment</span>
 						</span>

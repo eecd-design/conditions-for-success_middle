@@ -15,7 +15,8 @@ import PageNav from 'src/components/PageNav.astro';
 import gnbLogo from 'src/images/gnb-logo-colour.png';
 import AssessmentDialogs from 'src/components/dialogs/AssessmentDialogs.astro';
 import BarChart from 'src/components/charts/BarChart.astro';
-import IconAssessment20 from 'src/components/icons/IconAssessment_20.astro';
+import IconChecklist20 from 'src/components/icons/IconChecklist_20.astro';
+import IconChecklistPen20 from 'src/components/icons/IconChecklistPen_20.astro';
 
 // Get all indicators
 let allIndicators = await getCollection('indicators');
@@ -167,7 +168,7 @@ navSections.push(onPageSection);
 							data-size="large"
 						>
 							<span class="icon-and-label-container">
-								<IconAssessment20 />
+								<IconChecklist20 />
 								<span class="label-container">
 									<span class="label">View The Big Seven</span>
 								</span>
