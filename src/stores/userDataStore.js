@@ -328,6 +328,12 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
 
+	// Set old assessment active assessor to null prior to opening new one
+	setAssessment({
+		activeAssessor: null,
+	});
+
+	// Create new assessment
 	let newAssessment = structuredClone(assessmentSchema);
 
 	newAssessment.assessors = oldAssessment.assessors;
