@@ -1270,55 +1270,47 @@ import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 			if (target.matches('button.close')) {
 				let activeAssessment = getActiveAssessmentData();
 
-				if (activeAssessment.status === 'In Progress') {
+				if (activeAssessment.unexportedChanges) {
 					dialogControl.open({
-						dialogId: 'edit-status-dialog',
-						context: 'close',
-						headingText: 'Update Status Before Closing',
+						dialogId: 'backup-warning-dialog',
 					});
 				} else {
-					if (activeAssessment.unexportedChanges) {
-						dialogControl.open({
-							dialogId: 'backup-warning-dialog',
+					try {
+						setAssessment({
+							activeAssessor: null,
 						});
-					} else {
-						try {
-							setAssessment({
-								activeAssessor: null,
-							});
 
-							setState({
-								mode: 'reading',
-								activeAssessmentId: null,
-							});
+						setState({
+							mode: 'reading',
+							activeAssessmentId: null,
+						});
 
-							setPreferences({
-								reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-							});
+						setPreferences({
+							reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
+						});
 
-							// Reset consideration checkboxes
-							for (let input of document.querySelectorAll(
-								'input[name="considerationsEstablished"]',
-							) as NodeListOf<HTMLInputElement>) {
-								input.checked = false;
-							}
-
-							// Reset create assessment dialog
-							let createDialog = document.querySelector(
-								'#edit-assessment-properties-dialog',
-							);
-							if (createDialog) {
-								resetForm({
-									form: createDialog.querySelector('form'),
-									resetType: 'hard',
-								});
-							}
-
-							toastControl.show({ target, type: 'success' });
-						} catch (error) {
-							console.error(error);
-							toastControl.show({ target, type: 'failure' });
+						// Reset consideration checkboxes
+						for (let input of document.querySelectorAll(
+							'input[name="considerationsEstablished"]',
+						) as NodeListOf<HTMLInputElement>) {
+							input.checked = false;
 						}
+
+						// Reset create assessment dialog
+						let createDialog = document.querySelector(
+							'#edit-assessment-properties-dialog',
+						);
+						if (createDialog) {
+							resetForm({
+								form: createDialog.querySelector('form'),
+								resetType: 'hard',
+							});
+						}
+
+						toastControl.show({ target, type: 'success' });
+					} catch (error) {
+						console.error(error);
+						toastControl.show({ target, type: 'failure' });
 					}
 				}
 			}

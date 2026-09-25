@@ -37,16 +37,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				Cancel
 			</button>
 			<button
-				class="skip"
-				type="button"
-				data-size="large"
-				data-style="outline"
-				data-focus-start
-				data-restrict-context="close"
-			>
-				Skip
-			</button>
-			<button
 				class="change-status"
 				type="button"
 				data-style="solid"
@@ -257,94 +247,21 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 					}),
 				});
 
-				if (dialog.getAttribute('data-context') === 'close') {
-					if (assessment.unexportedChanges) {
-						toastControl.show({
-							target,
-							type: 'success',
-							selector: 'edit-status-dialog_change-status-and-warn-toast_success',
-						});
-						dialogControl.open({
-							dialogId: 'backup-warning-dialog',
-							noBack: true,
-						});
-					} else {
-						try {
-							setAssessment({
-								activeAssessor: null,
-							});
-							setState({
-								mode: 'reading',
-								activeAssessmentId: null,
-							});
-							// Reset consideration checkboxes
-							for (let input of document.querySelectorAll(
-								'input[name="considerationsEstablished"]',
-							) as NodeListOf<HTMLInputElement>) {
-								input.checked = false;
-							}
-
-							toastControl.show({
-								target,
-								type: 'success',
-								selector:
-									'edit-status-dialog_change-status-and-close-toast_success',
-							});
-							dialogControl.close(dialog);
-						} catch (error) {
-							console.error(error);
-							toastControl.show({ target, type: 'failure' });
-						}
-					}
+				if (newStatus === 'In Progress') {
+					dialogControl.open({
+						dialogId: 'assessor-dialog',
+						headingText: 'Select Active Assessor',
+						context: 'setup',
+						noBack: true,
+					});
+					toastControl.show({ context: 'dialog', target, type: 'success' });
 				} else {
-					if (newStatus === 'In Progress') {
-						dialogControl.open({
-							dialogId: 'assessor-dialog',
-							headingText: 'Select Active Assessor',
-							context: 'setup',
-							noBack: true,
-						});
-						toastControl.show({ context: 'dialog', target, type: 'success' });
-					} else {
-						dialogControl.close(dialog);
-						toastControl.show({ target, type: 'success' });
-					}
+					dialogControl.close(dialog);
+					toastControl.show({ target, type: 'success' });
 				}
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });
-			}
-		}
-
-		if (target.matches('button.skip')) {
-			if (dialog.getAttribute('data-context') === 'close') {
-				let activeAssessment = getActiveAssessmentData();
-				if (activeAssessment.unexportedChanges) {
-					dialogControl.open({
-						dialogId: 'backup-warning-dialog',
-						context: 'close',
-					});
-				} else {
-					setAssessment({
-						activeAssessor: null,
-					});
-					setState({
-						mode: 'reading',
-						activeAssessmentId: null,
-					});
-					// Reset consideration checkboxes
-					for (let input of document.querySelectorAll(
-						'input[name="considerationsEstablished"]',
-					) as NodeListOf<HTMLInputElement>) {
-						input.checked = false;
-					}
-					toastControl.show({
-						target,
-						type: 'success',
-						selector: 'edit-status-dialog_close-toast_success',
-					});
-					dialogControl.close(dialog);
-				}
 			}
 		}
 	};
