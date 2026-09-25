@@ -177,11 +177,17 @@ let dialogControl = (() => {
 				);
 				previousState.searchListItem.setAttribute('aria-selected', 'true');
 			}
+
 			if (debug) {
 				console.log('Restored Dialog Scroll Top:', restoredDialog.scrollTop);
 				console.log('Previous State Scroll Top:', previousState.scrollTop);
 			}
-			restoredDialog.scrollTop = previousState.scrollTop;
+
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					restoredDialog.scrollTop = previousState.scrollTop;
+				});
+			});
 		}
 	};
 
