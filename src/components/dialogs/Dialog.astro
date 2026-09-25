@@ -66,6 +66,10 @@ if (dataset) {
 		max-width: calc(100dvw - 2rem);
 		z-index: 200;
 
+		@container body (width >= 744px) and (width < 1200px) {
+			margin-top: var(--space-xl);
+		}
+
 		@container body (width < 744px) {
 			border-radius: 0;
 			max-height: 100dvh;
