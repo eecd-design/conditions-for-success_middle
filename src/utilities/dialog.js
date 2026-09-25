@@ -129,7 +129,7 @@ let dialogControl = (() => {
 		}
 
 		let focusStart = targetDialog.querySelector('[data-focus-start]');
-		if (focusStart) focusStart.focus();
+		if (focusStart) focusStart.focus({ preventScroll: true });
 
 		emitEvent({
 			target: targetDialog,
@@ -166,26 +166,28 @@ let dialogControl = (() => {
 		// Restore saved scroll position inside the dialog
 		let restoredDialog = document.querySelector(`#${previousState.dialogId}`);
 		if (restoredDialog) {
-			if (restoredDialog.matches('#search-dialog')) {
-				let searchInput = restoredDialog.querySelector('form fieldset.search input');
-				searchInput.focus({ preventScroll: true });
-				let previousItem = restoredDialog.querySelector('[aria-selected="true"]');
-				if (previousItem) previousItem.removeAttribute('aria-selected');
-				searchInput.setAttribute(
-					'aria-activedescendant',
-					previousState.searchListItem.closest('li').id,
-				);
-				previousState.searchListItem.setAttribute('aria-selected', 'true');
-			}
-
-			if (debug) {
-				console.log('Restored Dialog Scroll Top:', restoredDialog.scrollTop);
-				console.log('Previous State Scroll Top:', previousState.scrollTop);
-			}
-
 			requestAnimationFrame(() => {
 				requestAnimationFrame(() => {
 					restoredDialog.scrollTop = previousState.scrollTop;
+
+					if (restoredDialog.matches('#search-dialog')) {
+						let searchInput = restoredDialog.querySelector(
+							'form fieldset.search input',
+						);
+						searchInput.focus({ preventScroll: true });
+						let previousItem = restoredDialog.querySelector('[aria-selected="true"]');
+						if (previousItem) previousItem.removeAttribute('aria-selected');
+						searchInput.setAttribute(
+							'aria-activedescendant',
+							previousState.searchListItem.closest('li').id,
+						);
+						previousState.searchListItem.setAttribute('aria-selected', 'true');
+					}
+
+					if (debug) {
+						console.log('Restored Dialog Scroll Top:', restoredDialog.scrollTop);
+						console.log('Previous State Scroll Top:', previousState.scrollTop);
+					}
 				});
 			});
 		}
