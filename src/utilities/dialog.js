@@ -200,7 +200,7 @@ let dialogControl = (() => {
 				// Restore original scroll behavior
 				restoredDialog.style.scrollBehavior =
 					originalScrollBehavior === 'smooth' ? 'smooth' : '';
-			}, 50);
+			}, 0);
 		}
 	};
 
