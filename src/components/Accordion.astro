@@ -146,7 +146,7 @@ let IconCaret = caretIcons[caretIconSize];
 					padding: var(--space-2xs) var(--space-base) var(--space-2xs) var(--space-sm);
 					box-shadow: inset 0 0 0 var(--button-boxshadow-width, 2px)
 						var(--button-boxshadow-colour, transparent);
-					transition: background-color var(--transition-linear-fast);
+					transition: none;
 
 					/* States */
 
@@ -154,6 +154,7 @@ let IconCaret = caretIcons[caretIconSize];
 						&:hover {
 							--button-bkg-colour: transparent;
 							--button-txt-colour: var(--button-txt-colour);
+							transition: background-color var(--transition-linear-fast);
 						}
 
 						&:not([aria-expanded='true']):hover {
@@ -188,6 +189,10 @@ let IconCaret = caretIcons[caretIconSize];
 
 					&[aria-expanded='true'] .icon-and-label-container {
 						--label-colour: var(--colour-txt-on-bold-1);
+					}
+
+					&:not(:hover) .icon-and-label-container .label-container {
+						transition: none;
 					}
 
 					/* Caret */
