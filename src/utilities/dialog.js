@@ -128,8 +128,11 @@ let dialogControl = (() => {
 			else backBtn.setAttribute('hidden', '');
 		}
 
-		let focusStart = targetDialog.querySelector('[data-focus-start]');
-		if (focusStart) focusStart.focus({ preventScroll: true });
+		// 5. Set custom focus
+		if (!isBack) {
+			let focusStart = targetDialog.querySelector('[data-focus-start]');
+			if (focusStart) focusStart.focus({ preventScroll: true });
+		}
 
 		emitEvent({
 			target: targetDialog,
@@ -166,30 +169,38 @@ let dialogControl = (() => {
 		// Restore saved scroll position inside the dialog
 		let restoredDialog = document.querySelector(`#${previousState.dialogId}`);
 		if (restoredDialog) {
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => {
-					restoredDialog.scrollTop = previousState.scrollTop;
+			setTimeout(() => {
+				// Temporarily disable smooth scrolling if it's applied via CSS
+				let originalScrollBehavior = getComputedStyle(restoredDialog).scrollBehavior;
+				restoredDialog.style.scrollBehavior = 'auto';
 
-					if (restoredDialog.matches('#search-dialog')) {
-						let searchInput = restoredDialog.querySelector(
-							'form fieldset.search input',
-						);
-						searchInput.focus({ preventScroll: true });
-						let previousItem = restoredDialog.querySelector('[aria-selected="true"]');
-						if (previousItem) previousItem.removeAttribute('aria-selected');
+				restoredDialog.scrollTop = previousState.scrollTop;
+
+				if (restoredDialog.matches('#search-dialog')) {
+					let searchInput = restoredDialog.querySelector('form fieldset.search input');
+					if (searchInput) searchInput.focus({ preventScroll: true });
+
+					let previousItem = restoredDialog.querySelector('[aria-selected="true"]');
+					if (previousItem) previousItem.removeAttribute('aria-selected');
+
+					if (previousState.searchListItem) {
 						searchInput.setAttribute(
 							'aria-activedescendant',
 							previousState.searchListItem.closest('li').id,
 						);
 						previousState.searchListItem.setAttribute('aria-selected', 'true');
 					}
+				}
 
-					if (debug) {
-						console.log('Restored Dialog Scroll Top:', restoredDialog.scrollTop);
-						console.log('Previous State Scroll Top:', previousState.scrollTop);
-					}
-				});
-			});
+				if (debug) {
+					console.log('Restored Dialog Scroll Top:', restoredDialog.scrollTop);
+					console.log('Previous State Scroll Top:', previousState.scrollTop);
+				}
+
+				// Restore original scroll behavior
+				restoredDialog.style.scrollBehavior =
+					originalScrollBehavior === 'smooth' ? 'smooth' : '';
+			}, 50);
 		}
 	};
 
