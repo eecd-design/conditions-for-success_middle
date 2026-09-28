@@ -1,1 +1,1 @@
-Strengthen Educator-Learner relationships through intentional reflection and community-building.
+Strengthen educator-learner relationships through intentional reflection and community-building.
