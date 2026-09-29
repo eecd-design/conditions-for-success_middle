@@ -10,6 +10,8 @@ import IconDownload from 'src/components/icons/IconDownload_20.astro';
 import IconWrench from 'src/components/icons/IconWrench_20.astro';
 import IconTrash from 'src/components/icons/IconTrash_20.astro';
 import IconArrowUp from 'src/components/icons/IconArrowUp_16.astro';
+import IconVideo from 'src/components/icons/IconVideo_24.astro';
+import IconDocument from 'src/components/icons/IconDocument_24.astro';
 
 import { getResourcePath } from 'src/utilities/helpers';
 
@@ -145,7 +147,7 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 				data-content="asset"
 				data-list-item-categories='["guides"]'
 			>
-				{
+				<!-- {
 					guideList.map((itemData, index) => (
 						<LinksListItem
 							itemData={itemData}
@@ -154,7 +156,70 @@ let continuums20ResourcePath = getResourcePath(continuums20ResourceData);
 							listGroupSize={10}
 						/>
 					))
-				}
+				} -->
+
+				<li
+					id="support-list_item-0"
+					data-item-id="gui-0"
+				>
+					<div
+						class="detailed-link"
+						data-style-as="link"
+						data-theme="gray"
+						data-vibrancy="vivid"
+					>
+						<div class="banner">
+							<div class="icon-and-label-container type-icon-container">
+								<IconVideo />
+								<span class="label-container"><span class="label">Video</span></span
+								>
+							</div>
+						</div>
+						<div class="wrapper">
+							<span class="text-container">
+								<span class="title"
+									>Completing a Self-assessment & Viewing a Report (Coming Soon)</span
+								>
+								<span class="description"
+									>A video walkthrough of the self-assessment process, followed by
+									how to create and view a report.</span
+								>
+							</span>
+						</div>
+					</div>
+				</li>
+
+				<li
+					id="support-list_item-0"
+					data-item-id="gui-0"
+				>
+					<div
+						class="detailed-link"
+						data-style-as="link"
+						data-theme="gray"
+						data-vibrancy="vivid"
+					>
+						<div class="banner">
+							<div class="icon-and-label-container type-icon-container">
+								<IconDocument />
+								<span class="label-container"
+									><span class="label">Document</span></span
+								>
+							</div>
+						</div>
+						<div class="wrapper">
+							<span class="text-container">
+								<span class="title"
+									>Completing a Self-assessment & Viewing a Report (Coming Soon)</span
+								>
+								<span class="description"
+									>A step-by-step job aid for completing a self-assessment and
+									creating and viewing a report.</span
+								>
+							</span>
+						</div>
+					</div>
+				</li>
 			</ul>
 		</div>
 
