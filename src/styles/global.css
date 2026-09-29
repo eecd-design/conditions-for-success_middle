@@ -2305,7 +2305,7 @@ ul.field-values-list {
 		}
 	}
 
-	&[data-columns] > .wrapper:has(> *:not(template):only-of-type) > * {
+	&[data-columns] > .wrapper:has(> *:not(template):not([data-fixed-span]):only-of-type) > * {
 		grid-column: span var(--group-columns);
 	}
 
