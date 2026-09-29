@@ -1,12 +1,12 @@
 ---
+import Dialog from 'src/components/dialogs/Dialog.astro';
+import Toast from 'src/components/Toast.astro';
+
 import IconCaretDown from 'src/components/icons/IconCaretDown_14.astro';
 import IconEdit from 'src/components/icons/IconEdit_14.astro';
 import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
-import Toast from 'src/components/Toast.astro';
-import IconCheckmark from '../icons/IconCheckmark_12.astro';
 
 let schoolList = {
 	east: [
@@ -105,205 +105,190 @@ let schoolList = {
 };
 ---
 
-<dialog
-	id="edit-assessment-properties-dialog"
-	aria-labelledby="edit-assessment-properties-dialog_heading"
-	data-reset-forms="true"
+<Dialog
+	id={'edit-assessment-properties-dialog'}
+	title={'Create Assessment'}
+	resetForms={true}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog clear"
-			type="button"
-			aria-label="Close Create Assessment Dialog"
+	<Fragment slot="content">
+		<div
+			class="callout"
+			data-style="solid"
+			data-vibrancy="vivid"
+			data-fit="compact"
+			data-theme="yellow"
 		>
-			<IconXmark />
-		</button>
-		<h2
-			id="edit-assessment-properties-dialog_heading"
-			class="heading"
-			data-default-text="Create Assessment"
-		>
-			Create Assessment
-		</h2>
-	</div>
-
-	<div
-		class="callout"
-		data-style="solid"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="yellow"
-	>
-		<div class="wrapper">
-			<div class="icon-container">
-				<IconWarningBig />
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>
+						All information collected is stored exclusively in the browser. Download a
+						backup of your assessment regularly to keep your data safe and restore it if
+						needed.
+					</p>
+				</div>
 			</div>
-			<div class="text-container">
-				<p>
-					All information collected is stored exclusively in the browser. Download a copy
-					of your assessment regularly to keep your data safe and restore it if needed.
+		</div>
+
+		<form data-reset-custom-lists>
+			<fieldset>
+				<label for="edit-assessment-properties-dialog_district-select"
+					>School District</label
+				>
+				<div class="select-container">
+					<select
+						id="edit-assessment-properties-dialog_district-select"
+						name="district"
+						aria-describedby="edit-assessment-properties-dialog_district-select_error"
+						required
+						data-focus-start
+					>
+						<option value="">Select a district...</option>
+						<option value="ASD-W">ASD-W</option>
+						<option value="ASD-N">ASD-N</option>
+						<option value="ASD-E">ASD-E</option>
+						<option value="ASD-S">ASD-S</option>
+						<hr />
+						<option value="Test">Test District</option>
+					</select>
+					<IconCaretDown />
+				</div>
+				<p
+					id="edit-assessment-properties-dialog_district-select_error"
+					class="error-status"
+					role="status"
+					hidden
+				>
+					<IconWarningSmall />
+					<span>Please select a school district from the list.</span>
 				</p>
-			</div>
-		</div>
-	</div>
+			</fieldset>
 
-	<form data-reset-custom-lists>
-		<fieldset>
-			<label for="edit-assessment-properties-dialog_district-select">School District</label>
-			<div class="select-container">
-				<select
-					id="edit-assessment-properties-dialog_district-select"
-					name="district"
-					aria-describedby="edit-assessment-properties-dialog_district-select_error"
-					required
-					data-focus-start
+			<fieldset>
+				<label for="edit-assessment-properties-dialog_school-select">School</label>
+				<div class="select-container">
+					<select
+						id="edit-assessment-properties-dialog_school-select"
+						name="school"
+						required
+						disabled
+						data-disabled-by-default
+					>
+						<option value="">Select a school...</option>
+					</select>
+					<IconCaretDown />
+					<template id="edit-assessment-properties-dialog_school-select_asd-w-options">
+						{schoolList.west.map((school) => <option value={school}>{school}</option>)}
+					</template>
+					<template id="edit-assessment-properties-dialog_school-select_asd-n-options">
+						{schoolList.north.map((school) => <option value={school}>{school}</option>)}
+					</template>
+					<template id="edit-assessment-properties-dialog_school-select_asd-e-options">
+						{schoolList.east.map((school) => <option value={school}>{school}</option>)}
+					</template>
+					<template id="edit-assessment-properties-dialog_school-select_asd-s-options">
+						{schoolList.south.map((school) => <option value={school}>{school}</option>)}
+					</template>
+					<template id="edit-assessment-properties-dialog_school-select_test-options">
+						<option value="Test Middle School">Test Middle School</option>
+					</template>
+				</div>
+				<p
+					id="edit-assessment-properties-dialog_school-select_error"
+					class="error-status"
+					role="status"
+					hidden
 				>
-					<option value="">Select a district...</option>
-					<option value="ASD-W">ASD-W</option>
-					<option value="ASD-N">ASD-N</option>
-					<option value="ASD-E">ASD-E</option>
-					<option value="ASD-S">ASD-S</option>
-					<hr />
-					<option value="Test">Test District</option>
-				</select>
-				<IconCaretDown />
-			</div>
-			<p
-				id="edit-assessment-properties-dialog_district-select_error"
-				class="error-status"
-				role="status"
-				hidden
-			>
-				<IconWarningSmall />
-				<span>Please select a school district from the list.</span>
-			</p>
-		</fieldset>
+					<IconWarningSmall />
+					<span>Please select a school from the list.</span>
+				</p>
+			</fieldset>
 
-		<fieldset>
-			<label for="edit-assessment-properties-dialog_school-select">School</label>
-			<div class="select-container">
-				<select
-					id="edit-assessment-properties-dialog_school-select"
-					name="school"
-					required
+			<fieldset>
+				<label for="edit-assessment-properties-dialog_reporting-year-input"
+					>Reporting Year</label
+				>
+				<p id="edit-assessment-properties-dialog_reporting-year-input_help">
+					Enter a 4-digit year (e.g., 2027).
+				</p>
+				<div class="input-container">
+					<input
+						id="edit-assessment-properties-dialog_reporting-year-input"
+						name="reportingYear"
+						type="text"
+						required
+						placeholder="Enter a year..."
+						pattern="\d{4}"
+						aria-describedby="edit-assessment-properties-dialog_reporting-year-input_help, edit-assessment-properties-dialog_reporting-year-input_error"
+					/>
+				</div>
+				<p
+					id="edit-assessment-properties-dialog_reporting-year-input_error"
+					class="error-status"
+					role="status"
+					hidden
+				>
+					<IconWarningSmall />
+					<span>Please enter a valid year.</span>
+				</p>
+			</fieldset>
+
+			<div class="button-group">
+				<button
+					class="close-dialog clear"
+					type="button"
+					data-size="large"
+					data-style="outline"
+					>Cancel</button
+				>
+				<button
+					class="create"
+					type="button"
+					data-style="solid"
+					data-size="large"
+					data-restrict-context="setup"
+					data-toast-success="edit-assessment-properties-dialog_create-toast_success"
+					data-toast-failure="edit-assessment-properties-dialog_create-toast_failure"
+					>Create</button
+				>
+				<button
+					class="create"
+					type="button"
+					data-style="solid"
+					data-size="large"
+					data-restrict-context="test"
+					data-toast-success="edit-assessment-properties-dialog_create-toast_success"
+					data-toast-failure="edit-assessment-properties-dialog_create-toast_failure"
+					>Create</button
+				>
+				<button
+					class="duplicate"
+					type="button"
+					data-style="solid"
+					data-size="large"
+					data-restrict-context="duplicate"
+					data-toast-success="edit-assessment-properties-dialog_duplicate-toast_success"
+					data-toast-failure="edit-assessment-properties-dialog_duplicate-toast_failure"
+					>Duplicate</button
+				>
+				<button
+					class="save"
+					type="button"
+					data-style="solid"
+					data-size="large"
+					data-restrict-context="configure"
+					data-toast-success="edit-assessment-properties-dialog_save-toast_success"
+					data-toast-failure="edit-assessment-properties-dialog_save-toast_failure"
 					disabled
-					data-disabled-by-default
+					>Save</button
 				>
-					<option value="">Select a school...</option>
-				</select>
-				<IconCaretDown />
-				<template id="edit-assessment-properties-dialog_school-select_asd-w-options">
-					{schoolList.west.map((school) => <option value={school}>{school}</option>)}
-				</template>
-				<template id="edit-assessment-properties-dialog_school-select_asd-n-options">
-					{schoolList.north.map((school) => <option value={school}>{school}</option>)}
-				</template>
-				<template id="edit-assessment-properties-dialog_school-select_asd-e-options">
-					{schoolList.east.map((school) => <option value={school}>{school}</option>)}
-				</template>
-				<template id="edit-assessment-properties-dialog_school-select_asd-s-options">
-					{schoolList.south.map((school) => <option value={school}>{school}</option>)}
-				</template>
-				<template id="edit-assessment-properties-dialog_school-select_test-options">
-					<option value="Test Middle School">Test Middle School</option>
-				</template>
 			</div>
-			<p
-				id="edit-assessment-properties-dialog_school-select_error"
-				class="error-status"
-				role="status"
-				hidden
-			>
-				<IconWarningSmall />
-				<span>Please select a school from the list.</span>
-			</p>
-		</fieldset>
+		</form></Fragment
+	>
 
-		<fieldset>
-			<label for="edit-assessment-properties-dialog_reporting-year-input"
-				>Reporting Year</label
-			>
-			<p
-				id="edit-assessment-properties-dialog_reporting-year-input_help"
-				class="instructions"
-			>
-				Enter a 4-digit year (e.g., 2027).
-			</p>
-			<div class="input-container">
-				<input
-					id="edit-assessment-properties-dialog_reporting-year-input"
-					name="reportingYear"
-					type="text"
-					required
-					placeholder="Enter a year..."
-					pattern="\d{4}"
-					aria-describedby="edit-assessment-properties-dialog_reporting-year-input_help, edit-assessment-properties-dialog_reporting-year-input_error"
-				/>
-			</div>
-			<p
-				id="edit-assessment-properties-dialog_reporting-year-input_error"
-				class="error-status"
-				role="status"
-				hidden
-			>
-				<IconWarningSmall />
-				<span>Please enter a valid year.</span>
-			</p>
-		</fieldset>
-
-		<div class="button-group">
-			<button
-				class="close-dialog clear"
-				type="button"
-				data-size="large"
-				data-style="outline"
-				>Cancel</button
-			>
-			<button
-				class="create"
-				type="button"
-				data-style="solid"
-				data-size="large"
-				data-restrict-context="setup"
-				data-toast-success="edit-assessment-properties-dialog_create-toast_success"
-				data-toast-failure="edit-assessment-properties-dialog_create-toast_failure"
-				>Create</button
-			>
-			<button
-				class="create"
-				type="button"
-				data-style="solid"
-				data-size="large"
-				data-restrict-context="test"
-				data-toast-success="edit-assessment-properties-dialog_create-toast_success"
-				data-toast-failure="edit-assessment-properties-dialog_create-toast_failure"
-				>Create</button
-			>
-			<button
-				class="duplicate"
-				type="button"
-				data-style="solid"
-				data-size="large"
-				data-restrict-context="duplicate"
-				data-toast-success="edit-assessment-properties-dialog_duplicate-toast_success"
-				data-toast-failure="edit-assessment-properties-dialog_duplicate-toast_failure"
-				>Duplicate</button
-			>
-			<button
-				class="save"
-				type="button"
-				data-style="solid"
-				data-size="large"
-				data-restrict-context="configure"
-				data-toast-success="edit-assessment-properties-dialog_save-toast_success"
-				data-toast-failure="edit-assessment-properties-dialog_save-toast_failure"
-				disabled
-				>Save</button
-			>
-		</div>
-	</form>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<!-- Creation Success Toast in Assessors Dialog -->
 		<Toast
 			id={'edit-assessment-properties-dialog_create-toast_failure'}
@@ -331,128 +316,118 @@ let schoolList = {
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
-<dialog
-	id="view-assessment-properties-dialog"
-	aria-describedby="view-assessment-properties-dialog_heading"
+<Dialog
+	id={'view-assessment-properties-dialog'}
+	title={'Assessment Properties'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Assessment Properties Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="view-assessment-properties-dialog_heading"
-			class="heading"
-			data-default-text="Assessment Properties"
-		>
-			Assessment Properties
-		</h2>
-	</div>
-
-	<section>
-		<button
-			class="open-dialog"
-			type="button"
-			aria-label="Edit Assessment General Information"
-			data-dialog="edit-assessment-properties-dialog"
-			data-dialog-heading="Edit Assessment Properties"
-			data-dialog-context="configure"
-			data-focus-start
-		>
-			<span class="icon-and-label-container">
-				<IconEdit />
-				<span class="label-container">
-					<span class="label">Edit General Information</span>
+	<Fragment slot="content">
+		<section>
+			<button
+				class="open-dialog"
+				type="button"
+				aria-label="Edit Assessment General Information"
+				data-dialog="edit-assessment-properties-dialog"
+				data-dialog-heading="Edit Assessment Properties"
+				data-dialog-context="configure"
+				data-focus-start
+			>
+				<span class="icon-and-label-container">
+					<IconEdit />
+					<span class="label-container">
+						<span class="label">Edit General Information</span>
+					</span>
 				</span>
-			</span>
-		</button>
-		<h3 class="heading">General Information</h3>
-		<dl>
-			<div class="detail-container field-container">
-				<dt>Date Created:</dt>
-				<dd data-field="dateCreated"></dd>
-			</div>
-			<div class="detail-container">
-				<dt>School District:</dt>
-				<dd data-field="district"></dd>
-			</div>
-			<div class="detail-container">
-				<dt>School:</dt>
-				<dd data-field="school"></dd>
-			</div>
-			<div class="detail-container">
-				<dt>Reporting Year:</dt>
-				<dd data-field="reportingYear"></dd>
-			</div>
-		</dl>
-	</section>
+			</button>
+			<h3 class="heading">General Information</h3>
+			<dl>
+				<div class="detail-container field-container">
+					<dt>Date Created:</dt>
+					<dd data-field="dateCreated"></dd>
+				</div>
+				<div class="detail-container">
+					<dt>School District:</dt>
+					<dd data-field="district"></dd>
+				</div>
+				<div class="detail-container">
+					<dt>School:</dt>
+					<dd data-field="school"></dd>
+				</div>
+				<div class="detail-container">
+					<dt>Reporting Year:</dt>
+					<dd data-field="reportingYear"></dd>
+				</div>
+			</dl>
+		</section>
 
-	<hr class="group" />
+		<hr class="group" />
 
-	<section>
-		<button
-			class="open-dialog"
-			data-dialog="assessor-dialog"
-			data-dialog-heading="Edit Assessors"
-			data-dialog-context="configure"
-			type="button"
-			aria-label="Edit Assessment Assessors"
-		>
-			<span class="icon-and-label-container">
-				<IconEdit />
-				<span class="label-container">
-					<span class="label">Edit Assessors</span>
+		<section>
+			<button
+				class="open-dialog"
+				data-dialog="assessor-dialog"
+				data-dialog-heading="Manage Assessors"
+				data-dialog-context="configure"
+				type="button"
+				aria-label="Edit Assessment Assessors"
+			>
+				<span class="icon-and-label-container">
+					<IconEdit />
+					<span class="label-container">
+						<span class="label">Manage Assessors</span>
+					</span>
 				</span>
-			</span>
-		</button>
-		<h3 class="heading">Assessors</h3>
-		<dl>
-			<div class="detail-container">
-				<dt>Assessor(s):</dt>
-				<dd data-field="assessors"></dd>
-			</div>
-			<div class="detail-container field-container">
-				<dt>Active Assessor:</dt>
-				<dd data-field="activeAssessor"></dd>
-			</div>
-		</dl>
-	</section>
+			</button>
+			<h3 class="heading">Assessors</h3>
+			<dl>
+				<div class="detail-container">
+					<dt>Assessor(s):</dt>
+					<dd data-field="assessors"></dd>
+				</div>
+				<div class="detail-container field-container">
+					<dt>Active Assessor:</dt>
+					<dd data-field="activeAssessor"></dd>
+				</div>
+			</dl>
+		</section>
 
-	<hr class="group" />
+		<hr class="group" />
 
-	<section>
-		<button
-			class="open-dialog"
-			data-dialog="edit-status-dialog"
-			data-dialog-context="configure"
-			type="button"
-			aria-label="Edit Assessment Status"
-		>
-			<span class="icon-and-label-container">
-				<IconEdit />
-				<span class="label-container">
-					<span class="label">Edit Status</span>
+		<section>
+			<button
+				class="open-dialog"
+				data-dialog="edit-status-dialog"
+				data-dialog-context="configure"
+				type="button"
+				aria-label="Edit Assessment Status"
+			>
+				<span class="icon-and-label-container">
+					<IconEdit />
+					<span class="label-container">
+						<span class="label">Edit Status</span>
+					</span>
 				</span>
-			</span>
-		</button>
-		<h3 class="heading">Status</h3>
-		<dl>
-			<div class="detail-container">
-				<dt>Status:</dt>
-				<dd data-field="status"></dd>
-			</div>
-		</dl>
-	</section>
+			</button>
+			<h3 class="heading">Status</h3>
+			<dl>
+				<div class="detail-container">
+					<dt>Status:</dt>
+					<dd data-field="status"></dd>
+				</div>
+			</dl>
+		</section>
+	</Fragment>
+</Dialog>
 
-	<hr class="group" />
+<Dialog
+	id={'change-history-dialog'}
+	title={'Change History'}
+>
+	<Fragment slot="content">
+		<p>The 20 most recent changes to this assessment are listed in this log.</p>
 
-	<section>
-		<h3 class="heading">Change History</h3>
 		<dl class="change-log-list">
 			<template>
 				<div class="detail-container">
@@ -461,42 +436,79 @@ let schoolList = {
 				</div>
 			</template>
 		</dl>
-	</section>
-</dialog>
+	</Fragment>
+</Dialog>
 
 <style is:global>
-	#view-assessment-properties-dialog section :is(button, [data-style-as='button']) {
-		--icon-size: 0.875rem;
+	#view-assessment-properties-dialog {
+		& section {
+			& :is(button, [data-style-as='button']) {
+				--icon-size: 0.875rem;
+
+				@media (hover: hover) {
+					&:hover {
+						--icon-colour: var(--colour-txt-on-bold-1);
+						--label-colour: var(--colour-txt-on-bold-1);
+						--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+					}
+				}
+
+				&:focus-visible {
+					--icon-colour: var(--colour-txt-on-bold-1);
+					--label-colour: var(--colour-txt-on-bold-1);
+					--button-bkg-colour: var(--colour-bkg-surface-bold-2);
+				}
+			}
+
+			& button.open-dialog {
+				float: right;
+				margin: 0 0 var(--space-sm) var(--space-sm);
+			}
+
+			& h3 {
+				margin: 0 0 var(--space-sm);
+				font-size: var(--font-size-base);
+				font-weight: 600;
+				line-height: 1.2;
+			}
+
+			& dl {
+				--detail-list-margin: var(--space-sm);
+				--detail-list-font-size: var(--font-size-2xs);
+				line-height: 1;
+			}
+		}
+
+		& hr.group {
+			margin: var(--space-lg) 0;
+		}
 	}
 
-	#view-assessment-properties-dialog
-		section
-		:is(button, [data-style-as='button']):is(:hover, :focus-visible) {
-		--icon-colour: var(--colour-txt-on-bold-1);
-		--label-colour: var(--colour-txt-on-bold-1);
-		--button-bkg-colour: var(--colour-bkg-surface-bold-2);
-	}
+	#change-history-dialog {
+		& dl {
+			--detail-list-gap: var(--space-sm);
+			--detail-list-margin: var(--space-lg);
 
-	#view-assessment-properties-dialog hr.group {
-		margin: var(--space-lg) 0;
-	}
+			& .detail-container {
+				flex-flow: column;
 
-	#view-assessment-properties-dialog dl {
-		--detail-list-margin: var(--space-sm);
-		--detail-list-font-size: var(--font-size-2xs);
-		line-height: 1;
-	}
+				& + .detail-container {
+					border-top: 1px solid var(--colour-brd-faint);
+					padding-top: var(--space-sm);
+				}
 
-	#view-assessment-properties-dialog section h3 {
-		margin: 0 0 var(--space-sm);
-		font-size: var(--font-size-base);
-		font-weight: 600;
-		line-height: 1.2;
-	}
+				& dt {
+					font-size: var(--font-size-2xs);
+					font-weight: 500;
+					color: var(--colour-txt-on-subtle-2);
+				}
 
-	#view-assessment-properties-dialog button.open-dialog {
-		float: right;
-		margin: 0 0 var(--space-sm) var(--space-sm);
+				& dd {
+					color: var(--colour-txt-on-subtle-1);
+					font-weight: 500;
+				}
+			}
+		}
 	}
 </style>
 
@@ -519,7 +531,7 @@ let schoolList = {
 		duplicateAssessment,
 	} from 'src/stores/userDataStore';
 	import { getFormValues, resetForm, validateForm, validateField } from 'src/utilities/form';
-	import { joinWithAnd, toTitleCase } from 'src/utilities/helpers.js';
+	import { joinWithAnd, toTitleCase } from 'src/utilities/helpers';
 	import { dialogControl } from 'src/utilities/dialog';
 	import { toastControl } from 'src/utilities/toast';
 	import { eventControl } from 'src/utilities/event';
@@ -670,7 +682,6 @@ let schoolList = {
 			'assessor',
 			'activeAssessor',
 			'status',
-			'changeLog',
 		];
 		if (
 			!changes.initiating &&
@@ -685,14 +696,32 @@ let schoolList = {
 		let assessment = getActiveAssessmentData();
 		if (!assessment) return;
 
-		// console.log("Updating Dialog (view properties)");
-
-		let changeLogList = dialog.querySelector('dl.change-log-list');
-
 		updateFieldsFromAssessmentData({
 			assessment: assessment,
 			dialog: dialog,
 		});
+	};
+
+	let updateChangeHistoryDialog = (data: UserData, changes) => {
+		let dialog = document.querySelector('#change-history-dialog') as HTMLDialogElement;
+		if (!dialog) return;
+
+		let stateTriggerKeys = ['activeAssessmentId'];
+		let assessmentTriggerKeys = ['changeLog'];
+		if (
+			!changes.initiating &&
+			!(
+				(changes.assessments &&
+					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+			)
+		)
+			return;
+
+		let assessment = getActiveAssessmentData();
+		if (!assessment) return;
+
+		let changeLogList = dialog.querySelector('dl.change-log-list');
 
 		for (let child of changeLogList.querySelectorAll(':not(template)')) {
 			child.remove();
@@ -722,7 +751,7 @@ let schoolList = {
 				definition: message,
 			});
 
-			changeLogList.append(item);
+			changeLogList.prepend(item);
 		}
 	};
 
@@ -777,6 +806,8 @@ let schoolList = {
 		if (context === 'duplicate') {
 			let targetAssessment = assessment;
 			if (targetId) targetAssessment = getAssessmentData(targetId);
+			if (!targetAssessment) return;
+
 			revealSchoolOptionGroup(districtSelect, targetAssessment.district);
 			updateFieldsFromAssessmentData({
 				assessment: targetAssessment,
@@ -802,6 +833,7 @@ let schoolList = {
 	//
 
 	subscribe(updateViewAssessmentPropertiesDialog);
+	subscribe(updateChangeHistoryDialog);
 	subscribe(updateEditAssessmentPropertiesDialog);
 
 	//
@@ -826,7 +858,9 @@ let schoolList = {
 			let fields = form.querySelectorAll('input[required], select[required]');
 			for (let field of fields) touchedFormFields.add(field);
 
-			let formValidity = validateForm({ form, touchedFormFields });
+			let userData = getUserData();
+
+			let formValidity = validateForm({ form, touchedFormFields, userData });
 			if (!formValidity) return;
 
 			try {
@@ -847,6 +881,7 @@ let schoolList = {
 				dialogControl.open({
 					dialogId: 'assessor-dialog',
 					context: 'setup',
+					noBack: true,
 				});
 
 				// Reset touched fields
@@ -865,7 +900,9 @@ let schoolList = {
 			let fields = form.querySelectorAll('input[required], select[required]');
 			for (let field of fields) touchedFormFields.add(field);
 
-			let formValidity = validateForm({ form, touchedFormFields });
+			let userData = getUserData();
+
+			let formValidity = validateForm({ form, touchedFormFields, userData });
 			if (!formValidity) return;
 
 			try {
@@ -883,6 +920,7 @@ let schoolList = {
 				dialogControl.open({
 					dialogId: 'assessor-dialog',
 					context: 'setup',
+					noBack: true,
 				});
 
 				// Reset touched fields
@@ -900,7 +938,9 @@ let schoolList = {
 			let inputs = form.querySelectorAll('input[required], select[required]');
 			for (let input of inputs) touchedFormFields.add(input);
 
-			let formValidity = validateForm({ form, touchedFormFields });
+			let userData = getUserData();
+
+			let formValidity = validateForm({ form, touchedFormFields, userData });
 			if (!formValidity) return;
 
 			try {
@@ -954,7 +994,6 @@ let schoolList = {
 
 	let onDialogOpen = (event) => {
 		let dialog = event.target as HTMLDialogElement;
-		// console.log("Opening Edit Assessment Dialog", dialog);
 
 		// On open, update dialog form with current assessment data
 		if (dialog.open) {
@@ -982,6 +1021,7 @@ let schoolList = {
 					field: target,
 					form,
 					touchedFormFields,
+					userData: getUserData(),
 				});
 			}
 		}
@@ -1002,6 +1042,7 @@ let schoolList = {
 					field: target,
 					form,
 					touchedFormFields,
+					userData: getUserData(),
 				});
 			}
 		}
@@ -1044,6 +1085,7 @@ let schoolList = {
 				field: target,
 				form,
 				touchedFormFields,
+				userData: getUserData(),
 			});
 		}
 

@@ -3,12 +3,11 @@ import { getCollection, render } from 'astro:content';
 
 import { getResourcePath, toTitleCase } from 'src/utilities/helpers';
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from 'src/layouts/BaseLayout.astro';
 import PageNav from 'src/components/PageNav.astro';
 import ResourceIcons from 'src/components/icons/ResourceIcons.astro';
+import IconArrowUp from 'src/components/icons/IconArrowUp_16.astro';
 
-import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
-import DetailedLink from 'src/components/DetailedLink.astro';
 import IconArrowLeft16 from 'src/components/icons/IconArrowLeft_16.astro';
 
 let pagePath = Astro.url.pathname;
@@ -70,7 +69,13 @@ let typeColourMap = {
 };
 let typeColour = typeColourMap[type];
 
+let isExternal = external && external.discriminant;
+let isMedia = ['video', 'audio'].includes(type);
+let isFile = ['document', 'presentation', 'image'].includes(type);
+
 let opensDialog = linkAction === 'dialog';
+let opensInNewTab = !isMedia && (isExternal || isFile);
+
 let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
 	? {
@@ -86,6 +91,8 @@ let interactiveWrapperAttrs = opensDialog
 	: {
 			'data-style-as': 'button',
 			'data-size': 'large',
+			target: opensInNewTab ? '_blank' : null,
+			rel: opensInNewTab ? 'noopener' : null,
 			href: trainingPath,
 		};
 ---
@@ -197,9 +204,28 @@ let interactiveWrapperAttrs = opensDialog
 
 		{pageContent && <pageContent.Content />}
 
+		<div class="link-container">
+			<a
+				class="top-link"
+				href={`${pagePath}#top`}
+			>
+				<span class="icon-and-label-container">
+					<IconArrowUp classes={['destination']} />
+					<span class="label-container">
+						<span class="label">Back To Top</span>
+					</span>
+				</span>
+			</a>
+		</div>
+
 		<hr class="section" />
 
-		<InteractiveWrapper {...interactiveWrapperAttrs}> {launchText} </InteractiveWrapper>
+		<div class="link-container">
+			<InteractiveWrapper {...interactiveWrapperAttrs}>
+				{launchText}
+				{opensInNewTab && <span data-screen-reader>(opens in a new tab)</span>}
+			</InteractiveWrapper>
+		</div>
 	</div>
 </BaseLayout>
 

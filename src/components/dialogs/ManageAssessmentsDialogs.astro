@@ -1,254 +1,208 @@
 ---
-import IconAssessment from 'src/components/icons/IconAssessment_20.astro';
+import Dialog from 'src/components/dialogs/Dialog.astro';
+import Toast from 'src/components/Toast.astro';
+
 import IconWarningBig from 'src/components/icons/IconWarning_24.astro';
 import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
-import IconXmark from 'src/components/icons/IconXmark_20.astro';
-import Toast from 'src/components/Toast.astro';
 import IconCheckmark from 'src/components/icons/IconCheckmark_12.astro';
-import IconTrash from 'src/components/icons/IconTrash_20.astro';
 import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 ---
 
-<dialog
-	id="manage-assessments-dialog"
-	aria-describedby="manage-assessments-dialog_heading"
-	data-reset-forms="true"
+<Dialog
+	id={'manage-assessments-dialog'}
+	title={'Manage Assessments'}
+	resetForms={true}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Manage Assessments Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="manage-assessments-dialog_heading"
-			class="heading"
-			data-default-text="Manage Assessments"
-		>
-			Manage Assessments
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<section class="import">
+			<h3>Import Assessment</h3>
 
-	<section class="import">
-		<h3>Import Assessment</h3>
-
-		<form>
-			<fieldset class="file">
-				<!-- <h4 class="heading">File</h4> -->
-				<label
-					class="file-input-container"
-					data-toast-success="manage-assessments-dialog_import-file-toast_success"
-					data-toast-failure="manage-assessments-dialog_import-file-toast_failure"
-				>
-					<span
-						data-style-as="button"
-						data-style="solid"
-						data-size="large"
-						>Choose File</span
+			<form>
+				<fieldset class="file">
+					<!-- <h4 class="heading">File</h4> -->
+					<label
+						class="file-input-container"
+						data-toast-success="manage-assessments-dialog_import-file-toast_success"
+						data-toast-failure="manage-assessments-dialog_import-file-toast_failure"
 					>
-					<input
-						type="file"
-						accept=".csv"
-						data-focus-start
-					/>
-				</label>
-			</fieldset>
+						<span
+							data-style-as="button"
+							data-style="solid"
+							data-size="large"
+							>Choose Backup File</span
+						>
+						<input
+							type="file"
+							accept=".csv"
+							data-focus-start
+						/>
+					</label>
+				</fieldset>
+
+				<div
+					class="separator item"
+					data-orientation="vertical"
+				>
+				</div>
+
+				<fieldset class="code">
+					<!-- <h4 class="heading">Code</h4> -->
+					<div class="code-container input-container">
+						<input
+							type="text"
+							name="import-code"
+							placeholder="Paste save code..."
+						/>
+						<button
+							class="import-code"
+							type="button"
+							aria-label="Import assessment code"
+							data-toast-success="manage-assessments-dialog_import-code-toast_success"
+							data-toast-failure="manage-assessments-dialog_import-code-toast_failure"
+							disabled
+						>
+							Import
+						</button>
+					</div>
+				</fieldset>
+			</form>
+		</section>
+
+		<hr class="group" />
+
+		<section>
+			<h3>Saved Assessments</h3>
 
 			<div
-				class="separator item"
-				data-orientation="vertical"
+				class="elem-group"
+				data-fit="compact"
+				data-columns="1"
 			>
-			</div>
-
-			<fieldset class="code">
-				<!-- <h4 class="heading">Code</h4> -->
-				<div class="code-container input-container">
-					<input
-						type="text"
-						name="import-code"
-						placeholder="Paste code here..."
-					/>
-					<button
-						class="import-code"
-						type="button"
-						aria-label="Import assessment code"
-						data-toast-success="manage-assessments-dialog_import-code-toast_success"
-						data-toast-failure="manage-assessments-dialog_import-code-toast_failure"
-						disabled
-					>
-						Import
-					</button>
-				</div>
-			</fieldset>
-		</form>
-	</section>
-
-	<hr class="group" />
-
-	<section>
-		<h3>Saved Assessments</h3>
-
-		<div
-			class="callout"
-			data-style="solid"
-			data-vibrancy="vivid"
-			data-fit="compact"
-			data-theme="yellow"
-			data-restrict-context="report"
-		>
-			<div class="wrapper">
-				<div class="icon-container">
-					<IconWarningBig />
-				</div>
-				<div class="text-container">
-					<p>
-						To view a report, the assessment must be <strong>Complete</strong>.
-					</p>
-				</div>
-			</div>
-		</div>
-
-		<div
-			class="elem-group"
-			data-fit="compact"
-			data-columns="1"
-		>
-			<ul class="saved-assessments-list wrapper">
-				<template>
-					<li
-						class="card"
-						data-theme="red"
-						data-vibrancy="vivid"
-					>
-						<div
-							class="banner"
-							data-theme="blue"
+				<ul class="saved-assessments-list wrapper">
+					<template>
+						<li
+							class="card"
+							data-theme="red"
 							data-vibrancy="vivid"
-							data-field="banner"
-							hidden
 						>
-						</div>
-						<div class="wrapper">
-							<div class="metadata-container">
-								<h4 class="heading icon-and-label-container">
-									<!-- <IconAssessment /> -->
-									<span class="label-container">
-										<span
-											class="title"
-											data-field="school"
-										></span>
-										<span
-											class="subtitle"
-											data-field="reportingYear"
-											>2025</span
-										>
-									</span>
-								</h4>
-								<div class="details">
-									<span class="label-group">
-										<div
-											class="edit-status label-container field-container"
-											data-vibrancy="vivid"
-											data-style="solid"
-										>
+							<div
+								class="banner"
+								data-theme="blue"
+								data-vibrancy="vivid"
+								data-field="banner"
+								hidden
+							>
+								Open
+							</div>
+							<div class="wrapper">
+								<div class="metadata-container">
+									<h4 class="heading icon-and-label-container">
+										<span class="label-container">
 											<span
-												class="label"
-												data-field="editStatus"
+												class="title"
+												data-field="school"
 											></span>
-										</div>
-										<div
-											class="export-status label-container field-container"
-											data-theme="red"
-											hidden
-										>
 											<span
-												class="label"
-												data-field="exportStatus"
-												>*Unexported Changes</span
+												class="subtitle"
+												data-field="reportingYear"
+												>2025</span
 											>
-										</div>
-									</span>
-									<dl data-fit="compact">
-										<div class="date-created detail-container">
-											<dt>Date Created:</dt>
-											<dd data-field="dateCreated"></dd>
-										</div>
-										<div
-											class="date-completed detail-container"
+										</span>
+									</h4>
+									<div class="details">
+										<span class="label-group">
+											<div
+												class="edit-status label-container field-container"
+												data-vibrancy="vivid"
+												data-style="solid"
+											>
+												<span
+													class="label"
+													data-field="editStatus"
+												></span>
+											</div>
+											<div
+												class="export-status label-container field-container"
+												data-theme="red"
+												hidden
+											>
+												<span
+													class="label"
+													data-field="exportStatus"
+													>*Modified since last backup</span
+												>
+											</div>
+										</span>
+										<dl data-fit="compact">
+											<div class="date-created detail-container">
+												<dt>Date Created:</dt>
+												<dd data-field="dateCreated"></dd>
+											</div>
+											<div
+												class="date-completed detail-container"
+												hidden
+											>
+												<dt>Date Completed:</dt>
+												<dd data-field="dateCompleted"></dd>
+											</div>
+											<div
+												class="date-exported detail-container"
+												hidden
+											>
+												<dt>Date Exported:</dt>
+												<dd data-field="dateExported"></dd>
+											</div>
+											<div
+												class="date-modified detail-container"
+												hidden
+											>
+												<dt>Date Modified:</dt>
+												<dd data-field="dateModified"></dd>
+											</div>
+										</dl>
+									</div>
+								</div>
+								<div class="controls-container">
+									<div class="button-group">
+										<button
+											class="open"
+											type="button"
+											data-size="large"
 											hidden
+											>Open</button
 										>
-											<dt>Date Completed:</dt>
-											<dd data-field="dateCompleted"></dd>
-										</div>
-										<div
-											class="date-exported detail-container"
-											hidden
+										<button
+											class="duplicate-assessment open-dialog"
+											type="button"
+											data-size="large"
+											data-dialog="edit-assessment-properties-dialog"
+											data-dialog-context="duplicate"
+											data-dialog-heading="Duplicate Assessment"
+											>Duplicate</button
 										>
-											<dt>Date Exported:</dt>
-											<dd data-field="dateExported"></dd>
-										</div>
-										<div
-											class="date-modified detail-container"
-											hidden
+										<button
+											class="delete open-dialog"
+											type="button"
+											data-size="large"
+											data-theme="red"
+											data-vibrancy="vivid"
+											aria-label="Delete Assessment"
+											data-dialog="deletion-confirmation-dialog"
 										>
-											<dt>Date Modified:</dt>
-											<dd data-field="dateModified"></dd>
-										</div>
-									</dl>
+											<!-- <IconTrash /> -->
+											Delete
+										</button>
+									</div>
 								</div>
 							</div>
-							<div class="controls-container">
-								<div class="button-group">
-									<button
-										class="open"
-										type="button"
-										data-size="large"
-										data-toast-success="manage-assessments-dialog_open-toast_success"
-										data-toast-failure="manage-assessments-dialog_open-toast_failure"
-										hidden
-										>Open</button
-									>
-									<button
-										class="open change-status"
-										type="button"
-										data-size="large"
-										data-toast-success="manage-assessments-dialog_open-toast_success"
-										data-toast-failure="manage-assessments-dialog_open-toast_failure"
-										hidden
-										>Mark Complete and Open</button
-									>
-									<button
-										class="duplicate-assessment open-dialog"
-										type="button"
-										data-size="large"
-										data-dialog="edit-assessment-properties-dialog"
-										data-dialog-context="duplicate"
-										data-dialog-heading="Duplicate Assessment"
-										>Duplicate</button
-									>
-									<button
-										class="delete open-dialog"
-										type="button"
-										data-size="large"
-										data-theme="red"
-										data-vibrancy="vivid"
-										aria-label="Delete Assessment"
-										data-dialog="deletion-confirmation-dialog"
-									>
-										<!-- <IconTrash /> -->
-										Delete
-									</button>
-								</div>
-							</div>
-						</div>
-					</li>
-				</template>
-			</ul>
-		</div>
-	</section>
+						</li>
+					</template>
+				</ul>
+			</div>
+		</section>
+	</Fragment>
 
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<Toast
 			id={'import-conflict-dialog_overwrite-toast_success'}
 			message={`Assessment overwritten.`}
@@ -314,176 +268,169 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
-<dialog
-	id="import-conflict-dialog"
-	aria-describedby="import-conflict-dialog_heading"
+<Dialog
+	id={'import-conflict-dialog'}
+	title={'Import Conflict'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Manage Assessments Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="import-conflict-dialog_heading"
-			class="heading"
-			data-default-text="Import Conflict"
-		>
-			Import Conflict
-		</h2>
-	</div>
-	<div
-		class="callout"
-		data-style="solid"
-		data-vibrancy="vivid"
-		data-fit="compact"
-		data-theme="red"
-	>
-		<div class="wrapper">
-			<div class="icon-container">
-				<IconWarningBig />
-			</div>
-			<div class="text-container">
-				<p>
-					The imported assessment conflicts with an assessment already saved in the
-					browser. <strong
-						>Each school can have only one assessment per reporting year</strong
-					>.
-				</p>
-				<p>
-					Review the assessment properties below and choose whether to keep the saved
-					assessment or overwrite it.
-				</p>
-			</div>
-		</div>
-	</div>
-	<template class="highlight">
+	<Fragment slot="content">
 		<div
-			class="highlight-container"
-			data-theme="red"
-			data-vibrancy="vivid"
-		>
-			<IconWarningSmall />
-			<span>
-				<span class="value"></span>
-				<span data-screen-reader>, conflicting value</span>
-			</span>
-		</div>
-	</template>
-	<div
-		class="conflicting-assessments elem-group"
-		data-columns="2"
-		data-fit="compact"
-	>
-		<div class="wrapper">
-			<div class="card local">
-				<div
-					class="banner"
-					data-theme="blue"
-					data-vibrancy="vivid"
-				>
-					Saved
-				</div>
-				<div class="wrapper">
-					<div class="metadata-container">
-						<h4 class="heading icon-and-label-container">
-							<!-- <IconAssessment /> -->
-							<span
-								class="label-container"
-								data-field="school"
-							></span>
-						</h4>
-						<div class="details">
-							<dl data-fit="compact">
-								<div class="detail-container">
-									<dt>Reporting Year:</dt>
-									<dd data-field="reportingYear"></dd>
-								</div>
-								<div class="detail-container">
-									<dt>Status:</dt>
-									<dd data-field="status"></dd>
-								</div>
-								<div class="detail-container">
-									<dt>Date Modified:</dt>
-									<dd data-field="dateModified"></dd>
-								</div>
-								<div class="detail-container">
-									<dt>Last Modified By:</dt>
-									<dd data-field="lastModifiedBy"></dd>
-								</div>
-							</dl>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card imported">
-				<div
-					class="banner"
-					data-theme="yellow"
-					data-vibrancy="vivid"
-				>
-					Imported
-				</div>
-				<div class="wrapper">
-					<div class="metadata-container">
-						<h4 class="heading icon-and-label-container">
-							<!-- <IconAssessment /> -->
-							<span
-								class="label-container"
-								data-field="school"
-							></span>
-						</h4>
-						<div class="details">
-							<dl data-fit="compact">
-								<div class="detail-container">
-									<dt>Reporting Year:</dt>
-									<dd data-field="reportingYear"></dd>
-								</div>
-								<div class="detail-container">
-									<dt>Status:</dt>
-									<dd data-field="status"></dd>
-								</div>
-								<div class="detail-container">
-									<dt>Date Modified:</dt>
-									<dd data-field="dateModified"></dd>
-								</div>
-								<div class="detail-container">
-									<dt>Last Modified By:</dt>
-									<dd data-field="lastModifiedBy"></dd>
-								</div>
-							</dl>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="button-group">
-		<button
-			class="keep close-dialog"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-focus-start
-			>Keep Saved</button
-		>
-		<button
-			class="overwrite"
-			type="button"
-			data-size="large"
+			class="callout"
 			data-style="solid"
-			data-toast-success="import-conflict-dialog_overwrite-toast_success"
-			data-toast-failure="import-conflict-dialog_overwrite-toast_failure"
-			>Overwrite</button
+			data-vibrancy="vivid"
+			data-fit="compact"
+			data-theme="red"
 		>
-	</div>
+			<div class="wrapper">
+				<div class="icon-container">
+					<IconWarningBig />
+				</div>
+				<div class="text-container">
+					<p>
+						The imported assessment conflicts with an assessment already saved in the
+						browser. <strong
+							>Each school can have only one assessment per reporting year</strong
+						>.
+					</p>
+					<p>
+						Review the assessment properties below and choose whether to keep the saved
+						assessment or overwrite it.
+					</p>
+				</div>
+			</div>
+		</div>
+		<template class="highlight">
+			<div
+				class="highlight-container"
+				data-theme="red"
+				data-vibrancy="vivid"
+			>
+				<IconWarningSmall />
+				<span>
+					<span class="value"></span>
+					<span data-screen-reader>, conflicting value</span>
+				</span>
+			</div>
+		</template>
+		<div
+			class="conflicting-assessments elem-group"
+			data-columns="2"
+			data-fit="compact"
+		>
+			<div class="wrapper">
+				<div class="card local">
+					<div
+						class="banner"
+						data-theme="blue"
+						data-vibrancy="vivid"
+					>
+						Saved
+					</div>
+					<div class="wrapper">
+						<div class="metadata-container">
+							<h4 class="heading icon-and-label-container">
+								<span
+									class="label-container"
+									data-field="school"
+								></span>
+							</h4>
+							<div class="details">
+								<dl data-fit="compact">
+									<div class="detail-container">
+										<dt>Reporting Year:</dt>
+										<dd data-field="reportingYear"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Status:</dt>
+										<dd data-field="status"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Date Modified:</dt>
+										<dd data-field="dateModified"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Last Modified By:</dt>
+										<dd data-field="lastModifiedBy"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Continuum Version:</dt>
+										<dd data-field="continuumVersion"></dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card imported">
+					<div
+						class="banner"
+						data-theme="yellow"
+						data-vibrancy="vivid"
+					>
+						Imported
+					</div>
+					<div class="wrapper">
+						<div class="metadata-container">
+							<h4 class="heading icon-and-label-container">
+								<span
+									class="label-container"
+									data-field="school"
+								></span>
+							</h4>
+							<div class="details">
+								<dl data-fit="compact">
+									<div class="detail-container">
+										<dt>Reporting Year:</dt>
+										<dd data-field="reportingYear"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Status:</dt>
+										<dd data-field="status"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Date Modified:</dt>
+										<dd data-field="dateModified"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Last Modified By:</dt>
+										<dd data-field="lastModifiedBy"></dd>
+									</div>
+									<div class="detail-container">
+										<dt>Continuum Version:</dt>
+										<dd data-field="continuumVersion"></dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-	<div class="toast-group">
+		<div class="button-group">
+			<button
+				class="keep close-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-focus-start
+				>Keep Saved</button
+			>
+			<button
+				class="overwrite"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				data-toast-success="import-conflict-dialog_overwrite-toast_success"
+				data-toast-failure="import-conflict-dialog_overwrite-toast_failure"
+				>Overwrite</button
+			>
+		</div>
+	</Fragment>
+
+	<Fragment slot="toasts">
 		<!-- Success Toast in Manage Assessments Dialog -->
 		<Toast
 			id={'import-conflict-dialog_overwrite-toast_failure'}
@@ -493,65 +440,52 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		>
 			<IconXmarkInCircle slot={'icon'} />
 		</Toast>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
-<dialog
-	id="deletion-confirmation-dialog"
-	aria-describedby="deletion-confirmation-dialog_heading"
+<Dialog
+	id={'deletion-confirmation-dialog'}
+	title={'Delete Assessment'}
 >
-	<div class="heading-container">
-		<button
-			class="close-dialog"
-			type="button"
-			aria-label="Close Manage Assessments Dialog"
-			><IconXmark /></button
-		>
-		<h2
-			id="deletion-confirmation-dialog_heading"
-			class="heading"
-			data-default-text="Delete Assessment"
-		>
-			Delete Assessment
-		</h2>
-	</div>
+	<Fragment slot="content">
+		<p>
+			Are you sure you want to delete the <strong>
+				<span data-field="reportingYear"></span>
+			</strong> assessment for <strong><span data-field="school"></span></strong>? This action
+			cannot be undone.
+		</p>
 
-	<p class="instructions">
-		Are you sure you want to delete the <strong>
-			<span data-field="reportingYear"></span>
-		</strong> assessment for <strong><span data-field="school"></span></strong>? This action
-		cannot be undone.
-	</p>
+		<div class="button-group">
+			<button
+				class="cancel open-dialog"
+				type="button"
+				data-size="large"
+				data-style="outline"
+				data-dialog="manage-assessments-dialog"
+				data-dialog-no-back
+				>Cancel</button
+			>
+			<button
+				class="delete"
+				type="button"
+				data-size="large"
+				data-style="solid"
+				data-toast-success="deletion-confirmation-dialog_delete-toast_success"
+				data-toast-failure="deletion-confirmation-dialog_delete-toast_failure"
+				>Delete</button
+			>
+		</div>
+	</Fragment>
 
-	<div class="button-group">
-		<button
-			class="cancel open-dialog"
-			type="button"
-			data-size="large"
-			data-style="outline"
-			data-dialog="manage-assessments-dialog"
-			>Cancel</button
-		>
-		<button
-			class="delete"
-			type="button"
-			data-size="large"
-			data-style="solid"
-			data-toast-success="deletion-confirmation-dialog_delete-toast_success"
-			data-toast-failure="deletion-confirmation-dialog_delete-toast_failure"
-			>Delete</button
-		>
-	</div>
-
-	<div class="toast-group">
+	<Fragment slot="toasts">
 		<Toast
 			id={'deletion-confirmation-dialog_delete-toast_failure'}
 			message={`Unable to delete assessment. Please reload the page to try again.`}
 			colour={'red'}
 			type={'failure'}
 		/>
-	</div>
-</dialog>
+	</Fragment>
+</Dialog>
 
 <style is:global>
 	/* 
@@ -573,6 +507,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			flex-flow: row nowrap;
 			align-items: center;
 			gap: var(--space-sm);
+
+			& fieldset.file {
+				& .file-input-container {
+					white-space: nowrap;
+				}
+			}
 
 			& fieldset.code {
 				flex-grow: 1;
@@ -606,7 +546,13 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 						color: var(--colour-txt-on-bold-1);
 					}
 
-					& button.delete:is(:hover, :focus-visible) {
+					@media (hover: hover) {
+						& button.delete:hover {
+							--button-bkg-colour: var(--colour-bkg-surface-bold-error);
+						}
+					}
+
+					& button.delete:focus-visible {
 						--button-bkg-colour: var(--colour-bkg-surface-bold-error);
 					}
 				}
@@ -630,7 +576,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 							color: var(--colour-txt-on-subtle-1);
 						}
 
-						& button.delete:is(:hover, :focus-visible) {
+						@media (hover: hover) {
+							& button.delete:hover {
+								--button-bkg-colour: var(--colour-bkg-surface-subtle-error);
+								--button-txt-colour: var(--colour-txt-on-subtle-1);
+							}
+						}
+
+						& button.delete:focus-visible {
 							--button-bkg-colour: var(--colour-bkg-surface-subtle-error);
 							--button-txt-colour: var(--colour-txt-on-subtle-1);
 						}
@@ -649,7 +602,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	*/
 
 	#import-conflict-dialog {
-		&:has(button.overwrite:hover) .card.imported {
+		&:has(button.overwrite:is(:hover, :focus-visible)) .card.imported {
 			--card-boxshadow-colour: var(--colour-brd-bold);
 			--card-boxshadow-width: 3px;
 
@@ -660,7 +613,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			}
 		}
 
-		&:has(button.keep:hover) .card.local {
+		&:has(button.keep:is(:hover, :focus-visible)) .card.local {
 			--card-boxshadow-colour: var(--colour-brd-bold);
 			--card-boxshadow-width: 3px;
 
@@ -694,12 +647,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Imports
 	//
 
-	import {
-		findIndexByKey,
-		findObjectByKey,
-		formatDateAsHTML,
-		sanitizeHTML,
-	} from 'src/utilities/helpers';
+	import { findIndexByKey, findObjectByKey, formatDateAsHTML } from 'src/utilities/helpers';
 	import {
 		getUserData,
 		getAssessmentName,
@@ -708,22 +656,18 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		setState,
 		setAssessment,
 		setPreferences,
-		importAssessment,
+		readAssessmentFile,
 		subscribe,
-		decompressData,
 		updateChangeLog,
+		getAssessmentData,
+		getActiveAssessmentData,
+		deleteAssessment,
+		checkImportedAssessment,
+		resolveImportedAssessment,
+		readAssessmentCode,
 	} from 'src/stores/userDataStore';
 	import { dialogControl } from 'src/utilities/dialog';
 	import { toastControl } from 'src/utilities/toast';
-	import {
-		getActiveAssessmentData,
-		findAssessmentConflicts,
-		setImportConflictData,
-		getImportConflictData,
-		deleteAssessment,
-		generateContinuumCompletion,
-		deleteImportConflictData,
-	} from 'src/stores/userDataStore';
 	import { eventControl } from 'src/utilities/event';
 	import { resetForm } from 'src/utilities/form';
 
@@ -731,7 +675,9 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Methods
 	//
 
-	let createAssessmentCard = (assessment: Assessment, active = false, context = 'assessment') => {
+	let createAssessmentCard = (assessment: Assessment, active = false) => {
+		let debug = false;
+
 		if (!assessment || assessment === undefined) return;
 		let { dateCompleted, dateExported, status, id, unexportedChanges } = assessment;
 
@@ -753,13 +699,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let banner = card.querySelector('.banner');
 		if (active) {
 			banner.removeAttribute('hidden');
-			if (context === 'assessment') {
-				banner.setAttribute('data-theme', getStatusColour(assessment));
-				banner.textContent = status === 'In Progress' ? 'Editing' : 'Reviewing';
-			} else if (context === 'report') {
-				banner.setAttribute('data-theme', getStatusColour(assessment));
-				banner.textContent = 'Viewing';
-			}
+			banner.setAttribute('data-theme', getStatusColour(assessment));
 		}
 
 		// Set title text
@@ -776,7 +716,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		editStatusField.textContent = status;
 
 		// Set export status field
-		if (unexportedChanges && context === 'assessment') {
+		if (unexportedChanges) {
 			let exportStatusField = card.querySelector('[data-field="exportStatus"]');
 			exportStatusField.closest('.field-container').removeAttribute('hidden');
 		}
@@ -800,13 +740,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		// Show open buttons
 		if (!active) {
-			if (status === 'In Progress' && context === 'report') {
-				let btn = card.querySelector('button.open.change-status');
-				btn.removeAttribute('hidden');
-			} else {
-				let createBtn = card.querySelector('button.open:not(.change-status)');
-				createBtn.removeAttribute('hidden');
-			}
+			let createBtn = card.querySelector('button.open');
+			createBtn.removeAttribute('hidden');
 		}
 
 		let duplicateBtn = card.querySelector('button.duplicate-assessment');
@@ -815,62 +750,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		deleteBtn.setAttribute('data-dialog-target-id', `${assessment.id}`);
 
 		return card;
-	};
-
-	let handleAssessmentImport = async (importedAssessment) => {
-		let userData = getUserData();
-		let localAssessments = userData.assessments;
-
-		// Compare imported assessment to saved assessment to identify conflicts
-		let { idConflict, schoolYearConflict } = findAssessmentConflicts({
-			importedAssessment,
-			localAssessments,
-		});
-
-		// If there's a school/year conflict, open import conflict dialog
-		if (schoolYearConflict) {
-			// console.log("School/Year Conflict Detected");
-
-			setImportConflictData({
-				importedAssessment,
-				localAssessment: schoolYearConflict,
-			});
-
-			updateImportConflictDialog({
-				importedAssessment,
-				localAssessment: schoolYearConflict,
-			});
-
-			dialogControl.open({
-				dialogId: 'import-conflict-dialog',
-			});
-
-			return false;
-		}
-
-		// If there's an id conflict (but no school/year conflict), assign assessment a new id
-		if (idConflict) {
-			// console.log("ID Conflict Detected");
-			let ids = localAssessments.map((a) => a.id).filter(Boolean);
-			let newId = ids.length ? Math.max(...ids) + 1 : 1;
-			importedAssessment.id = newId;
-		}
-
-		// Add missing keys and default values
-		importedAssessment.activeAssessor = null;
-		importedAssessment.unexportedChanges = false;
-		if (importedAssessment.continuumCompletion === undefined) {
-			importedAssessment.continuumCompletion =
-				await generateContinuumCompletion(importedAssessment);
-		}
-
-		// Save assessment to user data
-		setAssessment(importedAssessment);
-
-		// Clear out the import conflict data cache
-		deleteImportConflictData();
-
-		return true;
 	};
 
 	//
@@ -885,7 +764,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let dialog = document.querySelector('#manage-assessments-dialog');
 		if (!dialog) return;
 
-		let stateTriggerKeys = ['activeAssessmentId', 'activeReportId'];
+		let stateTriggerKeys = ['activeAssessmentId'];
 		if (
 			!changes.initiating &&
 			!(
@@ -895,7 +774,6 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		)
 			return;
 
-		let context = window.location.pathname.includes('/report') ? 'report' : 'assessment';
 		let savedAssessmentList = dialog?.querySelector('ul.saved-assessments-list');
 		let savedAssessmentListItems = savedAssessmentList?.querySelectorAll('li');
 		let savedAssessmentsSection = savedAssessmentList.closest('section');
@@ -910,17 +788,10 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			// Create a shallow copy of the array
 			let assessments = [...data.assessments];
 
-			if (context === 'assessment') {
-				// Sort array of assessments by date modified
-				assessments.sort((a, b) => b.dateModified - a.dateModified);
-			} else if (context === 'report') {
-				assessments.sort((a, b) => Number(b.reportingYear) - Number(a.reportingYear));
-			}
+			// Sort array of assessments by date modified
+			assessments.sort((a, b) => b.dateModified - a.dateModified);
 
-			let activeId =
-				context === 'assessment'
-					? data.uiState.activeAssessmentId
-					: data.uiState.activeReportId;
+			let activeId = data.uiState.activeAssessmentId;
 
 			if (activeId) {
 				// Get the index of the active assessment
@@ -941,7 +812,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 				if (assessment !== null) {
 					if (activeId && i === 0) active = true;
 
-					let card = createAssessmentCard(assessment, active, context);
+					let card = createAssessmentCard(assessment, active);
 
 					savedAssessmentList.append(card);
 				}
@@ -964,7 +835,14 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		let importedCard = dialog.querySelector('.conflicting-assessments .imported');
 		let highlightTemplate = dialog.querySelector('template.highlight') as HTMLTemplateElement;
 
-		let metadataKeys = ['school', 'status', 'reportingYear', 'dateModified', 'lastModifiedBy'];
+		let metadataKeys = [
+			'school',
+			'status',
+			'reportingYear',
+			'dateModified',
+			'lastModifiedBy',
+			'continuumVersion',
+		];
 
 		/**
 		 * Compare two objects with the same schema and return keys with mismatched values.
@@ -1047,7 +925,9 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	// Event Listeners
 	//
 
-	let onOpenAssessmentClick = (event) => {
+	let onOpenAssessmentClick = async (event) => {
+		let debug = false;
+
 		let target = event.target as HTMLButtonElement;
 
 		let dialog = target.closest('dialog');
@@ -1055,75 +935,58 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		if (target.matches('button.open')) {
 			try {
-				let context = window.location.pathname.includes('/report')
-					? 'report'
-					: 'assessment';
-
 				let targetAssessmentId = Number(target.closest('.card').getAttribute('data-id'));
+				let targetAssessment = getAssessmentData(targetAssessmentId);
 
-				if (context === 'assessment') {
-					let assessment = getActiveAssessmentData();
-					if (assessment) {
-						// Set existing assessment active assessor to null prior to opening new one
-						setAssessment({
-							activeAssessor: null,
-						});
-					}
-
-					// Reset consideration checkboxes
-					for (let input of document.querySelectorAll(
-						'input[name="considerationsEstablished"]',
-					) as NodeListOf<HTMLInputElement>) {
-						input.checked = false;
-					}
-
-					setState({
-						mode: 'assessment',
-						activeAssessmentId: targetAssessmentId,
+				let activeAssessment = getActiveAssessmentData();
+				if (activeAssessment) {
+					// Set existing assessment active assessor to null prior to opening new one
+					setAssessment({
+						activeAssessor: null,
 					});
+				}
 
-					toastControl.show({ target, type: 'success' });
+				// Reset consideration checkboxes
+				for (let input of document.querySelectorAll(
+					'input[name="considerationsEstablished"]',
+				) as NodeListOf<HTMLInputElement>) {
+					input.checked = false;
+				}
 
+				setState({
+					mode: 'assessment',
+					activeAssessmentId: targetAssessmentId,
+				});
+
+				// Reset report settings
+				setPreferences({
+					reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
+				});
+
+				if (targetAssessment.status === 'In Progress') {
 					// Open select assessor dialog
 					dialogControl.open({
 						dialogId: 'assessor-dialog',
 						headingText: 'Select Active Assessor',
 						context: 'setup',
 					});
-				} else if (context === 'report') {
-					let assessment = findObjectByKey(
-						getUserData().assessments,
-						'id',
-						targetAssessmentId,
-					);
-
-					if (target.matches('button.change-status')) {
-						setAssessment({
-							id: targetAssessmentId,
-							status: 'Complete',
-							dateCompleted: Date.now(),
-							changeLog: updateChangeLog({
-								changeLog: assessment.changeLog,
-								message: `updated assessment status to completed.`,
-							}),
-						});
-					}
-
-					setState({
-						activeReportId: targetAssessmentId,
+					toastControl.show({
+						selector: 'manage-assessments-dialog_open-in-progress-toast_success',
+						type: 'success',
 					});
-
-					setPreferences({
-						reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
-					});
-
-					toastControl.show({ target, type: 'success' });
-
+				} else {
 					dialogControl.close(dialog);
+					toastControl.show({
+						selector: 'manage-assessments-dialog_open-complete-toast_success',
+						type: 'success',
+					});
 				}
 			} catch (error) {
 				console.error(error);
-				toastControl.show({ target, type: 'failure' });
+				toastControl.show({
+					selector: 'manage-assessments-dialog_open-toast_failure',
+					type: 'failure',
+				});
 			}
 		}
 
@@ -1131,21 +994,42 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			try {
 				let codeInput = target.closest('fieldset').querySelector('input');
 
-				let importedCode = sanitizeHTML(codeInput.value);
+				let importedAssessment = readAssessmentCode(codeInput.value);
 
-				if (importedCode.length === 0) {
-					throw new Error('Import code is empty');
+				if (debug)
+					console.log(
+						'Imported Assessment (Code)',
+						JSON.parse(JSON.stringify(importedAssessment)),
+					);
+
+				let checkResult = checkImportedAssessment(importedAssessment);
+
+				if (checkResult.schoolYearConflict.found) {
+					updateImportConflictDialog({
+						importedAssessment,
+						localAssessment: checkResult.schoolYearConflict.localAssessment,
+					});
+
+					dialogControl.open({
+						dialogId: 'import-conflict-dialog',
+					});
+				} else {
+					let { continuumsUpgraded } = await resolveImportedAssessment();
+
+					if (continuumsUpgraded) {
+						dialogControl.open({
+							dialogId: 'continuum-update-dialog',
+							context: 'import',
+							noBack: true,
+						});
+					} else {
+						dialogControl.open({
+							dialogId: 'manage-assessments-dialog',
+							noBack: true,
+						});
+					}
+					toastControl.show({ target, type: 'success' });
 				}
-
-				let importedAssessment = decompressData(importedCode);
-				// console.log(
-				// 	"Imported Assessment (Code)",
-				// 	JSON.parse(JSON.stringify(importedAssessment)),
-				// );
-
-				let importResult = handleAssessmentImport(importedAssessment);
-
-				if (importResult) toastControl.show({ target, type: 'success' });
 			} catch (error) {
 				console.error(error);
 				if (error.cause === 'JSON') {
@@ -1171,6 +1055,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	});
 
 	let onOpenAssessmentChange = async (event) => {
+		let debug = false;
+
 		let target = event.target as any;
 
 		let dialog = target.closest('dialog');
@@ -1182,15 +1068,42 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 			if (!file) return;
 
 			try {
-				let importedAssessment = await importAssessment(file);
-				// console.log(
-				// 	"Imported Assessment (File)",
-				// 	JSON.parse(JSON.stringify(importedAssessment)),
-				// );
+				let importedAssessment = await readAssessmentFile(file);
 
-				let importResult = handleAssessmentImport(importedAssessment);
+				if (debug)
+					console.log(
+						'Imported Assessment (File)',
+						JSON.parse(JSON.stringify(importedAssessment)),
+					);
 
-				if (importResult) toastControl.show({ target, type: 'success' });
+				let checkResult = checkImportedAssessment(importedAssessment);
+
+				if (checkResult.schoolYearConflict.found) {
+					updateImportConflictDialog({
+						importedAssessment,
+						localAssessment: checkResult.schoolYearConflict.localAssessment,
+					});
+
+					dialogControl.open({
+						dialogId: 'import-conflict-dialog',
+					});
+				} else {
+					let { continuumsUpgraded } = await resolveImportedAssessment();
+
+					if (continuumsUpgraded) {
+						dialogControl.open({
+							dialogId: 'continuum-update-dialog',
+							context: 'import',
+							noBack: true,
+						});
+					} else {
+						dialogControl.open({
+							dialogId: 'manage-assessments-dialog',
+							noBack: true,
+						});
+					}
+					toastControl.show({ target, type: 'success' });
+				}
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });
@@ -1255,33 +1168,22 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 		if (target.matches('button.overwrite')) {
 			try {
-				let { importedAssessment, localAssessment } = getImportConflictData();
-				if (!importedAssessment || !localAssessment) return;
+				let { continuumsUpgraded } = await resolveImportedAssessment();
 
-				// Make sure the ids match
-				importedAssessment.id = localAssessment.id;
-
-				deleteAssessment(localAssessment.id);
-
-				// Add missing keys and default values
-				importedAssessment.activeAssessor = null;
-				importedAssessment.unexportedChanges = false;
-				if (importedAssessment.continuumCompletion === undefined) {
-					importedAssessment.continuumCompletion =
-						await generateContinuumCompletion(importedAssessment);
+				if (continuumsUpgraded) {
+					dialogControl.open({
+						dialogId: 'continuum-update-dialog',
+						context: 'import',
+						noBack: true,
+					});
+				} else {
+					dialogControl.open({
+						dialogId: 'manage-assessments-dialog',
+						noBack: true,
+					});
 				}
 
-				// Save assessment to user data
-				setAssessment(importedAssessment);
-
-				// Clear out the import conflict data cache
-				deleteImportConflictData();
-
 				toastControl.show({ target, type: 'success' });
-
-				dialogControl.open({
-					dialogId: 'manage-assessments-dialog',
-				});
 			} catch (error) {
 				console.error(error);
 				toastControl.show({ target, type: 'failure' });
@@ -1289,7 +1191,12 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		}
 
 		if (target.matches('button.keep')) {
-			deleteImportConflictData();
+			await resolveImportedAssessment(false);
+
+			dialogControl.open({
+				dialogId: 'manage-assessments-dialog',
+				noBack: true,
+			});
 		}
 	};
 	eventControl.add({
@@ -1330,6 +1237,7 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 
 				dialogControl.open({
 					dialogId: 'manage-assessments-dialog',
+					noBack: true,
 				});
 			} catch (error) {
 				console.error(error);

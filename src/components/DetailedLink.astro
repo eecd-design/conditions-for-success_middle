@@ -3,11 +3,11 @@ import { getResourcePath } from 'src/utilities/helpers';
 
 import { toTitleCase } from 'src/utilities/helpers';
 
-import ResourceIcons from './icons/ResourceIcons.astro';
-import IconArrowRight from './icons/IconArrowRight_16.astro';
-import IconExpand from './icons/IconExpand_16.astro';
-import IconExternal from './icons/IconExternal_16.astro';
-import IconDownload from './icons/IconDownload_16.astro';
+import ResourceIcons from 'src/components/icons/ResourceIcons.astro';
+import IconArrowRight from 'src/components/icons/IconArrowRight_16.astro';
+import IconExpand from 'src/components/icons/IconExpand_16.astro';
+import IconExternal from 'src/components/icons/IconExternal_16.astro';
+import IconDownload from 'src/components/icons/IconDownload_16.astro';
 
 let { itemData, isInListItem = false, listLocation = null } = Astro.props;
 
@@ -92,14 +92,15 @@ if (category === 'resource') {
 
 let isLocation = !['resource', 'guides'].includes(category);
 let isExternal = external && external.discriminant;
-let isMedia = ['video', 'audio'].includes(type);
+let isVideo = ['video', 'webinar'].includes(type);
+let isTraining = category === 'training';
 let isFile = ['document', 'presentation', 'image'].includes(type);
 
 // If resource is a video or internal audio, open it in a dialog
 let opensDialog = false;
 if (!isLocation) opensDialog = linkAction === 'dialog';
 
-let opensInNewTab = !isMedia && (isExternal || isFile);
+let opensInNewTab = !isTraining && !isVideo && (isExternal || isFile);
 
 let InteractiveWrapper = opensDialog ? 'button' : 'a';
 let interactiveWrapperAttrs = opensDialog
@@ -342,6 +343,7 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				align-items: start;
 				gap: var(--space-2xs);
 				font-size: var(--font-size-xs);
+				color: var(--colour-txt-on-subtle-1);
 			}
 
 			/* Date */
@@ -387,6 +389,10 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				font-weight: 600;
 				color: var(--colour-txt-on-subtle-2-accent, var(--colour-txt-on-subtle-2));
 
+				:root[data-theme='dark'] & {
+					color: var(--colour-txt-on-subtle-2);
+				}
+
 				&.simple {
 					display: none;
 				}
@@ -407,9 +413,19 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 		// State Styles
 		*/
 
-		&:is(:hover, :focus-visible) {
-			& .icon.destination {
-				@media (hover: hover) {
+		@media (hover: hover) {
+			&:hover {
+				& .text-container {
+					& .label {
+						:root[data-theme='dark'] & {
+							color: var(--colour-txt-on-subtle-1);
+						}
+					}
+				}
+			}
+
+			&:is(:hover, :focus-visible) {
+				& .icon.destination {
 					opacity: 1;
 					scale: 100%;
 					transition:
@@ -419,12 +435,56 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 			}
 		}
 
+		&:focus-visible {
+			& .text-container {
+				& .label {
+					:root[data-theme='dark'] & {
+						color: var(--colour-txt-on-subtle-1);
+					}
+				}
+			}
+		}
+
 		/*
 		// Layout Styles
 		*/
 
 		[data-layout^='list-'] & {
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					--link-bkg-colour: var(
+						--colour-bkg-surface-subtle-1-accent,
+						var(--colour-bkg-surface-subtle-1)
+					);
+					--link-brd-colour: var(--colour-brd-mid-accent, var(--colour-brd-mid));
+					--link-txt-colour: var(
+						--colour-txt-on-subtle-1-accent,
+						var(--colour-txt-on-subtle-1)
+					);
+
+					& .text-container {
+						& .date {
+							color: var(--colour-txt-on-subtle-1);
+						}
+
+						& .tags-list li {
+							background-color: var(--colour-bkg-surface-bold-2);
+							color: var(--colour-txt-on-bold-1);
+						}
+
+						& .description {
+							color: var(--colour-txt-on-subtle-1);
+						}
+
+						& span.highlight {
+							--highlight-surface-colour: transparent;
+							--highlight-txt-colour: var(--colour-txt-on-subtle-1);
+						}
+					}
+				}
+			}
+
+			&:focus-visible {
 				--link-bkg-colour: var(
 					--colour-bkg-surface-subtle-1-accent,
 					var(--colour-bkg-surface-subtle-1)
@@ -581,23 +641,29 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				}
 			}
 
-			&:is(:hover, :focus-visible) {
-				& .banner {
-					border-top-color: var(--card-boxshadow-colour);
-					border-left-color: var(--card-boxshadow-colour);
-					border-right-color: var(--card-boxshadow-colour);
-				}
-			}
+			@media (hover: hover) {
+				&:hover {
+					--card-boxshadow-colour: var(--colour-brd-mid);
+					--card-boxshadow-width: 2px;
 
-			&:hover {
-				--card-boxshadow-colour: var(--colour-brd-mid);
-				--card-boxshadow-width: 2px;
+					& .banner {
+						border-top-color: var(--card-boxshadow-colour);
+						border-left-color: var(--card-boxshadow-colour);
+						border-right-color: var(--card-boxshadow-colour);
+					}
+				}
 			}
 
 			&:focus-visible {
 				--card-boxshadow-colour: var(--colour-brd-bold);
 				--card-boxshadow-width: 3px;
 				outline: none;
+
+				& .banner {
+					border-top-color: var(--card-boxshadow-colour);
+					border-left-color: var(--card-boxshadow-colour);
+					border-right-color: var(--card-boxshadow-colour);
+				}
 			}
 
 			/* Coming Soon Placeholder Card */
@@ -628,7 +694,14 @@ if (['indicator', 'component', 'consideration'].includes(category)) {
 				--link-boxshadow-colour: var(--colour-brd-mid-accent);
 			}
 
-			&:is(:hover, :focus-visible) {
+			@media (hover: hover) {
+				&:hover {
+					background-color: transparent;
+					box-shadow: inset 0 0 0 2px var(--link-boxshadow-colour);
+				}
+			}
+
+			&:focus-visible {
 				background-color: transparent;
 				box-shadow: inset 0 0 0 2px var(--link-boxshadow-colour);
 			}

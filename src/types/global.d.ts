@@ -1,42 +1,41 @@
 declare global {
-
 	type UserData = {
-		uiPreferences: Preferences,
-		uiState: State,
-		assessments: Assessment[]
-	}
+		uiPreferences: Preferences;
+		uiState: State;
+		assessments: Assessment[];
+	};
 
 	type Preferences = {
-		schemaVersion: string,
-		theme: string,
-		reportIncludedIndicators: string[],
-		resourcePageSort: string,
-		resourcePageLayout: string,
-	}
+		reportIncludedIndicators: string[];
+		resourcePageSort: string;
+		resourcePageLayout: string;
+		theme: string;
+		schemaVersion: string;
+	};
 
 	type State = {
-		schemaVersion: string,
 		activeAssessmentId: number;
-		activeReportId: number;
-		currentContinuumVersion: string,
+		announcementSession: AnnoucementSession;
+		continuumVersion: string;
+		latestResourceTimestamp: number;
 		lastModifiedPage: Page;
 		lastVisitedPage: Page;
 		mode: string;
 		onboardingCompleted: boolean;
+		schemaVersion: string;
 	};
 
 	type Assessment = {
-		schemaVersion: string,
 		activeAssessor: string;
 		assessors: string[];
 		changeLog: ChangeLogItem[];
-		continuumCompletion: {},
+		continuumCompletion: {};
 		considerationsEstablished: string[];
 		continuumVersion: string;
+		dateCompleted: number;
 		dateCreated: number;
 		dateExported: number;
 		dateModified: number;
-		dateCompleted: number;
 		district: string;
 		id: number;
 		lastModifiedBy: string;
@@ -44,19 +43,24 @@ declare global {
 		school: string;
 		status: string;
 		unexportedChanges: boolean;
+		schemaVersion: string;
 	};
 
 	type ChangeLogItem = {
-		assessor: string,
-		date: number,
-		message: string,
-	}
+		assessor: string;
+		date: number;
+		message: string;
+	};
 
 	type Page = {
-		path: string,
-		title: string,
-	}
+		path: string;
+		title: string;
+	};
 
+	type AnnoucementSession = {
+		lastSeen: number;
+		views: number;
+	};
 }
 
-export { };
+export {};

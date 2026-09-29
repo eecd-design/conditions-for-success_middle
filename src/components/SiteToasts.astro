@@ -6,6 +6,17 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 ---
 
 <Fragment slot="toast-group">
+	<!-- Manage Assessments -->
+	<Toast
+		id={'manage-assessments-dialog_open-complete-toast_success'}
+		message={`Assessment opened!`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
+	</Toast>
+
+	<!-- Edit Assessments -->
 	<Toast
 		id={'edit-assessment-properties-dialog_save-toast_success'}
 		message={`Save successful!`}
@@ -14,6 +25,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconCheckmark slot={'icon'} />
 	</Toast>
+
+	<!-- Assessors -->
 	<Toast
 		id={'assessor-dialog_save-toast_success'}
 		message={`Save successful!`}
@@ -22,6 +35,8 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconCheckmark slot={'icon'} />
 	</Toast>
+
+	<!-- Status -->
 	<Toast
 		id={'edit-status-dialog_change-status-toast_success'}
 		message={`Save successful!`}
@@ -46,8 +61,10 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 	>
 		<IconCheckmark slot={'icon'} />
 	</Toast>
+
+	<!-- Close -->
 	<Toast
-		id={'export-warning-dialog_close-toast_success'}
+		id={'backup-warning-dialog_close-toast_success'}
 		message={`Assessment closed.`}
 		colour={'green'}
 		type={'success'}
@@ -71,6 +88,16 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		<IconXmarkInCircle slot={'icon'} />
 	</Toast>
 
+	<!-- Report Settings -->
+	<Toast
+		id={'report-settings-dialog_save-toast_success'}
+		message={`Report settings saved!`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
+	</Toast>
+
 	<!-- Data Entry -->
 	<Toast
 		id={'big-seven_data-entry-toast_reminder'}
@@ -79,5 +106,33 @@ import IconXmarkInCircle from 'src/components/icons/IconXmarkInCircle_16.astro';
 		type={'reminder'}
 	>
 		<IconWarning slot={'icon'} />
+	</Toast>
+
+	<!-- Repair Saved Data -->
+	<Toast
+		id={'support_data-repair-toast_success'}
+		message={`Saved data repaired.`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
+	</Toast>
+	<Toast
+		id={'support_data-repair-toast_failure'}
+		message={`Unable to repaire saved data. Please reload the page to try again.`}
+		colour={'red'}
+		type={'failure'}
+	>
+		<IconXmarkInCircle slot={'icon'} />
+	</Toast>
+
+	<!-- Delete Saved Data -->
+	<Toast
+		id={'data-deletion-confirmation-dialog_delete-toast_success'}
+		message={`Saved data deleted.`}
+		colour={'green'}
+		type={'success'}
+	>
+		<IconCheckmark slot={'icon'} />
 	</Toast>
 </Fragment>

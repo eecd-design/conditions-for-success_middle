@@ -1,15 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionNav from '../../components/SectionNav.astro';
+import BaseLayout from 'src/layouts/BaseLayout.astro';
 import PageNav from 'src/components/PageNav.astro';
-import AssessmentToolbar from '../../components/AssessmentToolbar.astro';
-import AssessmentDialogs from '../../components/dialogs/AssessmentDialogs.astro';
-import AssessmentToasts from '../../components/AssessmentToasts.astro';
-import Accordion from '../../components/Accordion.astro';
-import AccordionGroup from '../../components/AccordionGroup.astro';
-import Tab from '../../components/Tab.astro';
-import PhaseIcons from '../../components/icons/PhaseIcons.astro';
+import AssessmentToolbar from 'src/components/AssessmentToolbar.astro';
+import AssessmentDialogs from 'src/components/dialogs/AssessmentDialogs.astro';
+import Accordion from 'src/components/Accordion.astro';
+import AccordionGroup from 'src/components/AccordionGroup.astro';
+import Tab from 'src/components/Tab.astro';
+import PhaseIcons from 'src/components/icons/PhaseIcons.astro';
 import IconArrowRightSmall from 'src/components/icons/IconArrowRight_16.astro';
 import IconArrowDownRight from 'src/components/icons/IconArrowDownRight_20.astro';
 import IconCheckmark from 'src/components/icons/IconCheckmark_16.astro';
@@ -83,10 +81,6 @@ navSections.push(bigSevenSection, onPageSection);
 
 	<AssessmentDialogs />
 
-	<AssessmentToasts slot="toast-group" />
-
-	<!-- <SectionNav /> -->
-
 	<PageNav navSections={navSections} />
 
 	<div class="content">
@@ -114,14 +108,14 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>1</span
 					>
 					<p>
 						Focuses on cultivating a shared vision, fostering inclusive collaboration,
 						and building strong professional communities that prioritize
-						learner-centered middle-level education through flexible, responsive
+						learner-centered middle level education through flexible, responsive
 						scheduling.
 					</p>
 					<h4>Components</h4>
@@ -150,7 +144,7 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>2</span
 					>
@@ -187,7 +181,7 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>3</span
 					>
@@ -222,7 +216,7 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>4</span
 					>
@@ -257,7 +251,7 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>5</span
 					>
@@ -292,7 +286,7 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>6</span
 					>
@@ -327,7 +321,7 @@ navSections.push(bigSevenSection, onPageSection);
 					]}
 				>
 					<span
-						class="tag"
+						class="number"
 						slot="button-icon"
 						>7</span
 					>

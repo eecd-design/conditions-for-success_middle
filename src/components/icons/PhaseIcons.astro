@@ -1,19 +1,19 @@
 ---
-import IconInitiating from "../icons/IconTrowel_24.astro";
-import IconImplementing from "../icons/IconSeed_24.astro";
-import IconDeveloping from "../icons/IconSapling_24.astro";
-import IconSustaining from "../icons/IconWateringCan_24.astro";
+import IconInitiating from 'src/components/icons/IconTrowel_24.astro';
+import IconImplementing from 'src/components/icons/IconSeed_24.astro';
+import IconDeveloping from 'src/components/icons/IconSapling_24.astro';
+import IconSustaining from 'src/components/icons/IconWateringCan_24.astro';
 
 const phaseIcons = {
 	initiating: IconInitiating,
 	implementing: IconImplementing,
 	developing: IconDeveloping,
 	sustaining: IconSustaining,
-}
+};
 
 const { phase } = Astro.props;
 
 let Icon = phaseIcons[phase];
-
 ---
+
 <Icon />

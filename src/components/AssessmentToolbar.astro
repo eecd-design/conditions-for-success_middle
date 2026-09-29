@@ -1,21 +1,24 @@
 ---
-import IconCross from './icons/IconCross_20.astro';
-import IconInfo from './icons/IconInfo_20.astro';
-import IconFolder from './icons/IconFolder_20.astro';
-import IconSave from './icons/IconSave_20.astro';
-import IconEdit from './icons/IconEdit_20.astro';
-import IconEditSmall from './icons/IconEdit_14.astro';
-import IconEditStop from './icons/IconEditStop_20.astro';
-import IconAssessor from './icons/IconAssessor_20.astro';
-import IconCopy from './icons/IconCopy_20.astro';
-import IconBlank from './icons/IconBlank_20.astro';
-import IconTest from './icons/IconTest_20.astro';
-import IconAssessment from './icons/IconAssessment_20.astro';
-import IconXmark from './icons/IconXmark_20.astro';
-import IconWarningSmall from 'src/components/icons/IconWarning_16.astro';
-import IconCheckmark from 'src/components/icons/IconCheckmark_12.astro';
-import Toast from './Toast.astro';
+import IconCross from 'src/components/icons/IconCross_20.astro';
+import IconInfo from 'src/components/icons/IconInfo_20.astro';
+import IconFolder from 'src/components/icons/IconFolder_20.astro';
+import IconEdit from 'src/components/icons/IconEdit_20.astro';
+import IconEditSmall from 'src/components/icons/IconEdit_14.astro';
+import IconAssessor from 'src/components/icons/IconAssessor_20.astro';
+import IconCopy from 'src/components/icons/IconCopy_20.astro';
+import IconBlank from 'src/components/icons/IconBlank_20.astro';
+import IconTest from 'src/components/icons/IconTest_20.astro';
+import IconChecklist from 'src/components/icons/IconChecklist_20.astro';
+import IconChecklistPen from 'src/components/icons/IconChecklistPen_20.astro';
+import IconDownload from 'src/components/icons/IconDownload_20.astro';
+import IconCog from 'src/components/icons/IconCog_20.astro';
+import IconChart from 'src/components/icons/IconChart_20.astro';
+import IconMore from 'src/components/icons/IconMore_20.astro';
+import IconXmark from 'src/components/icons/IconXmark_20.astro';
 import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
+import IconShare from 'src/components/icons/IconShare_20.astro';
+import IconHistory from 'src/components/icons/IconHistory_20.astro';
+import IconBack from 'src/components/icons/IconArrowLeft_20.astro';
 ---
 
 <section
@@ -33,8 +36,8 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 			<IconWarning16 />
 			<div>
 				<p>
-					The assessment feature isn't available on small screens. Please use a tablet or
-					desktop device to access it.
+					You cannot complete a self-assessment on a device of this size. To do so, use a
+					tablet, laptop, or desktop device.
 				</p>
 			</div>
 		</div>
@@ -45,13 +48,22 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 		data-restrict-device-min="medium"
 	>
 		<div class="wrapper">
+			<!-- Info Group -->
 			<div
 				class="info-group button-group"
 				data-restrict-mode="assessment"
 			>
 				<!-- Assessment Title -->
 				<div class="field-container icon-and-label-container">
-					<IconAssessment />
+					<IconChecklist
+						data-restrict-context="big-seven"
+						data-restrict-status="complete"
+					/>
+					<IconChecklistPen
+						data-restrict-context="big-seven"
+						data-restrict-status="in-progress"
+					/>
+					<IconChart data-restrict-context="report" />
 					<span
 						class="label-container"
 						data-restrict-length
@@ -62,6 +74,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 						></span>
 					</span>
 				</div>
+
 				<!-- Edit Status -->
 				<button
 					type="button"
@@ -84,38 +97,48 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					</span>
 					<span class="tooltip">Change Status</span>
 				</button>
+			</div>
+
+			<div
+				class="separator group"
+				data-orientation="vertical"
+				aria-hidden="true"
+				data-restrict-mode="assessment"
+			>
+			</div>
+
+			<!-- File Group -->
+			<div class="file-group button-group">
+				<!-- Manage Assessments -->
+				<button
+					class="open-dialog"
+					data-dialog="manage-assessments-dialog"
+					data-dialog-context="assessment"
+					aria-label="Open or Import Assessment"
+					type="button"
+				>
+					<span class="icon-and-label-container">
+						<IconFolder />
+						<span class="label-container">
+							<span class="label">Assessments</span>
+						</span>
+					</span>
+					<span class="tooltip">Manage Assessments</span>
+				</button>
+
 				<div
 					class="separator item"
 					data-orientation="vertical"
 					aria-hidden="true"
+					data-restrict-context="big-seven"
 				>
 				</div>
-				<!-- Assessment Properties Button -->
-				<button
-					class="open-dialog"
-					data-dialog="view-assessment-properties-dialog"
-					type="button"
-					aria-label="View Assessment Properties"
+
+				<!-- New Assessment -->
+				<div
+					class="button-container"
+					data-restrict-context="big-seven"
 				>
-					<span class="icon-and-label-container">
-						<IconInfo />
-						<span class="label-container">
-							<span class="label">Properties</span>
-						</span>
-					</span>
-					<span class="tooltip">View Properties</span>
-				</button>
-			</div>
-			<div
-				class="separator group"
-				data-orientation="vertical"
-				data-restrict-mode="assessment"
-				aria-hidden="true"
-			>
-			</div>
-			<div class="file-group button-group">
-				<!-- Create Assessment Button -->
-				<div class="button-container">
 					<button
 						class="subgroup-toggle"
 						aria-label="Create New Assessment"
@@ -127,7 +150,7 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 								<span class="label">New</span>
 							</span>
 						</span>
-						<span class="tooltip">Create Assessment</span>
+						<span class="tooltip">New Assessment</span>
 					</button>
 
 					<ul class="subgroup">
@@ -181,61 +204,133 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 						</li>
 					</ul>
 				</div>
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					aria-hidden="true"
-				>
-				</div>
-				<!-- Open/Import Assessment Button -->
-				<button
-					class="open-dialog"
-					data-dialog="manage-assessments-dialog"
-					data-dialog-context="assessment"
-					aria-label="Open or Import Assessment"
-					type="button"
-				>
-					<span class="icon-and-label-container">
-						<IconFolder />
-						<span class="label-container">
-							<span class="label">Open</span>
-						</span>
-					</span>
-					<span class="tooltip">Manage Assessments</span>
-				</button>
 			</div>
+
 			<div
 				class="separator group"
 				data-orientation="vertical"
-				data-restrict-mode="assessment"
 				aria-hidden="true"
+				data-restrict-mode="assessment"
 			>
 			</div>
+
+			<!-- Report Group -->
 			<div
-				class="export-group button-group"
+				class="report-group button-group"
 				data-restrict-mode="assessment"
+				data-restrict-context="report"
+				data-restrict-status="complete"
 			>
-				<!-- Export Assessment Button -->
+				<!-- Report Settings Button -->
 				<button
 					class="open-dialog"
-					data-dialog="export-assessment-dialog"
+					data-dialog="report-settings-dialog"
+					aria-label="Modify Report Settings"
 					type="button"
-					aria-label="Export Assessment"
+					data-restrict-breakpoint-report-min="1"
 				>
 					<span class="icon-and-label-container">
-						<IconSave />
+						<IconCog />
 						<span class="label-container">
-							<span class="label">Export</span>
+							<span class="label">Report Settings</span>
 						</span>
 					</span>
-					<span class="tooltip">Export Assessment</span>
+					<span class="tooltip">Report Settings</span>
 				</button>
+
 				<div
 					class="separator item"
 					data-orientation="vertical"
 					aria-hidden="true"
+					data-restrict-breakpoint-report-min="1"
 				>
 				</div>
+
+				<!-- Download Report Button -->
+				<button
+					class="open-dialog"
+					data-dialog="report-download-dialog"
+					aria-label="Download Report"
+					type="button"
+					data-restrict-status="complete"
+				>
+					<span class="icon-and-label-container">
+						<IconDownload />
+						<span class="label-container">
+							<span class="label">Download</span>
+						</span>
+					</span>
+					<span class="tooltip">Download Report</span>
+				</button>
+			</div>
+
+			<div
+				class="separator group"
+				data-orientation="vertical"
+				aria-hidden="true"
+				data-restrict-mode="assessment"
+				data-restrict-context="report"
+				data-restrict-status="complete"
+				data-restrict-breakpoint-big-seven-min="2"
+			>
+			</div>
+
+			<!-- Save Group -->
+			<div
+				class="save-group button-group"
+				data-restrict-mode="assessment"
+				data-restrict-context="big-seven"
+			>
+				<!-- Share Assessment Button -->
+				<button
+					class="open-dialog"
+					data-dialog="share-assessment-dialog"
+					type="button"
+					aria-label="Share Assessment"
+					data-restrict-breakpoint-big-seven-min="3"
+				>
+					<span class="icon-and-label-container">
+						<IconShare />
+						<span class="label-container">
+							<span class="label">Share</span>
+						</span>
+					</span>
+					<span class="tooltip">Share Assessment</span>
+				</button>
+
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+					data-restrict-breakpoint-big-seven-min="3"
+				>
+				</div>
+
+				<!-- Download Assessment Button -->
+				<button
+					class="open-dialog"
+					data-dialog="download-assessment-dialog"
+					type="button"
+					aria-label="Download Assessment"
+					data-restrict-breakpoint-big-seven-min="3"
+				>
+					<span class="icon-and-label-container">
+						<IconDownload />
+						<span class="label-container">
+							<span class="label">Download</span>
+						</span>
+					</span>
+					<span class="tooltip">Download Assessment</span>
+				</button>
+
+				<div
+					class="separator item"
+					data-orientation="vertical"
+					aria-hidden="true"
+					data-restrict-breakpoint-big-seven-min="3"
+				>
+				</div>
+
 				<!-- Export Status -->
 				<div class="field-container label-container">
 					<span
@@ -244,25 +339,87 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					></span>
 				</div>
 			</div>
+
 			<div
 				class="separator group"
 				data-orientation="vertical"
-				data-restrict-mode="assessment"
 				aria-hidden="true"
+				data-restrict-mode="assessment"
+				data-restrict-context="big-seven"
+				data-restrict-status="complete"
+				data-restrict-breakpoint-big-seven-min="2"
 			>
 			</div>
+
+			<!-- View Group -->
+			<div
+				class="view-group button-group"
+				data-restrict-mode="assessment"
+			>
+				<!-- View Report Link -->
+				<a
+					data-style-as="button"
+					href="./report/"
+					aria-label="View Report"
+					data-restrict-context="big-seven"
+					data-restrict-status="complete"
+					data-restrict-breakpoint-big-seven-min="2"
+				>
+					<span class="icon-and-label-container">
+						<IconChart />
+						<span class="label-container">
+							<span class="label">Report</span>
+						</span>
+					</span>
+					<span class="tooltip">View Report</span>
+				</a>
+
+				<!-- View Assessment Link -->
+				<a
+					class="view-assessment"
+					data-style-as="button"
+					href="./big-seven/"
+					aria-label="View Assessment"
+					data-restrict-context="report"
+					data-restrict-breakpoint-big-seven-min="2"
+				>
+					<span class="icon-and-label-container">
+						<IconChecklist />
+						<span class="label-container">
+							<span class="label">Assessment</span>
+						</span>
+					</span>
+					<span class="tooltip">View Assessment</span>
+				</a>
+			</div>
+
+			<div
+				class="separator group"
+				data-orientation="vertical"
+				aria-hidden="true"
+				data-restrict-mode="assessment"
+				data-restrict-breakpoint-big-seven-min="4"
+				data-restrict-breakpoint-report-min="2"
+			>
+			</div>
+
+			<!-- User Group -->
 			<div
 				class="user-group button-group"
 				data-restrict-mode="assessment"
+				data-restrict-breakpoint-big-seven-min="4"
+				data-restrict-breakpoint-report-min="2"
 			>
-				<!-- Edit Assessors Button -->
+				<!-- Manage Assessors Button -->
 				<button
 					class="open-dialog"
 					data-dialog="assessor-dialog"
-					data-dialog-heading="Edit Assessors"
+					data-dialog-heading="Manage Assessors"
 					data-dialog-context="configure"
 					type="button"
 					aria-label="Manage Assessors"
+					data-restrict-breakpoint-big-seven-min="3"
+					data-restrict-breakpoint-report-min="1"
 				>
 					<span class="icon-and-label-container">
 						<IconAssessor />
@@ -270,21 +427,25 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 							<span class="label">Assessors</span>
 						</span>
 					</span>
-					<span class="tooltip">Edit Assessors</span>
+					<span class="tooltip">Manage Assessors</span>
 				</button>
+
 				<div
 					class="separator item"
 					data-orientation="vertical"
-					data-restrict-assessor="true"
 					aria-hidden="true"
+					data-restrict-assessor="true"
+					data-restrict-breakpoint-big-seven-min="3"
+					data-restrict-breakpoint-report-min="1"
 				>
 				</div>
+
 				<!-- Active Assessor -->
 				<button
 					type="button"
 					class="open-dialog field-container icon-and-label-container"
 					data-dialog="assessor-dialog"
-					data-dialog-heading="Select Active Assessor"
+					data-dialog-context="configure"
 					aria-label="Change Active Assessor"
 					data-style="solid-outline"
 					data-vibrancy="vivid"
@@ -307,40 +468,24 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					<span class="tooltip">Change Active Assessor</span>
 				</button>
 			</div>
+
 			<div
 				class="separator group"
 				data-orientation="vertical"
 				data-restrict-mode="assessment"
+				data-restrict-breakpoint-big-seven-min="2"
+				data-restrict-breakpoint-report-min="1"
 				aria-hidden="true"
 			>
 			</div>
+
+			<!-- Mode Group -->
 			<div
 				class="mode-group button-group"
 				data-restrict-mode="assessment"
+				data-restrict-breakpoint-big-seven-min="2"
+				data-restrict-breakpoint-report-min="1"
 			>
-				<!-- Start Editing Button -->
-				<button
-					class="open-dialog"
-					data-dialog="status-warning-dialog"
-					aria-label="Edit Completed Assessment"
-					type="button"
-					data-restrict-status="complete"
-				>
-					<span class="icon-and-label-container">
-						<IconEdit />
-						<span class="label-container">
-							<span class="label">Edit</span>
-						</span>
-					</span>
-					<span class="tooltip">Edit Assessment</span>
-				</button>
-				<div
-					class="separator item"
-					data-orientation="vertical"
-					data-restrict-status="complete"
-					aria-hidden="true"
-				>
-				</div>
 				<!-- Close Button -->
 				<button
 					class="close"
@@ -358,425 +503,790 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					<span class="tooltip">Close Assessment</span>
 				</button>
 			</div>
+
+			<div
+				class="separator group"
+				data-orientation="vertical"
+				aria-hidden="true"
+				data-restrict-mode="assessment"
+				data-restrict-breakpoint-report-max="1"
+			>
+			</div>
+
+			<!-- More Group -->
+			<div
+				class="more-group button-group"
+				data-restrict-mode="assessment"
+				data-restrict-breakpoint-report-max="1"
+			>
+				<!-- More Options Buttons -->
+				<div class="more button-container">
+					<button
+						class="subgroup-toggle"
+						aria-label="More Options"
+						type="button"
+					>
+						<span class="icon-and-label-container">
+							<IconMore />
+							<span class="label-container">
+								<span class="label">More</span>
+							</span>
+						</span>
+						<span class="tooltip">More Options</span>
+					</button>
+
+					<ul
+						class="subgroup"
+						data-align="right"
+					>
+						<!-- View Properties -->
+						<li data-restrict-context="big-seven">
+							<button
+								class="open-dialog"
+								data-dialog="view-assessment-properties-dialog"
+								type="button"
+								aria-label="View Assessment Properties"
+							>
+								<span class="icon-and-label-container">
+									<IconInfo />
+									<span class="label-container">
+										<span class="label">View Properties</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Change History -->
+						<li data-restrict-context="big-seven">
+							<button
+								class="open-dialog"
+								data-dialog="change-history-dialog"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconHistory />
+									<span class="label-container">
+										<span class="label">Change History</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Share Assessment Button -->
+						<li
+							data-restrict-context="big-seven"
+							data-restrict-breakpoint-big-seven-max="3"
+						>
+							<button
+								class="open-dialog"
+								data-dialog="share-assessment-dialog"
+								type="button"
+								aria-label="Share Assessment"
+							>
+								<span class="icon-and-label-container">
+									<IconShare />
+									<span class="label-container">
+										<span class="label">Share Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Download Assessment Button -->
+						<li
+							data-restrict-context="big-seven"
+							data-restrict-breakpoint-big-seven-max="3"
+						>
+							<button
+								class="open-dialog"
+								data-dialog="download-assessment-dialog"
+								type="button"
+								aria-label="Download Assessment"
+							>
+								<span class="icon-and-label-container">
+									<IconDownload />
+									<span class="label-container">
+										<span class="label">Download Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- View Report -->
+						<li
+							data-restrict-mode="assessment"
+							data-restrict-context="big-seven"
+							data-restrict-status="complete"
+							data-restrict-breakpoint-big-seven-max="2"
+						>
+							<a
+								class="open-dialog"
+								data-style-as="button"
+								href="./report/"
+								aria-label="View Report"
+							>
+								<span class="icon-and-label-container">
+									<IconChart />
+									<span class="label-container">
+										<span class="label">View Report</span>
+									</span>
+								</span>
+							</a>
+						</li>
+
+						<!-- Report Settings -->
+						<li
+							data-restrict-context="report"
+							data-restrict-status="complete"
+							data-restrict-breakpoint-report-max="1"
+						>
+							<button
+								class="open-dialog"
+								data-dialog="report-settings-dialog"
+								aria-label="Modify Report Settings"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconCog />
+									<span class="label-container">
+										<span class="label">Report Settings</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Manage Assessors -->
+						<li data-restrict-breakpoint-big-seven-max="3">
+							<button
+								class="open-dialog"
+								data-dialog="assessor-dialog"
+								data-dialog-context="configure"
+								type="button"
+								aria-label="Manage Assessors"
+							>
+								<span class="icon-and-label-container">
+									<IconAssessor />
+									<span class="label-container">
+										<span class="label">Manage Assessors</span>
+									</span>
+								</span>
+							</button>
+						</li>
+
+						<!-- Edit Assessment -->
+						<li
+							data-restrict-status="complete"
+							data-restrict-context="big-seven"
+						>
+							<button
+								class="open-dialog"
+								data-dialog="status-warning-dialog"
+								aria-label="Edit Completed Assessment"
+								type="button"
+							>
+								<span class="icon-and-label-container">
+									<IconEdit />
+									<span class="label-container">
+										<span class="label">Edit Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+						<!-- Close Assessment -->
+						<li data-restrict-breakpoint-big-seven-max="2">
+							<button
+								class="close"
+								type="button"
+								aria-label="Close Assessment"
+								data-toast-success="assessment-toolbar_close-toast_success"
+								data-toast-failure="assessment-toolbar_close-toast_failure"
+							>
+								<span class="icon-and-label-container">
+									<IconXmark />
+									<span class="label-container">
+										<span class="label">Close Assessment</span>
+									</span>
+								</span>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
-</section>
 
-<style is:global>
-	#assessment-controls {
-		container-name: assessment-controls;
-		container-type: inline-size;
+	<style is:global>
+		#assessment-controls {
+			container-name: assessment-controls;
+			container-type: inline-size;
 
-		min-height: 3.75rem;
-		top: 0;
-		z-index: 11;
-		user-select: none;
-		-webkit-user-select: none;
-
-		[data-mode='assessment'] & {
-			position: sticky;
-
-			@container main (width < 904px) {
-				position: static;
-			}
-
-			&
-				:is(button, [data-style-as='button']):not(.field-container, .subgroup button)
-				.label-container {
-				@container assessment-controls (width < 1648px) {
-					display: none;
-				}
-			}
-		}
-
-		& :is(.notice, .tools) > .wrapper {
-			max-width: 1920px;
-		}
-
-		& > .notice {
-			height: 100%;
-			background-color: var(--colour-bkg-surface-subtle-1-accent);
-			border-bottom: 1px solid var(--colour-brd-subtle-accent);
-
-			:root[data-theme='dark'] & {
-				--icon-colour: var(--colour-brd-bold-accent);
-
-				/* background-color: var(--colour-bkg-surface-bold-1-accent); */
-				background-color: var(--colour-bkg-surface-subtle-1);
-				border-top: 1px solid var(--colour-bkg-surface-bold-1-accent);
-				border-bottom: 1px solid var(--colour-bkg-surface-bold-1-accent);
-			}
-
-			& > .wrapper {
-				--icon-size: 1rem;
-				display: flex;
-				align-items: center;
-				gap: var(--space-base);
-				height: 100%;
-				padding: var(--space-base) var(--space-2xl);
-				margin: 0 auto;
-
-				@container main (width < 720px) {
-					padding: var(--space-base) var(--space-xl);
-				}
-			}
-
-			& p {
-				font-size: var(--font-size-2xs);
-				line-height: 1.2;
-				margin: 0 0 0.125rem;
-				text-wrap: balance;
-			}
-		}
-
-		& > .tools {
-			height: 100%;
-			background-color: var(--colour-bkg-surface-subtle-1);
-			border-top: 1px solid var(--colour-brd-subtle);
-			border-bottom: 1px solid var(--colour-brd-subtle);
-
-			& > .wrapper {
-				display: flex;
-				flex-flow: row nowrap;
-				align-items: center;
-				gap: var(--space-xs);
-				height: 100%;
-				padding: 0 var(--space-2xl);
-				margin: 0 auto;
-			}
-		}
-
-		& .button-group {
-			--group-gap: var(--space-xs);
-			flex-shrink: 0;
-
-			& .button-container {
-				position: relative;
-
-				& .subgroup {
-					display: none;
-					flex-flow: column nowrap;
-					align-items: start;
-					gap: var(--space-3xs);
-					list-style-type: none;
-					background-color: var(--colour-bkg-surface-subtle-1);
-					border: 1px solid var(--colour-brd-subtle);
-					border-radius: var(--brd-radius-normal);
-					width: max-content;
-					padding: var(--space-2xs);
-					box-shadow: var(--box-shadow);
-					position: absolute;
-					top: calc(2rem + var(--space-xs));
-					left: calc(-1 * var(--space-xs));
-					z-index: 100;
-
-					& li {
-						width: 100%;
-					}
-
-					& button {
-						justify-content: start;
-						width: 100%;
-						font-size: var(--font-size-2xs);
-					}
-				}
-
-				& .subgroup-toggle[aria-expanded='true'] + .subgroup {
-					display: flex;
-				}
-			}
-		}
-
-		& .export-group {
-			flex-grow: 1;
-		}
-
-		& :is(button, [data-style-as='button']) {
-			position: relative;
-
-			&:not([data-style='solid-outline']) {
-				--icon-size: 1.25rem;
-				--button-bkg-colour: transparent;
-
-				&:is(:hover, :focus-visible, [aria-expanded='true']) {
-					--icon-colour: var(--colour-txt-on-bold-1);
-					--label-colour: var(--colour-txt-on-bold-1);
-					--button-bkg-colour: var(--colour-bkg-surface-bold-1);
-				}
-			}
-
-			&:not([aria-expanded='true']):is(:hover, :focus-visible) {
-				& .tooltip {
-					opacity: 1;
-					visibility: visible;
-					transition: opacity var(--transition-linear-fast) 750ms;
-				}
-			}
-
-			&:focus-visible {
-				& .tooltip {
-					top: calc(100% + var(--space-xs));
-				}
-			}
-
-			.tooltip {
-				position: absolute;
-				top: calc(100% + var(--space-2xs));
-				left: 50%;
-				translate: -50%;
-				font-size: var(--font-size-2xs);
-				color: var(--colour-txt-on-bold-1);
-				line-height: 1.2;
-				background-color: var(--colour-bkg-surface-bold-1);
-				width: max-content;
-				padding: var(--space-2xs) var(--space-2xs);
-				border-radius: var(--brd-radius-small);
-				visibility: hidden;
-				opacity: 0;
-				transition: opacity var(--transition-linear-fast) 0s;
-			}
-
-			&.close {
-				& .tooltip {
-					left: auto;
-					right: calc(-1 * var(--space-xs));
-					translate: 0;
-				}
-			}
-		}
-
-		& .field-container {
-			--icon-size: 1.25rem;
-			--label-size: var(--font-size-2xs);
+			min-height: 3.75rem;
+			top: 0;
+			z-index: 11;
 			user-select: none;
 			-webkit-user-select: none;
 
-			&:has([data-field='activeAssessmentName']) {
+			[data-mode='assessment'] & {
+				position: sticky;
+
+				@container main (width < 720px) {
+					position: static;
+				}
+
+				&
+					:is(button, [data-style-as='button']):not(
+						.field-container,
+						.subgroup :is(button, [data-style-as='button'])
+					)
+					.label-container {
+					@container assessment-controls (width < 1840px) {
+						display: none;
+					}
+				}
+			}
+
+			& :is(.notice, .tools) > .wrapper {
+				max-width: 1920px;
+			}
+
+			& > .notice {
+				height: 100%;
+				background-color: var(--colour-bkg-surface-subtle-1-accent);
+				border-bottom: 1px solid var(--colour-brd-subtle-accent);
+
+				:root[data-theme='dark'] & {
+					--icon-colour: var(--colour-brd-bold-accent);
+
+					/* background-color: var(--colour-bkg-surface-bold-1-accent); */
+					background-color: var(--colour-bkg-surface-subtle-1);
+					border-top: 1px solid var(--colour-bkg-surface-bold-1-accent);
+					border-bottom: 1px solid var(--colour-bkg-surface-bold-1-accent);
+				}
+
+				& > .wrapper {
+					--icon-size: 1rem;
+					display: flex;
+					align-items: center;
+					gap: var(--space-base);
+					height: 100%;
+					padding: var(--space-base) var(--space-2xl);
+					margin: 0 auto;
+
+					@container main (width < 720px) {
+						padding: var(--space-base) var(--space-xl);
+					}
+				}
+
+				& p {
+					font-size: var(--font-size-2xs);
+					line-height: 1.2;
+					margin: 0 0 0.125rem;
+					text-wrap: balance;
+				}
+			}
+
+			& > .tools {
+				height: 100%;
+				background-color: var(--colour-bkg-surface-subtle-1);
+				border-top: 1px solid var(--colour-brd-subtle);
+				border-bottom: 1px solid var(--colour-brd-subtle);
+
+				& > .wrapper {
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					gap: var(--space-xs);
+					height: 100%;
+					padding: 0 var(--space-2xl);
+					margin: 0 auto;
+				}
+			}
+
+			& .button-group {
+				--group-gap: var(--space-xs);
+				flex-shrink: 0;
+
+				&:has([data-field='exportStatus']) {
+					flex-shrink: 1;
+				}
+
+				& .button-container {
+					position: relative;
+
+					& .subgroup {
+						display: none;
+						flex-flow: column nowrap;
+						align-items: start;
+						gap: var(--space-3xs);
+						list-style-type: none;
+						background-color: var(--colour-bkg-surface-subtle-1);
+						border: 1px solid var(--colour-brd-subtle);
+						border-radius: var(--brd-radius-normal);
+						width: max-content;
+						padding: var(--space-2xs);
+						box-shadow: var(--box-shadow);
+						position: absolute;
+						top: calc(2rem + var(--space-xs));
+						left: calc(-1 * var(--space-xs));
+						z-index: 100;
+
+						&[data-align='right'] {
+							right: calc(-1 * var(--space-xs));
+							left: unset;
+						}
+
+						& li {
+							width: 100%;
+						}
+
+						& :is(button, [data-style-as='button']) {
+							justify-content: start;
+							width: 100%;
+							font-size: var(--font-size-2xs);
+						}
+					}
+
+					& .subgroup-toggle[aria-expanded='true'] + .subgroup {
+						display: flex;
+					}
+				}
+			}
+
+			main.big-seven & .save-group {
+				flex-grow: 1;
+			}
+
+			main.report[data-status='complete'] & .report-group {
+				flex-grow: 1;
+			}
+
+			main.report[data-status='in-progress'] & .file-group {
+				flex-grow: 1;
+			}
+
+			& :is(button, [data-style-as='button']) {
+				position: relative;
+
+				&:not([data-style='solid-outline']) {
+					--icon-size: 1.25rem;
+					--button-bkg-colour: transparent;
+
+					@media (hover: hover) {
+						&:hover {
+							--icon-colour: var(--colour-txt-on-bold-1);
+							--label-colour: var(--colour-txt-on-bold-1);
+							--button-bkg-colour: var(--colour-bkg-surface-bold-1);
+						}
+					}
+
+					&:is(:focus-visible, [aria-expanded='true']) {
+						--icon-colour: var(--colour-txt-on-bold-1);
+						--label-colour: var(--colour-txt-on-bold-1);
+						--button-bkg-colour: var(--colour-bkg-surface-bold-1);
+					}
+				}
+
+				@media (hover: hover) {
+					&:not([aria-expanded='true']):hover {
+						& .tooltip {
+							opacity: 1;
+							visibility: visible;
+							transition: opacity var(--transition-linear-fast) 750ms;
+						}
+					}
+				}
+
+				&:not([aria-expanded='true']):focus-visible {
+					& .tooltip {
+						opacity: 1;
+						visibility: visible;
+						transition: opacity var(--transition-linear-fast) 750ms;
+					}
+				}
+
+				&:focus-visible {
+					& .tooltip {
+						top: calc(100% + var(--space-xs));
+					}
+				}
+
+				.tooltip {
+					position: absolute;
+					top: calc(100% + var(--space-2xs));
+					left: 50%;
+					translate: -50%;
+					font-size: var(--font-size-2xs);
+					color: var(--colour-txt-on-bold-1);
+					line-height: 1.2;
+					background-color: var(--colour-bkg-surface-bold-1);
+					width: max-content;
+					padding: var(--space-2xs) var(--space-2xs);
+					border-radius: var(--brd-radius-small);
+					visibility: hidden;
+					opacity: 0;
+					transition: opacity var(--transition-linear-fast) 0s;
+				}
+
+				&:is(.close, .more) {
+					& .tooltip {
+						left: auto;
+						right: calc(-1 * var(--space-xs));
+						translate: 0;
+					}
+				}
+			}
+
+			& .field-container {
+				--icon-size: 1.25rem;
 				--label-size: var(--font-size-2xs);
-				--label-weight: 700;
-				gap: var(--space-xs);
+				user-select: none;
+				-webkit-user-select: none;
+
+				&:has([data-field='activeAssessmentName']) {
+					--label-size: var(--font-size-2xs);
+					--label-weight: 700;
+					gap: var(--space-xs);
+				}
+
+				&:has([data-field='status'], [data-field='activeAssessor']) {
+					--container-padding: var(--space-2xs);
+					--icon-size: 0.875rem;
+					min-height: 1.75rem;
+					margin: 0 var(--space-2xs) !important;
+				}
+
+				&:has([data-field='exportStatus']) {
+					--label-colour: var(--colour-txt-on-subtle-2);
+					margin: 0 var(--space-2xs) !important;
+					text-wrap: balance;
+
+					& button {
+						--link-colour: var(--colour-txt-on-subtle-2);
+					}
+				}
 			}
 
-			&:has([data-field='status'], [data-field='activeAssessor']) {
-				--container-padding: var(--space-2xs);
-				--icon-size: 0.875rem;
-				min-height: 1.75rem;
-				margin: 0 var(--space-2xs) !important;
+			& .separator {
+				&.group {
+					--separator-long-edge-dimension: 100%;
+				}
+
+				&.item {
+					--separator-long-edge-dimension: 1.75rem;
+				}
 			}
 
-			&:has([data-field='exportStatus']) {
-				--label-colour: var(--colour-txt-on-subtle-2);
-				margin: 0 var(--space-2xs) !important;
-				@container assessment-controls (width < 1296px) {
-					display: none;
+			main:not(.big-seven) & [data-restrict-context='big-seven'] {
+				display: none;
+			}
+
+			main:not(.report) & [data-restrict-context='report'] {
+				display: none;
+			}
+
+			& [data-restrict-device-min='medium'] {
+				@container main (width < 720px) {
+					display: none !important;
+				}
+			}
+
+			& [data-restrict-device-max='small'] {
+				@container main (width >= 720px) {
+					display: none !important;
+				}
+			}
+
+			/* 
+		// Big Seven Breakpoints
+		*/
+
+			/* First breakpoint, drop the labels */
+			main.big-seven & [data-restrict-breakpoint-big-seven-max='1'] {
+				@container main (width >= 1600px) {
+					display: none !important;
+				}
+			}
+			main.big-seven & [data-restrict-breakpoint-big-seven-min='1'] {
+				@container main (width < 1600px) {
+					display: none !important;
+				}
+			}
+
+			/* Second breakpoint, reveal more with first batch (props, report, edit, close) */
+			main.big-seven & [data-restrict-breakpoint-big-seven-max='2'] {
+				@container main (width >= 1400px) {
+					display: none !important;
+				}
+			}
+
+			main.big-seven & [data-restrict-breakpoint-big-seven-min='2'] {
+				@container main (width < 1400px) {
+					display: none !important;
+				}
+			}
+
+			/* Third breakpoint, second batch in more (export btn (not info), manage assessor), add 'Assessor' to Active:Chad */
+			main.big-seven & [data-restrict-breakpoint-big-seven-max='3'] {
+				@container main (width >= 1200px ) {
+					display: none !important;
+				}
+			}
+
+			main.big-seven & [data-restrict-breakpoint-big-seven-min='3'] {
+				@container main (width < 1200px ) {
+					display: none !important;
+				}
+			}
+
+			main.big-seven:not([data-assessor='true']) & .user-group {
+				@container main (width < 1200px) {
+					display: none !important;
+				}
+			}
+
+			main.big-seven:not([data-assessor='true']) & .separator:has(+ .user-group) {
+				@container main (width < 1200px ) {
+					display: none !important;
+				}
+			}
+
+			/* Fourth breakpoint, third batch in more (manage ass. and new ass.) */
+			main.big-seven & [data-restrict-breakpoint-big-seven-max='4'] {
+				@container main (width >= 1040px ) {
+					display: none !important;
+				}
+			}
+
+			main.big-seven & [data-restrict-breakpoint-big-seven-min='4'] {
+				@container main (width < 1040px ) {
+					display: none !important;
+				}
+			}
+
+			/* 
+			// Report Breakpoints
+			*/
+
+			main.report & [data-restrict-breakpoint-report-max='1'] {
+				@container main (width >= 950px) {
+					display: none !important;
+				}
+			}
+			main.report & [data-restrict-breakpoint-report-min='1'] {
+				@container main (width < 950px) {
+					display: none !important;
+				}
+			}
+
+			main.report:not([data-assessor='true']) & .user-group {
+				@container main (width < 950px) {
+					display: none !important;
+				}
+			}
+
+			main.report:not([data-assessor='true']) & .separator:has(+ .user-group) {
+				@container main (width < 950px ) {
+					display: none !important;
+				}
+			}
+
+			/* First breakpoint, drop the labels */
+			main.report & [data-restrict-breakpoint-report-max='2'] {
+				@container main (width >= 850px) {
+					display: none !important;
+				}
+			}
+			main.report & [data-restrict-breakpoint-report-min='2'] {
+				@container main (width < 850px) {
+					display: none !important;
 				}
 			}
 		}
+	</style>
 
-		& .separator {
-			&.group {
-				--separator-long-edge-dimension: 100%;
-			}
+	<script>
+		//
+		// Imports
+		//
 
-			&.item {
-				--separator-long-edge-dimension: 1.75rem;
-			}
+		import {
+			getActiveAssessmentData,
+			getAssessmentName,
+			getExportStatus,
+			getStatusColour,
+			getUserData,
+			setAssessment,
+			setState,
+			setPreferences,
+			subscribe,
+		} from 'src/stores/userDataStore';
+		import { dialogControl } from 'src/utilities/dialog';
+		import { eventControl } from 'src/utilities/event';
+		import { resetForm } from 'src/utilities/form';
+		import { toastControl } from 'src/utilities/toast';
 
-			&:has(+ .field-container [data-field='exportStatus']) {
-				@container assessment-controls (width < 1296px) {
-					display: none;
-				}
-			}
-		}
+		//
+		// DOM Updates
+		//
 
-		& [data-restrict-device-min='medium'] {
-			@container main (width < 920px) {
-				display: none !important;
-			}
-		}
+		let updateToolbar = (data: UserData, changes) => {
+			let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
+			if (!toolbar) return;
 
-		& [data-restrict-device-max='small'] {
-			@container main (width >= 920px) {
-				display: none !important;
-			}
-		}
-	}
-</style>
-
-<script>
-	//
-	// Imports
-	//
-
-	import {
-		getActiveAssessmentData,
-		getAssessmentName,
-		getExportStatus,
-		getStatusColour,
-		getUserData,
-		setAssessment,
-		setState,
-		subscribe,
-	} from 'src/stores/userDataStore';
-	import { dialogControl } from 'src/utilities/dialog';
-	import { eventControl } from 'src/utilities/event';
-	import { resetForm } from 'src/utilities/form';
-	import { toastControl } from 'src/utilities/toast';
-
-	//
-	// DOM Updates
-	//
-
-	let updateToolbar = (data: UserData, changes) => {
-		let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
-		if (!toolbar) return;
-
-		let stateTriggerKeys = ['activeAssessmentId'];
-		let assessmentTriggerKeys = [
-			'status',
-			'reportingYear',
-			'school',
-			'unexportedChanges',
-			'activeAssessor',
-		];
-		if (
-			!changes.initiating &&
-			!(
-				(changes.assessments &&
-					assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
-				(changes.uiState && stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+			let stateTriggerKeys = ['activeAssessmentId', 'lastModifiedPage'];
+			let assessmentTriggerKeys = [
+				'status',
+				'reportingYear',
+				'school',
+				'unexportedChanges',
+				'activeAssessor',
+			];
+			if (
+				!changes.initiating &&
+				!(
+					(changes.assessments &&
+						assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+					(changes.uiState &&
+						stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+				)
 			)
-		)
-			return;
+				return;
 
-		let assessment = getActiveAssessmentData();
-		if (!assessment) return;
+			let assessment = getActiveAssessmentData();
+			if (!assessment) return;
 
-		// console.log("Updating Assessment Toolbar");
+			// Get the update fields
+			let statusField = toolbar?.querySelector('[data-field="status"]');
+			let assessmentField = toolbar?.querySelector('[data-field="activeAssessmentName"]');
+			let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
+			let assessorField = toolbar?.querySelector('[data-field="activeAssessor"]');
+			let duplicateBtn = toolbar?.querySelector('[data-dialog-context="duplicate"]');
+			let viewAssessmentLink = toolbar?.querySelector(
+				'a.view-assessment',
+			) as HTMLAnchorElement;
 
-		// Get the update fields
-		let statusField = toolbar?.querySelector('[data-field="status"]');
-		let assessmentField = toolbar?.querySelector('[data-field="activeAssessmentName"]');
-		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
-		let assessorField = toolbar?.querySelector('[data-field="activeAssessor"]');
-		let duplicateBtn = toolbar?.querySelector('[data-dialog-context="duplicate"]');
+			if (!assessment) return;
 
-		if (!assessment) return;
+			// 1. Update the assessment status
+			if (statusField) {
+				if (assessment.status === undefined) {
+					statusField.setAttribute('hidden', '');
+				} else {
+					statusField.removeAttribute('hidden');
+				}
 
-		// 1. Update the assessment status
-		if (statusField) {
-			if (assessment.status === undefined) {
-				statusField.setAttribute('hidden', '');
-			} else {
-				statusField.removeAttribute('hidden');
+				// Create the assessment title string and inject it
+				let statusStr = `${assessment.status}`;
+				statusField.textContent = statusStr;
+				statusField.setAttribute('title', statusStr);
+				statusField
+					.closest('.field-container')
+					?.setAttribute('data-theme', getStatusColour());
 			}
 
-			// Create the assessment title string and inject it
-			let statusStr = `${assessment.status}`;
-			statusField.textContent = statusStr;
-			statusField.setAttribute('title', statusStr);
-			statusField.closest('.field-container')?.setAttribute('data-theme', getStatusColour());
-		}
+			// 2. Update the assessment name
+			if (assessmentField) {
+				if (assessment.reportingYear === undefined || assessment.school === undefined) {
+					assessmentField.setAttribute('hidden', '');
+				} else {
+					assessmentField.removeAttribute('hidden');
+				}
 
-		// 2. Update the assessment name
-		if (assessmentField) {
-			if (assessment.reportingYear === undefined || assessment.school === undefined) {
-				assessmentField.setAttribute('hidden', '');
-			} else {
-				assessmentField.removeAttribute('hidden');
+				// Create the assessment title string and inject it
+				let assessmentStr = getAssessmentName();
+				assessmentField.textContent = assessmentStr;
+				assessmentField.setAttribute('title', assessmentStr);
 			}
 
-			// Create the assessment title string and inject it
-			let assessmentStr = getAssessmentName();
-			assessmentField.textContent = assessmentStr;
-			assessmentField.setAttribute('title', assessmentStr);
-		}
+			// 3. Update the export status
+			if (exportField) {
+				if (assessment.unexportedChanges === undefined) {
+					exportField.setAttribute('hidden', '');
+				} else {
+					exportField.removeAttribute('hidden');
+				}
 
-		// 3. Update the export status
-		if (exportField) {
-			if (assessment.unexportedChanges === undefined) {
-				exportField.setAttribute('hidden', '');
-			} else {
-				exportField.removeAttribute('hidden');
+				exportField.innerHTML = getExportStatus({}) as string;
 			}
 
-			exportField.textContent = getExportStatus({}) as string;
-		}
-
-		// 4. Update the assessor name
-		if (assessorField) {
-			if (assessment.activeAssessor === undefined) {
-				assessorField.setAttribute('hidden', '');
-			} else {
-				assessorField.removeAttribute('hidden');
-				let assessorStr = `Active: ${assessment.activeAssessor}`;
-				assessorField.textContent = assessorStr;
-				assessorField.setAttribute('title', assessorStr);
+			// 4. Update the assessor name
+			if (assessorField) {
+				if (assessment.activeAssessor === undefined) {
+					assessorField.setAttribute('hidden', '');
+				} else {
+					assessorField.removeAttribute('hidden');
+					let assessorStr = `Active: ${assessment.activeAssessor}`;
+					assessorField.textContent = assessorStr;
+					assessorField.setAttribute('title', assessorStr);
+				}
 			}
-		}
 
-		// 5. Update the duplicate btn target id
-		if (duplicateBtn) {
-			duplicateBtn.setAttribute('data-dialog-target-id', assessment.id);
-		}
-	};
+			// 5. Update the duplicate btn target id
+			if (duplicateBtn) {
+				duplicateBtn.setAttribute('data-dialog-target-id', assessment.id);
+			}
 
-	let updateToolbarExportStatus = () => {
-		let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
-		if (!toolbar) return;
+			// 6. Update the view assessment path
+			if (viewAssessmentLink) {
+				viewAssessmentLink.href =
+					data.uiState.lastModifiedPage?.path ?? './big-seven/leadership-and-teaming/';
+			}
+		};
 
-		let userData = getUserData();
-		if (userData.uiState.mode !== 'assessment') return;
+		let updateToolbarExportStatus = () => {
+			let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
+			if (!toolbar) return;
 
-		// Get the update fields
-		let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
+			let userData = getUserData();
+			if (userData.uiState.mode !== 'assessment') return;
 
-		exportField.textContent = getExportStatus({}) as string;
-	};
+			// Get the update fields
+			let exportField = toolbar?.querySelector('[data-field="exportStatus"]');
 
-	//
-	// Inits
-	//
+			exportField.innerHTML = getExportStatus({}) as string;
+		};
 
-	subscribe(updateToolbar);
+		//
+		// Inits
+		//
 
-	// Reset save status every minute
-	setInterval(() => {
-		updateToolbarExportStatus();
-	}, 60_000);
+		subscribe(updateToolbar);
 
-	//
-	// Event Listeners
-	//
+		// Reset save status every minute
+		setInterval(() => {
+			updateToolbarExportStatus();
+		}, 60_000);
 
-	let onClick = (event) => {
-		let target = event.target as HTMLButtonElement;
+		//
+		// Event Listeners
+		//
 
-		let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
-		if (!toolbar) return;
+		let onClick = (event) => {
+			let target = event.target as HTMLButtonElement;
 
-		if (target.matches('button.close')) {
-			let activeAssessment = getActiveAssessmentData();
+			let toolbar = document.querySelector('#assessment-controls') as HTMLElement;
+			if (!toolbar) return;
 
-			if (activeAssessment.status === 'In Progress') {
-				dialogControl.open({
-					dialogId: 'edit-status-dialog',
-					context: 'close',
-					headingText: 'Update Status Before Closing',
-				});
-			} else {
+			if (target.matches('button.close')) {
+				let activeAssessment = getActiveAssessmentData();
+
 				if (activeAssessment.unexportedChanges) {
 					dialogControl.open({
-						dialogId: 'export-warning-dialog',
+						dialogId: 'backup-warning-dialog',
 					});
 				} else {
 					try {
 						setAssessment({
 							activeAssessor: null,
 						});
+
 						setState({
 							mode: 'reading',
 							activeAssessmentId: null,
+						});
+
+						setPreferences({
+							reportIncludedIndicators: ['1', '2', '3', '4', '5', '6', '7'],
 						});
 
 						// Reset consideration checkboxes
@@ -804,64 +1314,56 @@ import IconWarning16 from 'src/components/icons/IconWarning_16.astro';
 					}
 				}
 			}
-		}
 
-		if (target.matches('button.subgroup-toggle')) {
-			let expanded = target.getAttribute('aria-expanded') === 'true';
-			target.setAttribute('aria-expanded', String(!expanded));
-		}
-	};
-	eventControl.add({
-		selector: '#assessment-controls',
-		eventType: 'click',
-		fn: onClick,
-	});
+			if (target.matches('button.subgroup-toggle')) {
+				let expanded = target.getAttribute('aria-expanded') === 'true';
+				target.setAttribute('aria-expanded', String(!expanded));
+			}
+		};
+		eventControl.add({
+			selector: '#assessment-controls',
+			eventType: 'click',
+			fn: onClick,
+		});
 
-	let onDocumentClick = (event) => {
-		let target = event.target as any;
+		let onDocumentClick = (event) => {
+			let target = event.target as any;
 
-		let buttonContainer = document.querySelector(
-			'#assessment-controls .button-container:has(.subgroup)',
-		);
-		if (buttonContainer && !buttonContainer.contains(target)) {
-			let btn = buttonContainer.querySelector('.subgroup-toggle');
-			btn.setAttribute('aria-expanded', 'false');
-		}
-	};
-	eventControl.add({
-		elem: document,
-		eventType: 'click',
-		fn: onDocumentClick,
-	});
+			let buttonContainers = document.querySelectorAll(
+				'#assessment-controls .button-container:has(.subgroup)',
+			);
+			for (let buttonContainer of buttonContainers) {
+				if (buttonContainer && !buttonContainer.contains(target)) {
+					let btn = buttonContainer.querySelector('.subgroup-toggle');
+					btn.setAttribute('aria-expanded', 'false');
+				}
+			}
+		};
+		eventControl.add({
+			elem: document,
+			eventType: 'click',
+			fn: onDocumentClick,
+		});
 
-	let onFocusout = (event) => {
-		let target = event.target as any;
-		let next = event.relatedTarget as any;
+		let onFocusout = (event) => {
+			let target = event.target as any;
+			let next = event.relatedTarget as any;
 
-		if (target.matches('button.subgroup-toggle, .subgroup button')) {
-			let buttonContainer = target.closest('.button-container');
-			if (buttonContainer && buttonContainer.contains(next)) return;
-			let btn = buttonContainer.querySelector('button.subgroup-toggle');
-			btn.setAttribute('aria-expanded', 'false');
-		}
-	};
-	eventControl.add({
-		selector: '#assessment-controls',
-		eventType: 'focusout',
-		fn: onFocusout,
-	});
-
-	let onFocus = (event) => {};
-	eventControl.add({
-		selector: '#assessment-controls',
-		eventType: 'focus',
-		fn: onFocus,
-	});
-
-	let onBlur = (event) => {};
-	eventControl.add({
-		selector: '#assessment-controls',
-		eventType: 'blur',
-		fn: onBlur,
-	});
-</script>
+			if (
+				target.matches(
+					'button.subgroup-toggle, .subgroup :is(button, [data-style-as="button"])',
+				)
+			) {
+				let buttonContainer = target.closest('.button-container');
+				if (buttonContainer && buttonContainer.contains(next)) return;
+				let btn = buttonContainer.querySelector('button.subgroup-toggle');
+				btn.setAttribute('aria-expanded', 'false');
+			}
+		};
+		eventControl.add({
+			selector: '#assessment-controls',
+			eventType: 'focusout',
+			fn: onFocusout,
+		});
+	</script>
+</section>

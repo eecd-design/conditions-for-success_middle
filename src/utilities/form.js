@@ -1,5 +1,4 @@
-import { getUserData } from 'src/stores/userDataStore';
-import { toCamelCase } from './helpers';
+import { toCamelCase } from 'src/utilities/helpers';
 
 let getFormValues = (form) => {
 	let result = {};
@@ -86,13 +85,16 @@ let resetForm = ({ form, resetType = 'soft' }) => {
 		// Reset aria-invalid
 		field.removeAttribute('aria-invalid');
 
+		// Reset custom validity
+		field.setCustomValidity('');
+
 		// Reset to default enabled status
 		let disabledByDefault = field.hasAttribute('data-disabled-by-default');
 		field.disabled = disabledByDefault;
 	}
 };
 
-let validateField = ({ field, form, touchedFormFields }) => {
+let validateField = ({ field, form, touchedFormFields, userData = null }) => {
 	// Clear previous custom validity
 	field.setCustomValidity('');
 
@@ -111,21 +113,21 @@ let validateField = ({ field, form, touchedFormFields }) => {
 	// Cross-field check for reporting year
 	if (field.name === 'reportingYear') {
 		let schoolField = form.querySelector('select[name="school"]');
+		let schoolYearConflict = false;
 
-		// If school is empty, skip conflict check
-		if (!schoolField.value) {
+		if (schoolField?.value) {
+			let assessments = userData?.assessments ?? [];
+			schoolYearConflict = assessments.some(
+				(a) => a.school === schoolField.value && a.reportingYear === field.value,
+			);
+		} else if (!schoolField?.value) {
 			// Reset error if no school is selected
 			field.setCustomValidity('');
 			error.querySelector('span').textContent = '';
 			error.setAttribute('hidden', '');
 			field.removeAttribute('aria-invalid');
-			return;
 		}
 
-		let userData = getUserData();
-		let schoolYearConflict = userData.assessments.some(
-			(a) => a.school === schoolField.value && a.reportingYear === field.value,
-		);
 		if (schoolYearConflict) {
 			message = `An assessment for this school and year is already saved in your browser. To view it, open the 'Manage Assessments' dialog from the toolbar.`;
 		}
@@ -160,13 +162,13 @@ let validateField = ({ field, form, touchedFormFields }) => {
 	}
 };
 
-let validateForm = ({ form, touchedFormFields }) => {
+let validateForm = ({ form, touchedFormFields, userData = null }) => {
 	let firstInvalid = null;
 
 	// Validate every field in the form
 	let fields = form.querySelectorAll('input[required], select[required]');
 	for (let field of fields) {
-		validateField({ field, form, touchedFormFields });
+		validateField({ field, form, touchedFormFields, userData });
 
 		// Store the first invalid field
 		if (!field.validity.valid && !firstInvalid) {

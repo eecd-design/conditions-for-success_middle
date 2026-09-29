@@ -1,13 +1,15 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-
-import Header from '../components/Header.astro';
-
-import '../styles/normalize.css';
-import '../styles/global.css';
-
 import { Image } from 'astro:assets';
-import GNBLogo from '../images/gnb-logo-reverse.png';
+
+import Header from 'src/components/Header.astro';
+import DataDialogs from 'src/components/dialogs/DataDialogs.astro';
+import SiteToasts from 'src/components/SiteToasts.astro';
+
+import 'src/styles/normalize.css';
+import 'src/styles/global.css';
+
+import GNBLogo from 'src/images/gnb-logo-reverse.png';
 
 let path = Astro.url.pathname;
 
@@ -45,6 +47,12 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			applyInitialTheme(data);
 		</script>
 
+		<!-- Progressive Enhancement Handlers (not for view transition) -->
+		<script is:inline>
+			let html = document.documentElement;
+			html.dataset.js = '';
+		</script>
+
 		<!-- Set relative path root to '/conditions-for-success/' -->
 		<base href={Astro.url.origin + import.meta.env.BASE_URL} />
 
@@ -64,12 +72,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		/>
 		<!-- <meta name="color-scheme" content="dark light" /> -->
 		<title>{pageTitle}</title>
-
-		<!-- Progressive Enhancement Handlers (not for view transition) -->
-		<script is:inline>
-			let html = document.documentElement;
-			html.dataset.js = '';
-		</script>
 
 		<!-- Public Sans Font ~ Google Fonts -->
 		<link
@@ -105,6 +107,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			>
 		</div>
 		<Header />
+		<DataDialogs />
 		<main
 			class:list={[pageType]}
 			data-mode="reading"
@@ -113,7 +116,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		>
 			<div class="wrapper">
 				<div class="toast-group">
-					<slot name="toast-group" />
+					<SiteToasts />
 				</div>
 				<slot />
 			</div>
@@ -123,14 +126,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 				<div class="content-container">
 					<div class="contact-container">
 						<h2 data-font-type="sans-serif">Contact</h2>
-						<small>Beth Henderson</small>
-						<small>Middle Level Learning Project Lead</small>
+						<small>NB Middle Level Information</small>
 						<small>
-							<!-- <a href="mailto:beth.henderson@gnb.ca">beth.henderson@gnb.ca</a> -->
-							<a
-								href="https://www2.gnb.ca/content/gnb/en/contacts/contacts_renderer.216954.html"
-								>beth.henderson@gnb.ca</a
-							>
+							<a href="mailto:middle.info@gnb.ca">middle.info@gnb.ca </a>
 						</small>
 					</div>
 					<div class="separator"></div>
@@ -146,7 +144,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 							alt="Government of New Brunswick Logo"
 						/>
 						<small class="copyright"
-							>Copyright © <span id="copyrightYear">2025</span> Government of New Brunswick.
+							>Copyright © <span id="copyrightYear">2026</span> Government of New Brunswick.
 							All Rights Reserved.</small
 						>
 					</div>
@@ -158,7 +156,12 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		// Imports
 		//
 
-		import { getActiveAssessmentData, setState, subscribe } from 'src/stores/userDataStore';
+		import {
+			getActiveAssessmentData,
+			setState,
+			subscribe,
+			userDataStore,
+		} from 'src/stores/userDataStore';
 		import { scrollIntoView } from 'src/utilities/helpers';
 		import { dialogControl } from 'src/utilities/dialog';
 		import { scrollControl } from 'src/utilities/scroll';
@@ -174,18 +177,21 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			if (field) field.textContent = String(new Date().getFullYear());
 		};
 		updateCopyright();
+		eventControl.add({
+			elem: document,
+			eventType: 'astro:after-swap',
+			fn: updateCopyright,
+		});
 
 		let updateContinuumVersion = (data: UserData, changes) => {
-			let triggerKeys = ['currentContinuumVersion'];
+			let triggerKeys = ['continuumVersion'];
 			if (
 				!changes.initiating &&
 				!(changes.uiState && triggerKeys.some((val) => changes.uiState.includes(val)))
 			)
 				return;
 
-			// console.log("Updating Continuum Version (footer)");
-
-			let continuumVersion = data.uiState.currentContinuumVersion;
+			let continuumVersion = data.uiState.continuumVersion;
 
 			// 1. Site footer
 			let fields = document.querySelectorAll(`[data-field="continuumVersion"]`);
@@ -208,8 +214,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let system = window.matchMedia('(prefers-color-scheme: dark)').matches;
 			let theme = data.uiPreferences.theme || (system ? 'dark' : 'light');
 
-			// console.log("Updating Theme (on html)");
-
 			// Get the html root
 			let html = document.documentElement;
 
@@ -231,8 +235,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			let mode = data.uiState.mode;
 			if (mode !== 'assessment' && mode !== 'reading') mode = 'reading';
-
-			// console.log("Updating Mode (on main)");
 
 			// Get the main
 			let main = document.querySelector('main');
@@ -257,8 +259,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
-
-			// console.log("Updating Status (on main)");
 
 			let status = assessment.status;
 			if (status !== 'In Progress' && status !== 'Complete') status = 'In Progress';
@@ -287,8 +287,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let assessment = getActiveAssessmentData();
 			if (!assessment) return;
 
-			// console.log("Updating Assessor (on main)");
-
 			// Get the main
 			let main = document.querySelector('main');
 
@@ -297,6 +295,33 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 				main.setAttribute('data-assessor', 'false');
 			} else {
 				main.setAttribute('data-assessor', 'true');
+			}
+		};
+
+		let updateReport = (data: UserData, changes) => {
+			let stateTriggerKeys = ['activeAssessmentId'];
+			let assessmentTriggerKeys = ['status'];
+			if (
+				!changes.initiating &&
+				!(
+					(changes.assessments &&
+						assessmentTriggerKeys.some((val) => changes.assessments.includes(val))) ||
+					(changes.uiState &&
+						stateTriggerKeys.some((val) => changes.uiState.includes(val)))
+				)
+			)
+				return;
+
+			let assessment = getActiveAssessmentData();
+
+			// Get the main
+			let main = document.querySelector('main');
+
+			// Update the assessor
+			if (assessment && assessment.status === 'Complete') {
+				main.setAttribute('data-report', 'active');
+			} else {
+				main.setAttribute('data-report', 'inactive');
 			}
 		};
 
@@ -313,6 +338,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		subscribe(updateMode);
 		subscribe(updateStatus);
 		subscribe(updateAssessor);
+		subscribe(updateReport);
 
 		dialogControl.init();
 		eventControl.add({
@@ -342,6 +368,8 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 		//
 
 		let onPageLoad = () => {
+			let debug = false;
+
 			// Store last visited page
 			let path = window.location.pathname;
 			let base = import.meta.env.BASE_URL;
@@ -357,7 +385,9 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 			// Handle search queries
 			let query = new URLSearchParams(window.location.search);
-			console.log('Query: ', query);
+
+			if (debug) console.log('Query: ', query);
+
 			let dialog = query.get('dialog');
 			if (dialog) {
 				let dialogId;
@@ -384,7 +414,6 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 
 		let onBeforeSwap = (event) => {
 			let newDocument = event.newDocument.documentElement;
-			console.log('Before Swap: Incoming Document: ', newDocument);
 			newDocument.dataset.js = '';
 			newDocument.dataset.loading = '';
 			// if ("scrollRestoration" in history) {
@@ -399,7 +428,5 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			eventType: 'astro:before-swap',
 			fn: onBeforeSwap,
 		});
-
-		console.log(eventControl._registry);
 	</script>
 </html>

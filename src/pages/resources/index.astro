@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from 'src/layouts/BaseLayout.astro';
 import Accordion from 'src/components/Accordion.astro';
 import AccordionGroup from 'src/components/AccordionGroup.astro';
 import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
 
-import IconCheckmark from '../../components/icons/IconCheckmark_8.astro';
+import IconCheckmark from 'src/components/icons/IconCheckmark_8.astro';
 import IconFilter from 'src/components/icons/IconFilter_20.astro';
 import IconFilterClear from 'src/components/icons/IconFilterClear_20.astro';
 import IconWarning from 'src/components/icons/IconWarning_16.astro';
@@ -16,7 +16,7 @@ import IconSortAlpha from 'src/components/icons/IconAlpha_20.astro';
 import IconSortTime from 'src/components/icons/IconTime_20.astro';
 import IconCompact from 'src/components/icons/IconCompact_20.astro';
 import IconDetailed from 'src/components/icons/IconDetailed_20.astro';
-import IconXmarkSmall from 'src/components/icons/IconXmark_12.astro';
+import IconXmarkSmall from 'src/components/icons/IconXmark_16.astro';
 import IconXmarkBig from 'src/components/icons/IconXmark_20.astro';
 import { findObjectByKey } from 'src/utilities/helpers';
 
@@ -75,6 +75,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	<aside
 		id="filters-aside"
 		class="left-aside"
+		data-style="panel"
 	>
 		<div class="wrapper">
 			<form
@@ -577,7 +578,7 @@ let types = [...allTypes].sort((a: string, b: string) => {
 
 	#filters-aside {
 		margin: 0;
-		height: 100vh;
+		height: 100dvh;
 		position: sticky;
 		top: 0;
 		z-index: 10;
@@ -642,7 +643,13 @@ let types = [...allTypes].sort((a: string, b: string) => {
 				--icon-size: 1.25rem;
 				margin: 0;
 
-				&:is(:hover, :focus-visible),
+				@media (hover: hover) {
+					&:hover {
+						--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
+					}
+				}
+
+				&:focus-visible,
 				&:has(input:focus-visible) {
 					--button-bkg-colour: var(--colour-bkg-surface-subtle-1);
 				}
@@ -743,11 +750,14 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					}
 				}
 
-				&:has(input[type='checkbox']:is(:hover, :focus-visible)) {
-					background-color: var(--colour-bkg-surface-subtle-1);
+				@media (hover: hover) {
+					&:has(input[type='checkbox']:hover) {
+						background-color: var(--colour-bkg-surface-subtle-1);
+					}
 				}
 
 				&:has(input[type='checkbox']:focus-visible) {
+					background-color: var(--colour-bkg-surface-subtle-1);
 					outline: var(--colour-focus-ring) solid 2px;
 					outline-offset: 3px;
 				}
@@ -812,10 +822,14 @@ let types = [...allTypes].sort((a: string, b: string) => {
 					font-size: var(--font-size-2xs);
 					height: 2rem;
 
-					&:not(:is([aria-pressed='true'], [aria-expanded='true'])):is(
-							:hover,
-							:focus-visible
-						) {
+					@media (hover: hover) {
+						&:not(:is([aria-pressed='true'], [aria-expanded='true'])):hover {
+							--button-bkg-colour: transparent;
+							--button-boxshadow-colour: var(--colour-brd-subtle);
+						}
+					}
+
+					&:not(:is([aria-pressed='true'], [aria-expanded='true'])):focus-visible {
 						--button-bkg-colour: transparent;
 						--button-boxshadow-colour: var(--colour-brd-subtle);
 					}
@@ -1040,6 +1054,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	});
 
 	let toggleFiltersContainer = (event, init = false) => {
+		let debug = false;
+
 		let primaryControls = document.querySelector('#resources-list-primary-controls');
 		if (!primaryControls) return;
 
@@ -1056,6 +1072,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		if (event.matches) {
 			// Switch drawer to modal
 			if (secondaryControls.parentElement === filtersDialog) return;
+			if (debug)
+				console.log('Device screen is smaller that breakpoint, switching drawer to modal.');
 			filtersDialog.append(secondaryControls);
 			filtersAside.parentElement.setAttribute('hidden', '');
 			if (isExpanded) {
@@ -1068,6 +1086,8 @@ let types = [...allTypes].sort((a: string, b: string) => {
 		else if (!event.matches && !init) {
 			// Switch modal to drawer
 			if (secondaryControls.parentElement === filtersAside) return;
+			if (debug)
+				console.log('Device screen is large than breakpoint, switching modal to drawer.');
 			filtersAside.append(secondaryControls);
 			filtersAside.parentElement.removeAttribute('hidden');
 			if (isExpanded) {
@@ -1122,6 +1142,11 @@ let types = [...allTypes].sort((a: string, b: string) => {
 	eventControl.add({
 		elem: document,
 		eventType: 'DOMContentLoaded',
+		fn: onPageLoad,
+	});
+	eventControl.add({
+		elem: document,
+		eventType: 'astro:page-load',
 		fn: onPageLoad,
 	});
 </script>

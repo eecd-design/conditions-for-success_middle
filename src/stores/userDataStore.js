@@ -11,12 +11,19 @@ import {
 	isEqual,
 	normalizeImportedDate,
 	toKebabCase,
-} from 'src/utilities/helpers.js';
+	sanitizeHTML,
+	getTime,
+	getTimeDifference,
+} from 'src/utilities/helpers';
 import { eventControl } from 'src/utilities/event';
+import { dialogControl } from 'src/utilities/dialog';
 import { continuumChanges } from 'src/pages/data/continuum-changes';
 
 import Papa from 'papaparse';
 import LZString from 'lz-string'; // LZString is used to compress data into the exportcode
+
+// Testing imports
+import { sampleUserDataVersionOne } from 'src/pages/data/sample-user-data-v-1-0';
 
 //
 // Variables
@@ -26,7 +33,7 @@ let key = 'user';
 
 let currentContinuumVersion = '2.0';
 let currentPreferencesSchemaVersion = '1.0';
-let currentStateSchemaVersion = '1.0';
+let currentStateSchemaVersion = '2.0';
 let currentAssessmentSchemaVersion = '1.0';
 
 let userSchema = {
@@ -39,8 +46,16 @@ let userSchema = {
 	},
 	uiState: {
 		activeAssessmentId: null,
-		activeReportId: null,
-		currentContinuumVersion,
+		announcementSession: {
+			views: 0,
+			lastSeen: null,
+		},
+		continuumVersion: currentContinuumVersion,
+		latestResourceTimestamp:
+			Number(
+				document.querySelector('header .site-announcement-container')?.dataset
+					.mostRecentTimestamp,
+			) ?? null,
 		lastModifiedPage: null,
 		lastVisitedPage:
 			typeof window !== 'undefined'
@@ -49,20 +64,32 @@ let userSchema = {
 						path: window.location.pathname,
 					}
 				: null,
-		latestResourceTimestamp:
-			Number(
-				document.querySelector('header .site-announcement-container')?.dataset
-					.mostRecentTimestamp,
-			) ?? null,
-		announcementSession: {
-			views: 0,
-			lastSeen: null,
-		},
 		mode: 'reading',
 		onboardingCompleted: false,
 		schemaVersion: currentStateSchemaVersion,
 	},
 	assessments: [],
+};
+
+let assessmentSchema = {
+	activeAssessor: null,
+	assessors: [],
+	changeLog: [],
+	continuumCompletion: {},
+	considerationsEstablished: [],
+	continuumVersion: currentContinuumVersion,
+	dateCompleted: null,
+	dateCreated: null,
+	dateExported: null,
+	dateModified: null,
+	district: null,
+	id: null,
+	lastModifiedBy: null,
+	reportingYear: null,
+	school: null,
+	status: 'In Progress',
+	unexportedChanges: true,
+	schemaVersion: currentAssessmentSchemaVersion,
 };
 
 let data = structuredClone(userSchema);
@@ -97,13 +124,6 @@ let getAssessmentData = (id) => {
 };
 
 /**
- * Get the active assessment data
- */
-let getActiveReportData = () => {
-	return findObjectByKey(data.assessments, 'id', data.uiState.activeReportId);
-};
-
-/**
  * Get a human-readable date
  */
 let getAssessmentDate = ({ assessment = getActiveAssessmentData(), type }) => {
@@ -128,6 +148,8 @@ let getActiveAssessor = (assessment = getActiveAssessmentData()) => {
 };
 
 let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true }) => {
+	if (!assessment) return;
+
 	let { unexportedChanges, dateExported } = assessment;
 
 	if (unexportedChanges) {
@@ -138,28 +160,33 @@ let getExportStatus = ({ assessment = getActiveAssessmentData(), verbose = true 
 			let hours = Math.floor(minutes / 60);
 			let days = Math.floor(hours / 24);
 
-			if (minutes < 1) return verbose ? `Saved to browser. Exported just now.` : 0;
+			if (minutes < 1)
+				return verbose
+					? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
+					: 0;
 
 			if (minutes < 60) {
 				return verbose
-					? `Saved in browser. ${minutes} min. since last export.`
+					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${minutes} min. since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 					: `${minutes} minute${minutes === 1 ? '' : 's'}`;
 			}
 
 			if (hours < 24) {
 				return verbose
-					? `Saved in browser. ${hours} hour${hours === 1 ? '' : 's'} since last export.`
+					? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${hours} hour${hours === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 					: `${hours} hour${hours === 1 ? '' : 's'}`;
 			}
 
 			return verbose
-				? `Saved in browser. ${days} day${days === 1 ? '' : 's'} since last export.`
+				? `Saved in browser only. <span data-restrict-breakpoint-big-seven-min="3">${days} day${days === 1 ? '' : 's'} since last backup.</span> <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
 				: `${days} day${days === 1 ? '' : 's'}`;
 		}
-		return verbose ? 'Saved in browser. Export for backup.' : 0;
+		return verbose
+			? `Saved in browser only. <button class="open-dialog" type="button" data-style-as="link" data-dialog="download-assessment-dialog">Download backup</button>.`
+			: 0;
 	}
 
-	return verbose ? 'No changes since last export.' : 0;
+	return verbose ? 'No changes since last backup.' : 0;
 };
 
 /**
@@ -275,32 +302,19 @@ let createAssessment = (values) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
 
-	let assessment = {
-		activeAssessor: null,
-		assessors: [],
-		changeLog: [
-			{
-				date: Date.now(),
-				assessor: null,
-				message: 'Assessment created.',
-			},
-		],
-		continuumCompletion: {},
-		considerationsEstablished: [],
-		continuumVersion: currentContinuumVersion,
-		dateCompleted: null,
-		dateCreated: Date.now(),
-		dateExported: null,
-		dateModified: Date.now(),
-		district,
-		id,
-		lastModifiedBy: null,
-		reportingYear,
-		school,
-		status: 'In Progress',
-		schemaVersion: '1.0',
-		unexportedChanges: true,
-	};
+	let assessment = structuredClone(assessmentSchema);
+
+	assessment.dateCreated = Date.now();
+	assessment.dateModified = Date.now();
+	assessment.district = district;
+	((assessment.id = id),
+		assessment.changeLog.push({
+			date: Date.now(),
+			assessor: null,
+			message: 'created new assessment.',
+		}));
+	assessment.reportingYear = reportingYear;
+	assessment.school = school;
 
 	setState({
 		activeAssessmentId: id,
@@ -314,33 +328,28 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 	let highestId = findHighestValueByKey(data.assessments, 'id');
 	let id = typeof highestId === 'number' && !isNaN(highestId) ? highestId + 1 : 1;
 
-	let newAssessment = {
+	// Set old assessment active assessor to null prior to opening new one
+	setAssessment({
 		activeAssessor: null,
-		assessors: oldAssessment.assessors,
-		changeLog: [
-			{
-				date: Date.now(),
-				assessor: null,
-				message: `New assessment created based on ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
-			},
-		],
-		considerationsEstablished: oldAssessment.considerationsEstablished,
-		continuumVersion: currentContinuumVersion,
-		dateCompleted: null,
-		dateCreated: Date.now(),
-		dateExported: null,
-		dateModified: Date.now(),
-		district: oldAssessment.district,
-		id,
-		lastModifiedBy: null,
-		reportingYear: newReportingYear,
-		school: oldAssessment.school,
-		status: 'In Progress',
-		schemaVersion: '1.0',
-		unexportedChanges: true,
-	};
+	});
 
-	newAssessment.continuumCompletion = await generateContinuumCompletion(newAssessment);
+	// Create new assessment
+	let newAssessment = structuredClone(assessmentSchema);
+
+	newAssessment.assessors = oldAssessment.assessors;
+	newAssessment.changeLog.push({
+		date: Date.now(),
+		assessor: null,
+		message: `duplicated ${oldAssessment.school}'s ${oldAssessment.reportingYear} assessment.`,
+	});
+	newAssessment.considerationsEstablished = oldAssessment.considerationsEstablished;
+	newAssessment.dateCreated = Date.now();
+	newAssessment.dateModified = Date.now();
+	newAssessment.district = oldAssessment.district;
+	newAssessment.id = id;
+	newAssessment.reportingYear = newReportingYear;
+	newAssessment.school = oldAssessment.school;
+	newAssessment.continuumCompletion = await generateContinuumCompletion(oldAssessment);
 
 	setState({
 		activeAssessmentId: id,
@@ -350,14 +359,16 @@ let duplicateAssessment = async (oldAssessment, newReportingYear) => {
 	setAssessment(newAssessment);
 };
 
-let setImportConflictData = ({ importedAssessment, localAssessment }) => {
+let setImportConflictData = ({ importedAssessment, checkResult }) => {
 	importConflictData = {
 		importedAssessment,
-		localAssessment,
+		checkResult,
 	};
 };
 
 let generateContinuumCompletion = async (assessment) => {
+	let debug = true;
+
 	if (!assessment) return;
 
 	let { considerationsEstablished, continuumCompletion, continuumVersion } = assessment;
@@ -365,11 +376,18 @@ let generateContinuumCompletion = async (assessment) => {
 	if (considerationsEstablished.length === 0) return {};
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
+		if (debug) {
+			console.log(
+				'Continuum completion is present and continuum version matches current. Returning existing completion.',
+			);
+			console.log(continuumCompletion);
+		}
 		return continuumCompletion;
-	} else if (continuumVersion !== currentContinuumVersion) {
-		continuumCompletion = {};
-		considerationsEstablished = convertConsiderations(assessment);
 	} else {
+		if (debug)
+			console.log(
+				'Continuum completion is missing or continuum version does not match current. Generating new completion.',
+			);
 		continuumCompletion = {};
 	}
 
@@ -410,38 +428,12 @@ let generateContinuumCompletion = async (assessment) => {
 		});
 	}
 
-	updateContinuumVersion(assessment);
-
 	return continuumCompletion;
 };
 
 //
 // Methods (Updaters)
 //
-
-let updateSchema = (oldData, schema) => {
-	// Create a new object based on the schema
-	let updated = { ...schema };
-
-	for (let key in schema) {
-		if (oldData && Object.hasOwn(oldData, key)) {
-			if (
-				typeof schema[key] === 'object' &&
-				!Array.isArray(schema[key]) &&
-				schema[key] !== null
-			) {
-				// Recursively update nested objects
-				updated[key] = updateSchema(oldData[key], schema[key]);
-			} else {
-				// Use existing value when it matches type
-				let sameType = typeof oldData[key] === typeof schema[key];
-				updated[key] = sameType ? oldData[key] : schema[key];
-			}
-		}
-	}
-
-	return updated;
-};
 
 let updateChangeLog = ({ changeLog, assessor = getActiveAssessor(), message }) => {
 	if (!changeLog || !message) {
@@ -463,11 +455,7 @@ let updateChangeLog = ({ changeLog, assessor = getActiveAssessor(), message }) =
 	return changeLog;
 };
 
-let updateContinuumVersion = (assessment) => {
-	assessment.continuumVersion = currentContinuumVersion;
-};
-
-let updateContinuumCompletionEntry = async ({
+let updateContinuumCompletionEntry = ({
 	count,
 	continuumCompletion,
 	key,
@@ -477,27 +465,40 @@ let updateContinuumCompletionEntry = async ({
 }) => {
 	if (!count[scope]) return;
 
-	let entry = continuumCompletion[key] ?? {
-		count: 0,
-		initiatingCount: 0,
-		implementingCount: 0,
-		developingCount: 0,
-		sustainingCount: 0,
+	let entry = continuumCompletion[key];
+	if (!entry) {
+		entry = {
+			type: count[scope].type,
 
-		total: count[scope].total ?? 0,
-		initiatingTotal: count[scope].initiating ?? 0,
-		implementingTotal: count[scope].implementing ?? 0,
-		developingTotal: count[scope].developing ?? 0,
-		sustainingTotal: count[scope].sustaining ?? 0,
+			count: 0,
+			initiatingCount: 0,
+			implementingCount: 0,
+			developingCount: 0,
+			sustainingCount: 0,
 
-		ratio: 0,
-		initiatingRatio: 0,
-		implementingRatio: 0,
-		developingRatio: 0,
-		sustainingRatio: 0,
+			total: count[scope].total ?? 0,
+			initiatingTotal: count[scope].initiating ?? 0,
+			implementingTotal: count[scope].implementing ?? 0,
+			developingTotal: count[scope].developing ?? 0,
+			sustainingTotal: count[scope].sustaining ?? 0,
 
-		phase: 'Initiating',
-	};
+			ratio: 0,
+			initiatingRatio: 0,
+			implementingRatio: 0,
+			developingRatio: 0,
+			sustainingRatio: 0,
+
+			phase: 'Initiating',
+		};
+
+		if (['continuum', 'indicator'].includes(count[scope].type)) {
+			entry.components = count[scope].components;
+			entry.initiatingComponents = count[scope].components;
+			entry.implementingComponents = 0;
+			entry.developingComponents = 0;
+			entry.sustainingComponents = 0;
+		}
+	}
 
 	let phaseCountKey = `${phase}Count`;
 	let phaseRatioKey = `${phase}Ratio`;
@@ -512,6 +513,10 @@ let updateContinuumCompletionEntry = async ({
 
 	entry.ratio = count[scope].total ? entry.count / count[scope].total : 0;
 	entry[phaseRatioKey] = count[scope][phase] ? entry[phaseCountKey] / count[scope][phase] : 0;
+
+	// Todo: Need a way to pass the phase up to the indicator and continuum for components
+
+	let oldPhase = entry.phase;
 
 	if (
 		(entry.initiatingRatio >= 0.75 && entry.implementingRatio >= 0.25) ||
@@ -534,6 +539,20 @@ let updateContinuumCompletionEntry = async ({
 		entry.phase = 'Initiating';
 	}
 
+	// Component moved up a phase
+	if (entry.type === 'component' && oldPhase !== entry.phase) {
+		continuumCompletion.continuum[`${oldPhase.toLowerCase()}Components`] = Math.max(
+			0,
+			continuumCompletion.continuum[`${oldPhase.toLowerCase()}Components`] - 1,
+		);
+		continuumCompletion.continuum[`${entry.phase.toLowerCase()}Components`] += 1;
+		continuumCompletion[`${scope[0]}`][`${oldPhase.toLowerCase()}Components`] = Math.max(
+			0,
+			continuumCompletion[`${scope[0]}`][`${oldPhase.toLowerCase()}Components`] - 1,
+		);
+		continuumCompletion[`${scope[0]}`][`${entry.phase.toLowerCase()}Components`] += 1;
+	}
+
 	continuumCompletion[key] = entry;
 };
 
@@ -544,84 +563,137 @@ let updateContinuumCompletion = async ({
 }) => {
 	if (!assessment || !consideration || !/^\d+\.\d+\.\d+$/.test(consideration)) return;
 
-	let { continuumCompletion, continuumVersion } = assessment;
+	let { continuumCompletion } = assessment;
 
-	if (continuumVersion !== currentContinuumVersion) {
-		return generateContinuumCompletion(assessment);
-	} else {
-		let count = await userDataStore.getConsiderationCount();
+	let count = await userDataStore.getConsiderationCount();
 
-		if (!count || !count[consideration]) return;
+	if (!count || !count[consideration]) return;
 
-		// Get the connections
-		let phase = count[consideration].phase;
-		let indicator = count[consideration].indicator;
-		let component = count[consideration].component;
+	// Get the connections
+	let phase = count[consideration].phase;
+	let indicator = count[consideration].indicator;
+	let component = count[consideration].component;
 
-		if (!continuumCompletion) return;
+	if (!continuumCompletion) return;
 
-		updateContinuumCompletionEntry({
-			count,
-			continuumCompletion,
-			key: 'continuum',
-			scope: 'continuum',
-			phase,
-			operation,
-		});
-		updateContinuumCompletionEntry({
-			count,
-			continuumCompletion,
-			key: indicator,
-			scope: indicator,
-			phase,
-			operation,
-		});
-		updateContinuumCompletionEntry({
-			count,
-			continuumCompletion,
-			key: component,
-			scope: component,
-			phase,
-			operation,
-		});
+	updateContinuumCompletionEntry({
+		count,
+		continuumCompletion,
+		key: 'continuum',
+		scope: 'continuum',
+		phase,
+		operation,
+	});
+	updateContinuumCompletionEntry({
+		count,
+		continuumCompletion,
+		key: indicator,
+		scope: indicator,
+		phase,
+		operation,
+	});
+	updateContinuumCompletionEntry({
+		count,
+		continuumCompletion,
+		key: component,
+		scope: component,
+		phase,
+		operation,
+	});
 
-		let notify = false;
+	let notify = false;
 
-		let hasUnassessed = false;
-		let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
-		let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
-		let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
+	let hasUnassessed = false;
+	let initiatingIsUnassessed = continuumCompletion[component].initiatingCount === 0;
+	let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
+	let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
 
-		switch (phase) {
-			case 'implementing':
-				if (initiatingIsUnassessed) hasUnassessed = true;
-				break;
-			case 'developing':
-				if (initiatingIsUnassessed || implementingIsUnassessed) hasUnassessed = true;
-				break;
-			case 'sustaining':
-				if (initiatingIsUnassessed || implementingIsUnassessed || developingIsUnassessed)
-					hasUnassessed = true;
-				break;
-		}
+	console.log(continuumCompletion[component]);
+	console.log(initiatingIsUnassessed, implementingIsUnassessed, developingIsUnassessed);
 
-		// Only remind once per component (resets on import)
-		if (hasUnassessed && !continuumCompletion[component].reminded) {
-			notify = true;
-			continuumCompletion[component].reminded = true;
-		}
-
-		return {
-			entries: continuumCompletion,
-			notify,
-		};
+	switch (phase) {
+		case 'implementing':
+			if (initiatingIsUnassessed) hasUnassessed = true;
+			break;
+		case 'developing':
+			if (initiatingIsUnassessed || implementingIsUnassessed) hasUnassessed = true;
+			break;
+		case 'sustaining':
+			if (initiatingIsUnassessed || implementingIsUnassessed || developingIsUnassessed)
+				hasUnassessed = true;
+			break;
 	}
+
+	// Only remind once per component (resets on import)
+	if (hasUnassessed && !continuumCompletion[component].reminded) {
+		notify = true;
+		continuumCompletion[component].reminded = true;
+	}
+
+	return {
+		entries: continuumCompletion,
+		notify,
+	};
+};
+
+//
+// Methods (Upgraders)
+//
+
+let upgradeSchema = (oldData, schema) => {
+	let debug = false;
+
+	if (debug) console.log('Pre schema upgrade', structuredClone(oldData));
+
+	// Create a new object based on the schema
+	let upgraded = { ...schema };
+
+	// If oldData isn't a valid object, return the schema clone directly
+	if (!oldData || typeof oldData !== 'object' || Array.isArray(oldData)) {
+		return upgraded;
+	}
+
+	// Only keys included in the newest version of the schema are kept
+	for (let key in schema) {
+		if (Object.hasOwn(oldData, key)) {
+			let schemaVal = schema[key];
+			let oldVal = oldData[key];
+
+			let isSchemaObj =
+				typeof schemaVal === 'object' && schemaVal !== null && !Array.isArray(schemaVal);
+			let isOldObj = typeof oldVal === 'object' && oldVal !== null && !Array.isArray(oldVal);
+
+			if (isSchemaObj) {
+				// Recursively update nested plain objects
+				upgraded[key] = upgradeSchema(oldVal, schemaVal);
+			} else if (oldVal !== undefined) {
+				// Keep old value if schema default is null OR types match
+				let isSchemaNull = schemaVal === null;
+				let sameType = typeof oldVal === typeof schemaVal;
+
+				// Otherwise use the default schema value
+				if (isSchemaNull || sameType) {
+					upgraded[key] = oldVal;
+				}
+			}
+		}
+	}
+
+	upgraded.schemaVersion = schema.schemaVersion;
+
+	if (debug) console.log('Post schema upgrade', structuredClone(upgraded));
+
+	return upgraded;
 };
 
 let convertConsiderations = (assessment) => {
+	let debug = false;
+
 	let { continuumVersion, considerationsEstablished } = assessment;
 
 	if (continuumVersion === '1.0') {
+		if (debug) console.log('Converting Consideration from 1.0 to 2.0');
+
 		let changesByOldTag = new Map();
 		for (let change of continuumChanges.v2) {
 			if (change.transformation && change.oldTag !== null) {
@@ -644,12 +716,137 @@ let convertConsiderations = (assessment) => {
 			});
 		}
 
+		if (debug) console.log('Converted Considerations Array', converted);
+
 		// Ensure unique values (due to combine change type duplicates)
-		return {
-			result: [...new Set(converted)],
-			log,
-		};
+		assessment.considerationsEstablished = [...new Set(converted)];
+
+		return log;
 	}
+};
+
+let upgradeAssessmentSchemas = (assessments) => {
+	let debug = false;
+
+	if (debug) console.log(`Upgrading assessment schemas.`);
+
+	let upgraded = false;
+
+	for (let i = 0; i < assessments.length; i++) {
+		let assessment = assessments[i];
+
+		if (debug) console.log('Pre assessment upgrade', structuredClone(assessment));
+
+		if (assessment.schemaVersion !== currentAssessmentSchemaVersion) {
+			if (debug) console.warn('Assessment schema is out of date.');
+			assessment = upgradeSchema(assessment, assessmentSchema);
+			upgraded = true;
+		}
+
+		assessments[i] = assessment;
+	}
+
+	return { upgraded };
+};
+
+let upgradeAssessmentContinuums = async (assessments, context) => {
+	let debug = false;
+
+	if (debug) console.log(`Checking assessment continuums. Context is ${context}.`);
+
+	let upgraded = false;
+
+	for (let i = 0; i < assessments.length; i++) {
+		let assessment = assessments[i];
+
+		if (debug) console.log('Pre assessment upgrade', structuredClone(assessment));
+
+		if (assessment.continuumVersion !== currentContinuumVersion) {
+			if (debug) console.warn('Assessment continuum version is out of date.');
+
+			convertConsiderations(assessment);
+			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
+			assessment.changeLog = updateChangeLog({
+				changeLog: assessment.changeLog,
+				message: `updated assessment (${assessment.continuumVersion}) to version ${currentContinuumVersion} of the continuums.`,
+			});
+			assessment.continuumVersion = currentContinuumVersion;
+
+			upgraded = true;
+		}
+
+		assessments[i] = assessment;
+
+		if (debug) console.log('Post assessment upgrade', assessments[i]);
+	}
+
+	return { upgraded };
+};
+
+let upgradeUserData = async (sourceData) => {
+	let debug = false;
+
+	let workingData = structuredClone(sourceData);
+	if (debug) workingData = structuredClone(sampleUserDataVersionOne);
+
+	let schemasUpgraded = false;
+	let continuumsUpgraded = false;
+
+	// 1. Ensure schemas are up to date
+
+	if (workingData.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
+		console.warn('User preferences schema is out of date.');
+		workingData.uiPreferences = upgradeSchema(
+			workingData.uiPreferences,
+			userSchema.uiPreferences,
+		);
+		schemasUpgraded = true;
+	}
+
+	if (workingData.uiState.schemaVersion !== currentStateSchemaVersion) {
+		console.warn('User state schema is out of date.');
+		workingData.uiState = upgradeSchema(workingData.uiState, userSchema.uiState);
+		schemasUpgraded = true;
+	}
+
+	let upgradeAssessmentSchemasResult = upgradeAssessmentSchemas(workingData.assessments, 'load');
+	if (upgradeAssessmentSchemasResult.upgraded) schemasUpgraded = true;
+
+	// 2. Ensure continuum version is up to date
+
+	if (workingData.uiState.continuumVersion !== currentStateSchemaVersion) {
+		console.warn('User state continuum version is out of date.');
+		workingData.uiState.continuumVersion = currentContinuumVersion;
+		schemasUpgraded = true;
+	}
+
+	let upgradeAssessmentContinuumsResult = await upgradeAssessmentContinuums(
+		workingData.assessments,
+		'load',
+	);
+	if (upgradeAssessmentContinuumsResult.upgraded) continuumsUpgraded = true;
+
+	// 3. Save changes
+
+	if (schemasUpgraded || continuumsUpgraded) setUserData(workingData);
+
+	return { schemasUpgraded, continuumsUpgraded };
+};
+
+let repairUserData = async () => {
+	let debug = false;
+
+	let sourceData = getUserData();
+	let workingData = structuredClone(sourceData);
+	if (debug) console.log('Pre-repair', structuredClone(workingData));
+
+	workingData.uiPreferences = upgradeSchema(workingData.uiPreferences, userSchema.uiPreferences);
+	workingData.uiState = upgradeSchema(workingData.uiState, userSchema.uiState);
+	upgradeAssessmentSchemas(workingData.assessments, 'repair');
+	await upgradeAssessmentContinuums(workingData.assessments, 'repair');
+	setUserData(workingData);
+
+	if (debug) console.log('Post-repair', structuredClone(workingData));
 };
 
 //
@@ -694,7 +891,8 @@ let checkForChanges = ({ data, update }) => {
 };
 
 let checkAnnouncementSession = () => {
-	console.log(data.uiState);
+	let debug = true;
+
 	let announcementSession = data.uiState.announcementSession ?? {
 		views: 0,
 		lastSeen: null,
@@ -703,31 +901,51 @@ let checkAnnouncementSession = () => {
 	let { views, lastSeen } = announcementSession;
 	let { latestResourceTimestamp } = data.uiState;
 
-	let sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
-	let recencyTimeout = 30 * 24 * 60 * 60 * 1000; // 30 days
+	let recencyTimeout = 90 * 24 * 60 * 60 * 1000; // 90 days
 	let now = Date.now();
+	let maxViews = 3;
 
-	let showAnnouncement = false;
+	let showAnnouncement;
 
-	// Check if it's been over a month since the most recent resource was added
-	if (!latestResourceTimestamp || now - latestResourceTimestamp > recencyTimeout) {
+	if (debug) {
+		console.log(
+			`${getTimeDifference(now, latestResourceTimestamp)} since latest resource was added.`,
+		);
+
+		console.log(
+			now - latestResourceTimestamp > recencyTimeout
+				? `Latest resource addition is outside of the recency timeout window (${getTime(recencyTimeout)}).`
+				: `Latest resource addition is within the recency timeout window (${getTime(recencyTimeout)}).`,
+		);
+	}
+
+	if (latestResourceTimestamp) {
+		// Check if the most recently added resource is still considered recent
+		if (now - latestResourceTimestamp < recencyTimeout) {
+			// Check if the user has not seen the announcement for the latest resource
+			if (!lastSeen || lastSeen < latestResourceTimestamp) {
+				// Reset session
+				views = 0;
+				lastSeen = latestResourceTimestamp;
+			}
+
+			if (views < maxViews) {
+				views = (views || 0) + 1;
+				showAnnouncement = true;
+			} else {
+				showAnnouncement = false;
+			}
+		} else {
+			// Reset session
+			views = 0;
+			lastSeen = null;
+			showAnnouncement = false;
+		}
+	} else {
 		// Reset session
 		views = 0;
 		lastSeen = null;
-	} else {
-		// Check if it's been over 24 hours since the user has accessed the site
-		if (!lastSeen || now - lastSeen > sessionTimeout) {
-			// Reset session
-			views = 0;
-		}
-
-		// Keep track of announcement views
-		views = (views || 0) + 1;
-
-		lastSeen = now;
-
-		// Show for the first 3 page views
-		showAnnouncement = views <= 3;
+		showAnnouncement = false;
 	}
 
 	setState({
@@ -754,17 +972,14 @@ let deleteAssessment = (id) => {
 		Object.assign(data, { assessments: update });
 		changes.assessments = [];
 	}
-	let isActiveAssessment = id === data.uiState.activeAssessmentId;
-	let isActiveReport = id === data.uiState.activeReportId;
 
-	if (isActiveAssessment || isActiveReport) {
+	let isActiveAssessment = id === data.uiState.activeAssessmentId;
+
+	if (isActiveAssessment) {
 		let update = {};
 		if (isActiveAssessment) {
 			update.activeAssessmentId = null;
 			update.mode = 'reading';
-		}
-		if (isActiveReport) {
-			update.activeReportId = null;
 		}
 		Object.assign(data.uiState, update);
 		changes.uiState = Object.keys(update);
@@ -775,6 +990,15 @@ let deleteAssessment = (id) => {
 
 let deleteImportConflictData = () => (importConflictData = null);
 
+let deleteUserData = () => {
+	data = structuredClone(userSchema);
+	save();
+	let changes = {
+		initiating: true,
+	};
+	notify(changes);
+};
+
 //
 // Methods (Import/Export)
 //
@@ -783,7 +1007,7 @@ let deleteImportConflictData = () => (importConflictData = null);
  * Export assessment object as CSV
  * @param {Object} assessment - Assessment data
  */
-let exportAssessment = (assessment) => {
+let exportAssessmentFile = (assessment) => {
 	// Define columns for the main CSV
 	let mainData = [
 		{
@@ -839,15 +1063,15 @@ let exportAssessment = (assessment) => {
  * @param {File} file - File uploaded by the user
  * @returns {Promise<Object>} Parsed assessment object
  */
-let importAssessment = (file) => {
+let readAssessmentFile = (file) => {
 	return new Promise((resolve, reject) => {
 		let reader = new FileReader();
 
-		reader.onload = (event) => {
+		reader.onload = async (event) => {
 			let data = event.target.result;
 
 			// Split the combined CSV into main and change log parts
-			let [mainCsv, logCsv] = data.split(/\n\s*\n/);
+			let [mainCsv, logCsv] = data.split(/(?:\r?\n){2,}/);
 
 			// Parse with PapaParse
 			let mainResult = Papa.parse(mainCsv, {
@@ -859,42 +1083,46 @@ let importAssessment = (file) => {
 				skipEmptyLines: true,
 			});
 
+			if (mainResult.errors.length && !mainResult.data.length) {
+				return reject(mainResult.errors);
+			}
+
 			if (!mainResult.data || !mainResult.data.length) {
 				return reject('No main data found in the file');
 			}
 
 			let mainRow = mainResult.data[0]; // Only one row expected
-			let assessment = {
-				activeAssessor: null,
-				assessors: mainRow['Assessors']
-					? mainRow['Assessors'].split(',').map((s) => s.trim())
-					: [],
-				changeLog: [],
-				considerationsEstablished: mainRow['Considerations Established']
-					? mainRow['Considerations Established'].split(',').map((s) => s.trim())
-					: [],
-				continuumVersion: mainRow['Continuum Version'] || '',
-				dateCompleted: mainRow['Date Completed']
-					? normalizeImportedDate(mainRow['Date Completed'])
-					: null,
-				dateCreated: mainRow['Date Created']
-					? normalizeImportedDate(mainRow['Date Created'])
-					: null,
-				dateExported: mainRow['Date Exported']
-					? normalizeImportedDate(mainRow['Date Exported'])
-					: null,
-				dateModified: mainRow['Date Modified']
-					? normalizeImportedDate(mainRow['Date Modified'])
-					: null,
-				district: mainRow['District'] || '',
-				id: Number(mainRow['Id']) || 1,
-				lastModifiedBy: mainRow['Last Modified By'] || null,
-				reportingYear: mainRow['Reporting Year'] || '',
-				school: mainRow['School'] || '',
-				status: mainRow['Status'] || 'In Progress',
-				schemaVersion: mainRow['Schema Version'] || '',
-				unexportedChanges: false,
-			};
+			let assessment = structuredClone(assessmentSchema);
+
+			let parsedId = Number(mainRow['Id']);
+			assessment.id = Number.isNaN(parsedId) ? 1 : parsedId;
+
+			assessment.activeAssessor = null;
+			assessment.assessors = mainRow['Assessors']
+				? mainRow['Assessors'].split(',').map((s) => s.trim())
+				: [];
+			assessment.considerationsEstablished = mainRow['Considerations Established']
+				? mainRow['Considerations Established'].split(',').map((s) => s.trim())
+				: [];
+			assessment.continuumVersion = mainRow['Continuum Version'] || '';
+			assessment.dateCompleted = mainRow['Date Completed']
+				? normalizeImportedDate(mainRow['Date Completed'])
+				: null;
+			assessment.dateCreated = mainRow['Date Created']
+				? normalizeImportedDate(mainRow['Date Created'])
+				: null;
+			assessment.dateExported = mainRow['Date Exported']
+				? normalizeImportedDate(mainRow['Date Exported'])
+				: null;
+			assessment.dateModified = mainRow['Date Modified']
+				? normalizeImportedDate(mainRow['Date Modified'])
+				: null;
+			assessment.district = mainRow['District'] || '';
+			assessment.lastModifiedBy = mainRow['Last Modified By'] || null;
+			assessment.reportingYear = mainRow['Reporting Year'] || '';
+			assessment.school = mainRow['School'] || '';
+			assessment.status = mainRow['Status'] || 'In Progress';
+			assessment.unexportedChanges = false;
 
 			// Parse change log rows
 			if (logResult.data && logResult.data.length) {
@@ -903,6 +1131,8 @@ let importAssessment = (file) => {
 					assessor: log['Assessor'] || null,
 					message: log['Message'] || log['Note'] || '',
 				}));
+			} else {
+				assessment.changeLog = [];
 			}
 
 			resolve(assessment);
@@ -914,30 +1144,128 @@ let importAssessment = (file) => {
 	});
 };
 
-/**
- * Detect conflicts separately for ID and School/Year
- * @param {Object} importedAssessment - Assessment object from import
- * @param {Object[]} localAssessments - Existing assessments
- * @returns {Object} Conflict details with separate arrays
- */
-let findAssessmentConflicts = ({ importedAssessment, localAssessments }) => {
-	let idConflict = false;
-	let schoolYearConflict = false;
-	for (let assessment of localAssessments) {
-		if (assessment.id === importedAssessment.id) {
-			idConflict = assessment;
-		}
+let readAssessmentCode = (code) => {
+	let sanitizedCode = sanitizeHTML(code);
 
+	if (sanitizedCode.length === 0) {
+		throw new Error('Import code is empty');
+	}
+
+	let importedAssessment = decompressData(code);
+
+	// Reset certain assessment settings
+	importedAssessment.activeAssessor = null;
+	importedAssessment.unexportedChanges = false;
+
+	return importedAssessment;
+};
+
+let checkImportedAssessment = (importedAssessment) => {
+	let debug = false;
+
+	let userData = getUserData();
+	let localAssessments = userData.assessments;
+
+	// Compare imported assessment to saved assessment to identify conflicts
+	let idConflict = {
+		found: false,
+		localAssessment: null,
+	};
+	let schoolYearConflict = {
+		found: false,
+		localAssessment: null,
+	};
+	for (let assessment of localAssessments) {
 		if (
 			assessment.school === importedAssessment.school &&
 			assessment.reportingYear === importedAssessment.reportingYear
 		) {
-			schoolYearConflict = assessment;
+			schoolYearConflict.found = true;
+			schoolYearConflict.localAssessment = assessment;
+		}
+
+		if (assessment.id === importedAssessment.id) {
+			idConflict.found = true;
+			idConflict.localAssessment = assessment;
 		}
 	}
 
-	return { idConflict, schoolYearConflict };
+	let checkResult = { schoolYearConflict, idConflict };
+
+	if (schoolYearConflict.found) {
+		if (debug) console.log('School/Year Conflict Detected', schoolYearConflict);
+	}
+
+	if (idConflict.found) {
+		if (debug) console.log('ID Conflict Detected', idConflict);
+	}
+
+	setImportConflictData({
+		importedAssessment,
+		checkResult,
+	});
+
+	return checkResult;
 };
+
+let resolveImportedAssessment = async (addImported = true) => {
+	let continuumsUpgraded = false;
+
+	if (addImported) {
+		let { importedAssessment, checkResult } = getImportConflictData();
+		if (!importedAssessment || !checkResult) return { continuumsUpgraded };
+
+		let { schoolYearConflict, idConflict } = checkResult;
+
+		// Scenario 1: Conflict import
+		if (schoolYearConflict.found) {
+			// Make sure the id matches the local assessment
+			importedAssessment.id = schoolYearConflict.localAssessment.id;
+
+			// Remove the local assessment
+			deleteAssessment(schoolYearConflict.localAssessment.id);
+		}
+
+		// Scenario 2: No conflict import
+		else {
+			// If there's an id conflict, assign assessment a new id
+			if (idConflict.found) {
+				let userData = getUserData();
+
+				let ids = userData.assessments.map((a) => a.id).filter(Boolean);
+				let newId = ids.length ? Math.max(...ids) + 1 : 1;
+				importedAssessment.id = newId;
+			}
+		}
+
+		// Ensure schema is up to date
+		upgradeAssessmentSchemas([importedAssessment]);
+
+		// Ensure continuum is up to date
+		let upgradeAssessmentContinuumsResult = await upgradeAssessmentContinuums(
+			[importedAssessment],
+			'import',
+		);
+		continuumsUpgraded = upgradeAssessmentContinuumsResult.upgraded;
+
+		// Build continuum completion
+		importedAssessment.continuumCompletion =
+			await generateContinuumCompletion(importedAssessment);
+
+		setAssessment(importedAssessment);
+	}
+
+	// Clear out the import conflict data cache
+	deleteImportConflictData();
+
+	return { continuumsUpgraded };
+};
+
+// 1. Parse file/code - importAssessment.readCode/readFile
+// 2. Check parsed assessment for conflict - importAssessment.check
+// 3. Resolve conflict (if there is one) - (handled by dialog)
+// 4. Ensure schema/continuums are up to date - importAssessment.save
+// 5. Save to data
 
 //
 // Methods (Encoding)
@@ -975,6 +1303,7 @@ let notify = (changes) => {
  * Save to localStorage
  */
 let save = () => {
+	// console.log('Saving to local storage', data);
 	localStorage.setItem(key, JSON.stringify(data));
 };
 
@@ -1002,46 +1331,30 @@ let subscribe = (fn) => {
 // Inits
 //
 
-/**
- * Load from localStorage
- */
-try {
-	let raw = localStorage.getItem(key);
-	if (raw) data = JSON.parse(raw);
-
-	// console.log('User data before schema check', structuredClone(data));
-
-	if (data.uiPreferences.schemaVersion !== currentPreferencesSchemaVersion) {
-		console.warn('User preferences schema is out of date.');
-		data.uiPreferences = updateSchema(data.uiPreferences, userSchema.uiPreferences);
-		data.uiPreferences.schemaVersion = currentPreferencesSchemaVersion;
-	}
-
-	if (data.uiState.schemaVersion !== currentStateSchemaVersion) {
-		console.warn('User state schema is out of date.');
-		data.uiState = updateSchema(data.uiState, userSchema.uiState);
-		data.uiState.schemaVersion = currentStateSchemaVersion;
-	}
-
-	// console.log('User data after schema check', data);
-} catch (err) {
-	console.warn('Failed to load user data:', err);
-	localStorage.removeItem(key);
-}
-
 let userDataStore = (() => {
 	let considerationCountPromise = null;
 
-	let init = () => {
-		// console.log('Initiating User Data Store');
+	let getConsiderationCount = () => {
 		if (!considerationCountPromise) {
 			considerationCountPromise = fetch('./data/consideration-count.json')
-				.then((res) => res.json())
+				.then((res) => {
+					if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+					return res.json();
+				})
 				.catch((err) => {
 					console.error('Failed to fetch consideration count:', err);
+					considerationCountPromise = null; // Reset on failure to allow retry if needed
 					return null;
 				});
 		}
+		return considerationCountPromise;
+	};
+
+	let init = () => {
+		let debug = false;
+
+		if (debug) console.log('Initiating data');
+
 		save();
 		let changes = {
 			initiating: true,
@@ -1049,11 +1362,36 @@ let userDataStore = (() => {
 		notify(changes);
 	};
 
-	let getConsiderationCount = () => considerationCountPromise;
+	let load = async () => {
+		let debug = false;
 
-	return { init, getConsiderationCount };
+		if (debug) console.log('Loading user data from local storage');
+
+		try {
+			let raw = localStorage.getItem(key);
+			if (raw) {
+				data = JSON.parse(raw);
+				if (debug) console.log('User data from local storage', structuredClone(data));
+				let { schemasUpgraded, continuumsUpgraded } = await upgradeUserData(data);
+				if (continuumsUpgraded) {
+					dialogControl.open({
+						dialogId: 'continuum-update-dialog',
+						context: 'load',
+					});
+				}
+			} else {
+				if (debug) console.log('No user data found in local storage, using default', data);
+			}
+		} catch (err) {
+			console.warn('Failed to load user data:', err);
+			localStorage.removeItem(key);
+		}
+	};
+
+	return { init, load, getConsiderationCount };
 })();
 
+userDataStore.load();
 userDataStore.init();
 eventControl.add({
 	elem: document,
@@ -1069,9 +1407,7 @@ export {
 	checkForChanges,
 	compressData,
 	decompressData,
-	findAssessmentConflicts,
 	getActiveAssessmentData,
-	getActiveReportData,
 	getAssessmentData,
 	getAssessmentDate,
 	getAssessmentName,
@@ -1079,21 +1415,23 @@ export {
 	getExportStatus,
 	getStatusColour,
 	getUserData,
-	getImportConflictData,
+	repairUserData,
+	deleteUserData,
 	subscribe,
 	setPreferences,
 	setState,
 	createAssessment,
 	duplicateAssessment,
 	setAssessment,
-	setImportConflictData,
 	deleteAssessment,
-	exportAssessment,
-	importAssessment,
+	exportAssessmentFile,
+	readAssessmentFile,
+	readAssessmentCode,
 	updateChangeLog,
 	updateContinuumCompletion,
 	generateContinuumCompletion,
-	deleteImportConflictData,
 	userDataStore,
 	checkAnnouncementSession,
+	checkImportedAssessment,
+	resolveImportedAssessment,
 };

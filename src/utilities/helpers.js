@@ -91,6 +91,35 @@ let formatDateAsHTML = (timestamp) => {
 };
 
 /**
+ * Returns the human-readable time from a milliseconds.
+ * @param {number} ms - milliseconds.
+ * @returns {string} Human-readable time.
+ */
+let getTime = (ms) => {
+	let timeMs = ms;
+
+	let timeDays = Math.floor(timeMs / (1000 * 60 * 60 * 24));
+	timeMs %= 1000 * 60 * 60 * 24;
+
+	let timeHours = Math.floor(timeMs / (1000 * 60 * 60));
+	timeMs %= 1000 * 60 * 60;
+
+	let timeMinutes = Math.floor(timeMs / (1000 * 60));
+	timeMs %= 1000 * 60;
+
+	let timeSeconds = Math.floor(timeMs / 1000);
+
+	let parts = [];
+	if (timeDays > 0) parts.push(`${timeDays} day${timeDays !== 1 ? 's' : ''}`);
+	if (timeHours > 0) parts.push(`${timeHours} hour${timeHours !== 1 ? 's' : ''}`);
+	if (timeMinutes > 0) parts.push(`${timeMinutes} minute${timeMinutes !== 1 ? 's' : ''}`);
+	if (timeSeconds > 0 || parts.length === 0)
+		parts.push(`${timeSeconds} second${timeSeconds !== 1 ? 's' : ''}`);
+
+	return parts.join(', ');
+};
+
+/**
  * Returns the human-readable time difference between two date strings or timestamps.
  * @param {string|number} d1 - First date (string, ms timestamp, or Unix seconds).
  * @param {string|number} d2 - Second date (string, ms timestamp, or Unix seconds).
@@ -243,7 +272,7 @@ let stringToBoolean = function (str) {
 let toCamelCase = function (str) {
 	if (!str) return '';
 	// Normalize separators and spaces
-	str = str.replace(/[_-\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
+	str = str.replace(/[_\-\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
 	// Lowercase first character
 	return str.charAt(0).toLowerCase() + str.slice(1);
 };
@@ -375,8 +404,8 @@ let getResourcePath = (resource) => {
 		// Default relative path for the production site
 		let path = `./assets/${subfolder}/${slug}.${fileType}`;
 
-		// Absolute path for development site
-		if (import.meta.env.SITE === 'https://middle-success.netlify.app/') {
+		// Absolute path for netlify development site and local server
+		if (import.meta.env.NETLIFY === 'true' || import.meta.env.DEV) {
 			path = `https://middle.nbed.ca/conditions-for-success/assets/${subfolder}/${slug}.${fileType}`;
 		}
 
@@ -485,6 +514,7 @@ export {
 	formatDateAsHTML,
 	formatDateAsString,
 	getResourcePath,
+	getTime,
 	getTimeDifference,
 	htmlToElement,
 	isEqual,

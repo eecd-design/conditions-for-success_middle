@@ -95,6 +95,7 @@ const training = defineCollection({
 		title: z.string(),
 		published: z.boolean(),
 		dateAdded: z.date(),
+		order: z.optional(z.number()),
 		dateStart: z.optional(z.date()),
 		type: z.string(),
 		audience: z.array(z.string()),

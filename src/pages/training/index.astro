@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from 'src/layouts/BaseLayout.astro';
 import Accordion from 'src/components/Accordion.astro';
 import MediaDialog from 'src/components/dialogs/MediaDialog.astro';
 import LinksListItem from 'src/components/LinksListItem.astro';
@@ -27,12 +27,14 @@ for (let training of allTraining) {
 	itemIndex += 1;
 }
 
-searchList.sort((a, b) => {
-	let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
-	return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
-});
-
-console.log('Search List', searchList);
+searchList
+	.sort((a, b) => {
+		let toDate = (value?: Date) => (value ? new Date(value) : new Date(0));
+		return toDate(b.dateAdded).getTime() - toDate(a.dateAdded).getTime();
+	})
+	.sort((a, b) => {
+		return a.order - b.order;
+	});
 ---
 
 <BaseLayout
@@ -127,9 +129,6 @@ console.log('Search List', searchList);
 									><span class="label">Training</span></span
 								>
 							</div>
-							<span class="icon-container">
-								<IconArrowRight16 classes={'destination'} />
-							</span>
 						</div>
 						<div class="wrapper">
 							<span class="text-container">

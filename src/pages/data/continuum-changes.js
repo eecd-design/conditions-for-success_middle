@@ -261,7 +261,7 @@ export let continuumChanges = {
 		},
 		{
 			oldTag: '1.4.1',
-			edited: false,
+			edited: true,
 			transformation: null,
 		},
 		{
@@ -276,7 +276,7 @@ export let continuumChanges = {
 		},
 		{
 			oldTag: '1.4.4',
-			edited: false,
+			edited: true,
 			transformation: null,
 		},
 		{
@@ -289,7 +289,7 @@ export let continuumChanges = {
 		},
 		{
 			oldTag: '1.4.6',
-			edited: false,
+			edited: true,
 			transformation: {
 				type: TransformationType.REORDERED,
 				to: ['1.4.5'],
@@ -362,7 +362,7 @@ export let continuumChanges = {
 		},
 		{
 			oldTag: '1.5.3',
-			edited: false,
+			edited: true,
 			transformation: {
 				type: TransformationType.REORDERED,
 				to: ['1.5.4'],
@@ -1744,7 +1744,7 @@ export let continuumChanges = {
 		},
 		{
 			oldTag: '5.1.10',
-			edited: false,
+			edited: true,
 			transformation: {
 				type: TransformationType.REORDERED,
 				to: ['5.1.11'],
