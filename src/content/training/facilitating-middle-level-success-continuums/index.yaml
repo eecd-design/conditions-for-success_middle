@@ -21,7 +21,7 @@ topics: []
 external:
   discriminant: true
   value:
-    url: https://plhub.nbed.ca/
+    url: https://nbplhub.brightspace.com/d2l/le/discovery/view/course/120681
 linkAction: link
 linkedIndicators: []
 linkedComponents: []
