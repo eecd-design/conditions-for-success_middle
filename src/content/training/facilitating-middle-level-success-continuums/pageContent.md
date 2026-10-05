@@ -2,7 +2,7 @@
 
 This training course explores the purpose, structure, and developmental nature of the *Conditions for Success Developmental Continuums*, including how they support self-assessment and progress planning at the middle level.&#x20;
 
-**Note that you need a Brightspace account to complete the training.**
+**Note that you need an NBED Brightspace account to complete the training.**
 
 ## Course Structure and Topics
 
