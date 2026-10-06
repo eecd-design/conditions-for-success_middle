@@ -773,6 +773,10 @@ let upgradeAssessmentContinuums = async (assessments, context) => {
 			assessment.continuumVersion = currentContinuumVersion;
 
 			upgraded = true;
+		} else if (context === 'repair') {
+			assessment.continuumCompletion = await generateContinuumCompletion(assessment);
+
+			upgraded = true;
 		}
 
 		assessments[i] = assessment;
