@@ -559,7 +559,7 @@ let searchIndexModule = (() => {
 
 	let init = () => {
 		if (!searchIndexPromise) {
-			searchIndexPromise = fetch('./data/search-index.json')
+			searchIndexPromise = fetch('../data/search-index.json')
 				.then((res) => res.json())
 				.catch((err) => {
 					console.error('Failed to fetch search index:', err);

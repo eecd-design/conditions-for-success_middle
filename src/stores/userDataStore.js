@@ -367,7 +367,7 @@ let setImportConflictData = ({ importedAssessment, checkResult }) => {
 };
 
 let generateContinuumCompletion = async (assessment) => {
-	let debug = true;
+	let debug = false;
 
 	if (!assessment) return;
 
@@ -891,7 +891,7 @@ let checkForChanges = ({ data, update }) => {
 };
 
 let checkAnnouncementSession = () => {
-	let debug = true;
+	let debug = false;
 
 	let announcementSession = data.uiState.announcementSession ?? {
 		views: 0,
@@ -1336,7 +1336,7 @@ let userDataStore = (() => {
 
 	let getConsiderationCount = () => {
 		if (!considerationCountPromise) {
-			considerationCountPromise = fetch('./data/consideration-count.json')
+			considerationCountPromise = fetch('../data/consideration-count.json')
 				.then((res) => {
 					if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 					return res.json();
