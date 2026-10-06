@@ -35,6 +35,7 @@ let currentContinuumVersion = '2.0';
 let currentPreferencesSchemaVersion = '1.0';
 let currentStateSchemaVersion = '2.0';
 let currentAssessmentSchemaVersion = '1.0';
+let currentCompletionSchemaVersion = '2.0';
 
 let userSchema = {
 	uiPreferences: {
@@ -376,19 +377,35 @@ let generateContinuumCompletion = async (assessment) => {
 	if (considerationsEstablished.length === 0) return {};
 
 	if (continuumCompletion && continuumVersion === currentContinuumVersion) {
-		if (debug) {
-			console.log(
-				'Continuum completion is present and continuum version matches current. Returning existing completion.',
-			);
-			console.log(continuumCompletion);
+		if (
+			continuumCompletion.schemaVersion &&
+			continuumCompletion.schemaVersion === currentCompletionSchemaVersion
+		) {
+			if (debug) {
+				console.log(
+					'Continuum completion is present and continuum version matches current. Returning existing completion.',
+				);
+				console.log(continuumCompletion);
+			}
+			return continuumCompletion;
+		} else {
+			if (debug) {
+				console.log(
+					'Continuum completion is present and continuum version matches current, however, the completion schema does not match current. Generating new completion.',
+				);
+			}
+			continuumCompletion = {
+				schemaVersion: currentCompletionSchemaVersion,
+			};
 		}
-		return continuumCompletion;
 	} else {
 		if (debug)
 			console.log(
 				'Continuum completion is missing or continuum version does not match current. Generating new completion.',
 			);
-		continuumCompletion = {};
+		continuumCompletion = {
+			schemaVersion: currentCompletionSchemaVersion,
+		};
 	}
 
 	let count = await userDataStore.getConsiderationCount();
