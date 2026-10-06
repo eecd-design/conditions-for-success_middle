@@ -1340,7 +1340,10 @@ let userDataStore = (() => {
 
 	let getConsiderationCount = () => {
 		if (!considerationCountPromise) {
-			considerationCountPromise = fetch('../data/consideration-count.json')
+			let baseUrl = import.meta.env.BASE_URL;
+			let fetchUrl = `${baseUrl}data/consideration-count.json`;
+
+			considerationCountPromise = fetch(fetchUrl)
 				.then((res) => {
 					if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 					return res.json();
