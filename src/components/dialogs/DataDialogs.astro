@@ -127,15 +127,17 @@ import IconExternal16 from 'src/components/icons/IconExternal_16.astro';
 		)
 			return;
 
-		let fields = dialog.querySelectorAll('[data-field]');
+		if (data.uiState.continuumVersion) {
+			let fields = dialog.querySelectorAll('[data-field]');
 
-		for (let field of fields) {
-			field.textContent = data.uiState.continuumVersion;
+			for (let field of fields) {
+				field.textContent = data.uiState.continuumVersion;
+			}
+
+			let changeLogLink = dialog.querySelector('.change-log-link') as HTMLAnchorElement;
+			if (changeLogLink)
+				changeLogLink.href = `./support/continuum-${data.uiState.continuumVersion.replaceAll('.', '')}/`;
 		}
-
-		let changeLogLink = dialog.querySelector('.change-log-link') as HTMLAnchorElement;
-		if (changeLogLink && data.uiState.continuumVersion)
-			changeLogLink.href = `./support/continuum-${data.uiState.continuumVersion.replaceAll('.', '')}/`;
 	};
 
 	//
