@@ -145,7 +145,7 @@ let dialogControl = (() => {
 	};
 
 	let back = () => {
-		let debug = true;
+		let debug = false;
 
 		if (historyStack.length === 0) return;
 
