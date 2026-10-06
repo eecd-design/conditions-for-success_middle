@@ -134,7 +134,7 @@ import IconExternal16 from 'src/components/icons/IconExternal_16.astro';
 		}
 
 		let changeLogLink = dialog.querySelector('.change-log-link') as HTMLAnchorElement;
-		if (changeLogLink)
+		if (changeLogLink && data.uiState.continuumVersion)
 			changeLogLink.href = `./support/continuum-${data.uiState.continuumVersion.replaceAll('.', '')}/`;
 	};
 
