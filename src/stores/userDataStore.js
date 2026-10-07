@@ -625,9 +625,6 @@ let updateContinuumCompletion = async ({
 	let implementingIsUnassessed = continuumCompletion[component].implementingCount === 0;
 	let developingIsUnassessed = continuumCompletion[component].developingCount === 0;
 
-	console.log(continuumCompletion[component]);
-	console.log(initiatingIsUnassessed, implementingIsUnassessed, developingIsUnassessed);
-
 	switch (phase) {
 		case 'implementing':
 			if (initiatingIsUnassessed) hasUnassessed = true;

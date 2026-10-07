@@ -18,8 +18,6 @@ let toastControl = (() => {
 			scope = document;
 		}
 
-		console.log(scope);
-
 		if (!selector && !target) {
 			console.error('Toast creation aborted. No selector or target to build from.');
 			return;
