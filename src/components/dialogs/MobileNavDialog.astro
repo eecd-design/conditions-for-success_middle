@@ -28,7 +28,7 @@ let indicators = allIndicators.sort((a, b) => a.data.tag.localeCompare(b.data.ta
 				<li class="home-icon">
 					<a
 						class="nav-link"
-						aria-current={path.endsWith(base) ? 'page' : null}
+						aria-current={path === base ? 'page' : null}
 						href="./"
 					>
 						Home

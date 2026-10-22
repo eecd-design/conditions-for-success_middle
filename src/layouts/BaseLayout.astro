@@ -374,7 +374,7 @@ const { pageTitle, indicatorTag, pageType } = Astro.props;
 			let path = window.location.pathname;
 			let base = import.meta.env.BASE_URL;
 
-			if (!path.endsWith(base)) {
+			if (path !== base) {
 				setState({
 					lastVisitedPage: {
 						title: document.title,

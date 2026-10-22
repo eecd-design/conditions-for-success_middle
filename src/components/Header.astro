@@ -863,8 +863,9 @@ let welcomeVideoPath =
 
 		let recentShortcutsList = launchpad.querySelector('.shortcuts-list.recent');
 		let recentShortcutsHeading = recentShortcutsList.previousElementSibling;
+		let base = import.meta.env.BASE_URL;
 
-		if (lastVisitedPage && lastVisitedPage.path !== '/') {
+		if (lastVisitedPage && lastVisitedPage.path !== base) {
 			let link = createLaunchpadLink({
 				list: recentShortcutsList,
 				title: lastVisitedPage.title,
@@ -888,13 +889,10 @@ let welcomeVideoPath =
 	// Inits
 	//
 
+	subscribe(updateLaunchpad);
+
 	let onPageLoad = (event) => {
 		let path = window.location.pathname;
-		let base = import.meta.env.BASE_URL;
-
-		if (path.endsWith(base)) {
-			subscribe(updateLaunchpad);
-		}
 
 		let announcementPathSegments = ['/big-seven/', '/support/', '/training/'];
 		if (announcementPathSegments.some((segment) => path.includes(segment))) {
